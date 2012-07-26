@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SsKanri</title>
+  <%= stylesheet_link_tag    "application" %>  
+  <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "jquery.mini" %>
+  <%= stylesheet_link_tag    "table" %> 
+  <%= stylesheet_link_tag    "icon" %>   
+  <%= stylesheet_link_tag 'dropdown' %>   
+  <%= javascript_include_tag "dropdown" %>
+
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  福岡スタンダードSS管理システム
+  <%= current_user.user_name %>&nbsp; &nbsp; 
+
+  <%= link_to "ログアウト", destroy_user_session_path, method: :delete, :class => 'logout_icon' %>
+  <%= render :partial => "/layouts/menus.html" %> 
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
+  <%= yield %>
+  <%= render :partial => "/layouts/footer.html" %> 
+</body>
+</html>

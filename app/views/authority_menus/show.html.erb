@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>M authority:</b>
+  <%= @authority_menu.m_authority_id %>
+</p>
+
+<p>
+  <b>Menu:</b>
+  <%= @authority_menu.menu_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_authority_menu_path(@authority_menu) %> |
+<%= link_to 'Back', authority_menus_path %>

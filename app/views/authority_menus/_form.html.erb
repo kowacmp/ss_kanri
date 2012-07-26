@@ -1,0 +1,25 @@
+<%= form_for(@authority_menu) do |f| %>
+  <% if @authority_menu.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@authority_menu.errors.count, "error") %> prohibited this authority_menu from being saved:</h2>
+
+      <ul>
+      <% @authority_menu.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :m_authority_id %><br />
+    <%= f.number_field :m_authority_id %>
+  </div>
+  <div class="field">
+    <%= f.label :menu_id %><br />
+    <%= f.number_field :menu_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

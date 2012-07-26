@@ -1,0 +1,43 @@
+<h1>メニュー一覧</h1>
+<%= link_to '新規登録', new_menu_path, :class => 'add_icon' %>
+
+<table id='rounded-corner'>
+  <tr>
+    <th>メニュー分類</th>
+    <th>メニュー表示順</th>
+    <th>メニュー名</th>
+    <th>処理名</th>
+    <th>詳細</th>
+    <th>編集</th>
+    <th>削除</th>
+  </tr>
+	
+<% @menus.each do |menu| %>
+  <tr>
+    <td><%= menu.parent_menu_id %></td>
+    <td><%= menu.display_order %></td>
+    <td><%= menu.display_name %></td>
+    <td><%= menu.uri %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_show.png'), menu %></td>
+    <td class="icon"><%#= link_to '編集', edit_menu_path(menu), :class => 'edit_icon' %>
+    	<%= link_to image_tag('icon/24_edit.png'), edit_menu_path(menu) %>
+    </td>
+    <td class="icon"><%#= link_to '削除', menu, :confirm => '削除します。よろしいですか？', :method => :delete, :class=> 'delete_icon' %>
+    	<%= link_to image_tag('icon/24_delete.png'), menu, :confirm => '削除します。よろしいですか？', :method => :delete %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<%# menus = Menu.find(:all, :order => 'parent_menu_id, display_order') %>
+<%= select :select, :prefecture_id, Menu.all.collect {|u| [ u.display_name, u.id]} %>
+<div id="city_id">test</div>
+<script>
+$(function(){
+$('#select_prefecture_id').change(function(){
+var pref_id = $("#select_prefecture_id").val();
+$.get("menus/city_select?pref_id=" + pref_id);
+});
+});
+</script>
+

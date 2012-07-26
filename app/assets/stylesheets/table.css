@@ -1,0 +1,93 @@
+/* スタイルシート: public/stylesheets/table.css */
+/* ------------------
+ styling for the tables 
+   ------------------   */
+
+/*
+body
+{
+	line-height: 1.6em;
+}
+*/
+
+#rounded-corner
+{
+
+    text-align: left;
+    border-collapse: collapse;        
+    margin-left:  5px;
+}
+#rounded-corner th
+{
+	padding: 8px;
+	font-weight: normal;
+	text-align:center; 
+          
+	color: #039;
+    font-weight:bold;
+	background: url('th_001.gif');
+    background-repeat:repeat-x;
+    border: 1px solid #7D808A;
+}
+#rounded-corner td
+{
+	border: 1px solid #8B8E99;
+	color: #000457;
+    font-weight:bold;
+    padding:5px;
+        
+}
+#rounded-corner td.icon
+{
+	border: 1px solid #8B8E99;
+	color: #000457;
+    font-weight:bold;
+    text-align: center;
+            padding:2px;
+            padding-top: 4px;
+}
+#rounded-corner td.total
+{
+	background: #e8edff;
+        color: #FF0000;
+
+}
+#rounded-corner tbody tr:hover td
+{
+	background: #d0dafd;
+}
+
+
+
+
+
+
+
+
+#rounded-corner2
+{
+
+    text-align: left;
+    border-collapse: collapse;        
+    margin-left:  5px;
+}
+#rounded-corner2 th
+{
+    text-align: left;
+	font-weight: normal;
+
+
+	color: #039;
+    font-weight:bold;
+    background: url('th_002.jpg');
+    background-repeat:repeat-x;
+    border: 1px solid #7D808A;
+}
+#rounded-corner2 td
+{
+	padding: 8px;
+	border: 1px solid #8B8E99;
+	color: #000457;
+    font-weight:bold;
+    padding:5px; 
+}

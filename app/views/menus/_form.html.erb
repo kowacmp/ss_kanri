@@ -1,0 +1,35 @@
+<%= form_for(@menu) do |f| %>
+  <% if @menu.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@menu.errors.count, "error") %> prohibited this menu from being saved:</h2>
+
+      <ul>
+      <% @menu.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th><%= f.label 'メニュー分類' %></th>
+  	  <td><%= f.number_field :parent_menu_id %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label 'メニュー表示順' %></th>
+  	  <td><%= f.number_field :display_order %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label 'メニュー名' %></th>
+  	  <td><%= f.number_field :display_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '処理名' %></th>
+  	  <td><%= f.number_field :uri %></td>  	  
+  	</tr>   	   	 	
+  </table>
+  <div class="actions">
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div>
+<% end %>

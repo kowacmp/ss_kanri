@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>メニュー分類</th>
+  	  <td><%= @menu.parent_menu_id %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>メニュー表示順</th>
+  	  <td><%= @menu.display_order %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>メニュー名</th>
+  	  <td><%= @menu.display_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>処理名</th>
+  	  <td><%= @menu.uri %></td>  	  
+  	</tr>   	   	 	
+  </table>
+
+<%= link_to '編集', edit_menu_path(@menu), :class => 'edit_icon' %> |
+<%= link_to '戻る', menus_path, :class => 'return_icon' %>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SsKanri</title>
+  <%= stylesheet_link_tag    "application" %>  
+  <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "jquery.mini" %>
+  <%= stylesheet_link_tag    "table" %> 
+  <%= stylesheet_link_tag    "icon" %>   
+  <%= stylesheet_link_tag 'dropdown' %>   
+  <%= javascript_include_tag "dropdown" %>
+
+  <%= csrf_meta_tags %>
+</head>
+<body>
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
+<%= yield %>
+
+</body>
+</html>

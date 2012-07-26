@@ -1,0 +1,908 @@
+.add_icon
+{
+  background: url(icon/add.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.show_icon{
+  background-image: url(icon/show.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.edit_icon{
+  background-image: url(icon/edit.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.delete_icon
+{
+  background-image: url(icon/delete.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.return_icon
+{
+  background-image: url(icon/return.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.logout_icon
+{
+  background-image: url(icon/logout.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.information_icon
+{
+  background-image: url(icon/information.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+
+
+
+
+
+
+
+
+.icon_plugins
+{
+  background-image: url(../images/icon/plugins.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:45px;
+  display:inline-block;
+  /*line-height: 25px;*/
+  padding-right:10px;
+  /*margin-right:10px;*/
+
+}
+.icon_date
+{
+  background-image: url(../images/icon/date.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:45px;
+  display:inline-block;
+  /*line-height: 25px;*/
+  padding-right:10px;
+  /*margin-right:10px;*/
+
+}
+.icon_lending
+{
+  background-image: url(../images/icon/lending.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:45px;
+  display:inline-block;
+  /*line-height: 25px;*/
+  padding-right:10px;
+  /*margin-right:10px;*/
+
+}
+.icon_archive
+{
+  background-image: url(../images/icon/archive.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:45px;
+  display:inline-block;
+  /*line-height: 25px;*/
+  padding-right:10px;
+  /*margin-right:10px;*/
+
+}
+.icon_author
+{
+  background-image: url(../images/icon/author.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:45px;
+  display:inline-block;
+  /*line-height: 25px;*/
+  padding-right:10px;
+  /*margin-right:10px;*/
+
+}
+.icon_views
+{
+  background-image: url(../images/icon/views.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:45px;
+  display:inline-block;
+  /*line-height: 25px;*/
+  padding-right:10px;
+  /*margin-right:10px;*/
+
+}
+.icon_home
+{
+  background-image: url(../images/icon/home.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:100px;
+  display:inline-block;
+  /*line-height: 25px;*/
+  padding-right:10px;
+  /*margin-right:10px;*/
+
+}
+.icon_edit_bunsyo
+{
+  background-image: url(../images/icon/edit_bunsyo.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:40px;
+  display:inline-block;
+  line-height: 45px;
+  color:green;
+  padding-right:10px;
+  margin-right:10px;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #000000;
+}
+.icon_add_bunsyo
+{
+  background-image: url(../images/icon/add_bunsyo.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:40px;
+  display:inline-block;
+  line-height: 40px;
+  color:blue;
+  padding-right:10px;
+  margin-right:10px;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #000000;  
+}
+.icon_del_bunsyo
+{
+  background-image: url(../images/icon/del_bunsyo.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:40px;
+  display:inline-block;
+  line-height: 40px;
+  color:red;
+  padding-right:10px;
+  margin-right:10px;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #000000;
+}
+.icon_print_bunsyo
+{
+  background-image: url(../images/icon/printer.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:40px;
+  display:inline-block;
+  line-height: 40px;
+  color:orange;
+  padding-right:10px;
+  margin-right:10px;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #000000;
+}
+.icon_hokan_bunsyo_g
+{
+  background-image: url(../images/icon/hokan_busyo_g.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:40px;
+  display:inline-block;
+  line-height: 40px;
+  color:grey;
+  padding-right:10px;
+  margin-right:10px;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #000000;
+}
+.icon_kessai_bunsyo_g
+{
+  background-image: url(../images/icon/kessai_bunsyo_g.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:40px;
+  display:inline-block;
+  line-height: 40px;
+  color:grey;
+  padding-right:10px;
+  margin-right:10px;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #000000;
+}
+.icon_riyou_bunsyo
+{
+  background-image: url(../images/icon/riyou_bunsyo.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:40px;
+  display:inline-block;
+  line-height: 40px;
+  color:grey;
+  padding-right:10px;
+  margin-right:10px;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #000000;
+}
+.icon_search
+{
+  background-image: url(../images/icon/search.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  display:inline-block;
+  line-height: 20px;
+  color:brack;
+}
+.icon_refresh
+{
+  background-image: url(../images/icon/refresh.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  display:inline-block;
+  line-height: 20px;
+  color:brack;
+}
+.create_icon
+{
+  background-image: url(../images/icon/page_add.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  display:inline-block;
+  line-height: 20px;
+  color:brack;
+}
+.update_icon
+{
+  background-image: url(../images/icon/page_edit.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  display:inline-block;
+  line-height: 20px;
+  color:brack;
+}
+.home_icon
+{
+  background-image: url(../images/icon/home_small.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  display:inline-block;
+  line-height: 20px;
+  color:brack;
+}
+.storage_icon
+{
+  background-image: url(../images/icon/storage.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  display:inline-block;
+  line-height: 20px;
+  color:brack;
+}
+.icon_table_order_asc
+{
+  background-image: url(../images/icon/bullet_arrow_up.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:10px;
+  display:inline-block;
+  line-height: 10px;
+  color:brack;
+  width: 7px;
+}
+.icon_table_order_desc
+{
+  background-image: url(../images/icon/bullet_arrow_down.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:10px;
+  display:inline-block;
+  line-height: 10px;
+  color:brack;
+  width: 7px;
+}
+.mihokan_icon
+{
+  background-image: url(../images/icon/mihokan.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.kessai_icon
+{
+  background-image: url(../images/icon/kessai.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.kairan_icon
+{
+  background-image: url(../images/icon/kairan.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.kouji_ukagai_icon
+{
+  background-image: url(../images/icon/kouji.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.kensaku_icon
+{
+  background-image: url(../images/icon/kensaku.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+
+.ikkatu_icon
+{
+  background-image: url(../images/icon/ikkatu.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.code_icon
+{
+  background-image: url(../images/icon/code.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.user_icon
+{
+  background-image: url(../images/icon/user.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.user_syozoku_icon
+{
+  background-image: url(../images/icon/user_syozoku.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.bunsyo_bunrui_icon
+{
+  background-image: url(../images/icon/bunsyo_bunrui.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.hokan_icon
+{
+  background-image: url(../images/icon/hokan.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.password_icon
+{
+  background-image: url(../images/icon/password.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.sasimodosi_icon
+{
+  background-image: url(../images/icon/sasimodosi.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+
+.list_icon
+{
+  background-image: url(../images/icon/list.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.syozoku_icon
+{
+  background-image: url(../images/icon/syozoku.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.excel_icon
+{
+  background-image: url(../images/icon/excel_out.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.imp_icon
+{
+  background-image: url(../images/icon/imp.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.file_icon
+{
+  background-image: url(../images/icon/file.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+  color:blue;
+}
+.sentaku_icon
+{
+  background-image: url(../images/icon/check.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  display:inline-block;
+  line-height: 20px;
+  color:brack;
+}
+.temp_icon
+{
+  background-image: url(../images/icon/temp.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.yajirusi{
+    list-style-image: url(../images/icon/ul.png);
+    /*background-image: url(../images/icon/ul.png);
+    background-position: left;
+    background-repeat:no-repeat;*/
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-left: 25px;
+}
+.yajirusi a:link{
+  color: #49395D;
+  text-decoration: none;
+}
+.yajirusi a:visited{
+  color: #46365A;
+  text-decoration: none;
+}
+
+.xls_in_icon
+{
+  background-image: url(../images/icon/xls_in.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.xls_out_icon
+{
+  background-image: url(../images/icon/xls_out.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.clear_icon
+{
+  background-image: url(../images/icon/clear2.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  display:inline-block;
+  line-height: 20px;
+  color:brack;
+}
+.printer_icon
+{
+  background-image: url(../images/icon/printer2.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.riyo_icon
+{
+  background-image: url(../images/icon/riyo.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+
+.arrow_left_icon
+{
+  background-image: url(../images/icon/arrow_left.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+
+.arrow_right_icon
+{
+  background-image: url(../images/icon/arrow_right.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.aigi_icon
+{
+  background-image: url(../images/icon/aigi.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+  color:blue;
+}
+.atesaki_icon
+{
+  background-image: url(../images/icon/atesaki.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+  color:blue;
+}
+.yosan_kamoku_icon
+{
+  background-image: url(../images/icon/yosan_kamoku.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.calculator_icon
+{
+  background-image: url(../images/icon/calculator.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.user_edit_icon
+{
+  background-image: url(../images/icon/user_edit.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.stamp_icon
+{
+  background-image: url(../images/icon/stamp.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 15px;
+  display:inline-block;
+}
+.box_movement_icon
+{
+  background-image: url(../images/icon/box_movement.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.haiki_list_icon
+{
+  background-image: url(../images/icon/haiki_list.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.page_add_icon
+{
+  background-image: url(../images/icon/page_add2.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.page_movement_icon
+{
+  background-image: url(../images/icon/page_movement.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.syoko_search_icon
+{
+  background-image: url(../images/icon/syoko_search.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.nendo_chenge_icon
+{
+  background-image: url(../images/icon/time.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.folder_add_icon
+{
+  background-image: url(../images/icon/folder_add.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.group_edit_icon
+{
+  background-image: url(../images/icon/group_edit.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.box_icon
+{
+  background-image: url(../images/icon/box.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.folder_page_icon
+{
+  background-image: url(../images/icon/folder_page.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.folder_page_white_icon
+{
+  background-image: url(../images/icon/folder_page_white.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.date_edit_icon
+{
+  background-image: url(../images/icon/date_edit.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.folder_copy_icon
+{
+  background-image: url(../images/icon/folder_copy.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.pdf_icon
+{
+  background-image: url(../images/icon/pdf.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.folder_user_icon
+{
+  background-image: url(../images/icon/folder_user.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.rental_icon
+{
+  background-image: url(../images/icon/arrow_redo.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.return2_icon
+{
+  background-image: url(../images/icon/arrow_undo.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.document-copy_icon
+{
+  background-image: url(../images/icon/document-copy.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.document-convert_icon
+{
+  background-image: url(../images/icon/document-convert.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.move_icon
+{
+  background-image: url(../images/icon/arrow.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.nenji_icon
+{
+  background-image: url(../images/icon/clock.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.lending_icon
+{
+  background-image: url(../images/icon/lending_small.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.document-share_icon
+{
+  background-image: url(../images/icon/document-share.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.folder_open_icon
+{
+  background-image: url(../images/icon/folder_open.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.order_icon
+{
+  background-image: url(../images/icon/order.gif);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.folder_list_icon
+{
+  background-image: url(../images/icon/folder_list.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}
+.document-edit_icon
+{
+  background-image: url(../images/icon/document-edit.png);
+  background-position: left;
+  background-repeat:no-repeat;
+  padding-left:20px;
+  line-height: 16px;
+  display:inline-block;
+}

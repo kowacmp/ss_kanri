@@ -1,0 +1,36 @@
+<%= form_tag({:action => 'authority_menu_create' }, { :remote => true }) do %>
+<table id='rounded-corner'>
+  <tr>
+    <th>メニュー名</th>
+    <th>機能</th>
+    <th>表示有無</th>
+  </tr>
+
+<% @authority_menus.each_with_index do |authority_menu, idx| %>
+  <% if authority_menu.authority_menu_id.blank?
+  	   on = false
+  	   off = true
+  	 else
+  	   on = true
+  	   off = false
+  	 end
+  %>
+  <tr>
+  	<% if authority_menu.display_order == 0 %>
+  	  <td><%= authority_menu.display_name %></td>
+  	  <td></td>
+  	<% else %>
+  	  <td></td>
+  	  <td><%= authority_menu.display_name %></td>
+  	<% end %>
+    
+    <td>
+      <%= radio_button("menu[#{idx}]","chk","on", :checked => on)%>表示する	
+      <%= radio_button("menu[#{idx}]","chk","off", :checked => off)%>表示しない
+    </td>
+  </tr>
+<% end %>
+
+</table>
+  <%= submit_tag '登録' %>
+<% end %>  

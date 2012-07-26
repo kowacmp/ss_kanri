@@ -1,0 +1,20 @@
+<% session[:m_authority_id] = 4 %>
+<% get_parent_menu(session[:m_authority_id]) %>
+
+<ul id="jsddm">
+	<li><a href="/homes">home</a></li>
+	<% session[:parent_menus].each do |parent_menu| %>
+	  <li><a href="#"><%= parent_menu.display_name %></a>
+	  	<% get_menus(session[:m_authority_id], parent_menu.parent_menu_id)%>
+
+		<ul>
+		  <% session[:menus].each do |menu| %>
+			<li><a href="/<%= menu.uri %>"><%= menu.display_name %></a></li>
+		  <% end %> 
+		</ul>
+	  </li>
+	<% end %>
+</ul>
+<br/>
+
+

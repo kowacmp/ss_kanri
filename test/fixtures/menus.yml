@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  parent_menu_id: 1
+  display_order: 1
+  display_name: MyString
+  uri: MyString
+
+two:
+  parent_menu_id: 1
+  display_order: 1
+  display_name: MyString
+  uri: MyString

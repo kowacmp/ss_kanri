@@ -1,0 +1,20 @@
+<h1>Listing m_authorities</h1>
+<%= link_to '新規登録', new_m_authority_path, :class => 'add_icon' %>
+
+<table id='rounded-corner'>
+  <tr>
+    <th>Authority classd</th>
+    <th>権限名</th>
+    <th colspan="3"></th>
+  </tr>
+  
+<% @m_authorities.each do |m_authority| %>
+  <tr>
+    <td><%= m_authority.authority_cd %></td>
+    <td><%= m_authority.authority_name %></td>
+    <td><%= link_to '詳細', m_authority, :class => 'show_icon' %></td>
+    <td><%= link_to '編集', edit_m_authority_path(m_authority), :class => 'edit_icon' %></td>
+    <td><%= link_to '削除', m_authority, :confirm => '削除します。よろしいですか？', :method => :delete, :class=> 'delete_icon' %></td>
+  </tr>
+<% end %>
+</table>

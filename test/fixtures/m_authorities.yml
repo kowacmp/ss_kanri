@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  authority_classd: MyString
+  authority_class_name: MyString
+  deleted_flg: 1
+  deleted_at: 2012-07-06 16:10:55
+
+two:
+  authority_classd: MyString
+  authority_class_name: MyString
+  deleted_flg: 1
+  deleted_at: 2012-07-06 16:10:55
