@@ -1,0 +1,2 @@
+module MShopsHelper
+end

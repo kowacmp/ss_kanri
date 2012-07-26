@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>油種コード</th>
+  	  <td><%= @m_oil.oil_cd %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>油種名</th>
+  	  <td><%= @m_oil.oil_name %></td>  	  
+  	</tr>
+  </table>
+
+<%= link_to '編集', edit_m_oil_path(@m_oil), :class => 'edit_icon' %> |
+<%= link_to '戻る', m_oils_path, :class => 'return_icon' %>

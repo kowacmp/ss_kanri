@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>他商品コード</th>
+  	  <td><%= @m_etcsale.etc_cd %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>他商品名</th>
+  	  <td><%= @m_etcsale.etc_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>他商品略称</th>
+  	  <td><%= @m_etcsale.etc_ryaku %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>単位</th>
+  	  <td><%= @m_etcsale.etc_tani %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>グループ種類</th>
+  	  <td><%= @m_etcsale.etc_group %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>最大数</th>
+  	  <td><%= @m_etcsale.max_num %></td>  	  
+  	</tr>
+  </table>
+
+<%= link_to '編集', edit_m_etcsale_path(@m_etcsale), :class => 'edit_icon' %> |
+<%= link_to '戻る', m_etcsales_path, :class => 'return_icon' %>

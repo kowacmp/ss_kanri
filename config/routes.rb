@@ -1,4 +1,24 @@
 SsKanri::Application.routes.draw do
+  resources :m_washsale_plans
+
+  resources :m_tanks
+
+  resources :m_shops
+
+  resources :m_codes
+
+  resources :m_info_costs
+
+  resources :m_etcsales
+
+  resources :m_washes
+
+  resources :m_etcs
+
+  resources :m_oiletcs
+
+  resources :m_oils
+
   resources :d_comments
 
   resources :d_events

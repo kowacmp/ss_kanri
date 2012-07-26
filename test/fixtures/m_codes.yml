@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  kbn: MyString
+  code: MyString
+  code_name: MyString
+  code_name1: MyString
+
+two:
+  kbn: MyString
+  code: MyString
+  code_name: MyString
+  code_name1: MyString

@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>油外コード</th>
+  	  <td><%= @m_oiletc.oiletc_cd %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>油外名</th>
+  	  <td><%= @m_oiletc.oiletc_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>油外略称</th>
+  	  <td><%= @m_oiletc.oiletc_ryaku %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>単位</th>
+  	  <td><%= @m_oiletc.oiletc_tani %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>グループ種類</th>
+  	  <td><%= @m_oiletc.oiletc_group %></td>  	  
+  	</tr>
+  </table>
+
+<%= link_to '編集', edit_m_oiletc_path(@m_oiletc), :class => 'edit_icon' %> |
+<%= link_to '戻る', m_oiletcs_path, :class => 'return_icon' %>

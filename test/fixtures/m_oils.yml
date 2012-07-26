@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  oil_cd: 1
+  oil_name: MyString
+  deleted_flg: 1
+  deleted_at: 2012-07-23 10:35:25
+
+two:
+  oil_cd: 1
+  oil_name: MyString
+  deleted_flg: 1
+  deleted_at: 2012-07-23 10:35:25

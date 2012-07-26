@@ -1,0 +1,2 @@
+module MEtcsalesHelper
+end

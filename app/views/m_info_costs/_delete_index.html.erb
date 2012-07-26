@@ -1,0 +1,39 @@
+<table id='rounded-corner'>
+  <tr>
+    <th>ユーザID</th>
+    <th>基本給</th>
+    <th>深夜給</th>
+    <th>福利費</th>
+    <th>手当1</th>
+    <th>手当2</th>
+    <th>手当3</th>
+    <th>手当4</th>
+    <th>詳細</th>
+    <th>編集</th>
+    <th>削除</th>
+  </tr>
+
+<% @m_info_costs.each do |m_info_cost| %>
+  <tr>
+    <td><%= m_info_cost.users_id %></td>
+    <td><%= m_info_cost.base_pay %></td>
+    <td><%= m_info_cost.night_pay %></td>
+    <td><%= m_info_cost.welfare_pay %></td>
+    <td><%= m_info_cost.etc_pay1 %></td>
+    <td><%= m_info_cost.etc_pay2 %></td>
+    <td><%= m_info_cost.etc_pay3 %></td>
+    <td><%= m_info_cost.etc_pay4 %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_show.png'), m_info_cost %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_info_cost_path(m_info_cost) %></td>
+    
+    <td class="icon">
+    <%- if m_info_cost.deleted_flg == 1 -%>
+    <%= link_to image_tag('icon/24_show.png'), m_info_cost, :confirm => '削除の取消をします。よろしいですか？', :method => :delete %>
+    <%- else -%>
+    <%= link_to image_tag('icon/24_delete.png'), m_info_cost, :confirm => '削除します。よろしいですか？', :method => :delete %>
+    <%- end -%>
+    </td>
+    
+  </tr>
+<% end %>
+</table>

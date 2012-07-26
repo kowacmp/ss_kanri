@@ -1,0 +1,47 @@
+<h1>Listing m_washsale_plans</h1>
+
+<table>
+  <tr>
+    <th>M shop</th>
+    <th>M wash</th>
+    <th>Sunday</th>
+    <th>Monday</th>
+    <th>Tuesday</th>
+    <th>Wednesday</th>
+    <th>Thursday</th>
+    <th>Friday</th>
+    <th>Saturday</th>
+    <th>Created user</th>
+    <th>Updated user</th>
+    <th>Deleted flg</th>
+    <th>Deleted at</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @m_washsale_plans.each do |m_washsale_plan| %>
+  <tr>
+    <td><%= m_washsale_plan.m_shop_id %></td>
+    <td><%= m_washsale_plan.m_wash_id %></td>
+    <td><%= m_washsale_plan.sunday %></td>
+    <td><%= m_washsale_plan.monday %></td>
+    <td><%= m_washsale_plan.tuesday %></td>
+    <td><%= m_washsale_plan.wednesday %></td>
+    <td><%= m_washsale_plan.thursday %></td>
+    <td><%= m_washsale_plan.friday %></td>
+    <td><%= m_washsale_plan.saturday %></td>
+    <td><%= m_washsale_plan.created_user_id %></td>
+    <td><%= m_washsale_plan.updated_user_id %></td>
+    <td><%= m_washsale_plan.deleted_flg %></td>
+    <td><%= m_washsale_plan.deleted_at %></td>
+    <td><%= link_to 'Show', m_washsale_plan %></td>
+    <td><%= link_to 'Edit', edit_m_washsale_plan_path(m_washsale_plan) %></td>
+    <td><%= link_to 'Destroy', m_washsale_plan, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New M washsale plan', new_m_washsale_plan_path %>

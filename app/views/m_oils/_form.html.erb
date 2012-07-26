@@ -1,0 +1,28 @@
+<%= form_for(@m_oil) do |f| %>
+  <% if @m_oil.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_oil.errors.count, "error") %> prohibited this m_oil from being saved:</h2>
+
+      <ul>
+      <% @m_oil.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th><%= f.label '油種コード' %></th>
+  	  <td><%= f.number_field :oil_cd %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '油種名' %></th>
+  	  <td><%= f.text_field :oil_name %></td>  	  
+  	</tr>
+  </table>
+  <div class="actions">
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div>
+
+<% end %>

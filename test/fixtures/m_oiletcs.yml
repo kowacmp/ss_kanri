@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  oiletc_cd: 1
+  oiletc_name: MyString
+  oiletc_ryaku: MyString
+  oiletc_tani: MyString
+  oiletc_group: 1
+  deleted_flg: 1
+  deleted_at: 2012-07-23 13:56:48
+
+two:
+  oiletc_cd: 1
+  oiletc_name: MyString
+  oiletc_ryaku: MyString
+  oiletc_tani: MyString
+  oiletc_group: 1
+  deleted_flg: 1
+  deleted_at: 2012-07-23 13:56:48

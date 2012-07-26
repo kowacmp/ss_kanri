@@ -1,0 +1,35 @@
+<table id='rounded-corner'>
+  <tr>
+    <th>他売上コード</th>
+    <th>他売上名</th>
+    <th>他売上略称</th>
+    <th>単位</th>
+    <th>グループ種類</th>
+    <th>最大数</th>
+    <th>詳細</th>
+    <th>編集</th>
+    <th>削除</th>
+  </tr>
+
+<% @m_etcsales.each do |m_etcsale| %>
+  <tr>
+    <td><%= m_etcsale.etc_cd %></td>
+    <td><%= m_etcsale.etc_name %></td>
+    <td><%= m_etcsale.etc_ryaku %></td>
+    <td><%= m_etcsale.etc_tani %></td>
+    <td><%= m_etcsale.etc_group %></td>
+    <td><%= m_etcsale.max_num %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_show.png'), m_etcsale %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_etcsale_path(m_etcsale) %></td>
+    
+    <td class="icon">
+    <%- if m_etcsale.deleted_flg == 1 -%>
+    <%= link_to image_tag('icon/24_show.png'), m_etcsale, :confirm => '削除の取消をします。よろしいですか？', :method => :delete %>
+    <%- else -%>
+    <%= link_to image_tag('icon/24_delete.png'), m_etcsale, :confirm => '削除します。よろしいですか？', :method => :delete %>
+    <%- end -%>
+    </td>
+    
+  </tr>
+<% end %>
+</table>

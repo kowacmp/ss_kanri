@@ -1,0 +1,35 @@
+<%= form_for(@m_code) do |f| %>
+  <% if @m_code.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_code.errors.count, "error") %> prohibited this m_code from being saved:</h2>
+
+      <ul>
+      <% @m_code.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th><%= f.label 'コード区分' %></th>
+  	  <td><%= f.number_field :kbn %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label 'コード' %></th>
+  	  <td><%= f.text_field :code %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label 'コード名称' %></th>
+  	  <td><%= f.text_field :code_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label 'コード名称１' %></th>
+  	  <td><%= f.text_field :code_name1 %></td>  	  
+  	</tr>
+  </table>
+  <div class="actions">
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div>
+<% end %>

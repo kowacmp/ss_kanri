@@ -1,0 +1,33 @@
+<table id='rounded-corner'>
+  <tr>
+    <th>洗車機コード</th>
+    <th>洗車機名</th>
+    <th>洗車機略称</th>
+    <th>グループ種類</th>
+    <th>最大数</th>
+    <th>詳細</th>
+    <th>編集</th>
+    <th>削除</th>
+  </tr>
+
+<% @m_washes.each do |m_wash| %>
+  <tr>
+    <td><%= m_wash.wash_cd %></td>
+    <td><%= m_wash.wash_name %></td>
+    <td><%= m_wash.wash_ryaku %></td>
+    <td><%= m_wash.wash_group %></td>
+    <td><%= m_wash.max_num %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_show.png'), m_wash %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_wash_path(m_wash) %></td>
+    
+    <td class="icon">
+    <%- if m_wash.deleted_flg == 1 -%>
+    <%= link_to image_tag('icon/24_show.png'), m_wash, :confirm => '削除の取消をします。よろしいですか？', :method => :delete %>
+    <%- else -%>
+    <%= link_to image_tag('icon/24_delete.png'), m_wash, :confirm => '削除します。よろしいですか？', :method => :delete %>
+    <%- end -%>
+    </td>
+    
+  </tr>
+<% end %>
+</table>

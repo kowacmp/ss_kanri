@@ -1,0 +1,51 @@
+<%= form_for(@m_info_cost) do |f| %>
+  <% if @m_info_cost.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_info_cost.errors.count, "error") %> prohibited this m_info_cost from being saved:</h2>
+
+      <ul>
+      <% @m_info_cost.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th><%= f.label 'ユーザID' %></th>
+  	  <td><%= f.number_field :users_id %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '基本給' %></th>
+  	  <td><%= f.number_field :base_pay %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '深夜給' %></th>
+  	  <td><%= f.number_field :night_pay %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '福利費' %></th>
+  	  <td><%= f.number_field :welfare_pay %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '手当1' %></th>
+  	  <td><%= f.number_field :etc_pay1 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '手当2' %></th>
+  	  <td><%= f.number_field :etc_pay2 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '手当3' %></th>
+  	  <td><%= f.number_field :etc_pay3 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '手当4' %></th>
+  	  <td><%= f.number_field :etc_pay4 %></td>  	  
+  	</tr>
+  </table>
+  <div class="actions">
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div>
+<% end %>

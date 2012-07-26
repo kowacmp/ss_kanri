@@ -1,0 +1,45 @@
+<h1>他売上マスタメンテ</h1>
+
+<%= form_tag({:action => 'delete_index' }, { :remote => true }) do %>
+  <%= check_box(:check,:deleted_flg,{},true,false) %>
+  削除項目も表示する。
+  <%= submit_tag '再表示' %>
+<% end %>
+
+<%= link_to '新規登録', new_m_etcsale_path, :class => 'add_icon' %>
+
+<!--
+<table>
+  <tr>
+    <th>Etc cd</th>
+    <th>Etc name</th>
+    <th>Etc ryaku</th>
+    <th>Etc tani</th>
+    <th>Etc group</th>
+    <th>Max num</th>
+    <th>Deleted flg</th>
+    <th>Deleted at</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @m_etcsales.each do |m_etcsale| %>
+  <tr>
+    <td><%= m_etcsale.etc_cd %></td>
+    <td><%= m_etcsale.etc_name %></td>
+    <td><%= m_etcsale.etc_ryaku %></td>
+    <td><%= m_etcsale.etc_tani %></td>
+    <td><%= m_etcsale.etc_group %></td>
+    <td><%= m_etcsale.max_num %></td>
+    <td><%= m_etcsale.deleted_flg %></td>
+    <td><%= m_etcsale.deleted_at %></td>
+    <td><%= link_to 'Show', m_etcsale %></td>
+    <td><%= link_to 'Edit', edit_m_etcsale_path(m_etcsale) %></td>
+    <td><%= link_to 'Destroy', m_etcsale, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+-->
+<br />
+<div id="result"></div>

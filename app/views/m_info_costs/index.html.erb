@@ -1,0 +1,48 @@
+<h1>人件費情報マスタメンテ</h1>
+
+<%= form_tag({:action => 'delete_index' }, { :remote => true }) do %>
+  <%= check_box(:check,:deleted_flg,{},true,false) %>
+  削除項目も表示する。
+  <%= submit_tag '再表示' %>
+<% end %>
+
+<%= link_to '新規登録', new_m_info_cost_path, :class => 'add_icon' %>
+<!--
+<table>
+  <tr>
+    <th>Users</th>
+    <th>Base pay</th>
+    <th>Night pay</th>
+    <th>Welfare pay</th>
+    <th>Etc pay1</th>
+    <th>Etc pay2</th>
+    <th>Etc pay3</th>
+    <th>Etc pay4</th>
+    <th>Deleted flg</th>
+    <th>Deleted at</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @m_info_costs.each do |m_info_cost| %>
+  <tr>
+    <td><%= m_info_cost.users_id %></td>
+    <td><%= m_info_cost.base_pay %></td>
+    <td><%= m_info_cost.night_pay %></td>
+    <td><%= m_info_cost.welfare_pay %></td>
+    <td><%= m_info_cost.etc_pay1 %></td>
+    <td><%= m_info_cost.etc_pay2 %></td>
+    <td><%= m_info_cost.etc_pay3 %></td>
+    <td><%= m_info_cost.etc_pay4 %></td>
+    <td><%= m_info_cost.deleted_flg %></td>
+    <td><%= m_info_cost.deleted_at %></td>
+    <td><%= link_to 'Show', m_info_cost %></td>
+    <td><%= link_to 'Edit', edit_m_info_cost_path(m_info_cost) %></td>
+    <td><%= link_to 'Destroy', m_info_cost, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+-->
+<br />
+<div id="result"></div>

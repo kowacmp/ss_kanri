@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>他商品コード</th>
+  	  <td><%= @m_etc.etc_cd %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>他商品名</th>
+  	  <td><%= @m_etc.etc_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>他商品略称</th>
+  	  <td><%= @m_etc.etc_ryaku %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>単位</th>
+  	  <td><%= @m_etc.etc_tani %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>グループ種類</th>
+  	  <td><%= @m_etc.etc_group %></td>  	  
+  	</tr>
+  </table>
+
+<%= link_to '編集', edit_m_etc_path(@m_etc), :class => 'edit_icon' %> |
+<%= link_to '戻る', m_etcs_path, :class => 'return_icon' %>
+

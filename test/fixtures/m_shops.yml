@@ -1,0 +1,55 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  shop_cd: 1
+  shop_name: MyString
+  shop_kana: MyString
+  shop_ryaku: MyString
+  shop_zip_cd: MyString
+  shop_adress: MyString
+  shop_tel: MyString
+  shop_fax: MyString
+  shop_mail_adress: MyString
+  shop_kbn: 1
+  m_shop_group_id: 1
+  m_oil_id1: 1
+  tank1_all: 1
+  m_oil_id2: 1
+  tank2_all: 1
+  m_oil_id3: 1
+  tank3_all: 1
+  m_oil_id4: 1
+  tank4_all: 1
+  etc_oil_flg: 1
+  etc_flg: 1
+  wash_flg: 1
+  wash_sale_flg: 1
+  deleted_flg: 1
+  deleted_at: 2012-07-24 19:54:59
+
+two:
+  shop_cd: 1
+  shop_name: MyString
+  shop_kana: MyString
+  shop_ryaku: MyString
+  shop_zip_cd: MyString
+  shop_adress: MyString
+  shop_tel: MyString
+  shop_fax: MyString
+  shop_mail_adress: MyString
+  shop_kbn: 1
+  m_shop_group_id: 1
+  m_oil_id1: 1
+  tank1_all: 1
+  m_oil_id2: 1
+  tank2_all: 1
+  m_oil_id3: 1
+  tank3_all: 1
+  m_oil_id4: 1
+  tank4_all: 1
+  etc_oil_flg: 1
+  etc_flg: 1
+  wash_flg: 1
+  wash_sale_flg: 1
+  deleted_flg: 1
+  deleted_at: 2012-07-24 19:54:59

@@ -1,0 +1,39 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  m_shop_id: 1
+  m_oil_id: 1
+  tank_all: 1
+  measure1: 1
+  measure2: 1
+  measure3: 1
+  measure4: 1
+  measure5: 1
+  measure6: 1
+  measure7: 1
+  measure8: 1
+  measure9: 1
+  measure10: 1
+  measure11: 1
+  measure12: 1
+  deleted_flg: 1
+  deleted_at: 2012-07-25 11:41:57
+
+two:
+  m_shop_id: 1
+  m_oil_id: 1
+  tank_all: 1
+  measure1: 1
+  measure2: 1
+  measure3: 1
+  measure4: 1
+  measure5: 1
+  measure6: 1
+  measure7: 1
+  measure8: 1
+  measure9: 1
+  measure10: 1
+  measure11: 1
+  measure12: 1
+  deleted_flg: 1
+  deleted_at: 2012-07-25 11:41:57

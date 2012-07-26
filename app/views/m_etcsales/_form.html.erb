@@ -1,0 +1,43 @@
+<%= form_for(@m_etcsale) do |f| %>
+  <% if @m_etcsale.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_etcsale.errors.count, "error") %> prohibited this m_etcsale from being saved:</h2>
+
+      <ul>
+      <% @m_etcsale.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th><%= f.label '他売上コード' %></th>
+  	  <td><%= f.number_field :etc_cd %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '他売上名' %></th>
+  	  <td><%= f.text_field :etc_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '他売上略称' %></th>
+  	  <td><%= f.text_field :etc_ryaku %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '単位' %></th>
+  	  <td><%= f.text_field :etc_tani %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label 'グループ種類' %></th>
+  	  <td><%= f.number_field :etc_group %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '最大数' %></th>
+  	  <td><%= f.number_field :max_num %></td>  	  
+  	</tr>
+  </table>
+  <div class="actions">
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div>
+<% end %>

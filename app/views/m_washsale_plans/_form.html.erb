@@ -1,0 +1,69 @@
+<%= form_for(@m_washsale_plan) do |f| %>
+  <% if @m_washsale_plan.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_washsale_plan.errors.count, "error") %> prohibited this m_washsale_plan from being saved:</h2>
+
+      <ul>
+      <% @m_washsale_plan.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :m_shop_id %><br />
+    <%= f.number_field :m_shop_id %>
+  </div>
+  <div class="field">
+    <%= f.label :m_wash_id %><br />
+    <%= f.number_field :m_wash_id %>
+  </div>
+  <div class="field">
+    <%= f.label :sunday %><br />
+    <%= f.number_field :sunday %>
+  </div>
+  <div class="field">
+    <%= f.label :monday %><br />
+    <%= f.number_field :monday %>
+  </div>
+  <div class="field">
+    <%= f.label :tuesday %><br />
+    <%= f.number_field :tuesday %>
+  </div>
+  <div class="field">
+    <%= f.label :wednesday %><br />
+    <%= f.number_field :wednesday %>
+  </div>
+  <div class="field">
+    <%= f.label :thursday %><br />
+    <%= f.number_field :thursday %>
+  </div>
+  <div class="field">
+    <%= f.label :friday %><br />
+    <%= f.number_field :friday %>
+  </div>
+  <div class="field">
+    <%= f.label :saturday %><br />
+    <%= f.number_field :saturday %>
+  </div>
+  <div class="field">
+    <%= f.label :created_user_id %><br />
+    <%= f.number_field :created_user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :updated_user_id %><br />
+    <%= f.number_field :updated_user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :deleted_flg %><br />
+    <%= f.number_field :deleted_flg %>
+  </div>
+  <div class="field">
+    <%= f.label :deleted_at %><br />
+    <%= f.datetime_select :deleted_at %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

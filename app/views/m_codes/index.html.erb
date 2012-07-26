@@ -1,0 +1,36 @@
+<h1>Listing m_codes</h1>
+
+<%= link_to '新規登録', new_m_code_path, :class => 'add_icon' %>
+
+<table id='rounded-corner'>
+  <tr>
+    <th>コード区分</th>
+    <th>コード</th>
+    <th>コード名称</th>
+    <th>コード名称１</th>
+    <th>詳細</th>
+    <th>編集</th>
+    <th>削除</th>
+  </tr>
+
+<% @m_codes.each do |m_code| %>
+  <tr>
+    <td><%= m_code.kbn %></td>
+    <td><%= m_code.code %></td>
+    <td><%= m_code.code_name %></td>
+    <td><%= m_code.code_name1 %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_show.png'), m_code %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_code_path(m_code) %></td>
+    <td class="icon">
+    	<%= link_to image_tag('icon/24_delete.png'), m_code, :confirm => '削除します。よろしいですか？', :method => :delete %>
+    </td>
+    <!--
+    <td><%= link_to 'Show', m_code %></td>
+    <td><%= link_to 'Edit', edit_m_code_path(m_code) %></td>
+    <td><%= link_to 'Destroy', m_code, confirm: 'Are you sure?', method: :delete %></td>
+    -->
+  </tr>
+<% end %>
+</table>
+
+<br />

@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  wash_cd: 1
+  wash_name: MyString
+  wash_ryaku: MyString
+  wash_group: 1
+  max_num: 1
+  deleted_flg: 1
+  deleted_at: 2012-07-24 11:50:46
+
+two:
+  wash_cd: 1
+  wash_name: MyString
+  wash_ryaku: MyString
+  wash_group: 1
+  max_num: 1
+  deleted_flg: 1
+  deleted_at: 2012-07-24 11:50:46

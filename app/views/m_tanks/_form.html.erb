@@ -1,0 +1,85 @@
+<%= form_for(@m_tank) do |f| %>
+  <% if @m_tank.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_tank.errors.count, "error") %> prohibited this m_tank from being saved:</h2>
+
+      <ul>
+      <% @m_tank.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :m_shop_id %><br />
+    <%= f.number_field :m_shop_id %>
+  </div>
+  <div class="field">
+    <%= f.label :m_oil_id %><br />
+    <%= f.number_field :m_oil_id %>
+  </div>
+  <div class="field">
+    <%= f.label :tank_all %><br />
+    <%= f.number_field :tank_all %>
+  </div>
+  <div class="field">
+    <%= f.label :measure1 %><br />
+    <%= f.number_field :measure1 %>
+  </div>
+  <div class="field">
+    <%= f.label :measure2 %><br />
+    <%= f.number_field :measure2 %>
+  </div>
+  <div class="field">
+    <%= f.label :measure3 %><br />
+    <%= f.number_field :measure3 %>
+  </div>
+  <div class="field">
+    <%= f.label :measure4 %><br />
+    <%= f.number_field :measure4 %>
+  </div>
+  <div class="field">
+    <%= f.label :measure5 %><br />
+    <%= f.number_field :measure5 %>
+  </div>
+  <div class="field">
+    <%= f.label :measure6 %><br />
+    <%= f.number_field :measure6 %>
+  </div>
+  <div class="field">
+    <%= f.label :measure7 %><br />
+    <%= f.number_field :measure7 %>
+  </div>
+  <div class="field">
+    <%= f.label :measure8 %><br />
+    <%= f.number_field :measure8 %>
+  </div>
+  <div class="field">
+    <%= f.label :measure9 %><br />
+    <%= f.number_field :measure9 %>
+  </div>
+  <div class="field">
+    <%= f.label :measure10 %><br />
+    <%= f.number_field :measure10 %>
+  </div>
+  <div class="field">
+    <%= f.label :measure11 %><br />
+    <%= f.number_field :measure11 %>
+  </div>
+  <div class="field">
+    <%= f.label :measure12 %><br />
+    <%= f.number_field :measure12 %>
+  </div>
+  <div class="field">
+    <%= f.label :deleted_flg %><br />
+    <%= f.number_field :deleted_flg %>
+  </div>
+  <div class="field">
+    <%= f.label :deleted_at %><br />
+    <%= f.datetime_select :deleted_at %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,132 @@
+<p id="notice"><%#= notice %></p>
+
+<p>
+  <b>Shop cd:</b>
+  <%#= @m_shop.shop_cd %>
+</p>
+
+<p>
+  <b>Shop name:</b>
+  <%#= @m_shop.shop_name %>
+</p>
+
+<p>
+  <b>Shop kana:</b>
+  <%#= @m_shop.shop_kana %>
+</p>
+
+<p>
+  <b>Shop ryaku:</b>
+  <%#= @m_shop.shop_ryaku %>
+</p>
+
+<p>
+  <b>Shop zip cd:</b>
+  <%#= @m_shop.shop_zip_cd %>
+</p>
+
+<p>
+  <b>Shop adress:</b>
+  <%#= @m_shop.shop_adress %>
+</p>
+
+<p>
+  <b>Shop tel:</b>
+  <%#= @m_shop.shop_tel %>
+</p>
+
+<p>
+  <b>Shop fax:</b>
+  <%#= @m_shop.shop_fax %>
+</p>
+
+<p>
+  <b>Shop mail adress:</b>
+  <%#= @m_shop.shop_mail_adress %>
+</p>
+
+<p>
+  <b>Shop kbn:</b>
+  <%#= @m_shop.shop_kbn %>
+</p>
+
+<p>
+  <b>M shop group:</b>
+  <%#= @m_shop.m_shop_group_id %>
+</p>
+
+<p>
+  <b>M oil id1:</b>
+  <%#= @m_shop.m_oil_id1 %>
+</p>
+
+<p>
+  <b>Tank1 all:</b>
+  <%#= @m_shop.tank1_all %>
+</p>
+
+<p>
+  <b>M oil id2:</b>
+  <%#= @m_shop.m_oil_id2 %>
+</p>
+
+<p>
+  <b>Tank2 all:</b>
+  <%#= @m_shop.tank2_all %>
+</p>
+
+<p>
+  <b>M oil id3:</b>
+  <%#= @m_shop.m_oil_id3 %>
+</p>
+
+<p>
+  <b>Tank3 all:</b>
+  <%#= @m_shop.tank3_all %>
+</p>
+
+<p>
+  <b>M oil id4:</b>
+  <%#= @m_shop.m_oil_id4 %>
+</p>
+
+<p>
+  <b>Tank4 all:</b>
+  <%#= @m_shop.tank4_all %>
+</p>
+
+<p>
+  <b>Etc oil flg:</b>
+  <%#= @m_shop.etc_oil_flg %>
+</p>
+
+<p>
+  <b>Etc flg:</b>
+  <%#= @m_shop.etc_flg %>
+</p>
+
+<p>
+  <b>Wash flg:</b>
+  <%#= @m_shop.wash_flg %>
+</p>
+
+<p>
+  <b>Wash sale flg:</b>
+  <%#= @m_shop.wash_sale_flg %>
+</p>
+
+<p>
+  <b>Deleted flg:</b>
+  <%#= @m_shop.deleted_flg %>
+</p>
+
+<p>
+  <b>Deleted at:</b>
+  <#%= @m_shop.deleted_at %>
+</p>
+
+<%= link_to_function '閉じる', "new parent.Ajax.Updater('index',,{asynchronous:true, evalScripts:true});
+                                parent.hs.close();", :class => 'icon_close_s' %>
+                                
+<%#= link_to 'Edit', edit_m_shop_path(@m_shop) %> |
+<%#= link_to 'Back', m_shops_path %>

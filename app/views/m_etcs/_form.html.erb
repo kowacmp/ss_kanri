@@ -1,0 +1,39 @@
+<%= form_for(@m_etc) do |f| %>
+  <% if @m_etc.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_etc.errors.count, "error") %> prohibited this m_etc from being saved:</h2>
+
+      <ul>
+      <% @m_etc.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th><%= f.label '他商品コード' %></th>
+  	  <td><%= f.number_field :etc_cd %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '他商品名' %></th>
+  	  <td><%= f.text_field :etc_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '他商品略称' %></th>
+  	  <td><%= f.text_field :etc_ryaku %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '単位' %></th>
+  	  <td><%= f.text_field :etc_tani %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label 'グループ種類' %></th>
+  	  <td><%= f.number_field :etc_group %></td>  	  
+  	</tr>
+  </table>
+  <div class="actions">
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div>
+<% end %>

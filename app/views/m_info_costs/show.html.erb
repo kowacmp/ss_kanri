@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>ユーザID</th>
+  	  <td><%= @m_info_cost.users_id %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>基本給</th>
+  	  <td><%= @m_info_cost.base_pay %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>深夜給</th>
+  	  <td><%= @m_info_cost.night_pay %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>福利費</th>
+  	  <td><%= @m_info_cost.welfare_pay %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>手当1</th>
+  	  <td><%= @m_info_cost.etc_pay1 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>手当2</th>
+  	  <td><%= @m_info_cost.etc_pay2 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>手当3</th>
+  	  <td><%= @m_info_cost.etc_pay3 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>手当4</th>
+  	  <td><%= @m_info_cost.etc_pay4 %></td>  	  
+  	</tr>
+  </table>
+
+<%= link_to '編集', edit_m_info_cost_path(@m_info_cost), :class => 'edit_icon' %> |
+<%= link_to '戻る', m_info_costs_path, :class => 'return_icon' %>

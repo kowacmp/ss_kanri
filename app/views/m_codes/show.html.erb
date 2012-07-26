@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>コード区分</th>
+  	  <td><%= @m_code.kbn %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>コード</th>
+  	  <td><%= @m_code.code %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>コード名称</th>
+  	  <td><%= @m_code.code_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>コード名称１</th>
+  	  <td><%= @m_code.code_name1 %></td>  	  
+  	</tr>
+  </table>
+
+<%= link_to '編集', edit_m_code_path(@m_code), :class => 'edit_icon' %> |
+<%= link_to '戻る', m_codes_path, :class => 'return_icon' %>
+

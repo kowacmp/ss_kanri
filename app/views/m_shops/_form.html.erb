@@ -1,0 +1,132 @@
+<%= form_for(@m_shop) do |f| %>
+  <% if @m_shop.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_shop.errors.count, "error") %> prohibited this m_shop from being saved:</h2>
+
+      <ul>
+      <% @m_shop.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<table boder="0">
+	<tr>
+	<th>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th><%= f.label '店舗コード' %></th>
+  	  <td><%= f.number_field :shop_cd %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '店舗カナ' %></th>
+  	  <td><%= f.text_field :shop_kana %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '店舗略称' %></th>
+  	  <td><%= f.text_field :shop_ryaku %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '郵便番号' %></th>
+  	  <td><%= f.text_field :shop_zip_cd %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '住所' %></th>
+  	  <td><%= f.text_field :shop_adress %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label 'TEL' %></th>
+  	  <td><%= f.text_field :shop_tel %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label 'FAX' %></th>
+  	  <td><%= f.text_field :shop_fax %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label 'E-mail' %></th>
+  	  <td><%= f.text_field :shop_mail_adress %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '店舗種別' %></th>
+  	  <td><%= f.number_field :shop_kbn %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '所属' %></th>
+  	  <td><%= f.number_field :m_shop_group_id %></td>  	  
+  	</tr>
+  	
+  	<% @m_oils.each do |m_oil| %>
+  		<%- if m_oil.id == @m_shop.m_oil_id1 -%>
+    		<tr>
+		  	  <th><%= f.label m_oil.oil_name %></th>
+		  	  <td><%= f.number_field :tank1_all %></td>
+		  	</tr>
+    	<%- elsif m_oil.id == @m_shop.m_oil_id2 -%>
+    		<tr>
+		  	  <th><%= f.label m_oil.oil_name %></th>
+		  	  <td><%= f.number_field :tank2_all %></td>
+		  	</tr>
+    	<%- elsif m_oil.id == @m_shop.m_oil_id3 -%>
+    		<tr>
+		  	  <th><%= f.label m_oil.oil_name %></th>
+		  	  <td><%= f.number_field :tank3_all %></td>
+		  	</tr>
+    	<%- elsif m_oil.id == @m_shop.m_oil_id4 -%>
+    		<tr>
+		  	  <th><%= f.label m_oil.oil_name %></th>
+		  	  <td><%= f.number_field :tank4_all %></td>
+		  	</tr>
+    	<%- else -%>
+    		<tr>
+		  	  <th></th>
+		  	  <td></td>
+		  	</tr>
+    	<%- end -%>
+  	
+    <% end %>
+
+  	<tr>
+  	  <th><%= f.label '油外売上有無' %></th>
+  	  <td><%= f.number_field :etc_oil_flg %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '他商品有無' %></th>
+  	  <td><%= f.number_field :etc_flg %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '洗車有無' %></th>
+  	  <td><%= f.number_field :wash_flg %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '洗車売上報告有無' %></th>
+  	  <td><%= f.number_field :wash_sale_flg %></td>  	  
+  	</tr>
+  </table>
+  
+  </th>
+  
+  <td valign="top">
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>aaa</th>
+  	  <td>111</td>  	  
+  	</tr>
+  	<tr>
+  	  <th>bbb</th>
+  	  <td>222</td>  	  
+  	</tr>
+  	<tr>
+  	  <th>ccc</th>
+  	  <td>333</td>  	  
+  	</tr>
+  </table>
+  </td>
+  </tr>
+  </table>
+  
+  <div class="actions">
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div>
+<% end %>

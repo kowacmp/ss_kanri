@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  etc_cd: 1
+  etc_name: MyString
+  etc_ryaku: MyString
+  etc_tani: MyString
+  etc_group: 1
+  max_num: 1
+  deleted_flg: 1
+  deleted_at: 2012-07-24 14:41:02
+
+two:
+  etc_cd: 1
+  etc_name: MyString
+  etc_ryaku: MyString
+  etc_tani: MyString
+  etc_group: 1
+  max_num: 1
+  deleted_flg: 1
+  deleted_at: 2012-07-24 14:41:02

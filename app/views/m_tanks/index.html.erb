@@ -1,0 +1,55 @@
+<h1>Listing m_tanks</h1>
+
+<table>
+  <tr>
+    <th>M shop</th>
+    <th>M oil</th>
+    <th>Tank all</th>
+    <th>Measure1</th>
+    <th>Measure2</th>
+    <th>Measure3</th>
+    <th>Measure4</th>
+    <th>Measure5</th>
+    <th>Measure6</th>
+    <th>Measure7</th>
+    <th>Measure8</th>
+    <th>Measure9</th>
+    <th>Measure10</th>
+    <th>Measure11</th>
+    <th>Measure12</th>
+    <th>Deleted flg</th>
+    <th>Deleted at</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @m_tanks.each do |m_tank| %>
+  <tr>
+    <td><%= m_tank.m_shop_id %></td>
+    <td><%= m_tank.m_oil_id %></td>
+    <td><%= m_tank.tank_all %></td>
+    <td><%= m_tank.measure1 %></td>
+    <td><%= m_tank.measure2 %></td>
+    <td><%= m_tank.measure3 %></td>
+    <td><%= m_tank.measure4 %></td>
+    <td><%= m_tank.measure5 %></td>
+    <td><%= m_tank.measure6 %></td>
+    <td><%= m_tank.measure7 %></td>
+    <td><%= m_tank.measure8 %></td>
+    <td><%= m_tank.measure9 %></td>
+    <td><%= m_tank.measure10 %></td>
+    <td><%= m_tank.measure11 %></td>
+    <td><%= m_tank.measure12 %></td>
+    <td><%= m_tank.deleted_flg %></td>
+    <td><%= m_tank.deleted_at %></td>
+    <td><%= link_to 'Show', m_tank %></td>
+    <td><%= link_to 'Edit', edit_m_tank_path(m_tank) %></td>
+    <td><%= link_to 'Destroy', m_tank, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New M tank', new_m_tank_path %>

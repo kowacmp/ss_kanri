@@ -1,0 +1,30 @@
+<h1>油種マスタメンテ</h1>
+
+<%= form_tag({:action => 'delete_index' }, { :remote => true }) do %>
+  <%= check_box(:check,:deleted_flg,{},true,false) %>
+  削除項目も表示する。
+  <%= submit_tag '再表示' %>
+<% end %>
+
+<%= link_to '新規登録', new_m_oil_path, :class => 'add_icon' %>
+<!--
+<table id='rounded-corner'>
+  <tr>
+    <th>油種コード</th>
+    <th>油種名</th>
+    <th colspan="3"></th>
+  </tr>
+
+<% @m_oils.each do |m_oil| %>
+  <tr>
+    <td><%= m_oil.oil_cd %></td>
+    <td><%= m_oil.oil_name %></td>
+    <td><%= link_to '詳細', m_oil, :class => 'show_icon' %></td>
+    <td><%= link_to '編集', edit_m_oil_path(m_oil), :class => 'edit_icon' %></td>
+    <td><%= link_to '削除', m_oil, :confirm => '削除します。よろしいですか？', :method => :delete, :class=> 'delete_icon' %></td>
+  </tr>
+<% end %>
+</table>
+-->
+<br />
+<div id="result"></div>

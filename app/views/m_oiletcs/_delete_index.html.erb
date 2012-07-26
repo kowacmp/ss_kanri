@@ -1,0 +1,33 @@
+<table id='rounded-corner'>
+  <tr>
+    <th>油外コード</th>
+    <th>油外名</th>
+    <th>油外略称</th>
+    <th>単位</th>
+    <th>グループ種類</th>
+    <th>詳細</th>
+    <th>編集</th>
+    <th>削除</th>
+  </tr>
+
+<% @m_oiletcs.each do |m_oiletc| %>
+  <tr>
+    <td><%= m_oiletc.oiletc_cd %></td>
+    <td><%= m_oiletc.oiletc_name %></td>
+    <td><%= m_oiletc.oiletc_ryaku %></td>
+    <td><%= m_oiletc.oiletc_tani %></td>
+    <td><%= m_oiletc.oiletc_group %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_show.png'), m_oiletc %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_oiletc_path(m_oiletc) %></td>
+    
+    <td class="icon">
+    <%- if m_oiletc.deleted_flg == 1 -%>
+    <%= link_to image_tag('icon/24_show.png'), m_oiletc, :confirm => '削除の取消をします。よろしいですか？', :method => :delete %>
+    <%- else -%>
+    <%= link_to image_tag('icon/24_delete.png'), m_oiletc, :confirm => '削除します。よろしいですか？', :method => :delete %>
+    <%- end -%>
+    </td>
+    
+  </tr>
+<% end %>
+</table>

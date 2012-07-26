@@ -1,0 +1,30 @@
+<table id='rounded-corner'>
+  <tr>
+    <th>油種コード</th>
+    <th>油種名</th>
+    <th>詳細</th>
+    <th>編集</th>
+    <th>削除</th>
+  </tr>
+
+<% @m_oils.each do |m_oil| %>
+  <tr>
+    <td><%= m_oil.oil_cd %></td>
+    <td><%= m_oil.oil_name %></td>
+    <td class="icon"><%#= link_to '詳細', m_oil, :class => 'show_icon' %>
+    				 <%= link_to image_tag('icon/24_show.png'), m_oil %></td>
+    <td class="icon"><%#= link_to '編集', edit_m_oil_path(m_oil), :class => 'edit_icon' %>
+    				 <%= link_to image_tag('icon/24_edit.png'), edit_m_oil_path(m_oil) %></td>
+    
+    <td class="icon">
+    <%- if m_oil.deleted_flg == 1 -%>
+    <%= link_to image_tag('icon/24_show.png'), m_oil, :confirm => '削除の取消をします。よろしいですか？', :method => :delete %>
+    <%- else -%>
+    <%#= link_to '削除', m_oil, :confirm => '削除します。よろしいですか？', :method => :delete, :class=> 'delete_icon' %>
+    <%= link_to image_tag('icon/24_delete.png'), m_oil, :confirm => '削除します。よろしいですか？', :method => :delete %>
+    <%- end -%>
+    </td>
+    
+  </tr>
+<% end %>
+</table>

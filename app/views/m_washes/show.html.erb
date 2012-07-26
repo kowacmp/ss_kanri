@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>洗車機コード</th>
+  	  <td><%= @m_wash.wash_cd %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>洗車機名</th>
+  	  <td><%= @m_wash.wash_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>洗車機略称</th>
+  	  <td><%= @m_wash.wash_ryaku %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>グループ種類</th>
+  	  <td><%= @m_wash.wash_group %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>最大数</th>
+  	  <td><%= @m_wash.max_num %></td>  	  
+  	</tr>
+  </table>
+
+<%= link_to '編集', edit_m_wash_path(@m_wash), :class => 'edit_icon' %> |
+<%= link_to '戻る', m_washes_path, :class => 'return_icon' %>
