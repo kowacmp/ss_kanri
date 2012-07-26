@@ -11,11 +11,34 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120717073243) do
+ActiveRecord::Schema.define(:version => 20120725062238) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
     t.integer  "menu_id",        :limit => 2, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "d_comments", :force => true do |t|
+    t.datetime "send_day",                      :null => false
+    t.integer  "menu_id",                       :null => false
+    t.string   "contents",        :limit => 40, :null => false
+    t.integer  "send_id",                       :null => false
+    t.integer  "receive_id",                    :null => false
+    t.integer  "created_user_id",               :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "d_events", :force => true do |t|
+    t.string   "start_day",       :limit => 8,  :null => false
+    t.string   "end_day",         :limit => 8,  :null => false
+    t.integer  "menu_id"
+    t.string   "contents",        :limit => 40, :null => false
+    t.integer  "receive_group1",                :null => false
+    t.integer  "receive_group2"
+    t.integer  "created_user_id",               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -43,8 +66,10 @@ ActiveRecord::Schema.define(:version => 20120717073243) do
     t.string   "user_name",              :limit => 50
     t.string   "user_name_kana",         :limit => 50
     t.integer  "m_shops_id"
+    t.integer  "m_authority_id"
     t.integer  "user_class",             :limit => 2
     t.datetime "nyusya_date"
+    t.datetime "birthday"
     t.integer  "deleted_flg",            :limit => 2,  :default => 0,  :null => false
     t.datetime "deleted_at"
     t.string   "email",                                :default => "", :null => false

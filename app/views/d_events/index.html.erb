@@ -1,0 +1,35 @@
+<h1>Listing d_events</h1>
+
+<table>
+  <tr>
+    <th>Start day</th>
+    <th>End day</th>
+    <th>Menu</th>
+    <th>Contents</th>
+    <th>Receive group1</th>
+    <th>Receive group2</th>
+    <th>Created user</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @d_events.each do |d_event| %>
+  <tr>
+    <td><%= d_event.start_day %></td>
+    <td><%= d_event.end_day %></td>
+    <td><%= d_event.menu_id %></td>
+    <td><%= d_event.contents %></td>
+    <td><%= d_event.receive_group1 %></td>
+    <td><%= d_event.receive_group2 %></td>
+    <td><%= d_event.created_user_id %></td>
+    <td><%= link_to 'Show', d_event %></td>
+    <td><%= link_to 'Edit', edit_d_event_path(d_event) %></td>
+    <td><%= link_to 'Destroy', d_event, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New D event', new_d_event_path %>

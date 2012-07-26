@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Send day:</b>
+  <%= @d_comment.send_day %>
+</p>
+
+<p>
+  <b>Menu:</b>
+  <%= @d_comment.menu_id %>
+</p>
+
+<p>
+  <b>Contents:</b>
+  <%= @d_comment.contents %>
+</p>
+
+<p>
+  <b>Send:</b>
+  <%= @d_comment.send_id %>
+</p>
+
+<p>
+  <b>Receive:</b>
+  <%= @d_comment.receive_id %>
+</p>
+
+<p>
+  <b>Created user:</b>
+  <%= @d_comment.created_user_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_d_comment_path(@d_comment) %> |
+<%= link_to 'Back', d_comments_path %>

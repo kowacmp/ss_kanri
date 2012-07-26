@@ -1,23 +1,25 @@
 <br/><br/>
 <table id='rounded-corner'>
-  <caption>今週の予定</caption> 	
+  <caption>
+  	１週間の予定　<%= @today.strftime("%Y年%m月%d日") %>　～　
+  	<%= @end_day.strftime("%Y年%m月%d日") %>
+  </caption> 	
   <tr>
-    <th width='100'>月曜日</th>
-    <th width='100'>火曜日</th>
-    <th width='100'>水曜日</th>
-    <th width='100'>木曜日</th>
-    <th width='100'>金曜日</th>
-    <th width='100'>土曜日</th>
-    <th width='100'>日曜日</th>
+  	<% for i in 0..6 %>
+      <th width='100'>
+      	<% day, wday = home_date_format(@today, i)%>
+      	<%= day %>(<%= wday %>)
+      </th>  	
+  	<% end %>
   </tr>
   <tr>
     <td>　<br><br><br></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>  
-    <td></td>
-    <td></td>                    
+    <td>布洗車<br>泡洗車<br>スポンジ洗車</td>
+    <td>布洗車<br>泡洗車<br>スポンジ洗車</td>
+    <td>布洗車<br>泡洗車<br>スポンジ洗車</td>
+    <td>布洗車<br>泡洗車<br>スポンジ洗車</td>  
+    <td>布洗車<br>泡洗車<br>スポンジ洗車</td>
+    <td>布洗車<br>泡洗車<br>スポンジ洗車</td>                    
   </tr>
 </table>
 <br><br>
@@ -35,9 +37,44 @@
 
 <table id='rounded-corner2'>
   <tr>
-  	<th width='500'><%= image_tag 'mail.png' %>新着メッセージ</th>
+  	<th width='500' colspan="4"><%= image_tag 'mail.png' %>メッセージ</th>
   </tr>
   <tr>
-  	<td>a</td>
+  	<th>日付</th>
+  	<th>タイトル</th>
+  	<th>内容</th>
+  	<th>削除</th>
   </tr>  
+  <tr>
+  	<td>a</td>
+  </tr>
 </table>
+<br><br><br>
+
+
+<table id='rounded-corner2'>
+  <tr>
+  	<th width='500'colspan="5"class="title"><%= image_tag 'comment.png' %>コメント</th>
+  </tr>
+  <tr>
+  	<th width="16%">発信日</th>
+  	<th width="34%">タイトル</th>
+  	<th width="30%">発信者</th>
+  	<th width="10%">詳細</th>  	
+  	<th width="10%">削除</th>
+  </tr>
+</table>
+
+<div style="height:100px;width:525px;overflow-y:auto;overflow-x:hidden;">
+<table id='rounded-corner2'style="margin-top:0px; width:504px;">
+  <% @d_comments.each do |d_comment| %>
+  <tr>
+  	<td width="16%"><%= d_comment.send_day.strftime("%Y/%m/%d") %></td>
+  	<td width="34%"><%= d_comment.display_name %></td>
+  	<td width="30%"><%= d_comment.user_name %></td>
+  	<td width="10%" align="center"><%= link_to image_tag('icon/24_show.png'), :action => 'show_d_comment' %></td>
+  	<td width="10%" align="center"><%= link_to image_tag('icon/24_delete.png'), {:action => 'destroy_d_comment'}, :confirm => '削除します。よろしいですか？', :method => :delete %></td>  	
+  </tr>
+  <% end %>
+</table>
+</div>

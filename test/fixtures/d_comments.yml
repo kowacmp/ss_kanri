@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  send_day: 2012-07-25 15:22:38
+  menu_id: 1
+  contents: MyString
+  send_id: 1
+  receive_id: 1
+  created_user_id: 1
+
+two:
+  send_day: 2012-07-25 15:22:38
+  menu_id: 1
+  contents: MyString
+  send_id: 1
+  receive_id: 1
+  created_user_id: 1

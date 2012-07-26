@@ -1,6 +1,5 @@
+# -*- coding:utf-8 -*-
 module ApplicationHelper
-
-  
   def get_parent_menu(m_authority_id)
     sql = <<-SQL
       select m.* from authority_menus a, menus m
@@ -27,4 +26,24 @@ module ApplicationHelper
                       [u.id, u.id]
       end                
   end
+  
+  def day_of_the_week(i)
+    if i == 0
+      wday = "日"
+    elsif i == 1
+      wday = "月"      
+    elsif i == 2
+      wday = "火"      
+    elsif i == 3
+      wday = "水"      
+    elsif i == 4
+      wday = "木"      
+    elsif i == 5
+      wday = "金"      
+    elsif i == 6
+      wday = "土"           
+    end
+    
+    return wday
+  end  
 end

@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Start day:</b>
+  <%= @d_event.start_day %>
+</p>
+
+<p>
+  <b>End day:</b>
+  <%= @d_event.end_day %>
+</p>
+
+<p>
+  <b>Menu:</b>
+  <%= @d_event.menu_id %>
+</p>
+
+<p>
+  <b>Contents:</b>
+  <%= @d_event.contents %>
+</p>
+
+<p>
+  <b>Receive group1:</b>
+  <%= @d_event.receive_group1 %>
+</p>
+
+<p>
+  <b>Receive group2:</b>
+  <%= @d_event.receive_group2 %>
+</p>
+
+<p>
+  <b>Created user:</b>
+  <%= @d_event.created_user_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_d_event_path(@d_event) %> |
+<%= link_to 'Back', d_events_path %>

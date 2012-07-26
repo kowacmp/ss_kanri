@@ -6,8 +6,10 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string   :user_name,      :limit => 50
       t.string   :user_name_kana, :limit => 50
       t.integer  :m_shops_id
+      t.integer  :m_authority_id
       t.column   :user_class,     :smallint
       t.datetime :nyusya_date
+      t.datetime :birthday
       t.column   :deleted_flg,    :smallint,      :null => false, :default => 0
       t.datetime :deleted_at
       

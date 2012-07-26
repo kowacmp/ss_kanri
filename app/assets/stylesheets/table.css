@@ -73,7 +73,7 @@ body
 }
 #rounded-corner2 th
 {
-    text-align: left;
+    text-align: center;
 	font-weight: normal;
 
 
@@ -82,6 +82,10 @@ body
     background: url('th_002.jpg');
     background-repeat:repeat-x;
     border: 1px solid #7D808A;
+}
+#rounded-corner2 th.title
+{
+    text-align: left;
 }
 #rounded-corner2 td
 {

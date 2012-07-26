@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  start_day: MyString
+  end_day: MyString
+  menu_id: 1
+  contents: MyString
+  receive_group1: 1
+  receive_group2: 1
+  created_user_id: 1
+
+two:
+  start_day: MyString
+  end_day: MyString
+  menu_id: 1
+  contents: MyString
+  receive_group1: 1
+  receive_group2: 1
+  created_user_id: 1

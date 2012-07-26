@@ -1,0 +1,33 @@
+<h1>Listing d_comments</h1>
+
+<table>
+  <tr>
+    <th>Send day</th>
+    <th>Menu</th>
+    <th>Contents</th>
+    <th>Send</th>
+    <th>Receive</th>
+    <th>Created user</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @d_comments.each do |d_comment| %>
+  <tr>
+    <td><%= d_comment.send_day %></td>
+    <td><%= d_comment.menu_id %></td>
+    <td><%= d_comment.contents %></td>
+    <td><%= d_comment.send_id %></td>
+    <td><%= d_comment.receive_id %></td>
+    <td><%= d_comment.created_user_id %></td>
+    <td><%= link_to 'Show', d_comment %></td>
+    <td><%= link_to 'Edit', edit_d_comment_path(d_comment) %></td>
+    <td><%= link_to 'Destroy', d_comment, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New D comment', new_d_comment_path %>

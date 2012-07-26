@@ -1,0 +1,45 @@
+<%= form_for(@d_event) do |f| %>
+  <% if @d_event.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@d_event.errors.count, "error") %> prohibited this d_event from being saved:</h2>
+
+      <ul>
+      <% @d_event.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :start_day %><br />
+    <%= f.text_field :start_day %>
+  </div>
+  <div class="field">
+    <%= f.label :end_day %><br />
+    <%= f.text_field :end_day %>
+  </div>
+  <div class="field">
+    <%= f.label :menu_id %><br />
+    <%= f.number_field :menu_id %>
+  </div>
+  <div class="field">
+    <%= f.label :contents %><br />
+    <%= f.text_field :contents %>
+  </div>
+  <div class="field">
+    <%= f.label :receive_group1 %><br />
+    <%= f.number_field :receive_group1 %>
+  </div>
+  <div class="field">
+    <%= f.label :receive_group2 %><br />
+    <%= f.number_field :receive_group2 %>
+  </div>
+  <div class="field">
+    <%= f.label :created_user_id %><br />
+    <%= f.number_field :created_user_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

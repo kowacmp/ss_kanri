@@ -1,4 +1,8 @@
 SsKanri::Application.routes.draw do
+  resources :d_comments
+
+  resources :d_events
+
   get "welcome/index"
 
   devise_for :users, :path_names => { :sign_up => "register" }
