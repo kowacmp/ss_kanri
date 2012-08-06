@@ -7,20 +7,45 @@
   <%= javascript_include_tag "jquery.mini" %>
   <%= stylesheet_link_tag    "table" %> 
   <%= stylesheet_link_tag    "icon" %>   
-  <%= stylesheet_link_tag 'dropdown' %>   
-  <%= javascript_include_tag "dropdown" %>
-
-  <%= csrf_meta_tags %>
+  <%= javascript_include_tag "modal" %>
+  <%= javascript_include_tag "jquery" %>
+    
+  <!--カレンダー用↓ --> 
+  <%= stylesheet_link_tag 'jquery-ui-1.8.22.custom' %>    
+  <%= javascript_include_tag "jquery-ui-1.8.22.custom.min" %>
+  <%= javascript_include_tag "jquery.ui.datepicker-ja" %> 
+    
+  <!-- ドロップダウンメニュー用↓ -->  
+  <%= javascript_include_tag "ddsmoothmenu" %>
+  <%= stylesheet_link_tag 'ddsmoothmenu' %>    
+  <%= csrf_meta_tags %> 
 </head>
 <body>
+  <div id="page">	
+    <div id="modal">
+      <div class="background"></div>
+      <div class="container"></div>
+    </div>
+  <div id="header">  
   福岡スタンダードSS管理システム
-  <%= current_user.user_name %>&nbsp; &nbsp; 
 
-  <%= link_to "ログアウト", destroy_user_session_path, method: :delete, :class => 'logout_icon' %>
+    <%= current_user.user_name %>&nbsp; &nbsp; 
+    <%= link_to "ログアウト", destroy_user_session_path, method: :delete, :class => 'logout_icon' %>
+
   <%= render :partial => "/layouts/menus.html" %> 
+   </div>   
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>
+  
   <%= yield %>
-  <%= render :partial => "/layouts/footer.html" %> 
+  <%= render :partial => "/layouts/footer.html" %>
+  </div>
+  
+  <!-- カレンダー表示↓ -->
+  <script>
+  $(function() {
+    $( ".datepicker" ).datepicker();
+  });
+  </script>
 </body>
 </html>
