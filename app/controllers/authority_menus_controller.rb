@@ -1,8 +1,9 @@
 class AuthorityMenusController < ApplicationController
+  include AuthorityMenusHelper
   # GET /authority_menus
   # GET /authority_menus.json
   def index
-    @authority_menus = AuthorityMenu.all
+    #@authority_menus = AuthorityMenu.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -82,22 +83,29 @@ class AuthorityMenusController < ApplicationController
   end
   
   def authority_select
-    p "authority_select   authority_select   authority_select"
-    p "authority_select=#{params[:select][:authority]}"
-    #@authority_menus = AuthorityMenu.all
-    sql = "select m.id, m.display_order, m.display_name, a.id authority_menu_id"
-    sql << " from menus m left join authority_menus a"
-    sql << "   on (m.id = a.menu_id and a.m_authority_id = #{params[:select][:authority]})"
-    sql << " order by m.parent_menu_id, m.display_order"
+    @m_authority_id = params[:select][:m_authority_id]
+    
+    sql = authority_menu_sql(@m_authority_id)
     @authority_menus = Menu.find_by_sql(sql)
   end
 
   def authority_menu_create
     p "authority_menu_create   authority_menu_create   authority_menu_create"
-    p params["menu"]["0"]["chk"]
-
-    params["test"].each do |i|
-
+    p params[:select][:m_authority_id]
+    m_authority_id = params[:select][:m_authority_id].to_i
+    AuthorityMenu.destroy_all(["m_authority_id = ?", m_authority_id])
+    menus = Menu.all
+    p "---------------------------"
+    menus.each do |menu|
+      if params["#{menu.id}"]["chk"] == "on"
+        authority_menu = AuthorityMenu.new
+        authority_menu.m_authority_id = m_authority_id
+        authority_menu.menu_id = menu.id
+        authority_menu.save
+      end
     end
+    
+    #ログイン中の権限を変更した場合はメニューの再取得
+    get_menus(current_user.m_authority_id) if current_user.m_authority_id == m_authority_id
   end
 end

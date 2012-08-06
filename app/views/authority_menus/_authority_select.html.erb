@@ -1,8 +1,9 @@
 <%= form_tag({:action => 'authority_menu_create' }, { :remote => true }) do %>
 <table id='rounded-corner'>
   <tr>
-    <th>メニュー名</th>
-    <th>機能</th>
+    <th>メニュー分類１</th>
+    <th>メニュー分類２</th>
+    <th>メニュー分類３</th>
     <th>表示有無</th>
   </tr>
 
@@ -16,19 +17,29 @@
   	 end
   %>
   <tr>
-  	<% if authority_menu.display_order == 0 %>
+  	<% if authority_menu.menu_cd2 == 0 %>
+  	  <td><%= authority_menu.display_name %></td>
+  	  <td></td>
+  	  <td></td>  	  
+  	<% elsif authority_menu.menu_cd3 == 0 %>
+  	  <td></td>
   	  <td><%= authority_menu.display_name %></td>
   	  <td></td>
   	<% else %>
   	  <td></td>
-  	  <td><%= authority_menu.display_name %></td>
+  	  <td></td>  	  
+  	  <td><%= authority_menu.display_name %></td>	
   	<% end %>
     
     <td>
-      <%= radio_button("menu[#{idx}]","chk","on", :checked => on)%>表示する	
-      <%= radio_button("menu[#{idx}]","chk","off", :checked => off)%>表示しない
+      <%= radio_button("#{authority_menu.id}","chk","on", :checked => on)%>表示する	
+      <%= radio_button("#{authority_menu.id}","chk","off", :checked => off)%>表示しない
+      
+      <%#= radio_button("menu[#{idx}]","chk","on", :checked => on)%>
+      <%#= radio_button("menu[#{idx}]","chk","off", :checked => off)%>
     </td>
   </tr>
+  <%= hidden_field :select, :m_authority_id, :value => @m_authority_id %>
 <% end %>
 
 </table>

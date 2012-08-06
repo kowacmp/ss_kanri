@@ -43,3 +43,6 @@ end
 gem 'execjs'
 gem 'therubyracer'
 gem "devise"
+
+gem "jquery_datepicker"
+gem "jquery-ui-themes"

@@ -13,13 +13,17 @@
 
   <table id='rounded-corner'>
   	<tr>
-  	  <th><%= f.label 'メニュー分類' %></th>
-  	  <td><%= f.number_field :parent_menu_id %></td>  	  
+  	  <th><%= f.label 'メニュー分類１' %></th>
+  	  <td><%= f.number_field :menu_cd1 %></td>  	  
   	</tr>
   	<tr>
-  	  <th><%= f.label 'メニュー表示順' %></th>
-  	  <td><%= f.number_field :display_order %></td>  	  
+  	  <th><%= f.label 'メニュー分類２' %></th>
+  	  <td><%= f.number_field :menu_cd2 %></td>  	  
   	</tr>
+  	<tr>
+  	  <th><%= f.label 'メニュー分類３' %></th>
+  	  <td><%= f.number_field :menu_cd3 %></td>  	  
+  	</tr>  	
   	<tr>
   	  <th><%= f.label 'メニュー名' %></th>
   	  <td><%= f.number_field :display_name %></td>  	  
@@ -27,7 +31,11 @@
   	<tr>
   	  <th><%= f.label '処理名' %></th>
   	  <td><%= f.number_field :uri %></td>  	  
-  	</tr>   	   	 	
+  	</tr>
+  	<tr>
+  	  <th><%= f.label 'メッセージ種別' %></th>
+  	  <td><%= f.number_field :messege_send %></td>  	  
+  	</tr>   	   	   	 	
   </table>
   <div class="actions">
     <%= f.submit f.object.new_record? ? '追加' : '更新' %>

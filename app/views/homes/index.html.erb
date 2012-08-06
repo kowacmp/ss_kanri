@@ -26,55 +26,81 @@
 
 <table id='rounded-corner2'>
   <tr>
-  	<th width='500'><%= image_tag 'information.png' %>お知らせ</th>
+  	<th width='900'colspan="3" class="title"><%= image_tag 'information.png' %>イベント通知</th>
   </tr>
   <tr>
-  	<td>a</td>
-  </tr>  
+  	<th width="9%">実施日</th>
+  	<th width="35%">タイトル</th>
+  	<th width="56%">内容</th>  	  	
+  </tr>
+</table>  
+<div style="height:100px;width:925px;overflow-y:auto;overflow-x:hidden;">
+<table id='rounded-corner2'style="margin-top:-1px; width:904px;">  
+  <% @d_events.each do |d_event| %>
+    <tr>
+  	  <td width="9%"><%= Time.parse(d_event.action_day).strftime("%Y/%m/%d") %></td>
+  	  <td width="35%"><%= d_event.display_name %></td>
+  	  <td width="56%"><%= d_event.contents %></td>  	  	
+    </tr>
+  <% end %> 
 </table>
+</div>
 <br><br><br>
 
+<div style="float: left;width: 50%;">
+  <table id='rounded-corner2'>
+    <tr>
+  	  <th width='450' colspan="4" class="title"><%= image_tag 'mail.png' %>メッセージ</th>
+    </tr>
+    <tr>
+  	  <th width="17%">日付</th>
+  	  <th width="34%">タイトル</th>
+  	  <th width="39%">内容</th>
+  	  <th width="10%">削除</th>
+    </tr>  
+  </table>
 
-<table id='rounded-corner2'>
-  <tr>
-  	<th width='500' colspan="4"><%= image_tag 'mail.png' %>メッセージ</th>
-  </tr>
-  <tr>
-  	<th>日付</th>
-  	<th>タイトル</th>
-  	<th>内容</th>
-  	<th>削除</th>
-  </tr>  
-  <tr>
-  	<td>a</td>
-  </tr>
-</table>
-<br><br><br>
+  <div style="height:100px;width:475px;overflow-y:auto;overflow-x:hidden;">
+  <table id='rounded-corner2'style="margin-top:-1px; width:454px;">
+    <% @d_messages.each do |d_message| %>  
+      <tr>
+  	    <td width="17%"><%= d_message.send_day.strftime("%Y/%m/%d") %></td>
+  	    <td width="34%"><%= d_message.display_name %></td>
+  	    <td width="39%"><%= d_message.contents %></td>
+  	    <td width="10%" align="center"><%= link_to image_tag('icon/delete.png'), {:action => 'destroy_d_message'}, :confirm => '削除します。よろしいですか？', :method => :delete %></td>    	    
+      </tr>
+    <% end %>
+  </table>
+  </div>
+</div>
 
+<div style="float: right;width: 50%;">
+  <table id='rounded-corner2'>
+    <tr>
+  	  <th width='450'colspan="5" class="title"><%= image_tag 'comment.png' %>コメント</th>
+    </tr>
+    <tr>
+  	  <th width="17%">発信日</th>
+  	  <th width="33%">タイトル</th>
+  	  <th width="30%">発信者</th>
+  	  <th width="10%">詳細</th>  	
+  	  <th width="10%">削除</th>
+    </tr>
+  </table>
 
-<table id='rounded-corner2'>
-  <tr>
-  	<th width='500'colspan="5"class="title"><%= image_tag 'comment.png' %>コメント</th>
-  </tr>
-  <tr>
-  	<th width="16%">発信日</th>
-  	<th width="34%">タイトル</th>
-  	<th width="30%">発信者</th>
-  	<th width="10%">詳細</th>  	
-  	<th width="10%">削除</th>
-  </tr>
-</table>
-
-<div style="height:100px;width:525px;overflow-y:auto;overflow-x:hidden;">
-<table id='rounded-corner2'style="margin-top:0px; width:504px;">
-  <% @d_comments.each do |d_comment| %>
-  <tr>
-  	<td width="16%"><%= d_comment.send_day.strftime("%Y/%m/%d") %></td>
-  	<td width="34%"><%= d_comment.display_name %></td>
-  	<td width="30%"><%= d_comment.user_name %></td>
-  	<td width="10%" align="center"><%= link_to image_tag('icon/24_show.png'), :action => 'show_d_comment' %></td>
-  	<td width="10%" align="center"><%= link_to image_tag('icon/24_delete.png'), {:action => 'destroy_d_comment'}, :confirm => '削除します。よろしいですか？', :method => :delete %></td>  	
-  </tr>
-  <% end %>
-</table>
+  <div style="height:100px;width:475px;overflow-y:auto;overflow-x:hidden;">
+  <table id='rounded-corner2'style="margin-top:-1px; width:454px;">
+    <% @d_comments.each do |d_comment| %>
+      <tr>
+   	    <td width="17%"><%= d_comment.send_day.strftime("%Y/%m/%d") %></td>
+        <td width="33%"><%= d_comment.display_name %></td>
+  	    <td width="30%"><%= d_comment.user_name %></td>
+  	    <td width="10%" align="center"><%#= link_to image_tag('icon/show.png'), :action => 'show_d_comment' %>
+  	  	  <%= link_to image_tag('icon/show.png'), {:controller => 'homes', :action => 'show_d_comment', :id => d_comment.id}, :class => "modal" %>
+  	    </td>
+  	    <td width="10%" align="center"><%= link_to image_tag('icon/delete.png'), {:action => 'destroy_d_comment'}, :confirm => '削除します。よろしいですか？', :method => :delete %></td>  	
+      </tr>
+    <% end %>
+  </table>
+  </div>
 </div>

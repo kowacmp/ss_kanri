@@ -4,7 +4,70 @@
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
  *= require_tree . 
+ *= require jquery-ui/blitzer
 */
+
+
+html,
+body {
+/*	height: 100%;
+	margin: 0px;
+	padding: 0px; */
+	padding:0;
+	margin:0;
+	text-align: center;
+	color: #666666;
+	font-family: "メイリオ","ＭＳ Ｐゴシック",Osaka,Verdana,Arial,Helvetica,sans-serif;
+	font-size: 15px;
+	background: #fff url(body.gif) repeat-x;
+height:100%;
+}
+
+#page{
+	  margin-left: auto;
+      margin-right: auto;
+      width: 950px;
+      text-align: left;
+
+      
+
+	position: relative;
+	background: #fff;
+	border: 1px solid #2a83a2;      
+}
+
+div#modal {
+	display: none;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+}
+div#modal div.background {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: #000000;
+	opacity: 0.75;
+	filter: alpha(opacity=75);
+	-ms-filter: "alpha(opacity=75)";
+}
+div#modal div.container {
+	position: relative;
+	width: 500px;
+	height: 500px;
+	background-color: #ffffff;
+}
+
+#header {
+  /*background-image:url("th_001.gif"); 
+  background-color: #3256B6; 
+    color: white; 
+  border-bottom: 4px solid #fc0; 
+
+  font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;*/
+  padding-top: 10px;
+}
+
 #footer{
       height:25px;
       /* width: 1325px; */
@@ -17,6 +80,15 @@
       border-top-style: solid;
       border-top-width: 1px;
       clear: left;
+      
+      	color: #fff;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 11px;
+	font-style: normal;
+	text-align:center;
+	padding: 5px;
+	margin-top: 15px;
+
 }
 
 #footer #copyright {
@@ -28,6 +100,16 @@
       background-repeat:no-repeat;
       padding-left:50px;
       display:inline-block;
-      /*line-height: 18px;*/
-      /*margin-top:-5px;*/
 }
+
+
+
+/*--------------------------------------見出し*/
+h2 {
+	margin: 20px 100px 30px 30px;
+	padding: 3px 10px;
+	border-left: 8px solid #2a83a2;
+	border-bottom: 1px solid #2a83a2;
+}
+
+

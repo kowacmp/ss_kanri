@@ -2,13 +2,17 @@
 
   <table id='rounded-corner'>
   	<tr>
-  	  <th>メニュー分類</th>
-  	  <td><%= @menu.parent_menu_id %></td>  	  
+  	  <th>メニュー分類１</th>
+  	  <td><%= @menu.menu_cd1 %></td>  	  
   	</tr>
   	<tr>
-  	  <th>メニュー表示順</th>
-  	  <td><%= @menu.display_order %></td>  	  
+  	  <th>メニュー分類２</th>
+  	  <td><%= @menu.menu_cd2 %></td>  	  
   	</tr>
+  	<tr>
+  	  <th>メニュー分類３</th>
+  	  <td><%= @menu.menu_cd3 %></td>  	  
+  	</tr>  	
   	<tr>
   	  <th>メニュー名</th>
   	  <td><%= @menu.display_name %></td>  	  
@@ -16,7 +20,11 @@
   	<tr>
   	  <th>処理名</th>
   	  <td><%= @menu.uri %></td>  	  
-  	</tr>   	   	 	
+  	</tr>
+  	<tr>
+  	  <th>メッセージ種別</th>
+  	  <td><%= @menu.messege_send %></td>  	  
+  	</tr>  	   	   	 	
   </table>
 
 <%= link_to '編集', edit_menu_path(@menu), :class => 'edit_icon' %> |

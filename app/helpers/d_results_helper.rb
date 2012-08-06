@@ -1,0 +1,2 @@
+module DResultsHelper
+end

@@ -1,4 +1,13 @@
 SsKanri::Application.routes.draw do
+  get "d_results/index"
+
+  resources :userdata do
+    collection do
+      get :test
+    end
+  end
+
+
   resources :m_washsale_plans
 
   resources :m_tanks
@@ -23,8 +32,6 @@ SsKanri::Application.routes.draw do
 
   resources :d_events
 
-  get "welcome/index"
-
   devise_for :users, :path_names => { :sign_up => "register" }
 
   resources :m_authorities
@@ -37,8 +44,8 @@ SsKanri::Application.routes.draw do
   
   resources :menus do
     collection do
-      get :city_select     
-      post :city_select 
+      get :city_select  
+      get :test   
     end
   end
 
@@ -102,7 +109,7 @@ SsKanri::Application.routes.draw do
   # root :to => 'homes#index'
   match ':controller(/:action(/:id(.:format)))'
   
-  root :to => 'welcome#index'
+  root :to => 'homes#index'
   
   devise_for :users  
   get 'homes', :to => 'homes#index', :as => :user_root  

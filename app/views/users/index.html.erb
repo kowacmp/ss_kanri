@@ -1,0 +1,13 @@
+<%=raw jqgrid("Listing users", "users", "/users", 
+[ 
+   
+  { :field => "id", :label => "id" }, 
+   
+  { :field => "pseudo", :label => "pseudo" }, 
+   
+  { :field => "email", :label => "email" }, 
+   
+  { :field => "firstname", :label => "firstname" } 
+   
+  ] , {:autowidth=>true} 
+  ) %>

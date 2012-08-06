@@ -1,17 +1,37 @@
-<ul id="jsddm">
+<% get_menus(current_user.m_authority_id) if $menu1.blank? %>
+<div id="smoothmenu1" class="ddsmoothmenu">
+<ul>
 	<li><a href="/homes">home</a></li>
-	<% session[:parent_menus].each do |parent_menu| %>
-	  <li><a href="#"><%= parent_menu.display_name %></a>
-	  	<% get_menus(session[:m_authority_id], parent_menu.parent_menu_id)%>
+	<% $menu1.each do |menu1| %>
+	  <li>
+	  	<a href="#"><%= menu1.display_name %></a>
 
 		<ul>
-		  <% session[:menus].each do |menu| %>
-			<li><a href="/<%= menu.uri %>"><%= menu.display_name %></a></li>
+		  <% $menu2[menu1.menu_cd1.to_i].each do |menu2| %>
+			<li>
+			  <a href="/<%= menu2.uri %>"><%= menu2.display_name %></a>
+			  <% unless $menu3[menu1.menu_cd1.to_i][menu2.menu_cd2.to_i].blank? %>
+			    <ul>
+			      <% $menu3[menu1.menu_cd1.to_i][menu2.menu_cd2.to_i].each do |menu3| %>
+                    <li><a href="/<%= menu3.uri %>"><%= menu3.display_name %></a></li>
+                  <% end %>
+                </ul>
+              <% end %> 
+			</li>
 		  <% end %> 
 		</ul>
 	  </li>
 	<% end %>
 </ul>
-<br/>
+<br style="clear: left" />
+</div>
 
-
+<script type="text/javascript">
+ddsmoothmenu.init({
+	mainmenuid: "smoothmenu1", //menu DIV id
+	orientation: 'h', //Horizontal or vertical menu: Set to "h" or "v"
+	classname: 'ddsmoothmenu', //class added to menu's outer DIV
+	//customtheme: ["#1c5a80", "#18374a"],
+	contentsource: "markup" //"markup" or ["container_id", "path_to_menu_file"]
+})
+</script>

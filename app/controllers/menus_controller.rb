@@ -2,7 +2,7 @@ class MenusController < ApplicationController
   # GET /menus
   # GET /menus.json
   def index
-    @menus = Menu.find(:all, :order => 'parent_menu_id, display_order')
+    @menus = Menu.find(:all, :order => 'menu_cd1, menu_cd2, menu_cd3')
 
     respond_to do |format|
       format.html # index.html.erb
