@@ -2,7 +2,6 @@ SsKanri::Application.routes.draw do
   get "d_wash_sales/index"
   get "d_wash_sales/entry_error"
   get "d_wash_sales/change_input_ymd"
-  get "d_wash_sales/create"
   get "d_wash_sales/update"
       
   get "d_results/index"
