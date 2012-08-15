@@ -1,0 +1,116 @@
+<% if notice %>
+  <p id="notice"><%= notice %></p>
+<% end %>
+
+<% if @d_wash_sale_today == nil %>
+<!--                    データ作成      -->
+<%= @input_ymd %> New
+	<%= form_tag({:action => 'create'}) do %>
+	  <table  id='rounded-corner'>
+	  <tr>
+		<th>機種名</th>
+		<th>当日メーター</th>
+		<th>前回メーター</th>
+		<th>計算上売上高</th>
+		<th>現金売上高</th>
+		<th>誤差</th>
+	  </tr>
+     <%  @m_washes.each do |wash| %>
+       <% wash.max_num.times do |i| %>
+	  <tr>
+		  <td id="wash_cd_<%= wash.wash_cd.to_s %>_<%= (i+1).to_s %>"><%= wash.wash_name + (i + 1).to_s %></td>
+		  <td>
+		  	<% if @d_washsale_item_today == nil %>
+		  	  <% meter_id = "meter_" + wash.wash_cd.to_s + '_'+ (i+1).to_s %>
+		  	  <%= text_field_tag(meter_id,0,:size => 10) %>
+		  	<% else %>
+		  	<% meter_id = "meter_" + @d_washsale_item_today.m_wash_id.to_s + '_'+ @d_washsale_item_today.wash_no.to_s %>
+		  	  <%= text_field_tag(meter_id,@d_washsale_item_today.meter,:size => 10) %>
+		  	<% end %>
+		  </td>
+		  <td>
+		  	<% d_wash_sale_yesterday = get_d_wash_sale(@input_ymd_yesterday_s) %>
+		  	<% unless d_wash_sale_yesterday == nil %>
+  		  	  <% d_washsales_item_yesterday = get_d_washsale_item(d_wash_sale_yesterday.id, wash.wash_cd,(i+1)) %>
+  		  	<% else %>
+  		  	  <% d_washsales_item_yesterday = nil %>
+  		  	<% end %>
+		  	<% if d_washsales_item_yesterday == nil %>
+		  	  0
+		  	<% else %>
+		  	  <%= d_washsales_item_yesterday.meter %>
+		  	<% end %>
+		  	</td>
+		  <td>計算上売上高</td>
+		  <td>現金売上高</td>
+		  <td>誤差</td>
+	  </tr>
+	    <% end %>
+	    <tr><td>合計</td></tr>
+	  <% end %>
+	  <tr><td><%= submit_tag(" 更新 ",:disable_with => "更新中...") %></td></tr>
+	 </table>
+	 <%= hidden_field_tag 'sale_date',@input_ymd.delete("/") %>
+	<% end %>
+<% else %>
+<!--                    データ更新      -->
+<%= @input_ymd %> edit
+	<%= form_tag({:action => 'update'}) do %>
+	  <table  id='rounded-corner'>
+	  <tr>
+		<th>機種名</th>
+		<th>当日メーター</th>
+		<th>前回メーター</th>
+		<th>計算上売上高</th>
+		<th>現金売上高</th>
+		<th>誤差</th>
+	  </tr>
+     <%  @m_washes.each do |wash| %>
+       <% wash.max_num.times do |i| %>
+	  <tr>
+		  <td id="wash_cd_<%= wash.wash_cd.to_s %>_<%= (i+1).to_s %>"><%= wash.wash_name + (i + 1).to_s %></td>
+		  <td>
+		  	<% d_wash_sale = get_d_wash_sale(@input_ymd_s) %>
+		  	<% d_washsales_item = get_d_washsale_item(d_wash_sale.id, wash.wash_cd,(i+1)) %>
+		  	<% unless (d_washsales_item == nil) %>
+		  		<% if d_wash_sale.kakutei_flg == 1 %>
+		  		  <%= d_washsales_item.meter %>
+		  		<% else %>
+   	  	  	      <% meter_id = "meter_" + d_washsales_item.m_wash_id.to_s + '_'+ d_washsales_item.wash_no.to_s %>
+		  		  <%= text_field_tag(meter_id, d_washsales_item.meter ,:size => 10) %>
+		  		<% end %>
+		  	<% else %>
+		  	  <% if d_wash_sale.kakutei_flg == 1 %>
+		  	    0
+		  	  <% else %>
+		  	    <% meter_id = "meter_" + wash.wash_cd.to_s + '_'+ (i+1).to_s %>
+		  	    <%= text_field_tag(meter_id,0,:size => 10) %>
+		  	  <% end %>		  	  
+		  	<% end %>
+		  </td>
+		  <td>
+		  	<% d_wash_sale_yesterday = get_d_wash_sale(@input_ymd_yesterday_s) %>
+		  	<% unless d_wash_sale_yesterday == nil  %>
+ 		  	  <% d_washsales_item_yesterday = get_d_washsale_item(d_wash_sale_yesterday.id, wash.wash_cd,(i+1)) %>
+ 		  	<% else %>
+ 		  	  <% d_washsales_item_yesterday = nil %>
+ 		  	<% end %>
+
+		  	<% if d_washsales_item_yesterday == nil %>
+		  	  0
+		  	<% else %>
+		  	  <%= d_washsales_item_yesterday.meter %>
+		  	<% end %>
+		  	</td>
+		  <td>計算上売上高</td>
+		  <td>現金売上高</td>
+		  <td>誤差</td>
+	  </tr>
+	    <% end %>
+	    <tr><td>合計</td></tr>
+	  <% end %>
+	  <tr><td><%= submit_tag(" 更新 ",:disable_with => "更新中...") %></td></tr>
+	 </table>
+	 <%= hidden_field_tag 'sale_date',@input_ymd.delete("/") %>
+	<% end %>
+<% end %>

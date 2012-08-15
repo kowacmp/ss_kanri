@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120803051849) do
+ActiveRecord::Schema.define(:version => 20120806061105) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -160,6 +160,38 @@ ActiveRecord::Schema.define(:version => 20120803051849) do
     t.integer  "kakutei_flg",    :limit => 2, :null => false
     t.integer  "create_user_id",              :null => false
     t.integer  "update_user_id",              :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "d_wash_sales", :force => true do |t|
+    t.string   "sale_date",       :limit => 8, :default => "00000000", :null => false
+    t.integer  "m_shop_id",                    :default => 0,          :null => false
+    t.integer  "kakutei_flg",     :limit => 2, :default => 0,          :null => false
+    t.integer  "created_user_id",              :default => 0,          :null => false
+    t.integer  "updated_user_id",              :default => 0,          :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "d_washsale_items", :force => true do |t|
+    t.integer  "d_wash_sale_id",                 :null => false
+    t.integer  "m_wash_id",                      :null => false
+    t.integer  "wash_no",         :limit => 2,   :null => false
+    t.integer  "meter"
+    t.integer  "error_money"
+    t.string   "error_note",      :limit => 200
+    t.integer  "created_user_id",                :null => false
+    t.integer  "updated_user_id",                :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "establishes", :force => true do |t|
+    t.string   "name"
+    t.string   "zip_cd"
+    t.string   "address"
+    t.integer  "deleted_flg"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -334,6 +366,12 @@ ActiveRecord::Schema.define(:version => 20120803051849) do
     t.datetime "updated_at"
     t.integer  "messege_send", :limit => 2
     t.integer  "menu_cd3",     :limit => 2
+  end
+
+  create_table "testnishis", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "userdata", :force => true do |t|

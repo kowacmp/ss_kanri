@@ -3,7 +3,7 @@ class MWashesController < ApplicationController
   # GET /m_washes.json
   def index
     #@m_washes = MWash.all
-    @m_washes = MWash.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'wash_cd')
+    @washes = MWash.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'wash_cd')
 
     respond_to do |format|
       format.html # index.html.erb
