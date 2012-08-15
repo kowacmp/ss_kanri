@@ -90,12 +90,10 @@ class AuthorityMenusController < ApplicationController
   end
 
   def authority_menu_create
-    p "authority_menu_create   authority_menu_create   authority_menu_create"
-    p params[:select][:m_authority_id]
     m_authority_id = params[:select][:m_authority_id].to_i
     AuthorityMenu.destroy_all(["m_authority_id = ?", m_authority_id])
     menus = Menu.all
-    p "---------------------------"
+
     menus.each do |menu|
       if params["#{menu.id}"]["chk"] == "on"
         authority_menu = AuthorityMenu.new

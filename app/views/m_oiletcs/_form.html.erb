@@ -32,6 +32,10 @@
   	  <th><%= f.label 'グループ種類' %></th>
   	  <td><%= f.number_field :oiletc_group %></td>  	  
   	</tr>
+  	<tr>
+  	  <th><%= f.label '営業項目' %></th>
+  	  <td><%= f.number_field :oiletc_trade %></td>  	  
+  	</tr>  	
   </table>
   <div class="actions">
     <%= f.submit f.object.new_record? ? '追加' : '更新' %>

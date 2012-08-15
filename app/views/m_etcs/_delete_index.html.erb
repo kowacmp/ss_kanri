@@ -5,6 +5,8 @@
     <th>他商品略称</th>
     <th>単位</th>
     <th>グループ種類</th>
+    <th>最大数</th>    
+    <th>監査フラグ</th>      
     <th>詳細</th>
     <th>編集</th>
     <th>削除</th>
@@ -17,6 +19,8 @@
     <td><%= m_etc.etc_ryaku %></td>
     <td><%= m_etc.etc_tani %></td>
     <td><%= m_etc.etc_group %></td>
+    <td><%= m_etc.max_num %></td>    
+    <td><%= m_etc.kansa_flg %></td>     
     <td class="icon"><%= link_to image_tag('icon/24_show.png'), m_etc %></td>
     <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_etc_path(m_etc) %></td>
     

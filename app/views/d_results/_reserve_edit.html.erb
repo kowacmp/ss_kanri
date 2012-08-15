@@ -1,0 +1,27 @@
+<%= stylesheet_link_tag 'jquery-ui-1.8.22.custom' %>    
+<%= javascript_include_tag "jquery-ui-1.8.22.custom.min" %>
+<%= javascript_include_tag "jquery.ui.datepicker-ja" %> 
+
+<%= form_tag({:action => 'reserve_update' }, { :remote => true }) do %>
+  <table>
+  	<tr>
+  	  <th>車検予約日</th>
+      <td><%= number_field :reserve, :get_date, :readonly => true, :value => Time.parse(@d_result_reserve.get_date).strftime("%Y/%m/%d"), :size => 10, :class => "datepicker" %></td>
+    </tr>
+    <tr>
+      <th>車検予約者名</th>
+      <td><%= text_field :reserve, :reserve_name, :value => @d_result_reserve.reserve_name, :size => 10 %></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="right"><%= submit_tag '更新'%></td>
+    </tr>
+  </table>
+
+  <%= hidden_field :reserve, :id, :value => @d_result_reserve.id %>
+<% end %>
+
+<script>
+  $(function() {
+    $( ".datepicker" ).datepicker();
+  });
+</script>
