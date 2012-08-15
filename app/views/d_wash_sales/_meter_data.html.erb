@@ -18,7 +18,7 @@
      <%  @m_washes.each do |wash| %>
        <% wash.max_num.times do |i| %>
 	  <tr>
-		  <td id="wash_cd_<%= wash.wash_cd.to_s %>_<%= (i+1).to_s %>"><%= wash.wash_name + (i + 1).to_s %></td>
+		  <th id="wash_cd_<%= wash.wash_cd.to_s %>_<%= (i+1).to_s %>"><%= wash.wash_name + (i + 1).to_s %></th>
 		  <td>
 		  	<% if @d_washsale_item_today == nil %>
 		  	  <% meter_id = "meter_" + wash.wash_cd.to_s + '_'+ (i+1).to_s %>
@@ -41,12 +41,22 @@
 		  	  <%= d_washsales_item_yesterday.meter %>
 		  	<% end %>
 		  	</td>
-		  <td>計算上売上高</td>
-		  <td>現金売上高</td>
-		  <td>誤差</td>
-	  </tr>
+		  <td>
+		  	0
+          </td>
+          <% if i == 0%>
+		    <td rowspan="<%= wash.max_num %>">現金売上高</td>
+		    <td rowspan="<%= wash.max_num %>">誤差</td>
+		  <% end %>
+	    </tr>
 	    <% end %>
-	    <tr><td>合計</td></tr>
+
+	   <tr>
+	   	<td colspan="2">&nbsp;</td>
+	   	<th><%= wash.wash_name + "計" %></th>
+	   	<td>0</td>
+	   	<td>&nbsp;</td>
+	   </tr>
 	  <% end %>
 	  <tr><td><%= submit_tag(" 更新 ",:disable_with => "更新中...") %></td></tr>
 	 </table>
@@ -66,9 +76,10 @@
 		<th>誤差</th>
 	  </tr>
      <%  @m_washes.each do |wash| %>
+     <% sum_keisan_uriage = 0 %>
        <% wash.max_num.times do |i| %>
 	  <tr>
-		  <td id="wash_cd_<%= wash.wash_cd.to_s %>_<%= (i+1).to_s %>"><%= wash.wash_name + (i + 1).to_s %></td>
+		  <th id="wash_cd_<%= wash.wash_cd.to_s %>_<%= (i+1).to_s %>"><%= wash.wash_name + (i + 1).to_s %></th>
 		  <td>
 		  	<% d_wash_sale = get_d_wash_sale(@input_ymd_s) %>
 		  	<% d_washsales_item = get_d_washsale_item(d_wash_sale.id, wash.wash_cd,(i+1)) %>
@@ -102,12 +113,23 @@
 		  	  <%= d_washsales_item_yesterday.meter %>
 		  	<% end %>
 		  	</td>
-		  <td>計算上売上高</td>
-		  <td>現金売上高</td>
-		  <td>誤差</td>
+		  <td>
+		  	<% display_keisan_uriage = keisan_uriage(d_washsales_item,d_washsales_item_yesterday) %>
+		  	<%= display_keisan_uriage %>
+		  	<% sum_keisan_uriage = sum_keisan_uriage + display_keisan_uriage %>
+		  </td>
+          <% if i == 0%>
+		    <td rowspan="<%= wash.max_num %>">現金売上高</td>
+		    <td rowspan="<%= wash.max_num %>">誤差</td>
+		  <% end %>
 	  </tr>
 	    <% end %>
-	    <tr><td>合計</td></tr>
+	  <tr>
+	   	<td colspan="2">&nbsp;</td>
+	   	<th><%= wash.wash_name + "計" %></th>
+	   	<td><%= sum_keisan_uriage %></td>
+	   	<td>&nbsp;</td>
+	   </tr>
 	  <% end %>
 	  <tr><td><%= submit_tag(" 更新 ",:disable_with => "更新中...") %></td></tr>
 	 </table>
