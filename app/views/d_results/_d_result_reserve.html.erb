@@ -1,0 +1,23 @@
+<table id='rounded-corner'>
+	<tr>
+	  <th colspan="4">車検予約カード獲得</th>
+	</tr>
+	<tr>
+	  <th>月</th>
+	  <th>日計</th>
+	  <th>累計</th>
+	  <td rowspan="6">
+	  	<%= link_to '入力', {:controller => 'd_results', :action => 'reserve_index', :result_date => @result_date}, :class => "modal" %>
+	  </td>	  	  	  
+	</tr>
+  <% unless @syukei_reserves.blank?%>	
+  <% @syukei_reserves.each do |syukei_reserve| %>
+    <tr>
+      <th><%= syukei_reserve[:month] %></th> 	
+      <th><%= syukei_reserve[:nikkei] %></th> 
+      <th><%= syukei_reserve[:ruikei] %></th>           
+    </tr>
+  <% end %>	
+  <% end %>
+</table>
+    

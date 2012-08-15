@@ -1,0 +1,13 @@
+<table id='rounded-corner'>
+  <th>獲得日</th>
+  <td><%= Time.parse(@d_result.result_date).strftime("%Y/%m/%d") %></td>
+</table>	
+<br/>
+
+
+<%= link_to '新規登録', {:action => 'reserve_new', :d_result_id => @d_result.id}, { :remote => true ,:class => 'add_icon'} %>
+<div id="result">
+  <%= render 'reserve_result' %>
+</div>
+
+<div id="new"></div>

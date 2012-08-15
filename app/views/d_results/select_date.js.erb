@@ -1,0 +1,5 @@
+<% if @d_result.blank? or @d_result.kakutei_flg == 0 %>
+  $('#result').html("<%= j(render :partial => 'input_d_result')%>");
+<% else %>
+  $('#result').html("<%= j(render :partial => 'show_d_result')%>");
+<% end %>

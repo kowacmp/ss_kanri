@@ -6,14 +6,15 @@ SsKanri::Application.routes.draw do
   get "d_wash_sales/update"
       
   get "d_results/index"
-
+  get "d_results/select_date"
+  get "d_results/result_edit"
+    
   resources :userdata do
     collection do
       get :test
     end
   end
-
-
+ 
   resources :m_washsale_plans
 
   resources :m_tanks

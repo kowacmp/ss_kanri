@@ -5,7 +5,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string   :account,        :limit => 10
       t.string   :user_name,      :limit => 50
       t.string   :user_name_kana, :limit => 50
-      t.integer  :m_shops_id
+      t.integer  :m_shop_id
       t.integer  :m_authority_id
       t.column   :user_class,     :smallint
       t.datetime :nyusya_date

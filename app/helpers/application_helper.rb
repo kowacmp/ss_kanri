@@ -27,17 +27,11 @@ module ApplicationHelper
                and menu_cd1 = #{menu1.menu_cd1} and menu_cd2 = #{menu2.menu_cd2}
              order by menu_cd3
         SQL
-        p "sql3=#{sql3}"
-        p "3333333333333333333333333333333333333333333333333"
-        p "menu1.menu_cd1=#{menu1.menu_cd1}"
-        p "menu2.menu_cd2=#{menu2.menu_cd2}"        
+      
         $menu3[menu1.menu_cd1.to_i] = Hash::new if $menu3[menu1.menu_cd1.to_i].blank?
-        $menu3[menu1.menu_cd1.to_i][menu2.menu_cd2.to_i] = AuthorityMenu.find_by_sql(sql3) 
-        p "$menu3[1][1]=#{$menu3[1][1]}"       
+        $menu3[menu1.menu_cd1.to_i][menu2.menu_cd2.to_i] = AuthorityMenu.find_by_sql(sql3)   
       end
-    end
-    p "$menu3[1][1]=#{$menu3[1][1]}"
-    p "$menu3[1][2]=#{$menu3[1][2]}"    
+    end  
   end
   
   def day_of_the_week(i)

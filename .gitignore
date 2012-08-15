@@ -17,3 +17,4 @@
 *.pyc
 *.pyo
 db/schema.rb
+db/schema.rb

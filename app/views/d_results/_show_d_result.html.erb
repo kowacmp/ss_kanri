@@ -1,0 +1,137 @@
+
+<table id='rounded-corner'>
+	<tr>
+	  <th>出荷数量(リットル)</th>
+	  <th>POS1</th>
+	  <th>POS2</th>	
+	  <th>POS3</th>
+	  <th>POS日計</th>
+	</tr>
+  <% @m_oils.each do |m_oil| %>
+    <tr>
+      <th><%= m_oil.oil_name %></th> 	
+      <td><%= m_oil.pos1_data %></td>
+      <td><%= m_oil.pos2_data %></td>
+      <td><%= m_oil.pos3_data %></td>
+      <td></td>                
+    </tr>
+  <% end %>
+    <tr>
+      <th>ガソリン合計</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>MOFUEL計</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>   
+</table>
+<br/>
+
+<table id='rounded-corner'>
+	<tr>
+	  <th>油外販売</th>
+	  <th>POS1</th>
+	  <th>POS2</th>	
+	  <th>POS3</th>
+	  <th>POS日計</th>	
+	</tr>
+  <% @oiletc0s.each do |oiletc0| %>
+    <tr>
+      <th><%= oiletc0.oiletc_name %></th> 	
+      <td><%= oiletc0.pos1_data %></td>
+      <td><%= oiletc0.pos2_data %></td>
+      <td><%= oiletc0.pos3_data %></td>  
+      <td></td>              
+    </tr>
+  <% end %>	
+    <tr>
+      <th>油外合計</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>  
+</table>	
+<br/>
+  
+<table id='rounded-corner'>
+	<tr>
+	  <th>その他商品</th>
+	  <th>POS1</th>
+	  <th>POS2</th>	
+	  <th>POS3</th>
+	  <th>POS日計</th>	
+	</tr>
+  <% @oiletc1s.each do |oiletc1| %>
+    <tr>
+      <th><%= oiletc1.oiletc_name %></th> 	
+      <td><%= oiletc1.pos1_data %></td>
+      <td><%= oiletc1.pos2_data %></td>
+      <td><%= oiletc1.pos3_data %></td>  
+      <td></td>              
+    </tr>
+  <% end %>	
+</table>	
+<br/>
+  
+<table id='rounded-corner'>
+	<tr>
+	  <th>その他売上</th>
+	  <th>POS1</th>
+	  <th>POS2</th>	
+	  <th>POS3</th>
+	  <th>POS日計</th>	
+	</tr>
+  <% @m_etcs.each do |m_etc| %>
+    <tr>
+      <th><%= m_etc.etc_name + m_etc.no.to_s %></th> 	
+      <td><%= m_etc.pos1_data %></td>
+      <td><%= m_etc.pos2_data %></td>
+      <td><%= m_etc.pos3_data %></td>  
+      <td></td>              
+    </tr>      
+  <% end %>	
+</table>	
+<br/>
+
+<table id='rounded-corner'>
+	<tr>
+	  <th colspan="3">営業POS伝回収報告</th>
+	</tr>
+	<tr>  
+	  <th></th>
+	  <th>日計</th>	
+	  <th>累計</th>
+	</tr>
+  <% @m_oil_etcs.each do |m_oil_etc| %>
+    <tr>
+      <th><%= m_oil_etc.oiletc_name %></th> 	
+      <td><%= m_oil_etc.get_num %></td>
+      <td></td>              
+    </tr>
+  <% end %>	
+</table>
+
+<table id='rounded-corner'>
+	<tr>
+	  <th colspan="4">車検予約カード獲得</th>
+	</tr>
+	<tr>
+	  <th>月</th>
+	  <th>日計</th>
+	  <th>累計</th>	  	  
+	</tr>
+  <% @syukei_reserves.each do |syukei_reserve| %>
+    <tr>
+      <th><%= syukei_reserve[:month] %></th> 	
+      <th><%= syukei_reserve[:nikkei] %></th> 
+      <th><%= syukei_reserve[:ruikei] %></th>           
+    </tr>
+  <% end %>
+</table>

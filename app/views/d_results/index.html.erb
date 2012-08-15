@@ -1,2 +1,20 @@
 <h1>実績データ入力</h1>
-<p>Find me in app/views/d_results/index.html.erb</p>
+<table id='rounded-corner'>
+  <th>対象店舗</th>
+  <td><%= @m_shop.shop_name %></td>
+</table>	
+
+<table id='rounded-corner'>
+  <th>入力日</th>
+  <td><%= number_field :select, :date, :class => "datepicker", :size => 5 %></td>
+</table>
+
+
+<div id="result"></div>
+
+<script type="text/javascript">
+$("#select_date").change(function(){
+    var select_date = $("#select_date").val();
+    $.get("d_results/select_date?select_date=" + select_date);
+});
+</script>

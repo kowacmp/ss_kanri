@@ -1,0 +1,16 @@
+<table id='rounded-corner'>
+	<tr>
+	  <th>出荷数量(リットル)</th>
+	  <th>POS1</th>
+	  <th>POS2</th>	
+	  <th>POS3</th>	
+	</tr>
+  <% @m_oils.each do |m_oil| %>
+    <tr>
+      <th><%= m_oil.oil_name %></th> 	
+      <td><%= m_oil.pos1_data %></td>
+      <td><%= m_oil.pos2_data %></td>
+      <td><%= m_oil.pos3_data %></td>            
+    </tr>
+  <% end %>
+</table>

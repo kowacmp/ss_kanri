@@ -21,6 +21,14 @@
   	  <th>グループ種類</th>
   	  <td><%= @m_etc.etc_group %></td>  	  
   	</tr>
+  	<tr>
+  	  <th>最大数</th>
+  	  <td><%= @m_etc.max_num %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>監査フラグ</th>
+  	  <td><%= @m_etc.kansa_flg %></td>  	  
+  	</tr>   	  	
   </table>
 
 <%= link_to '編集', edit_m_etc_path(@m_etc), :class => 'edit_icon' %> |
