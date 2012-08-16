@@ -1,7 +1,34 @@
 #coding: utf-8
 module DWashSalesHelper
+  
+  def get_zenkai_date(sale_date)
+    if sale_date.length == 10
+      sale_date = sale_date.delete("/")
+    end
+    d_wash_sale = get_d_wash_sale(sale_date) 
+    unless d_wash_sale == nil
+      #データあり
+      zenkai_date = DWashSale.maximum(:sale_date,
+        :conditions => ['sale_date <> ? and m_shop_id = ?',sale_date,current_user.m_shops_id])
+    else
+      #データなし
+      zenkai_date = DWashSale.maximum(:sale_date,
+        :conditions => ['m_shop_id = ?',current_user.m_shops_id])
+    end
+    return zenkai_date
+  end
+  
+  def get_sum_meter(d_wash_sale_id,wash_id)
+    DWashsaleItem.sum(:meter,
+               :conditions => ['d_wash_sale_id = ? and m_wash_id = ? and wash_no <> 99',d_wash_sale_id,wash_id])    
+  end
+  
   def get_m_washes
    MWash.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'wash_cd')    
+  end
+  
+  def get_m_washe(wash_cd)
+    MWash.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ? and wash_cd = ? ",1,wash_cd] ).first    
   end
   
   def get_d_wash_sale(hiduke)

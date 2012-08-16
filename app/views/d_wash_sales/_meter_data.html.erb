@@ -1,3 +1,5 @@
+<%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
+
 <% if notice %>
   <p id="notice"><%= notice %></p>
 <% end %>
@@ -70,7 +72,18 @@
 		  </td>
           <% if i == 0%>
 		    <td rowspan="<%= wash.max_num %>">ー</td>
-		    <td rowspan="<%= wash.max_num %>">誤差</td>
+		    <td rowspan="<%= wash.max_num %>">
+	   		  <% unless d_wash_sale == nil %>
+	   		    <% d_washsales_item_99 = get_d_washsale_item(d_wash_sale.id, wash.wash_cd,99) %>
+	     		  <% unless d_washsales_item_99 == nil %>
+		    	    <%= link_to '誤差入力',{:controller => 'd_wash_sales',:action => 'entry_error', :sale_date=> @input_ymd_s,:wash_cd => wash.wash_cd },:class => 'modal'%> 
+		  	      <% else %>
+		  	        誤差入力不可
+		    	<% end%>
+	   		  <% else %>
+	   		     誤差入力不可
+	   		  <% end %>
+		    </td>
 		  <% end %>
 	  </tr>
 	    <% end %>
@@ -93,9 +106,9 @@
 		</td>
 		<td>
 			<% unless d_washsales_item_99 == nil %>
-			  <%= sum_keisan_uriage - d_washsales_item_99.meter %>
+			  <%= d_washsales_item_99.error_money %>
 			<% else %>
-			  <%= sum_keisan_uriage - 0 %>
+			  0
 			<% end %>
 	    </td>
 	   </tr>
