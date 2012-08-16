@@ -3,7 +3,9 @@
 <% if notice %>
   <p id="notice"><%= notice %></p>
 <% end %>
-
+<% sum_goukei_uriage = 0 %>
+<% sum_genkin_uriage = 0 %>
+<% sum_gosa = 0 %>
 <!--                    データ更新      -->
 <%= @input_ymd %> edit
 	<%= form_tag({:action => 'update'}) do %>
@@ -90,13 +92,16 @@
 	  <tr>
 	   	<td colspan="2">&nbsp;</td>
 	   	<th><%= wash.wash_name + "計" %></th>
-	   	<td><%= sum_keisan_uriage %></td>
+	   	<td><%= sum_keisan_uriage %>
+	   		<% sum_goukei_uriage = sum_goukei_uriage + sum_keisan_uriage %>
+	   	</td>
 	   	<td>
 	   		<% meter_id = "meter_" + wash.wash_cd.to_s + '_'+ 99.to_s %>
 	   		<% unless d_wash_sale == nil %>
 	   		  <% d_washsales_item_99 = get_d_washsale_item(d_wash_sale.id, wash.wash_cd,99) %>
 	   		  <% unless d_washsales_item_99 == nil %>
 		  	    <%= text_field_tag(meter_id, d_washsales_item_99.meter ,:size => 10) %>
+		  	    <% sum_genkin_uriage = sum_genkin_uriage + d_washsales_item_99.meter %>
 		  	  <% else %>
 		  	    <%= text_field_tag(meter_id,0 ,:size => 10) %>
 		  	<% end%>
@@ -107,12 +112,19 @@
 		<td>
 			<% unless d_washsales_item_99 == nil %>
 			  <%= d_washsales_item_99.error_money %>
+			  <% sum_gosa = sum_gosa + d_washsales_item_99.error_money %>
 			<% else %>
 			  0
 			<% end %>
 	    </td>
 	   </tr>
 	  <% end %>
+	  <tr><td colspan="2">&nbsp;</td>
+	  	  <th>売上合計</th>
+	  	  <td><%= sum_goukei_uriage %></td>
+	  	  <td><%= sum_genkin_uriage %></td>
+	  	  <td><%= sum_gosa %></td>
+	  </tr>
 	  <tr><td><%= submit_tag(" 更新 ",:disable_with => "更新中...") %></td></tr>
 	 </table>
 	 <%= hidden_field_tag 'sale_date',@input_ymd.delete("/") %>
