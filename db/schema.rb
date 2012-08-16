@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120813064730) do
+ActiveRecord::Schema.define(:version => 20120815022109) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -84,15 +84,11 @@ ActiveRecord::Schema.define(:version => 20120813064730) do
   end
 
   create_table "d_result_meters", :force => true do |t|
-    t.integer  "d_result_id",                 :null => false
-    t.integer  "m_oil_id",                    :null => false
-    t.integer  "m_tank_id",                   :null => false
-    t.integer  "m_code_id",                   :null => false
-    t.integer  "number",         :limit => 2, :null => false
-    t.integer  "meter_no",       :limit => 2
+    t.integer  "d_result_id",    :null => false
+    t.integer  "m_meter_id",     :null => false
     t.integer  "meter"
-    t.integer  "create_user_id",              :null => false
-    t.integer  "update_user_id",              :null => false
+    t.integer  "create_user_id", :null => false
+    t.integer  "update_user_id", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -133,7 +129,6 @@ ActiveRecord::Schema.define(:version => 20120813064730) do
 
   create_table "d_result_tanks", :force => true do |t|
     t.integer  "d_result_id",    :null => false
-    t.integer  "m_oil_id",       :null => false
     t.integer  "m_tank_id",      :null => false
     t.integer  "receive"
     t.integer  "stock"
@@ -246,6 +241,17 @@ ActiveRecord::Schema.define(:version => 20120813064730) do
     t.datetime "updated_at"
   end
 
+  create_table "m_meters", :force => true do |t|
+    t.integer  "m_tank_id",                               :null => false
+    t.integer  "m_code_id",                               :null => false
+    t.integer  "number",      :limit => 2,                :null => false
+    t.integer  "meter_no",    :limit => 2
+    t.integer  "deleted_flg", :limit => 2, :default => 0
+    t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "m_oiletcs", :force => true do |t|
     t.integer  "oiletc_cd"
     t.string   "oiletc_name"
@@ -301,23 +307,12 @@ ActiveRecord::Schema.define(:version => 20120813064730) do
   create_table "m_tanks", :force => true do |t|
     t.integer  "m_shop_id"
     t.integer  "m_oil_id"
-    t.integer  "tank_all"
-    t.integer  "measure1"
-    t.integer  "measure2"
-    t.integer  "measure3"
-    t.integer  "measure4"
-    t.integer  "measure5"
-    t.integer  "measure6"
-    t.integer  "measure7"
-    t.integer  "measure8"
-    t.integer  "measure9"
-    t.integer  "measure10"
-    t.integer  "measure11"
-    t.integer  "measure12"
     t.integer  "deleted_flg"
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "tank_no",     :limit => 2
+    t.integer  "volume"
   end
 
   create_table "m_washes", :force => true do |t|

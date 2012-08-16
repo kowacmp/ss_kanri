@@ -1,6 +1,7 @@
 <%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
   
 <div id="d_result_reserve"><%= render 'd_result_reserve' %></div>
+<div id="d_result_meter"><%= render 'd_result_meter' %></div>
 
 <%= form_tag({:action => 'd_result_create' }, { :remote => true }) do %>
   <table id='rounded-corner'>

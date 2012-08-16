@@ -50,7 +50,7 @@ class DResultsController < ApplicationController
     etc_sql << " where m.deleted_flg = 0 order by m.etc_cd, d.no"
     @m_etcs = MEtc.find_by_sql(etc_sql)
   
-  
+ 
     #営業POS伝回収報告
     m_oil_etc_sql = "select m.id, m.oiletc_name, d.get_num"
     m_oil_etc_sql << " from m_oiletcs m left join d_result_collects d"
@@ -252,4 +252,47 @@ class DResultsController < ApplicationController
     #現在月から４ヶ月先までの車検予約実績データ集計
     syukei_data(d_result, '')  
   end
+  
+  def meter_index
+    p "meter_index   meter_index   meter_index   meter_index"
+    @result_date = params[:result_date]
+    
+    @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
+                                                      current_user.m_shops_id, @result_date])
+    
+    #実績データ作成 
+    if @d_result.blank?
+      @d_result = DResult.new
+      @d_result.result_date = @result_date
+      @d_result.m_shop_id = current_user.m_shops_id
+      @d_result.kakutei_flg = 0
+      @d_result.created_user_id = current_user.id
+      @d_result.updated_user_id = current_user.id
+      @d_result.save
+    end
+    
+    m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"], :order => 'oil_cd')
+    m_codes = MCode.find(:all, :conditions => ["kbn = 'pos_class'", :order => 'code'])
+    
+    m_meters = MMeter.find(:all)
+    
+    @max_no = 0
+    $meters = Array::new
+    meter = Hash::new 
+    
+    m_oils.each do |m_oil|
+      m_codes.each do |m_code|
+        sql = "select * from m_meters m, m_tanks t, m_oils o"
+        sql << " where m.m_tank_id = t.id and t.m_oil_id = o.id"
+        sql << "   and m.m_code_id = #{m_code.id} and o.id = #{m_oil.id}"
+        meter["#{m_oil.id}_#{m_code.id}"] = MOil.find_by_sql(sql)
+        @max_no = meter["#{m_oil.id}_#{m_code.id}"].size if meter["#{m_oil.id}_#{m_code.id}"].size > @max_no
+      end
+    end
+    
+    p "max_no=#{@max_no}"
+    p "test=#{meter["1_7"]}"
+    render :layout => 'modal'
+  end
+  
 end
