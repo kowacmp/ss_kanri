@@ -52,21 +52,21 @@
 		  	<% end %>
 		  </td>
 		  <td>
-		  	<% d_wash_sale_yesterday = get_d_wash_sale(@input_ymd_yesterday_s) %>
-		  	<% unless d_wash_sale_yesterday == nil  %>
- 		  	  <% d_washsales_item_yesterday = get_d_washsale_item(d_wash_sale_yesterday.id, wash.wash_cd,(i+1)) %>
+		  	<% d_wash_sale_mae = get_d_wash_sale(@input_ymd_mae_s) %>
+		  	<% unless d_wash_sale_mae == nil  %>
+ 		  	  <% d_washsales_item_mae = get_d_washsale_item(d_wash_sale_mae.id, wash.wash_cd,(i+1)) %>
  		  	<% else %>
- 		  	  <% d_washsales_item_yesterday = nil %>
+ 		  	  <% d_washsales_item_mae = nil %>
  		  	<% end %>
 
-		  	<% if d_washsales_item_yesterday == nil %>
+		  	<% if d_washsales_item_mae == nil %>
 		  	  0
 		  	<% else %>
-		  	  <%= d_washsales_item_yesterday.meter %>
+		  	  <%= d_washsales_item_mae.meter %>
 		  	<% end %>
 		  	</td>
 		  <td>
-		  	<% display_keisan_uriage = keisan_uriage(d_washsales_item,d_washsales_item_yesterday) %>
+		  	<% display_keisan_uriage = keisan_uriage(d_washsales_item,d_washsales_item_mae) %>
 		  	<%= display_keisan_uriage %>
 		  	<% sum_keisan_uriage = sum_keisan_uriage + display_keisan_uriage %>
 		  </td>

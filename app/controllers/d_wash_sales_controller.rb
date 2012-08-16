@@ -8,15 +8,15 @@ class DWashSalesController < ApplicationController
     @shop = MShop.find(current_user.m_shops_id)
     @input_ymd = Time.now.strftime("%Y/%m/%d")
     @input_ymd_s = Time.now.strftime("%Y%m%d")
-    @input_ymd_yesterday_s = 1.days.ago.strftime("%Y%m%d")
+    @input_ymd_mae_s = get_zenkai_date(@input_ymd_s)
     @d_wash_sale_today     = get_d_wash_sale(@input_ymd_s)
     #@d_wash_sale_yesterday = get_d_wash_sale(@input_ymd_yesterday_s)
     unless @d_wash_sale_today == nil
       @d_washsale_item_today =get_d_washsale_items(@d_wash_sale_today.id)
     end
-    unless @d_wash_sale_yesterday == nil
-      @d_washsale_item_yesterday = get_d_washsale_items(@d_wash_sale_yesterday.id)
-    end
+    #unless @d_wash_sale_yesterday == nil
+    #  @d_washsale_item_yesterday = get_d_washsale_items(@d_wash_sale_yesterday.id)
+    #end
   end
 
   def entry_error
@@ -71,15 +71,11 @@ class DWashSalesController < ApplicationController
   
   def change_input_ymd
     @input_ymd = params[:input_ymd]
-    @input_ymd_yesterday = @input_ymd.to_time.yesterday.strftime("%Y%m%d")
     @m_washes = get_m_washes
     @input_ymd_s = params[:input_ymd].delete("/")
-    @input_ymd_yesterday_s = @input_ymd_yesterday.to_s.delete("/")
+    @input_ymd_mae_s = get_zenkai_date(params[:input_ymd])
     @d_wash_sale_today     = get_d_wash_sale(@input_ymd_s)
-    @d_wash_sale_yesterday = get_d_wash_sale(@input_ymd_yesterday_s)
-    #respond_to do |format|
-    #  format.js
-    #end
+    @d_wash_sale_mae = get_d_wash_sale(@input_ymd_mae_s)
   end
   
  
@@ -162,9 +158,9 @@ class DWashSalesController < ApplicationController
       @shop = MShop.find(current_user.m_shops_id)
       @input_ymd = params[:sale_date].to_time.strftime("%Y/%m/%d")
       @input_ymd_s = params[:sale_date]
-      @input_ymd_yesterday_s = @input_ymd.to_time.yesterday.strftime("%Y%m%d")
+      @input_ymd_mae_s = get_zenkai_date(@input_ymd_s)
       @d_wash_sale_today     = get_d_wash_sale(@input_ymd_s)
-      @d_wash_sale_yesterday = get_d_wash_sale(1.days.ago.strftime("%Y%m%d"))
+      @d_wash_sale_mae = get_d_wash_sale(@input_ymd_mae_s)
       format.html { render action: "index", notice: 'D wash sale was successfully updated.' }
     end
   end
