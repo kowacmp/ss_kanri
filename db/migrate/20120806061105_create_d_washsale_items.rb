@@ -5,8 +5,8 @@ class CreateDWashsaleItems < ActiveRecord::Migration
       t.integer :d_wash_sale_id ,:null => false
       t.integer :m_wash_id      ,:null => false
       t.integer :wash_no        ,:null => false,:limit => 2
-      t.integer :meter
-      t.integer :error_money
+      t.integer :meter                         ,:default => 0
+      t.integer :error_money                   ,:default => 0
       t.string  :error_note                    ,:limit => 200
       t.integer :created_user_id,:null => false
       t.integer :updated_user_id ,:null => false
