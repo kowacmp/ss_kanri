@@ -3,7 +3,12 @@ SsKanri::Application.routes.draw do
   get "d_wash_sales/entry_error"
   get "d_wash_sales/change_input_ymd"
   get "d_wash_sales/update"
-      
+
+  get "d_sale_etcs/index"
+  get "d_sale_etcs/entry_error"
+  get "d_sale_etcs/change_input_ymd"
+  get "d_sale_etcs/update"
+
   get "d_results/index"
   get "d_results/select_date"
   get "d_results/result_edit"
