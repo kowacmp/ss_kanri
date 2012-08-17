@@ -51,6 +51,17 @@ body
         color: #FF0000;
 
 }
+td.input-num
+{
+	background: #fdf3b5;
+	text-align: right;
+	
+}
+td.no-input-num
+{
+	background: #66ffcc;
+	text-align: right;
+}
 #rounded-corner tbody tr:hover td
 {
 	background: #d0dafd;

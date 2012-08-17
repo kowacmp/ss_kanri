@@ -1,0 +1,12 @@
+#error_summary {
+	color: #F00;
+	display: none;
+}
+
+.error_field {
+	background-color: #F9C;
+}
+
+.error_mark {
+	color: #F00;
+}
