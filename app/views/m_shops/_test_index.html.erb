@@ -1,0 +1,19 @@
+
+<tr>
+  <%#= f.hidden_field :id %>
+  <td class="fields">
+  <%#= f.select :m_wash_id, options_for_select([['選択して下さい', nil]] + 
+  MWash.find(:all,:conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'wash_cd').map{|m| [m.wash_ryaku, m.id]}, f.object.m_wash_id) %>
+  </td>
+  
+  <td class="fields"><%= f.check_box :sunday%></td>
+  <td class="fields"><%= f.check_box :monday%></td>
+  <td class="fields"><%= f.check_box :tuesday%></td>
+  <td class="fields"><%= f.check_box :wednesday%></td>
+  <td class="fields"><%= f.check_box :thursday%></td>
+  <td class="fields"><%= f.check_box :friday%></td>
+  <td class="fields"><%= f.check_box :saturday%></td>
+  
+  <td class="fields"><%= f.label :_destroy,"remove"%></td>
+  <td class="fields"><%= link_to_remove_fields 'クリア', f %></td>
+</tr>

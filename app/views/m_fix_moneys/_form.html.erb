@@ -1,0 +1,53 @@
+<%= form_for(@m_fix_money) do |f| %>
+  <% if @m_fix_money.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_fix_money.errors.count, "error") %> prohibited this m_fix_money from being saved:</h2>
+
+      <ul>
+      <% @m_fix_money.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :m_shop_id %><br />
+    <%= f.number_field :m_shop_id %>
+  </div>
+  <div class="field">
+    <%= f.label :cash_box %><br />
+    <%= f.number_field :cash_box %>
+  </div>
+  <div class="field">
+    <%= f.label :pos_register %><br />
+    <%= f.number_field :pos_register %>
+  </div>
+  <div class="field">
+    <%= f.label :part_time %><br />
+    <%= f.number_field :part_time %>
+  </div>
+  <div class="field">
+    <%= f.label :wash_money %><br />
+    <%= f.number_field :wash_money %>
+  </div>
+  <div class="field">
+    <%= f.label :money_change %><br />
+    <%= f.number_field :money_change %>
+  </div>
+  <div class="field">
+    <%= f.label :total_cash_box %><br />
+    <%= f.number_field :total_cash_box %>
+  </div>
+  <div class="field">
+    <%= f.label :total_change_money %><br />
+    <%= f.number_field :total_change_money %>
+  </div>
+  <div class="field">
+    <%= f.label :total_money %><br />
+    <%= f.number_field :total_money %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
