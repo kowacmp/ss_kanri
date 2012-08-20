@@ -271,28 +271,74 @@ class DResultsController < ApplicationController
       @d_result.save
     end
     
-    m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"], :order => 'oil_cd')
-    m_codes = MCode.find(:all, :conditions => ["kbn = 'pos_class'", :order => 'code'])
-    
-    m_meters = MMeter.find(:all)
+    @m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"], :order => 'oil_cd')
+    @m_codes = MCode.find(:all, :conditions => ["kbn = 'pos_class'", :order => 'code'])
     
     @max_no = 0
-    $meters = Array::new
     meter = Hash::new 
     
-    m_oils.each do |m_oil|
-      m_codes.each do |m_code|
-        sql = "select * from m_meters m, m_tanks t, m_oils o"
-        sql << " where m.m_tank_id = t.id and t.m_oil_id = o.id"
-        sql << "   and m.m_code_id = #{m_code.id} and o.id = #{m_oil.id}"
+    @m_oils.each do |m_oil|
+      @m_codes.each do |m_code|
+        sql = "select m.id m_meter_id, m.meter_no, d.meter from m_meters m"
+        sql << " left join d_result_meters d on (m.id = d.m_meter_id and d.d_result_id = #{@d_result.id})"
+        sql << " left join m_tanks t on (m.m_tank_id = t.id)"
+        sql << " left join m_oils o on (t.m_oil_id = o.id)"
+        sql << " where m.m_code_id = #{m_code.id} and o.id = #{m_oil.id} and t.m_shop_id = #{@d_result.m_shop_id}"
+        sql << "  and m.deleted_flg = 0 and t.deleted_flg = 0 and o.deleted_flg = 0"
+        sql << " order by m.number"
+                                    
         meter["#{m_oil.id}_#{m_code.id}"] = MOil.find_by_sql(sql)
         @max_no = meter["#{m_oil.id}_#{m_code.id}"].size if meter["#{m_oil.id}_#{m_code.id}"].size > @max_no
       end
     end
     
+    @meters = Array::new
+    for i in 0..@max_no - 1
+      @meters[i] = Hash::new
+    end
+    
+    @m_oils.each do |m_oil|
+      @m_codes.each do |m_code|
+                                      
+        meter["#{m_oil.id}_#{m_code.id}"].each_with_index do |m_meter, idx|
+          p "idx=#{idx}"
+          @meters[idx]["#{m_oil.id}_#{m_code.id}_m_meter_id"] = m_meter.m_meter_id
+          @meters[idx]["#{m_oil.id}_#{m_code.id}_meter_no"] = m_meter.meter_no
+          @meters[idx]["#{m_oil.id}_#{m_code.id}_meter"] = m_meter.meter
+          #@meters[idx][:m_oil_id] = m_oil.id
+          #@meters[idx][:m_code_id] = m_code.id
+        end
+      end
+    end
+        
     p "max_no=#{@max_no}"
     p "test=#{meter["1_7"]}"
     render :layout => 'modal'
   end
   
+  def d_result_meter_create
+    p "d_result_meter_create   d_result_meter_create   d_result_meter_create"
+    p params[:select][:d_result_id]
+    sql = "select m.* from m_meters m, m_tanks t"
+    sql << " where m.m_tank_id = t.id and t.m_shop_id = #{current_user.m_shops_id}"
+
+    m_meters = MMeter.find_by_sql(sql)
+    m_meters.each do |m_meter|
+      p params[:meter]["#{m_meter.id}"]
+      d_result_meter = DResultMeter.find(:first, :conditions => ["d_result_id = ? and m_meter_id = ?", params[:select][:d_result_id], m_meter.id])
+      
+      if d_result_meter.blank?
+        d_result_meter = DResultMeter.new
+        d_result_meter.d_result_id = params[:select][:d_result_id]
+        d_result_meter.m_meter_id = m_meter.id
+        d_result_meter.created_user_id = current_user.id
+        d_result_meter.updated_user_id = current_user.id        
+      end
+      
+      d_result_meter.meter = params[:meter]["#{m_meter.id}"]
+      d_result_meter.updated_user_id = current_user.id 
+      d_result_meter.save
+    end
+    
+  end
 end

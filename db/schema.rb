@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120815022109) do
+ActiveRecord::Schema.define(:version => 20120820004553) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -84,11 +84,11 @@ ActiveRecord::Schema.define(:version => 20120815022109) do
   end
 
   create_table "d_result_meters", :force => true do |t|
-    t.integer  "d_result_id",    :null => false
-    t.integer  "m_meter_id",     :null => false
+    t.integer  "d_result_id",     :null => false
+    t.integer  "m_meter_id",      :null => false
     t.integer  "meter"
-    t.integer  "create_user_id", :null => false
-    t.integer  "update_user_id", :null => false
+    t.integer  "created_user_id", :null => false
+    t.integer  "updated_user_id", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,0 +1,44 @@
+<%= form_tag({:action => 'd_result_meter_create' }, { :remote => true }) do %>
+<table id='rounded-corner'>
+  <tr>
+  	<th colspan="2">油種</th>
+  	<% @m_oils.each do |m_oil| %>
+  	  <th colspan="6"><%= m_oil.oil_name %></th>
+  	<% end %>
+  </tr>
+  <tr>
+  	<td rowspan="<%= @meters.size + 1%>">終<br/>了<br/>時<br/>メ<br/>|<br/>タ<br/>|</td>
+  	<td>No</td>
+  	<% @m_oils.each do |m_oil| %>
+  	  <% @m_codes.each do |m_code| %>
+  	    <th>計量</th>
+  	    <th><%= m_code.code_name %></th>
+  	  <% end %> 	
+  	<% end %>
+  </tr>
+  <% @meters.each_with_index do |meter, idx| %>
+    <tr>
+      <td><%= idx + 1 %></td>	
+  	  <% @m_oils.each do |m_oil| %>
+  	    <% @m_codes.each do |m_code| %>
+  	      <% if meter["#{m_oil.id}_#{m_code.id}_m_meter_id"].blank? %>  
+            <td></td>
+            <td></td>
+  	      <% else %>  	      	
+  	        <td><%= meter["#{m_oil.id}_#{m_code.id}_meter_no"] %></td>
+  	        <td><%= number_field :meter, meter["#{m_oil.id}_#{m_code.id}_m_meter_id"], :value => meter["#{m_oil.id}_#{m_code.id}_meter"], :size => 4 %></td>
+          <% end %> 	        
+  	    <% end %>
+  	  <% end %>
+    </tr>
+  <% end %>
+</table>
+  <%= hidden_field :select, :d_result_id, :value => @d_result.id %>
+  <%= submit_tag '登録' %>
+<% end %>
+ <%= javascript_include_tag "tablefix.js" %> 
+   <script>
+$(function() {
+    $('#rounded-corner').tablefix({width: 200, height: 100, fixRows: 2, fixCols: 2});
+});
+  </script>
