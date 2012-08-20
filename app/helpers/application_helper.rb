@@ -53,4 +53,18 @@ module ApplicationHelper
     
     return wday
   end  
+  
+  #カンマ編集
+  def num_fmt(num, float_flg=false)
+    
+    if num.blank?
+      return 0
+    end
+    
+    if float_flg
+      return number_with_delimiter(num.to_f)
+    else
+      return number_with_delimiter(num.to_f.round)
+    end
+  end
 end

@@ -60,6 +60,17 @@ SsKanri::Application.routes.draw do
     end
   end
 
+  resources :m_items
+
+  resources :d_sale_items
+
+  resources :d_sales do
+    collection do
+      delete :destroy_d_sale_item
+    end
+  end
+  
+  
   get "homes/index"
 
   # The priority is based upon order of creation:
