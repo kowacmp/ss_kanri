@@ -4,21 +4,23 @@ class DWashSalesController < ApplicationController
   layout "application",:except => [:entry_error]
   
   def index
-    @m_washes = get_m_washes
-    @shop = MShop.find(current_user.m_shops_id)
-    @input_ymd = Time.now.strftime("%Y/%m/%d")
-    @input_ymd_s = Time.now.strftime("%Y%m%d")
-    @input_ymd_mae_s = get_zenkai_date(@input_ymd_s)
-    @d_wash_sale_today     = get_d_wash_sale(@input_ymd_s)
-    #@d_wash_sale_yesterday = get_d_wash_sale(@input_ymd_yesterday_s)
-    unless @d_wash_sale_today == nil
-      @d_washsale_item_today =get_d_washsale_items(@d_wash_sale_today.id)
-    end
-    #unless @d_wash_sale_yesterday == nil
-    #  @d_washsale_item_yesterday = get_d_washsale_items(@d_wash_sale_yesterday.id)
-    #end
+    change_input_ymd
   end
 
+  def change_input_ymd
+    @m_washes = get_m_washes
+    @shop = MShop.find(current_user.m_shops_id)
+    if params[:input_ymd] == nil
+      @input_ymd = Time.now.strftime("%Y/%m/%d")
+    else
+    @input_ymd = params[:input_ymd]
+    end
+    @input_ymd_s = @input_ymd.delete("/")
+    @input_ymd_mae_s = get_zenkai_date(@input_ymd)
+    @d_wash_sale_today     = get_d_wash_sale(@input_ymd_s)
+    @d_wash_sale_mae = get_d_wash_sale(@input_ymd_mae_s)
+  end
+  
   def entry_error
     @m_washe = get_m_washe(params[:wash_cd])
     @d_wash_sale = get_d_wash_sale(params[:sale_date])
@@ -65,16 +67,6 @@ class DWashSalesController < ApplicationController
       end
   end
   
-  def change_input_ymd
-    @input_ymd = params[:input_ymd]
-    @m_washes = get_m_washes
-    @input_ymd_s = params[:input_ymd].delete("/")
-    @input_ymd_mae_s = get_zenkai_date(params[:input_ymd])
-    @d_wash_sale_today     = get_d_wash_sale(@input_ymd_s)
-    @d_wash_sale_mae = get_d_wash_sale(@input_ymd_mae_s)
-  end
-  
- 
   def update
     DWashsaleItem.transaction do
       @d_wash_sale = get_d_wash_sale(params[:sale_date])
