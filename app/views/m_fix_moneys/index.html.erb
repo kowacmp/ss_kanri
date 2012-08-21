@@ -1,0 +1,39 @@
+<h1>Listing m_fix_moneys</h1>
+
+<table>
+  <tr>
+    <th>M shop</th>
+    <th>Cash box</th>
+    <th>Pos register</th>
+    <th>Part time</th>
+    <th>Wash money</th>
+    <th>Money change</th>
+    <th>Total cash box</th>
+    <th>Total change money</th>
+    <th>Total money</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @m_fix_moneys.each do |m_fix_money| %>
+  <tr>
+    <td><%= m_fix_money.m_shop_id %></td>
+    <td><%= m_fix_money.cash_box %></td>
+    <td><%= m_fix_money.pos_register %></td>
+    <td><%= m_fix_money.part_time %></td>
+    <td><%= m_fix_money.wash_money %></td>
+    <td><%= m_fix_money.money_change %></td>
+    <td><%= m_fix_money.total_cash_box %></td>
+    <td><%= m_fix_money.total_change_money %></td>
+    <td><%= m_fix_money.total_money %></td>
+    <td><%= link_to 'Show', m_fix_money %></td>
+    <td><%= link_to 'Edit', edit_m_fix_money_path(m_fix_money) %></td>
+    <td><%= link_to 'Destroy', m_fix_money, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New M fix money', new_m_fix_money_path %>

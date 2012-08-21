@@ -1,0 +1,24 @@
+switch("<%= @kbn %>")
+{
+  case "pay_item":
+    $("#pay_item_<%= @index %>_id").val("");
+    $("#pay_item_<%= @index %>_item_money").val("");
+	$("#pay_item_<%= @index %>_m_item_id").prop('selectedIndex', 0);
+    break;
+
+  case "recive_item":
+    $("#recive_item_<%= @index %>_id").val("");
+    $("#recive_item_<%= @index %>_item_money").val("");
+	$("#recive_item_<%= @index %>_m_item_id").prop('selectedIndex', 0);
+    break;
+
+  case "purika_item":
+    $("#purika_item_<%= @index %>_id").val("");
+    $("#purika_item_<%= @index %>_item_money").val("");
+	$("#purika_item_<%= @index %>_item_name").val("");
+	$("#purika_item_<%= @index %>_m_shop_id").prop('selectedIndex', 0);
+	//$("#purika_row_<%= @index %>").parent().parent().remove();
+    break;
+    
+};
+

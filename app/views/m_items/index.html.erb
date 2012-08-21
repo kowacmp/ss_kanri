@@ -1,0 +1,29 @@
+<h1>Listing m_items</h1>
+
+<table>
+  <tr>
+    <th>Item class</th>
+    <th>Item name</th>
+    <th>Item ryaku</th>
+    <th>M item account</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @m_items.each do |m_item| %>
+  <tr>
+    <td><%= m_item.item_class %></td>
+    <td><%= m_item.item_name %></td>
+    <td><%= m_item.item_ryaku %></td>
+    <td><%= m_item.m_item_account %></td>
+    <td><%= link_to 'Show', m_item %></td>
+    <td><%= link_to 'Edit', edit_m_item_path(m_item) %></td>
+    <td><%= link_to 'Destroy', m_item, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New M item', new_m_item_path %>

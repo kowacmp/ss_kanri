@@ -1,0 +1,300 @@
+<%= form_for(@d_sale, :html => {:id => 'form_d_sale'}) do |f| %>
+  <%= f.hidden_field :m_shop_id %>
+  <%= f.hidden_field :sale_date %>
+  <%= f.hidden_field :kakutei_flg %>
+  <%= f.hidden_field :pay_money, :class=>"money" %>
+  <%= f.hidden_field :recive_money, :class=>"money" %>
+  
+  <% syo_total=@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i + @d_sale.sale_purika.to_i + @d_sale.recive_money.to_i - @d_sale.pay_money.to_i %>
+  
+  <% if @d_sale.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@d_sale.errors.count, "error") %> prohibited this d_sale from being saved:</h2>
+
+      <ul>
+      <% @d_sale.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div id="d_sale">
+	  <div class="title_alias">売上１</div>
+	  <div class="input_alias"><%= f.text_field :sale_money1, :size=>4, :class=>"money" %></div>
+	  <div class="title_alias">プリカ</div>
+	  <div class="input_alias"><%= f.text_field :sale_purika, :size=>4, :class=>"money" %></div>
+	  <div class="title_alias">当日出</div>
+	  <div class="input_alias"><%= f.text_field :sale_today_out, :size=>4, :class=>"money" %></div>
+	  <div class="title_alias">釣銭機１</div>
+	  <div class="input_alias"><%= f.text_field :sale_change1, :size=>4, :class=>"money" %></div>
+	  <div class="title_alias">ＡＳＳ</div>
+	  <div class="input_alias"><%= f.text_field :sale_ass, :size=>4, :class=>"money" %></div>
+	  
+	  
+	  <br />
+	  <div class="title_alias">売上２</div>
+	  <div class="input_alias"><%= f.text_field :sale_money2, :size=>4, :class=>"money" %></div>
+	  <div class="none_alias"></div>
+	  <div class="title_alias">前日出</div>
+	  <div class="info_alias"><%= label :zenjitu_d_sale, :sale_today_out, num_fmt(@zenjitu_d_sale.sale_today_out.to_i), :id=>'zenjitu_today_out' %></div>
+	  <div class="title_alias">釣銭機２</div>
+	  <div class="input_alias"><%= f.text_field :sale_change2, :size=>4, :class=>"money" %></div>
+	  <div class="title_alias">固定金庫</div>
+	  <div class="info_alias"><%= num_fmt(@d_sale.sale_cashbox.to_i) %></div>
+	  
+	  <br />
+	  <div class="title_alias">売上３</div>
+	  <div class="input_alias"><%= f.text_field :sale_money3, :size=>4, :class=>"money" %></div>
+	  <div class="none_alias"></div>	  
+	  <div class="title_alias">翌日出</div>
+	  <div class="info_alias"><label id="yokujitu_out"><%= syo_total.to_i - @d_sale.sale_today_out.to_i + @d_sale.sale_ass.to_i %></label></div>
+	  <div class="title_alias">釣銭機３</div>
+	  <div class="input_alias"><%= f.text_field :sale_change3, :size=>4, :class=>"money" %></div>
+	  <div class="title_alias">　〃　釣銭機</div>
+	  <div class="info_alias"><%= num_fmt(@d_sale.sale_changebox.to_i) %></div>
+	  
+	  <br />
+	  <div class="title_alias">売上合計</div>
+	  <div class="info_alias"><label id="sale_money_total"><%= num_fmt(@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i) %></label></div>
+      <div class="none_alias"></div>
+      <div class="none_alias"></div>
+      <div class="title_alias">釣銭合計</div>
+      <div class="info_alias"><label id="sale_change_total"><%= num_fmt(@d_sale.sale_change1.to_i + @d_sale.sale_change2.to_i + @d_sale.sale_change3.to_i) %></label></div>
+      <div class="title_alias">通帳預金額</div>
+      <div class="info_alias"><label id="tucyo_money"><%= num_fmt(@zenjitu_d_sale.sale_today_out.to_i + @d_sale.sale_today_out.to_i -  @d_sale.sale_ass.to_i ) %></label></div>
+
+      <br /><br />
+      
+      <div class="title_alias">入金</div>
+      <div class="info_alias"><%= label :d_sale, :recive_money, num_fmt(@d_sale.recive_money.to_i), :id=>'recive_money_total' %></div>
+      <div class="title_alias">出金</div>
+      <div class="info_alias"><%= label :d_sale, :pay_money, num_fmt(@d_sale.pay_money.to_i), :id=>'pay_money_total' %></div>
+　　　
+	
+      <div id="pay_item">
+		<table id="pay_table" class="rounded-corner">
+			<tr>
+				<th>No.</th>
+				<th>出金内訳</th>
+				<th>金額</th>
+				<th></th>
+			</tr>
+			<% if @d_sale.id == nil %>
+			  <% d_sale_items = DSaleItem.new %>
+			<% else %>
+			  <% d_sale_items = DSaleItem.find(:all, :conditions=>["d_sale_id = ? and item_class=?", @d_sale.id, 0], :order => "id")%>
+			<% end %>
+			<% 10.times { |i| %>
+				<% if d_sale_items[i] == nil %>
+				  <% @pay_item = DSaleItem.new %>
+				<% else %>
+				  <% @pay_item = d_sale_items[i] %>
+				<% end %>
+				<tr>
+					<td><%= i + 1 %><%= hidden_field :pay_item, :id, {:index => i} %></td>
+					<td>
+						<%= select :pay_item, :m_item_id, 
+						        MItem.find(:all, :conditions=>["item_class=0"]).collect{|i| [ "#{i.item_ryaku}", i.id ]}, {:include_blank => true},{:index => i} %>
+                    </td>
+					<td><%= text_field :pay_item, :item_money,  {:index => i, :size=>4, :class=>"money"} %></td>
+					<td>
+						<% unless @pay_item.id == nil  %>
+						<%= link_to '削除', {:action => "destroy_d_sale_item", :id => @pay_item.id, :kbn=> "pay_item", :index=>i }, :confirm => '削除します。よろしいですか？', :remote => true, :method => :delete, :class=> 'delete_icon', :id=>"pay_row_#{i}" %>
+						<% end %>
+					</td>
+				</tr>				
+            <% } %>
+
+		</table>
+      </div>
+
+      <div id="recive_item">
+      	<table id="recive_table" class="rounded-corner">
+			<tr>
+				<th>No.</th>
+				<th>入庫内訳</th>
+				<th>金額</th>
+				<th></th>
+			</tr>
+			<% if @d_sale.id == nil %>
+			  <% d_sale_items = DSaleItem.new %>
+			<% else %>
+			  <% d_sale_items = DSaleItem.find(:all, :conditions=>["d_sale_id = ? and item_class=?", @d_sale.id, 1], :order => "id")%>
+			<% end %>
+			<% 10.times { |i| %>
+				<% if d_sale_items[i] == nil %>
+				  <% @recive_item = DSaleItem.new %>
+				<% else %>
+				  <% @recive_item = d_sale_items[i] %>
+				<% end %>
+				<tr>
+					<td><%= i + 1 %><%= hidden_field :recive_item, :id, {:index => i} %></td>
+					<td>
+						<%= select :recive_item, :m_item_id, 
+						        MItem.find(:all, :conditions=>["item_class=1"]).collect{|i| [ "#{i.item_ryaku}", i.id ]}, {:include_blank => true},{:index => i} %>
+                    </td>
+					<td><%= text_field :recive_item, :item_money,  {:index => i, :size=>4, :class=>"money"} %></td>
+					<td>
+						<% unless @recive_item.id == nil  %>
+						<%= link_to '削除', {:action => "destroy_d_sale_item", :id => @recive_item.id, :kbn=> "recive_item", :index=>i }, :confirm => '削除します。よろしいですか？', :remote => true, :method => :delete, :class=> 'delete_icon', :id=>"recive_row_#{i}" %>
+						<% end %>
+					</td>
+				</tr>				
+            <% } %>
+		</table>
+      </div>
+
+      <div id="purika_item">
+      	<table id="purika_table" class="rounded-corner">
+			<tr>
+				<th rowspan="2">No.</th>
+				<th colspan="3">プリカ送付内訳</th>
+				<th  rowspan="2"></th>
+			</tr>
+			<tr>
+				<th>店舗</th>
+				<th>シリアルNo</th>
+				<th>金額</th>
+			</tr>
+			<% if @d_sale.id == nil %>
+			  <% d_sale_items = DSaleItem.new %>
+			<% else %>
+			  <% d_sale_items = DSaleItem.find(:all, :conditions=>["d_sale_id = ? and item_class=?", @d_sale.id, 2], :order => "id")%>
+			<% end %>
+			<% 10.times { |i| %>
+				<% if d_sale_items[i] == nil %>
+				  <% @purika_item = DSaleItem.new %>
+				<% else %>
+				  <% @purika_item = d_sale_items[i] %>
+				<% end %>
+				<tr>
+					<td><%= i + 1 %><%= hidden_field :purika_item, :id, {:index => i} %></td>
+					<td>
+						<%= select :purika_item, :m_shop_id, 
+						        MShop.find(:all).collect{|i| [ "#{i.shop_cd} #{i.shop_name}", i.id ]}, {:include_blank => true},{:index => i} %>
+					</td>
+					<td>
+						<%= text_field :purika_item, :item_name,  {:index => i, :size=>4} %>
+                    </td>
+					<td><%= text_field :purika_item, :item_money,  {:index => i, :size=>4, :class=>"money"} %></td>
+					<td>
+						<% unless @purika_item.id == nil  %>
+						<%= link_to '削除', {:action => "destroy_d_sale_item", :id => @purika_item.id,:kbn=> "purika_item", :index=>i }, :confirm => '削除します。よろしいですか？', :remote => true, :method => :delete, :class=> 'delete_icon', :id=>"purika_row_#{i}" %>
+						<% end %>
+					</td>
+				</tr>				
+            <% } %>
+		</table>      	
+      </div>
+
+	  <div id="total_alias">
+      <div class="title_alias">売上</div>
+      <div class="info_alias"><label id="sale_money_total2"><%= num_fmt(@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i) %></label></div>
+      <br />
+      <div class="title_alias">プリカ</div>
+      <div class="info_alias"><label id="sale_purika2"><%= num_fmt(@d_sale.sale_purika.to_i) %></label></div>
+      <br />
+      <div class="title_alias">入金(＋)</div>
+      <div class="info_alias"><%= label :d_sale, :recive_money, num_fmt(@d_sale.recive_money.to_i), :id=>'recive_money_total2' %></div>
+      <br />
+      <div class="title_alias">出金(ー)</div>
+      <div class="info_alias"><%= label :d_sale, :pay_money, num_fmt(@d_sale.pay_money.to_i), :id=>'pay_money_total2' %></div>
+      <br />
+      <div class="title_alias">小計</div>
+      <div class="info_alias"><label id="syo_total"><%= num_fmt(syo_total) %></div>
+      <br /><br />
+      <div class="title_alias">金庫(＋)</div>
+      <div class="info_alias"><%= label :zenjitu_d_sale, :sale_cashbox, num_fmt(@zenjitu_d_sale.sale_cashbox.to_i), :id=>'zenjitu_cashbox' %></div>
+      <br />
+      <div class="title_alias">釣銭機(＋)</div>
+      <div class="info_alias"><%= label :zenjitu_d_sale, :sale_changebox, num_fmt(@zenjitu_d_sale.sale_changebox.to_i), :id=>'zenjitu_changebox' %></div>
+      <br />
+      <div class="title_alias">ＡＳＳ</div>
+      <div class="info_alias"><label id="sale_ass"><%= num_fmt(@d_sale.sale_ass.to_i) %></label></div>
+      <br />
+      <div class="title_alias">合計(A)</div>
+      <div class="info_alias"><label id="total"><%= num_fmt(syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + @zenjitu_d_sale.sale_changebox.to_i + @d_sale.sale_ass.to_i) %></label></div>
+      <br /><br />
+      <div class="title_alias">釣銭有高1</div>
+      <div class="info_alias"></div>
+      <div class="title_alias">釣銭有高2</div>
+      <div class="info_alias"></div>
+      <div class="title_alias">当日出</div>
+      <div class="info_alias"><label id="sale_today_out2"><%= @d_sale.sale_today_out.to_i %></label></div>
+      <div class="title_alias">翌日出</div>
+      <div class="info_alias"></div>
+      <div class="title_alias">現金有高(B)</div>
+      <div class="info_alias"></div>
+      <div class="title_alias">過不足 B-A</div>
+      <div class="info_alias"></div>
+      
+      </div>
+  </div>
+  
+  <div class="actions">
+  	<%= link_to "キャンセル", {:controller=>"d_sales", :action => "index"}, :confirm => "入力をキャンセルします。よろしいですか？", :method => :get %>
+  	<%= f.submit '保存', :confirm => "保存します。よろしいですか？", :method => :post %>
+  </div>
+<% end %>
+
+
+<script>
+$(function () {
+    //テーブルにスクロールバーを設定
+    var pytables = new superTable("pay_table", {
+      cssSkin : "sSky",
+      headerRows : 0,
+      fixedCols : 0,
+      colWidths :  [30, 350, 100, 60],
+	  //onStart : function () {
+	  //    //this.start = new Date();
+	  //    var table1 = document.getElementById("pay_table");
+	  //    var row1 = table1.insertRow(-1);
+	  //    
+	  //    var col1 = row1.insertCell(-1);
+	  //    var col2 = row1.insertCell(-1);
+	  //    var col3 = row1.insertCell(-1);
+	  //    var col4 = row1.insertCell(-1);
+	  //    
+	  //    col1.appendChild(document.createTextNode("1"));
+	  //    
+	  //},
+	  //onFinish : function () {
+	  //   alert("Finished... " + ((new Date()) - this.start) + "ms.");
+	  //}
+    });
+    //テーブルにスクロールバーを設定
+    new superTable("recive_table", {
+      cssSkin : "sSky",
+      headerRows : 0,
+      fixedCols : 0,
+      colWidths :  [30, 350, 100, 60]
+    });
+    //テーブルにスクロールバーを設定
+    new superTable("purika_table", {
+      cssSkin : "sSky",
+      headerRows : 2,
+      fixedCols : 1,
+      colWidths :  [30, 250, 100, 100, 60]
+    });
+
+    //保存の時に金額はカンマを消す
+    $("form").submit(function() {
+    	
+         	//金額欄のカンマを消す
+         	$("input.money").each(function(){
+         		var num = new String($(this).val()).replace(/,/g, "");
+           		$(this).val(num); 
+         	});
+    });
+
+    //カンマ編集して表示する
+ 	$("input.money").each(function(){
+	    var num = new String($(this).val()).replace(/,/g, "");
+	    while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
+	    $(this).val(num); 
+ 	});
+
+})();	
+</script>

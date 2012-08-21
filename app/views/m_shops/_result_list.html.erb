@@ -1,0 +1,53 @@
+
+<table id='rounded-corner'>
+  <tr>
+    <th width="8%">店舗コード</th>
+    <th width="12%">店舗名</th>
+    <th width="7%">店舗種別</th>
+    <% @m_oils.each do |m_oil| %>
+    	<th width="7%"><%= m_oil.oil_name %></th>
+    <% end %>
+    <th width="8%">固定約銭額</th>
+    <!--th width="5%">詳細</th-->
+    <th width="5%">編集</th>
+    <th width="5%">削除</th>
+    <th width="5%">計量</th>
+  </tr>
+
+<% @m_shops.each do |m_shop| %>
+  <tr>
+    <td><%= m_shop.shop_cd %></td>
+    <td><%= m_shop.shop_name %></td>
+    <td><%#= m_shop.shop_kbn %>
+    	<% @shopkbn_first = MCode.find(:first,:conditions => ["kbn = '6' and code = ?",m_shop.shop_kbn.to_s])%>
+		<%= @shopkbn_first.code_name1%>
+    </td>
+    
+    <% @m_oils.each do |m_oil| %>
+    	<%- if m_oil.id == m_shop.m_oil_id1 -%>
+    		<td><%= m_shop.tank1_all %></td>
+    	<%- elsif m_oil.id == m_shop.m_oil_id2 -%>
+    		<td><%= m_shop.tank2_all %></td>
+    	<%- elsif m_oil.id == m_shop.m_oil_id3 -%>
+    		<td><%= m_shop.tank3_all %></td>
+    	<%- elsif m_oil.id == m_shop.m_oil_id4 -%>
+    		<td><%= m_shop.tank4_all %></td>
+    	<%- else -%>
+    		<td></td>
+    	<%- end -%>
+    <% end %>
+    <td>
+		<% @m_fix_money_totals = MFixMoney.find(:all,
+                                   :conditions=>["m_shop_id = ? and (deleted_flg is null or deleted_flg <> ?)",m_shop.id,1])%>
+    	<%= @m_fix_money_totals.sum{|money| money.total_cash_box}%>
+	</td>
+    <!--td class="icon"><%#= link_to image_tag('icon/24_show.png'), m_shop %></td-->
+    <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_shop_path(m_shop) %></td>
+    <td class="icon">
+    	<%= link_to image_tag('icon/24_delete.png'), m_shop, :confirm => '削除します。よろしいですか？', :method => :delete %>
+    </td>
+    
+    <td class="icon"><%= link_to image_tag('icon/24_edit.png'), :controller => "m_meters",:action => "new",:id => m_shop.id %></td>
+  </tr>
+<% end %>
+</table>
