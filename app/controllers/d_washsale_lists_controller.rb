@@ -45,9 +45,12 @@ class DWashsaleListsController < ApplicationController
       @input_ymd = params[:input_ymd]      
       @shop_kbn = params[:shop_kbn]
     end
+    
+    @wday = @input_ymd.to_time.wday
 
     @input_ymd_s = @input_ymd.delete("/")
     @shops = MShop.find(:all,:conditions => ['shop_kbn = ?', @shop_kbn],:order => 'shop_cd')
+    
   end
 
 end
