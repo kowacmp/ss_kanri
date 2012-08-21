@@ -1,13 +1,17 @@
 #coding: utf-8
 module DWashSalesHelper
   
-  def get_zenkai_date(sale_date)
+  def get_zenkai_date(sale_date,shop_id,mode)
     if sale_date.length == 10
       sale_date = sale_date.delete("/")
     end
-    d_wash_sale = get_d_wash_sale(sale_date) 
-      zenkai_date = DWashSale.maximum(:sale_date,
-        :conditions => ['sale_date < ? and m_shop_id = ?',sale_date,current_user.m_shops_id])
+      if mode == 'list'
+        zenkai_date = DWashSale.maximum(:sale_date,
+          :conditions => ['sale_date < ? and m_shop_id = ?',sale_date,shop_id])
+      else
+        zenkai_date = DWashSale.maximum(:sale_date,
+          :conditions => ['sale_date < ? and m_shop_id = ?',sale_date,current_user.m_shops_id])
+      end
     return zenkai_date
   end
   
@@ -24,8 +28,18 @@ module DWashSalesHelper
     MWash.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ? and wash_cd = ? ",1,wash_cd] ).first    
   end
   
-  def get_d_wash_sale(hiduke)
-    DWashSale.find(:all, :conditions => ["sale_date = ? and m_shop_id = ?",hiduke,current_user.m_shops_id]).first
+  #複数取得
+  def get_d_wash_sales(hiduke)
+      DWashSale.find(:all, :conditions => ["sale_date = ?",hiduke],:order => 'id')   
+  end
+  
+  #単数取得
+    def get_d_wash_sale(hiduke,m_shops_id,mode)
+    if mode == 'list'
+      DWashSale.find(:all, :conditions => ["sale_date = ? and m_shop_id = ?",hiduke,m_shops_id]).first      
+    else
+      DWashSale.find(:all, :conditions => ["sale_date = ? and m_shop_id = ?",hiduke,current_user.m_shops_id]).first
+    end
   end
   
   #複数取得

@@ -1,0 +1,24 @@
+  <table id="rounded-corner">
+  	<tr>
+  		<th></th>
+  		<th>(日)</th>
+  		<th>(月)</th>
+  		<th>(火)</th>
+  		<th>(水)</th>
+  		<th>(木)</th>
+  		<th>(金)</th>
+  		<th>(土)</th>
+  	</tr>
+<% @m_washsale_plans.each do |plan| %>
+  <tr>
+  	<td><%= MWash.find(plan.m_wash_id).wash_name %></td>
+  	<td align="center"><%= change_week_mark(plan.sunday) %></td>
+  	<td align="center"><%= change_week_mark(plan.monday) %></td>
+  	<td align="center"><%= change_week_mark(plan.tuesday) %></td>
+  	<td align="center"><%= change_week_mark(plan.wednesday) %></td>
+  	<td align="center"><%= change_week_mark(plan.thursday) %></td>
+  	<td align="center"><%= change_week_mark(plan.friday) %></td>
+  	<td align="center"><%= change_week_mark(plan.saturday) %></td>
+  </tr>
+<% end %>
+  </table> 

@@ -1,5 +1,12 @@
 SsKanri::Application.routes.draw do
+  get "d_washsale_lists/index"
+  get "d_washsale_lists/update"
+  get "d_washsale_lists/show"
+  get "d_washsale_lists/compare"
+  get "d_washsale_lists/search"
+
   get "d_wash_sales/index"
+  get "d_wash_sales/index_modal"
   get "d_wash_sales/entry_error"
   get "d_wash_sales/change_input_ymd"
   get "d_wash_sales/update"
