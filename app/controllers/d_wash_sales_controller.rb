@@ -205,6 +205,9 @@ private
   
   def update_d_washsale_item(wash_cd,wash_no,sum_meter=0,sum_meter_mae=0)
     @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"]
+    if @d_washsale_item.meter == nil
+      @d_washsale_item.meter = 0
+    end
     if wash_no == 99
       @d_washsale_item.error_money =  (sum_meter - sum_meter_mae) - @d_washsale_item.meter
     end

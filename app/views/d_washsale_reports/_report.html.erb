@@ -60,7 +60,11 @@
               <td rowspan="<%= wash.max_num %>"></td>
             <% end %>
             <td  class="no-input-num">
-            	<% sale_meter = d_washsale_detail_report.sale_meter %>
+            	<% unless d_washsale_detail_report == nil %>
+            	  <% sale_meter = d_washsale_detail_report.sale_meter %>
+            	<% else %>
+            	  <% sale_meter = 0 %>
+            	<% end %>
             	<% k_sale_meter = k_sale_meter + sale_meter %>
             	<%= sale_meter %>
             </td>

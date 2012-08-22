@@ -25,7 +25,7 @@
 	</div>
 </p>
 
-<% unless @mode == "list" %>
+<% if @mode == "list" %>
   <%= link_to '洗車売上入力状況一覧へ戻る',{:controller => 'd_washsale_lists',:action => 'index',
   	:input_ymd => @input_ymd,:shop_kbn => @shop_kbn} %>
 <% end %>
