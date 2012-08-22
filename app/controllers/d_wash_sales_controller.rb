@@ -12,7 +12,7 @@ class DWashSalesController < ApplicationController
     @m_washes = get_m_washes
     @mode     = params[:mode]
     unless @mode == 'list'
-      @shop = MShop.find(current_user.m_shops_id)      
+      @shop = MShop.find(current_user.m_shop_id)      
     else
       @shop = MShop.find(params[:m_shop_id])
     end
@@ -162,7 +162,7 @@ class DWashSalesController < ApplicationController
       if @mode == 'list'
         @shop = MShop.find(@shop_id)
       else  
-        @shop = MShop.find(current_user.m_shops_id)
+        @shop = MShop.find(current_user.m_shop_id)
       end
 
       @input_ymd = @sale_date.to_time.strftime("%Y/%m/%d")
@@ -181,7 +181,7 @@ private
     if mode == 'list'
       @d_wash_sale.m_shop_id = shops_id
     else
-      @d_wash_sale.m_shop_id = current_user.m_shops_id      
+      @d_wash_sale.m_shop_id = current_user.m_shop_id      
     end
     @d_wash_sale.kakutei_flg = 0
     @d_wash_sale.created_user_id = current_user.id

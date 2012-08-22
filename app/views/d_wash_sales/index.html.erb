@@ -6,7 +6,7 @@
 		<td><%= @shop.shop_cd %> | 
 <%= @shop.shop_name %></td> <th>
 入力日</th><td>
-	<% if @mode == nil %>
+	<% unless @mode == 'list' %>
 	  <%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 10%>
 	<% else %>
 	  <%= @input_ymd %>	
@@ -15,7 +15,7 @@
 </tr>
 </table>
 
-<% unless (@mode == nil) || (@mode == "") %>
+<% if @mode == 'list' %>
   <%= link_to '洗車売上入力状況一覧へ戻る',{:controller => 'd_washsale_lists',:action => 'index',
   	:input_ymd => @input_ymd,:shop_kbn => @shop_kbn} %>
 <% end %>
@@ -25,7 +25,7 @@
 	</div>
 </p>
 
-<% unless (@mode == nil) || (@mode == "") %>
+<% unless @mode == "list" %>
   <%= link_to '洗車売上入力状況一覧へ戻る',{:controller => 'd_washsale_lists',:action => 'index',
   	:input_ymd => @input_ymd,:shop_kbn => @shop_kbn} %>
 <% end %>
