@@ -32,7 +32,14 @@ module DWashSalesHelper
   def get_d_wash_sales(hiduke)
       DWashSale.find(:all, :conditions => ["sale_date = ?",hiduke],:order => 'id')   
   end
-  
+
+  def get_d_wash_sales_month(month,m_shop_id)
+      DWashSale.find(:all, 
+      :conditions => ["sale_date between ? and ? and m_shop_id = ?",
+        month + "01",month + "31",m_shop_id],
+      :order => 'id')   
+  end
+    
   #単数取得
     def get_d_wash_sale(hiduke,m_shop_id,mode)
     if mode == 'list'
