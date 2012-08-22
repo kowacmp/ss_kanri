@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120806061105) do
+ActiveRecord::Schema.define(:version => 20120817022954) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -149,6 +149,29 @@ ActiveRecord::Schema.define(:version => 20120806061105) do
     t.integer  "kakutei_flg",     :limit => 2, :null => false
     t.integer  "created_user_id",              :null => false
     t.integer  "updated_user_id",              :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "d_sale_etc_details", :force => true do |t|
+    t.integer  "d_sale_etc_id",                                 :null => false
+    t.integer  "m_etc_id",                                      :null => false
+    t.integer  "etc_no",          :limit => 2,                  :null => false
+    t.integer  "meter",                          :default => 0
+    t.integer  "error_money",                    :default => 0
+    t.string   "error_note",      :limit => 200
+    t.integer  "created_user_id",                               :null => false
+    t.integer  "updated_user_id",                               :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "d_sale_etcs", :force => true do |t|
+    t.string   "sale_date",       :limit => 8, :default => "00000000", :null => false
+    t.integer  "m_shop_id",                    :default => 0,          :null => false
+    t.integer  "kakutei_flg",     :limit => 2, :default => 0,          :null => false
+    t.integer  "created_user_id",              :default => 0,          :null => false
+    t.integer  "updated_user_id",              :default => 0,          :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

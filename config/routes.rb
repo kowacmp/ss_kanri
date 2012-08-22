@@ -1,4 +1,6 @@
 SsKanri::Application.routes.draw do
+  get "d_washsale_report_lists/index"
+  get "d_washsale_report_lists/search"
   
   get "d_washsale_lists/index"
   get "d_washsale_lists/update"
