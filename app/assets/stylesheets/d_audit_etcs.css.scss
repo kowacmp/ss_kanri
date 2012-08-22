@@ -1,0 +1,54 @@
+// Place all the styles related to the d_audit_etcs controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+table.rounded-corner
+{
+
+    text-align: left;
+    border-collapse: collapse;        
+    margin-left:  5px;
+}
+
+table.rounded-corner th
+{
+  padding: 8px;
+  font-weight: normal;
+  text-align:center; 
+          
+  color: #039;
+    font-weight:bold;
+  background: url('th_001.gif');
+    background-repeat:repeat-x;
+    border: 1px solid #7D808A;
+}
+
+table.rounded-corner td
+{
+  border: 1px solid #8B8E99;
+  color: #000457;
+    padding:5px;
+        
+}
+
+table.rounded-corner td.icon
+{
+  border: 1px solid #8B8E99;
+  color: #000457;
+    font-weight:bold;
+    text-align: center;
+            padding:2px;
+            padding-top: 4px;
+}
+
+table.rounded-corner td.total
+{
+  background: #e8edff;
+        color: #FF0000;
+
+}
+
+table.rounded-corner tbody tr:hover td
+{
+  background: #d0dafd;
+}

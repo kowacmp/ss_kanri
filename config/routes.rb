@@ -1,4 +1,5 @@
 SsKanri::Application.routes.draw do
+  
   get "d_washsale_lists/index"
   get "d_washsale_lists/update"
   get "d_washsale_lists/show"
@@ -25,6 +26,14 @@ SsKanri::Application.routes.draw do
       get :test
     end
   end
+ 
+  match "d_audit_washes/confirm_shop_id_select", :to => "d_audit_washes#confirm_shop_id_select"
+  match "d_audit_washes/confirm_user_id_select", :to => "d_audit_washes#confirm_user_id_select"
+  resources :d_audit_washes
+  
+  match "d_audit_etcs/confirm_shop_id_select", :to => "d_audit_etcs#confirm_shop_id_select"
+  match "d_audit_etcs/confirm_user_id_select", :to => "d_audit_etcs#confirm_user_id_select"
+  resources :d_audit_etcs
  
   resources :m_washsale_plans
 

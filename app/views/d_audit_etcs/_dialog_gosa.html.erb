@@ -1,0 +1,18 @@
+<% rec_cnt = 0 %>
+<table class='rounded-corner' >
+	<tr>
+		<th>№</th>
+		<th>発生日</th>
+	<tr>
+	<%for rec in @d_sale_etcs%>
+		<tr>
+			<td>
+				<% rec_cnt += 1 %>
+				<%=rec_cnt%>
+			</td>
+			<td>
+				<%=Date.strptime(rec.sale_date, "%Y%m%d").strftime('%m/%d')%>
+			</td>
+		</tr>
+	<% end %>
+</table>

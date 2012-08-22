@@ -1,0 +1,14 @@
+$('#dialog_div').html("<%= escape_javascript(render :partial => 'confirm_user_pass' )%>");
+
+$('#dialog_div').dialog({
+	autoOpen:true,
+	width:400,
+	modal:true,
+	title:'パスワードを入力してください',
+	close: function(event) {
+		if ($('#pass_ret').val() == '0') {
+			$('#confirm_user_id').val('');
+		}
+	}
+});
+
