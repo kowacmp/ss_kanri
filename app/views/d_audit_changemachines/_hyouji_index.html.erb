@@ -1,0 +1,300 @@
+<script>
+/*
+ * 本当はApplication.jsにいれたい‥
+ * 
+ */
+
+	//整数数字に強制変換する(変換負荷の場合は0)
+	function toNum(str) {
+		var num = new String( str ).replace( /,/g, "" );
+		if (isNaN(num)) {
+			return 0;
+		} else {
+			num = Number(num);
+			return Math.floor(num);	
+		}
+	}
+	
+	//整数カンマ数値に強制変換する(数値ではない場合は空文字列)
+	function toCurrency(str) {
+		var num = new String( str ).replace( /,/g, "" );
+		if (num == '' || isNaN(num)) {
+			return '';
+		} else {
+			num = Math.floor(num);
+			num = String(num);
+			while ( num != ( num = num.replace( /^(-?\d+)(\d{3})/, "$1,$2" ) ) );
+			return num;
+		}
+	}
+	
+</script>
+
+<%= form_for(@d_audit_changemachine, :url => {:action => "update"} ) do |f| %>
+
+<%= f.hidden_field :audit_date %>
+
+<table class='rounded-corner' >
+	<tr>
+		<th>POS1</th>
+		<th>監査前有高</th>
+		<th>監査後有高</th>
+		<th>POS2</th>
+		<th>監査前有高</th>
+		<th>監査後有高</th>
+		<th>POS3</th>
+		<th>監査前有高</th>
+		<th>監査後有高</th>
+	</tr>  	
+	
+	<% for i in 1..7 %>
+	<tr>
+		<th>釣銭機№<%=i%></th>
+		<td><%=f.text_field 'pos1_before_money' + i.to_s , :size=>10, :style=>"text-align:right;" %></td>
+		<td><%=f.text_field 'pos1_after_money' + i.to_s  , :size=>10, :style=>"text-align:right;" %></td>
+		<th>釣銭機№<%=i%></th>
+		<td><%=f.text_field 'pos2_before_money' + i.to_s , :size=>10, :style=>"text-align:right;"  %></td>
+		<td><%=f.text_field 'pos2_after_money' + i.to_s  , :size=>10, :style=>"text-align:right;"  %></td>
+		<th>釣銭機№<%=i%></th>
+		<td><%=f.text_field 'pos3_before_money' + i.to_s , :size=>10, :style=>"text-align:right;"  %></td>
+		<td><%=f.text_field 'pos3_after_money' + i.to_s  , :size=>10, :style=>"text-align:right;"  %></td>
+	</tr>
+	<% end %> <!-- for i in 1..7 -->
+
+	<tr>
+		<th              >合計</th>
+		<td align="right"><span id="pos1_before_money_sum"></span></td>
+		<td align="right"><span id="pos1_after_money_sum"></span></td>
+		<th              >合計</th>
+		<td align="right"><span id="pos2_before_money_sum"></span></td>
+		<td align="right"><span id="pos2_after_money_sum"></span></td>
+		<th              >合計</th>
+		<td align="right"><span id="pos3_before_money_sum"></span></td>
+		<td align="right"><span id="pos3_after_money_sum"></span></td>
+	</tr>
+	
+	<tr>
+		<th>補充金額</th>
+		<td colspan="2">
+			<%=f.text_field 'pos1_supplement_money', :size=>10, :style=>"text-align:right;" %>			
+		</td>
+		<th>補充金額</th>
+		<td colspan="2">
+			<%=f.text_field 'pos2_supplement_money', :size=>10, :style=>"text-align:right;" %>	
+		</td>
+		<th>補充金額</th>
+		<td colspan="2">
+			<%=f.text_field 'pos3_supplement_money', :size=>10, :style=>"text-align:right;" %>	
+		</td>
+	</tr>
+		
+	<tr>
+		<th>回収金額</th>
+		<td colspan="2">
+			<%=f.text_field 'pos1_collectt_money', :size=>10, :style=>"text-align:right;" %>			
+		</td>
+		<th>回収金額</th>
+		<td colspan="2">
+			<%=f.text_field 'pos2_collectt_money', :size=>10, :style=>"text-align:right;" %>	
+		</td>
+		<th>回収金額</th>
+		<td colspan="2">
+			<%=f.text_field 'pos3_collectt_money', :size=>10, :style=>"text-align:right;" %>	
+		</td>
+	</tr>
+	
+	<tr>
+		<th>計算上有高</th>
+		<td colspan="2" align="right">
+			<span id="pos1_keisan_aridaka"></span>			
+		</td>
+		<th>計算上有高</th>
+		<td colspan="2" align="right">
+			<span id="pos2_keisan_aridaka"></span>	
+		</td>
+		<th>計算上有高</th>
+		<td colspan="2" align="right">
+			<span id="pos3_keisan_aridaka"></span>
+		</td>
+	</tr>
+	
+	<tr>
+		<th>過不足額</th>
+		<td colspan="2" align="right">
+			<span id="pos1_kabusoku_gak"></span>			
+		</td>
+		<th>過不足額</th>
+		<td colspan="2" align="right">
+			<span id="pos2_kabusoku_gak"></span>	
+		</td>
+		<th>過不足額</th>
+		<td colspan="2" align="right">
+			<span id="pos3_kabusoku_gak"></span>
+		</td>
+	</tr>
+		
+	<tr>
+		<th>全POS合計<br/>計算上</th>
+		<td colspan="2" align="right">
+			<span id="pos_all_keisan_aridaka"></span>			
+		</td>
+		<th>全POS合計<br/>実有高</th>
+		<td colspan="2" align="right">
+			<span id="pos_all_jitu_aridaka"></span>	
+		</td>
+		<th>全POS合計<br/>過不足額</th>
+		<td colspan="2" align="right">
+			<span id="pos_all_kabusoku"></span>
+		</td>
+	</tr>	
+	
+</table>
+
+<script>
+
+	//金額入力欄更新後イベント(テキストボックスのIDにmoneyが含まれるもの)
+	$("input:text[id*=money]").blur(function() {
+		//カンマ編集及び、数値入力以外を禁止
+		this.value = toCurrency(this.value);
+		
+		//合計欄計算表示
+		upd_sum();
+	});
+
+	//合計欄計算ロジック
+	function upd_sum() {
+		
+		for (var pos = 1; pos < 4; pos++) {
+
+			// POS1～3 監査前有高　
+			var sum_value = 0;
+			$("input:text[id*=pos{POS}_before_money]".replace("{POS}", pos)).each(function(i, obj){
+				sum_value += toNum(obj.value);
+			});
+			$("#pos{POS}_before_money_sum".replace("{POS}", pos)).html(toCurrency(sum_value));		
+
+			// POS1～3 監査後有高
+			var sum_value = 0;
+			$("input:text[id*=pos{POS}_after_money]".replace("{POS}", pos)).each(function(i, obj){
+				sum_value += toNum(obj.value);
+			});
+			$("#pos{POS}_after_money_sum".replace("{POS}", pos)).html(toCurrency(sum_value));			
+	
+			// POS1～3 計算上有高
+			var sum_value = 0;
+			sum_value += toNum($("#pos{POS}_before_money_sum".replace("{POS}", pos)).html());
+			sum_value += toNum($("input:text[id$=pos{POS}_supplement_money]".replace("{POS}", pos)).val())
+			sum_value -= toNum($("input:text[id$=pos{POS}_collectt_money]".replace("{POS}", pos)).val())		
+			$("#pos{POS}_keisan_aridaka".replace("{POS}", pos)).html(toCurrency(sum_value));
+		
+			// POS1～3 過不足額
+			var sum_value = 0;
+			sum_value += toNum($("#pos{POS}_after_money_sum".replace("{POS}", pos)).html());
+			sum_value -= toNum($("#pos{POS}_keisan_aridaka".replace("{POS}", pos)).html());
+			$("#pos{POS}_kabusoku_gak".replace("{POS}", pos)).html(toCurrency(sum_value));
+
+		}		
+	
+		// 全POS合計 計算上有高
+		var sum_value = 0;
+		for (var pos = 1; pos < 4; pos++) {
+			sum_value += toNum($("#pos{POS}_keisan_aridaka".replace("{POS}", pos)).html());
+		}
+		$("#pos_all_keisan_aridaka").html(toCurrency(sum_value));
+		
+		// 全POS合計 実有高
+		var sum_value = 0;
+		for (var pos = 1; pos < 4; pos++) {
+			sum_value += toNum($("#pos{POS}_after_money_sum".replace("{POS}", pos)).html());
+		}
+		$("#pos_all_jitu_aridaka").html(toCurrency(sum_value));
+		
+		// 全POS合計過不足額
+		var sum_value = 0;
+		for (var pos = 1; pos < 4; pos++) {
+			sum_value += toNum($("#pos{POS}_kabusoku_gak".replace("{POS}", pos)).html());
+		}
+		$("#pos_all_kabusoku").html(toCurrency(sum_value));
+	
+	}
+		
+	//読込時にテキストボックスのカンマ編集
+	$("input:text[id*=money]").each(function(i, obj) {
+		//カンマ編集及び、数値入力以外を禁止
+		obj.value = toCurrency(obj.value);	
+	});
+		
+	//読込時に合計欄更新
+	upd_sum();
+	
+</script>
+
+<br/>
+
+	<!-- 立会人 -->
+	<%
+		unless  @d_audit_changemachine[0].nil?
+  			c_shop_id = @d_audit_changemachine[0].confirm_shop_id
+  			c_user_id = @d_audit_changemachine[0].confirm_user_id
+		end 
+	%>
+<table class='rounded-corner' >
+<tr>
+	<th rowspan="2">立会人</th>
+	<td>
+		<%=select :confirm, :shop_id, MShop.find(:all, :conditions => "deleted_flg=0", :order => "shop_cd").collect{|i| [i.shop_name ,i.id]},
+			:selected => c_shop_id, :include_blank => "選択してください" %>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div id="confirm_user_id_div">
+			<%=render :partial => 'confirm_user_id', :locals => {:c_shop_id => c_shop_id, :c_user_id => c_user_id} %>
+		</div>
+	</td>
+</tr>
+</table>
+
+	<%= submit_tag '更新', :onclick => "return update_chk()" ,:disable_with => '更新中です...' %>
+
+<!-- 参照ダイアログ -->
+<div id="dialog_div" style="display: none;" >
+	&nbsp;
+</div>
+
+<script language="JavaScript">
+
+  	$("#confirm_shop_id").change(function() {
+  		  		
+  		$.ajax({
+  			type: "GET",
+  			url:  "d_audit_etcs/confirm_shop_id_select?shop_id=" + this.value,
+ 			async: false,
+ 			timeout: 5000
+  		});
+  		
+  	});
+  	  	
+  	// 更新前チェック
+  	function update_chk() {
+  		var sel_shop = $("#confirm_shop_id")[0];
+  		var sel_user = $("#confirm_user_id")[0];
+  		
+  		if (sel_shop.value == '') {
+  			alert('立会人を選択してください。');
+  			sel_shop.focus();
+  			return false;
+  		}
+  		
+  		if (sel_user.value == '') {
+  			alert('立会人を選択してください。');
+  			sel_user.focus();
+  			return false;
+  		}
+  		
+  		return true;
+  	}
+  	
+</script>
+
+<% end %> <!-- form_for(@d_audit_changemachine) do |f| %> >
