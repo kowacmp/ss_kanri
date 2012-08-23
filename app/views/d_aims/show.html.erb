@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Date:</b>
+  <%= @d_aim.date %>
+</p>
+
+<p>
+  <b>M shop:</b>
+  <%= @d_aim.m_shop_id %>
+</p>
+
+<p>
+  <b>M aim:</b>
+  <%= @d_aim.m_aim_id %>
+</p>
+
+<p>
+  <b>Aim value1:</b>
+  <%= @d_aim.aim_value1 %>
+</p>
+
+<p>
+  <b>Created user:</b>
+  <%= @d_aim.created_user_id %>
+</p>
+
+<p>
+  <b>Updated user:</b>
+  <%= @d_aim.updated_user_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_d_aim_path(@d_aim) %> |
+<%= link_to 'Back', d_aims_path %>

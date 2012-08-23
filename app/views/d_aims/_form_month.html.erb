@@ -1,0 +1,102 @@
+<script type="text/javascript">
+	
+	function numberCheck(obj) { 
+		var v = obj.value;
+		
+		if (v.match(/[^0-9]/g)) {
+			obj.value = v.replace(/[^0-9]/g,'');
+		}		
+	}
+	
+</script>
+
+<%= form_for(@d_aim) do |f| %>
+  <% if @d_aim.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@d_aim.errors.count, "error") %> prohibited this d_aim from being saved:</h2>
+
+      <ul>
+      <% @d_aim.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= hidden_field "search", 'aim',:value=> @search_aim %>
+  <%= hidden_field "input",'year',:value=>@year%>
+  <%= hidden_field "input",'month',:value=>@month%>
+  <%= hidden_field "input",'aim',:value=>@search_aim%>
+  
+  <table id='rounded-corner'>
+  	  
+	  <tr>
+	 	<th><%= @year + "年" %></th>
+		<% for i in 1..6 do %>
+	  	  <th><%= i.to_s + "月" %></th>
+	  	<% end %>
+	  </tr>
+	  
+  	
+	  <% @m_aims.each_with_index do |m_aim,idx| %>
+		<tr>
+	  	  <th><%= m_aim.aim_name %></th>
+	  	  
+	  	  <% for i in 1..6 do %>
+	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,m_aim.id.to_i]) %>
+	  	  <%= hidden_field "d_aim[#{idx}][#{i}]", 'date',:value=> @year + format("%02d",i) %>
+	  	  <%= hidden_field "d_aim[#{idx}][#{i}]", 'm_shop_id',:value=> @m_shop.id %>
+	  	  <%= hidden_field "d_aim[#{idx}][#{i}]", 'm_aim_id',:value=>m_aim.id %>
+	  	  	<td>
+	  	  	<%- if @d_aim -%>
+	  	  		<%= hidden_field "d_aim[#{idx}][#{i}]", 'id',:value=>@d_aim.id %>
+			  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:value=>eval("@d_aim.aim_total"),:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+			<%- else -%>
+		  	  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+	  	  	<%- end -%>
+	  	  	</td>
+	  	  <% end %>
+	  	  
+	  	</tr>
+	  <% end %>
+	  
+	  
+	  
+	  <tr>
+	 	<th><%= @year + "年" %></th>
+		<% for i in 7..12 do %>
+	  	  <th><%= i.to_s + "月" %></th>
+	  	<% end %>
+	  </tr>
+	  
+  	
+	  <% @m_aims.each_with_index do |m_aim,idx| %>
+		<tr>
+	  	  <th><%= m_aim.aim_name %></th>
+	  	  
+	  	  <% for i in 7..12 do %>
+	  	  	<% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,m_aim.id.to_i]) %>
+	  	    <%= hidden_field "d_aim[#{idx}][#{i}]", 'date',:value=> @year + format("%02d",i) %>
+	  	    <%= hidden_field "d_aim[#{idx}][#{i}]", 'm_shop_id',:value=> @m_shop.id %>
+	  	    <%= hidden_field "d_aim[#{idx}][#{i}]", 'm_aim_id',:value=>m_aim.id %>
+	  	  	<td>
+	  	  	<%- if @d_aim -%>
+	  	  		<%= hidden_field "d_aim[#{idx}][#{i}]", 'id',:value=>@d_aim.id %>
+			  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:value=>eval("@d_aim.aim_total"),:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+			<%- else -%>
+		  	  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+	  	  	<%- end -%>
+	  	  	</td>
+	  	  <% end %>
+	  	  
+	  	</tr>
+	  <% end %>
+	  
+	  
+  </table>
+
+  
+  <div class="actions" align="right">
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div>
+<% end %>
