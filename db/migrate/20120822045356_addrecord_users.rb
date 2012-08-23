@@ -58,7 +58,7 @@ class AddrecordUsers < ActiveRecord::Migration
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          1,999999,'本社','ﾎﾝｼｬ','本社','830-0017','久留米市日吉町23-36 福岡スタンダードビル5F','0942-33-2323','0942-31-2222','',9,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          1,999999,'本社','ﾎﾝｼｬ','本社','830-0017','久留米市日吉町23-36 福岡スタンダードビル5F','0942-33-2323','0942-31-2222','',9,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
@@ -84,7 +84,7 @@ class AddrecordUsers < ActiveRecord::Migration
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          5,'195643','ニュー久留米南SS','ｸﾙﾒﾐﾅﾐ','久留米南','830-0047','久留米市津福本町499-1','0942-32-1377','0942-32-1377','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          5,'195643','ニュー久留米南SS','ｸﾙﾒﾐﾅﾐ','久留米南','830-0047','久留米市津福本町499-1','0942-32-1377','0942-32-1377','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
@@ -96,7 +96,7 @@ class AddrecordUsers < ActiveRecord::Migration
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          7,'195646','ニュー広川インターSS','ﾋﾛｶﾜｲﾝﾀｰ','広川IC','834-0115','八女郡広川町新代1092','0943-32-6119','0943-32-6119','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          7,'195646','ニュー広川インターSS','ﾋﾛｶﾜｲﾝﾀｰ','広川IC','834-0115','八女郡広川町新代1092','0943-32-6119','0943-32-6119','',0,7,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
@@ -120,19 +120,19 @@ class AddrecordUsers < ActiveRecord::Migration
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          11,'195650','セルフ新宮SS','ｼﾝｸﾞｳ','新宮','811-0017','糟屋郡新宮町上府773-1','092-941-5811','092-941-5811','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          11,'195650','セルフ新宮SS','ｼﾝｸﾞｳ','新宮','811-0017','糟屋郡新宮町上府773-1','092-941-5811','092-941-5811','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          12,'232797','セルフ曽根SS','ｿﾈ','曽根','800-0223','北九州市小倉南区上曽根5丁目110-1','093-474-5811','093-474-5811','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          12,'232797','セルフ曽根SS','ｿﾈ','曽根','800-0223','北九州市小倉南区上曽根5丁目110-1','093-474-5811','093-474-5811','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          13,'232798','セルフ長府SS','ﾁｮｳﾌ','長府','752-0928','下関市長府才川2丁目473－5','083-249-2211','083-249-2211','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          13,'232798','セルフ長府SS','ﾁｮｳﾌ','長府','752-0928','下関市長府才川2丁目473－5','083-249-2211','083-249-2211','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
@@ -144,97 +144,97 @@ class AddrecordUsers < ActiveRecord::Migration
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          15,'244095','セルフ金隈SS','ｶﾈﾉｸﾏ','金隈','812-0863','福岡市博多区金の隈１丁目23-29','092-503-0686','092-503-0686','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          15,'244095','セルフ金隈SS','ｶﾈﾉｸﾏ','金隈','812-0863','福岡市博多区金の隈１丁目23-29','092-503-0686','092-503-0686','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          16,'246407','セルフ佐賀大和SS','ｻｶﾞﾔﾏﾄ','佐賀大和','849-0917','佐賀市高木瀬町大字長瀬1666-1','0952-34-5801','0952-34-5801','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          16,'246407','セルフ佐賀大和SS','ｻｶﾞﾔﾏﾄ','佐賀大和','849-0917','佐賀市高木瀬町大字長瀬1666-1','0952-34-5801','0952-34-5801','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          17,'253342','セルフ画図SS','ｴｽﾞ','画図','862-0946','熊本市画図町大字所島123-1','096-334-9811','096-334-9811','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          17,'253342','セルフ画図SS','ｴｽﾞ','画図','862-0946','熊本市画図町大字所島123-1','096-334-9811','096-334-9811','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          18,'256970','セルフ荒木SS','ｱﾗｷ','荒木','830-0063','久留米市荒木町荒木2411','0942-51-3550','0942-51-3336','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          18,'256970','セルフ荒木SS','ｱﾗｷ','荒木','830-0063','久留米市荒木町荒木2411','0942-51-3550','0942-51-3336','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          19,'265628','セルフ菊陽SS','ｷｸﾖｳ','菊陽','869-1101','菊池郡菊陽町津久礼2150-1','096-233-5011','096-233-5011','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          19,'265628','セルフ菊陽SS','ｷｸﾖｳ','菊陽','869-1101','菊池郡菊陽町津久礼2150-1','096-233-5011','096-233-5011','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          20,'270075','セルフ筑紫野3号バイパスSS','ﾁｸｼﾉｻﾝｺﾞｳﾊﾞｲﾊﾟｽ','筑紫野3号','818-0066','筑紫野市大字永岡685-1','092-918-7701','092-918-7701','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          20,'270075','セルフ筑紫野3号バイパスSS','ﾁｸｼﾉｻﾝｺﾞｳﾊﾞｲﾊﾟｽ','筑紫野3号','818-0066','筑紫野市大字永岡685-1','092-918-7701','092-918-7701','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          21,'273479','セルフ筑紫野インターSS','ﾁｸｼﾉｲﾝﾀｰ','筑紫野IC','818-0054','筑紫野市杉塚 3-181-5','092-923-5817','092-923-5817','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          21,'273479','セルフ筑紫野インターSS','ﾁｸｼﾉｲﾝﾀｰ','筑紫野IC','818-0054','筑紫野市杉塚 3-181-5','092-923-5817','092-923-5817','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          22,'277618','セルフ大野城SS','ｵｵﾉｼﾞｮｳ','大野城','816-0955','大野城市上大利北26街区4号','092-915-5817','092-915-5817','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          22,'277618','セルフ大野城SS','ｵｵﾉｼﾞｮｳ','大野城','816-0955','大野城市上大利北26街区4号','092-915-5817','092-915-5817','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          23,'278668','セルフ二又瀬SS','ﾌﾀﾏﾀｾ','二又瀬','812-0065','福岡市東区二又瀬新町6-22','092-624-2811','092-624-2811','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          23,'278668','セルフ二又瀬SS','ﾌﾀﾏﾀｾ','二又瀬','812-0065','福岡市東区二又瀬新町6-22','092-624-2811','092-624-2811','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          24,'283529','セルフ久留米東SS','ｸﾙﾒﾋｶﾞｼ','久留米東','839-0862','久留米市野中町419-1','0942-41-9818','0942-41-9818','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          24,'283529','セルフ久留米東SS','ｸﾙﾒﾋｶﾞｼ','久留米東','839-0862','久留米市野中町419-1','0942-41-9818','0942-41-9818','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          25,'285260','セルフ津福SS','ﾂﾌﾞｸ','津福','830-0061','久留米市津福今町679-1','0942-31-5330','0942-31-5330','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          25,'285260','セルフ津福SS','ﾂﾌﾞｸ','津福','830-0061','久留米市津福今町679-1','0942-31-5330','0942-31-5330','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          26,'287706','セルフ岡垣SS','ｵｶｶﾞｷ','岡垣','811-4222','遠賀郡岡垣町大字戸切344-1','093-281-5330','093-281-5330','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          26,'287706','セルフ岡垣SS','ｵｶｶﾞｷ','岡垣','811-4222','遠賀郡岡垣町大字戸切344-1','093-281-5330','093-281-5330','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          27,'288626','セルフ東合川SS','ﾋｶﾞｼｱｲｶﾜ','東合川','839-0809','久留米市東合川2-2-10','0942-44-3811','0942-44-3811','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          27,'288626','セルフ東合川SS','ﾋｶﾞｼｱｲｶﾜ','東合川','839-0809','久留米市東合川2-2-10','0942-44-3811','0942-44-3811','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          28,'288907','セルフ東篠崎SS','ﾋｶﾞｼｼﾉｻﾞｷ','東篠崎','802-0072','北九州市小倉北区東篠崎3-193-17','093-932-9811','093-932-9811','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          28,'288907','セルフ東篠崎SS','ﾋｶﾞｼｼﾉｻﾞｷ','東篠崎','802-0072','北九州市小倉北区東篠崎3-193-17','093-932-9811','093-932-9811','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          29,'289575','セルフ志免SS','ｼﾒ','志免','811-2207','糟屋郡志免町大字南里105-1','092-937-9011','092-937-9011','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          29,'289575','セルフ志免SS','ｼﾒ','志免','811-2207','糟屋郡志免町大字南里105-1','092-937-9011','092-937-9011','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          30,'290018','セルフ山口SS','ﾔﾏｸﾞﾁ','山口','753-0871','山口市朝田1808-10','083-934-5911','083-934-5911','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          30,'290018','セルフ山口SS','ﾔﾏｸﾞﾁ','山口','753-0871','山口市朝田1808-10','083-934-5911','083-934-5911','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
@@ -246,13 +246,13 @@ class AddrecordUsers < ActiveRecord::Migration
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          32,'293378','セルフ諫早SS','ｲｻﾊﾔ','諫早','854-0062','諫早市小船越町242-1','0957-21-7011 ','0957-21-7011 ','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          32,'293378','セルフ諫早SS','ｲｻﾊﾔ','諫早','854-0062','諫早市小船越町242-1','0957-21-7011 ','0957-21-7011 ','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          33,'293975','セルフ別府SS','ﾍﾞｯﾌﾟ','別府','874-0023','別府市上人ヶ浜町239','0977-27-7355','0977-27-7355','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          33,'293975','セルフ別府SS','ﾍﾞｯﾌﾟ','別府','874-0023','別府市上人ヶ浜町239','0977-27-7355','0977-27-7355','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
@@ -264,31 +264,31 @@ class AddrecordUsers < ActiveRecord::Migration
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          35,'299508','セルフ大分SS','ｵｵｲﾀ','大分','870-0924','大分市牧1-160','097-504-3811','097-504-3811','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          35,'299508','セルフ大分SS','ｵｵｲﾀ','大分','870-0924','大分市牧1-160','097-504-3811','097-504-3811','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          36,'300847','セルフ佐賀ゆめタウン前SS','ｻｶﾞﾕﾒﾀｳﾝﾏｴ','佐賀ゆめ','849-0914','佐賀市兵庫町大字西渕三本柳1912-2','0952-36-9411','0952-36-9411','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          36,'300847','セルフ佐賀ゆめタウン前SS','ｻｶﾞﾕﾒﾀｳﾝﾏｴ','佐賀ゆめ','849-0914','佐賀市兵庫町大字西渕三本柳1912-2','0952-36-9411','0952-36-9411','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          37,'300846','セルフ時津SS','ﾄｷﾂ','時津','851-2104','西彼杵郡時津町野田郷字岩崎35-1','0958-60-2711','0958-60-2711','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          37,'300846','セルフ時津SS','ﾄｷﾂ','時津','851-2104','西彼杵郡時津町野田郷字岩崎35-1','0958-60-2711','0958-60-2711','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          38,'301506','セルフ大牟田SS','ｵｵﾑﾀ','大牟田','836-0083','大牟田市長田町7-1','0944-57-1800','0944-57-1800','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          38,'301506','セルフ大牟田SS','ｵｵﾑﾀ','大牟田','836-0083','大牟田市長田町7-1','0944-57-1800','0944-57-1800','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          39,'301505','セルフ大川SS','ｵｵｶﾜ','大川','831-0005','大川市向島前開1367-1','0944-86-6711','0944-86-6711','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          39,'301505','セルフ大川SS','ｵｵｶﾜ','大川','831-0005','大川市向島前開1367-1','0944-86-6711','0944-86-6711','',0,6,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
           execute "
           select setval('m_shops_id_seq',(select max(id) from m_shops));
@@ -300,11 +300,11 @@ class AddrecordUsers < ActiveRecord::Migration
            "
            execute "INSERT INTO m_shop_groups (id, group_cd, group_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (3, 3, '久留米スタンダード石油', 0, NULL, '2012-10-01', '2012-10-01');
            "
-           execute "INSERT INTO m_shop_groups (id, group_cd, group_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (5, 4, '平成スタンダード石油', 0, NULL, '2012-10-01', '2012-10-01');
+           execute "INSERT INTO m_shop_groups (id, group_cd, group_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (4, 4, '平成スタンダード石油', 0, NULL, '2012-10-01', '2012-10-01');
            "
-           execute "INSERT INTO m_shop_groups (id, group_cd, group_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (6, 5, 'みやまスタンダード石油', 0, NULL, '2012-10-01', '2012-10-01');
+           execute "INSERT INTO m_shop_groups (id, group_cd, group_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (5, 5, 'みやまスタンダード石油', 0, NULL, '2012-10-01', '2012-10-01');
            "
-           execute "INSERT INTO m_shop_groups (id, group_cd, group_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (7, 9, '福岡スタンダード石油', 0, NULL, '2012-10-01', '2012-10-01');
+           execute "INSERT INTO m_shop_groups (id, group_cd, group_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (6, 6, '福岡スタンダード石油', 0, NULL, '2012-10-01', '2012-10-01');
            "
           execute "
           select setval('m_shop_groups_id_seq',(select max(id) from m_shop_groups));
