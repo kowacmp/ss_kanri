@@ -4,7 +4,9 @@
   <%= f.hidden_field :kakutei_flg %>
   <%= f.hidden_field :pay_money, :class=>"money" %>
   <%= f.hidden_field :recive_money, :class=>"money" %>
-  
+  <%= hidden_field_tag 'head_input_shop_kbn', @head[:input_shop_kbn] %>
+  <%= hidden_field_tag 'head_from_view', @head[:from_view] %>
+    
   <% syo_total=@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i + @d_sale.sale_purika.to_i + @d_sale.recive_money.to_i - @d_sale.pay_money.to_i %>
   <% total = syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + @zenjitu_d_sale.sale_changebox.to_i + @d_sale.sale_ass.to_i %>
   <% sale_change_total = @d_sale.sale_change1.to_i + @d_sale.sale_change2.to_i + @d_sale.sale_change3.to_i %>
@@ -284,12 +286,19 @@
   </div>
   
   <div class="actions">
-  	<%= link_to "キャンセル", {:controller => "d_sales", :action => "new", :input_day => @head.input_day}, :confirm => "入力をキャンセルします。よろしいですか？", :method => :get %>
-  	<% if @d_sale.kakutei_flg == 1 %>
+  	<% if @head[:from_view] == "index" %>
+  		<%= link_to "戻る", {:controller => "d_sales", :action => "index", :input_day => @head[:input_day], :input_shop_kbn => @head[:input_shop_kbn]}, :confirm => "一覧表に戻ります。よろしいですか？", :method => :get, :class => 'return_icon' %>
+  	    <%= link_to "キャンセル", {:controller => "d_sales", :action => "new", :from_view=>"index", :input_shop_kbn => @head[:input_shop_kbn], :id => @d_sale.id}, :confirm => "入力をキャンセルします。よろしいですか？", :method => :get %>
+	<% else %>
+     	<%= link_to "キャンセル", {:controller => "d_sales", :action => "new", :input_day => @head.input_day}, :confirm => "入力をキャンセルします。よろしいですか？", :method => :get %>
+  	<% end %>
+  	
+  	<% if @d_sale.kakutei_flg == 1 and params[:from_view] != "index" %>
   	   <%= f.submit '保存', :confirm => "保存します。よろしいですか？", :method => :post, :disabled=>"disabled" %>
   	<% else%>
   	   <%= f.submit '保存', :confirm => "保存します。よろしいですか？", :method => :post %>
   	<% end %>
+  	
   </div>
 <% end %>
 
@@ -301,7 +310,7 @@ $(function () {
       cssSkin : "sSky",
       headerRows : 1,
       fixedCols : 0,
-      colWidths :  [30, 150, 200, 100, 60],
+      colWidths :  [30, 200, 200, 100, 60],
 	  //onStart : function () {
 	  //    //this.start = new Date();
 	  //    var table1 = document.getElementById("pay_table");
@@ -324,21 +333,21 @@ $(function () {
       cssSkin : "sSky",
       headerRows : 1,
       fixedCols : 0,
-      colWidths :  [30, 150, 200, 100, 60]
+      colWidths :  [30, 200, 200, 100, 60]
     });
     //テーブルにスクロールバーを設定
     new superTable("purika_table", {
       cssSkin : "sSky",
       headerRows : 2,
       fixedCols : 0,
-      colWidths :  [30, 250, 100, 100, 60]
+      colWidths :  [30, 300, 100, 100, 60]
     });
     //テーブルにスクロールバーを設定
     new superTable("etc_table", {
       cssSkin : "sSky",
       headerRows : 1,
       fixedCols : 0,
-      colWidths :  [30, 150, 200, 100, 60]
+      colWidths :  [30, 200, 200, 100, 60]
     });
 
     //保存の時に金額はカンマを消す
