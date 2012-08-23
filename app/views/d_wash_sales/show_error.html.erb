@@ -1,0 +1,8 @@
+
+誤差内容入力：<%= @m_washe.wash_name %><br />
+<% if (@d_washsale_item.error_note == nil) or (@d_washsale_item.error_note == "") %>
+  <font color="blue">入力されたデータはありません</font>
+<% else %>
+  <%= @d_washsale_item.error_note %>
+<% end %>
+

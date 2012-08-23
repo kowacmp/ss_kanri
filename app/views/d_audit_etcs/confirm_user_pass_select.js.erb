@@ -1,0 +1,7 @@
+<%if @pass_ok then%>
+	$("#pass_ret").val("1");
+	$("#dialog_div").dialog("close");
+<%else%>
+	$("#pass_ret").val("0");
+	$("#msg").html("パスワードが違います。");
+<%end%>

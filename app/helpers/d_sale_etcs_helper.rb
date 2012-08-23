@@ -7,7 +7,7 @@ module DSaleEtcsHelper
     end
     d_wash_sale = get_d_sale_etc(sale_date) 
       zenkai_date = DSaleEtc.maximum(:sale_date,
-        :conditions => ['sale_date < ? and m_shop_id = ?',sale_date,current_user.m_shops_id])
+        :conditions => ['sale_date < ? and m_shop_id = ?',sale_date,current_user.m_shop_id])
     return zenkai_date
   end
   
@@ -25,7 +25,7 @@ module DSaleEtcsHelper
   end
   
   def get_d_sale_etc(hiduke)
-    DSaleEtc.find(:all, :conditions => ["sale_date = ? and m_shop_id = ?",hiduke,current_user.m_shops_id]).first
+    DSaleEtc.find(:all, :conditions => ["sale_date = ? and m_shop_id = ?",hiduke,current_user.m_shop_id]).first
   end
   
   #複数取得
