@@ -43,6 +43,14 @@ SsKanri::Application.routes.draw do
   match "d_audit_etcs/confirm_user_id_select", :to => "d_audit_etcs#confirm_user_id_select"
   resources :d_audit_etcs
  
+  resources :m_shop_groups
+  
+  resources :d_aims
+
+  resources :m_aims
+
+  resources :m_meters
+ 
   resources :m_washsale_plans
 
   resources :m_tanks

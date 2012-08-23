@@ -3,7 +3,20 @@ class MEtcsController < ApplicationController
   # GET /m_etcs.json
   def index
     #@m_etcs = MEtc.all
-    @m_etcs = MEtc.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'etc_cd')
+    p "index----"
+    if params[:input_check] == nil
+        @check_del_flg = 0
+        @m_etcs = MEtc.find(:all, :conditions => "deleted_flg = 0", :order => 'etc_cd')
+    else
+        @check_del_flg = params[:input_check].to_i
+        if @check_del_flg == 0
+          @m_etcs = MEtc.find(:all, :conditions => "deleted_flg = 0", :order => 'etc_cd')
+        else
+          @m_etcs = MEtc.find(:all, :order => 'etc_cd')
+        end
+    end
+    
+    #@m_etcs = MEtc.find(:all, :conditions => "deleted_flg = 0", :order => 'etc_cd')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,6 +29,8 @@ class MEtcsController < ApplicationController
   def show
     @m_etc = MEtc.find(params[:id])
 
+    @check_del_flg = params[:input_check].to_i
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @m_etc }
@@ -26,7 +41,7 @@ class MEtcsController < ApplicationController
   # GET /m_etcs/new.json
   def new
     @m_etc = MEtc.new
-
+    
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @m_etc }
@@ -35,12 +50,21 @@ class MEtcsController < ApplicationController
 
   # GET /m_etcs/1/edit
   def edit
+    p "edit----"
+    
     @m_etc = MEtc.find(params[:id])
+    
+    @check_del_flg = params[:input_check].to_i
+    
   end
 
   # POST /m_etcs
   # POST /m_etcs.json
   def create
+    
+    p "update----"
+    p params[:input_check]
+    
     @m_etc = MEtc.new(params[:m_etc])
 
     respond_to do |format|
@@ -57,6 +81,9 @@ class MEtcsController < ApplicationController
   # PUT /m_etcs/1
   # PUT /m_etcs/1.json
   def update
+    p "update----"
+    p params[:input_check]
+    
     @m_etc = MEtc.find(params[:id])
 
     respond_to do |format|
@@ -73,6 +100,9 @@ class MEtcsController < ApplicationController
   # DELETE /m_etcs/1
   # DELETE /m_etcs/1.json
   def destroy
+    
+    p "delete-----------------"
+    
     @m_etc = MEtc.find(params[:id])
     #@m_etc.destroy
     if @m_etc.deleted_flg == 1
@@ -82,16 +112,20 @@ class MEtcsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to m_etcs_url }
+      input_check = params[:input_check]
+      format.html { redirect_to :controller => "m_etcs", :action => "index", :input_check => input_check }
+      #format.html { redirect_to m_etcs_url }
       format.json { head :ok }
     end
   end
   
-  def delete_index
+  def search
     if params[:check][:deleted_flg] == "true"
+      @check_del_flg = 1
       @m_etcs = MEtc.find(:all, :order => 'etc_cd')
     else
-      @m_etcs = MEtc.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'etc_cd')
+      @check_del_flg = 0
+      @m_etcs = MEtc.find(:all, :conditions => "deleted_flg = 0", :order => 'etc_cd')
     end
   end
   
