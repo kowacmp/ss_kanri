@@ -1,0 +1,208 @@
+<script type="text/javascript">
+	
+	function numberCheck(obj) { 
+		var v = obj.value;
+		
+		if (v.match(/[^0-9]/g)) {
+			obj.value = v.replace(/[^0-9]/g,'');
+		}
+		
+		<% @m_aims.each_with_index do |m_aim,idx| %>
+			var goukei<%= idx %> = Number(0);
+			<% for i in 1..@month_last_day.to_i do %>
+				goukei<%= idx %> = goukei<%= idx %> + Number(document.getElementById('d_aim_<%= idx %>_aim_value<%= i %>').value);
+			<% end %>
+			
+			document.getElementById('goukei<%= idx %>').innerHTML = goukei<%= idx %>;
+		<% end %>
+		
+	}
+	
+</script>
+
+<%= form_for(@d_aim) do |f| %>
+  <% if @d_aim.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@d_aim.errors.count, "error") %> prohibited this d_aim from being saved:</h2>
+
+      <ul>
+      <% @d_aim.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= hidden_field "search", 'aim',:value=> @search_aim %>
+  <%= hidden_field "input",'year',:value=>@year%>
+  <%= hidden_field "input",'month',:value=>@month%>
+  <%= hidden_field "input",'aim',:value=>@search_aim%>
+  
+  <table id='rounded-corner'>
+  	  
+	  <tr>
+	 	<th><%= @year + "年" + @month + "月" %></th>
+		<% for i in 1..8 do %>
+	  	  <th><%= i.to_s + "日" %></th>
+	  	<% end %>
+	  </tr>
+	  
+	  <tr>
+	  	<th>曜日</th>
+	  	<% for i in 1..8 do %>
+	  	<% day, wday = home_date_format(@month_first, i-1)%>
+	  	  <th><%= wday %></th>
+	  	<% end %>
+	  </tr>
+  	
+	  <% @m_aims.each_with_index do |m_aim,idx| %>
+	  <%= hidden_field "d_aim[#{idx}]", 'date',:value=> @year + @month %>
+	  <%= hidden_field "d_aim[#{idx}]", 'm_shop_id',:value=> @m_shop.id %>
+		<tr>
+	  	  <th>
+	  	  	<%= m_aim.aim_name %>
+	  	  	<%= hidden_field "d_aim[#{idx}]", 'm_aim_id',:value=>m_aim.id %>
+	  	  </th>
+	  	  
+	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
+	  	  
+	  	  <% for i in 1..8 do %>
+	  	  	<td>
+	  	  	<%- if @d_aim -%>
+	  	  		<%= hidden_field "d_aim[#{idx}]", 'id',:value=>@d_aim.id %>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+			<%- else -%>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+	  	  	<%- end -%>
+	  	  	</td>
+	  	  <% end %>
+	  	  
+	  	</tr>
+	  <% end %>
+	  
+	  
+	  
+	  <tr>
+	 	<th><%= @year + "年" + @month + "月" %></th>
+		<% for i in 9..16 do %>
+	  	  <th><%= i.to_s + "日" %></th>
+	  	<% end %>
+	  </tr>
+	  
+	  <tr>
+	  	<th>曜日</th>
+	  	<% for i in 9..16 do %>
+	  	<% day, wday = home_date_format(@month_first, i-1)%>
+	  	  <th><%= wday %></th>
+	  	<% end %>
+	  </tr>
+  	
+	  <% @m_aims.each_with_index do |m_aim,idx| %>
+		<tr>
+	  	  <th><%= m_aim.aim_name %></th>
+	  	  
+	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
+	  	  
+	  	  <% for i in 9..16 do %>
+	  	  	<td>
+	  	  	<%- if @d_aim -%>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+			<%- else -%>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+	  	  	<%- end -%>
+	  	  	</td>
+	  	  <% end %>
+	  	  
+	  	</tr>
+	  <% end %>
+	  
+	  
+	  <tr>
+	 	<th><%= @year + "年" + @month + "月" %></th>
+		<% for i in 17..24 do %>
+	  	  <th><%= i.to_s + "日" %></th>
+	  	<% end %>
+	  </tr>
+	  
+	  <tr>
+	  	<th>曜日</th>
+	  	<% for i in 17..24 do %>
+	  	<% day, wday = home_date_format(@month_first, i-1)%>
+	  	  <th><%= wday %></th>
+	  	<% end %>
+	  </tr>
+  	
+	  <% @m_aims.each_with_index do |m_aim,idx| %>
+		<tr>
+	  	  <th><%= m_aim.aim_name %></th>
+	  	  
+	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
+	  	  
+	  	  <% for i in 17..24 do %>
+	  	  	<td>
+	  	  	<%- if @d_aim -%>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+			<%- else -%>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+	  	  	<%- end -%>
+	  	  	</td>
+	  	  <% end %>
+	  	  
+	  	</tr>
+	  <% end %>
+	  
+	  <tr>
+	 	<th><%= @year + "年" + @month + "月" %></th>
+		<% for i in 25..@month_last_day.to_i do %>
+	  	  <th><%= i.to_s + "日" %></th>
+	  	<% end %>
+	  	<th>合計</th>
+	  </tr>
+	  
+	  <tr>
+	  	<th>曜日</th>
+	  	<% for i in 25..@month_last_day.to_i do %>
+	  	<% day, wday = home_date_format(@month_first, i-1)%>
+	  	  <th><%= wday %></th>
+	  	<% end %>
+	  	<th></th>
+	  </tr>
+  	
+	  <% @m_aims.each_with_index do |m_aim,idx| %>
+		<tr>
+	  	  <th><%= m_aim.aim_name %></th>
+	  	  
+	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
+	  	  
+	  	  <% for i in 25..@month_last_day.to_i do %>
+	  	  	<td>
+	  	  	<%- if @d_aim -%>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+			<%- else -%>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+	  	  	<%- end -%>
+	  	  	</td>
+	  	  <% end %>
+	  	  
+	  	  <% goukei = 0 %>
+	  	  <td id="goukei<%= idx %>">
+	  	  	<% for i in 1..@month_last_day.to_i do %>
+		  	  	<%- if @d_aim -%>
+		  	  		<% goukei = goukei + eval("@d_aim.aim_value#{i}").to_i%>
+		  	  	<%- else -%>
+		  	  		<% goukei = goukei + 0 %>
+		  	  	<%- end -%>
+	  	  	<% end %>
+	  	  	<%= goukei %>
+	  	  </td>
+	  	  
+	  	</tr>
+	  <% end %>
+	  
+  </table>
+
+  
+  <div class="actions" align="right">
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div>
+<% end %>

@@ -1,0 +1,176 @@
+<script type="text/javascript">
+	function form_clear1(idx){
+		for (i=1; i<=10; i++){
+			document.getElementById('m_meter_' + idx + '_' + i + '_meter_no').value = "";
+			document.getElementById('m_meter_' + idx + '_' + i + '_m_tank_id').selectedIndex = 0;
+		}
+	}
+	
+	function form_clear2(idx){
+		for (i=11; i<=20; i++){
+			document.getElementById('m_meter_' + idx + '_' + i + '_meter_no').value = "";
+			document.getElementById('m_meter_' + idx + '_' + i + '_m_tank_id').selectedIndex = 0;
+		}
+	}
+	
+	function numberCheck(obj) { 
+		var v = obj.value;
+		
+		if (v.match(/[^0-9]/g)) {
+			obj.value = v.replace(/[^0-9]/g,'');
+		}
+		//inputString = String.fromCharCode(event.keyCode); 
+		//if ("0123456789\b\r\t".indexOf(inputString,0) < 0) return false; 
+		//return true;
+	}
+	
+</script>
+
+
+
+
+<%= form_for(@m_meter) do |f| %>
+  <% if @m_meter.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_meter.errors.count, "error") %> prohibited this m_meter from being saved:</h2>
+
+      <ul>
+      <% @m_meter.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<%#= select( "m_oil", 'm_oil_id',@m_oils.map do |u| [u.oil_name,u.id] end ,:onChange => 'test_alert()') %>
+<%#= select "m_oil", 'm_oil_id',@m_oils.map {|u| [u.oil_name,u.id]},{:include_blank => "選択して下さい"},:onChange => "test_alert();" %>
+<%#= select "m_oil", 'm_oil_id',@m_oils.map {|u| [u.oil_name,u.id]},{:include_blank => "選択して下さい"},:onChange => {url_for :controller => 'm_meters', :action => 'index'}%>
+
+
+	<table id='rounded-corner'>
+	  	
+	  	<% @m_codes.each_with_index do |m_code,idx| %> 
+	  	
+	  	<tr>
+	  		<th colspan="2"><%= m_code.code_name1%></th>
+	  		<th colspan="2"><%= @m_oil_first.oil_name%></th>
+	  	</tr>
+	  	
+	  	
+	  	<tr>
+	  	  <!--td rowspan="6"><%#= m_code.code_name1%></td>
+	  	  <td rowspan="6"><%#= @m_oil_first.oil_name%></td-->
+	  	  <% for i in 1..10 do %>
+	  	  <th><%= "No" + i.to_s %></th>
+	  	  <% end %>
+	  	  <th></th>
+	  	</tr>
+	  	
+	  	<tr>
+	  	  <% for i in 1..10 do %>
+	  	  <%= hidden_field "m_meter[#{idx}][#{i}]" ,'m_shop_id', :value => @m_shop_id %>
+	  	  <%= hidden_field "m_meter[#{idx}][#{i}]" ,'m_oil_id', :value => @m_oil_first.id %>
+	  	  <% @m_meter = MMeter.find(:first,:conditions=>['m_shop_id = ? and m_oil_id = ? and pos_class = ? and number = ?',@m_shop_id.to_i,@m_oil_first.id.to_i,m_code.code.to_i,i]) %>
+	  	  
+	  	  <td>
+	  	  	<%- if @m_meter -%>
+	  	  		<%= hidden_field "m_meter[#{idx}][#{i}]", 'id',:value=>@m_meter.id %>
+			  	<%= text_field "m_meter[#{idx}][#{i}]", 'meter_no',:value=>@m_meter.meter_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"numberCheck(this)" %>
+			<%- else -%>
+		  	  	<%= text_field "m_meter[#{idx}][#{i}]", 'meter_no',:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"numberCheck(this)" %>
+	  	  	<%- end -%>
+	  	  	</td>
+	  	  <%= hidden_field "m_meter[#{idx}][#{i}]", 'pos_class',:value=>m_code.code.to_i  %>
+	  	  <%= hidden_field "m_meter[#{idx}][#{i}]", 'number',:value=>i  %>
+	  	  <% end %>
+	  	  <td rowspan="2">
+				<input type="button" value="クリア" onClick="form_clear1(<%= idx %>);" />
+	  	  </td>
+	  	</tr>
+	  	
+	  	<tr>
+	  	  <% for i in 1..10 do %>
+	  	  
+	  	  <% @m_meter = MMeter.find(:first,:conditions=>['m_shop_id = ? and m_oil_id = ? and pos_class = ? and number = ?',@m_shop_id.to_i,@m_oil_first.id.to_i,m_code.code.to_i,i]) %>
+	  	  
+	  	  <td>
+	  	  	<%- if @m_meter -%>
+	  	  		<%#= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
+		  	 	#MTank.find(:all,:conditions => ["m_oil_id = 1 and deleted_flg <> ?",1], :order => 'tank_no').map do |u|
+		      	#[u.tank_name,u.id] end, :selected => @m_meter.m_tank_id,:include_blank => "") %>
+		      	<%= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
+		  	 	@m_tanks.map do |u|
+		      	[u.tank_name,u.id] end, :selected => @m_meter.m_tank_id,:include_blank => "") %>
+	  	  	<%- else -%>
+	  	  		<%#= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
+		  	 	#MTank.find(:all,:conditions => ["m_oil_id = 1 and deleted_flg <> ?",1], :order => 'tank_no').map do |u|
+		      	#[u.tank_name,u.id] end, :include_blank => "") %>
+		      	<%= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
+		  	 	@m_tanks.map do |u|
+		      	[u.tank_name,u.id] end, :include_blank => "") %>
+	  	  	<%- end -%>
+		  </td>
+		  <% end %>
+	  	</tr>
+	  	
+	  	<tr>
+	  	  <% for i in 11..20 do %>
+	  	  <th><%= "No" + i.to_s %></th>
+	  	  <% end %>
+	  	  <th></th>
+	  	</tr>	
+	  	
+	  	<tr>
+	  	  <% for i in 11..20 do %>
+	  	  <%= hidden_field "m_meter[#{idx}][#{i}]" ,'m_shop_id', :value => @m_shop_id %>
+	  	  <%= hidden_field "m_meter[#{idx}][#{i}]" ,'m_oil_id', :value => @m_oil_first.id %>
+	  	  <% @m_meter = MMeter.find(:first,:conditions=>['m_shop_id = ? and m_oil_id = ? and pos_class = ? and number = ?',@m_shop_id.to_i,@m_oil_first.id.to_i,m_code.code.to_i,i]) %>
+	  	  
+	  	  <td>
+			<%- if @m_meter -%>
+				<%= hidden_field "m_meter[#{idx}][#{i}]", 'id',:value=>@m_meter.id %>
+	  	  		<%= text_field "m_meter[#{idx}][#{i}]", 'meter_no',:value=>@m_meter.meter_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"numberCheck(this)" %>
+	  	  	<%- else -%>
+	  	  		<%= text_field "m_meter[#{idx}][#{i}]", 'meter_no',:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"numberCheck(this)" %>
+	  	  	<%- end -%>
+		  </td>
+	  	  <%= hidden_field "m_meter[#{idx}][#{i}]", 'pos_class',:value=>m_code.code.to_i  %>
+	  	  <%= hidden_field "m_meter[#{idx}][#{i}]", 'number',:value=>i  %>
+	  	  <% end %>
+	  	  <td rowspan="2">
+				<input type="button" value="クリア" onClick="form_clear2(<%= idx %>);" />
+	  	  </td>
+	  	</tr>
+	  	
+	  	<tr>
+	  	  <% for i in 11..20 do %>
+	  	  
+	  	  <% @m_meter = MMeter.find(:first,:conditions=>['m_shop_id = ? and m_oil_id = ? and pos_class = ? and number = ?',@m_shop_id.to_i,@m_oil_first.id.to_i,m_code.code.to_i,i]) %>
+	  	  
+	  	  <td>
+			<%- if @m_meter -%>
+	  	  		<%#= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
+		  	 	#MTank.find(:all,:conditions => ["m_oil_id = 1 and deleted_flg <> ?",1], :order => 'tank_no').map do |u|
+		      	#[u.tank_name,u.id] end, :selected => @m_meter.m_tank_id,:include_blank => "") %>
+		      	<%= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
+		  	 	@m_tanks.map do |u|
+		      	[u.tank_name,u.id] end, :selected => @m_meter.m_tank_id,:include_blank => "") %>
+	  	  	<%- else -%>
+	  	  		<%#= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
+		  	 	#MTank.find(:all,:conditions => ["m_oil_id = 1 and deleted_flg <> ?",1], :order => 'tank_no').map do |u|
+		      	#[u.tank_name,u.id] end, :include_blank => "") %>
+		      	<%= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
+		  	 	@m_tanks.map do |u|
+		      	[u.tank_name,u.id] end, :include_blank => "") %>
+	  	  	<%- end -%>
+		  </td>
+	  	  <% end %>
+	  	</tr>
+	  	
+	  	<% end %>
+	</table>
+
+  <div class="actions">
+	    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div>
+<% end %>

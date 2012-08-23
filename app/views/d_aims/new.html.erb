@@ -1,0 +1,38 @@
+<script type="text/javascript">
+	
+</script>
+
+<h1>目標値入力</h1>
+
+<div id="shop_info" >
+	<div class="title_alias">対象店舗</div>
+	<div class="info_alias"><%= @m_shop.shop_name %></div>
+</div>
+
+<%= form_tag({:action => 'search' }, { :remote => true }) do %>
+
+	<div id="select_info" >
+		<div class="title_alias">対象年月</div>
+		<div class="select_alias">
+			<%= select_date(@month_first,{:date_separator=>'/',:use_month_numbers=>true,:discard_day=>true},:onChange=>"test_alert()")%>
+		</div>
+	</div>
+	
+	<div id="select_info" >
+		<div class="title_alias">対象区分</div>
+		<div class="radio_alias">
+			日毎:<%= radio_button 'search','aim',0,{:checked=>true} %>
+			月毎:<%= radio_button 'search','aim',1,{} %>
+		</div>
+	</div>
+	
+	<%= submit_tag '検索' %>
+<% end %>
+
+</br>
+
+<div id="result">
+	<%= render :partial => 'form' %>
+</div>
+
+<%#= link_to 'Back', d_aims_path %>

@@ -1,13 +1,46 @@
 class DAimsController < ApplicationController
+
   # GET /d_aims
   # GET /d_aims.json
   def index
-    @d_aims = DAim.all
+    #@d_aims = DAim.all
+    
+    date = DateTime.now
+    year = date.strftime("%Y")
+    month = date.strftime("%m")
+    
+    @month_last_day = Date.new(year.to_i,month.to_i,-1).day
+    
+    if params[:input_year] == nil and params[:input_month] == nil and params[:input_aim] == nil
+       @year = year
+       @month = month
+       @month_first = Date.new(year.to_i,month.to_i,1)
+       
+       @search_aim = 0
+    else
+       @year = params[:input_year]
+       @month = params[:input_month]
+       @month_first = Date.new(params[:input_year].to_i,params[:input_month].to_i,1)
+       
+       @search_aim = params[:input_aim].to_i
+    end
+    
+    @d_aim = DAim.new
+    
+    @m_shop = MShop.find(current_user.m_shop_id)
+
+    @m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=?",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @d_aims }
+      format.json { render json: @d_aim }
     end
+
+
+    #respond_to do |format|
+    #  format.html # index.html.erb
+    #  format.json { render json: @d_aims }
+    #end
   end
 
   # GET /d_aims/1
@@ -25,16 +58,7 @@ class DAimsController < ApplicationController
   # GET /d_aims/new.json
   def new
     @d_aim = DAim.new
-    p Time.now
-    #@today = Time.now
-    #@end_day = @today + 6.days
-    @today = Date.new(2012,8,1)
     
-    @m_shop = MShop.find(current_user.m_shops_id)
-
-    @m_aims = MAim.find(:all,:order=>"aim_code")
-
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @d_aim }
@@ -49,41 +73,48 @@ class DAimsController < ApplicationController
   # POST /d_aims
   # POST /d_aims.json
   def create
-    
     p "create-----------"
-    p params[:d_aim]
-    p "-----------------"
+    
+    @search_aim = params[:search][:aim]
     
     if params[:d_aim]
       params[:d_aim].each do |key,value| 
         
-            @d_aim = DAim.find(:first,:conditions=>["id = ?",value['id']])
+        if @search_aim == "1"
+          # 月毎の場合
+          value.each do |key2,value2|
+            @d_aim = DAim.find(:first,:conditions=>["id = ?",value2['id']])
             
             if @d_aim == nil then
-                @d_aim = DAim.new(value)
-                #@m_meter.m_oil_id = params[:m_oil][:m_oil_id]
-                #タンクが選択されていれば保存
-                if value2[:m_tank_id] == ""
-                else
-                  @d_aim.save
-                end  
+                @d_aim = DAim.new(value2)
+                @d_aim.save
             else
-                #タンクが選択されていれば更新、なければ削除
-                if value2[:m_tank_id] == ""
-                  @d_aim.destroy
-                else
-                  @d_aim.update_attributes(value)
-                end 
+                @d_aim.update_attributes(value2)
             end
-            
+          end
+        else
+          # 日毎の場合
+          @d_aim = DAim.find(:first,:conditions=>["id = ?",value['id']])
+          
+          if @d_aim == nil then
+              @d_aim = DAim.new(value)
+              @d_aim.save
+          else
+              @d_aim.update_attributes(value)
+          end
+        end
       end
     end
     
     
+    respond_to do |format|
+      input_year = params[:input][:year]
+      input_month = params[:input][:month]
+      input_aim = params[:input][:aim]
+      format.html { redirect_to :controller => "d_aims", :action => "index", :input_year => input_year,:input_month => input_month,:input_aim => input_aim }
+      format.json { render json: @d_aim, status: :created, location: @d_aim }
+    end
     
-    
-    #@d_aim = DAim.new(params[:d_aim])
-
     #respond_to do |format|
     #  if @d_aim.save
     #    format.html { redirect_to @d_aim, notice: 'D aim was successfully created.' }
@@ -122,4 +153,29 @@ class DAimsController < ApplicationController
       format.json { head :ok }
     end
   end
+  
+  
+  def search 
+    p "search-----------------------------------"
+    
+    @search_aim = params[:search][:aim]
+    
+    year = params[:date][:year]
+    month = params[:date][:month]
+    
+    @year = format("%04d",year)
+    @month = format("%02d",month)
+    
+    @month_first = Date.new(year.to_i,month.to_i,1)
+    @month_last_day = Date.new(year.to_i,month.to_i,-1).day
+    
+    @d_aim = DAim.new
+    
+    @m_shop = MShop.find(current_user.m_shop_id)
+    
+    @m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=?",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
+
+  end
+  
+  
 end
