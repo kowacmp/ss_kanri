@@ -1,0 +1,62 @@
+<%= form_tag(url_for(:action => 'update')) do %>
+<dir id="check">
+<table id="rounded-corner">
+	<tr>
+		<th>店舗</th>
+		<th>年月</th>
+		<th>作成者</th>
+		<th>店舗種別</th>
+		<th>入力状況</th>
+		<th>詳細</th>
+		<th>確認<br /><input type="checkbox" id="all" />全て</th>
+	</tr>
+	<% @shops.each do |shop| %>
+	<tr>
+		<td><%= shop.shop_cd.to_s + " | " + shop.shop_name %></td>
+		<td>
+			<% washsale_report = DWashsaleReport.find(:all,:conditions => ['sale_date = ? and m_shop_id = ?',@this_month,shop.id]).first %>
+			<%= @this_month[0,4] + '/' + @this_month[4,2] %>
+		</td>
+		<td>
+    	  <%= User.find(washsale_report.created_user_id).user_name unless washsale_report == nil %>
+		</td>
+		<td>
+			<%= if shop.shop_kbn == 0 then '直営' else '油外' end%>
+		</td>
+		<td>
+			<%= unless washsale_report == nil then "済" else "未" end%>
+		</td>
+		<td>
+			<% unless washsale_report == nil %>
+			<%= link_to '詳細',{:controller => 'd_washsale_reports',:action => 'index',:sale_date => @this_month,:m_shop_id => shop.id,:shop_kbn => @shop_kbn,:mode => 'list'}   %>
+			<% end %>
+			</td>
+		<td>
+		  <% unless washsale_report == nil %>
+      	    <% if washsale_report.kakutei_flg == 1  %>
+      	      <%= check_box_tag("cbox[]",washsale_report.id,{:checked => true}) %>
+      	    <% else %>
+      	      <%= check_box_tag("cbox[]",washsale_report.id) %> 	  
+      	    <% end %>
+      	  <% end %>
+		</td>
+	</tr>
+	<% end %><!-- each -->
+    <%= hidden_field_tag "sale_date",@this_month %>
+    <%= hidden_field_tag "shop_kbn",@shop_kbn %>
+    <tr><td colspan="8"><%= submit_tag(" 更新 ",:disable_with => "更新中...",:confirm => '保存しても良いですか？') %>	 </td></tr>
+</table>
+<% end %>
+</dir>
+
+<script type="text/javascript">
+$(function(){
+    $('#all').click(function(){
+    if(this.checked){
+    $('#check input').attr('checked','checked');
+    }else{
+    $('#check input').removeAttr('checked');
+    }
+  });
+});
+</script>

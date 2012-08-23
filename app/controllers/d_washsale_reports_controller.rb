@@ -12,16 +12,22 @@ class DWashsaleReportsController < ApplicationController
     #select_yearの開始年
     @m_shop_id = current_user.m_shop_id
     @start_year = DWashSale.minimum("sale_date",:conditions => ['m_shop_id = ?',@m_shop_id])[0,4].to_i
+    @mode = params[:mode]
     
-    if params[:date] == nil or params[:date] == ''
-      @year = @time_now.year.to_s
-      @month = format_month(@time_now.month)
+    unless @mode == 'list'
+      if params[:date] == nil or params[:date] == ''
+        @year = @time_now.year.to_s
+        @month = format_month(@time_now.month)
+      else
+        @year = params[:date][:year].to_s
+        @month = format_month(params[:date][:month])
+      end
+      @this_month = @year + @month
+      @last_month = get_last_month(@year, @month)
     else
-      @year = params[:date][:year].to_s
-      @month = format_month(params[:date][:month])
+      @this_month = params[:sale_date]
+      @last_month = get_last_month(@this_month[0,4], @this_month[4,2])
     end
-    @this_month = @year + @month
-    @last_month = get_last_month(@year, @month)
 
     @d_washsale_report = get_d_washsale_report(@this_month,@m_shop_id)
     @d_washsale_report_last = get_d_washsale_report(@last_month,@m_shop_id)
@@ -116,27 +122,7 @@ private
         :conditions => ['sale_date = ? and m_shop_id = ?',sale_date,m_shop_id]).first
   end
 
-  def get_last_month(year, month)
-    year  = year.to_i
-    month = month.to_i
+
     
-    if month == 1
-      month = 12
-      year = year -1
-    else
-      month = month -1
-    end
-    month = format_month(month)
-    return year.to_s + month.to_s
-  end  
-    
-  def format_month(month)
-      month = month.to_s
-      if month.length == 1
-        month = "0" + month
-      else
-        month = month
-      end
-    return month
-  end
+
 end
