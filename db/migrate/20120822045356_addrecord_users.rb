@@ -58,6 +58,12 @@ class AddrecordUsers < ActiveRecord::Migration
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
+          1,999999,'本社','ﾎﾝｼｬ','本社','830-0017','久留米市日吉町23-36 福岡スタンダードビル5F','0942-33-2323','0942-31-2222','',9,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
+          "
+           execute "INSERT INTO m_shops(
+            id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
+            m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
+          VALUES (
           2,195639,'八女インターSS','ﾔﾒｲﾝﾀｰ','八女IC','833-0005','筑後市長浜2245-1','0942-53-0679','0942-53-5766','',1,2,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
           execute "INSERT INTO m_shops(
