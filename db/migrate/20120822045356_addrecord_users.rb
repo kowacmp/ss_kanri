@@ -2,16 +2,23 @@
 class AddrecordUsers < ActiveRecord::Migration
   def up
 
-        execute "INSERT INTO users(
-            id, account, user_name, user_name_kana, m_shops_id, m_authority_id, 
-            user_class, nyusya_date, birthday, deleted_flg, email, 
-            encrypted_password
-            )
-         VALUES (1,999999,'管理者','ｶﾝﾘｼｬ',1,1, 
-            0,'2012-10-01','2012-10-01',0,'999999@com.jp', 
-             '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq'
-             );"
-          execute "select setval('users_id_seq',(select max(id) from users));"
+          execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shops_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (3, '000006', 'KOWA社員SS', NULL, 2, 16, 0, NULL, NULL, 0, NULL, 'kowa11@com.jp', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+           "
+           execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shops_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (8, '000010', 'KOWAバイト', NULL, 2, 17, 0, NULL, NULL, 0, NULL, 'kowa5@', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+           "
+           execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shops_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (1, '999999', '管理者', 'ｶﾝﾘｼｬ', 1, 1, 0, '2012-10-01 00:00:00', '2012-10-01 00:00:00', 0, NULL, '999999@com.jp', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 25, '2012-08-23 03:53:53.200407', '2012-08-23 03:00:38.224022', '127.0.0.1', '127.0.0.1', NULL, '2012-08-23 03:53:53.201144');
+           "
+           execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shops_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (4, '000002', 'KOWA専務', NULL, 1, 3, 0, NULL, NULL, 0, NULL, 'kowa1@com.jp', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+           "
+           execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shops_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (5, '000003', 'KOWA常務', NULL, 1, 4, 0, NULL, NULL, 0, NULL, 'kowa2@com.jp', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 1, '2012-08-23 02:54:20.88417', '2012-08-23 02:54:20.88417', '127.0.0.1', '127.0.0.1', NULL, '2012-08-23 02:54:20.884906');
+           "
+           execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shops_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (6, '000004', 'KOWA店長', NULL, 2, 6, 0, NULL, NULL, 0, NULL, 'kowa3@', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 6, '2012-08-23 03:49:14.909155', '2012-08-23 03:46:59.644673', '127.0.0.1', '127.0.0.1', NULL, '2012-08-23 03:49:14.909815');
+           "
+           execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shops_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (7, '000005', 'KOWA社員', NULL, 2, 13, 0, NULL, NULL, 0, NULL, 'kowa4@', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 3, '2012-08-23 03:52:21.380034', '2012-08-23 02:57:57.38074', '127.0.0.1', '127.0.0.1', NULL, '2012-08-23 03:52:21.380893');
+           "
+           execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shops_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (2, '000001', 'KOWA社長', NULL, 1, 2, 0, '2012-10-01 00:00:00', '2012-10-01 00:00:00', 0, NULL, 'kowa@com.jp', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 5, '2012-08-23 01:03:24.84941', '2012-08-23 01:01:58.312895', '127.0.0.1', '127.0.0.1', NULL, '2012-08-23 01:03:24.850083');
+           "
+           execute "select setval('users_id_seq',(select max(id) from users));"
 
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (1, 'user_class', '0', '社員', '社員', '2012-10-01', '2012-10-01');"
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (2, 'user_class', '1', '社員以外', '社員以外', '2012-10-01', '2012-10-01');"
@@ -203,7 +210,7 @@ class AddrecordUsers < ActiveRecord::Migration
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
             m_oil_id4, tank4_all, deleted_flg, created_at, updated_at)
           VALUES (
-          27,'288626','セルフ東合川SS','ﾋｶﾞｼｱｲｶﾜ','東合川','839-0809','久留米市東合川2-2-10','0942-44-3811','0942-44-3811','',00
+          27,'288626','セルフ東合川SS','ﾋｶﾞｼｱｲｶﾜ','東合川','839-0809','久留米市東合川2-2-10','0942-44-3811','0942-44-3811','',0,9,1,0,2,0,3,0,4,0,0,'2012-10-01','2012-10-01');
           "
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
