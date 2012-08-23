@@ -58,6 +58,38 @@ div#select_day_info{
   }
 }  
 
+div#shop_kbn_info{
+  display: inline-block; _display: inline;
+  
+  div.title_alias{
+      display: inline-block; _display: inline;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 7px;
+      margin-left: 30px;
+      background: url("th_001.gif") repeat-x scroll 0 0 transparent;
+  }
+  
+  div.input_alias{
+    display: inline-block; _display: inline;
+            border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 3px;
+      padding-bottom: 4px;
+      text-align: right;
+      margin-left: -4px;
+      
+      input#head_input_day{
+        width: 100px;
+        margin: 0px;
+        padding: 0px;
+        text-align: right;
+      }
+  }
+}  
+
 div#d_sale{
   display: inline-block; _display: inline;
   /*margin-top: 20px;*/
@@ -118,7 +150,7 @@ div#d_sale{
   
 
 
-  div#pay_item, div#recive_item, div#purika_item{
+  div#pay_item, div#recive_item, div#etc_item, div#purika_item{
       /*display: inline-block; _display: inline;*/
       border-color: black;
       border-style: solid;
@@ -164,4 +196,22 @@ div#d_sale{
 input.money{
   ime-mode: inactive;
   text-align: right;
+}
+
+input.number{
+  ime-mode: inactive;
+  text-align: left;
+}
+
+input.text{
+  ime-mode: active;
+  text-align: left;
+}
+
+input[ type=checkbox ] {
+  width: 40px; height: 40px;
+  /*-moz-transform-origin: right bottom;*/
+  -moz-transform: scale( 2 , 2 );
+ /* -webkit-transform-origin: right bottom;*/
+ /* -webkit-transform: scale( 2 , 2 );*/
 }

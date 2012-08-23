@@ -67,6 +67,8 @@ SsKanri::Application.routes.draw do
   resources :d_sales do
     collection do
       delete :destroy_d_sale_item
+      get :lock
+      get :all_lock
     end
   end
   

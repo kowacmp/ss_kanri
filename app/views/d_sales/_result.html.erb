@@ -1,0 +1,34 @@
+<table id='rounded-corner' style="width: 930px;">
+  <tr>
+    <th>店舗</th>
+    <th>売上日</th>
+    <th>作成者</th>
+    <th>店舗種別</th>
+    <th>入力状況</th>
+    <th>
+    	<%= link_to 'ロック', {:action => "all_lock", :input_day=>@head[:input_day], :input_shop_kbn=>@head[:input_shop_kbn], :kbn=>"lock"}, :confirm => 'すべてロックします。よろしいですか？', :remote => true, :method => :get %>
+    	／解除</th>
+    <th></th>
+  </tr>
+
+<% @result_datas.each_with_index do |data,i| %>
+  <tr>
+    <td><%= "#{data.shop_cd}  #{data.shop_name}" %></td>
+    <td><%= "#{data.sale_date.to_s[0,4]}/#{data.sale_date.to_s[4,2]}/#{data.sale_date.to_s[6,2]}" unless data.sale_date.blank? %></td>
+    <td><%= "#{data.account}  #{data.user_name}" %></td>
+    <td><%= data.shop_kbn_name %></td>
+    <td><%= if data.sale_date.blank? then "未" else "済" end %></td>
+    <td>
+    	<% unless data.sale_date.blank? %>
+    		<% if data.kakutei_flg == 0 %>
+	    		<%=  check_box_tag "data_kakutei_flg_#{i}", "0", false  %>
+	    	<% else %>
+	    		<%=  check_box_tag "data_kakutei_flg_#{i}", "1", true %>
+	    	<% end%>
+	    	<%= hidden_field_tag "data_id_#{i}", data.id %>
+    	<% end %>
+    </td>
+    <td></td>
+  </tr>
+<% end %>
+</table>
