@@ -6,19 +6,25 @@
     <th>店舗種別</th>
     <th>入力状況</th>
     <th>
-    	<%= link_to 'ロック', {:action => "all_lock", :input_day=>@head[:input_day], :input_shop_kbn=>@head[:input_shop_kbn], :kbn=>"lock"}, :confirm => 'すべてロックします。よろしいですか？', :remote => true, :method => :get %>
-    	／解除</th>
+    	<% if @all_kakutei_flg == 0 or @all_kakutei_flg == nil %>
+    	  <%=  check_box_tag "all_lock", "0", false  %> 
+    	<% else %>
+    	  <%=  check_box_tag "all_lock", "1", true  %>
+    	<% end %>
+    	全て
+    	<%#= link_to 'ロック', {:action => "all_lock", :input_day=>@head[:input_day], :input_shop_kbn=>@head[:input_shop_kbn], :kbn=>"lock"}, :confirm => 'すべてロックします。よろしいですか？', :remote => true, :method => :get %>
+    </th>
     <th></th>
   </tr>
 
 <% @result_datas.each_with_index do |data,i| %>
   <tr>
     <td><%= "#{data.shop_cd}  #{data.shop_name}" %></td>
-    <td><%= "#{data.sale_date.to_s[0,4]}/#{data.sale_date.to_s[4,2]}/#{data.sale_date.to_s[6,2]}" unless data.sale_date.blank? %></td>
+    <td style="text-align: center"><%= "#{data.sale_date.to_s[0,4]}/#{data.sale_date.to_s[4,2]}/#{data.sale_date.to_s[6,2]}" unless data.sale_date.blank? %></td>
     <td><%= "#{data.account}  #{data.user_name}" %></td>
-    <td><%= data.shop_kbn_name %></td>
-    <td><%= if data.sale_date.blank? then "未" else "済" end %></td>
-    <td>
+    <td style="text-align: center"><%= data.shop_kbn_name %></td>
+    <td style="text-align: center"><%= if data.sale_date.blank? then "未" else "済" end %></td>
+    <td style="text-align: center">
     	<% unless data.sale_date.blank? %>
     		<% if data.kakutei_flg == 0 %>
 	    		<%=  check_box_tag "data_kakutei_flg_#{i}", "0", false  %>
@@ -28,7 +34,12 @@
 	    	<%= hidden_field_tag "data_id_#{i}", data.id %>
     	<% end %>
     </td>
-    <td></td>
+    <td>
+    	<% unless data.sale_date.blank? %>
+    		<%= link_to image_tag('icon/24_edit.png'), {:controller => "d_sales", :action => "new", :id => data.id, :input_shop_kbn=>@head[:input_shop_kbn], :from_view=>"index" } %>
+    		<%= link_to image_tag('icon/24_show.png'), {:controller => "d_sales", :action => "report_view", :id => data.id, :input_shop_kbn=>@head[:input_shop_kbn]} %>
+    	<% end %>
+    </td>
   </tr>
 <% end %>
 </table>

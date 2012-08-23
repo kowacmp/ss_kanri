@@ -1,0 +1,82 @@
+<h1>売上現金管理表</h1>
+
+<% m_shop = MShop.find(@head[:m_shop_id]) %>
+<div id="shop_info">
+	<div class="title_alias">対象店舗</div>
+	<div class="info_alias"><%= "#{m_shop.shop_cd}　#{m_shop.shop_name}" %></div></div>
+<div id="select_day_info">
+	<div class="title_alias">売上年月</div>
+	<div class="info_alias">
+		<%= @head[:input_day].to_s[0,7] %>
+    </div>
+</div>
+
+<hr>
+
+
+<div id="report_view">
+  	<table id="report_view_table" class="rounded-corner">
+		<tr>
+			<th>日付</th>
+			<th>曜日</th>
+			<th>現金売上</th>
+			<th>プリカ売上</th>
+			<th>ﾌﾟﾘｶ手数料</th>
+			<th>その他売上</th>
+			<th>掛入金</th>
+			<th>出金</th>
+			<th>小計</th>
+			<th>釣銭追加</th>
+			<th>ＡＳＳ入金</th>
+			<th>前日入金</th>
+			<th>当日入金</th>
+			<th>翌日入金<br />(前)</th>
+			<th>翌日入金<br />(後)</th>
+			<th>計算上有高</th>
+			<th>現金有高</th>
+			<th>過不足</th>
+		</tr>
+		<%  loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, -1)).strftime("%d").to_i %>
+		<% loopcnt.times { |i| %>
+			<% select_day = Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, i + 1) %>				
+			<% d_sale, zenjitu_d_sale = get_d_sales_data(select_day.strftime("%Y%m%d")) %>
+			<tr>
+				<td class="title"><%= i + 1 %></td>
+				<td class="title">
+					<%= day_of_the_week(select_day.wday) %>
+				</td>
+				<td class="money"><%= num_fmt(d_sale.sale_money) if d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale.sale_purika) if d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale.purika_tesuryo) if d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale.sonota_money) if d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale.recive_money) if d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale.pay_money) if d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i - d_sale.purika_tesuryo.to_i + d_sale.pay_money.to_i) if d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale.sale_ass) if d_sale %></td>
+				<td class="money"><%#= num_fmt() if d_sale %></td>
+				<td class="money"><%= num_fmt(zenjitu_d_sale.sale_pm_out) if zenjitu_d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale.sale_today_out) if d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale.sale_am_out) if d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale.sale_pm_out) if d_sale %></td>
+				<td class="money"><%#= num_fmt(d_sale.) if d_sale %></td>
+				<td class="money"><%#= num_fmt(d_sale.) if d_sale %></td>
+				<td class="money"><%#= num_fmt(d_sale.) if d_sale %></td>
+			</tr>
+		<% } %>
+	</table>
+</div>
+
+<%= link_to "戻る", {:controller => "d_sales", :action => "index", :input_day => @head[:input_day], :input_shop_kbn => @head[:input_shop_kbn]}, :method => :get, :class => 'return_icon' %>
+
+<script>
+$(function () {
+    //テーブルにスクロールバーを設定
+    new superTable("report_view_table", {
+      cssSkin : "sSky",
+      headerRows : 1,
+      fixedCols : 2,
+      colWidths :  [40, 40, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+    });
+    
+})();	
+</script>
