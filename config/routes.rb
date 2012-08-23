@@ -93,6 +93,7 @@ SsKanri::Application.routes.draw do
       delete :destroy_d_sale_item
       get :lock
       get :all_lock
+      get :report_view
     end
   end
   
