@@ -5,37 +5,38 @@ class CreateDAims < ActiveRecord::Migration
       t.string  :date,            :limit => 6,      :null => false
       t.integer :m_shop_id,       :null => false
       t.integer :m_aim_id,        :null => false
-      t.integer :aim_value1
-      t.integer :aim_value2
-      t.integer :aim_value3
-      t.integer :aim_value4
-      t.integer :aim_value5
-      t.integer :aim_value6
-      t.integer :aim_value7
-      t.integer :aim_value8
-      t.integer :aim_value9
-      t.integer :aim_value10
-      t.integer :aim_value11
-      t.integer :aim_value12
-      t.integer :aim_value13
-      t.integer :aim_value14
-      t.integer :aim_value15
-      t.integer :aim_value16
-      t.integer :aim_value17
-      t.integer :aim_value18
-      t.integer :aim_value19
-      t.integer :aim_value20
-      t.integer :aim_value21
-      t.integer :aim_value22
-      t.integer :aim_value23
-      t.integer :aim_value24
-      t.integer :aim_value25
-      t.integer :aim_value26
-      t.integer :aim_value27
-      t.integer :aim_value28
-      t.integer :aim_value29
-      t.integer :aim_value30
-      t.integer :aim_value31
+      t.integer :aim_total,       :limit => 9
+      t.integer :aim_value1,      :limit => 9
+      t.integer :aim_value2,      :limit => 9
+      t.integer :aim_value3,      :limit => 9
+      t.integer :aim_value4,      :limit => 9
+      t.integer :aim_value5,      :limit => 9
+      t.integer :aim_value6,      :limit => 9
+      t.integer :aim_value7,      :limit => 9
+      t.integer :aim_value8,      :limit => 9
+      t.integer :aim_value9,      :limit => 9
+      t.integer :aim_value10,     :limit => 9
+      t.integer :aim_value11,     :limit => 9
+      t.integer :aim_value12,     :limit => 9
+      t.integer :aim_value13,     :limit => 9
+      t.integer :aim_value14,     :limit => 9
+      t.integer :aim_value15,     :limit => 9
+      t.integer :aim_value16,     :limit => 9
+      t.integer :aim_value17,     :limit => 9
+      t.integer :aim_value18,     :limit => 9
+      t.integer :aim_value19,     :limit => 9
+      t.integer :aim_value20,     :limit => 9
+      t.integer :aim_value21,     :limit => 9
+      t.integer :aim_value22,     :limit => 9
+      t.integer :aim_value23,     :limit => 9
+      t.integer :aim_value24,     :limit => 9
+      t.integer :aim_value25,     :limit => 9
+      t.integer :aim_value26,     :limit => 9
+      t.integer :aim_value27,     :limit => 9
+      t.integer :aim_value28,     :limit => 9
+      t.integer :aim_value29,     :limit => 9
+      t.integer :aim_value30,     :limit => 9
+      t.integer :aim_value31,     :limit => 9
       t.integer :created_user_id
       t.integer :updated_user_id
 
@@ -45,6 +46,7 @@ class CreateDAims < ActiveRecord::Migration
     execute "COMMENT ON COLUMN d_aims.date IS '年月';
              COMMENT ON COLUMN d_aims.m_shop_id IS '店舗id';
              COMMENT ON COLUMN d_aims.m_aim_id IS '目標id';
+             COMMENT ON COLUMN d_aims.aim_total IS '合計';
              COMMENT ON COLUMN d_aims.aim_value1 IS '１日';
              COMMENT ON COLUMN d_aims.aim_value2 IS '２日';
              COMMENT ON COLUMN d_aims.aim_value3 IS '３日';

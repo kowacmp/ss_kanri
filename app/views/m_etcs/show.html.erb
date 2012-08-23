@@ -31,6 +31,9 @@
   	</tr>   	  	
   </table>
 
-<%= link_to '編集', edit_m_etc_path(@m_etc), :class => 'edit_icon' %> |
-<%= link_to '戻る', m_etcs_path, :class => 'return_icon' %>
+<%#= link_to '編集', edit_m_etc_path(@m_etc), :class => 'edit_icon' %> 
+<%#= link_to '戻る', m_etcs_path, :class => 'return_icon' %>
+<%= link_to '編集', {:action=>"edit",:id=>@m_etc.id,:input_check=>@check_del_flg}, :class => 'edit_icon' %> |
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>
+
 

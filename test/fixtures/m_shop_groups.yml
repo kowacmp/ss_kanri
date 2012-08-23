@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  group_cd: 1
+  group_name: MyString
+  deleted_flg: 1
+  deleted_at: 2012-08-20 19:50:46
+
+two:
+  group_cd: 1
+  group_name: MyString
+  deleted_flg: 1
+  deleted_at: 2012-08-20 19:50:46

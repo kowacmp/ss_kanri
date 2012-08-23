@@ -9,6 +9,7 @@ class DWashsaleListsController < ApplicationController
     @input_ymd   = params[:input_ymd]
     @input_ymd_s = @input_ymd.delete("/")
     @d_wash_sales = get_d_wash_sales(@input_ymd_s)
+    @wday = @input_ymd.to_time.wday
     
     @d_wash_sales.each do |d_wash_sale|
       if params[:cbox].include?(d_wash_sale.id.to_s)

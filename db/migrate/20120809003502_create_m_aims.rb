@@ -5,6 +5,7 @@ class CreateMAims < ActiveRecord::Migration
       t.column  :aim_code,          :smallint,      :null => false
       t.string :aim_name,           :limit => 30
       t.column  :shop_kbn,          :smallint
+      t.column  :input_kbn,         :smallint
 
       t.timestamps
     end
@@ -12,6 +13,7 @@ class CreateMAims < ActiveRecord::Migration
     execute "COMMENT ON COLUMN m_aims.aim_code IS '目標値コード';
              COMMENT ON COLUMN m_aims.aim_name IS '目標値名';
              COMMENT ON COLUMN m_aims.shop_kbn IS '店舗種別';
+             COMMENT ON COLUMN m_aims.input_kbn IS '入力区分';
     "
     
   end

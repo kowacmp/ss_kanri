@@ -1,6 +1,7 @@
 <%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
 <% nyuryoku_flg = 0 %>
 <%= form_tag(url_for(:action => 'update')) do %>
+<div id="check">
 <table  id='rounded-corner'>
 	<tr>
 		<th>店舗</th>
@@ -8,7 +9,9 @@
 		<th>作成者</th>
 		<th>店舗種別</th>
 		<th>入力状況</th>
-		<th>ロック／解除</th>
+		<th>ロック／解除<br />
+			<input type="checkbox" id="all" />
+		</th>
 		<th>参照</th>
 		<th>編集</th>
 	</tr>
@@ -27,13 +30,9 @@
       	<% unless d_wash_sale == nil %>
       	  <%= User.find(d_wash_sale.created_user_id).user_name %><% end %>
       </td>
-      <td><% if shop.shop_kbn == 0 %> 直営 	<% else %> 	油外 <% end %></td>
+      <td><%= if shop.shop_kbn == 0 then "直営" else "油外" end %></td>
       <td>
-      	<% unless d_wash_sale == nil %>
-      	  済
-      	<% else %>
-      	  未
-      	<% end %>
+      	<%= unless d_wash_sale == nil then "済" else "未" end %>
       </td>
       <td>
       	<% unless d_wash_sale == nil %>
@@ -66,3 +65,16 @@
     <tr><td colspan="8"><%= submit_tag(" 更新 ",:disable_with => "更新中...",:confirm => '保存しても良いですか？') %>	 </td></tr>
 </table>
 <% end %>
+</div>
+
+<script type="text/javascript">
+$(function(){
+    $('#all').click(function(){
+    if(this.checked){
+    $('#check input').attr('checked','checked');
+    }else{
+    $('#check input').removeAttr('checked');
+    }
+  });
+});
+</script>
