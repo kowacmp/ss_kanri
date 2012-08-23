@@ -1,0 +1,35 @@
+<%= @input_ymd %>
+<% i = 0 %>
+<%= form_tag({:action => 'update'}) do %>
+<table id="rounded-corner">
+	<tr>
+		<th rowspan="2">No</th>
+		<th>購入先</th>
+		<th>購入品名</th>
+		<th>個数</th>
+		<th>単価</th>
+		<th colspan="2">金額</th>
+	</tr>
+	<tr>
+		<th colspan="2">購入目的</th>
+		<th>現在庫</th>
+		<th>購入日</th>
+		<th>承認</th>
+		<th>コメント</th>
+	</tr>
+
+    <% @fixtures.each do |fixture| %>
+	    <%= render partial: 'inputed_data',:locals => {:fixture => fixture,:i => i} %>
+        <% i = i + 1 %>
+	<% end %><!-- each -->
+	
+	
+	<% (10 - i).times do |j| %>
+	  <%# if j == 0 then j = j + i end %>
+	      <% j = j + i %>
+	      <%= render partial: 'empty_data', :locals => {:i => j}%>
+	<% end %><!-- times-->
+		   <%= hidden_field_tag "input_ymd",@input_ymd %>
+</table>
+<%= submit_tag(" 更新 ",:disable_with => "更新中...",:confirm => '保存しても良いですか？') %>	 
+<% end %><!-- form -->
