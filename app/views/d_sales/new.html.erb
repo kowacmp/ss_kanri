@@ -1,5 +1,19 @@
-<h1>New d_sale</h1>
+<h1>売上入力</h1>
 
+<% m_shop = MShop.find(@m_shop_id) %>
+<div id="shop_info">
+	<div class="title_alias">対象店舗</div>
+	<div class="info_alias"><%= "#{m_shop.shop_cd}　#{m_shop.shop_name}" %></div></div>
+<div id="select_day_info">
+	<div class="title_alias">入力日</div>
+	<div class="input_alias">
+		<%= text_field :head ,:input_day, :class=>"datepicker" , :readonly=>"readonly" %>
+    </div>
+</div>
+
+<hr>
+
+<div id="result">
 <%= render 'form' %>
+</div>
 
-<%= link_to 'Back', d_sales_path %>
