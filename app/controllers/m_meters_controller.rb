@@ -146,7 +146,7 @@ class MMetersController < ApplicationController
     p "search-----------------------------------"
     p params[:m_shop][:m_shop_id]
     
-    @m_shop_id = 1
+    @m_shop_id = params[:m_shop][:m_shop_id]
     @m_oil_id = params[:m_oil][:m_oil_id]
     
     @m_oil_first = MOil.find(@m_oil_id)
@@ -154,7 +154,7 @@ class MMetersController < ApplicationController
     @m_meter = MMeter.new
 
     @m_codes = MCode.find(:all,:conditions=>["kbn='7'"],:order=>'code')
-    @m_oils = MOil.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'oil_cd')
+    @m_oils = MOil.find(:all, :conditions => "deleted_flg = 0", :order => 'oil_cd')
     
     sql_where = "m_shop_id = ?"
     sql_where = sql_where + " and m_oil_id = ?"

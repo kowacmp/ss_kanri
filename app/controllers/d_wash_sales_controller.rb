@@ -12,7 +12,7 @@ class DWashSalesController < ApplicationController
     @m_washes = get_m_washes
     @mode     = params[:mode]
     unless @mode == 'list'
-      @shop = MShop.find(current_user.m_shops_id)      
+      @shop = MShop.find(current_user.m_shop_id)      
     else
       @shop = MShop.find(params[:m_shop_id])
     end
@@ -162,7 +162,7 @@ class DWashSalesController < ApplicationController
       if @mode == 'list'
         @shop = MShop.find(@shop_id)
       else  
-        @shop = MShop.find(current_user.m_shops_id)
+        @shop = MShop.find(current_user.m_shop_id)
       end
 
       @input_ymd = @sale_date.to_time.strftime("%Y/%m/%d")
@@ -181,7 +181,7 @@ private
     if mode == 'list'
       @d_wash_sale.m_shop_id = shops_id
     else
-      @d_wash_sale.m_shop_id = current_user.m_shops_id      
+      @d_wash_sale.m_shop_id = current_user.m_shop_id      
     end
     @d_wash_sale.kakutei_flg = 0
     @d_wash_sale.created_user_id = current_user.id
@@ -205,6 +205,9 @@ private
   
   def update_d_washsale_item(wash_cd,wash_no,sum_meter=0,sum_meter_mae=0)
     @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"]
+    if @d_washsale_item.meter == nil
+      @d_washsale_item.meter = 0
+    end
     if wash_no == 99
       @d_washsale_item.error_money =  (sum_meter - sum_meter_mae) - @d_washsale_item.meter
     end

@@ -5,7 +5,7 @@ class DSaleEtcsController < ApplicationController
   
   def index
     @m_etcs = get_m_etcs
-    @shop = MShop.find(current_user.m_shops_id)
+    @shop = MShop.find(current_user.m_shop_id)
     @input_ymd = Time.now.strftime("%Y/%m/%d")
     @input_ymd_s = Time.now.strftime("%Y%m%d")
     @input_ymd_mae_s = get_zenkai_date(@input_ymd_s)
@@ -130,7 +130,7 @@ class DSaleEtcsController < ApplicationController
 
     respond_to do |format|
       @m_etcs = get_m_etcs
-      @shop = MShop.find(current_user.m_shops_id)
+      @shop = MShop.find(current_user.m_shop_id)
       @input_ymd = params[:sale_date].to_time.strftime("%Y/%m/%d")
       @input_ymd_s = params[:sale_date]
       @input_ymd_mae_s = get_zenkai_date(@input_ymd_s)
@@ -144,7 +144,7 @@ private
   def create_d_sale_etc(sale_date)
     @d_sale_etc = DSaleEtc.new
     @d_sale_etc.sale_date = sale_date
-    @d_sale_etc.m_shop_id = current_user.m_shops_id
+    @d_sale_etc.m_shop_id = current_user.m_shop_id
     @d_sale_etc.kakutei_flg = 0
     @d_sale_etc.created_user_id = current_user.id
     @d_sale_etc.updated_user_id = current_user.id

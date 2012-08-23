@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>M shop:</b>
+  <%= @m_meter.m_shop_id %>
+</p>
+
+<p>
+  <b>M oil:</b>
+  <%= @m_meter.m_oil_id %>
+</p>
+
+<p>
+  <b>M tank:</b>
+  <%= @m_meter.m_tank_id %>
+</p>
+
+<p>
+  <b>Pos class:</b>
+  <%= @m_meter.pos_class %>
+</p>
+
+<p>
+  <b>Meter no:</b>
+  <%= @m_meter.meter_no %>
+</p>
+
+<p>
+  <b>Deleted flg:</b>
+  <%= @m_meter.deleted_flg %>
+</p>
+
+<p>
+  <b>Deleted at:</b>
+  <%= @m_meter.deleted_at %>
+</p>
+
+
+<%= link_to 'Edit', edit_m_meter_path(@m_meter) %> |
+<%= link_to 'Back', m_meters_path %>

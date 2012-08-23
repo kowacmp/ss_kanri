@@ -1,0 +1,27 @@
+<h1>Listing m_aims</h1>
+
+<table>
+  <tr>
+    <th>Aim code</th>
+    <th>Aim name</th>
+    <th>Shop kbn</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @m_aims.each do |m_aim| %>
+  <tr>
+    <td><%= m_aim.aim_code %></td>
+    <td><%= m_aim.aim_name %></td>
+    <td><%= m_aim.shop_kbn %></td>
+    <td><%= link_to 'Show', m_aim %></td>
+    <td><%= link_to 'Edit', edit_m_aim_path(m_aim) %></td>
+    <td><%= link_to 'Destroy', m_aim, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New M aim', new_m_aim_path %>

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Group cd:</b>
+  <%= @m_shop_group.group_cd %>
+</p>
+
+<p>
+  <b>Group name:</b>
+  <%= @m_shop_group.group_name %>
+</p>
+
+<p>
+  <b>Deleted flg:</b>
+  <%= @m_shop_group.deleted_flg %>
+</p>
+
+<p>
+  <b>Deleted at:</b>
+  <%= @m_shop_group.deleted_at %>
+</p>
+
+
+<%= link_to 'Edit', edit_m_shop_group_path(@m_shop_group) %> |
+<%= link_to 'Back', m_shop_groups_path %>

@@ -1,0 +1,5 @@
+<% if @search_aim == "0" %>
+	$('#result').html("<%= escape_javascript(render :partial => 'form' )%>");
+<% else %>
+	$('#result').html("<%= escape_javascript(render :partial => 'form_month' )%>");
+<% end %>
