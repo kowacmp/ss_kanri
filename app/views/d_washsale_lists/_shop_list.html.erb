@@ -1,0 +1,68 @@
+<%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
+<% nyuryoku_flg = 0 %>
+<%= form_tag(url_for(:action => 'update')) do %>
+<table  id='rounded-corner'>
+	<tr>
+		<th>店舗</th>
+		<th>売上日</th>
+		<th>作成者</th>
+		<th>店舗種別</th>
+		<th>入力状況</th>
+		<th>ロック／解除</th>
+		<th>参照</th>
+		<th>編集</th>
+	</tr>
+  <% @shops.each do |shop| %>
+    <% nyuryoku_flg = wday_hantei(@wday,shop.id) %>
+    <% if nyuryoku_flg > 0 %>
+    <tr>
+      <td><%= shop.shop_cd.to_s + '　' + shop.shop_name %></td>
+        <% d_wash_sale = DWashSale.find(:all,:conditions => ['sale_date = ? and m_shop_id = ?',@input_ymd_s,shop.id]).first %>
+      <td>
+      	<% unless d_wash_sale == nil %>
+      	  <%= d_wash_sale.sale_date[0,4] + '/' + d_wash_sale.sale_date[4,2] + '/' + d_wash_sale.sale_date[6,2] %>
+      	<% end %>
+      </td>
+      <td>
+      	<% unless d_wash_sale == nil %>
+      	  <%= User.find(d_wash_sale.created_user_id).user_name %><% end %>
+      </td>
+      <td><% if shop.shop_kbn == 0 %> 直営 	<% else %> 	油外 <% end %></td>
+      <td>
+      	<% unless d_wash_sale == nil %>
+      	  済
+      	<% else %>
+      	  未
+      	<% end %>
+      </td>
+      <td>
+      	<% unless d_wash_sale == nil %>
+      	  <% if d_wash_sale.kakutei_flg == 1  %>
+      	    <%= check_box_tag("cbox[]",d_wash_sale.id,{:checked => true}) %>
+      	  <% else %>
+      	    <%= check_box_tag("cbox[]",d_wash_sale.id) %> 	  
+      	  <% end %>
+      	<% end %>
+      </td>
+      <td><%= link_to('参照' ,{:action => 'show',:m_shop_id => shop.id},:class => 'modal') %></td>
+      <td><%= link_to('編集' ,{:controller => 'd_wash_sales',:action => 'index',
+            :input_ymd => @input_ymd,:m_shop_id => shop.id,:shop_kbn => @shop_kbn,:mode => 'list'}) %></td>
+    </tr>
+    <% else %> <!-- nyuryoku_flg -->
+    <tr>
+    	<td><%= shop.shop_cd.to_s + '　' + shop.shop_name %></td>
+    	<td></td>
+    	<td></td>
+    	<td><% if shop.shop_kbn == 0 %> 直営 	<% else %> 	油外 <% end %></td>
+    	<td></td>
+    	<td></td>
+        <td><%= link_to('参照' ,{:action => 'show',:m_shop_id => shop.id},:class => 'modal') %></td>
+        <td></td>
+    </tr>
+    <% end %> <!-- nyuryoku_flg -->
+  <% end %>
+  <%= hidden_field_tag "input_ymd",@input_ymd %>
+  <%= hidden_field_tag "shop_kbn",@shop_kbn %>
+    <tr><td colspan="8"><%= submit_tag(" 更新 ",:disable_with => "更新中...",:confirm => '保存しても良いですか？') %>	 </td></tr>
+</table>
+<% end %>

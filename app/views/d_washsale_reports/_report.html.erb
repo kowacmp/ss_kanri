@@ -1,0 +1,117 @@
+<%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
+<%  #最終行集計用初期化
+        k_sale_meter = 0
+		k_sale_sum = 0
+		g_sale_sum = 0
+		gosa_sum  = 0
+		g_sum_meter_pos = 0
+		g_sum_gosa = 0
+		g_sum_zengetu_sa = 0
+		g_sale_meter = 0
+%>
+<% if @d_washsale_report == nil %>
+  <font color="red">データの更新はされていません</font>
+<% else %>
+<% end %>
+<%= form_tag({:action => 'update'}) do %>
+<table class='rounded-corner' >
+	<!-- 共通ヘッダ -->
+	<tr>
+		<th>機種名</th>
+		<th>月末メーター</th>
+		<th>月初メーター</th>
+		<th>月間メーター売上</th>
+		<th>POS売上</th>
+		<th>誤差</th>
+		<th>前月差</th>
+		<th>前月売上</th>
+	</tr>  	
+
+
+	<% @m_washes.each do |wash| %>
+	  <% wash.max_num.times do |i| %>
+		<tr>
+			<th  id="wash_cd_<%= wash.wash_cd.to_s %>_<%= (i+1).to_s %>"><%= wash.wash_name + (i+1).to_s %></th>
+			<% @d_wash_sales = get_d_wash_sales_month(@this_month ,@m_shop_id) %>
+			<% sum_meter = sum_d_washsale_item_meter(@d_wash_sales,wash.id,(i+1)) %>
+			<% meter_id = "meter_" + wash.id.to_s + '_'+ (i+1).to_s %>
+			<td class="no-input-num"><%= sum_meter %><%= hidden_field_tag meter_id, sum_meter %></td>
+            <% if @d_washsale_report_last == nil %>
+              <% d_washsale_detail_report = nil %>
+			<% else %>
+  			  <% d_washsale_detail_report = get_d_washsale_detail_report(@d_washsale_report_last.id,wash.id,(i+1)) %>
+			<% end%>
+			<% if d_washsale_detail_report == nil %>
+			  <% sum_meter_last = 0 %>
+			<% else %>
+			  <% sum_meter_last = d_washsale_detail_report.meter %>
+			<% end %>
+			<td class="no-input-num"><%= sum_meter_last %></td>
+			<% last_meter_id = "sale_meter_" + wash.id.to_s + '_'+ (i+1).to_s %>
+			<td class="no-input-num"><%= sum_meter - sum_meter_last %><%= hidden_field_tag last_meter_id, (sum_meter - sum_meter_last) %></td>
+            <% k_sale_sum = k_sale_sum + (sum_meter - sum_meter_last) %>
+            <% if i == 0 %>
+              <td rowspan="<%= wash.max_num %>"></td>
+              <td rowspan="<%= wash.max_num %>">
+              	<%= link_to '誤差',{:action => 'show_error',
+		    	    	   :sale_date=> @this_month,:wash_cd => wash.wash_cd,
+		    	    	   :shop_id => @shop.id  },:class => 'modal'%> 
+              	</td>
+              <td rowspan="<%= wash.max_num %>"></td>
+            <% end %>
+            <td  class="no-input-num">
+            	<% unless d_washsale_detail_report == nil %>
+            	  <% sale_meter = d_washsale_detail_report.sale_meter %>
+            	<% else %>
+            	  <% sale_meter = 0 %>
+            	<% end %>
+            	<% k_sale_meter = k_sale_meter + sale_meter %>
+            	<%= sale_meter %>
+            </td>
+		</tr>
+      <% end %><!-- times -->
+        <tr>
+        	<td colspan="2"></td>
+          <th><%= wash.wash_name + "計" %></th>
+          <td class="no-input-num"><%= k_sale_sum %></td>
+          <% g_sale_sum = g_sale_sum + k_sale_sum %>
+          <% k_sale_sum = 0 %>
+          <td class="no-input-num"><!-- POS売上 -->
+          	  <% meter_99 = "meter_" + wash.id.to_s + '_'+ 99.to_s %>
+          	  <% sum_meter_pos = sum_d_washsale_item_meter(@d_wash_sales,wash.id,99) %>
+              <%= sum_meter_pos %><%= hidden_field_tag meter_99, sum_meter_pos %>
+              <% g_sum_meter_pos = g_sum_meter_pos + sum_meter_pos %>
+          </td>
+          <td class="no-input-num">
+          	<%= sum_d_washsale_item_gosa(@d_wash_sales,wash.id) %>
+          	<% g_sum_gosa = g_sum_gosa + sum_d_washsale_item_gosa(@d_wash_sales,wash.id) %>	
+          </td><!-- 誤差-->
+          <td class="no-input-num">
+          	<%= sum_meter_pos - k_sale_meter %>
+          	<% g_sum_zengetu_sa = g_sum_zengetu_sa - (sum_meter_pos - k_sale_meter) %>
+          	</td><!--前月差 -->
+          <td class="no-input-num"><%= k_sale_meter %>
+          	<% g_sale_meter = g_sale_meter + k_sale_meter %>
+          	<% k_sale_meter = 0 %></td><!-- 前月売上 -->
+        </tr>
+	<% end %><!-- each -->
+	<tr>
+		<td colspan="2"></td>
+		<th>売上合計</th>
+		<td class="no-input-num"><%= g_sale_sum %></td>
+		<td class="no-input-num"><%= g_sum_meter_pos %></td>
+		<td class="no-input-num"><%= g_sum_gosa %></td>
+		<td class="no-input-num"><%= g_sum_zengetu_sa %></td>
+		<td class="no-input-num"><%= g_sale_meter %></td>
+	</tr>
+	<tr>
+		<td colspan="8">
+			<%= submit_tag(" 更新 ",:disable_with => "更新中...",:confirm => '保存しても良いですか？') %>	
+		</td>
+		
+	</tr>
+</table>
+<%= hidden_field_tag 'sale_date',@this_month %>
+<%= hidden_field_tag 'm_shop_id',@m_shop_id %>
+<% end %><!-- form -->
+
