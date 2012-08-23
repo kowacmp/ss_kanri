@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  application_date: MyString
+  m_shop_id: 1
+  buy_shop: MyString
+  buy_item: MyString
+  buy_num: 1
+  buy_object: MyString
+  now_num: 1
+  buy_day: MyString
+  comment: MyString
+  approve_flg: 1
+  approve_id1: 1
+  approve_date1: 
+  created_user_id: 1
+  updated_user_id: 1
+
+two:
+  application_date: MyString
+  m_shop_id: 1
+  buy_shop: MyString
+  buy_item: MyString
+  buy_num: 1
+  buy_object: MyString
+  now_num: 1
+  buy_day: MyString
+  comment: MyString
+  approve_flg: 1
+  approve_id1: 1
+  approve_date1: 
+  created_user_id: 1
+  updated_user_id: 1
