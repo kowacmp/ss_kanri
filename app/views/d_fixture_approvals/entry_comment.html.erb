@@ -1,0 +1,8 @@
+
+コメント入力：<%= @fixture.buy_item %>
+<%= form_tag({:action => 'update_comment'},:remote => true) do %>
+<div id="text_area">
+	<%= render 'input_comment' %>
+</div>
+<%= submit_tag(" 更新 ",:disable_with => "更新中...") %>
+<% end %>

@@ -1,5 +1,9 @@
 SsKanri::Application.routes.draw do
 
+  get "d_fixture_approvals/index"
+  get "d_fixture_approvals/edit"
+  get "d_fixture_approvals/change_radio"
+  
   resources :m_approvals
 
   get "d_washsale_reports/index"

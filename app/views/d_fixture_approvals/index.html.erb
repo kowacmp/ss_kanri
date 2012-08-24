@@ -1,0 +1,57 @@
+<%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
+<% i = 0%>
+<table id="rounded-corner">
+	<tr>
+		<th>No</th>
+		<th>購入先</th>
+		<th>購入品名</th>
+		<th>個数</th>
+		<th>単価</th>
+		<th>金額</th>
+		<th>購入目的</th>
+		<th>現在庫</th>
+		<th>購入日</th>
+		<th>承認</th>
+		<th>コメント</th>
+	</tr>
+<% @fixtures.each do |fixture| %>
+    <% i = i + 1%>
+    <tr>
+    <td><%= i %></td>
+    <td><%= fixture.buy_shop %></td>
+    <td><%= fixture.buy_item %></td>
+    <td><%= fixture.buy_num %></td>
+    <td><%= fixture.buy_price %></td>
+    <td><%= fixture.buy_num * fixture.buy_price %></td>
+    <td><%= fixture.buy_object %></td>
+    <td><%= fixture.now_num %></td>
+    <td><%= fixture.buy_day %></td>
+    <td><% if fixture.approve_flg == 1 %>
+    	  <%= radio_button_tag("rbtn#{fixture.id}",1,:checked => true) %>
+    	<% else %>
+    	  <%= radio_button_tag("rbtn#{fixture.id}",1) %>
+    	<% end %>
+    	承認
+    	<% if fixture.approve_flg == 2 %>
+    	  <%= radio_button_tag("rbtn#{fixture.id}",2,:checked => true) %>
+    	<% else %>
+    	  <%= radio_button_tag("rbtn#{fixture.id}",2) %>
+    	<% end %>
+    	却下
+    </td>
+    <td><%= link_to '入力',{:action => 'entry_comment',:id => fixture.id},:class => 'modal' %></td>
+    </tr>
+<% end %>
+</table>
+<div id="message"></div>
+
+<script type="text/javascript">
+jQuery(function() {
+<% @fixtures.each do |f| %>
+    jQuery('input[name="rbtn<%="#{f.id}"%>"]').change(function(){
+        var data = jQuery(this).val();
+        $.get("<%=url_for({:action => 'change_radio'}) %>?value=" + data + "&id=" + <%= f.id.to_s %>);
+    });
+<% end %>
+});
+</script>
