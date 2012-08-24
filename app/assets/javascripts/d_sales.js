@@ -19,7 +19,7 @@ $(function () {
 			   //New
 		       $.get(
 				    '/d_sales/new',                 // 送信先
-				    { input_day: $(this).val() , remote: true},
+				    { input_day: $(this).val() , m_shop_id: $("#m_shop_id"), remote: true},
 				    function(data, status) {        // 通信成功時にデータを表示
 				       $('#form_d_sale').empty();
 		               $('#form_d_sale').append(data);
@@ -41,6 +41,35 @@ $(function () {
 			    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
 	            );
       	});
+      	
+    //全てロック／解除が変更された場合のイベント
+    $("#all_lock")
+	    .live('click', function(){
+	    		var msg;
+	    		if ($(this).attr('checked') == "checked") {
+	    			msg = "すべてロックします。よろしいですか？"
+	    		}else{
+	    			msg = "すべて解除します。よろしいですか？"
+	    		};
+	    		
+	    		if(confirm(msg)){
+	    			$.get(
+		    			'/d_sales/all_lock/',
+		    			{ kakutei_flg: $(this).attr('checked'), input_day: $("#head_input_day").val(), input_shop_kbn: $("#head_input_shop_kbn").val() },
+					    function(data, status) {        // 通信成功時にデータを表示
+					       $('#result').empty();
+			               $('#result').append(data);
+			               
+			             },
+					    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
+		    		);
+					//return true;
+				}else{
+					return false;	
+				};
+				
+	    	});
+    
 	//ロック／解除が変更された場合のイベント
 	$(":checkbox[id^=data_kakutei_flg]")
 	    .live('click', function(){
