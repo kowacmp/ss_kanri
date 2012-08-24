@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  item_account_code: 1
+  item_account_name: MyString
+  outline: MyString
+
+two:
+  item_account_code: 1
+  item_account_name: MyString
+  outline: MyString

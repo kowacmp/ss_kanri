@@ -1,27 +1,18 @@
 <h1>登録</h1>
 
-<%#= form_tag(url_for(:action => 'search') ,:remote => true) do %>
-
 <%= form_tag({:action => 'search' }, { :remote => true }) do %>
-	<%#= select "m_oil",'m_oil_id', @m_oils.map {|u| [u.oil_name,u.id]} %>
 	<%= select( "m_oil", 'm_oil_id',@m_oils.map do |u| [u.oil_name,u.id] end ) %>
-	<%#= select_tag "m_oil[m_oil_id]", options_for_select(@m_oils.map {|u| [u.oil_name,u.id]}),:onChange => "test_submit()" %>
+	
   <%= hidden_field "m_shop" ,'m_shop_id', :value => @m_shop_id %>
   <%= submit_tag '検索' %>
-  <%# submit 'aaa' %>
 <% end %>
 
-<%#= form_tag(:action => 'new' ,:id => @m_shop_id) do %>
-<%#= form_tag(:update => "form", :url => {:action => "search"}, :remote => true) do %>
-<%#= form_for @m_meter, :url => {:action => 'index'} do |f| %>
-<%#= select "m_oil", 'm_oil_id',@m_oils.map {|u| [u.oil_name,u.id]},{:include_blank => "選択して下さい"},:onChange => "test_submit(this.form)"%>
-<%#= submit_tag "aaa"%>
-<%# end %>
 
-<%#= render 'form' %>
 <div id="result">
 	<%= render :partial => 'form' %>
 </div>
 
-<%= link_to '戻る', m_meters_path, :class => 'return_icon' %>
+<%#= link_to '戻る', m_meters_path, :class => 'return_icon' %>
+<%= link_to '戻る', {:controller=>"m_shops", :action=>"index"}, :class => 'return_icon' %>
+
 </div>

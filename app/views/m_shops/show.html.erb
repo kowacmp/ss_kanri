@@ -41,7 +41,7 @@
   	<tr>
   	  <th>店舗種別</th>
   	  <td>
-  	  	<% @m_code = MCode.find(:first,:conditions => ["kbn = '6' and code = ?",@m_shop.shop_kbn.to_s]) %>
+  	  	<% @m_code = MCode.find(:first,:conditions => ["kbn = 'shop_kbn' and code = ?",@m_shop.shop_kbn.to_s]) %>
   	  	<%= @m_code.code_name1 %>
   	  </td>  	  
   	</tr>
@@ -51,39 +51,6 @@
   	  	<% @m_shop_group = MShopGroup.find(:first,:conditions => ["deleted_flg = 0 and id = ?",@m_shop.m_shop_group_id]) %>
   	  	<%= @m_shop_group.group_name %></td>  	  
   	</tr>
-  	
-  	<!--
-  	<%# @m_oils.each_with_index do |m_oil,idx| %>
-  		<%#- if m_oil.id == @m_shop.m_oil_id1 -%>
-    		<tr>
-		  	  <th><%#= m_oil.oil_name %></th>
-		  	  <td><%#= @m_shop.tank1_all %></td>
-		  	</tr>
-    	<%#- elsif m_oil.id == @m_shop.m_oil_id2 -%>
-    		<tr>
-		  	  <th><%#= m_oil.oil_name %></th>
-		  	  <td><%#= @m_shop.tank2_all %></td>
-		  	</tr>
-    	<%#- elsif m_oil.id == @m_shop.m_oil_id3 -%>
-    		<tr>
-		  	  <th><%#= m_oil.oil_name %></th>
-		  	  <td><%#= @m_shop.tank3_all %></td>
-		  	</tr>
-    	<%#- elsif m_oil.id == @m_shop.m_oil_id4 -%>
-    		<tr>
-		  	  <th><%#= m_oil.oil_name %></th>
-		  	  <td><%#= @m_shop.tank4_all %></td>
-		  	</tr>
-    	<%#- else -%>
-    		<tr>
-		  	  <th></th>
-		  	  <td></td>
-		  	</tr>
-    	<%#- end -%>
-    <%# end %>
-  	
-  	
-  	-->
   	
   </table>
 

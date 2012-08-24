@@ -1,4 +1,4 @@
-<p id="notice"><%= notice %></p>
+<!--<p id="notice"><%#= notice %></p>-->
 
   <table id='rounded-corner'>
   	<tr>
@@ -15,7 +15,7 @@
   	</tr>
   	<tr>
   	  <th>グループ種類</th>
-  	  <td><%= @m_wash.wash_group %></td>  	  
+  	  <td><%= @m_wash.wash_group_name %></td>  	  
   	</tr>
   	<tr>
   	  <th>最大数</th>
@@ -23,5 +23,7 @@
   	</tr>
   </table>
 
-<%= link_to '編集', edit_m_wash_path(@m_wash), :class => 'edit_icon' %> |
-<%= link_to '戻る', m_washes_path, :class => 'return_icon' %>
+<%#= link_to '編集', edit_m_wash_path(@m_wash), :class => 'edit_icon' %> 
+<%#= link_to '戻る', m_washes_path, :class => 'return_icon' %>
+<%= link_to '編集', {:action=>"edit",:id=>@m_wash.id,:input_check=>@check_del_flg}, :class => 'edit_icon' %> |
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>

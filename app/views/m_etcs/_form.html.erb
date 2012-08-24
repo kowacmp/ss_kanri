@@ -1,46 +1,62 @@
 <%= form_for(@m_etc) do |f| %>
   <% if @m_etc.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@m_etc.errors.count, "error") %> prohibited this m_etc from being saved:</h2>
+      <h2><%= pluralize(@m_etc.errors.count, "") %> 件のエラーがあります。</h2>
 
       <ul>
       <% @m_etc.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= sliceString(msg) %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
+  <%= hidden_field "input",'check',:value=>@check_del_flg%>
+
   <table id='rounded-corner'>
   	<tr>
-  	  <th><%= f.label '他商品コード' %></th>
-  	  <td><%= f.number_field :etc_cd %></td>  	  
+  	  <th><%= f.label '他売上コード' %></th>
+  	  <td><%= f.number_field :etc_cd, :style=>"ime-mode:disabled" ,:maxlength=>2 %></td>  	  
   	</tr>
   	<tr>
-  	  <th><%= f.label '他商品名' %></th>
-  	  <td><%= f.text_field :etc_name %></td>  	  
+  	  <th><%= f.label '他売上名' %></th>
+  	  <td><%= f.text_field :etc_name,:maxlength=>20 %></td>  	  
   	</tr>
   	<tr>
-  	  <th><%= f.label '他商品略称' %></th>
-  	  <td><%= f.text_field :etc_ryaku %></td>  	  
+  	  <th><%= f.label '他売上略称' %></th>
+  	  <td><%= f.text_field :etc_ryaku,:maxlength=>10 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '単位' %></th>
-  	  <td><%= f.text_field :etc_tani %></td>  	  
+  	  <td><%= f.text_field :etc_tani,:maxlength=>4 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label 'グループ種類' %></th>
-  	  <td><%#= f.number_field :etc_group %>
-  	    <%= f.select(:etc_group, MCodesHelper::code_list('m_etc_group'),{:include_blank => "選択してください"}) %>
+  	  <td>
+  	    <%= f.select(:etc_group, MCode.find(:all, :conditions => ["kbn = ?",'m_etc_group'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
   	  </td> 
+  	</tr>
   	<tr>
   	  <th><%= f.label '最大数' %></th>
-  	  <td><%= f.text_field :max_num %></td>  	  
+  	  <td><%= f.text_field :max_num, :style=>"ime-mode:disabled" ,:maxlength=>2 %></td>  	  
   	</tr>  	 
   	<tr>
   	  <th><%= f.label '監査フラグ' %></th>
-  	  <td><%= f.text_field :kansa_flg %></td>  	  
-  	</tr>   	  	  
+  	  <td>
+  	  	<%= f.select(:kansa_flg, MCode.find(:all, :conditions => ["kbn = ?",'kansa_flg'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
+  	  </td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '課税フラグ' %></th>
+  	  <td>
+  	  	<%= f.select(:tax_flg, MCode.find(:all, :conditions => ["kbn = ?",'tax_flg'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
+  	  </td>  	  
   	</tr>
   </table>
   <div class="actions">

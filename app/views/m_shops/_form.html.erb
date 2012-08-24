@@ -3,8 +3,8 @@
       <!-- JS -->
       <script type="text/javascript" src="lib/jquery/jquery-1.3.2.min.js"></script>
       <script type="text/javascript">
+      
          $(function(){
-         	//alert("aaa");
             // パス名格納用
             var tabs = [];
             // ハッシュ格納用
@@ -93,21 +93,15 @@
 		 	
 		 	
 		 	for (i = 0; i < counter2; i++) {
-		 		if (document.getElementById('m_fix_money_' + i + '_start_month') == null) {
-			 		//alert("null or undefined");
-			 	}
-			 	else {
+		 		if (document.getElementById('m_fix_money_' + i + '_start_month') != null) {
 		 			if (document.getElementById('m_fix_money_' + i + '_start_month').value == "") {
 		 				error_msg_m = error_msg_m + '<li>開始月を選択してください。</li>';
 		 				break;
 		 			}
 		 		}
 		 		
-		 		if (document.getElementById('m_fix_money_' + i + '_end_month') == null) {
-			 		//alert("null or undefined");
-			 	}
-			 	else {
-		 			if (document.getElementById('m_fix_money_' + i + '_end_month').value == "") {
+		 		if (document.getElementById('m_fix_money_' + i + '_end_month') != null) {
+			 		if (document.getElementById('m_fix_money_' + i + '_end_month').value == "") {
 		 				error_msg_m = error_msg_m + '<li>終了月を選択してください。</li>';
 		 				break;
 		 			}
@@ -158,8 +152,6 @@
 				}
 			}
 		 	
-		 	
-		 	
 		 	//固定釣銭  >>>>>>>>>>>>>>>>>>>>>>>
 		 	
 		 	
@@ -171,20 +163,14 @@
 			}
 		 	
 		 	for (i = 0; i < counter3; i++) {
-		 		if (document.getElementById('m_tank_' + i + '_m_oil_id') == null) {
-			 		//alert("null or undefined");
-			 	}
-			 	else {
+		 		if (document.getElementById('m_tank_' + i + '_m_oil_id') != null) {
 		 			if (document.getElementById('m_tank_' + i + '_m_oil_id').value == "") {
 		 				error_msg_m = error_msg_m + '<li>油種を選択してください。</li>';
 		 				break;
 		 			}
 		 		}
 		 		
-		 		if (document.getElementById('m_tank_' + i + '_tank_no') == null) {
-			 		//alert("null or undefined");
-			 	}
-			 	else {
+		 		if (document.getElementById('m_tank_' + i + '_tank_no') != null) {
 		 			if (document.getElementById('m_tank_' + i + '_tank_no').value == "") {
 		 				error_msg_m = error_msg_m + '<li>タンクNoを入力してください。</li>';
 		 				break;
@@ -204,10 +190,7 @@
 			}
 		 	
 		 	for (i = 0; i < counter; i++) {
-		 		if (document.getElementById('m_washsale_plan_' + i + '_m_wash_id') == null) {
-			 		//alert("null or undefined");
-			 	}
-			 	else {
+		 		if (document.getElementById('m_washsale_plan_' + i + '_m_wash_id') != null) {
 		 			if (document.getElementById('m_washsale_plan_' + i + '_m_wash_id').value == "") {
 		 				error_msg_m = error_msg_m + '<li>洗車機を選択してください。</li>';
 		 				break;
@@ -315,21 +298,21 @@
 		   	HTML2 = HTML2.replace(/select-replace/g,"m_fix_money[" + (counter2) + "]");
 		   	
 			var HTML3 = '<input type="text" id="m_fix_money_' + (counter2) 
-						+ '_cash_box" name="m_fix_money[' + (counter2) + '][cash_box]" size="2" maxlength="9" style="ime-mode:disabled" onkeyup="numberCheck(this)"/>';
+						+ '_cash_box" name="m_fix_money[' + (counter2) + '][cash_box]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
 			var HTML4 = '<input type="text" id="m_fix_money_' + (counter2) 
-						+ '_pos_register" name="m_fix_money[' + (counter2) + '][pos_register]" size="2" maxlength="9" style="ime-mode:disabled" onkeyup="numberCheck(this)"/>';
+						+ '_pos_register" name="m_fix_money[' + (counter2) + '][pos_register]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
 			var HTML5 = '<input type="text" id="m_fix_money_' + (counter2) 
-						+ '_part_time" name="m_fix_money[' + (counter2) + '][part_time]" size="2" maxlength="9" style="ime-mode:disabled" onkeyup="numberCheck(this)"/>';
+						+ '_part_time" name="m_fix_money[' + (counter2) + '][part_time]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
 			var HTML6 = '<input type="text" id="m_fix_money_' + (counter2) 
-						+ '_wash_money" name="m_fix_money[' + (counter2) + '][wash_money]" size="2" maxlength="9" style="ime-mode:disabled" onkeyup="numberCheck(this)"/>';
+						+ '_wash_money" name="m_fix_money[' + (counter2) + '][wash_money]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
 			var HTML7 = '<input type="text" id="m_fix_money_' + (counter2) 
-						+ '_money_change" name="m_fix_money[' + (counter2) + '][money_change]" size="2" maxlength="9" style="ime-mode:disabled" onkeyup="numberCheck(this)"/>';
+						+ '_money_change" name="m_fix_money[' + (counter2) + '][money_change]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
 			var HTML8 = '<input type="text" id="m_fix_money_' + (counter2) 
-						+ '_total_cash_box" name="m_fix_money[' + (counter2) + '][total_cash_box]" size="2" maxlength="9" style="ime-mode:disabled" onkeyup="numberCheck(this)"/>';
+						+ '_total_cash_box" name="m_fix_money[' + (counter2) + '][total_cash_box]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
 			var HTML9 = '<input type="text" id="m_fix_money_' + (counter2) 
-						+ '_total_change_money" name="m_fix_money[' + (counter2) + '][total_change_money]" size="2" maxlength="9" style="ime-mode:disabled" onkeyup="numberCheck(this)"/>';
+						+ '_total_change_money" name="m_fix_money[' + (counter2) + '][total_change_money]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
 			var HTML10 = '<input type="text" id="m_fix_money_' + (counter2) 
-						+ '_total_money" name="m_fix_money[' + (counter2) + '][total_money]" size="2" maxlength="9" style="ime-mode:disabled" onkeyup="numberCheck(this)"/>';
+						+ '_total_money" name="m_fix_money[' + (counter2) + '][total_money]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
 			
 			var HTML11 = '<input type="button" name="clear" value="クリア" onClick="form_clear2(' + (counter2) + ');" />'
 						+ '<input type="button" name="clear" value="削除" onClick="DelTableRows2(this);" />';
@@ -534,7 +517,7 @@
 			var HTML3 = '<input type="text" id="m_tank_' + (counter3) 
 						+ '_tank_name" name="m_tank[' + (counter3) + '][tank_name]" size="5", readonly=true />';
 			var HTML4 = '<input type="text" id="m_tank_' + (counter3) 
-						+ '_volume" name="m_tank[' + (counter3) + '][volume]" size="2" maxlength="9" style="ime-mode:disabled" onkeyup="numberCheck(this)"/>';
+						+ '_volume" name="m_tank[' + (counter3) + '][volume]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
 			var HTML5 = '<input type="button" name="clear" value="クリア" onClick="form_clear3(' + (counter3) + ');" />'
 					+ '<input type="button" name="clear" value="削除" onClick="DelTableRows3(this);" />';
 			
@@ -704,7 +687,7 @@
 			  	  <th><%= f.label '店舗種別' %></th>
 			  	  <td>
 			  	  	<%= f.select(:shop_kbn, 
-				  	 	MCode.find(:all,:conditions => ["kbn = '6'"], :order => 'code').map do |u|
+				  	 	MCode.find(:all,:conditions => ["kbn = 'shop_kbn'"], :order => 'code').map do |u|
 				      	[u.code_name1,u.code]
 				   		end, :selected => @m_shop.shop_kbn, :include_blank => "選択して下さい") %>
 			  	  </td>  	  
@@ -781,28 +764,28 @@
 						  	 	end, :selected => m_fix_money.end_month,:include_blank => "") %>
 					    </td>
 					    <td class="cash_box">
-					    	<%= text_field "m_fix_money[#{idx}]", 'cash_box',:value=>m_fix_money.cash_box,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:onkeyup=>"numberCheck(this)"%>
+					    	<%= text_field "m_fix_money[#{idx}]", 'cash_box',:value=>m_fix_money.cash_box,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
 					    </td>
 					    <td class="pos_register">
-					    	<%= text_field "m_fix_money[#{idx}]", 'pos_register',:value=>m_fix_money.pos_register,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:onkeyup=>"numberCheck(this)"%>
+					    	<%= text_field "m_fix_money[#{idx}]", 'pos_register',:value=>m_fix_money.pos_register,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
 					    </td>
 					    <td class="part_time">
-					    	<%= text_field "m_fix_money[#{idx}]", 'part_time',:value=>m_fix_money.part_time,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:onkeyup=>"numberCheck(this)"%>
+					    	<%= text_field "m_fix_money[#{idx}]", 'part_time',:value=>m_fix_money.part_time,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
 					    </td>
 					    <td class="wash_money">
-					    	<%= text_field "m_fix_money[#{idx}]", 'wash_money',:value=>m_fix_money.wash_money,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:onkeyup=>"numberCheck(this)"%>
+					    	<%= text_field "m_fix_money[#{idx}]", 'wash_money',:value=>m_fix_money.wash_money,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
 					    </td>
 					    <td class="money_change">
-					    	<%= text_field "m_fix_money[#{idx}]", 'money_change',:value=>m_fix_money.money_change,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:onkeyup=>"numberCheck(this)"%>
+					    	<%= text_field "m_fix_money[#{idx}]", 'money_change',:value=>m_fix_money.money_change,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
 					    </td>
 					    <td class="total_cash_box">
-					    	<%= text_field "m_fix_money[#{idx}]", 'total_cash_box',:value=>m_fix_money.total_cash_box,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:onkeyup=>"numberCheck(this)"%>
+					    	<%= text_field "m_fix_money[#{idx}]", 'total_cash_box',:value=>m_fix_money.total_cash_box,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
 					    </td>
 					    <td class="total_change_money">
-					    	<%= text_field "m_fix_money[#{idx}]", 'total_change_money',:value=>m_fix_money.total_change_money,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:onkeyup=>"numberCheck(this)"%>
+					    	<%= text_field "m_fix_money[#{idx}]", 'total_change_money',:value=>m_fix_money.total_change_money,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
 					    </td>
 					    <td class="total_money">
-					    	<%= text_field "m_fix_money[#{idx}]", 'total_money',:value=>m_fix_money.total_money,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:onkeyup=>"numberCheck(this)"%>
+					    	<%= text_field "m_fix_money[#{idx}]", 'total_money',:value=>m_fix_money.total_money,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
 					    </td>
 					    <td class="clear">
 							<input type="button" value="クリア" onClick="form_clear2(<%= idx %>);" />
@@ -944,7 +927,7 @@
 					    	<%= text_field "m_tank[#{idx}]", 'tank_name',:value=>m_tank.tank_name,:size=>5, :readonly=>true %>
 					    </td>
 					    <td class="volume">
-					    	<%= text_field "m_tank[#{idx}]", 'volume',:value=>m_tank.volume,:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>9,:onkeyup=>"numberCheck(this)"%>
+					    	<%= text_field "m_tank[#{idx}]", 'volume',:value=>m_tank.volume,:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
 					    </td>
 					   
 					    <td class="clear">

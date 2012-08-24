@@ -1,4 +1,4 @@
-<p id="notice"><%= notice %></p>
+<!--<p id="notice"><%#= notice %></p>-->
 
   <table id='rounded-corner'>
   	<tr>
@@ -19,13 +19,19 @@
   	</tr>
   	<tr>
   	  <th>グループ種類</th>
-  	  <td><%= @m_oiletc.oiletc_group %></td>  	  
+  	  <td><%= @m_oiletc.oiletc_group_name %></td>  	  
   	</tr>
   	<tr>
+  	  <th>課税フラグ</th>
+  	  <td><%= @m_oiletc.tax_flg_name %></td>  	  
+  	</tr> 	
+  	<tr>
   	  <th>営業項目</th>
-  	  <td><%= @m_oiletc.oiletc_trade %></td>  	  
+  	  <td><%= @m_oiletc.oiletc_trade_name %></td>  	  
   	</tr>  	
   </table>
 
-<%= link_to '編集', edit_m_oiletc_path(@m_oiletc), :class => 'edit_icon' %> |
-<%= link_to '戻る', m_oiletcs_path, :class => 'return_icon' %>
+<%#= link_to '編集', edit_m_oiletc_path(@m_oiletc), :class => 'edit_icon' %> 
+<%#= link_to '戻る', m_oiletcs_path, :class => 'return_icon' %>
+<%= link_to '編集', {:action=>"edit",:id=>@m_oiletc.id,:input_check=>@check_del_flg}, :class => 'edit_icon' %> |
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>

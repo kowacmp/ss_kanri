@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  check_code: 1
+  m_class_check_id: 1
+  content: MyString
+  deleted_flg: 1
+  deleted_at: 2012-08-24 16:45:15
+
+two:
+  check_code: 1
+  m_class_check_id: 1
+  content: MyString
+  deleted_flg: 1
+  deleted_at: 2012-08-24 16:45:15

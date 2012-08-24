@@ -7,7 +7,7 @@
 		<div class="title_alias">店舗種別</div>
 		<div class="select_alias">
 	  	<%= select("select",'shop_kbn' ,
-	  	 	MCode.find(:all,:conditions => ["kbn = '6'"], :order => 'code').map do |u|
+	  	 	MCode.find(:all,:conditions => ["kbn = 'shop_kbn'"], :order => 'code').map do |u|
 	      	[u.code_name1,u.code]
 	   		end, :include_blank => "") %>
 	   	</div>

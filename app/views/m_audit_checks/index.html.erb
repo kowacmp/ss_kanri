@@ -1,0 +1,31 @@
+<h1>Listing m_audit_checks</h1>
+
+<table>
+  <tr>
+    <th>Check code</th>
+    <th>M class check</th>
+    <th>Content</th>
+    <th>Deleted flg</th>
+    <th>Deleted at</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @m_audit_checks.each do |m_audit_check| %>
+  <tr>
+    <td><%= m_audit_check.check_code %></td>
+    <td><%= m_audit_check.m_class_check_id %></td>
+    <td><%= m_audit_check.content %></td>
+    <td><%= m_audit_check.deleted_flg %></td>
+    <td><%= m_audit_check.deleted_at %></td>
+    <td><%= link_to 'Show', m_audit_check %></td>
+    <td><%= link_to 'Edit', edit_m_audit_check_path(m_audit_check) %></td>
+    <td><%= link_to 'Destroy', m_audit_check, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New M audit check', new_m_audit_check_path %>
