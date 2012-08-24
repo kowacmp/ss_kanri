@@ -51,4 +51,8 @@ class DFixturesController < ApplicationController
     end
   end
 
+  def show_comment
+    @fixture = DFixture.find(params[:id])
+    render :layout => 'modal'
+  end
 end
