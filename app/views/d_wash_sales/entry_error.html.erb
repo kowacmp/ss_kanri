@@ -1,0 +1,8 @@
+
+誤差内容入力：<%= @m_washe.wash_name %>
+<%= form_tag({:action => 'update_error'},:remote => true) do %>
+<div id="text_area">
+	<%= render 'input_error' %>
+</div>
+<%= submit_tag(" 更新 ",:disable_with => "更新中...") %>
+<% end %>

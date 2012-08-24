@@ -1,5 +1,51 @@
+<%#= javascript_include_tag "tablefix" %>
+<script> 
+$(function() {
+//$('.end_meter').tablefix({width: 450, height: 150, fixRows: 2, fixCols: 1});
+	
+//$('.tablefix1').tablefix({width: 350, height: 200, fixRows: 1, fixCols: 1});
+});
+</script>
 <%= form_tag({:action => 'd_result_meter_create' }, { :remote => true }) do %>
-<table id='rounded-corner'>
+
+<div style="float: left;width: 59%;">
+<table id='rounded-corner' class="end_meter" width="1500">
+  <tr>
+  	<th colspan="2">油種</th>
+  	<% @m_oils.each do |m_oil| %>
+  	  <th colspan="6"><%= m_oil.oil_name %></th>
+  	<% end %>
+  </tr>
+  <tr>
+  	<td rowspan="<%= @old_meters.size + 1%>">開<br/>始<br/>時<br/>メ<br/>|<br/>タ<br/>|</td>
+  	<td>No</td>
+  	<% @m_oils.each do |m_oil| %>
+  	  <% @m_codes.each do |m_code| %>
+  	    <th>計量</th>
+  	    <th><%= m_code.code_name %></th>
+  	  <% end %> 	
+  	<% end %>
+  </tr>
+  <% @old_meters.each_with_index do |meter, idx| %>
+    <tr>
+      <td><%= idx + 1 %></td>	
+  	  <% @m_oils.each do |m_oil| %>
+  	    <% @m_codes.each do |m_code| %>
+  	      <% if meter["#{m_oil.id}_#{m_code.id}_m_meter_id"].blank? %>  
+            <td></td>
+            <td></td>
+  	      <% else %>  	      	
+  	        <td><%= meter["#{m_oil.id}_#{m_code.id}_meter_no"] %></td>
+  	        <td><%= meter["#{m_oil.id}_#{m_code.id}_meter"] %></td>
+          <% end %> 	        
+  	    <% end %>
+  	  <% end %>
+    </tr>
+  <% end %>
+</table>	
+<br/>
+
+<table id='rounded-corner' class="end_meter" width="1500">
   <tr>
   	<th colspan="2">油種</th>
   	<% @m_oils.each do |m_oil| %>
@@ -33,12 +79,30 @@
     </tr>
   <% end %>
 </table>
+</div>
+
+<div style="float: right;width: 41%;">
+<table id='rounded-corner'>
+  <tr>
+  	<th>タンク</th>
+  	<th>容量</th>
+  	<th>油種</th>
+  	<th>仕入</th>
+  	<th>在庫</th>  	  	  	  	
+  </tr>
+  <% @m_tanks.each do |m_tank| %>
+    <tr>
+      <th>タンク<%= m_tank.tank_no %></th>
+      <th><%= m_tank.volume %>KL</th>
+      <th><%= m_tank.oil_name %></th>
+      <td><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :size => 1 %></td>
+      <td><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :size => 1 %></td>                  
+    </tr>
+  <% end %>
+</table>
+</div>
   <%= hidden_field :select, :d_result_id, :value => @d_result.id %>
-  <%= submit_tag '登録' %>
+  <div><%= submit_tag '登録' %></div>
 <% end %>
- <%= javascript_include_tag "tablefix.js" %> 
-   <script>
-$(function() {
-    $('#rounded-corner').tablefix({width: 200, height: 100, fixRows: 2, fixCols: 2});
-});
-  </script>
+
+

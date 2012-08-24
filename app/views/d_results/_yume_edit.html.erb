@@ -1,0 +1,21 @@
+<%= form_tag({:action => 'yume_update' }, { :remote => true }) do %>
+  <table>
+  	<tr>
+  	  <th>金額</th>
+      <td><%= number_field :yume, :kingaku, :value => @d_result_yume.pos1_data, :size => 10 %></td>
+    </tr>
+    <tr>
+      <th>ポイント</th>
+      <td><%= number_field :yume, :point, :value => @d_result_yume.pos2_data, :size => 10 %></td>
+    </tr>
+    <tr>
+      <th>件数</th>
+      <td><%= number_field :yume, :kensu, :value => @d_result_yume.pos3_data, :size => 10 %></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="right"><%= submit_tag '更新'%></td>
+    </tr>
+  </table>
+
+  <%= hidden_field :yume, :id, :value => @d_result_yume.id %>
+<% end %>

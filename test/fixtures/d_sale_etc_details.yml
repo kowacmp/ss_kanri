@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  d_sale_etc_id: 1
+  m_etc_id: 1
+  etc_no: 1
+  meter: 1
+  error_money: 1
+  error_note: MyString
+  created_user_id: 1
+  updated_user_id: 1
+
+two:
+  d_sale_etc_id: 1
+  m_etc_id: 1
+  etc_no: 1
+  meter: 1
+  error_money: 1
+  error_note: MyString
+  created_user_id: 1
+  updated_user_id: 1

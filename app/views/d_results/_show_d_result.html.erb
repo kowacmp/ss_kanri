@@ -1,4 +1,3 @@
-
 <table id='rounded-corner'>
 	<tr>
 	  <th>出荷数量(リットル)</th>
@@ -7,7 +6,7 @@
 	  <th>POS3</th>
 	  <th>POS日計</th>
 	</tr>
-  <% @m_oils.each do |m_oil| %>
+  <% @m_oil_totals.each do |m_oil| %>
     <tr>
       <th><%= m_oil.oil_name %></th> 	
       <td><%= m_oil.pos1_data %></td>
@@ -117,6 +116,7 @@
     </tr>
   <% end %>	
 </table>
+<br />
 
 <table id='rounded-corner'>
 	<tr>
@@ -130,8 +130,32 @@
   <% @syukei_reserves.each do |syukei_reserve| %>
     <tr>
       <th><%= syukei_reserve[:month] %></th> 	
-      <th><%= syukei_reserve[:nikkei] %></th> 
-      <th><%= syukei_reserve[:ruikei] %></th>           
+      <td><%= syukei_reserve[:nikkei] %></td> 
+      <td><%= syukei_reserve[:ruikei] %></td>           
     </tr>
   <% end %>
+</table>
+<br />
+
+<table id='rounded-corner'>
+	<tr>
+	  <th>油種</th>
+	  <th>タンク容量</th>
+	  <th>メーター進み</th>
+	  <th>メーター過不足</th>
+	  <th>地下タンク過不足</th>
+	  <th>仕入(リットル)</th>
+	  <th>在庫(リットル)</th>	  	  	  	  	  	  
+	</tr>	
+  <% @meters.each do |meter| %>
+    <tr>
+      <th><%= meter[:oil_name] %></th>
+      <th><%= meter[:volume] %></th>
+      <td><%= meter[:meter_susumi] %></td>
+      <td><%#= meter[:] %></td>
+      <td><%= meter[:tank_kabusoku] %></td>
+      <td><%= meter[:receive] %></td>
+      <td><%= meter[:stock] %></td>                                            
+    </tr>
+  <% end %>	
 </table>

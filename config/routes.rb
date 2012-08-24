@@ -1,8 +1,18 @@
 SsKanri::Application.routes.draw do
+  get "d_wash_sales/index"
+  get "d_wash_sales/entry_error"
+  get "d_wash_sales/change_input_ymd"
+  get "d_wash_sales/update"
+
+  get "d_sale_etcs/index"
+  get "d_sale_etcs/entry_error"
+  get "d_sale_etcs/change_input_ymd"
+  get "d_sale_etcs/update"
+
   get "d_results/index"
   get "d_results/select_date"
   get "d_results/result_edit"
-    
+
   resources :userdata do
     collection do
       get :test
@@ -50,6 +60,17 @@ SsKanri::Application.routes.draw do
     end
   end
 
+  resources :m_items
+
+  resources :d_sale_items
+
+  resources :d_sales do
+    collection do
+      delete :destroy_d_sale_item
+    end
+  end
+  
+  
   get "homes/index"
 
   # The priority is based upon order of creation:

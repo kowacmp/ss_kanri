@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  d_wash_sales_id: 1
+  m_wash_id: 1
+  wash_no: 1
+  meter: 1
+  error_money: 1
+  error_note: MyString
+  created_user_id: 1
+  update_user_id: 1
+
+two:
+  d_wash_sales_id: 1
+  m_wash_id: 1
+  wash_no: 1
+  meter: 1
+  error_money: 1
+  error_note: MyString
+  created_user_id: 1
+  update_user_id: 1

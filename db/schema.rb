@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120820004553) do
+ActiveRecord::Schema.define(:version => 20120824055309) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -106,13 +106,13 @@ ActiveRecord::Schema.define(:version => 20120820004553) do
   end
 
   create_table "d_result_oils", :force => true do |t|
-    t.integer  "d_result_id",     :null => false
-    t.integer  "m_oil_id",        :null => false
-    t.integer  "pos1_data"
-    t.integer  "pos2_data"
-    t.integer  "pos3_data"
-    t.integer  "created_user_id", :null => false
-    t.integer  "updated_user_id", :null => false
+    t.integer  "d_result_id",                                   :null => false
+    t.integer  "m_oil_id",                                      :null => false
+    t.decimal  "pos1_data",       :precision => 9, :scale => 2
+    t.decimal  "pos2_data",       :precision => 9, :scale => 2
+    t.decimal  "pos3_data",       :precision => 9, :scale => 2
+    t.integer  "created_user_id",                               :null => false
+    t.integer  "updated_user_id",                               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -128,12 +128,12 @@ ActiveRecord::Schema.define(:version => 20120820004553) do
   end
 
   create_table "d_result_tanks", :force => true do |t|
-    t.integer  "d_result_id",    :null => false
-    t.integer  "m_tank_id",      :null => false
+    t.integer  "d_result_id",     :null => false
+    t.integer  "m_tank_id",       :null => false
     t.integer  "receive"
     t.integer  "stock"
-    t.integer  "create_user_id", :null => false
-    t.integer  "update_user_id", :null => false
+    t.integer  "created_user_id", :null => false
+    t.integer  "updated_user_id", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -148,10 +148,68 @@ ActiveRecord::Schema.define(:version => 20120820004553) do
     t.datetime "updated_at"
   end
 
+  create_table "d_sale_etc_details", :force => true do |t|
+    t.integer  "d_sale_etc_id",                                 :null => false
+    t.integer  "m_etc_id",                                      :null => false
+    t.integer  "etc_no",          :limit => 2,                  :null => false
+    t.integer  "meter",                          :default => 0
+    t.integer  "error_money",                    :default => 0
+    t.string   "error_note",      :limit => 200
+    t.integer  "created_user_id",                               :null => false
+    t.integer  "updated_user_id",                               :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "d_sale_etcs", :force => true do |t|
+    t.string   "sale_date",       :limit => 8, :default => "00000000", :null => false
+    t.integer  "m_shop_id",                    :default => 0,          :null => false
+    t.integer  "kakutei_flg",     :limit => 2, :default => 0,          :null => false
+    t.integer  "created_user_id",              :default => 0,          :null => false
+    t.integer  "updated_user_id",              :default => 0,          :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "d_sale_items", :force => true do |t|
+    t.integer  "d_sale_id",                     :null => false
+    t.integer  "item_class",      :limit => 2,  :null => false
+    t.integer  "m_item_id"
+    t.string   "item_name",       :limit => 30
+    t.integer  "item_money"
+    t.integer  "m_shop_id"
+    t.integer  "created_user_id"
+    t.integer  "updated_user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "d_sales", :force => true do |t|
+    t.string   "sale_date",       :limit => 8, :null => false
+    t.integer  "m_shop_id",                    :null => false
+    t.integer  "kakutei_flg",     :limit => 2, :null => false
+    t.integer  "sale_money1"
+    t.integer  "sale_money2"
+    t.integer  "sale_money3"
+    t.integer  "sale_purika"
+    t.integer  "sale_today_out"
+    t.integer  "sale_change1"
+    t.integer  "sale_change2"
+    t.integer  "sale_change3"
+    t.integer  "sale_ass"
+    t.integer  "recive_money"
+    t.integer  "pay_money"
+    t.integer  "sale_cashbox"
+    t.integer  "sale_changebox"
+    t.integer  "created_user_id"
+    t.integer  "updated_user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "d_tank_compute_reports", :force => true do |t|
     t.integer  "d_result_id",                                                 :null => false
     t.integer  "m_tank_id",                                                   :null => false
-    t.integer  "m_oil_id",                                                    :null => false
     t.integer  "inspect_flg",      :limit => 2,                               :null => false
     t.integer  "before_stock",     :limit => 8
     t.integer  "receive",          :limit => 8
@@ -160,14 +218,14 @@ ActiveRecord::Schema.define(:version => 20120820004553) do
     t.integer  "after_stock",      :limit => 8
     t.integer  "sale_total",       :limit => 8
     t.integer  "decrease_total",   :limit => 8
-    t.decimal  "total_percentage",              :precision => 3, :scale => 3
+    t.decimal  "total_percentage",              :precision => 6, :scale => 3
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "decrease"
   end
 
   create_table "d_tank_decrease_reports", :force => true do |t|
-    t.integer  "d_result_id",                                   :null => false
-    t.integer  "m_shop_group_id",                               :null => false
+    t.integer  "d_result_id",                                     :null => false
     t.integer  "oil1_id"
     t.integer  "oil1_num"
     t.integer  "oil2_id"
@@ -176,7 +234,34 @@ ActiveRecord::Schema.define(:version => 20120820004553) do
     t.integer  "oil3_num"
     t.integer  "oil4_id"
     t.integer  "oil4_num"
-    t.decimal  "oil_percent",     :precision => 3, :scale => 2
+    t.decimal  "oil_percent",       :precision => 5, :scale => 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "oil1_num_total"
+    t.integer  "oil2_num_total"
+    t.integer  "oil3_num_total"
+    t.integer  "oil4_num_total"
+  end
+
+  create_table "d_wash_sales", :force => true do |t|
+    t.string   "sale_date",       :limit => 8, :default => "00000000", :null => false
+    t.integer  "m_shop_id",                    :default => 0,          :null => false
+    t.integer  "kakutei_flg",     :limit => 2, :default => 0,          :null => false
+    t.integer  "created_user_id",              :default => 0,          :null => false
+    t.integer  "updated_user_id",              :default => 0,          :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "d_washsale_items", :force => true do |t|
+    t.integer  "d_wash_sale_id",                                :null => false
+    t.integer  "m_wash_id",                                     :null => false
+    t.integer  "wash_no",         :limit => 2,                  :null => false
+    t.integer  "meter",                          :default => 0
+    t.integer  "error_money",                    :default => 0
+    t.string   "error_note",      :limit => 200
+    t.integer  "created_user_id",                               :null => false
+    t.integer  "updated_user_id",                               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -237,6 +322,15 @@ ActiveRecord::Schema.define(:version => 20120820004553) do
     t.integer  "etc_pay4"
     t.integer  "deleted_flg"
     t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "m_items", :force => true do |t|
+    t.integer  "item_class",     :limit => 2,  :null => false
+    t.string   "item_name",      :limit => 30
+    t.string   "item_ryaku",     :limit => 10
+    t.integer  "m_item_account",               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -368,7 +462,7 @@ ActiveRecord::Schema.define(:version => 20120820004553) do
     t.string   "account",                :limit => 10
     t.string   "user_name",              :limit => 50
     t.string   "user_name_kana",         :limit => 50
-    t.integer  "m_shops_id"
+    t.integer  "m_shop_id"
     t.integer  "m_authority_id"
     t.integer  "user_class",             :limit => 2
     t.datetime "nyusya_date"

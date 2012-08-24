@@ -10,14 +10,14 @@ body
 }
 */
 
-#rounded-corner
+#rounded-corner, .rounded-corner
 {
 
     text-align: left;
     border-collapse: collapse;        
     margin-left:  5px;
 }
-#rounded-corner th
+#rounded-corner th, .rounded-corner th
 {
 	padding: 8px;
 	font-weight: normal;
@@ -29,14 +29,14 @@ body
     background-repeat:repeat-x;
     border: 1px solid #7D808A;
 }
-#rounded-corner td
+#rounded-corner td, .rounded-corner td
 {
 	border: 1px solid #8B8E99;
 	color: #000457;
     padding:5px;
         
 }
-#rounded-corner td.icon
+#rounded-corner td.icon, .rounded-corner td.icon
 {
 	border: 1px solid #8B8E99;
 	color: #000457;
@@ -45,13 +45,24 @@ body
             padding:2px;
             padding-top: 4px;
 }
-#rounded-corner td.total
+#rounded-corner td.total, .rounded-corner td.total
 {
 	background: #e8edff;
         color: #FF0000;
 
 }
-#rounded-corner tbody tr:hover td
+td.input-num
+{
+	background: #fdf3b5;
+	text-align: right;
+	
+}
+td.no-input-num
+{
+	background: #66ffcc;
+	text-align: right;
+}
+#rounded-corner tbody tr:hover td, .rounded-corner tbody tr:hover td
 {
 	background: #d0dafd;
 }
@@ -63,14 +74,14 @@ body
 
 
 
-#rounded-corner2
+#rounded-corner2, .rounded-corner2
 {
 
     text-align: left;
     border-collapse: collapse;        
     margin-left:  5px;
 }
-#rounded-corner2 th
+#rounded-corner2 th, .rounded-corner2 th
 {
     text-align: center;
 	font-weight: normal;
@@ -82,11 +93,11 @@ body
     background-repeat:repeat-x;
     border: 1px solid #7D808A;
 }
-#rounded-corner2 th.title
+#rounded-corner2 th.title, .rounded-corner2 th.title
 {
     text-align: left;
 }
-#rounded-corner2 td
+#rounded-corner2 td, .rounded-corner2 td
 {
 	padding: 8px;
 	border: 1px solid #8B8E99;

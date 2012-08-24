@@ -1,0 +1,167 @@
+// Place all the styles related to the d_sales controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+div#shop_info{
+  display: inline-block; _display: inline;
+
+  div.title_alias{
+      display: inline-block; _display: inline;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 7px;
+      background: url("th_001.gif") repeat-x scroll 0 0 transparent;
+  }
+  div.info_alias{
+      display: inline-block; _display: inline;
+      margin-left: -4px;
+      width: 200px;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 7px; 
+      background-color: #A5D7AA;  
+      /*background: url("th_002.jpg") repeat-x scroll 0 0 transparent;*/ 
+  }
+}
+
+div#select_day_info{
+  display: inline-block; _display: inline;
+  
+  div.title_alias{
+      display: inline-block; _display: inline;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 7px;
+      margin-left: 30px;
+      background: url("th_001.gif") repeat-x scroll 0 0 transparent;
+  }
+  
+  div.input_alias{
+    display: inline-block; _display: inline;
+            border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 4px;
+      padding-bottom: 5px;
+      text-align: right;
+      margin-left: -4px;
+      
+      input#head_input_day{
+        width: 100px;
+        margin: 0px;
+        padding: 0px;
+        text-align: right;
+      }
+  }
+}  
+
+div#d_sale{
+  display: inline-block; _display: inline;
+  /*margin-top: 20px;*/
+  
+  div.title_alias{
+      display: inline-block; _display: inline;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 5px;
+      width: 80px;
+      text-align: center;
+      background: url("th_001.gif") repeat-x scroll 0 0 transparent;
+  }
+  
+  div.input_alias{
+    display: inline-block; _display: inline;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      width: 90px;
+      
+      padding: 1px;
+      padding-bottom: 2px;
+      /*padding-top: 2px;*/
+    
+      margin-top: -3px;
+      margin-left: -4px;
+      /*background-color: #ED7139;*/
+      
+      text-align: right;
+      
+      input{
+        
+      }
+  }
+  
+  div.info_alias{
+      display: inline-block; _display: inline;
+      margin-left: -4px;
+      width: 82px;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 5px;   
+      text-align: right;
+      background-color: #A5D7AA;  
+      /*background: url("th_002.jpg") repeat-x scroll 0 0 transparent;*/ 
+  }
+  
+  div.none_alias{
+      display: inline-block; _display: inline;
+      margin-left: -4px;
+      min-width: 190px;
+      min-hegth: 10px;
+          
+  }
+  
+
+
+  div#pay_item, div#recive_item, div#purika_item{
+      /*display: inline-block; _display: inline;*/
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      min-hegth: 150px;
+    margin: 0 0 20px;
+    width: 555px;
+    height: 190px;
+    overflow: hidden;
+    float:left;
+  }
+  
+  div#total_alias{
+    margin-left: 700px;
+    /*display: inline-block; _display: inline;*/
+    div.title_alias{
+        display: inline-block; _display: inline;
+        border-color: black;
+        border-style: solid;
+        border-width: 1px;
+        padding: 5px;
+        width: 100px;
+        text-align: center;
+        background: url("th_001.gif") repeat-x scroll 0 0 transparent;
+    }
+
+    div.info_alias{
+        display: inline-block; _display: inline;
+        margin-left: -4px;
+        width: 110px;
+        border-color: black;
+        border-style: solid;
+        border-width: 1px;
+        padding: 5px;   
+        text-align: right;
+        background-color: #A5D7AA;  
+        
+        /*background: url("th_002.jpg") repeat-x scroll 0 0 transparent;*/ 
+    }
+  }
+}
+
+input.money{
+  ime-mode: inactive;
+  text-align: right;
+}

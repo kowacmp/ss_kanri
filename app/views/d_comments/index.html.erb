@@ -31,3 +31,130 @@
 <br />
 
 <%= link_to 'New D comment', new_d_comment_path %>
+
+
+  <div id="d_sale">
+	  <div class="title_alias">売上１</div>
+	  <div class="input_alias"><%= text_field :d_sale, :sale_money1, :size=>4, :class=>"money" %></div>
+
+	  <br />
+	  <div class="title_alias">売上２</div>
+	  <div class="input_alias"><%= text_field :d_sale,:sale_money2, :size=>4, :class=>"money" %></div>
+
+	  <br />
+	  <div class="title_alias">売上３</div>
+	  <div class="input_alias"><%= text_field :d_sale,:sale_money3, :size=>4, :class=>"money" %></div>
+
+	  <br />  <br />  <br />
+	  <div class="title_alias">売上合計</div>
+	  <div class="info_alias"><label id="sale_money_total"></label></div>
+  </div>
+  <table>
+  	<tr>
+	  <td>売上１</td>
+	  <td><%= text_field :test, :sale_money1, :size=>4, :class=>"money" %></td>
+    </tr>
+	<tr>
+	  <td>売上２</td>
+	  <td><%= text_field :test,:sale_money2, :size=>4, :class=>"money" %></td>
+    </tr>
+	<tr>
+	  <td>売上３</td>
+	  <td><%= text_field :test,:sale_money3, :size=>4, :class=>"money" %></td>
+    </tr>
+	<tr>
+	  <td>合計</td>
+	  <td id="test_money_total"></td>
+    </tr>    
+   </table>
+   
+   <table>
+  	<tr>
+	  <td>１</td>
+	  <td><%= text_field :test, "1", :size=>4, :class=>"money" %></td>
+    </tr>
+	<tr>
+	  <td>２</td>
+	  <td><%= text_field :test,"2", :size=>4, :class=>"money" %></td>
+    </tr>
+	<tr>
+	  <td>３</td>
+	  <td><%= text_field :test,"3", :size=>4, :class=>"money" %></td>
+    </tr>
+	<tr>
+	  <td>合計</td>
+	  <td id="test_total"></td>
+    </tr>    
+   </table>  
+<script>
+$(function () {     
+
+  
+    //値がかわったら再計算
+    //売上１、売上２、売上３
+    $(":input[id^=test_sale_money]").live('change', function(){ sale_money_total_calc(); });
+
+    //売上合計を計算
+    function sale_money_total_calc(){
+	 	//var num1 = Number(format_kanma($("#test_sale_money1").val(), 2));
+  		//var num2 = Number(format_kanma($("#test_sale_money2").val(), 2));
+  		//var num3 = Number(format_kanma($("#test_sale_money3").val(), 2));
+  		//var total;
+	 	var num1 = Number(format_kanma($("#test_sale_money1").val(), 2));
+  		var num2 = Number(format_kanma($("#test_sale_money2").val(), 2));
+  		var num3 = Number(format_kanma($("#test_sale_money3").val(), 2));
+  		var total;
+  		  		
+  		if (isNaN(num1)) {num1 = 0};
+  		if (isNaN(num2)) {num2 = 0};
+  		if (isNaN(num3)) {num3 = 0};
+  		
+  		total = num1 + num2 + num3;
+  		
+  		$("#test_money_total").text(format_kanma(total));
+
+    };
+    
+    $(":input[id^=test]").live('change', function(){ sale_money_total_calc(); });
+
+    //売上合計を計算
+    function sale_money_total_calc(){
+	 	var num1 = Number(format_kanma($("#test_1").val(), 2));
+  		var num2 = Number(format_kanma($("#test_2").val(), 2));
+  		var num3 = Number(format_kanma($("#test_3").val(), 2));
+  		var total;
+  		  		
+  		if (isNaN(num1)) {num1 = 0};
+  		if (isNaN(num2)) {num2 = 0};
+  		if (isNaN(num3)) {num3 = 0};
+  		
+  		total = num1 + num2 + num3;
+  		
+  		$("#test_total").text(format_kanma(total));
+  		//$("#sale_money_total2").text(format_kanma(total));
+  		
+  		//syo_total_calc();//小計計算
+    };    
+    
+    
+    //カンマ編集
+    //set…1:カンマ編集する（デフォルト）
+    //     以外:カンマを消す
+    function format_kanma(para_num, para_set) {
+    
+    	if (para_set == undefined) para_set = 1;
+
+    	if (para_set == 1) {
+			var num = new String(para_num).replace(/,/g, "");
+            while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
+            return num; 
+    	} else {
+        	var num = new String(para_num).replace(/,/g, "");
+            return num;
+    	}
+    	
+    };
+})();
+</script>
+
+
