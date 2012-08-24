@@ -18,38 +18,38 @@
   <tr>
     <td><%= m_shop.shop_cd %></td>
     <td><%= m_shop.shop_name %></td>
-    <td><%#= m_shop.shop_kbn %>
-    	<% @shopkbn_first = MCode.find(:first,:conditions => ["kbn = '6' and code = ?",m_shop.shop_kbn.to_s])%>
+    <td>
+    	<% @shopkbn_first = MCode.find(:first,:conditions => ["kbn = 'shop_kbn' and code = ?",m_shop.shop_kbn.to_s])%>
 		<%= @shopkbn_first.code_name1%>
     </td>
     
     <% @m_oils.each do |m_oil| %>
     	<%- if m_oil.id == m_shop.m_oil_id1 -%>
-    		<td><%#= m_shop.tank1_all %>
+    		<td>
     			<% @tank1_totals = MTank.find(:all,
 		                                   :conditions=>["deleted_flg = 0 and m_shop_id = ? and m_oil_id = ?",m_shop.id,m_shop.m_oil_id1])%>
-		    	<%= @tank1_totals.sum{|tank| tank.volume}%>
-    			
+		    	<div class="oil_total"><%= @tank1_totals.sum{|tank| tank.volume}%></div>
+		    	
     		</td>
     	<%- elsif m_oil.id == m_shop.m_oil_id2 -%>
-    		<td><%#= m_shop.tank2_all %>
+    		<td>
     			<% @tank2_totals = MTank.find(:all,
 		                                   :conditions=>["deleted_flg = 0 and m_shop_id = ? and m_oil_id = ?",m_shop.id,m_shop.m_oil_id2])%>
-		    	<%= @tank2_totals.sum{|tank| tank.volume}%>
+		    	<div class="oil_total"><%= @tank2_totals.sum{|tank| tank.volume}%></div>
     			
     		</td>
     	<%- elsif m_oil.id == m_shop.m_oil_id3 -%>
-    		<td><%#= m_shop.tank3_all %>
+    		<td>
     			<% @tank3_totals = MTank.find(:all,
 		                                   :conditions=>["deleted_flg = 0 and m_shop_id = ? and m_oil_id = ?",m_shop.id,m_shop.m_oil_id3])%>
-		    	<%= @tank3_totals.sum{|tank| tank.volume}%>
+		    	<div class="oil_total"><%= @tank3_totals.sum{|tank| tank.volume}%></div>
     	
     		</td>
     	<%- elsif m_oil.id == m_shop.m_oil_id4 -%>
-    		<td><%#= m_shop.tank4_all %>
+    		<td>
     			<% @tank4_totals = MTank.find(:all,
 		                                   :conditions=>["deleted_flg = 0 and m_shop_id = ? and m_oil_id = ?",m_shop.id,m_shop.m_oil_id4])%>
-		    	<%= @tank4_totals.sum{|tank| tank.volume}%>
+		    	<div class="oil_total"><%= @tank4_totals.sum{|tank| tank.volume}%></div>
     			
     		</td>
     	<%- else -%>
@@ -59,7 +59,7 @@
     <td>
 		<% @m_fix_money_totals = MFixMoney.find(:all,
                                    :conditions=>["m_shop_id = ? and (deleted_flg is null or deleted_flg <> ?)",m_shop.id,1])%>
-    	<%= @m_fix_money_totals.sum{|money| money.total_cash_box}%>
+    	<div class="money_total"><%= @m_fix_money_totals.sum{|money| money.total_cash_box}%></div>
 	</td>
     <!--td class="icon"><%#= link_to image_tag('icon/24_show.png'), m_shop %></td-->
     <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_shop_path(m_shop) %></td>

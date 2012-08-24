@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Class code:</b>
+  <%= @m_class_check.class_code %>
+</p>
+
+<p>
+  <b>Item:</b>
+  <%= @m_class_check.item %>
+</p>
+
+<p>
+  <b>Deleted flg:</b>
+  <%= @m_class_check.deleted_flg %>
+</p>
+
+<p>
+  <b>Deleted at:</b>
+  <%= @m_class_check.deleted_at %>
+</p>
+
+
+<%= link_to 'Edit', edit_m_class_check_path(@m_class_check) %> |
+<%= link_to 'Back', m_class_checks_path %>

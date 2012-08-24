@@ -1,0 +1,37 @@
+<%= form_for(@m_audit_check) do |f| %>
+  <% if @m_audit_check.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_audit_check.errors.count, "error") %> prohibited this m_audit_check from being saved:</h2>
+
+      <ul>
+      <% @m_audit_check.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :check_code %><br />
+    <%= f.number_field :check_code %>
+  </div>
+  <div class="field">
+    <%= f.label :m_class_check_id %><br />
+    <%= f.number_field :m_class_check_id %>
+  </div>
+  <div class="field">
+    <%= f.label :content %><br />
+    <%= f.text_field :content %>
+  </div>
+  <div class="field">
+    <%= f.label :deleted_flg %><br />
+    <%= f.number_field :deleted_flg %>
+  </div>
+  <div class="field">
+    <%= f.label :deleted_at %><br />
+    <%= f.datetime_select :deleted_at %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

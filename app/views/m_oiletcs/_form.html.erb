@@ -1,40 +1,58 @@
 <%= form_for(@m_oiletc) do |f| %>
   <% if @m_oiletc.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@m_oiletc.errors.count, "error") %> prohibited this m_oiletc from being saved:</h2>
+      <h2><%= pluralize(@m_oiletc.errors.count, "") %> 件のエラーがあります。</h2>
 
       <ul>
       <% @m_oiletc.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= sliceString(msg) %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
+  <%= hidden_field "input",'check',:value=>@check_del_flg%>
+
   <table id='rounded-corner'>
   	<tr>
   	  <th><%= f.label '油外コード' %></th>
-  	  <td><%= f.number_field :oiletc_cd %></td>  	  
+  	  <td><%= f.number_field :oiletc_cd, :style=>"ime-mode:disabled" ,:maxlength=>2 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '油外名' %></th>
-  	  <td><%= f.text_field :oiletc_name %></td>  	  
+  	  <td><%= f.text_field :oiletc_name,:maxlength=>20 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '油外略称' %></th>
-  	  <td><%= f.text_field :oiletc_ryaku %></td>  	  
+  	  <td><%= f.text_field :oiletc_ryaku,:maxlength=>10 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '単位' %></th>
-  	  <td><%= f.text_field :oiletc_tani %></td>  	  
+  	  <td><%= f.text_field :oiletc_tani,:maxlength=>10 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label 'グループ種類' %></th>
-  	  <td><%= f.number_field :oiletc_group %></td>  	  
+  	  <td>
+  	  	<%= f.select(:oiletc_group, MCode.find(:all, :conditions => ["kbn = ?",'oiletc_group'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
+       </td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '課税フラグ' %></th>
+  	  <td>
+  	  	<%= f.select(:tax_flg, MCode.find(:all, :conditions => ["kbn = ?",'tax_flg'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
+  	  </td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '営業項目' %></th>
-  	  <td><%= f.number_field :oiletc_trade %></td>  	  
+  	  <td>
+  	  	<%= f.select(:oiletc_trade, MCode.find(:all, :conditions => ["kbn = ?",'umu_flg'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
+  	  </td>  	  
   	</tr>  	
   </table>
   <div class="actions">

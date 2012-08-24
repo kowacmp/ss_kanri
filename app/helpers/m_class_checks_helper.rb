@@ -1,0 +1,2 @@
+module MClassChecksHelper
+end

@@ -5,7 +5,31 @@ class MOiletcsController < ApplicationController
   # GET /m_oiletcs.json
   def index
     #@m_oiletcs = MOiletc.all
-    @m_oiletcs = MOiletc.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'oiletc_cd')
+    #@m_oiletcs = MOiletc.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'oiletc_cd')
+
+    select_sql = "select a.*, b.code_name as oiletc_group_name,"
+    select_sql << "           c.code_name as tax_flg_name, d.code_name as oiletc_trade_name " 
+    select_sql << " from m_oiletcs a " 
+    select_sql << " left join (select * from m_codes where kbn='oiletc_group') b on a.oiletc_group = cast(b.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='tax_flg') c on a.tax_flg = cast(c.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='umu_flg') d on a.oiletc_trade = cast(d.code as integer) "
+    
+    condition_sql = ""
+    
+    if params[:input_check] == nil
+        @check_del_flg = 0
+        condition_sql = " where deleted_flg = 0 "
+        @m_oiletcs = MOiletc.find_by_sql("#{select_sql} #{condition_sql} order by a.oiletc_cd")
+    else
+        @check_del_flg = params[:input_check].to_i
+        if @check_del_flg == 0
+          condition_sql = " where deleted_flg = 0 "
+          @m_oiletcs = MOiletc.find_by_sql("#{select_sql} #{condition_sql} order by a.oiletc_cd")
+        else
+          @m_oiletcs = MOiletc.find_by_sql("#{select_sql} #{condition_sql} order by a.oiletc_cd")
+        end
+    end
+
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,7 +40,22 @@ class MOiletcsController < ApplicationController
   # GET /m_oiletcs/1
   # GET /m_oiletcs/1.json
   def show
-    @m_oiletc = MOiletc.find(params[:id])
+    #@m_oiletc = MOiletc.find(params[:id])
+
+    select_sql = "select a.*, b.code_name as oiletc_group_name,"
+    select_sql << "           c.code_name as tax_flg_name, d.code_name as oiletc_trade_name " 
+    select_sql << " from m_oiletcs a " 
+    select_sql << " left join (select * from m_codes where kbn='oiletc_group') b on a.oiletc_group = cast(b.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='tax_flg') c on a.tax_flg = cast(c.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='umu_flg') d on a.oiletc_trade = cast(d.code as integer) "
+    
+    condition_sql = " where a.id = " + params[:id]
+    
+    @m_oiletcs = MOiletc.find_by_sql("#{select_sql} #{condition_sql}")
+    
+    @m_oiletc = @m_oiletcs[0]
+    
+    @check_del_flg = params[:input_check].to_i
 
     respond_to do |format|
       format.html # show.html.erb
@@ -38,6 +77,8 @@ class MOiletcsController < ApplicationController
   # GET /m_oiletcs/1/edit
   def edit
     @m_oiletc = MOiletc.find(params[:id])
+    
+    @check_del_flg = params[:input_check].to_i
   end
 
   # POST /m_oiletcs
@@ -47,7 +88,8 @@ class MOiletcsController < ApplicationController
 
     respond_to do |format|
       if @m_oiletc.save
-        format.html { redirect_to @m_oiletc, notice: 'M oiletc was successfully created.' }
+        #format.html { redirect_to @m_oiletc, notice: 'M oiletc was successfully created.' }
+        format.html { redirect_to @m_oiletc }
         format.json { render json: @m_oiletc, status: :created, location: @m_oiletc }
       else
         format.html { render action: "new" }
@@ -63,7 +105,9 @@ class MOiletcsController < ApplicationController
 
     respond_to do |format|
       if @m_oiletc.update_attributes(params[:m_oiletc])
-        format.html { redirect_to @m_oiletc, notice: 'M oiletc was successfully updated.' }
+        input_check = params[:input][:check].to_i
+        format.html { redirect_to :controller => "m_oiletcs", :action => "show",:id=>@m_oiletc.id,:input_check => input_check }
+        #format.html { redirect_to @m_oiletc, notice: 'M oiletc was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
@@ -84,16 +128,33 @@ class MOiletcsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to m_oiletcs_url }
+      input_check = params[:input_check].to_i
+      format.html { redirect_to :controller => "m_oiletcs", :action => "index", :input_check => input_check }
+      #format.html { redirect_to m_oiletcs_url }
       format.json { head :ok }
     end
   end
   
-  def delete_index
+  def search
+    p "search------------"
+    select_sql = "select a.*, b.code_name as oiletc_group_name,"
+    select_sql << "           c.code_name as tax_flg_name, d.code_name as oiletc_trade_name " 
+    select_sql << " from m_oiletcs a " 
+    select_sql << " left join (select * from m_codes where kbn='oiletc_group') b on a.oiletc_group = cast(b.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='tax_flg') c on a.tax_flg = cast(c.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='umu_flg') d on a.oiletc_trade = cast(d.code as integer) "
+    
+    condition_sql = ""
+    
     if params[:check][:deleted_flg] == "true"
-      @m_oiletcs = MOiletc.find(:all, :order => 'oiletc_cd')
+      @check_del_flg = 1
+      #@m_oiletcs = MOiletc.find(:all, :order => 'oiletc_cd')
+      @m_oiletcs = MOiletc.find_by_sql("#{select_sql} #{condition_sql} order by a.oiletc_cd")
     else
-      @m_oiletcs = MOiletc.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'oiletc_cd')
+      @check_del_flg = 0
+      condition_sql = " where deleted_flg = 0 "
+      #@m_oiletcs = MOiletc.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'oiletc_cd')
+      @m_oiletcs = MOiletc.find_by_sql("#{select_sql} #{condition_sql} order by a.oiletc_cd")
     end
   end
   

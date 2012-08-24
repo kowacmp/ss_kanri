@@ -1,5 +1,11 @@
 SsKanri::Application.routes.draw do
 
+  resources :m_audit_checks
+
+  resources :m_class_checks
+
+  resources :m_item_accounts
+
   resources :m_approvals
 
   get "d_washsale_reports/index"
