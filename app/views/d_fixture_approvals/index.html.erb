@@ -1,5 +1,6 @@
 <%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
 <% i = 0%>
+<% sum_goukei = 0 %>
 <table id="rounded-corner">
 	<tr>
 		<th>No</th>
@@ -22,7 +23,9 @@
     <td><%= fixture.buy_item %></td>
     <td><%= fixture.buy_num %></td>
     <td><%= fixture.buy_price %></td>
-    <td><%= fixture.buy_num * fixture.buy_price %></td>
+    <td><%= goukei = fixture.buy_num * fixture.buy_price %>
+    	<% sum_goukei = sum_goukei + goukei %>
+    </td>
     <td><%= fixture.buy_object %></td>
     <td><%= fixture.now_num %></td>
     <td><%= fixture.buy_day %></td>
@@ -42,6 +45,11 @@
     <td><%= link_to '入力',{:action => 'entry_comment',:id => fixture.id},:class => 'modal' %></td>
     </tr>
 <% end %>
+  <tr>
+  	<td colspan="5"></td>
+  	<td><%= sum_goukei %></td>
+  	<td colspan="5"></td>
+  </tr>
 </table>
 <div id="message"></div>
 
