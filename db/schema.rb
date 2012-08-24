@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120823052114) do
+ActiveRecord::Schema.define(:version => 20120824083601) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -236,8 +236,8 @@ ActiveRecord::Schema.define(:version => 20120823052114) do
     t.datetime "send_day",                      :null => false
     t.integer  "menu_id",                       :null => false
     t.string   "contents",        :limit => 40, :null => false
-    t.integer  "receive_id",                    :null => false
     t.integer  "send_id",                       :null => false
+    t.integer  "receive_id",                    :null => false
     t.integer  "created_user_id",               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -502,14 +502,14 @@ ActiveRecord::Schema.define(:version => 20120823052114) do
   end
 
   create_table "d_washsale_items", :force => true do |t|
-    t.integer  "d_wash_sale_id",                                :null => false
-    t.integer  "m_wash_id",                                     :null => false
-    t.integer  "wash_no",         :limit => 2,                  :null => false
-    t.integer  "meter",                          :default => 0
-    t.integer  "error_money",                    :default => 0
+    t.integer  "d_wash_sale_id",                 :null => false
+    t.integer  "m_wash_id",                      :null => false
+    t.integer  "wash_no",         :limit => 2,   :null => false
+    t.integer  "meter"
+    t.integer  "error_money"
     t.string   "error_note",      :limit => 200
-    t.integer  "created_user_id",                               :null => false
-    t.integer  "updated_user_id",                               :null => false
+    t.integer  "created_user_id",                :null => false
+    t.integer  "updated_user_id",                :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -524,6 +524,18 @@ ActiveRecord::Schema.define(:version => 20120823052114) do
     t.datetime "updated_at"
   end
 
+  create_table "establishes", :force => true do |t|
+    t.string   "name"
+    t.string   "zip_cd",      :limit => 8
+    t.string   "address"
+    t.integer  "deleted_flg"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "system_name"
+    t.decimal  "tax_rate",                 :precision => 5, :scale => 2, :null => false
+    t.decimal  "limit",                    :precision => 3, :scale => 0, :null => false
+  end
+
   create_table "m_aims", :force => true do |t|
     t.integer  "aim_code",   :limit => 2,  :null => false
     t.string   "aim_name",   :limit => 30
@@ -533,10 +545,45 @@ ActiveRecord::Schema.define(:version => 20120823052114) do
     t.datetime "updated_at"
   end
 
+  create_table "m_approvals", :force => true do |t|
+    t.integer  "menu_id",                      :null => false
+    t.integer  "approval_id1"
+    t.string   "approval_name1", :limit => 10
+    t.integer  "approval_id2"
+    t.string   "approval_name2", :limit => 10
+    t.integer  "approval_id3"
+    t.string   "approval_name3", :limit => 10
+    t.integer  "approval_id4"
+    t.string   "approval_name4", :limit => 10
+    t.integer  "approval_id5"
+    t.string   "approval_name5", :limit => 10
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "m_audit_checks", :force => true do |t|
+    t.integer  "check_code",       :limit => 2,                 :null => false
+    t.integer  "m_class_check_id",                              :null => false
+    t.string   "content",          :limit => 50,                :null => false
+    t.integer  "deleted_flg",      :limit => 2,  :default => 0
+    t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "m_authorities", :force => true do |t|
     t.integer  "authority_cd",   :limit => 2,   :default => 0, :null => false
     t.string   "authority_name", :limit => 100,                :null => false
     t.integer  "deleted_flg",    :limit => 2,   :default => 0, :null => false
+    t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "m_class_checks", :force => true do |t|
+    t.integer  "class_code",  :limit => 2,                 :null => false
+    t.string   "item",        :limit => 20,                :null => false
+    t.integer  "deleted_flg", :limit => 2,  :default => 0
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -552,17 +599,18 @@ ActiveRecord::Schema.define(:version => 20120823052114) do
   end
 
   create_table "m_etcs", :force => true do |t|
-    t.integer  "etc_cd"
-    t.string   "etc_name"
-    t.string   "etc_ryaku"
-    t.string   "etc_tani"
-    t.integer  "etc_group"
-    t.integer  "deleted_flg"
+    t.integer  "etc_cd",      :limit => 2,                 :null => false
+    t.string   "etc_name",    :limit => 20,                :null => false
+    t.string   "etc_ryaku",   :limit => 10,                :null => false
+    t.string   "etc_tani",    :limit => 4,                 :null => false
+    t.integer  "etc_group",   :limit => 2
+    t.integer  "deleted_flg", :limit => 2,  :default => 0, :null => false
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "max_num",     :limit => 2
     t.integer  "kansa_flg",   :limit => 2
+    t.integer  "tax_flg",     :limit => 2,                 :null => false
   end
 
   create_table "m_etcsales", :force => true do |t|
@@ -605,8 +653,18 @@ ActiveRecord::Schema.define(:version => 20120823052114) do
     t.integer  "etc_pay2"
     t.integer  "etc_pay3"
     t.integer  "etc_pay4"
-    t.integer  "deleted_flg"
+    t.integer  "etc_pay5"
+    t.integer  "etc_pay6"
+    t.integer  "deleted_flg", :limit => 2
     t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "m_item_accounts", :force => true do |t|
+    t.integer  "item_account_code",                :null => false
+    t.string   "item_account_name", :limit => 20,  :null => false
+    t.string   "outline",           :limit => 100
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -634,16 +692,17 @@ ActiveRecord::Schema.define(:version => 20120823052114) do
   end
 
   create_table "m_oiletcs", :force => true do |t|
-    t.integer  "oiletc_cd"
-    t.string   "oiletc_name"
-    t.string   "oiletc_ryaku"
-    t.string   "oiletc_tani"
-    t.integer  "oiletc_group"
-    t.integer  "deleted_flg"
+    t.integer  "oiletc_cd",    :limit => 2,                 :null => false
+    t.string   "oiletc_name",  :limit => 20,                :null => false
+    t.string   "oiletc_ryaku", :limit => 10,                :null => false
+    t.string   "oiletc_tani",  :limit => 10,                :null => false
+    t.integer  "oiletc_group", :limit => 2,                 :null => false
+    t.integer  "deleted_flg",  :limit => 2,  :default => 0, :null => false
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "oiletc_trade", :limit => 2
+    t.integer  "tax_flg",      :limit => 2,                 :null => false
   end
 
   create_table "m_oils", :force => true do |t|
@@ -703,38 +762,36 @@ ActiveRecord::Schema.define(:version => 20120823052114) do
   end
 
   create_table "m_washes", :force => true do |t|
-    t.integer  "wash_cd",     :default => 0
-    t.string   "wash_name"
-    t.string   "wash_ryaku"
-    t.integer  "wash_group",  :default => 0
-    t.integer  "max_num",     :default => 0
-    t.integer  "deleted_flg", :default => 0
+    t.integer  "wash_cd",     :limit => 2,                 :null => false
+    t.string   "wash_name",   :limit => 20,                :null => false
+    t.string   "wash_ryaku",  :limit => 10,                :null => false
+    t.integer  "wash_group",  :limit => 2,                 :null => false
+    t.integer  "max_num",     :limit => 2,                 :null => false
+    t.integer  "deleted_flg", :limit => 2,  :default => 0, :null => false
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "m_washsale_plans", :force => true do |t|
-    t.integer  "m_shop_id",                                   :null => false
-    t.integer  "m_wash_id",                                   :null => false
-    t.integer  "sunday",          :limit => 2, :default => 0
-    t.integer  "monday",          :limit => 2, :default => 0
-    t.integer  "tuesday",         :limit => 2, :default => 0
-    t.integer  "wednesday",       :limit => 2, :default => 0
-    t.integer  "thursday",        :limit => 2, :default => 0
-    t.integer  "friday",          :limit => 2, :default => 0
-    t.integer  "saturday",        :limit => 2, :default => 0
-    t.integer  "created_user_id",              :default => 0
-    t.integer  "updated_user_id",              :default => 0
-    t.integer  "deleted_flg",                  :default => 0
+    t.integer  "m_shop_id",                               :null => false
+    t.integer  "m_wash_id",                               :null => false
+    t.integer  "sunday",      :limit => 2
+    t.integer  "monday",      :limit => 2
+    t.integer  "tuesday",     :limit => 2
+    t.integer  "wednesday",   :limit => 2
+    t.integer  "thursday",    :limit => 2
+    t.integer  "friday",      :limit => 2
+    t.integer  "saturday",    :limit => 2
+    t.integer  "deleted_flg", :limit => 2, :default => 0
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "menus", :force => true do |t|
-    t.integer  "menu_cd1",     :limit => 2,                  :null => false
-    t.integer  "menu_cd2",     :limit => 2,   :default => 0, :null => false
+    t.integer  "menu_cd1",     :limit => 2,   :null => false
+    t.integer  "menu_cd2",     :limit => 2,   :null => false
     t.string   "display_name", :limit => 100
     t.string   "uri",          :limit => 100
     t.datetime "created_at"
