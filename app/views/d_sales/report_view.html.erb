@@ -40,6 +40,15 @@
 		<% loopcnt.times { |i| %>
 			<% select_day = Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, i + 1) %>				
 			<% d_sale, zenjitu_d_sale = get_d_sales_data(select_day.strftime("%Y%m%d")) %>
+			
+			<% if d_sale then%>
+				<% d_sale_ass = zenjitu_d_sale.sale_pm_out.to_i + d_sale.sale_today_out.to_i + d_sale.sale_am_out.to_i   #ASS入金額%>
+				<% d_sale_syokei = d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i - d_sale.purika_tesuryo.to_i + d_sale.pay_money.to_i #小計 %>
+				<% zenjitu_d_sale_cash_arigaka = zenjitu_d_sale.sale_change1.to_i + zenjitu_d_sale.sale_change2.to_i + zenjitu_d_sale.sale_change3.to_i + zenjitu_d_sale.sale_cashbox.to_i %>
+				<% d_sale_calc_aridaka = zenjitu_d_sale_cash_arigaka.to_i + d_sale_syokei.to_i + d_sale.sale_ass.to_i + d_sale_ass.to_i %>
+				<% d_sale_cash_aridaka = d_sale.sale_change.to_i + d_sale.sale_cashbox.to_i %>
+			<% end %>
+			
 			<tr>
 				<td class="title"><%= i + 1 %></td>
 				<td class="title">
@@ -51,16 +60,16 @@
 				<td class="money"><%= num_fmt(d_sale.sonota_money) if d_sale %></td>
 				<td class="money"><%= num_fmt(d_sale.recive_money) if d_sale %></td>
 				<td class="money"><%= num_fmt(d_sale.pay_money) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i - d_sale.purika_tesuryo.to_i + d_sale.pay_money.to_i) if d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale_syokei) if d_sale %></td>
 				<td class="money"><%= num_fmt(d_sale.sale_ass) if d_sale %></td>
-				<td class="money"><%#= num_fmt() if d_sale %></td>
-				<td class="money"><%= num_fmt(zenjitu_d_sale.sale_pm_out) if zenjitu_d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale_ass) if d_sale %></td>
+				<td class="money"><%= num_fmt(zenjitu_d_sale.sale_pm_out) if d_sale %></td>
 				<td class="money"><%= num_fmt(d_sale.sale_today_out) if d_sale %></td>
 				<td class="money"><%= num_fmt(d_sale.sale_am_out) if d_sale %></td>
 				<td class="money"><%= num_fmt(d_sale.sale_pm_out) if d_sale %></td>
-				<td class="money"><%#= num_fmt(d_sale.) if d_sale %></td>
-				<td class="money"><%#= num_fmt(d_sale.) if d_sale %></td>
-				<td class="money"><%#= num_fmt(d_sale.) if d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale_calc_aridaka) if d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale_cash_aridaka) if d_sale %></td>
+				<td class="money"><%= num_fmt(d_sale_cash_aridaka - d_sale_calc_aridaka) if d_sale %></td>
 			</tr>
 		<% } %>
 	</table>

@@ -4,7 +4,7 @@ $(function () {
     $("#head_input_day")
       .change(function() { 
       	   //店舗種別があるときは、INDEXメソッドを実行、以外はNEWメソッドを実行、
-           if ($("#head_input_shop_kbn").size() != 0){
+           if ($("#head_from_view").val() == 'index'){
            	  //Index
            	   $.get(
 				    '/d_sales',                 // 送信先
@@ -19,7 +19,7 @@ $(function () {
 			   //New
 		       $.get(
 				    '/d_sales/new',                 // 送信先
-				    { input_day: $(this).val() , m_shop_id: $("#m_shop_id"), remote: true},
+				    { input_day: $(this).val() , m_shop_id: $("#m_shop_id").val(), remote: true},
 				    function(data, status) {        // 通信成功時にデータを表示
 				       $('#form_d_sale').empty();
 		               $('#form_d_sale').append(data);
@@ -211,6 +211,7 @@ $(function () {
     	
     	total_calc();//合計を計算
     	tucyo_money_calc();//通帳預金額を計算
+    	changebox_aridaka2_calc(); //釣銭有高2を計算
     };
     
     //出金合計を計算
@@ -325,26 +326,27 @@ $(function () {
     
     //釣銭有高2
     function changebox_aridaka2_calc() {
-    	//前日出＋当日出＋釣銭合計ー小計ー当日出
-    	var num = new Array(5);
+    	//前日出＋当日出＋釣銭合計ー小計ーASSー当日出
+    	var num = new Array(6);
     	var total=0;
 
     	num[0]=Number(format_kanma($("#zenjitu_sale_pm_out").text(), 2));
     	num[1]=Number(format_kanma($("#sale_today_out2").text(), 2));
     	num[2]=Number(format_kanma($("#sale_change_total").text(), 2));
     	num[3]=Number(format_kanma($("#syo_total").text(), 2));
-    	num[4]=Number(format_kanma($("#sale_today_out2").text(), 2));
+    	num[4]=Number(format_kanma($("#sale_ass").text(), 2));
+    	num[5]=Number(format_kanma($("#sale_today_out2").text(), 2));
 
 		var i=0;
-      	while(i<5){
+      	while(i<6){
         	if (isNaN(num[i])) {num[i] = 0};
         	i=i+1;
      	};    	
     	
-    	total = num[0] + num[1] + num[2] - num[3] - num[4];
+    	total = num[0] + num[1] + num[2] - num[3] - num[4] - num[5];
     	
     	$("#changebox_aridaka2").text(format_kanma( total ));  
-    	
+    	$("#d_sale_sale_changebox").val(total);
     	cash_aridaka_calc();//現金有高を計算
     };
     

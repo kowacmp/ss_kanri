@@ -4,14 +4,12 @@
   <%= f.hidden_field :kakutei_flg %>
   <%= f.hidden_field :pay_money, :class=>"money" %>
   <%= f.hidden_field :recive_money, :class=>"money" %>
+  <%= f.hidden_field :sale_cashbox, :class=>"money" %>
+  <%= f.hidden_field :sale_changebox, :class=>"money" %>
+  
   <%= hidden_field_tag 'head_input_shop_kbn', @head[:input_shop_kbn] %>
   <%= hidden_field_tag 'head_from_view', @head[:from_view] %>
-    
-  <% syo_total=@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i + @d_sale.sale_purika.to_i + @d_sale.recive_money.to_i - @d_sale.pay_money.to_i %>
-  <% total = syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + @zenjitu_d_sale.sale_changebox.to_i + @d_sale.sale_ass.to_i %>
-  <% sale_change_total = @d_sale.sale_change1.to_i + @d_sale.sale_change2.to_i + @d_sale.sale_change3.to_i %>
-  <% changebox_aridaka = @zenjitu_d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i + sale_change_total - syo_total - @d_sale.sale_today_out.to_i %>
-  <% cash_aridaka = @m_fix_money.total_cash_box.to_i + changebox_aridaka.to_i + @d_sale.sale_today_out.to_i + @d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i %>
+ 
   
   <% if @d_sale.errors.any? %>
     <div id="error_explanation">
@@ -67,7 +65,7 @@
 	  <div class="title_alias">翌日出後</div>
 	  <div class="input_alias"><%= f.text_field :sale_pm_out, :size=>4, :class=>"money" %></div>
       <div class="title_alias">釣銭合計</div>
-      <div class="info_alias"><label id="sale_change_total"><%= num_fmt(sale_change_total) %></label></div>
+      <div class="info_alias"><label id="sale_change_total"><%= num_fmt(@sale_change_total) %></label></div>
       <div class="title_alias">通帳預金額</div>
       <div class="info_alias"><label id="tucyo_money"><%= num_fmt(@zenjitu_d_sale.sale_today_out.to_i + @d_sale.sale_today_out.to_i -  @d_sale.sale_ass.to_i ) %></label></div>
 
@@ -251,7 +249,7 @@
       <div class="info_alias"><%= label :d_sale, :pay_money, num_fmt(@d_sale.pay_money.to_i), :id=>'pay_money_total2' %></div>
       <br />
       <div class="title_alias">小計</div>
-      <div class="info_alias"><label id="syo_total"><%= num_fmt(syo_total) %></div>
+      <div class="info_alias"><label id="syo_total"><%= num_fmt(@syo_total) %></div>
       <br /><br />
       <div class="title_alias">金庫(＋)</div>
       <div class="info_alias"><%= label :zenjitu_d_sale, :sale_cashbox, num_fmt(@zenjitu_d_sale.sale_cashbox.to_i), :id=>'zenjitu_cashbox' %></div>
@@ -263,12 +261,12 @@
       <div class="info_alias"><label id="sale_ass"><%= num_fmt(@d_sale.sale_ass.to_i) %></label></div>
       <br />
       <div class="title_alias">合計(A)</div>
-      <div class="info_alias"><label id="total"><%= num_fmt(total) %></label></div>
+      <div class="info_alias"><label id="total"><%= num_fmt(@total) %></label></div>
       <br /><br />
       <div class="title_alias">釣銭有高1</div>
-      <div class="info_alias"><label id="m_fix_money_total_cash_box2"><%= num_fmt(@m_fix_money.total_cash_box.to_i) %></label></div>
+      <div class="info_alias"><label id="m_fix_money_total_cash_box2"><%= num_fmt(@d_sale.sale_cashbox.to_i) %></label></div>
       <div class="title_alias">釣銭有高2</div>
-      <div class="info_alias"><label id="changebox_aridaka2"><%= num_fmt(changebox_aridaka) %></label></div>
+      <div class="info_alias"><label id="changebox_aridaka2"><%= num_fmt(@changebox_aridaka) %></label></div>
       <div class="title_alias">前日出</div>
       <div class="info_alias"><label id="zenjitu_d_sale_sale_pm_out2"><%= num_fmt(@zenjitu_d_sale.sale_pm_out.to_i) %></label></div>
       <div class="title_alias">当日出</div>
@@ -278,9 +276,9 @@
       <div class="title_alias">翌日出後</div>
       <div class="info_alias"><label id="sale_pm_out2"><%= num_fmt(@d_sale.sale_pm_out.to_i) %></label></div>
       <div class="title_alias">現金有高(B)</div>
-      <div class="info_alias"><label id="cash_aridaka"><%= num_fmt(cash_aridaka.to_i) %></label></div>
+      <div class="info_alias"><label id="cash_aridaka"><%= num_fmt(@cash_aridaka.to_i) %></label></div>
       <div class="title_alias">過不足 B-A</div>
-      <div class="info_alias"><label id="kabusoku"><%= num_fmt(cash_aridaka - total) %></label></div>
+      <div class="info_alias"><label id="kabusoku"><%= num_fmt(@cash_aridaka - @total) %></label></div>
       
       </div>
   </div>

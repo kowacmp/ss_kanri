@@ -43,7 +43,7 @@ class DSalesController < ApplicationController
   # GET /d_sales/new
   # GET /d_sales/new.json
   def new
-
+p params
     @head = DSale.new
         
     #売上入力確認から飛んできた時は、IDがくるのでIDでデータを取得する
@@ -87,7 +87,7 @@ class DSalesController < ApplicationController
     if @zenjitu_d_sale == nil 
       @zenjitu_d_sale = DSale.new
     end
-       
+ 
     #固定釣銭機情報を取得
     taisyo_m = (@head[:input_day].to_s.gsub("/", "")).to_s[4,2].to_i
     m_fix_moneys = MFixMoney.find(:all, :conditions=>["m_shop_id = ? ", @m_shop_id])    
@@ -111,11 +111,21 @@ class DSalesController < ApplicationController
     }
     
     
-    
     if @m_fix_money == nil
       @m_fix_money = MFixMoney.new  
     end
     
+    @syo_total=@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i + @d_sale.sale_purika.to_i + @d_sale.recive_money.to_i - @d_sale.pay_money.to_i 
+    @total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + @zenjitu_d_sale.sale_changebox.to_i + @d_sale.sale_ass.to_i 
+    @sale_change_total = @d_sale.sale_change1.to_i + @d_sale.sale_change2.to_i + @d_sale.sale_change3.to_i 
+    @changebox_aridaka = @zenjitu_d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i + @sale_change_total - @syo_total - @d_sale.sale_ass.to_i - @d_sale.sale_today_out.to_i 
+    @cash_aridaka = @m_fix_money.total_cash_box.to_i + @changebox_aridaka.to_i + @d_sale.sale_today_out.to_i + @d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i 
+
+    #固定金庫(マスタより)
+    @d_sale.sale_cashbox = @m_fix_money.total_cash_box.to_i
+    #釣銭機固定金庫（前日の翌日出(後)＋当日出＋釣銭機ー小計ーASSー当日出）
+    #@d_sale.sale_changebox = @changebox_aridaka
+
     respond_to do |format|
       if params[:remote]
         format.html { render :partial => 'form'  }
