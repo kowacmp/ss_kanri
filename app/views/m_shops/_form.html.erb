@@ -1,132 +1,956 @@
-<%= form_for(@m_shop) do |f| %>
-  <% if @m_shop.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@m_shop.errors.count, "error") %> prohibited this m_shop from being saved:</h2>
 
-      <ul>
-      <% @m_shop.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+	<head>
+      <!-- JS -->
+      <script type="text/javascript" src="lib/jquery/jquery-1.3.2.min.js"></script>
+      <script type="text/javascript">
+      
+         $(function(){
+            // パス名格納用
+            var tabs = [];
+            // ハッシュ格納用
+             var tabContainers = [];
+             $('#exp ul.tabnav a').each(function () {
+               // 現在のウィンドウのパス名を取得して配列に格納
+//                if (this.pathname == window.location.pathname) {
+                     tabs.push(this);
+                     // ハッシュを取得して配列に格納
+                     tabContainers.push($(this.hash).get(0));
+//                }
+             });
+             $(tabs).click(function () {
+                 // すべてのタブコンテンツを非表示に
+                 // クリックされたハッシュをIDとするタブコンテンツだけ表示
+                 $(tabContainers).hide().filter(this.hash).show();
+
+                // 選択中のタブをハイライト表示
+                 $(tabs).removeClass('selected');
+                 $(this).addClass('selected');
+
+                 return false;
+            }).filter(':first').click(); // 最初のタブコンテンツだけ表示
+
+		 });
+         
+		 
+		 function test_val(){
+		 	var error_msg_s = '<div id="error_explanation"><ul><h2>エラーが存在します。</h2>';
+		 	var error_msg_m = '';
+		 	var error_msg_e = '</ul></div>';
+		 	
+		 	
+		 	//店舗情報  <<<<<<<<<<<<<<<<<<<<<<<
+		 	if (document.getElementById('m_shop_shop_cd').value == "") {
+ 				error_msg_m = error_msg_m + '<li>店舗コードを入力してください。</li>';
+ 			}
+		 	if (document.getElementById('m_shop_shop_name').value == "") {
+ 				error_msg_m = error_msg_m + '<li>店舗名を入力してください。</li>';
+ 			}
+ 			if (document.getElementById('m_shop_shop_kana').value == "") {
+ 				error_msg_m = error_msg_m + '<li>店舗カナを入力してください。</li>';
+ 			}
+		 	if (document.getElementById('m_shop_shop_ryaku').value == "") {
+ 				error_msg_m = error_msg_m + '<li>店舗略称を入力してください。</li>';
+ 			}
+ 			
+			var ary_shop_cd = 
+			
+				<% if params[:id].blank? %>
+					String(<%= MShop.find(:all).map do |u| [u.shop_cd] end %>).split(",");
+				<% else %>
+					String(<%= MShop.find(:all,:conditions=>["id <> ?",params[:id]]).map do |u| [u.shop_cd] end %>).split(",");
+				<% end %>
+			
+			
+			for(i=0; i<ary_shop_cd.length; i++) {
+				if(ary_shop_cd[i] == document.getElementById('m_shop_shop_cd').value) {
+					error_msg_m = error_msg_m + '<li>店舗コードが既に登録されています。</li>';
+					break;
+				}
+			}
+			
+			
+			if (document.getElementById('m_shop_shop_kbn') != null) {
+	 			if (document.getElementById('m_shop_shop_kbn').value == "") {
+	 				error_msg_m = error_msg_m + '<li>店舗種別を選択してください。</li>';
+	 			}
+	 		}
+	 		
+	 		if (document.getElementById('m_shop_m_shop_group_id') != null) {
+	 			if (document.getElementById('m_shop_m_shop_group_id').value == "") {
+	 				error_msg_m = error_msg_m + '<li>所属を選択してください。</li>';
+	 			}
+	 		}
+			
+			
+		 	//店舗情報  >>>>>>>>>>>>>>>>>>>>>>>
+		 	
+		 	//固定釣銭  <<<<<<<<<<<<<<<<<<<<<<<
+		 	var table1 = document.getElementById("tbody2-row");
+			
+			if (counter2 == 0) {
+				counter2 = table1.rows.length;
+			}
+		 	
+		 	
+		 	for (i = 0; i < counter2; i++) {
+		 		if (document.getElementById('m_fix_money_' + i + '_start_month') != null) {
+		 			if (document.getElementById('m_fix_money_' + i + '_start_month').value == "") {
+		 				error_msg_m = error_msg_m + '<li>開始月を選択してください。</li>';
+		 				break;
+		 			}
+		 		}
+		 		
+		 		if (document.getElementById('m_fix_money_' + i + '_end_month') != null) {
+			 		if (document.getElementById('m_fix_money_' + i + '_end_month').value == "") {
+		 				error_msg_m = error_msg_m + '<li>終了月を選択してください。</li>';
+		 				break;
+		 			}
+		 		}
+		 	}
+		 	
+		 	
+		 	var ary_month = []
+		 	var start_month = 0
+		 	var end_month = 0
+		 	
+		 	for (i = 0; i < counter2; i++) {
+		 		if (document.getElementById('m_fix_money_' + i + '_start_month') != null) {
+		 			if (document.getElementById('m_fix_money_' + i + '_start_month').value != "") {
+		 				start_month = document.getElementById('m_fix_money_' + i + '_start_month').selectedIndex;
+		 			}
+		 		}
+		 		if (document.getElementById('m_fix_money_' + i + '_end_month') != null) {
+		 			if (document.getElementById('m_fix_money_' + i + '_end_month').value != "") {
+		 				end_month = document.getElementById('m_fix_money_' + i + '_end_month').selectedIndex;
+		 			}
+		 		}
+		 		
+		 		
+		 		if(start_month > end_month){
+		 			end_month = end_month + 12;
+		 		}
+		 		
+		 		for (j = start_month; j <= end_month; j++) {
+		 			if(j > 12){
+		 				ary_month.push(j-12);
+		 			} else {
+		 				ary_month.push(j);
+		 			}
+		 		}
+		 		
+		 	}
+			
+		 	var ary_months = String(ary_month).split(",");
+			loopout: for(i=0; i<ary_months.length; i++) {
+				for(j=0; j<ary_months.length; j++) {
+					if(i != j) {
+						if(ary_months[i] == ary_months[j]) {
+							error_msg_m = error_msg_m + '<li>月範囲が重複しています。</li>';
+							break loopout;
+						}
+					}
+				}
+			}
+		 	
+		 	//固定釣銭  >>>>>>>>>>>>>>>>>>>>>>>
+		 	
+		 	
+		 	//タンク情報  <<<<<<<<<<<<<<<<<<<<<<<
+		 	var table1 = document.getElementById("tbody3-row");
+			
+			if (counter3 == 0) {
+				counter3 = table1.rows.length;
+			}
+		 	
+		 	for (i = 0; i < counter3; i++) {
+		 		if (document.getElementById('m_tank_' + i + '_m_oil_id') != null) {
+		 			if (document.getElementById('m_tank_' + i + '_m_oil_id').value == "") {
+		 				error_msg_m = error_msg_m + '<li>油種を選択してください。</li>';
+		 				break;
+		 			}
+		 		}
+		 		
+		 		if (document.getElementById('m_tank_' + i + '_tank_no') != null) {
+		 			if (document.getElementById('m_tank_' + i + '_tank_no').value == "") {
+		 				error_msg_m = error_msg_m + '<li>タンクNoを入力してください。</li>';
+		 				break;
+		 			}
+		 		}
+		 	}
+		 	
+		 	//タンク情報  >>>>>>>>>>>>>>>>>>>>>>>
+		 	
+		 	
+		 	
+		 	//洗車売上報告  >>>>>>>>>>>>>>>>>>>>>>>
+		 	var table1 = document.getElementById("tbody-row");
+			
+			if (counter == 0) {
+				counter = table1.rows.length;
+			}
+		 	
+		 	for (i = 0; i < counter; i++) {
+		 		if (document.getElementById('m_washsale_plan_' + i + '_m_wash_id') != null) {
+		 			if (document.getElementById('m_washsale_plan_' + i + '_m_wash_id').value == "") {
+		 				error_msg_m = error_msg_m + '<li>洗車機を選択してください。</li>';
+		 				break;
+		 			}
+		 		}
+		 	}
+		 	
+		 	loopout: for (i = 0; i < counter; i++) {
+		 		if (document.getElementById('m_washsale_plan_' + i + '_m_wash_id') != null) {
+			 			for (j = 0; j < counter; j++) {
+					 		if (document.getElementById('m_washsale_plan_' + i + '_m_wash_id') != null) {
+					 			if (i != j) {
+						 			if (document.getElementById('m_washsale_plan_' + i + '_m_wash_id').value 
+						 					== document.getElementById('m_washsale_plan_' + j + '_m_wash_id').value) {
+						 				error_msg_m = error_msg_m + '<li>洗車機が重複しています。</li>';
+						 				break loopout;
+						 			}
+					 			}
+					 		}
+					 	}
+		 		}
+		 	}
+		 	
+		 	//洗車売上報告  <<<<<<<<<<<<<<<<<<<<<<<
+		 	
+		 	
+		 	if (error_msg_m != ""){
+				document.getElementById("error_test").innerHTML = error_msg_s + error_msg_m + error_msg_e;
+		 		document.getElementById("error_test2").innerHTML = error_msg_s + error_msg_m + error_msg_e;
+		 		document.getElementById("error_test3").innerHTML = error_msg_s + error_msg_m + error_msg_e;
+		 		document.getElementById("error_test1").innerHTML = error_msg_s + error_msg_m + error_msg_e;
+		 	} else {
+		 		document.getElementById("error_test").innerHTML = "";
+		 		document.getElementById("error_test2").innerHTML = "";
+		 		document.getElementById("error_test3").innerHTML = "";
+		 		document.getElementById("error_test1").innerHTML = "";
+		 		return true;
+		 	}
+		 	return false;
+		 };
+         
+         
+         
+         var counter2 = 0;
+		 function AddTableRows2(){
+			
+			var table1 = document.getElementById("tbody2-row");
+			
+			if (counter2 == 0) {
+				counter2 = table1.rows.length;
+			}
+			
+			var row1 = table1.insertRow(table1.rows.length);
+			var cell1 = row1.insertCell(0);
+			var cell2 = row1.insertCell(1);
+			var cell3 = row1.insertCell(2);
+			var cell4 = row1.insertCell(3);
+			var cell5 = row1.insertCell(4);
+			var cell6 = row1.insertCell(5);
+			var cell7 = row1.insertCell(6);
+			var cell8 = row1.insertCell(7);
+			var cell9 = row1.insertCell(8);
+			var cell10 = row1.insertCell(9);
+			var cell11 = row1.insertCell(10);
+		
+			// class の付与は UserAgent によって
+			// 挙動が違うっぽいので念のため両方の方法で
+			cell1.setAttribute("class","start_month");
+			cell2.setAttribute("class","end_month");
+			cell3.setAttribute("class","cash_box");
+			cell4.setAttribute("class","pos_register");
+			cell5.setAttribute("class","part_time");
+			cell6.setAttribute("class","wash_money");
+			cell7.setAttribute("class","money_change");
+			cell8.setAttribute("class","total_cash_box");
+			cell9.setAttribute("class","total_change_money");
+			cell10.setAttribute("class","total_money");
+			cell11.setAttribute("class","clear");
+			cell1.className = 'start_month';
+			cell2.className = 'end_month';
+			cell3.className = 'cash_box';
+			cell4.className = 'pos_register';
+			cell5.className = 'part_time';
+			cell6.className = 'wash_money';
+			cell7.className = 'money_change';
+			cell8.className = 'total_cash_box';
+			cell9.className = 'total_change_money';
+			cell10.className = 'total_money';
+			cell11.className = 'clear';
+			
+			var HTML1 = String(<%= select("select-replace", "start_month",
+				  	 	12.times.map do |i|	
+						[(i + 1).to_s + "月", i + 1]
+				  	 	end,:include_blank => "") %>);
+		   	
+		   	HTML1 = HTML1.replace(/select-replace_/g,"m_fix_money_" + (counter2) + "_");
+		   	HTML1 = HTML1.replace(/select-replace/g,"m_fix_money[" + (counter2) + "]");
+		   	
+		   	var HTML2 = String(<%= select("select-replace", "end_month",
+				  	 	12.times.map do |i|	
+						[(i + 1).to_s + "月", i + 1]
+				  	 	end,:include_blank => "") %>);
+		   	
+		   	HTML2 = HTML2.replace(/select-replace_/g,"m_fix_money_" + (counter2) + "_");
+		   	HTML2 = HTML2.replace(/select-replace/g,"m_fix_money[" + (counter2) + "]");
+		   	
+			var HTML3 = '<input type="text" id="m_fix_money_' + (counter2) 
+						+ '_cash_box" name="m_fix_money[' + (counter2) + '][cash_box]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
+			var HTML4 = '<input type="text" id="m_fix_money_' + (counter2) 
+						+ '_pos_register" name="m_fix_money[' + (counter2) + '][pos_register]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
+			var HTML5 = '<input type="text" id="m_fix_money_' + (counter2) 
+						+ '_part_time" name="m_fix_money[' + (counter2) + '][part_time]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
+			var HTML6 = '<input type="text" id="m_fix_money_' + (counter2) 
+						+ '_wash_money" name="m_fix_money[' + (counter2) + '][wash_money]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
+			var HTML7 = '<input type="text" id="m_fix_money_' + (counter2) 
+						+ '_money_change" name="m_fix_money[' + (counter2) + '][money_change]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
+			var HTML8 = '<input type="text" id="m_fix_money_' + (counter2) 
+						+ '_total_cash_box" name="m_fix_money[' + (counter2) + '][total_cash_box]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
+			var HTML9 = '<input type="text" id="m_fix_money_' + (counter2) 
+						+ '_total_change_money" name="m_fix_money[' + (counter2) + '][total_change_money]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
+			var HTML10 = '<input type="text" id="m_fix_money_' + (counter2) 
+						+ '_total_money" name="m_fix_money[' + (counter2) + '][total_money]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
+			
+			var HTML11 = '<input type="button" name="clear" value="クリア" onClick="form_clear2(' + (counter2) + ');" />'
+						+ '<input type="button" name="clear" value="削除" onClick="DelTableRows2(this);" />';
+			
+			
+			cell1.innerHTML = HTML1;
+			cell2.innerHTML = HTML2;
+			cell3.innerHTML = HTML3;
+			cell4.innerHTML = HTML4;
+			cell5.innerHTML = HTML5;
+			cell6.innerHTML = HTML6;
+			cell7.innerHTML = HTML7;
+			cell8.innerHTML = HTML8;
+			cell9.innerHTML = HTML9;
+			cell10.innerHTML = HTML10;
+			cell11.innerHTML = HTML11;
+			
+			counter2++;
+		};
+		
+		function DelTableRows2(obj){
+			
+			var table1 = document.getElementById("tbody2-row");
+			
+			if (counter2 == 0) {
+				counter2 = table1.rows.length;
+			}
+			
+			var myTbl = document.getElementById("tbody2-row");
+			var tr = obj.parentNode.parentNode;
+			myTbl.removeChild(tr);
+		};
+	
+	
+		function form_clear2(idx){
+				document.getElementById('m_fix_money_' + idx + '_start_month').selectedIndex = 0;
+				document.getElementById('m_fix_money_' + idx + '_end_month').selectedIndex = 0;
+				document.getElementById('m_fix_money_' + idx + '_cash_box').value = "";
+				document.getElementById('m_fix_money_' + idx + '_pos_register').value = "";
+				document.getElementById('m_fix_money_' + idx + '_part_time').value = "";
+				document.getElementById('m_fix_money_' + idx + '_wash_money').value = "";
+				document.getElementById('m_fix_money_' + idx + '_money_change').value = "";
+				document.getElementById('m_fix_money_' + idx + '_total_cash_box').value = "";
+				document.getElementById('m_fix_money_' + idx + '_total_change_money').value = "";
+				document.getElementById('m_fix_money_' + idx + '_total_money').value = "";
+		};
+         
+        var counter = 0;
+		function AddTableRows(){
+			var table1 = document.getElementById("tbody-row");
+			
+			if (counter == 0) {
+				counter = table1.rows.length;
+			}
+			
+			var row1 = table1.insertRow(table1.rows.length);
+			var cell1 = row1.insertCell(0);
+			var cell2 = row1.insertCell(1);
+			var cell3 = row1.insertCell(2);
+			var cell4 = row1.insertCell(3);
+			var cell5 = row1.insertCell(4);
+			var cell6 = row1.insertCell(5);
+			var cell7 = row1.insertCell(6);
+			var cell8 = row1.insertCell(7);
+			var cell9 = row1.insertCell(8);
+		
+			// class の付与は UserAgent によって
+			// 挙動が違うっぽいので念のため両方の方法で
+			cell1.setAttribute("class","m_wash_id");
+			cell2.setAttribute("class","sunday");
+			cell3.setAttribute("class","monday");
+			cell4.setAttribute("class","tuesday");
+			cell5.setAttribute("class","wednesday");
+			cell6.setAttribute("class","thursday");
+			cell7.setAttribute("class","friday");
+			cell8.setAttribute("class","saturday");
+			cell9.setAttribute("class","clear");
+			cell9.setAttribute("class","row-del");
+			cell1.className = 'm_wash_id';
+			cell2.className = 'sunday';
+			cell3.className = 'monday';
+			cell4.className = 'tuesday';
+			cell5.className = 'wednesday';
+			cell6.className = 'thursday';
+			cell7.className = 'friday';
+			cell8.className = 'saturday';
+			cell9.className = 'clear';
+			
+			var HTML1 = String(<%= select("select-replace", "m_wash_id",
+		  	 	 MWash.find(:all,:conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => "wash_cd").map do |u|
+		      	 [u.wash_ryaku,u.id]
+		   		 end, :include_blank => "選択して下さい") %>);
+		   	
+		   	HTML1 = HTML1.replace(/select-replace_/g,"m_washsale_plan_" + (counter) + "_");
+		   	HTML1 = HTML1.replace(/select-replace/g,"m_washsale_plan[" + (counter) + "]");
+		   	
+			var HTML2 = '<input type="hidden" value="0" name="m_washsale_plan[' + (counter) + '][sunday]">'
+						+ '<input type="checkbox" id="m_washsale_plan_' + (counter) 
+						+ '_sunday" name="m_washsale_plan[' + (counter) + '][sunday]" value=1 />';
+			
+			var HTML3 = '<input type="hidden" value="0" name="m_washsale_plan[' + (counter) + '][monday]">'
+						+ '<input type="checkbox" id="m_washsale_plan_' + (counter) 
+						+ '_monday" name="m_washsale_plan[' + (counter) + '][monday]" value=1 />';
+			
+			var HTML4 = '<input type="hidden" value="0" name="m_washsale_plan[' + (counter) + '][tuesday]">'
+						+ '<input type="checkbox" id="m_washsale_plan_' + (counter) 
+						+ '_tuesday" name="m_washsale_plan[' + (counter) + '][tuesday]" value=1 />';
+			
+			var HTML5 = '<input type="hidden" value="0" name="m_washsale_plan[' + (counter) + '][wednesday]">'
+						+ '<input type="checkbox" id="m_washsale_plan_' + (counter) 
+						+ '_wednesday" name="m_washsale_plan[' + (counter) + '][wednesday]" value=1 />';
+			
+			var HTML6 = '<input type="hidden" value="0" name="m_washsale_plan[' + (counter) + '][thursday]">'
+						+ '<input type="checkbox" id="m_washsale_plan_' + (counter) 
+						+ '_thursday" name="m_washsale_plan[' + (counter) + '][thursday]" value=1 />';
+			
+			var HTML7 = '<input type="hidden" value="0" name="m_washsale_plan[' + (counter) + '][friday]">'
+						+ '<input type="checkbox" id="m_washsale_plan_' + (counter) 
+						+ '_friday" name="m_washsale_plan[' + (counter) + '][friday]" value=1 />';
+			
+			var HTML8 = '<input type="hidden" value="0" name="m_washsale_plan[' + (counter) + '][saturday]">'
+						+ '<input type="checkbox" id="m_washsale_plan_' + (counter) 
+						+ '_saturday" name="m_washsale_plan[' + (counter) + '][saturday]" value=1 />';
+			
+			var HTML9 = '<input type="button" name="clear" value="クリア" onClick="form_clear(' + (counter) + ');" />'
+						+ '<input type="button" name="clear" value="削除" onClick="DelTableRows(this);" />';
+			
+			cell1.innerHTML = HTML1;
+			cell2.innerHTML = HTML2;
+			cell3.innerHTML = HTML3;
+			cell4.innerHTML = HTML4;
+			cell5.innerHTML = HTML5;
+			cell6.innerHTML = HTML6;
+			cell7.innerHTML = HTML7;
+			cell8.innerHTML = HTML8;
+			cell9.innerHTML = HTML9;
+			
+			counter++;
+		};
+		
+		function DelTableRows(obj){
+			
+			var table1 = document.getElementById("tbody-row");
+				
+			if (counter == 0) {
+				counter = table1.rows.length;
+			}
+			
+			var myTbl = document.getElementById("tbody-row");
+			var tr = obj.parentNode.parentNode;
+			myTbl.removeChild(tr);
+		};
+		
+		
+		function form_clear(idx){
+					document.getElementById('m_washsale_plan_' + idx + '_m_wash_id').selectedIndex = 0;
+					document.getElementById('m_washsale_plan_' + idx + '_sunday').checked = false;
+					document.getElementById('m_washsale_plan_' + idx + '_monday').checked = false;
+					document.getElementById('m_washsale_plan_' + idx + '_tuesday').checked = false;
+					document.getElementById('m_washsale_plan_' + idx + '_wednesday').checked = false;
+					document.getElementById('m_washsale_plan_' + idx + '_thursday').checked = false;
+					document.getElementById('m_washsale_plan_' + idx + '_friday').checked = false;
+					document.getElementById('m_washsale_plan_' + idx + '_saturday').checked = false;
+		};
+         
+         
+         
+        var counter3 = 0;
+		function AddTableRows3(){
+		
+			var table1 = document.getElementById("tbody3-row");
+			
+			if (counter3 == 0) {
+				counter3 = table1.rows.length;
+			}
+			
+			var row1 = table1.insertRow(table1.rows.length);
+			var cell1 = row1.insertCell(0);
+			var cell2 = row1.insertCell(1);
+			var cell3 = row1.insertCell(2);
+			var cell4 = row1.insertCell(3);
+			var cell5 = row1.insertCell(4);
+			
+			// class の付与は UserAgent によって
+			// 挙動が違うっぽいので念のため両方の方法で
+			cell1.setAttribute("class","m_oil_id");
+			cell2.setAttribute("class","tank_no");
+			cell3.setAttribute("class","tank_name");
+			cell4.setAttribute("class","volume");
+			cell5.setAttribute("class","clear");
+			
+			
+			var HTML1 = String(<%= select("select-replace", "m_oil_id",
+							  	 	@m_oils.map do |u| [u.oil_name,u.id] 
+					    			end,:include_blank => "選択して下さい") %>);
+		   	
+		   	HTML1 = HTML1.replace(/select-replace_/g,"m_tank_" + (counter3) + "_");
+		   	HTML1 = HTML1.replace(/select-replace/g,"m_tank[" + (counter3) + "]");
+		   	
+		   	var HTML2 = '<input type="text" id="m_tank_' + (counter3) 
+						+ '_tank_no" name="m_tank[' + (counter3) + '][tank_no]" size="2" maxlength="2" style="ime-mode:disabled" onkeyup="showPreview(' + (counter3) + ')"/>';
+			var HTML3 = '<input type="text" id="m_tank_' + (counter3) 
+						+ '_tank_name" name="m_tank[' + (counter3) + '][tank_name]" size="5", readonly=true />';
+			var HTML4 = '<input type="text" id="m_tank_' + (counter3) 
+						+ '_volume" name="m_tank[' + (counter3) + '][volume]" size="2" maxlength="9" style="ime-mode:disabled" class="money2" onkeyup="numberCheck(this)"/>';
+			var HTML5 = '<input type="button" name="clear" value="クリア" onClick="form_clear3(' + (counter3) + ');" />'
+					+ '<input type="button" name="clear" value="削除" onClick="DelTableRows3(this);" />';
+			
+			cell1.innerHTML = HTML1;
+			cell2.innerHTML = HTML2;
+			cell3.innerHTML = HTML3;
+			cell4.innerHTML = HTML4;
+			cell5.innerHTML = HTML5;
+			
+			counter3++;
+		};
+		
+		function DelTableRows3(obj){
+			
+			var table1 = document.getElementById("tbody3-row");
+			
+			if (counter3 == 0) {
+				counter3 = table1.rows.length;
+			}
+			
+			var myTbl = document.getElementById("tbody3-row");
+			var tr = obj.parentNode.parentNode;
+			myTbl.removeChild(tr);
+		};
+	
+	
+		function form_clear3(idx){
+				document.getElementById('m_tank_' + idx + '_m_oil_id').selectedIndex = 0;
+				document.getElementById('m_tank_' + idx + '_tank_no').value = "";
+				document.getElementById('m_tank_' + idx + '_tank_name').value = "";
+				document.getElementById('m_tank_' + idx + '_volume').value = "";
+		};
+	
+	
+		function numberCheck(obj) { 
+			var v = obj.value;
+			
+			if (v.match(/[^0-9]/g)) {
+				obj.value = v.replace(/[^0-9]/g,'');
+			}
+		};
+	
+		function showPreview(idx){
+			var v = document.getElementById('m_tank_' + idx + '_tank_no').value;
+			
+			if (v.match(/[^0-9]/g)) {
+				document.getElementById('m_tank_' + idx + '_tank_no').value = v.replace(/[^0-9]/g,'');
+			}
+			
+			var html = document.getElementById('m_tank_' + idx + '_tank_no').value;
+			document.getElementById('m_tank_' + idx + '_tank_name').value = "タンク" + html;
+		};
+        
+
+		 
+		 
+      </script>
+      <!-- CSS -->
+      <style type="text/css">
+      :focus {
+         outline:0;
+      }
+      ul,
+      li {
+         margin:0; padding:0;
+         list-style:none;
+      }
+      #exp {
+         margin:0 0 20px 0; padding:0;
+      }
+      ul.tabnav {
+         overflow:hidden;
+      }
+      ul.tabnav li {
+          display:inline;
+      }
+      ul.tabnav li a {
+          padding:3px 7px;
+          background-color:#ccc;
+          color:#000;
+          text-decoration:none;
+      }
+      ul.tabnav li a.selected,
+      ul.tabnav li a:hover {
+          background-color:#666;
+          color:#fff;
+          padding-top:7px;
+      }
+      div.tabs div {
+         margin:0; padding:10px;
+         /*background-color:#666;*/
+         /*color:#fff;*/
+      }
+      div.tabs div h2 {
+         margin:10px 0;
+      }
+      </style>
+   </head>
+   <body>
+	
+     <%= form_for(@m_shop ,:html => {:onsubmit=>"return test_val();" }) do |f| %>
+      <div id="wrap">
+<!-- CODE -->
+
+         <div class="tabs" id="exp">
+             <ul class="tabnav">
+                 <li><a href="#first">店舗情報</a></li>
+                 <li><a href="#second">釣銭固定額</a></li>
+                 <li><a href="#third">洗車売上報告</a></li>
+                 <li><a href="#fourth">タンク情報</a></li>
+                 
+             </ul>
+			  <div id="first">
+				  <% if @m_shop.errors.any? %>
+				    <div id="error_explanation">
+				      <h2><%= pluralize(@m_shop.errors.count, "件") %> のエラーが存在します。</h2>
+				
+				      <ul>
+				      <% @m_shop.errors.full_messages.each do |msg| %>
+				        <li><%= msg %></li>
+				      <% end %>
+				      </ul>
+				    </div>
+				  <% end %>
+			
+			  <div id="error_test1"></div>
+			
+			
+			  <table id='rounded-corner'>
+			  	<tr>
+			  	  <th><%= f.label '店舗コード' %></th>
+			  	  <td><%= f.number_field :shop_cd , :style=>"ime-mode:disabled" ,:maxlength=>6,:onkeyup=>"numberCheck(this)"%></td> 	  
+			  	</tr>
+			  	<tr>
+			  	  <th><%= f.label '店舗名' %></th>
+			  	  <td><%= f.text_field :shop_name %></td>  	  
+			  	</tr>
+			  	<tr>
+			  	  <th><%= f.label '店舗カナ' %></th>
+			  	  <td><%= f.text_field :shop_kana %></td>  	  
+			  	</tr>
+			  	<tr>
+			  	  <th><%= f.label '店舗略称' %></th>
+			  	  <td><%= f.text_field :shop_ryaku %></td>  	  
+			  	</tr>
+			  	<tr>
+			  	  <th><%= f.label '郵便番号' %></th>
+			  	  <td><%= f.text_field :shop_zip_cd , :style=>"ime-mode:disabled" ,:maxlength=>8 %></td>  	  
+			  	</tr>
+			  	<tr>
+			  	  <th><%= f.label '住所' %></th>
+			  	  <td><%= f.text_field :shop_adress %></td>  	  
+			  	</tr>
+			  	<tr>
+			  	  <th><%= f.label 'TEL' %></th>
+			  	  <td><%= f.text_field :shop_tel , :style=>"ime-mode:disabled" ,:maxlength=>12 %></td>  	  
+			  	</tr>
+			  	<tr>
+			  	  <th><%= f.label 'FAX' %></th>
+			  	  <td><%= f.text_field :shop_fax , :style=>"ime-mode:disabled" ,:maxlength=>12 %></td>  	  
+			  	</tr>
+			  	<tr>
+			  	  <th><%= f.label 'E-mail' %></th>
+			  	  <td><%= f.text_field :shop_mail_adress , :style=>"ime-mode:disabled" ,:maxlength=>25 %></td>  	  
+			  	</tr>
+			  	<tr>
+			  	  <th><%= f.label '店舗種別' %></th>
+			  	  <td>
+			  	  	<%= f.select(:shop_kbn, 
+				  	 	MCode.find(:all,:conditions => ["kbn = 'shop_kbn'"], :order => 'code').map do |u|
+				      	[u.code_name1,u.code]
+				   		end, :selected => @m_shop.shop_kbn, :include_blank => "選択して下さい") %>
+			  	  </td>  	  
+			  	</tr>
+			  	<tr>
+			  	  <th><%= f.label '所属' %></th>
+			  	  <td><%#= f.number_field :m_shop_group_id %>
+			  	  	<%= f.select(:m_shop_group_id, 
+				  	 	MShopGroup.find(:all,:conditions => ["deleted_flg = 0"], :order => 'group_cd').map do |u|
+				      	[u.group_name,u.id]
+				   		end, :selected => @m_shop.m_shop_group_id, :include_blank => "選択して下さい") %>
+			  	  </td>  	  
+			  	</tr>
+			  	
+			  	
+			  	<% @m_oils.each_with_index do |m_oil,idx| %>
+			  	  	<%- if m_oil.id == @m_shop.m_oil_id1 -%>
+			    	<%- elsif m_oil.id == @m_shop.m_oil_id2 -%>
+			    	<%- elsif m_oil.id == @m_shop.m_oil_id3 -%>
+			    	<%- elsif m_oil.id == @m_shop.m_oil_id4 -%>
+			    	<%- else -%>
+				  	  	<%- if idx < 4 -%>
+				  	  		<%= f.hidden_field "m_oil_id#{idx+1}" , :value => m_oil.id %>
+				  	  	<%- end -%>
+				  	<%- end -%>
+			    <% end %>
+			     	
+			  </table>
+			  	  
+			  
+			  
+			  </div>
+			  
+			  <div id="second">
+			  
+			  <div id="error_test2"></div>
+			  	          
+				<form method="GET" action="#">
+				  <input type="button" value="追加" onClick="AddTableRows2();" />
+				</form>   
+				  
+				<table id='rounded-corner'>
+				
+				  <tr>
+				  	<th>開始月</th>
+				    <th>終了月</th>
+				    <th>金庫</th>
+				    <th>POSレジ</th>
+				    <th>バイト用</th>
+				    <th>洗車機釣銭</th>
+				    <th>ｹﾞｰﾑ両替機</th>
+				    <th>金庫合計</th>
+				    <th>釣銭機合計</th>
+					<th>釣銭合計</th>
+					<th width="5%"></th>
+				  </tr>
+				
+				<tbody id="tbody2-row">
+				<% if @m_fix_moneys %>
+					<% @m_fix_moneys.each_with_index do |m_fix_money,idx| %>   
+					  <tr>
+					  	<%= hidden_field "m_fix_money[#{idx}]", 'id' , :value=>m_fix_money.id %>
+					  
+					    <td class="start_month">
+					    	<%= select("m_fix_money[#{idx}]", "start_month",
+						  	 	12.times.map do |i|	
+								[(i + 1).to_s + "月", i + 1]
+						  	 	end, :selected => m_fix_money.start_month,:include_blank => "") %>
+					    </td>
+					    <td class="end_month">
+					    	<%= select("m_fix_money[#{idx}]", "end_month",
+						  	 	12.times.map do |i|	
+								[(i + 1).to_s + "月", i + 1]
+						  	 	end, :selected => m_fix_money.end_month,:include_blank => "") %>
+					    </td>
+					    <td class="cash_box">
+					    	<%= text_field "m_fix_money[#{idx}]", 'cash_box',:value=>m_fix_money.cash_box,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
+					    </td>
+					    <td class="pos_register">
+					    	<%= text_field "m_fix_money[#{idx}]", 'pos_register',:value=>m_fix_money.pos_register,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
+					    </td>
+					    <td class="part_time">
+					    	<%= text_field "m_fix_money[#{idx}]", 'part_time',:value=>m_fix_money.part_time,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
+					    </td>
+					    <td class="wash_money">
+					    	<%= text_field "m_fix_money[#{idx}]", 'wash_money',:value=>m_fix_money.wash_money,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
+					    </td>
+					    <td class="money_change">
+					    	<%= text_field "m_fix_money[#{idx}]", 'money_change',:value=>m_fix_money.money_change,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
+					    </td>
+					    <td class="total_cash_box">
+					    	<%= text_field "m_fix_money[#{idx}]", 'total_cash_box',:value=>m_fix_money.total_cash_box,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
+					    </td>
+					    <td class="total_change_money">
+					    	<%= text_field "m_fix_money[#{idx}]", 'total_change_money',:value=>m_fix_money.total_change_money,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
+					    </td>
+					    <td class="total_money">
+					    	<%= text_field "m_fix_money[#{idx}]", 'total_money',:value=>m_fix_money.total_money,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
+					    </td>
+					    <td class="clear">
+							<input type="button" value="クリア" onClick="form_clear2(<%= idx %>);" />
+							<input type="button" value="削除" onClick="DelTableRows2(this);" />
+						</td>
+					  </tr>
+					<% end %>
+				<% end %>
+				</tbody>
+				</table>
+			  	
+			  </div>
+			  
+			  <div id="third">
+				         
+				<div id="error_test"></div>          
+				          
+				<form method="GET" action="#">
+				  <input type="button" value="追加" onClick="AddTableRows();" />
+				</form>             
+				<table id='rounded-corner'>
+				
+				  <tr>
+				  	<th>洗車機名</th>
+				    <th>(日)</th>
+				    <th>(月)</th>
+				    <th>(火)</th>
+				    <th>(水)</th>
+				    <th>(木)</th>
+				    <th>(金)</th>
+				    <th>(土)</th>
+				    <th></th>
+				  </tr>
+				
+				<tbody id="tbody-row">
+				<% if @m_washsale_plans %>
+					<% @m_washsale_plans.each_with_index do |m_washsale_plan,idx| %>   
+					  <tr>
+					  	<%= hidden_field "m_washsale_plan[#{idx}]", 'id' , :value=>m_washsale_plan.id %>
+					  
+					    <td class="m_wash_id">
+					    	<%= select("m_washsale_plan[#{idx}]", "m_wash_id",
+						  	 	MWash.find(:all,:conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'wash_cd').map do |u|
+						      	[u.wash_ryaku,u.id]	   		end, :selected => m_washsale_plan.m_wash_id, :include_blank => "選択して下さい") %>
+					    	</td>
+					    <td class="sunday">
+					    	<%- if m_washsale_plan.sunday == 1 -%>
+					    	<%= check_box "m_washsale_plan[#{idx}]", 'sunday', {:checked => true}, 1, 0%>
+					    	<%- else -%>
+					    	<%= check_box "m_washsale_plan[#{idx}]", 'sunday', {}, 1, 0%>
+					    	<%- end -%>
+					    </td>
+					    <td class="monday">
+					    	<%- if m_washsale_plan.monday == 1 -%>
+					    	<%= check_box( "m_washsale_plan[#{idx}]", 'monday', {:checked => true}, 1, 0)%>
+					    	<%- else -%>
+					    	<%= check_box( "m_washsale_plan[#{idx}]", 'monday', {}, 1, 0)%>
+					    	<%- end -%>
+					    </td>
+					    <td class="tuesday">
+					    	<%- if m_washsale_plan.tuesday == 1 -%>
+					    	<%= check_box( "m_washsale_plan[#{idx}]", 'tuesday', {:checked => true}, 1, 0)%>
+					    	<%- else -%>
+					    	<%= check_box( "m_washsale_plan[#{idx}]", 'tuesday', {}, 1, 0)%>
+					    	<%- end -%>
+					    </td>
+					    <td class="wednesday">
+					    	<%- if m_washsale_plan.wednesday == 1 -%>
+					    	<%= check_box( "m_washsale_plan[#{idx}]", 'wednesday', {:checked => true}, 1, 0)%>
+					    	<%- else -%>
+					    	<%= check_box( "m_washsale_plan[#{idx}]", 'wednesday', {}, 1, 0)%>
+					    	<%- end -%>
+					    </td>
+					    <td class="thursday">
+					    	<%- if m_washsale_plan.thursday == 1 -%>
+					    	<%= check_box( "m_washsale_plan[#{idx}]", 'thursday', {:checked => true}, 1, 0)%>
+					    	<%- else -%>
+					    	<%= check_box( "m_washsale_plan[#{idx}]", 'thursday', {}, 1, 0)%>
+					    	<%- end -%>
+					    </td>
+					    <td class="friday">
+					    	<%- if m_washsale_plan.friday == 1 -%>
+					    	<%= check_box( "m_washsale_plan[#{idx}]", 'friday', {:checked => true}, 1, 0)%>
+					    	<%- else -%>
+					    	<%= check_box( "m_washsale_plan[#{idx}]", 'friday', {}, 1, 0)%>
+					    	<%- end -%>
+					    </td>
+					    <td class="saturday">
+					    	<%- if m_washsale_plan.saturday == 1 -%>
+					    	<%= check_box( "m_washsale_plan[#{idx}]", 'saturday', {:checked => true}, 1, 0)%>
+					    	<%- else -%>
+					    	<%= check_box( "m_washsale_plan[#{idx}]", 'saturday', {}, 1, 0)%>
+					    	<%- end -%>
+					    </td>
+					    <td class="clear">
+							<input type="button" value="クリア" onClick="form_clear(<%= idx %>);" />
+							<input type="button" value="削除" onClick="DelTableRows(this);" />
+						</td>
+					  </tr>
+					<% end %>
+				<% end %>
+				</tbody>
+				</table>
+			
+			   </div>
+			  
+			  <div id="fourth">
+			  	 
+			  	<div id="error_test3"></div>
+			  	 
+				<form method="GET" action="#">
+				  <input type="button" value="追加" onClick="AddTableRows3();" />
+				</form>   
+				  
+				<table id='rounded-corner'>
+				
+				  <tr>
+					<th>油種</th>
+				    <th>タンクNo</th>
+				    <th>タンク名</th>
+				    <th>タンク容量</th>
+					<th></th>
+				  </tr>
+				
+				<tbody id="tbody3-row">
+				<% if @m_tanks %>
+					<% @m_tanks.each_with_index do |m_tank,idx| %>   
+					  <tr>
+					  	<%= hidden_field "m_tank[#{idx}]", 'id' , :value=>m_tank.id %>
+					  
+					    <td class="m_oil_id">
+					    	<%= select("m_tank[#{idx}]", "m_oil_id",@m_oils.map do |u| [u.oil_name,u.id] 
+					    		end, :selected => m_tank.m_oil_id,:include_blank => "選択して下さい") %>
+					    </td>
+					    <td class="tank_no">
+					    	<%= text_field "m_tank[#{idx}]", 'tank_no',:value=>m_tank.tank_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"showPreview(#{idx});"%>
+					    </td>
+					    <td class="tank_name">
+					    	<%= text_field "m_tank[#{idx}]", 'tank_name',:value=>m_tank.tank_name,:size=>5, :readonly=>true %>
+					    </td>
+					    <td class="volume">
+					    	<%= text_field "m_tank[#{idx}]", 'volume',:value=>m_tank.volume,:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
+					    </td>
+					   
+					    <td class="clear">
+							<input type="button" value="クリア" onClick="form_clear3(<%= idx %>);" />
+							<input type="button" value="削除" onClick="DelTableRows3(this);" />
+						</td>
+					  </tr>
+					<% end %>
+				<% end %>
+				</tbody>
+				</table>
+			  	
+			  </div>
+			  
+         </div>
+         
+         <div class="actions">
+			    <%= f.submit f.object.new_record? ? '追加' : '更新'%>
+		 </div>
+         
+<!-- / CODE -->
+      </div>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-<table boder="0">
-	<tr>
-	<th>
-
-  <table id='rounded-corner'>
-  	<tr>
-  	  <th><%= f.label '店舗コード' %></th>
-  	  <td><%= f.number_field :shop_cd %></td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '店舗カナ' %></th>
-  	  <td><%= f.text_field :shop_kana %></td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '店舗略称' %></th>
-  	  <td><%= f.text_field :shop_ryaku %></td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '郵便番号' %></th>
-  	  <td><%= f.text_field :shop_zip_cd %></td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '住所' %></th>
-  	  <td><%= f.text_field :shop_adress %></td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label 'TEL' %></th>
-  	  <td><%= f.text_field :shop_tel %></td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label 'FAX' %></th>
-  	  <td><%= f.text_field :shop_fax %></td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label 'E-mail' %></th>
-  	  <td><%= f.text_field :shop_mail_adress %></td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '店舗種別' %></th>
-  	  <td><%= f.number_field :shop_kbn %></td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '所属' %></th>
-  	  <td><%= f.number_field :m_shop_group_id %></td>  	  
-  	</tr>
-  	
-  	<% @m_oils.each do |m_oil| %>
-  		<%- if m_oil.id == @m_shop.m_oil_id1 -%>
-    		<tr>
-		  	  <th><%= f.label m_oil.oil_name %></th>
-		  	  <td><%= f.number_field :tank1_all %></td>
-		  	</tr>
-    	<%- elsif m_oil.id == @m_shop.m_oil_id2 -%>
-    		<tr>
-		  	  <th><%= f.label m_oil.oil_name %></th>
-		  	  <td><%= f.number_field :tank2_all %></td>
-		  	</tr>
-    	<%- elsif m_oil.id == @m_shop.m_oil_id3 -%>
-    		<tr>
-		  	  <th><%= f.label m_oil.oil_name %></th>
-		  	  <td><%= f.number_field :tank3_all %></td>
-		  	</tr>
-    	<%- elsif m_oil.id == @m_shop.m_oil_id4 -%>
-    		<tr>
-		  	  <th><%= f.label m_oil.oil_name %></th>
-		  	  <td><%= f.number_field :tank4_all %></td>
-		  	</tr>
-    	<%- else -%>
-    		<tr>
-		  	  <th></th>
-		  	  <td></td>
-		  	</tr>
-    	<%- end -%>
-  	
-    <% end %>
-
-  	<tr>
-  	  <th><%= f.label '油外売上有無' %></th>
-  	  <td><%= f.number_field :etc_oil_flg %></td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '他商品有無' %></th>
-  	  <td><%= f.number_field :etc_flg %></td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '洗車有無' %></th>
-  	  <td><%= f.number_field :wash_flg %></td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '洗車売上報告有無' %></th>
-  	  <td><%= f.number_field :wash_sale_flg %></td>  	  
-  	</tr>
-  </table>
-  
-  </th>
-  
-  <td valign="top">
-  <table id='rounded-corner'>
-  	<tr>
-  	  <th>aaa</th>
-  	  <td>111</td>  	  
-  	</tr>
-  	<tr>
-  	  <th>bbb</th>
-  	  <td>222</td>  	  
-  	</tr>
-  	<tr>
-  	  <th>ccc</th>
-  	  <td>333</td>  	  
-  	</tr>
-  </table>
-  </td>
-  </tr>
-  </table>
-  
-  <div class="actions">
-    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
-  </div>
-<% end %>
+      
+   </body>
+</html>

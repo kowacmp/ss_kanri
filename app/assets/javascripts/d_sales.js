@@ -3,20 +3,85 @@ $(function () {
     //入力日が変更された場合のイベント
     $("#head_input_day")
       .change(function() { 
-           $.get(
-			    '/d_sales',                 // 送信先
-			    { input_day: $(this).val() , remote: true},
-			    function(data, status) {        // 通信成功時にデータを表示
-			       //$('#result').html(data);
-			       $('#form_d_sale').empty();
-                   $('#form_d_sale').append(data);
-                   alert(data);
-			    },
-			    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
-                );
+      	   //店舗種別があるときは、INDEXメソッドを実行、以外はNEWメソッドを実行、
+           if ($("#head_input_shop_kbn").size() != 0){
+           	  //Index
+           	   $.get(
+				    '/d_sales',                 // 送信先
+				    { input_day: $(this).val() , input_shop_kbn: $("#head_input_shop_kbn").val(), remote: true},
+				    function(data, status) {        // 通信成功時にデータを表示
+				       $('#result').empty();
+		               $('#result').append(data);
+		             },
+				    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
+		            );
+           }else{
+			   //New
+		       $.get(
+				    '/d_sales/new',                 // 送信先
+				    { input_day: $(this).val() , m_shop_id: $("#m_shop_id"), remote: true},
+				    function(data, status) {        // 通信成功時にデータを表示
+				       $('#form_d_sale').empty();
+		               $('#form_d_sale').append(data);
+		             },
+				    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
+		            );
+           };
            });
+    //店舗種別が変更された場合のイベント
+    $("#head_input_shop_kbn")
+      .change(function() { 
+	      	$.get(
+			    '/d_sales',                 // 送信先
+			    { input_day: $("#head_input_day").val() , input_shop_kbn: $(this).val(), remote: true},
+			    function(data, status) {        // 通信成功時にデータを表示
+			       $('#result').empty();
+	               $('#result').append(data);
+	             },
+			    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
+	            );
+      	});
+      	
+    //全てロック／解除が変更された場合のイベント
+    $("#all_lock")
+	    .live('click', function(){
+	    		var msg;
+	    		if ($(this).attr('checked') == "checked") {
+	    			msg = "すべてロックします。よろしいですか？"
+	    		}else{
+	    			msg = "すべて解除します。よろしいですか？"
+	    		};
+	    		
+	    		if(confirm(msg)){
+	    			$.get(
+		    			'/d_sales/all_lock/',
+		    			{ kakutei_flg: $(this).attr('checked'), input_day: $("#head_input_day").val(), input_shop_kbn: $("#head_input_shop_kbn").val() },
+					    function(data, status) {        // 通信成功時にデータを表示
+					       $('#result').empty();
+			               $('#result').append(data);
+			               
+			             },
+					    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
+		    		);
+					//return true;
+				}else{
+					return false;	
+				};
+				
+	    	});
     
-
+	//ロック／解除が変更された場合のイベント
+	$(":checkbox[id^=data_kakutei_flg]")
+	    .live('click', function(){
+	    		$.get(
+	    			'/d_sales/lock/',
+	    			{ kakutei_flg: $(this).attr('checked'), id: $(this).parent().find(":hidden[id^=data_id]").val() },
+	    			//function(data, status) {        // 通信成功時にデータを表示
+	    			//alert($(this).parent().find(":hidden[id^=data_id]").val());
+	    			//},
+	    		    "script"
+	    		);
+	    	});
        
     //金額のカンマ編集
     $("input.money")
@@ -35,6 +100,10 @@ $(function () {
 	$('#d_sale_sale_purika').live('change', function(){ sale_purika_calc(); });
 	//当日出
 	$('#d_sale_sale_today_out').live('change', function(){ sale_today_out_calc(); });
+	//翌日出前
+    $('#d_sale_sale_am_out').live('change', function(){ sale_am_out_calc(); });
+	//翌日出後
+	$('#d_sale_sale_pm_out').live('change', function(){ sale_pm_out_calc(); });
 	//釣銭機１、釣銭機２、釣銭機３
 	$(":input[id^=d_sale_sale_change]").live('change', function(){ sale_change_total_calc(); });
 	//ASS
@@ -84,8 +153,33 @@ $(function () {
     	total = num1;
     	$("#sale_today_out2").text(format_kanma(total));
     	
-    	yokujitu_out_calc();//翌日出を計算
     	tucyo_money_calc();//通帳預金額を計算
+    	changebox_aridaka2_calc(); //釣銭有高2を計算
+    	cash_aridaka_calc();//現金有高を計算
+    };
+    
+    //翌日出前
+    function sale_am_out_calc() {
+    	var num1 = Number(format_kanma($("#d_sale_sale_am_out").val(), 2));
+    	var total;
+    	
+    	if (isNaN(num1)) {num1 = 0};
+    	total = num1;
+    	$("#sale_am_out2").text(format_kanma(total));
+    	
+    	cash_aridaka_calc();//現金有高を計算
+    };
+    
+    //翌日出後
+    function sale_pm_out_calc() {
+    	var num1 = Number(format_kanma($("#d_sale_sale_pm_out").val(), 2));
+    	var total;
+    	
+    	if (isNaN(num1)) {num1 = 0};
+    	total = num1;
+    	$("#sale_pm_out2").text(format_kanma(total));
+    	
+    	cash_aridaka_calc();//現金有高を計算
     };
     
     //釣銭合計を計算
@@ -102,6 +196,8 @@ $(function () {
   		total = num1 + num2 + num3;
   		
   		$("#sale_change_total").text(format_kanma(total));
+  		
+  		changebox_aridaka2_calc(); //釣銭有高2を計算
 	};
     
     //ASSを計算
@@ -114,7 +210,6 @@ $(function () {
     	$("#sale_ass").text(format_kanma(total));
     	
     	total_calc();//合計を計算
-    	yokujitu_out_calc();//翌日出を計算
     	tucyo_money_calc();//通帳預金額を計算
     };
     
@@ -178,7 +273,7 @@ $(function () {
 		$("#syo_total").text(format_kanma( total ));  	
 		
 		total_calc();//合計を計算
-		yokujitu_out_calc();//翌日出を計算
+		changebox_aridaka2_calc(); //釣銭有高2を計算
     };
     
     //合計を計算
@@ -202,29 +297,9 @@ $(function () {
 		
 		$("#total").text(format_kanma( total ));  	
 
+		kabusoku_calc(); //過不足を計算    	
     };
     
-    //翌日出を計算
-    function yokujitu_out_calc() {
-    	//小計ー当日出＋ASS
-    	var num = new Array(3);
-    	var total=0;
-
-    	num[0]=Number(format_kanma($("#syo_total").text(), 2));
-    	num[1]=Number(format_kanma($("#sale_today_out2").text(), 2));
-    	num[2]=Number(format_kanma($("#sale_ass").text(), 2));
-
-		var i=0;
-      	while(i<3){
-        	if (isNaN(num[i])) {num[i] = 0};
-        	i=i+1;
-     	};    	
-
-		total = num[0] - num[1] + num[2];
-		
-		$("#yokujitu_out").text(format_kanma( total ));  	
-    	
-    };
     
     //通帳預金額
     function tucyo_money_calc() {
@@ -232,7 +307,7 @@ $(function () {
     	var num = new Array(3);
     	var total=0;
 
-    	num[0]=Number(format_kanma($("#zenjitu_today_out").text(), 2));
+    	num[0]=Number(format_kanma($("#zenjitu_sale_pm_out").text(), 2));
     	num[1]=Number(format_kanma($("#sale_today_out2").text(), 2));
     	num[2]=Number(format_kanma($("#sale_ass").text(), 2));
 
@@ -246,6 +321,76 @@ $(function () {
 		
 		$("#tucyo_money").text(format_kanma( total ));  	
     	
+    };
+    
+    //釣銭有高2
+    function changebox_aridaka2_calc() {
+    	//前日出＋当日出＋釣銭合計ー小計ー当日出
+    	var num = new Array(5);
+    	var total=0;
+
+    	num[0]=Number(format_kanma($("#zenjitu_sale_pm_out").text(), 2));
+    	num[1]=Number(format_kanma($("#sale_today_out2").text(), 2));
+    	num[2]=Number(format_kanma($("#sale_change_total").text(), 2));
+    	num[3]=Number(format_kanma($("#syo_total").text(), 2));
+    	num[4]=Number(format_kanma($("#sale_today_out2").text(), 2));
+
+		var i=0;
+      	while(i<5){
+        	if (isNaN(num[i])) {num[i] = 0};
+        	i=i+1;
+     	};    	
+    	
+    	total = num[0] + num[1] + num[2] - num[3] - num[4];
+    	
+    	$("#changebox_aridaka2").text(format_kanma( total ));  
+    	
+    	cash_aridaka_calc();//現金有高を計算
+    };
+    
+    //現金有高
+    function cash_aridaka_calc() {
+    	//釣銭有高１＋釣銭有高２＋当日出＋翌日出前＋翌日出後
+    	var num = new Array(5);
+    	var total=0;
+
+    	num[0]=Number(format_kanma($("#m_fix_money_total_cash_box2").text(), 2));
+     	num[1]=Number(format_kanma($("#changebox_aridaka2").text(), 2));
+     	num[2]=Number(format_kanma($("#sale_today_out2").text(), 2));
+     	num[3]=Number(format_kanma($("#sale_am_out2").text(), 2));
+     	num[4]=Number(format_kanma($("#sale_pm_out2").text(), 2));
+     	
+		var i=0;
+      	while(i<5){
+        	if (isNaN(num[i])) {num[i] = 0};
+        	i=i+1;
+     	};    	
+    	
+    	total = num[0] + num[1] + num[2] + num[3] + num[4];
+    	
+    	$("#cash_aridaka").text(format_kanma( total )); 
+    	
+    	kabusoku_calc(); //過不足を計算    	
+    };
+    
+    //過不足
+    function kabusoku_calc() {
+    	//現金有高ー合計
+    	var num = new Array(2);
+    	var total=0;
+
+    	num[0]=Number(format_kanma($("#cash_aridaka").text(), 2));
+     	num[1]=Number(format_kanma($("#total").text(), 2));
+
+     	
+		var i=0;
+      	while(i<2){
+        	if (isNaN(num[i])) {num[i] = 0};
+        	i=i+1;
+     	};  
+     	total = num[0] - num[1];
+     	
+     	$("#kabusoku").text(format_kanma( total ));  	
     };
     
     //カンマ編集

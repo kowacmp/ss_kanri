@@ -1,11 +1,11 @@
 <%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
-
-<% if notice %>
-  <p id="notice"><%= notice %></p>
-<% end %>
-<% sum_goukei_uriage = 0 %>
-<% sum_genkin_uriage = 0 %>
-<% sum_gosa = 0 %>
+<% kakutei_flg = 0 %>
+<% if notice -%>
+  <p id="notice"><%= notice -%></p>
+<% end -%>
+<% sum_goukei_uriage = 0 -%>
+<% sum_genkin_uriage = 0 -%>
+<% sum_gosa = 0 -%>
 <!--                    データ更新      -->
 <ul id="error_summary"></ul>
 
@@ -20,7 +20,14 @@
 		<th>誤差</th>
 	  </tr>
      <%  @m_washes.each do |wash| %>
-       <% d_wash_sale = get_d_wash_sale(@input_ymd_s) %>
+       <% d_wash_sale = get_d_wash_sale(@input_ymd_s,@shop.id,@mode) %>
+       
+       <% unless d_wash_sale == nil %>
+         <% kakutei_flg = d_wash_sale.kakutei_flg %>
+       <% else %>
+         <% kakutei_flg = 0 %>
+       <% end %>
+       
        <% sum_keisan_uriage = 0 %>
        <% wash.max_num.times do |i| %>
 	  <tr>
@@ -31,7 +38,7 @@
 		  	  <% d_washsales_item = nil %>
 		  	<% end %>
 		  	<% unless (d_washsales_item == nil) %>
-		  		<% if d_wash_sale.kakutei_flg == 1 %>
+		  		<% if kakutei_flg == 1 %>
 		  		  <td class="no-input-num"><%= d_washsales_item.meter %></td>
 		  		<% else %>
 		  		  <div class="field">
@@ -43,7 +50,7 @@
 		  		<% end %>
 		  	<% else %>
 		  	  <% unless d_wash_sale == nil %>
-		  	    <% if d_wash_sale.kakutei_flg == 1 %>
+		  	    <% if kakutei_flg == 1 %>
 		  	      <td class="no-input-num">0</td>
 		  	    <% else %>
 		  	      <td class="input-num">
@@ -60,7 +67,7 @@
 		  	<% end %>
 
 		  <td class="no-input-num"><!-- 前回メーター-->
-		  	<% d_wash_sale_mae = get_d_wash_sale(@input_ymd_mae_s) %>
+		  	<% d_wash_sale_mae = get_d_wash_sale(@input_ymd_mae_s,@shop.id,@mode) %>
 		  	<% unless d_wash_sale_mae == nil  %>
  		  	  <% d_washsales_item_mae = get_d_washsale_item(d_wash_sale_mae.id, wash.wash_cd,(i+1)) %>
  		  	<% else %>
@@ -84,7 +91,15 @@
 	   		  <% unless d_wash_sale == nil %>
 	   		    <% d_washsales_item_99 = get_d_washsale_item(d_wash_sale.id, wash.wash_cd,99) %>
 	     		  <% unless d_washsales_item_99 == nil %>
-		    	    <%= link_to '誤差入力',{:controller => 'd_wash_sales',:action => 'entry_error', :sale_date=> @input_ymd_s,:wash_cd => wash.wash_cd },:class => 'modal'%> 
+	     		    <% if kakutei_flg == 1%>
+		    	      <%= link_to '誤差',{:controller => 'd_wash_sales',:action => 'show_error',
+		    	    	   :sale_date=> @input_ymd_s,:wash_cd => wash.wash_cd,:mode => @mode,
+		    	    	   :shop_id => @shop.id  },:class => 'modal'%> 
+	     		    <% else %>
+		    	      <%= link_to '誤差入力',{:controller => 'd_wash_sales',:action => 'entry_error',
+		    	    	   :sale_date=> @input_ymd_s,:wash_cd => wash.wash_cd,:mode => @mode,
+		    	    	   :shop_id => @shop.id  },:class => 'modal'%> 
+		    	    <% end %>
 		  	      <% else %>
 		  	        誤差入力不可
 		    	<% end%>
@@ -106,8 +121,12 @@
 	   		<% unless d_wash_sale == nil %>
 	   		  <% d_washsales_item_99 = get_d_washsale_item(d_wash_sale.id, wash.wash_cd,99) %>
 	   		  <% unless d_washsales_item_99 == nil %>
+	   		    <% if kakutei_flg == 1 %>
+	   		    <td class="no-input-num"><%= d_washsales_item_99.meter %></td>
+	   		    <% else %>
 		  	    <td class="input-num"><%= text_field_tag(meter_id, d_washsales_item_99.meter ,
 		  	      :style => "text-align:right",:size => 10) %></td>
+		  	    <% end %>
 		  	    <% sum_genkin_uriage = sum_genkin_uriage + d_washsales_item_99.meter %>
 		  	  <% else %>
 		  	    <td class="input-num"><%= text_field_tag(meter_id,0 ,:style => "text-align:right",:size => 10) %></td>
@@ -142,11 +161,17 @@
 	  </tr>
 	  <tr><td colspan="6">
 	  	<div class="field">
-	     <%= submit_tag(" 更新 ",:disable_with => "更新中...",:confirm => '保存しても良いですか？') %>	  
+	     <% if kakutei_flg == 1 %>
+	       <%= submit_tag(" 更新 ",:disabled => true) %>	 
+	     <% else %>
+	       <%= submit_tag(" 更新 ",:disable_with => "更新中...",:confirm => '保存しても良いですか？') %>	  
+	     <% end %>
 	   </div>
 	 </td></tr>
 	 </table>
 	 <%= hidden_field_tag 'sale_date',@input_ymd.delete("/") %>
-
+     <%= hidden_field_tag 'shop_kbn',@shop_kbn %>
+     <%= hidden_field_tag 'shop_id',@shop.id %>
+     <%= hidden_field_tag 'mode',@mode %>
 	<% end %>
 

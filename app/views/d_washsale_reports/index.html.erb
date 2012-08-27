@@ -1,0 +1,32 @@
+<% if params[:mode] == 'list' %>
+<%= link_to('洗車売上報告書に戻る',{:controller => 'd_washsale_report_lists',:action => 'index',:sale_date => params[:sale_date],:shop_kbn => params[:shop_kbn],:mode => params[:mode]}) %><br />
+<% end %>
+<%= form_tag(url_for(:action => 'search'),:remote => true) do %>
+<table id='rounded-corner'>
+	<tr>
+	  <th>対象店舗</th>
+	  <td><%= @shop.shop_cd %> | <%= @shop.shop_name %></td>
+      <th>対象年月</th>
+      <td>
+      	<% if params[:mode] == 'list' %>
+      	<%= @d_washsale_report.sale_date[0,4].to_s + '/' + @d_washsale_report.sale_date[4,2].to_s %>
+      	<% else %>
+      	<%= select_year(@time_now,:start_year => @start_year, :end_year => @time_now.year) %><%= select_month(@time_now,:use_month_numbers => true) %>
+      	<% end %>
+      </td>
+      <% unless params[:mode] == 'list' %>
+	  <td><%= submit_tag "検索" %></td>
+	  <% end %>
+      </tr>
+</table>
+<% end %>
+
+<p>
+	<div id="report">
+	    <%= render partial: 'report'%>
+	</div>
+</p>
+
+<% if params[:mode] == 'list' %>
+<%= link_to('洗車売上報告書に戻る',{:controller => 'd_washsale_report_lists',:action => 'index',:sale_date => params[:sale_date],:shop_kbn => params[:shop_kbn],:mode => params[:mode]}) %>
+<% end %>

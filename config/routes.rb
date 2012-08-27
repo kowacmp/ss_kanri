@@ -1,5 +1,34 @@
 SsKanri::Application.routes.draw do
+
+  get "d_fixture_approvals/index"
+  get "d_fixture_approvals/edit"
+  get "d_fixture_approvals/change_radio"
+
+  resources :m_audit_checks
+
+  resources :m_class_checks
+
+  resources :m_item_accounts
+  
+  resources :m_approvals
+
+  get "d_washsale_reports/index"
+
+  get "d_washsale_reports/search"
+
+  get "d_washsale_reports/update"
+
+  get "d_washsale_report_lists/index"
+  get "d_washsale_report_lists/search"
+  
+  get "d_washsale_lists/index"
+  get "d_washsale_lists/update"
+  get "d_washsale_lists/show"
+  get "d_washsale_lists/compare"
+  get "d_washsale_lists/search"
+
   get "d_wash_sales/index"
+  get "d_wash_sales/index_modal"
   get "d_wash_sales/entry_error"
   get "d_wash_sales/change_input_ymd"
   get "d_wash_sales/update"
@@ -18,6 +47,22 @@ SsKanri::Application.routes.draw do
       get :test
     end
   end
+ 
+  match "d_audit_washes/confirm_shop_id_select", :to => "d_audit_washes#confirm_shop_id_select"
+  match "d_audit_washes/confirm_user_id_select", :to => "d_audit_washes#confirm_user_id_select"
+  resources :d_audit_washes
+  
+  match "d_audit_etcs/confirm_shop_id_select", :to => "d_audit_etcs#confirm_shop_id_select"
+  match "d_audit_etcs/confirm_user_id_select", :to => "d_audit_etcs#confirm_user_id_select"
+  resources :d_audit_etcs
+ 
+  resources :m_shop_groups
+  
+  resources :d_aims
+
+  resources :m_aims
+
+  resources :m_meters
  
   resources :m_washsale_plans
 
@@ -67,6 +112,9 @@ SsKanri::Application.routes.draw do
   resources :d_sales do
     collection do
       delete :destroy_d_sale_item
+      get :lock
+      get :all_lock
+      get :report_view
     end
   end
   

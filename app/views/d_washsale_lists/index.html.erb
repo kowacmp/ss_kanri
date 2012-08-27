@@ -1,0 +1,20 @@
+<!-- ><h1>DWashsaleLists#index</h1> -->
+<%= form_tag(url_for(:action => 'search'),:remote => true) do %>
+<table id='rounded-corner'>
+	<tr>
+      <th>入力日</th>
+      <td><%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 10%></td>
+	  <th>店舗種別</th>
+	  <td><%= select_tag "shop_kbn",
+	        raw('<option value="0">直営</option><option value="1">油外</option>')
+	        %></td> 
+	  <td><%= submit_tag "検索" %></td>
+      </tr>
+</table>
+<% end %>
+
+<p>
+	<div id="shop_list">
+	    <%= render partial: 'shop_list'%>
+	</div>
+</p>

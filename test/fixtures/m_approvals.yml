@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  menu_id: 1
+  approval_id1: 1
+  approval_name1: MyString
+  approval_id2: 1
+  approval_name2: MyString
+  approval_id3: 1
+  approval_name3: MyString
+  approval_id4: 1
+  approval_name4: MyString
+  approval_id5: 1
+  approval_name5: MyString
+
+two:
+  menu_id: 1
+  approval_id1: 1
+  approval_name1: MyString
+  approval_id2: 1
+  approval_name2: MyString
+  approval_id3: 1
+  approval_name3: MyString
+  approval_id4: 1
+  approval_name4: MyString
+  approval_id5: 1
+  approval_name5: MyString

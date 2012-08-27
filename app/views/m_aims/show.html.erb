@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Aim code:</b>
+  <%= @m_aim.aim_code %>
+</p>
+
+<p>
+  <b>Aim name:</b>
+  <%= @m_aim.aim_name %>
+</p>
+
+<p>
+  <b>Shop kbn:</b>
+  <%= @m_aim.shop_kbn %>
+</p>
+
+
+<%= link_to 'Edit', edit_m_aim_path(@m_aim) %> |
+<%= link_to 'Back', m_aims_path %>

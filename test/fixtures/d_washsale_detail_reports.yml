@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  d_washsale_report_id: 1
+  m_wash_id: 1
+  wash_no: 1
+  meter: 1
+  sale_mater: 1
+  created_user_id: 1
+  updated_user_id: 1
+
+two:
+  d_washsale_report_id: 1
+  m_wash_id: 1
+  wash_no: 1
+  meter: 1
+  sale_mater: 1
+  created_user_id: 1
+  updated_user_id: 1

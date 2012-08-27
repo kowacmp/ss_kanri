@@ -56,6 +56,51 @@ div#select_day_info{
         text-align: right;
       }
   }
+
+  div.info_alias{
+      display: inline-block; _display: inline;
+      margin-left: -4px;
+      width: 100px;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 7px; 
+      background-color: #A5D7AA;  
+      /*background: url("th_002.jpg") repeat-x scroll 0 0 transparent;*/ 
+  }
+
+}  
+
+div#shop_kbn_info{
+  display: inline-block; _display: inline;
+  
+  div.title_alias{
+      display: inline-block; _display: inline;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 7px;
+      margin-left: 30px;
+      background: url("th_001.gif") repeat-x scroll 0 0 transparent;
+  }
+  
+  div.input_alias{
+    display: inline-block; _display: inline;
+            border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 3px;
+      padding-bottom: 4px;
+      text-align: right;
+      margin-left: -4px;
+      
+      input#head_input_day{
+        width: 100px;
+        margin: 0px;
+        padding: 0px;
+        text-align: right;
+      }
+  }
 }  
 
 div#d_sale{
@@ -118,14 +163,14 @@ div#d_sale{
   
 
 
-  div#pay_item, div#recive_item, div#purika_item{
+  div#pay_item, div#recive_item, div#etc_item, div#purika_item{
       /*display: inline-block; _display: inline;*/
       border-color: black;
       border-style: solid;
       border-width: 1px;
       min-hegth: 150px;
     margin: 0 0 20px;
-    width: 555px;
+    width: 605px;
     height: 190px;
     overflow: hidden;
     float:left;
@@ -161,7 +206,47 @@ div#d_sale{
   }
 }
 
+
+  div#report_view{
+      /*display: inline-block; _display: inline;*/
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      min-hegth: 800px;
+    margin: 0 0 20px;
+    width: 940px;
+    height: 800px;
+    overflow: hidden;
+    /*float:left;*/
+    
+    td.money {
+      text-align: right;
+    }
+    td.title {
+      text-align: center;
+    }
+    
+  }
+  
 input.money{
   ime-mode: inactive;
   text-align: right;
+}
+
+input.number{
+  ime-mode: inactive;
+  text-align: left;
+}
+
+input.text{
+  ime-mode: active;
+  text-align: left;
+}
+
+input[ type=checkbox ] {
+  width: 40px; height: 40px;
+  /*-moz-transform-origin: right bottom;*/
+  -moz-transform: scale( 1.5 , 1.5 );
+ /* -webkit-transform-origin: right bottom;*/
+ /* -webkit-transform: scale( 2 , 2 );*/
 }

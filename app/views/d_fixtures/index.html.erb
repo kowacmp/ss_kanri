@@ -1,0 +1,28 @@
+<!-- ><h1>DWashSales#index</h1> -->
+
+<table id='rounded-corner'>
+	<tr>
+		<th>対象店舗</th>
+		<td><%= @shop.shop_cd %> | 
+            <%= @shop.shop_name %></td> <th>
+     入力日</th><td>
+	  <%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 10%>
+	</td>
+	<th>申請者</th><td><%= current_user.user_name %></td>
+</tr>
+</table>
+
+<p>
+	<div id="fixture_data">
+	    <%= render partial: 'fixture_data'%>
+	</div>
+</p>
+
+<!-- 読み込む位置が関係しているので、ここに書く -->
+<script type="text/javascript">
+$("#input_ymd").change(function(){
+    var input_ymd = $("#input_ymd").val();
+    $.get("<%=url_for({:action => 'change_input_ymd'}) %>?input_ymd=" + input_ymd);
+});
+</script>
+

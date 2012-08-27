@@ -1,0 +1,2 @@
+module MApprovalsHelper
+end

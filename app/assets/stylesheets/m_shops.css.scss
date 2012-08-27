@@ -1,0 +1,85 @@
+// Place all the styles related to the d_sales controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+div#search_shop_kbn{
+  display: inline-block; _display: inline;
+
+  div.title_alias{
+      display: inline-block; _display: inline;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 7px;
+      background: url("th_001.gif") repeat-x scroll 0 0 transparent;
+  }
+  
+  div.select_alias{
+      display: inline-block; _display: inline;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 2px;
+      padding-bottom: 5px;
+      text-align: right;
+      margin-left: -4px;
+      
+  }
+  
+}
+
+div#search_shop{
+  display: inline-block; _display: inline;
+
+  div.title_alias{
+      display: inline-block; _display: inline;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      padding: 7px;
+      background: url("th_001.gif") repeat-x scroll 0 0 transparent;
+      width: 100px;
+  }
+  
+  div.select_alias_from{
+      display: inline-block; _display: inline;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      
+      padding: 2px;
+      padding-bottom: 5px;
+      text-align: right;
+      margin-left: -4px;
+  }
+  
+  div.select_alias_to{
+      display: inline-block; _display: inline;
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      
+      padding: 2px;
+      padding-bottom: 5px;
+      text-align: right;
+      margin-left: -4px;
+      margin-top: 1px;
+  }
+  
+}
+
+div#result{
+  
+  div.oil_total{
+    text-align: center;
+  }
+  
+  div.money_total{
+    text-align: right;
+  }
+  
+}
+
+
+
+

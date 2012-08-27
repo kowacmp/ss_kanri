@@ -1,0 +1,2 @@
+module DFixturesHelper
+end

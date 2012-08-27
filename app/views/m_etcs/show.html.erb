@@ -1,16 +1,16 @@
-<p id="notice"><%= notice %></p>
+<!--<p id="notice"><%#= notice %></p>-->
 
   <table id='rounded-corner'>
   	<tr>
-  	  <th>他商品コード</th>
+  	  <th>他売上コード</th>
   	  <td><%= @m_etc.etc_cd %></td>  	  
   	</tr>
   	<tr>
-  	  <th>他商品名</th>
+  	  <th>他売上名</th>
   	  <td><%= @m_etc.etc_name %></td>  	  
   	</tr>
   	<tr>
-  	  <th>他商品略称</th>
+  	  <th>他売上略称</th>
   	  <td><%= @m_etc.etc_ryaku %></td>  	  
   	</tr>
   	<tr>
@@ -19,7 +19,7 @@
   	</tr>
   	<tr>
   	  <th>グループ種類</th>
-  	  <td><%= @m_etc.etc_group %></td>  	  
+  	  <td><%= @m_etc.etc_group_name %></td>  	  
   	</tr>
   	<tr>
   	  <th>最大数</th>
@@ -27,10 +27,17 @@
   	</tr>
   	<tr>
   	  <th>監査フラグ</th>
-  	  <td><%= @m_etc.kansa_flg %></td>  	  
-  	</tr>   	  	
+  	  <td><%= @m_etc.kansa_flg_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>課税フラグ</th>
+  	  <td><%= @m_etc.tax_flg_name %></td>  	  
+  	</tr> 	
   </table>
 
-<%= link_to '編集', edit_m_etc_path(@m_etc), :class => 'edit_icon' %> |
-<%= link_to '戻る', m_etcs_path, :class => 'return_icon' %>
+<%#= link_to '編集', edit_m_etc_path(@m_etc), :class => 'edit_icon' %> 
+<%#= link_to '戻る', m_etcs_path, :class => 'return_icon' %>
+<%= link_to '編集', {:action=>"edit",:id=>@m_etc.id,:input_check=>@check_del_flg}, :class => 'edit_icon' %> |
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>
+
 

@@ -1,0 +1,156 @@
+<%  #最終行集計用初期化
+	k_uri_sum = 0
+	g_uri_sum = 0
+	gosa_sum  = 0
+%>
+
+<table class='rounded-corner' >	
+	<!-- 共通ヘッダ -->
+	<tr>
+		<th>機種名</th>
+		<th>当日メーター</th>
+		<th>前回メーター</th>
+		<th>計算上売上高</th>
+		<th>現金売上高</th>
+		<th>誤差</th>
+	</tr>  	
+
+	<% for dt_rec in @dt%>
+		<%if dt_rec[:etc_no] != 99 then %>
+			<!--明細レコード-->
+			<tr>
+				<th              ><%= dt_rec[:etc_name] %><%= dt_rec[:etc_no] %></th>
+  				<td align="right"><%= number_with_delimiter(dt_rec[:t_meter]) %></td>
+  				<td align="right"><%= number_with_delimiter(dt_rec[:z_meter]) %></td>
+  				<td align="right"><%= number_with_delimiter(dt_rec[:k_uri])   %></td>
+  				<% if dt_rec[:etc_no] == 1 then %>
+  					<td rowspan="<%= dt_rec[:max_num] %>" style="background-color: #C3C3C3;">&nbsp;</td>
+  					<td rowspan="<%= dt_rec[:max_num] %>">
+  						<%= form_tag({:action => 'dialog_gosa' }, { :remote => true }) do %>
+  							<%= hidden_field(:dialog_gosa, :sale_date_from, :value => dt_rec[:audit_date_from]) %>
+  							<%= hidden_field(:dialog_gosa, :sale_date_to,   :value => dt_rec[:audit_date_to]) %>
+  							<%= hidden_field(:dialog_gosa, :m_shop_id,      :value => dt_rec[:m_shop_id]) %>
+  							<%= hidden_field(:dialog_gosa, :m_etc_id,      :value => dt_rec[:m_etc_id]) %>
+							<%= submit_tag '参照', :disable_with => "処理中です..." %>
+  						<% end %>
+					</td>
+  				<% end %>
+			</tr>
+		<%else%>
+			<!--合計レコード-->
+  			<tr>
+  				<td colspan="2" style="border-left-width: 0px; border-bottom-width: 0px;">&nbsp;</td>
+  				<th              ><%= dt_rec[:etc_name] %>計</th>
+  				<td align="right"><%= number_with_delimiter(dt_rec[:k_uri]) %></td>
+  				<td align="right"><%= number_with_delimiter(dt_rec[:g_uri]) %></td>
+  				<td align="right"><%= number_with_delimiter(dt_rec[:gosa])  %></td>
+  			</tr>		
+  			
+  		　　<%  #最終行集計用合算
+				k_uri_sum += dt_rec[:k_uri]
+				g_uri_sum += dt_rec[:g_uri]
+				gosa_sum  += dt_rec[:gosa]
+			%>
+  			
+		<%end%>
+		
+	<% end %>
+
+	<!-- 最終合計 -->
+  	<tr>
+  		<td colspan="2" style="border-left-width: 0px; border-top-width: 0px; border-bottom-width: 0px;">&nbsp;</td>
+  		<th style="border-width: 3px;"              >売上合計</th>
+  		<td style="border-width: 3px;" align="right"><%= number_with_delimiter(k_uri_sum) %></td>
+  		<td style="border-width: 3px;" align="right"><%= number_with_delimiter(g_uri_sum) %></td>
+  		<td style="border-width: 3px;" align="right"><%= number_with_delimiter(gosa_sum)  %></td>
+  	</tr>
+  	  	
+<tr><td colspan="6" style="border: none; text-align: right;">
+<div style="float:right;">
+<%=form_tag :action => 'update' do %>
+	<!-- 立会人 -->
+	<%
+  		c_shop_id = @d_audit_etc.confirm_shop_id unless @d_audit_etc.nil?
+  		c_user_id = @d_audit_etc.confirm_user_id unless @d_audit_etc.nil?
+	%>
+	<table class='rounded-corner' >
+	<tr>
+		<th rowspan="2">立会人</th>
+		<td>
+			<%=select :confirm, :shop_id, MShop.find(:all, :conditions => "deleted_flg=0", :order => "shop_cd").collect{|i| [i.shop_name ,i.id]},
+				:selected => c_shop_id, :include_blank => "選択してください" %>
+		</td>
+    </tr>
+    <tr>
+		<td>
+			<div id="confirm_user_id_div">
+				<%=render :partial => 'confirm_user_id', :locals => {:c_shop_id => c_shop_id, :c_user_id => c_user_id} %>
+			</div>
+		</td>
+    </tr>
+	</table>
+
+	<!-- 更新内容 -->
+	<% rec_no = 0 %>
+	<% for dt_rec in @dt %>  
+  		<% rec_no += 1 %>
+    	<%= hidden_field("dt#{rec_no}", :audit_date_from, :value => dt_rec[:audit_date_from]) %>	
+    	<%= hidden_field("dt#{rec_no}", :audit_date_to,   :value => dt_rec[:audit_date_to]) %>	
+    	<%= hidden_field("dt#{rec_no}", :audit_class,     :value => dt_rec[:audit_class]) %>	
+    	<%= hidden_field("dt#{rec_no}", :m_shop_id,       :value => dt_rec[:m_shop_id]) %>	
+    	<%= hidden_field("dt#{rec_no}", :m_etc_id,        :value => dt_rec[:m_etc_id]) %>	
+    	<%= hidden_field("dt#{rec_no}", :etc_no,          :value => dt_rec[:etc_no]) %>	
+    
+    	<%= hidden_field("dt#{rec_no}", :t_meter,         :value => dt_rec[:t_meter]) %>	
+    	<%= hidden_field("dt#{rec_no}", :z_meter,         :value => dt_rec[:z_meter]) %>	
+    	<%= hidden_field("dt#{rec_no}", :k_uri,           :value => dt_rec[:k_uri]) %>	
+    	<%= hidden_field("dt#{rec_no}", :g_uri,           :value => dt_rec[:g_uri]) %>	
+    	<%= hidden_field("dt#{rec_no}", :gosa,            :value => dt_rec[:gosa]) %>	
+  	
+	<% end %>
+	<br/>
+	<%= submit_tag '更新', :onclick => "return update_chk()" ,:disable_with => '更新中です...' %>
+</div>
+</td></tr>
+</table>
+<% end %>
+
+<!-- 参照ダイアログ -->
+<div id="dialog_div" style="display: none;" >
+	&nbsp;
+</div>
+
+<script language="JavaScript">
+
+  	$("#confirm_shop_id").change(function() {
+  		  		
+  		$.ajax({
+  			type: "GET",
+  			url:  "d_audit_etcs/confirm_shop_id_select?shop_id=" + this.value,
+ 			async: false,
+ 			timeout: 5000
+  		});
+  		
+  	});
+  	  	
+  	// 更新前チェック
+  	function update_chk() {
+  		var sel_shop = $("#confirm_shop_id")[0];
+  		var sel_user = $("#confirm_user_id")[0];
+  		
+  		if (sel_shop.value == '') {
+  			alert('立会人を選択してください。');
+  			sel_shop.focus();
+  			return false;
+  		}
+  		
+  		if (sel_user.value == '') {
+  			alert('立会人を選択してください。');
+  			sel_user.focus();
+  			return false;
+  		}
+  		
+  		return true;
+  	}
+  	
+</script>

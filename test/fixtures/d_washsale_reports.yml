@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  sale_date: MyString
+  m_shop_id: 1
+  kakutei_flg: 1
+  created_user_id: 1
+  updated_user_id: 1
+
+two:
+  sale_date: MyString
+  m_shop_id: 1
+  kakutei_flg: 1
+  created_user_id: 1
+  updated_user_id: 1

@@ -1,0 +1,43 @@
+<h1>Listing m_approvals</h1>
+
+<table>
+  <tr>
+    <th>Menu</th>
+    <th>Approval id1</th>
+    <th>Approval name1</th>
+    <th>Approval id2</th>
+    <th>Approval name2</th>
+    <th>Approval id3</th>
+    <th>Approval name3</th>
+    <th>Approval id4</th>
+    <th>Approval name4</th>
+    <th>Approval id5</th>
+    <th>Approval name5</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @m_approvals.each do |m_approval| %>
+  <tr>
+    <td><%= m_approval.menu_id %></td>
+    <td><%= m_approval.approval_id1 %></td>
+    <td><%= m_approval.approval_name1 %></td>
+    <td><%= m_approval.approval_id2 %></td>
+    <td><%= m_approval.approval_name2 %></td>
+    <td><%= m_approval.approval_id3 %></td>
+    <td><%= m_approval.approval_name3 %></td>
+    <td><%= m_approval.approval_id4 %></td>
+    <td><%= m_approval.approval_name4 %></td>
+    <td><%= m_approval.approval_id5 %></td>
+    <td><%= m_approval.approval_name5 %></td>
+    <td><%= link_to 'Show', m_approval %></td>
+    <td><%= link_to 'Edit', edit_m_approval_path(m_approval) %></td>
+    <td><%= link_to 'Destroy', m_approval, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New M approval', new_m_approval_path %>

@@ -228,9 +228,10 @@ class DResultsController < ApplicationController
     d_tank_compute_reports = DTankComputeReport.find(:all, :conditions => ["d_result_id = ?",d_result.id])
     d_tank_compute_reports.each do |d_tank_compute_report|
       d_tank_compute_report.inspect_flg = params[:inspect_flg]["#{d_tank_compute_report.id}"]
-      d_tank_compute_report.save
-      
+      d_tank_compute_report.save    
     end
+    
+    
     
     head :ok
   end

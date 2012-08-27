@@ -1,43 +1,16 @@
-<h1>他商品マスタメンテ</h1>
+<h1>他売上マスタメンテ</h1>
 
-<%= form_tag({:action => 'delete_index' }, { :remote => true }) do %>
-  <%= check_box(:check,:deleted_flg,{},true,false) %>
+<%= form_tag({:action => 'search' }, { :remote => true }) do %>
+  <% if @check_del_flg == 0%>
+  	<%= check_box(:check,:deleted_flg,{},true,false) %>
+  <% else %>
+  	<%= check_box(:check,:deleted_flg,{:checked => true},true,false) %>
+  <% end %>
+  
   削除項目も表示する。
   <%= submit_tag '再表示' %>
 <% end %>
 
 <%= link_to '新規登録', new_m_etc_path, :class => 'add_icon' %>
-
-<!--
-<table>
-  <tr>
-    <th>Etc cd</th>
-    <th>Etc name</th>
-    <th>Etc ryaku</th>
-    <th>Etc tani</th>
-    <th>Etc group</th>
-    <th>Deleted flg</th>
-    <th>Deleted at</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @m_etcs.each do |m_etc| %>
-  <tr>
-    <td><%= m_etc.etc_cd %></td>
-    <td><%= m_etc.etc_name %></td>
-    <td><%= m_etc.etc_ryaku %></td>
-    <td><%= m_etc.etc_tani %></td>
-    <td><%= m_etc.etc_group %></td>
-    <td><%= m_etc.deleted_flg %></td>
-    <td><%= m_etc.deleted_at %></td>
-    <td><%= link_to 'Show', m_etc %></td>
-    <td><%= link_to 'Edit', edit_m_etc_path(m_etc) %></td>
-    <td><%= link_to 'Destroy', m_etc, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
-<% end %>
-</table>
--->
 <br />
-<div id="result"></div>
+<div id="result"><%= render 'result_list' %></div>
