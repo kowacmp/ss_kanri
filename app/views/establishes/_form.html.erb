@@ -1,0 +1,49 @@
+<%= form_for(@establish) do |f| %>
+  <% if @establish.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@establish.errors.count, "error") %> prohibited this establish from being saved:</h2>
+
+      <ul>
+      <% @establish.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :zip_cd %><br />
+    <%= f.text_field :zip_cd %>
+  </div>
+  <div class="field">
+    <%= f.label :address %><br />
+    <%= f.text_field :address %>
+  </div>
+  <div class="field">
+    <%= f.label :system_name %><br />
+    <%= f.text_field :system_name %>
+  </div>
+  <div class="field">
+    <%= f.label :tax_rate %><br />
+    <%= f.number_field :tax_rate %>
+  </div>
+  <div class="field">
+    <%= f.label :limit %><br />
+    <%= f.number_field :limit %>
+  </div>
+  <div class="field">
+    <%= f.label :deleted_flg %><br />
+    <%= f.number_field :deleted_flg %>
+  </div>
+  <div class="field">
+    <%= f.label :deleted_at %><br />
+    <%= f.datetime_select :deleted_at %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

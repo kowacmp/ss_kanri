@@ -1,0 +1,2 @@
+module EstablishesHelper
+end

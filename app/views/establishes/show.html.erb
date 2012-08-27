@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @establish.name %>
+</p>
+
+<p>
+  <b>Zip cd:</b>
+  <%= @establish.zip_cd %>
+</p>
+
+<p>
+  <b>Address:</b>
+  <%= @establish.address %>
+</p>
+
+<p>
+  <b>System name:</b>
+  <%= @establish.system_name %>
+</p>
+
+<p>
+  <b>Tax rate:</b>
+  <%= @establish.tax_rate %>
+</p>
+
+<p>
+  <b>Limit:</b>
+  <%= @establish.limit %>
+</p>
+
+<p>
+  <b>Deleted flg:</b>
+  <%= @establish.deleted_flg %>
+</p>
+
+<p>
+  <b>Deleted at:</b>
+  <%= @establish.deleted_at %>
+</p>
+
+
+<%= link_to 'Edit', edit_establish_path(@establish) %> |
+<%= link_to 'Back', establishes_path %>

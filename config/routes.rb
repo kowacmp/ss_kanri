@@ -1,5 +1,11 @@
 SsKanri::Application.routes.draw do
 
+  resources :establishes
+
+  get "d_tank_decrease_reports/index"
+
+  get "d_tank_decrease_reports/print"
+
   get "d_fixture_approvals/index"
   get "d_fixture_approvals/edit"
   get "d_fixture_approvals/change_radio"
