@@ -34,7 +34,7 @@ class DFixturesController < ApplicationController
           fixture.buy_price  = params["buy_price_#{i+1}"]
           fixture.buy_object = params["buy_object_#{i+1}"]
           fixture.now_num    = params["now_num_#{i+1}"]
-          fixture.buy_day    = params["buy_day_#{i+1}"]
+          fixture.buy_day    = params["buy_day_#{i+1}"].delete("/") unless params["buy_day_#{i+1}"] == nil
           fixture.created_user_id = current_user.id
           fixture.updated_user_id = current_user.id 
           unless  params["fixture_id_#{i+1}"] == nil or params["fixture_id_#{i+1}"] == ""

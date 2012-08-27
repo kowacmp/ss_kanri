@@ -1,5 +1,3 @@
-<%= javascript_include_tag("jquery.ui.datepicker-ja.js") %>
-
 	     <tr>
 	  	  <td rowspan="2"><%= i + 1 %></td>
 		  <td ><%= text_field_tag("buy_shop_#{i+1}", fixture.buy_shop ,
@@ -18,7 +16,7 @@
 		  <td ><%= text_field_tag("now_num_#{i+1}", fixture.now_num ,
 		  		    :style => "text-align:right",:size => 2) %></td>
 		  <td >
-		  	<%= text_field_tag("buy_day_#{i+1}", "" , :size => 10 ,:class => 'datepicker') if fixture.approve_flg == 1 %>
+		  	<%= text_field_tag("buy_day_#{i+1}", fixture.buy_day[0,4] + '/' + fixture.buy_day[4,2] + '/' + fixture.buy_day[6,2], :size => 10 ,:class => 'datepicker') if fixture.approve_flg == 1 %>
       	  </td>
 		  <td><%= if fixture.approve_flg == 1 then "承認" elsif fixture.approve_flg == 2 then "却下" else "未承認" end %></td><!-- 承認-->
 		  <td>
@@ -31,3 +29,9 @@
 	    
 
 
+ <!-- カレンダー表示↓ -->
+  <script>
+  $(function() {
+    $( ".datepicker" ).datepicker();
+  });
+  </script>
