@@ -46,3 +46,6 @@ gem "devise"
 
 gem "jquery_datepicker"
 gem "jquery-ui-themes"
+
+gem 'thinreports'
+gem 'thinreports-rails'

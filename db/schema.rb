@@ -11,7 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120824083601) do
+<<<<<<< HEAD
+ActiveRecord::Schema.define(:version => 20120827035946) do
+=======
+ActiveRecord::Schema.define(:version => 20120827020816) do
+>>>>>>> 70de452ccb1cb9d54d92a2fa77c0a997f96a8312
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -316,15 +320,15 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
   end
 
   create_table "d_result_meters", :force => true do |t|
-    t.integer  "d_result_id",                 :null => false
-    t.integer  "m_oil_id",                    :null => false
-    t.integer  "m_tank_id",                   :null => false
-    t.integer  "m_code_id",                   :null => false
-    t.integer  "number",         :limit => 2, :null => false
-    t.integer  "meter_no",       :limit => 2
+    t.integer  "d_result_id",                  :null => false
+    t.integer  "m_oil_id",                     :null => false
+    t.integer  "m_tank_id",                    :null => false
+    t.integer  "m_code_id",                    :null => false
+    t.integer  "number",          :limit => 2, :null => false
+    t.integer  "meter_no",        :limit => 2
     t.integer  "meter"
-    t.integer  "create_user_id",              :null => false
-    t.integer  "update_user_id",              :null => false
+    t.integer  "created_user_id",              :null => false
+    t.integer  "updated_user_id",              :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -342,13 +346,13 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
   end
 
   create_table "d_result_oils", :force => true do |t|
-    t.integer  "d_result_id",     :null => false
-    t.integer  "m_oil_id",        :null => false
-    t.integer  "pos1_data"
-    t.integer  "pos2_data"
-    t.integer  "pos3_data"
-    t.integer  "created_user_id", :null => false
-    t.integer  "updated_user_id", :null => false
+    t.integer  "d_result_id",                                   :null => false
+    t.integer  "m_oil_id",                                      :null => false
+    t.decimal  "pos1_data",       :precision => 9, :scale => 2
+    t.decimal  "pos2_data",       :precision => 9, :scale => 2
+    t.decimal  "pos3_data",       :precision => 9, :scale => 2
+    t.integer  "created_user_id",                               :null => false
+    t.integer  "updated_user_id",                               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -364,13 +368,13 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
   end
 
   create_table "d_result_tanks", :force => true do |t|
-    t.integer  "d_result_id",    :null => false
-    t.integer  "m_oil_id",       :null => false
-    t.integer  "m_tank_id",      :null => false
+    t.integer  "d_result_id",     :null => false
+    t.integer  "m_oil_id",        :null => false
+    t.integer  "m_tank_id",       :null => false
     t.integer  "receive"
     t.integer  "stock"
-    t.integer  "create_user_id", :null => false
-    t.integer  "update_user_id", :null => false
+    t.integer  "created_user_id", :null => false
+    t.integer  "updated_user_id", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -449,7 +453,6 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
   create_table "d_tank_compute_reports", :force => true do |t|
     t.integer  "d_result_id",                                                 :null => false
     t.integer  "m_tank_id",                                                   :null => false
-    t.integer  "m_oil_id",                                                    :null => false
     t.integer  "inspect_flg",      :limit => 2,                               :null => false
     t.integer  "before_stock",     :limit => 8
     t.integer  "receive",          :limit => 8
@@ -458,14 +461,14 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
     t.integer  "after_stock",      :limit => 8
     t.integer  "sale_total",       :limit => 8
     t.integer  "decrease_total",   :limit => 8
-    t.decimal  "total_percentage",              :precision => 3, :scale => 3
+    t.decimal  "total_percentage",              :precision => 6, :scale => 3
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "decrease"
   end
 
   create_table "d_tank_decrease_reports", :force => true do |t|
-    t.integer  "d_result_id",                                   :null => false
-    t.integer  "m_shop_group_id",                               :null => false
+    t.integer  "d_result_id",                                  :null => false
     t.integer  "oil1_id"
     t.integer  "oil1_num"
     t.integer  "oil2_id"
@@ -474,9 +477,14 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
     t.integer  "oil3_num"
     t.integer  "oil4_id"
     t.integer  "oil4_num"
-    t.decimal  "oil_percent",     :precision => 3, :scale => 2
+    t.decimal  "oil_percent",    :precision => 5, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "oil1_num_total"
+    t.integer  "oil2_num_total"
+    t.integer  "oil3_num_total"
+    t.integer  "oil4_num_total"
+    t.decimal  "oil_percent_total", :precision => 5, :scale => 2
   end
 
   create_table "d_wash_sales", :force => true do |t|
@@ -508,8 +516,13 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
     t.integer  "meter"
     t.integer  "error_money"
     t.string   "error_note",      :limit => 200
+<<<<<<< HEAD
+    t.integer  "created_user_id",                               :null => false
+    t.integer  "updated_user_id",                               :null => false
+=======
     t.integer  "created_user_id",                :null => false
     t.integer  "updated_user_id",                :null => false
+>>>>>>> 70de452ccb1cb9d54d92a2fa77c0a997f96a8312
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -524,18 +537,22 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
     t.datetime "updated_at"
   end
 
+<<<<<<< HEAD
+=======
   create_table "establishes", :force => true do |t|
     t.string   "name"
     t.string   "zip_cd",      :limit => 8
     t.string   "address"
-    t.integer  "deleted_flg"
+    t.string   "system_name"
+    t.decimal  "tax_rate",                 :precision => 5, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "limit",                    :precision => 3, :scale => 0, :default => 0,   :null => false
+    t.integer  "deleted_flg", :limit => 2,                               :default => 0
+    t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "system_name"
-    t.decimal  "tax_rate",                 :precision => 5, :scale => 2, :null => false
-    t.decimal  "limit",                    :precision => 3, :scale => 0, :null => false
   end
 
+>>>>>>> 70de452ccb1cb9d54d92a2fa77c0a997f96a8312
   create_table "m_aims", :force => true do |t|
     t.integer  "aim_code",   :limit => 2,  :null => false
     t.string   "aim_name",   :limit => 30
@@ -603,14 +620,14 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
     t.string   "etc_name",    :limit => 20,                :null => false
     t.string   "etc_ryaku",   :limit => 10,                :null => false
     t.string   "etc_tani",    :limit => 4,                 :null => false
-    t.integer  "etc_group",   :limit => 2
+    t.integer  "etc_group",   :limit => 2,                 :null => false
     t.integer  "deleted_flg", :limit => 2,  :default => 0, :null => false
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "max_num",     :limit => 2
     t.integer  "kansa_flg",   :limit => 2
-    t.integer  "tax_flg",     :limit => 2,                 :null => false
+    t.integer  "tax_flg",     :limit => 2
   end
 
   create_table "m_etcsales", :force => true do |t|
@@ -653,18 +670,18 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
     t.integer  "etc_pay2"
     t.integer  "etc_pay3"
     t.integer  "etc_pay4"
-    t.integer  "etc_pay5"
-    t.integer  "etc_pay6"
-    t.integer  "deleted_flg", :limit => 2
+    t.integer  "deleted_flg"
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "m_item_accounts", :force => true do |t|
-    t.integer  "item_account_code",                :null => false
-    t.string   "item_account_name", :limit => 20,  :null => false
+    t.integer  "item_account_code",                               :null => false
+    t.string   "item_account_name", :limit => 20,                 :null => false
     t.string   "outline",           :limit => 100
+    t.integer  "deleted_flg",       :limit => 2,   :default => 0
+    t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -679,6 +696,13 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
   end
 
   create_table "m_meters", :force => true do |t|
+<<<<<<< HEAD
+    t.integer  "m_tank_id",                               :null => false
+    t.integer  "m_code_id",                               :null => false
+    t.integer  "number",      :limit => 2,                :null => false
+    t.integer  "meter_no",    :limit => 2
+    t.integer  "deleted_flg", :limit => 2, :default => 0
+=======
     t.integer  "m_shop_id"
     t.integer  "m_oil_id"
     t.integer  "m_tank_id"
@@ -686,6 +710,7 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
     t.integer  "number",      :limit => 2,                :null => false
     t.integer  "meter_no",    :limit => 2
     t.integer  "deleted_flg", :limit => 2, :default => 0, :null => false
+>>>>>>> 70de452ccb1cb9d54d92a2fa77c0a997f96a8312
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -702,13 +727,13 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "oiletc_trade", :limit => 2
-    t.integer  "tax_flg",      :limit => 2,                 :null => false
+    t.integer  "tax_flg",      :limit => 2
   end
 
   create_table "m_oils", :force => true do |t|
     t.integer  "oil_cd"
     t.string   "oil_name"
-    t.integer  "deleted_flg"
+    t.integer  "deleted_flg", :default => 0
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -724,66 +749,78 @@ ActiveRecord::Schema.define(:version => 20120824083601) do
   end
 
   create_table "m_shops", :force => true do |t|
-    t.integer  "shop_cd",          :limit => 8,                 :null => false
-    t.string   "shop_name",        :limit => 50,                :null => false
-    t.string   "shop_kana",        :limit => 50,                :null => false
-    t.string   "shop_ryaku",       :limit => 20,                :null => false
-    t.string   "shop_zip_cd",      :limit => 8
+    t.integer  "shop_cd"
+    t.string   "shop_name"
+    t.string   "shop_kana"
+    t.string   "shop_ryaku"
+    t.string   "shop_zip_cd"
     t.string   "shop_adress"
-    t.string   "shop_tel",         :limit => 12
-    t.string   "shop_fax",         :limit => 12
+    t.string   "shop_tel"
+    t.string   "shop_fax"
     t.string   "shop_mail_adress"
-    t.integer  "shop_kbn",         :limit => 2,  :default => 0
-    t.integer  "m_shop_group_id",                :default => 0
-    t.integer  "m_oil_id1",                      :default => 0
-    t.integer  "tank1_all",        :limit => 8,  :default => 0
-    t.integer  "m_oil_id2",                      :default => 0
-    t.integer  "tank2_all",        :limit => 8,  :default => 0
-    t.integer  "m_oil_id3",                      :default => 0
-    t.integer  "tank3_all",        :limit => 8,  :default => 0
-    t.integer  "m_oil_id4",                      :default => 0
-    t.integer  "tank4_all",        :limit => 8,  :default => 0
-    t.integer  "deleted_flg",      :limit => 2,  :default => 0
+    t.integer  "shop_kbn"
+    t.integer  "m_shop_group_id"
+    t.integer  "m_oil_id1"
+    t.integer  "tank1_all"
+    t.integer  "m_oil_id2"
+    t.integer  "tank2_all"
+    t.integer  "m_oil_id3"
+    t.integer  "tank3_all"
+    t.integer  "m_oil_id4"
+    t.integer  "tank4_all"
+    t.integer  "etc_oil_flg"
+    t.integer  "etc_flg"
+    t.integer  "wash_flg"
+    t.integer  "wash_sale_flg"
+    t.integer  "deleted_flg"
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "m_tanks", :force => true do |t|
+<<<<<<< HEAD
+    t.integer  "m_shop_id"
+    t.integer  "m_oil_id"
+    t.integer  "deleted_flg"
+=======
     t.integer  "m_shop_id",                 :default => 0, :null => false
     t.integer  "m_oil_id",                  :default => 0, :null => false
     t.integer  "tank_no",     :limit => 2,  :default => 0, :null => false
     t.string   "tank_name",   :limit => 20,                :null => false
     t.integer  "volume",                    :default => 0, :null => false
     t.integer  "deleted_flg", :limit => 2,  :default => 0, :null => false
+>>>>>>> 70de452ccb1cb9d54d92a2fa77c0a997f96a8312
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "m_washes", :force => true do |t|
-    t.integer  "wash_cd",     :limit => 2,                 :null => false
-    t.string   "wash_name",   :limit => 20,                :null => false
-    t.string   "wash_ryaku",  :limit => 10,                :null => false
-    t.integer  "wash_group",  :limit => 2,                 :null => false
-    t.integer  "max_num",     :limit => 2,                 :null => false
-    t.integer  "deleted_flg", :limit => 2,  :default => 0, :null => false
+    t.integer  "wash_cd"
+    t.string   "wash_name"
+    t.string   "wash_ryaku"
+    t.integer  "wash_group"
+    t.integer  "max_num"
+    t.integer  "deleted_flg"
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "m_washsale_plans", :force => true do |t|
-    t.integer  "m_shop_id",                               :null => false
-    t.integer  "m_wash_id",                               :null => false
-    t.integer  "sunday",      :limit => 2
-    t.integer  "monday",      :limit => 2
-    t.integer  "tuesday",     :limit => 2
-    t.integer  "wednesday",   :limit => 2
-    t.integer  "thursday",    :limit => 2
-    t.integer  "friday",      :limit => 2
-    t.integer  "saturday",    :limit => 2
-    t.integer  "deleted_flg", :limit => 2, :default => 0
+    t.integer  "m_shop_id"
+    t.integer  "m_wash_id"
+    t.integer  "sunday"
+    t.integer  "monday"
+    t.integer  "tuesday"
+    t.integer  "wednesday"
+    t.integer  "thursday"
+    t.integer  "friday"
+    t.integer  "saturday"
+    t.integer  "created_user_id"
+    t.integer  "updated_user_id"
+    t.integer  "deleted_flg"
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"

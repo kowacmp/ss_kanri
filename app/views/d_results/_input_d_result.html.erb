@@ -1,8 +1,11 @@
 <%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
-  
+
+<div id="d_result_yume"><%= render 'd_result_yume' %></div><br/> 
 <div id="d_result_reserve"><%= render 'd_result_reserve' %></div>
+<div id="d_result_meter"><%= render 'd_result_meter' %></div>
 
 <%= form_tag({:action => 'd_result_create' }, { :remote => true }) do %>
+<div id="d_tank_compute"><%= render 'd_tank_compute' %></div>
   <table id='rounded-corner'>
 	<tr>
 	  <th>出荷数量(リットル)</th>
@@ -11,14 +14,14 @@
 	  <th>POS3</th>
 	  <th>POS日計</th>	
 	</tr>
-  <% @m_oils.each do |m_oil| %>
+  <% @m_oil_totals.each do |m_oil| %>
     <tr>
       <th><%= m_oil.oil_name %></th> 	
-      <td><%= number_field :oil_pos1, "#{m_oil.id}", :value => m_oil.pos1_data, :size => 8 %></td>
-      <td><%= number_field :oil_pos2, "#{m_oil.id}", :value => m_oil.pos2_data, :size => 8 %></td>
-      <td><%= number_field :oil_pos3, "#{m_oil.id}", :value => m_oil.pos3_data, :size => 8 %></td>  
-      <td></td>              
-    </tr>
+      <td><%= number_field :oil_pos1, "#{m_oil.id}", :value => m_oil.pos1_data, :size => 4 %></td>
+      <td><%= number_field :oil_pos2, "#{m_oil.id}", :value => m_oil.pos2_data, :size => 4 %></td>
+      <td><%= number_field :oil_pos3, "#{m_oil.id}", :value => m_oil.pos3_data, :size => 4 %></td>  
+      <td id="oil_total_<%= m_oil.id %>"><%= session[:m_oil_totals][m_oil.id][:total] %></td>              
+    </tr>  
   <% end %>
     <tr>
       <th>ガソリン合計</th>
@@ -139,3 +142,21 @@
   <%= submit_tag '登録' %>
 <% end %>
 
+   <table>
+  	<tr>
+	  <td>１</td>
+	  <td><%= text_field :test, "1", :size=>4, :class=>"money" %></td>
+    </tr>
+	<tr>
+	  <td>２</td>
+	  <td><%= text_field :test,"2", :size=>4, :class=>"money" %></td>
+    </tr>
+	<tr>
+	  <td>３</td>
+	  <td><%= text_field :test,"3", :size=>4, :class=>"money" %></td>
+    </tr>
+	<tr>
+	  <td>合計</td>
+	  <td id="test_total"></td>
+    </tr>    
+   </table>

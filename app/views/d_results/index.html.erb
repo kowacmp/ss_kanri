@@ -1,3 +1,5 @@
+<%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
+
 <h1>実績データ入力</h1>
 <table id='rounded-corner'>
   <th>対象店舗</th>
@@ -6,7 +8,7 @@
 
 <table id='rounded-corner'>
   <th>入力日</th>
-  <td><%= number_field :select, :date, :class => "datepicker", :size => 5 %></td>
+  <td><%= number_field :select, :date, :readonly => true, :class => "datepicker", :size => 5 %></td>
 </table>
 
 
@@ -18,3 +20,76 @@ $("#select_date").change(function(){
     $.get("d_results/select_date?select_date=" + select_date);
 });
 </script>
+
+
+<script>
+$(function () {     
+   //値がかわったら再計算
+   
+   //出荷数量
+  <% @m_oils.each do |m_oil| %>
+    $(":input[id^=oil_pos1_<%= m_oil.id %>]").live('change', function(){ oil_total_calc_<%= m_oil.id %>(); });
+    $(":input[id^=oil_pos2_<%= m_oil.id %>]").live('change', function(){ oil_total_calc_<%= m_oil.id %>(); });
+    $(":input[id^=oil_pos3_<%= m_oil.id %>]").live('change', function(){ oil_total_calc_<%= m_oil.id %>(); });       
+    
+    //売上合計を計算
+    function oil_total_calc_<%= m_oil.id %>(){
+	 	var num1 = Number(format_kanma($("#oil_pos1_<%= m_oil.id %>").val(), 2));
+  		var num2 = Number(format_kanma($("#oil_pos2_<%= m_oil.id %>").val(), 2));
+  		var num3 = Number(format_kanma($("#oil_pos3_<%= m_oil.id %>").val(), 2));
+  		var total;
+  		  		
+  		if (isNaN(num1)) {num1 = 0};
+  		if (isNaN(num2)) {num2 = 0};
+  		if (isNaN(num3)) {num3 = 0};
+  		
+  		total = num1 + num2 + num3;
+  		
+  		$("#oil_total_<%= m_oil.id %>").text(format_kanma(total));
+  		$.get("d_results/oil_total_set?oil_total=" + total, "oil=" + <%= m_oil.id %>);
+    };
+  <% end %> 
+      
+      
+    $(":input[id^=test]").live('change', function(){ sale_money_total_calc(); });
+
+    //売上合計を計算
+    function sale_money_total_calc(){
+	 	var num1 = Number(format_kanma($("#test_1").val(), 2));
+  		var num2 = Number(format_kanma($("#test_2").val(), 2));
+  		var num3 = Number(format_kanma($("#test_3").val(), 2));
+  		var total;
+  		  		
+  		if (isNaN(num1)) {num1 = 0};
+  		if (isNaN(num2)) {num2 = 0};
+  		if (isNaN(num3)) {num3 = 0};
+  		
+  		total = num1 + num2 + num3;
+  		
+  		$("#test_total").text(format_kanma(total));
+  		//$("#sale_money_total2").text(format_kanma(total));
+  		
+  		//syo_total_calc();//小計計算
+    };    
+    
+    
+    //カンマ編集
+    //set…1:カンマ編集する（デフォルト）
+    //     以外:カンマを消す
+    function format_kanma(para_num, para_set) {
+    
+    	if (para_set == undefined) para_set = 1;
+
+    	if (para_set == 1) {
+			var num = new String(para_num).replace(/,/g, "");
+            while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
+            return num; 
+    	} else {
+        	var num = new String(para_num).replace(/,/g, "");
+            return num;
+    	}
+    	
+    };
+})();
+</script>
+   

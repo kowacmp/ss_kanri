@@ -49,3 +49,158 @@ $.get("menus/city_select?pref_id=" + pref_id);
 <p>Date: <input type="text" class="datepicker"></p>
 
 
+
+
+
+
+
+<html>
+<head>
+<script type="text/javascript">
+<!--
+function scrollRC()
+{
+  document.getElementById('trow').scrollLeft
+        = document.getElementById('tbody').scrollLeft;
+  document.getElementById('tcol').scrollTop
+        = document.getElementById('tbody').scrollTop;
+}
+// -->
+</script>
+<style type="text/css">
+ table{
+	border-collapse:collapse;
+	white-space:nowrap;
+	border:solid 0px;
+	padding:0px;
+	margin:0px;	
+ }
+ th.col1,th.col2,
+ th.col4,th.col4 {
+	background-color: #00ccff;
+ }
+ th.col1,td.col1,
+ th.col2,td.col2 {
+ 	width:100px;
+	border:solid 1px;
+ }
+ th.col3,td.col3,
+ th.col4,td.col4 {
+ 	width:200px;
+	border:solid 1px;
+	background-color: #00ccff;
+ }
+ tr.even{
+ 	background-color: #lightgray;
+ }
+
+</style>
+
+</head>
+<body>
+	
+<table border="0" cellspacing="0" cellpadding="0" style="width: 400px;">
+<!-- HEAD -->
+<thead>
+  <tr>
+    <td>
+    	<div style="overflow:hidden;height; 1em;">
+			<table >
+				<thead>
+					<tr>
+						<th class="col1">HEAD1a</th>
+						<th class="col2">HEAD2b</th>			
+					</tr>					
+				</thead>
+			</table>
+		</div>
+	</td>
+	    <td>
+	<div  id="trow" style="overflow:hidden; width: 200px;">
+			<table style=" width: 415px;">
+				<thead>
+					<tr>
+						<th class="col3">HEAD-SCROLL1a</th>
+						<th class="col4">HEAD-SCROLL2b</th>
+						<th style="width:15px;"></th>
+					</tr>					
+				</thead>
+			</table>
+		</div>
+	</td>
+  </tr>
+</thead>  
+<!-- BODY -->
+<tbody>
+  <tr>
+    <td>
+    	<div id="tcol" style="overflow: hidden; height: 100px;">
+			<table style="padding-bottom:15px;">
+				<tbody >
+					<tr>
+						<td class="col1">BODY1</td>
+						<td class="col2">BODY2</td>			
+					</tr>
+					<tr class="even">
+						<td class="col1">BODY1</td>
+						<td class="col2">BODY2</td>			
+					</tr>
+					<tr>
+						<td class="col1">BODY1</td>
+						<td class="col2">BODY2</td>			
+					</tr>
+					<tr class="even">
+						<td class="col1">BODY1</td>
+						<td class="col2">BODY2</td>			
+					</tr>
+					<tr>
+						<td class="col1">BODY1</td>
+						<td class="col2">BODY2</td>			
+					</tr>
+					<tr class="even">
+						<td class="col1">BODY1</td>
+						<td class="col2">BODY2</td>			
+					</tr>
+					<tr style="height:15px;" border="0"></tr>					
+				</tbody>
+			</table>
+		</div>
+	</td>
+    <td>
+    	<div onScroll="scrollRC()" id="tbody" style="overflow:auto; width: 200px; height: 100px;">
+			<table style="width: 400px;" >
+				<tbody>
+					<tr>
+						<td class="col1">BODY-SCROLL1</td>
+						<td class="col2">BODY-SCROLL2</td>
+					</tr>
+					<tr class="even">
+						<td class="col1">BODY-SCROLL1</td>
+						<td class="col2">BODY-SCROLL2</td>
+					</tr>
+					<tr>
+						<td class="col1">BODY-SCROLL1</td>
+						<td class="col2">BODY-SCROLL2</td>
+					</tr>
+					<tr class="even">
+						<td class="col1">BODY-SCROLL1</td>
+						<td class="col2">BODY-SCROLL2</td>
+					</tr>	
+					<tr>
+						<td class="col1">BODY-SCROLL1</td>
+						<td class="col2">BODY-SCROLL2</td>
+					</tr>
+					<tr class="even">
+						<td class="col1">BODY-SCROLL1</td>
+						<td class="col2">BODY-SCROLL2</td>
+					</tr>		
+					<tr border="0"></tr>													
+				</tbody>
+			</table>
+		</div>
+	</td>
+  </tr>
+ </tbody>
+</table>
+</body>
+</html>

@@ -6,13 +6,13 @@ class CreateDTankComputeReports < ActiveRecord::Migration
       t.integer  :m_tank_id,         :null => false
       t.integer  :m_oil_id,          :null => false
       t.column   :inspect_flg,       :smallint,  :null => false
-      t.integer  :before_stock,      :limit => 5      
-      t.integer  :receive,           :limit => 5 
-      t.integer  :sale,              :limit => 8             
-      t.integer  :compute_stock,     :limit => 8
-      t.integer  :after_stock,       :limit => 8    
-      t.integer  :sale_total,        :limit => 5
-      t.integer  :decrease_total,    :limit => 8
+      t.integer  :before_stock     
+      t.integer  :receive
+      t.integer  :sale            
+      t.integer  :compute_stock
+      t.integer  :after_stock    
+      t.integer  :sale_total
+      t.integer  :decrease_total
       t.decimal  :total_percentage,  :precision => 3, :scale => 3          
 
       
