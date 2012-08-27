@@ -129,18 +129,30 @@ function scrollRC()
 	padding:0px;
 	margin:0px;	
  }
+ table th{
+    padding: 8px;
+	font-weight: normal;
+	text-align:center; 
+          
+	color: #039;
+    font-weight:bold;
+	background: url('th_001.gif');
+    background-repeat:repeat-x;
+    border: 1px solid #7D808A;
+ }
+ 
  th.col1,th.col2,
  th.col4,th.col4 {
 	background-color: #00ccff;
  }
  th.col1,td.col1,
  th.col2,td.col2 {
- 	width:100px;
+ 	
 	border:solid 1px;
  }
  th.col3,td.col3,
  th.col4,td.col4 {
- 	width:200px;
+ 	
 	border:solid 1px;
 	background-color: #00ccff;
  }
@@ -156,21 +168,21 @@ function scrollRC()
 <thead>
   <tr>
     <td>
-    	<div style="overflow:hidden;height; 1em;">
-			<table >
+    	<div style="overflow:hidden;height; 1em; width: 50px;">
+			<table width="50">
 				<thead>
 					<tr>
-						<th class="col1">油種</th>
+						<th>油種</th>
 					</tr>
 					<tr>
-						<th class="col1">No</th>
+						<th>No</th>
 					</tr>										
 				</thead>
 			</table>
 		</div>
 	</td>
 	    <td>
-	<div  id="trow" style="overflow:hidden; width: 200px;">
+	<div id="trow" style="overflow:hidden; width: 350px;">
 			<table style=" width: 415px;">
 				<thead>
 					<tr>
@@ -196,14 +208,15 @@ function scrollRC()
 <tbody>
   <tr>
     <td>
-    	<div id="tcol" style="overflow: hidden; height: 100px;">
+    	<div id="tcol" style="overflow: hidden; height: 100px; width;50px;">
 			<table style="padding-bottom:15px;">
 				<tbody >
-  <% @meters.each_with_index do |meter, idx| %>
+  <% @old_meters.each_with_index do |meter, idx| %>
     <tr>
-      <td><%= idx + 1 %></td>	
+      <td width="50"><%= idx + 1 %></td>	
     </tr>
   <% end %>
+ 
 					<tr style="height:15px;" border="0"></tr>					
 				</tbody>
 			</table>
@@ -213,30 +226,21 @@ function scrollRC()
     	<div onScroll="scrollRC()" id="tbody" style="overflow:auto; width: 200px; height: 100px;">
 			<table style="width: 400px;" >
 				<tbody>
-					<tr>
-						<td class="col1">BODY-SCROLL1</td>
-						<td class="col2">BODY-SCROLL2</td>
-					</tr>
-					<tr class="even">
-						<td class="col1">BODY-SCROLL1</td>
-						<td class="col2">BODY-SCROLL2</td>
-					</tr>
-					<tr>
-						<td class="col1">BODY-SCROLL1</td>
-						<td class="col2">BODY-SCROLL2</td>
-					</tr>
-					<tr class="even">
-						<td class="col1">BODY-SCROLL1</td>
-						<td class="col2">BODY-SCROLL2</td>
-					</tr>	
-					<tr>
-						<td class="col1">BODY-SCROLL1</td>
-						<td class="col2">BODY-SCROLL2</td>
-					</tr>
-					<tr class="even">
-						<td class="col1">BODY-SCROLL1</td>
-						<td class="col2">BODY-SCROLL2</td>
-					</tr>		
+  <% @old_meters.each_with_index do |meter| %>
+    <tr>
+  	  <% @m_oils.each do |m_oil| %>
+  	    <% @m_codes.each do |m_code| %>
+  	      <% if meter["#{m_oil.id}_#{m_code.id}_m_meter_id"].blank? %>  
+            <td class="col4"></td>
+            <td class="col4"></td>
+  	      <% else %>  	      	
+  	        <td class="col4"><%= meter["#{m_oil.id}_#{m_code.id}_meter_no"] %></td>
+  	        <td class="col4"><%= meter["#{m_oil.id}_#{m_code.id}_meter"] %></td>
+          <% end %> 	        
+  	    <% end %>
+  	  <% end %>
+    </tr>
+  <% end %>		
 					<tr border="0"></tr>													
 				</tbody>
 			</table>
