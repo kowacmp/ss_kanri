@@ -1,2 +1,21 @@
-<h1>DTankDecreaseReports#index</h1>
-<p>Find me in app/views/d_tank_decrease_reports/index.html.erb</p>
+<% old_group_name = nil %>
+<table id="rounded-corner">
+	<tr>
+		<th>所属会社</th>
+		<th>店舗</th>
+		<th><%= MOil.find(:all,:conditions => ['deleted_flg = 0 and id = 1']).first.oil_name %></th>
+		<th><%= MOil.find(:all,:conditions => ['deleted_flg = 0 and id = 2']).first.oil_name %></th>
+		<th><%= MOil.find(:all,:conditions => ['deleted_flg = 0 and id = 3']).first.oil_name %></th>
+		<th><%= MOil.find(:all,:conditions => ['deleted_flg = 0 and id = 4']).first.oil_name %></th>
+		<th>MG欠減率(%)</th>
+	</tr>
+	<% @reports.each do |report| %>
+	  <tr>
+	  	<td><%= report.group_name unless old_group_name == report.group_name %>
+	  		<% old_group_name = report.group_name %>
+	  	</td>
+	  	<td><%= report.shop_name %></td>
+	  	<td><%= report.oil1_num_total %></td>
+	  </tr>
+	<% end %>
+</table>
