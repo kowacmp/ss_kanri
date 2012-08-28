@@ -335,7 +335,7 @@ $(function () {
     	num[2]=Number(format_kanma($("#sale_change_total").text(), 2));
     	num[3]=Number(format_kanma($("#syo_total").text(), 2));
     	num[4]=Number(format_kanma($("#sale_ass").text(), 2));
-    	num[5]=Number(format_kanma($("#sale_today_out2").text(), 2));
+    	num[5]=Number(format_kanma($("#zenjitu_sale_pm_out").text(), 2));
 
 		var i=0;
       	while(i<6){
