@@ -17,15 +17,15 @@
     <tr>
       <td>タンク<%= d_tank_compute_report.tank_no %></td> 	
       <td><%= d_tank_compute_report.oil_name %></td> 
-      <td><%= d_tank_compute_report.before_stock %></td> 
-      <td><%= d_tank_compute_report.receive %></td>
-      <td><%= d_tank_compute_report.sale %></td>  	
-      <td><%= d_tank_compute_report.compute_stock %></td> 
-      <td><%= d_tank_compute_report.after_stock %></td> 
-      <td><%= d_tank_compute_report.decrease %></td> 	
-      <td><%= d_tank_compute_report.sale_total %></td> 
-      <td><%= d_tank_compute_report.decrease_total %></td> 
-      <td><%= d_tank_compute_report.total_percentage %></td> 
+      <td class="input_no"><%= num_fmt(d_tank_compute_report.before_stock) %></td> 
+      <td class="input_no"><%= num_fmt(d_tank_compute_report.receive) %></td>
+      <td class="input_no"><%= num_fmt(d_tank_compute_report.sale) %></td>  	
+      <td class="input_no"><%= num_fmt(d_tank_compute_report.compute_stock) %></td> 
+      <td class="input_no"><%= num_fmt(d_tank_compute_report.after_stock) %></td> 
+      <td class="input_no"><%= num_fmt(d_tank_compute_report.decrease) %></td> 	
+      <td class="input_no"><%= num_fmt(d_tank_compute_report.sale_total) %></td> 
+      <td class="input_no"><%= num_fmt(d_tank_compute_report.decrease_total) %></td> 
+      <td class="input_no"><%= num_fmt(d_tank_compute_report.total_percentage, true) %></td> 
       <td align="center">
       	<% if d_tank_compute_report.inspect_flg == 0 %>
       	  <%= check_box :inspect_flg, "#{d_tank_compute_report.id}", {:checked => false} %>

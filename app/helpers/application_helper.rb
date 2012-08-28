@@ -16,7 +16,7 @@ module ApplicationHelper
            where a.m_authority_id = #{m_authority_id} and a.menu_id = m.id and m.menu_cd2 <> 0
              and m.menu_cd3 = 0 and menu_cd1 = #{menu1.menu_cd1} order by menu_cd2  
       SQL
-      p "sql2=#{sql2}"
+
       $menu2[menu1.menu_cd1.to_i] = Hash::new
       $menu2[menu1.menu_cd1.to_i] = AuthorityMenu.find_by_sql(sql2)
 

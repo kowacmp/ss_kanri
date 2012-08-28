@@ -1,6 +1,6 @@
 module DResultsHelper
   def m_oiletc_sql(d_result, oiletc_group)
-    sql = "select m.id, m.oiletc_name, m.oiletc_tani, d.pos1_data, d.pos2_data, d.pos3_data"
+    sql = "select m.id, m.oiletc_name, m.oiletc_tani, d.pos1_data, d.pos2_data, d.pos3_data, d.pos1_data + d.pos2_data + d.pos3_data as pos_total"
     sql << " from m_oiletcs m left join d_result_oiletcs d"
     sql << "   on (m.id = d.m_oiletc_id "
     if d_result.blank?

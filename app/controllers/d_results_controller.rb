@@ -4,6 +4,9 @@ class DResultsController < ApplicationController
   def index
     @m_shop = MShop.find(current_user.m_shop_id)
     @m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"])
+    @m_oiletc0s = MOiletc.find(:all, :conditions => ["oiletc_group = 0 and deleted_flg = 0"])
+    @m_oiletc1s = MOiletc.find(:all, :conditions => ["oiletc_group = 1 and deleted_flg = 0"])
+    @etcs = MEtc.find(:all, :conditions => ["deleted_flg = 0 and kansa_flg = 1"])
     
     session[:m_oil_totals] = Array::new                 
     @m_oils.each do |m_oil|
@@ -13,6 +16,7 @@ class DResultsController < ApplicationController
   end
   
   def select_date
+    @m_shop = MShop.find(current_user.m_shop_id)
     @result_date = params[:select_date][0,4] + params[:select_date][5,2] + params[:select_date][8,2]
     @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       current_user.m_shop_id, @result_date])
@@ -35,15 +39,23 @@ class DResultsController < ApplicationController
     #油外販売取得
     oiletc0_sql = m_oiletc_sql(@d_result, 0)
     @oiletc0s = MOiletc.find_by_sql(oiletc0_sql)
-      
-      
+    @etc0_pos1_total, @etc0_pos2_total, @etc0_pos3_total, @etc0_pos_total = 0,0,0,0  
+    @oiletc0s.each do |oiletc0|
+      @etc0_pos1_total += oiletc0.pos1_data.to_i
+      @etc0_pos2_total += oiletc0.pos2_data.to_i 
+      @etc0_pos3_total += oiletc0.pos3_data.to_i
+      @etc0_pos_total += oiletc0.pos_total.to_i    
+    end
+
+ 
     #油外販売取得
     oiletc1_sql = m_oiletc_sql(@d_result, 1)
     @oiletc1s = MOiletc.find_by_sql(oiletc1_sql)
     
     
     #その他売上取得
-    etc_sql = "select m.id, m.etc_name, m.max_num,m.etc_cd, d.id d_result_etc_id, d.no, d.pos1_data, d.pos2_data, d.pos3_data"
+    etc_sql = "select m.id, m.etc_name, m.max_num,m.etc_cd, d.id d_result_etc_id, d.no,"
+    etc_sql << "      d.pos1_data, d.pos2_data, d.pos3_data, d.pos1_data + d.pos2_data + d.pos3_data as pos_total"
     etc_sql << " from m_etcs m left join d_result_etcs d on (m.id = d.m_etc_id"
     if @d_result.blank?
       etc_sql << " and d.d_result_id is null)"
@@ -111,6 +123,7 @@ class DResultsController < ApplicationController
   end
   
   def d_result_create
+    m_shop = MShop.find(current_user.m_shop_id)
     d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       current_user.m_shop_id, params[:select][:result_date]])
     #実績データ作成 
@@ -206,33 +219,33 @@ class DResultsController < ApplicationController
       end   
     end
     
-    #営業POS伝回収報告データ作成
-    m_oiletcs = MOiletc.find(:all, :conditions => ["oiletc_trade = 1 and deleted_flg = 0"])
+    #営業POS伝回収報告データ作成  油外店舗のみ作成
+    if m_shop.shop_kbn == 1
+      m_oiletcs = MOiletc.find(:all, :conditions => ["oiletc_trade = 1 and deleted_flg = 0"])
 
-    m_oiletcs.each do |m_oiletc|
-      d_result_collect = DResultCollect.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc.id])
+      m_oiletcs.each do |m_oiletc|
+        d_result_collect = DResultCollect.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc.id])
      
-      if d_result_collect.blank?
-        d_result_collect = DResultCollect.new
-        d_result_collect.d_result_id = d_result.id
-        d_result_collect.m_oiletc_id = m_oiletc.id
-        d_result_collect.created_user_id = current_user.id       
-      end
+        if d_result_collect.blank?
+          d_result_collect = DResultCollect.new
+          d_result_collect.d_result_id = d_result.id
+          d_result_collect.m_oiletc_id = m_oiletc.id
+          d_result_collect.created_user_id = current_user.id       
+        end
            
-      d_result_collect.get_num = params[:get_num]["#{m_oiletc.id}"]
-      d_result_collect.updated_user_id = current_user.id
-      d_result_collect.save
+        d_result_collect.get_num = params[:get_num]["#{m_oiletc.id}"]
+        d_result_collect.updated_user_id = current_user.id
+        d_result_collect.save
+      end
     end
-    
+        
     #タンク点検フラグ更新
     d_tank_compute_reports = DTankComputeReport.find(:all, :conditions => ["d_result_id = ?",d_result.id])
     d_tank_compute_reports.each do |d_tank_compute_report|
       d_tank_compute_report.inspect_flg = params[:inspect_flg]["#{d_tank_compute_report.id}"]
       d_tank_compute_report.save    
     end
-    
-    
-    
+     
     head :ok
   end
   
@@ -408,7 +421,7 @@ class DResultsController < ApplicationController
     
     @m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"], :order => 'oil_cd')
     @m_codes = MCode.find(:all, :conditions => ["kbn = 'pos_class'", :order => 'code'])
-    
+  
     #開始時メーター
     today = Time.parse(@result_date)
     yesterday = (today - 1.days).strftime("%Y%m%d")
@@ -425,7 +438,7 @@ class DResultsController < ApplicationController
           sql << " left join d_result_meters d on (m.id = d.m_meter_id and d.d_result_id = #{old_d_result.id})"
           sql << " left join m_tanks t on (m.m_tank_id = t.id)"
           sql << " left join m_oils o on (t.m_oil_id = o.id)"
-          sql << " where m.m_code_id = #{m_code.id} and o.id = #{m_oil.id} and t.m_shop_id = #{@d_result.m_shop_id}"
+          sql << " where m.pos_class = #{m_code.id} and o.id = #{m_oil.id} and t.m_shop_id = #{@d_result.m_shop_id}"
           sql << "  and m.deleted_flg = 0 and t.deleted_flg = 0 and o.deleted_flg = 0"
           sql << " order by m.number"
                               
@@ -461,10 +474,10 @@ class DResultsController < ApplicationController
         sql << " left join d_result_meters d on (m.id = d.m_meter_id and d.d_result_id = #{@d_result.id})"
         sql << " left join m_tanks t on (m.m_tank_id = t.id)"
         sql << " left join m_oils o on (t.m_oil_id = o.id)"
-        sql << " where m.m_code_id = #{m_code.id} and o.id = #{m_oil.id} and t.m_shop_id = #{@d_result.m_shop_id}"
+        sql << " where m.pos_class = #{m_code.id} and o.id = #{m_oil.id} and t.m_shop_id = #{@d_result.m_shop_id}"
         sql << "  and m.deleted_flg = 0 and t.deleted_flg = 0 and o.deleted_flg = 0"
         sql << " order by m.number"
-                                
+p "sql=#{sql}"                             
         meter["#{m_oil.id}_#{m_code.id}"] = MOil.find_by_sql(sql)
         max_no = meter["#{m_oil.id}_#{m_code.id}"].size if meter["#{m_oil.id}_#{m_code.id}"].size > max_no
       end

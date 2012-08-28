@@ -51,6 +51,10 @@ body
         color: #FF0000;
 
 }
+#rounded-corner td.input_no, .rounded-corner td.input_no
+{
+	text-align: right;
+}
 td.input-num
 {
 	background: #fdf3b5;
@@ -66,11 +70,6 @@ td.no-input-num
 {
 	background: #d0dafd;
 }
-
-
-
-
-
 
 
 
@@ -105,3 +104,65 @@ td.no-input-num
 
     padding:5px; 
 }
+
+
+#rounded-corner3{
+	border-collapse:collapse;
+	white-space:nowrap;
+	border:solid 0px;
+	padding:0px;
+	margin:0px;	
+ }
+#rounded-corner3 tr.even{
+ 	background-color: #lightgray;
+ }
+#rounded-corner3 th{
+    text-align: center;
+	font-weight: normal;
+	color: #039;
+    font-weight:bold;
+    background: url('th_002.jpg');
+    background-repeat:repeat-x;
+    border: 1px solid #7D808A;
+} 
+#rounded-corner3 td, .rounded-corner3 td
+{
+	border: 1px solid #8B8E99;
+	color: #000457;
+    
+        
+}
+ 
+
+
+
+#rounded-corner4{
+	border-collapse:collapse;
+	white-space:nowrap;
+	border:solid 0px;
+	padding:0px;
+	margin:0px;	
+ }
+#rounded-corner4 tr.even{
+ 	background-color: #lightgray;
+ }
+#rounded-corner4 th{
+    text-align: center;
+	font-weight: normal;
+	color: #039;
+    font-weight:bold;
+    background: url('th_002.jpg');
+    background-repeat:repeat-x;
+    border: 1px solid #7D808A;
+    height: 35px;
+    
+} 
+#rounded-corner4 td, .rounded-corner3 td
+{
+	border: 1px solid #8B8E99;
+	color: #000457;   
+  height: 35px;
+}
+ 
+
+ 
