@@ -1,6 +1,7 @@
-<h1>Editing m_audit_check</h1>
+<h1>更新</h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @m_audit_check %> |
-<%= link_to 'Back', m_audit_checks_path %>
+<%#= link_to 'Show', @m_audit_check %> 
+<%#= link_to 'Back', m_audit_checks_path %>
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>

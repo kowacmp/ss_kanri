@@ -1,0 +1,39 @@
+<%= form_for(@m_fix_item) do |f| %>
+  <% if @m_fix_item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_fix_item.errors.count, "") %> 件のエラーがあります。</h2>
+
+      <ul>
+      <% @m_fix_item.errors.full_messages.each do |msg| %>
+        <li><%= sliceString(msg) %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= hidden_field "input",'check',:value=>@check_del_flg%>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th><%= f.label '固定額内訳コード' %></th>
+  	  <td><%= f.number_field :fix_item_cd, :style=>"ime-mode:disabled" ,:maxlength=>2 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '固定額内訳名' %></th>
+  	  <td><%= f.text_field :fix_item_name,:maxlength=>20 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '固定額内訳種別' %></th>
+  	  <td>
+		<%= f.select(:fix_item_class, MCode.find(:all, :conditions => ["kbn = ?",'fix_item_class'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
+	  </td>  	  
+  	</tr> 	  
+  	</tr>
+  </table>
+  <div class="actions">
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div>
+  
+<% end %>

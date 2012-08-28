@@ -1,33 +1,30 @@
 <%= form_for(@m_shop_group) do |f| %>
   <% if @m_shop_group.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@m_shop_group.errors.count, "error") %> prohibited this m_shop_group from being saved:</h2>
+      <h2><%= pluralize(@m_shop_group.errors.count, "") %> 件のエラーがあります。</h2>
 
       <ul>
       <% @m_shop_group.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= sliceString(msg) %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :group_cd %><br />
-    <%= f.number_field :group_cd %>
-  </div>
-  <div class="field">
-    <%= f.label :group_name %><br />
-    <%= f.text_field :group_name %>
-  </div>
-  <div class="field">
-    <%= f.label :deleted_flg %><br />
-    <%= f.number_field :deleted_flg %>
-  </div>
-  <div class="field">
-    <%= f.label :deleted_at %><br />
-    <%= f.datetime_select :deleted_at %>
-  </div>
+  <%= hidden_field "input",'check',:value=>@check_del_flg%>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th><%= f.label '所属コード' %></th>
+  	  <td><%= f.number_field :group_cd, :style=>"ime-mode:disabled" ,:maxlength=>2 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '所属会社名' %></th>
+  	  <td><%= f.text_field :group_name,:maxlength=>50 %></td>  	  
+  	</tr>
+  </table>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div>
+
 <% end %>

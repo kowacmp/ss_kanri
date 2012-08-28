@@ -1,29 +1,46 @@
 <%= form_for(@m_aim) do |f| %>
   <% if @m_aim.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@m_aim.errors.count, "error") %> prohibited this m_aim from being saved:</h2>
+      <h2><%= pluralize(@m_aim.errors.count, "") %> 件のエラーがあります。</h2>
 
       <ul>
       <% @m_aim.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= sliceString(msg) %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :aim_code %><br />
-    <%= f.number_field :aim_code %>
-  </div>
-  <div class="field">
-    <%= f.label :aim_name %><br />
-    <%= f.text_field :aim_name %>
-  </div>
-  <div class="field">
-    <%= f.label :shop_kbn %><br />
-    <%= f.number_field :shop_kbn %>
-  </div>
+  <%= hidden_field "input",'check',:value=>@check_del_flg%>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th><%= f.label '目標値コード' %></th>
+  	  <td><%= f.number_field :aim_code, :style=>"ime-mode:disabled" ,:maxlength=>2 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '目標値名' %></th>
+  	  <td><%= f.text_field :aim_name,:maxlength=>30 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '店舗種別' %></th>
+  	  <td>
+  	  	<%= f.select(:shop_kbn, MCode.find(:all, :conditions => ["kbn = ?",'shop_kbn'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
+  	  </td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '入力区分' %></th>
+  	  <td>
+  	  	<%= f.select(:input_kbn, MCode.find(:all, :conditions => ["kbn = ?",'input_kbn'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
+  	  </td>  	  
+  	</tr>
+  </table>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div>
+  
 <% end %>

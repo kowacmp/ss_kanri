@@ -2,7 +2,6 @@ class MMetersController < ApplicationController
   # GET /m_meters
   # GET /m_meters.json
   def index
-    p "meter index----------------"
     @m_meters = MMeter.all
 
     respond_to do |format|
@@ -14,7 +13,6 @@ class MMetersController < ApplicationController
   # GET /m_meters/1
   # GET /m_meters/1.json
   def show
-    p "meter show------------------------"
     @m_meter = MMeter.find(params[:id])
 
     respond_to do |format|
@@ -26,23 +24,14 @@ class MMetersController < ApplicationController
   # GET /m_meters/new
   # GET /m_meters/new.json
   def new
-    
-    p "meter new-------------------------------"
-    
-    
     @m_shop_id = params[:id]
     
-    @m_oil_first = MOil.find(:first, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'oil_cd')
-    #@m_oil_id = 1
-    
-    #@m_oil_id = @m_oil_first.id
-    #@m_oil_name = @m_oil_first.oil_name
-    
-    
+    @m_oil_first = MOil.find(:first, :conditions => "deleted_flg = 0", :order => 'oil_cd')
+
     @m_meter = MMeter.new
 
-    @m_codes = MCode.find(:all,:conditions=>["kbn='7'"],:order=>'code')
-    @m_oils = MOil.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'oil_cd')
+    @m_codes = MCode.find(:all,:conditions=>["kbn='pos_class'"],:order=>'code')
+    @m_oils = MOil.find(:all, :conditions => "deleted_flg = 0", :order => 'oil_cd')
     
     sql_where = "m_shop_id = ?"
     sql_where = sql_where + " and m_oil_id = ?"
@@ -65,7 +54,6 @@ class MMetersController < ApplicationController
   # POST /m_meters
   # POST /m_meters.json
   def create
-    p "meter create------------------------"
     if params[:m_meter]
       params[:m_meter].each do |key,value| 
         
@@ -143,7 +131,6 @@ class MMetersController < ApplicationController
   
   
   def search 
-    p "search-----------------------------------"
     p params[:m_shop][:m_shop_id]
     
     @m_shop_id = params[:m_shop][:m_shop_id]
@@ -153,7 +140,7 @@ class MMetersController < ApplicationController
     
     @m_meter = MMeter.new
 
-    @m_codes = MCode.find(:all,:conditions=>["kbn='7'"],:order=>'code')
+    @m_codes = MCode.find(:all,:conditions=>["kbn='pos_class'"],:order=>'code')
     @m_oils = MOil.find(:all, :conditions => "deleted_flg = 0", :order => 'oil_cd')
     
     sql_where = "m_shop_id = ?"

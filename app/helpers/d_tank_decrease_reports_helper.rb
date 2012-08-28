@@ -4,7 +4,7 @@ module DTankDecreaseReportsHelper
   end
   
   def get_shops(group_id)
-    MShop.find(:all,:conditions => ['m_shop_group_id = ?',group_id],:order => 'shop_cd')
+    MShop.find(:all,:conditions => ['m_shop_group_id = ? and shop_kbn <> 9 ',group_id],:order => 'shop_cd')
   end
   
   def get_d_result(shop_id,result_date)

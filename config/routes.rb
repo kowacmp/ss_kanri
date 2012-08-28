@@ -1,10 +1,17 @@
 SsKanri::Application.routes.draw do
 
+  resources :m_fix_items
+
   resources :establishes
 
-  get "d_tank_decrease_reports/index"
+  resources :d_tank_decrease_reports do
+   collection do
+     get :print
+   end
+  end
+  #get "d_tank_decrease_reports/index"
 
-  get "d_tank_decrease_reports/print"
+  #get "d_tank_decrease_reports/print"
 
   get "d_fixture_approvals/index"
   get "d_fixture_approvals/edit"
@@ -53,6 +60,10 @@ SsKanri::Application.routes.draw do
       get :test
     end
   end
+ 
+  match "d_audit_changemachines/confirm_shop_id_select", :to => "d_audit_changemachines#confirm_shop_id_select"
+  match "d_audit_changemachines/confirm_user_id_select", :to => "d_audit_changemachines#confirm_user_id_select"
+  resources :d_audit_changemachines
  
   match "d_audit_washes/confirm_shop_id_select", :to => "d_audit_washes#confirm_shop_id_select"
   match "d_audit_washes/confirm_user_id_select", :to => "d_audit_washes#confirm_user_id_select"

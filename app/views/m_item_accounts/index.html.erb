@@ -1,27 +1,16 @@
-<h1>Listing m_item_accounts</h1>
+<h1>勘定科目マスタメンテ</h1>
 
-<table>
-  <tr>
-    <th>Item account code</th>
-    <th>Item account name</th>
-    <th>Outline</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @m_item_accounts.each do |m_item_account| %>
-  <tr>
-    <td><%= m_item_account.item_account_code %></td>
-    <td><%= m_item_account.item_account_name %></td>
-    <td><%= m_item_account.outline %></td>
-    <td><%= link_to 'Show', m_item_account %></td>
-    <td><%= link_to 'Edit', edit_m_item_account_path(m_item_account) %></td>
-    <td><%= link_to 'Destroy', m_item_account, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
+<%= form_tag({:action => 'search' }, { :remote => true }) do %>
+  <% if @check_del_flg == 0%>
+  	<%= check_box(:check,:deleted_flg,{},true,false) %>
+  <% else %>
+  	<%= check_box(:check,:deleted_flg,{:checked => true},true,false) %>
+  <% end %>
+  
+  削除項目も表示する。
+  <%= submit_tag '表示' %>
 <% end %>
-</table>
 
+<%= link_to '新規登録', new_m_item_account_path, :class => 'add_icon' %>
 <br />
-
-<%= link_to 'New M item account', new_m_item_account_path %>
+<div id="result"><%= render 'result_list' %></div>

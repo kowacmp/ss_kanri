@@ -1,33 +1,46 @@
 <%= form_for(@m_item) do |f| %>
   <% if @m_item.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@m_item.errors.count, "error") %> prohibited this m_item from being saved:</h2>
+      <h2><%= pluralize(@m_item.errors.count, "") %> 件のエラーがあります。</h2>
 
       <ul>
       <% @m_item.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= sliceString(msg) %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :item_class %><br />
-    <%= f.number_field :item_class %>
-  </div>
-  <div class="field">
-    <%= f.label :item_name %><br />
-    <%= f.text_field :item_name %>
-  </div>
-  <div class="field">
-    <%= f.label :item_ryaku %><br />
-    <%= f.text_field :item_ryaku %>
-  </div>
-  <div class="field">
-    <%= f.label :m_item_account %><br />
-    <%= f.number_field :m_item_account %>
-  </div>
+  <%= hidden_field "input",'check',:value=>@check_del_flg%>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th><%= f.label '内訳種別' %></th>
+  	  <td><%#= f.number_field :item_class, :style=>"ime-mode:disabled" ,:maxlength=>4 %>
+  	  	<%= f.select(:item_class, MCode.find(:all, :conditions => ["kbn = ?",'item_class'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
+  	  </td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '内訳名称' %></th>
+  	  <td><%= f.text_field :item_name,:maxlength=>30 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '内訳略称' %></th>
+  	  <td><%= f.text_field :item_ryaku,:maxlength=>10 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '内訳科目' %></th>
+  	  <td><%#= f.number_field :m_item_account_id, :style=>"ime-mode:disabled" ,:maxlength=>4 %>
+  	  	<%= f.select(:m_item_account_id, MItemAccount.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'item_account_code').map do |u|
+      		[u.item_account_name,u.id]
+        end, {:include_blank => "選択して下さい"}) %>
+  	  </td>  	  
+  	</tr>
+  </table>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div>
+  
 <% end %>

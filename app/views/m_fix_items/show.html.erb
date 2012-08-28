@@ -1,0 +1,21 @@
+<!--<p id="notice"><%#= notice %></p>-->
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>固定額内訳コード</th>
+  	  <td><%= @m_fix_item.fix_item_cd %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>固定額内訳名</th>
+  	  <td><%= @m_fix_item.fix_item_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>固定額内訳種別</th>
+  	  <td><%= @m_fix_item.fix_item_class_name %></td>  	  
+  	</tr>
+  </table>
+
+<%#= link_to 'Edit', edit_m_fix_item_path(@m_fix_item) %> 
+<%#= link_to 'Back', m_fix_items_path %>
+<%= link_to '編集', {:action=>"edit",:id=>@m_fix_item.id,:input_check=>@check_del_flg}, :class => 'edit_icon' %> |
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>

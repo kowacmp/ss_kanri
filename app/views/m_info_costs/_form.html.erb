@@ -1,48 +1,62 @@
 <%= form_for(@m_info_cost) do |f| %>
   <% if @m_info_cost.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@m_info_cost.errors.count, "error") %> prohibited this m_info_cost from being saved:</h2>
+      <h2><%= pluralize(@m_info_cost.errors.count, "") %> 件のエラーがあります。</h2>
 
       <ul>
       <% @m_info_cost.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= sliceString(msg) %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
+  
+  <%= hidden_field "input",'check',:value=>@check_del_flg%>
 
   <table id='rounded-corner'>
   	<tr>
-  	  <th><%= f.label 'ユーザID' %></th>
-  	  <td><%= f.number_field :users_id %></td>  	  
+  	  <th><%= f.label 'ユーザ' %></th>
+  	  <td><%#= f.number_field :user_id %>
+  	  	<%= f.select(:user_id, User.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'account').map do |u|
+      		[u.user_name,u.id]
+        end, {:include_blank => "選択して下さい"}) %>
+  	  </td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '基本給' %></th>
-  	  <td><%= f.number_field :base_pay %></td>  	  
+  	  <td><%= f.number_field :base_pay, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '深夜給' %></th>
-  	  <td><%= f.number_field :night_pay %></td>  	  
+  	  <td><%= f.number_field :night_pay, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '福利費' %></th>
-  	  <td><%= f.number_field :welfare_pay %></td>  	  
+  	  <td><%= f.number_field :welfare_pay, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '手当1' %></th>
-  	  <td><%= f.number_field :etc_pay1 %></td>  	  
+  	  <td><%= f.number_field :etc_pay1, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '手当2' %></th>
-  	  <td><%= f.number_field :etc_pay2 %></td>  	  
+  	  <td><%= f.number_field :etc_pay2, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '手当3' %></th>
-  	  <td><%= f.number_field :etc_pay3 %></td>  	  
+  	  <td><%= f.number_field :etc_pay3, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '手当4' %></th>
-  	  <td><%= f.number_field :etc_pay4 %></td>  	  
+  	  <td><%= f.number_field :etc_pay4, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '手当5' %></th>
+  	  <td><%= f.number_field :etc_pay5, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '手当6' %></th>
+  	  <td><%= f.number_field :etc_pay6, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
   	</tr>
   </table>
   <div class="actions">
