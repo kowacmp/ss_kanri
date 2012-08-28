@@ -5,7 +5,7 @@
   @sum_oil3 = 0
   @sum_oil4 = 0
 %>
-
+<%= form_tag({:action => 'print',:input_ymd_s => @input_ymd_s ,:rbtn => @rbtn}) do %>
 <table id="rounded-corner">
 	<tr>
 		<th>所属会社</th>
@@ -53,4 +53,8 @@
 		<td><%= @sum_oil4 %></td>
 		<td></td>
 	</tr>
+	<%= hidden_field_tag 'rbtn',@rbtn %>
+	<%= hidden_field_tag 'input_ymd_s',@input_ymd_s %>
 </table>
+<%= submit_tag '印刷',format: 'pdf' %>
+<% end %>
