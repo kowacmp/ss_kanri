@@ -22,7 +22,15 @@
   	<tr>
   		<th>監査日</th>
   		<td>
-  			<%=text_field :kansa, :ymd, :size => 11, :maxlength => 10, :value => Time.now.strftime('%Y/%m/%d') %>
+  			<%
+  				if params[:kansa].nil? then
+  					ymd = Time.now.strftime('%Y/%m/%d')
+  				else
+  					ymd = params[:kansa][:ymd]
+  					ymd = ymd[0..3] + "/" + ymd[4..5] + "/" + ymd[6..7]	
+  				end
+  			%>
+  			<%=text_field :kansa, :ymd, :size => 11, :maxlength => 10, :value => ymd %>
   		</td>
   	</tr>	
   </table>
@@ -31,7 +39,7 @@
 </tr>
 <tr>
 	<td colspan="2" align="right" style="margin-right: 5px;">
-		<%= submit_tag '表示', :onclick => "return kansa_ymd_chk()", :disable_with => "処理中です..." %>
+		<%= submit_tag '　表　示　', :onclick => "return kansa_ymd_chk()", :disable_with => "処理中です..." %>
 	</td>
 </tr>
 </table>
@@ -89,4 +97,8 @@ function ckDate(datestr) {
 
 <!-- 検索条件入力領域 END -->
 <br/>
-<div id='result'>&nbsp;</div>
+<div id='result'>
+<% if not(params[:kansa].nil?) then %>
+	<%=render :partial => 'hyouji_index'%>
+<% end %>
+</div>
