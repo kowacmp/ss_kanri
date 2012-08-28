@@ -361,7 +361,7 @@
 			<input type="button" value="キャンセル" 
 				onclick="this.value='キャンセル中です...';this.disabled=true;document.location='<%=url%>';" />
 			&nbsp;&nbsp;
-			<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...' %>			
+			<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...', :confirm => '保存しても良いですか？' %>			
 		</td>	
 	</tr>
 	
@@ -579,7 +579,8 @@
   			return false;
   		}
   		
-  		return true;
+  		return confirm('保存しても良いですか？');	
+  		
   	}
   	
 </script>

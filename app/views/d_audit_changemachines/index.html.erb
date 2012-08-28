@@ -1,4 +1,8 @@
-<h1>釣銭機監査報告</h1>
+<%if session[:audit_class] == "0" then %>
+	<h1>釣銭機自主監査報告</h1>
+<%else%>
+	<h1>釣銭機本監査報告</h1>
+<%end%>
 
 <!-- 検索条件入力領域 BEGIN -->
 <%= form_tag({:action => 'hyouji_index' }, { :remote => true }) do %>

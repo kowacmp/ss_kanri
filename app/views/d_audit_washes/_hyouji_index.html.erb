@@ -77,15 +77,17 @@
 	<tr>
 		<th rowspan="2">立会人</th>
 		<td>
-			<%= select :confirm, :shop_id, MShop.find(:all, :conditions => "deleted_flg=0", :order => "shop_cd").collect{|i| [i.shop_name ,i.id]},
-				:selected => c_shop_id, :include_blank => "選択してください" %>
-
+				<%=render :partial => 'd_audit_changemachines/confirm_shop_id', 
+					:locals => {:c_shop_id => c_shop_id, 
+					            :c_user_id => c_user_id} %>
 		</td>
     </tr>
     <tr>
 		<td>
 			<div id="confirm_user_id_div">
-				<%=render :partial => 'confirm_user_id', :locals => {:c_shop_id => c_shop_id, :c_user_id => c_user_id} %>
+				<%=render :partial => 'd_audit_changemachines/confirm_user_id', 
+					:locals => {:c_shop_id => c_shop_id, 
+					            :c_user_id => c_user_id} %>
 			</div>
 		</td>
     </tr>
@@ -109,7 +111,12 @@
     	<%= hidden_field("dt#{rec_no}", :gosa,            :value => dt_rec[:gosa]) %>	
   	<% end %>
 	<br/>
-	<%= submit_tag '更新', :onclick => "return update_chk();" ,:disable_with => '更新中です...' %>
+	<%
+		url = "./d_audit_washes?audit_class=#{session[:audit_class]}&kansa[from]=#{@dt[0][:audit_date_from]}&kansa[to]=#{@dt[0][:audit_date_to]}"
+	%>
+	<input type="button" value="キャンセル" 
+			onclick="this.value='キャンセル中です...';this.disabled=true;document.location='<%=url%>';" />
+	<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...'  %>
 </div>
 </td></tr>
 </table>
@@ -122,17 +129,6 @@
 
 <script language="JavaScript">
 
-  	$("#confirm_shop_id").change(function() {
-  		    		  
-  		$.ajax({
-  			type: "GET",
-  			url:  "d_audit_washes/confirm_shop_id_select?shop_id=" + this.value,
- 			async: false,
- 			timeout: 5000
-  		});
-
-  	});
-  	  	
   	// 更新前チェック
   	function update_chk() {
   		var sel_shop = $("#confirm_shop_id")[0];
@@ -150,7 +146,8 @@
   			return false;
   		}
   		
-  		return true;
+  		return confirm('保存しても良いですか？');	
+  		
   	}
   	
 </script>

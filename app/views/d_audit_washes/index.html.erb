@@ -1,4 +1,8 @@
-<h1>洗車自主監査報告</h1>
+<%if session[:audit_class] == "0" then %>
+	<h1>洗車自主監査報告</h1>
+<%else%>
+	<h1>洗車本監査報告</h1>
+<%end%>
 
 <!-- 検索条件入力領域 BEGIN -->
 <%= form_tag({:action => 'hyouji_index' }, { :remote => true }) do %>
@@ -22,7 +26,24 @@
   	<tr>
   		<th>監査日(From)</th>
   		<td>
-  			<%=select :kansa, :from, @from%>
+<%
+  				if params[:kansa].nil? then
+  					ymd_from = @from[0]
+  					ymd_to   = @to[0]
+  					ymd_to_disaled = false
+  				else
+  					ymd_from = params[:kansa][:from]
+  					ymd_from = ymd_from[0..3] + "/" + ymd_from[4..5] + "/" + ymd_from[6..7]
+  					ymd_to = params[:kansa][:to]
+  					ymd_to = ymd_to[0..3] + "/" + ymd_to[4..5] + "/" + ymd_to[6..7]
+  					if @from.length == 1 then
+  						ymd_to_disabled = false
+  					else
+  						ymd_to_disabled = true	
+  					end
+  				end
+  			%>
+  			<%=select :kansa, :from, @from, :selected => ymd_from %>
   		</td>
   	</tr>	
   </table>
@@ -34,7 +55,8 @@
   	<tr>
   		<th>監査日(To)</th>
   		<td>
-  			<%=text_field :kansa, :to, :size => 10, :maxlength => 10, :value => @to[0] %>
+  			<%=text_field :kansa, :t_to, :size => 10, :maxlength => 10, :value => ymd_to, :disabled => ymd_to_disabled %>
+  			<%=hidden_field :kansa, :to, :value => ymd_to %> <!-- textboxが使用不可の場合にPOSTされないためhiddenで送る -->
   			<input type='hidden' id='h_to' value="<%=@to.join(',')%>">
   		</td>
   	</tr>	
@@ -44,7 +66,7 @@
 </tr>
 <tr>
 	<td colspan="3" align="right" style="margin-right: 5px;">
-		<%= submit_tag '表示', :onclick => "return kansa_from_to_chk()", :disable_with => "処理中です..." %>
+		<%= submit_tag '　表　示　', :onclick => "return kansa_from_to_chk()", :disable_with => "処理中です..." %>
 	</td>
 </tr>
 </table>
@@ -53,12 +75,12 @@
 <script language="JavaScript">
   $(function() {
   	// 監査日Toのカレンダー機能
-    $("#kansa_to").datepicker();
+    $("#kansa_t_to").datepicker();
   
   	// 監査日Fromの変更時にToの自動入力
   	$("#kansa_from")[0].onclick = function() {
   		var from  = $("#kansa_from")[0];
-  		var to    = $("#kansa_to")[0];
+  		var to    = $("#kansa_t_to")[0];
   		var h_to  = $("#h_to")[0];
   		
   		to.value    = h_to.value.split(',')[from.selectedIndex];
@@ -72,7 +94,7 @@
   // 表示ボタン時の入力チェック
   function kansa_from_to_chk() {
   	var from = $("#kansa_from")[0];
-  	var to   = $("#kansa_to")[0];
+  	var to   = $("#kansa_t_to")[0];
   	
   	if (!ckDate(to.value)) {
   		alert('監査日(To)を正しく入力してください。');
@@ -86,7 +108,11 @@
 		return false;
   	}
   	
+    // toをセットする
+    $("#kansa_to").val(to.value);
+    
   	return true;
+
 
   }
   
@@ -121,4 +147,8 @@ function ckDate(datestr) {
 
 <!-- 検索条件入力領域 END -->
 <br/>
-<div id='result'>&nbsp;</div>
+<div id='result'>
+<% if not(params[:kansa].nil?) then %>
+	<%=render :partial => 'hyouji_index'%>
+<% end %>
+</div>
