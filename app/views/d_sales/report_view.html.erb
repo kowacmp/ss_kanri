@@ -10,6 +10,16 @@
 		<%= @head[:input_day].to_s[0,7] %>
     </div>
 </div>
+<div id="before_day_info">
+	<div class="title_alias">前月末現金有高</div>
+	<div class="info_alias">
+		<%= num_fmt(@d_sale_zengetumatu.sale_change1.to_i + @d_sale_zengetumatu.sale_change2.to_i + @d_sale_zengetumatu.sale_change3.to_i + @d_sale_zengetumatu.sale_cashbox.to_i) %>
+    </div>
+    <div class="title_alias">前月末過不足</div>
+	<div class="info_alias">
+		<%= @head[:input_day].to_s[0,7] %>
+    </div>
+</div>
 
 <hr>
 
