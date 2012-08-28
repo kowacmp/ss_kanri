@@ -6,7 +6,7 @@ class AddrecordUsers < ActiveRecord::Migration
            
           execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shop_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (3, '000006', 'KOWA社員SS', NULL, 2, 16, 0, NULL, NULL, 0, NULL, 'kowa11@com.jp', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
            "
-           execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shop_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (8, '000010', 'KOWAバイト', NULL, 2, 17, 0, NULL, NULL, 0, NULL, 'kowa5@', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+           execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shop_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (8, '000010', 'KOWAバイト', NULL, 2, 17, 1, NULL, NULL, 0, NULL, 'kowa5@', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
            "
            execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shop_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (1, '999999', '管理者', 'ｶﾝﾘｼｬ', 1, 1, 0, '2012-10-01 00:00:00', '2012-10-01 00:00:00', 0, NULL, '999999@com.jp', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 25, '2012-08-23 03:53:53.200407', '2012-08-23 03:00:38.224022', '127.0.0.1', '127.0.0.1', NULL, '2012-08-23 03:53:53.201144');
            "
@@ -20,8 +20,10 @@ class AddrecordUsers < ActiveRecord::Migration
            "
            execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shop_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (2, '000001', 'KOWA社長', NULL, 1, 2, 0, '2012-10-01 00:00:00', '2012-10-01 00:00:00', 0, NULL, 'kowa@com.jp', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 5, '2012-08-23 01:03:24.84941', '2012-08-23 01:01:58.312895', '127.0.0.1', '127.0.0.1', NULL, '2012-08-23 01:03:24.850083');
            "
+           execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shop_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (9, '000011', 'KOWA監査人', NULL, 1, 18, 2, '2012-10-01 00:00:00', '2012-10-01 00:00:00', 0, NULL, 'kowa@com.jp', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 5, '2012-08-23 01:03:24.84941', '2012-08-23 01:01:58.312895', '127.0.0.1', '127.0.0.1', NULL, '2012-08-23 01:03:24.850083');
+           "
            execute "select setval('users_id_seq',(select max(id) from users));"
-
+           
            execute "TRUNCATE TABLE m_codes;"
            
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (1, 'user_class', '0', '社員', '社員', '2012-10-01', '2012-10-01');"
@@ -64,6 +66,16 @@ class AddrecordUsers < ActiveRecord::Migration
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (38, 'm_etc_group', '2', 'スロット', 'スロット', '2012-10-01', '2012-10-01');"
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (39, 'm_etc_group', '3', '充電器', '充電器', '2012-10-01', '2012-10-01');"
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (40, 'm_etc_group', '4', '予備', '予備', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (41, 'tani', '0', '円', '円', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (42, 'tani', '1', '本', '本', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (43, 'tani', '2', '枚', '枚', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (44, 'tani', '3', '個', '個', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (45, 'tani', '4', '件', '件', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (46, 'tani', '5', '台', '台', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (47, 'tani', '6', 'Ｌ', 'Ｌ', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (48, 'kansa_flg', '0', '監査', '監査', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (49, 'kansa_flg', '1', '実績', '実績', '2012-10-01', '2012-10-01');"
+
            execute "select setval('m_codes_id_seq',(select max(id) from m_codes));"
            
            execute "TRUNCATE TABLE m_shops;"
