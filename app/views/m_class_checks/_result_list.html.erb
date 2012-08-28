@@ -1,0 +1,35 @@
+<table id='rounded-corner'>
+  <tr>
+    <th>分類コード</th>
+    <th>分類名</th>
+    <th>編集</th>
+    <th>削除</th>
+  </tr>
+
+<% @m_class_checks.each do |m_class_check| %>
+  <% if m_class_check.deleted_flg == 0 %>
+  	<% del_flg = "del_n" %>
+  <% else %>
+  	<% del_flg = "del_y" %>
+  <% end %>
+
+  <tr>
+    <td class="<%= "#{del_flg}" %>"><%= m_class_check.class_code %></td>
+    <td class="<%= "#{del_flg}" %>"><%= m_class_check.item %></td>
+    <td class="icon">
+    	<%- if m_class_check.deleted_flg == 0 -%>
+    	<%= link_to image_tag('icon/24_edit.png'), {:action=>"edit",:id=>m_class_check.id,:input_check=>@check_del_flg} %>
+    	<%- end -%>
+    </td>
+    
+    <td class="icon">
+    <%- if m_class_check.deleted_flg == 0 -%>
+    <%= link_to image_tag('icon/24_delete.png'), {:action=>"destroy",:id=>m_class_check.id,:input_check=>@check_del_flg}, :confirm => '削除します。よろしいですか？', :method => :delete %>
+    <%- else -%>
+    <%= link_to image_tag('icon/refresh.png'), {:action=>"destroy",:id=>m_class_check.id,:input_check=>@check_del_flg}, :confirm => '削除の取消をします。よろしいですか？', :method => :delete %>
+    <%- end -%>
+    </td>
+    
+  </tr>
+<% end %>
+</table>

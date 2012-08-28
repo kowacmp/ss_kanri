@@ -1,5 +1,7 @@
 SsKanri::Application.routes.draw do
 
+  resources :m_fix_items
+
   resources :establishes
 
   get "d_tank_decrease_reports/index"

@@ -2,7 +2,19 @@ class MItemAccountsController < ApplicationController
   # GET /m_item_accounts
   # GET /m_item_accounts.json
   def index
-    @m_item_accounts = MItemAccount.all
+    #@m_item_accounts = MItemAccount.all
+    
+    if params[:input_check] == nil
+        @check_del_flg = 0
+        @m_item_accounts = MItemAccount.find(:all,:conditions=>"deleted_flg = 0",:order=>"item_account_code")
+    else
+        @check_del_flg = params[:input_check].to_i
+        if @check_del_flg == 0
+          @m_item_accounts = MItemAccount.find(:all,:conditions=>"deleted_flg = 0",:order=>"item_account_code")
+        else
+          @m_item_accounts = MItemAccount.find(:all,:order=>"item_account_code")
+        end
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,6 +26,8 @@ class MItemAccountsController < ApplicationController
   # GET /m_item_accounts/1.json
   def show
     @m_item_account = MItemAccount.find(params[:id])
+
+    @check_del_flg = params[:input_check].to_i
 
     respond_to do |format|
       format.html # show.html.erb
@@ -35,6 +49,8 @@ class MItemAccountsController < ApplicationController
   # GET /m_item_accounts/1/edit
   def edit
     @m_item_account = MItemAccount.find(params[:id])
+    
+    @check_del_flg = params[:input_check].to_i
   end
 
   # POST /m_item_accounts
@@ -44,7 +60,8 @@ class MItemAccountsController < ApplicationController
 
     respond_to do |format|
       if @m_item_account.save
-        format.html { redirect_to @m_item_account, notice: 'M item account was successfully created.' }
+        #format.html { redirect_to @m_item_account, notice: 'M item account was successfully created.' }
+        format.html { redirect_to @m_item_account }
         format.json { render json: @m_item_account, status: :created, location: @m_item_account }
       else
         format.html { render action: "new" }
@@ -60,7 +77,9 @@ class MItemAccountsController < ApplicationController
 
     respond_to do |format|
       if @m_item_account.update_attributes(params[:m_item_account])
-        format.html { redirect_to @m_item_account, notice: 'M item account was successfully updated.' }
+        input_check = params[:input][:check].to_i
+        format.html { redirect_to :controller => "m_item_accounts", :action => "show",:id=>@m_item_account.id,:input_check => input_check }
+        #format.html { redirect_to @m_item_account, notice: 'M item account was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
@@ -73,11 +92,31 @@ class MItemAccountsController < ApplicationController
   # DELETE /m_item_accounts/1.json
   def destroy
     @m_item_account = MItemAccount.find(params[:id])
-    @m_item_account.destroy
+    #@m_item_account.destroy
+    
+    if @m_item_account.deleted_flg == 1
+      @m_item_account.update_attributes(:deleted_flg => 0)
+    else
+      @m_item_account.update_attributes(:deleted_flg => 1, :deleted_at => Time.current)
+    end
 
     respond_to do |format|
-      format.html { redirect_to m_item_accounts_url }
+      input_check = params[:input_check].to_i
+      format.html { redirect_to :controller => "m_item_accounts", :action => "index", :input_check => input_check }
+      #format.html { redirect_to m_item_accounts_url }
       format.json { head :ok }
     end
   end
+  
+  
+  def search
+    if params[:check][:deleted_flg] == "true"
+      @check_del_flg = 1
+      @m_item_accounts = MItemAccount.find(:all,:order=>"item_account_code")
+    else
+      @check_del_flg = 0
+      @m_item_accounts = MItemAccount.find(:all,:conditions=>"deleted_flg = 0",:order=>"item_account_code")
+    end
+  end
+  
 end

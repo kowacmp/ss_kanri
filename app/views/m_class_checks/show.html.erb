@@ -1,25 +1,20 @@
-<p id="notice"><%= notice %></p>
+<!--<p id="notice"><%#= notice %></p>-->
 
-<p>
-  <b>Class code:</b>
-  <%= @m_class_check.class_code %>
-</p>
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>分類コード</th>
+  	  <td><%= @m_class_check.class_code %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>分類名</th>
+  	  <td><%= @m_class_check.item %></td>  	  
+  	</tr>
+  </table>
 
-<p>
-  <b>Item:</b>
-  <%= @m_class_check.item %>
-</p>
-
-<p>
-  <b>Deleted flg:</b>
-  <%= @m_class_check.deleted_flg %>
-</p>
-
-<p>
-  <b>Deleted at:</b>
-  <%= @m_class_check.deleted_at %>
-</p>
+<%#= link_to 'Edit', edit_m_class_check_path(@m_class_check) %> 
+<%#= link_to 'Back', m_class_checks_path %>
+<%= link_to '編集', {:action=>"edit",:id=>@m_class_check.id,:input_check=>@check_del_flg}, :class => 'edit_icon' %> |
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>
 
 
-<%= link_to 'Edit', edit_m_class_check_path(@m_class_check) %> |
-<%= link_to 'Back', m_class_checks_path %>
+

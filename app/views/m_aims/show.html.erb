@@ -1,20 +1,25 @@
-<p id="notice"><%= notice %></p>
+<!--<p id="notice"><%#= notice %></p>-->
 
-<p>
-  <b>Aim code:</b>
-  <%= @m_aim.aim_code %>
-</p>
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>目標値コード</th>
+  	  <td><%= @m_aim.aim_code %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>目標値名</th>
+  	  <td><%= @m_aim.aim_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>店舗種別</th>
+  	  <td><%= @m_aim.shop_kbn_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>入力区分</th>
+  	  <td><%= @m_aim.input_kbn_name %></td>  	  
+  	</tr>
+  </table>
 
-<p>
-  <b>Aim name:</b>
-  <%= @m_aim.aim_name %>
-</p>
-
-<p>
-  <b>Shop kbn:</b>
-  <%= @m_aim.shop_kbn %>
-</p>
-
-
-<%= link_to 'Edit', edit_m_aim_path(@m_aim) %> |
-<%= link_to 'Back', m_aims_path %>
+<%#= link_to 'Edit', edit_m_aim_path(@m_aim) %> 
+<%#= link_to 'Back', m_aims_path %>
+<%= link_to '編集', {:action=>"edit",:id=>@m_aim.id,:input_check=>@check_del_flg}, :class => 'edit_icon' %> |
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>

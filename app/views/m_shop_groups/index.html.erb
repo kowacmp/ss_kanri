@@ -1,29 +1,17 @@
-<h1>Listing m_shop_groups</h1>
+<h1>所属会社マスタメンテ</h1>
 
-<table>
-  <tr>
-    <th>Group cd</th>
-    <th>Group name</th>
-    <th>Deleted flg</th>
-    <th>Deleted at</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @m_shop_groups.each do |m_shop_group| %>
-  <tr>
-    <td><%= m_shop_group.group_cd %></td>
-    <td><%= m_shop_group.group_name %></td>
-    <td><%= m_shop_group.deleted_flg %></td>
-    <td><%= m_shop_group.deleted_at %></td>
-    <td><%= link_to 'Show', m_shop_group %></td>
-    <td><%= link_to 'Edit', edit_m_shop_group_path(m_shop_group) %></td>
-    <td><%= link_to 'Destroy', m_shop_group, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
+<%= form_tag({:action => 'search' }, { :remote => true }) do %>
+  <% if @check_del_flg == 0%>
+  	<%= check_box(:check,:deleted_flg,{},true,false) %>
+  <% else %>
+  	<%= check_box(:check,:deleted_flg,{:checked => true},true,false) %>
+  <% end %>
+  
+  削除項目も表示する。
+  <%= submit_tag '表示' %>
 <% end %>
-</table>
 
+<%= link_to '新規登録', new_m_shop_group_path, :class => 'add_icon' %>
 <br />
+<div id="result"><%= render 'result_list' %></div>
 
-<%= link_to 'New M shop group', new_m_shop_group_path %>

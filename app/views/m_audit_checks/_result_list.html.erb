@@ -1,0 +1,37 @@
+<table id='rounded-corner'>
+  <tr>
+    <th>チェックコード</th>
+    <th>分類</th>
+    <th>内容</th>
+    <th>編集</th>
+    <th>削除</th>
+  </tr>
+
+<% @m_audit_checks.each do |m_audit_check| %>
+  <% if m_audit_check.deleted_flg == 0 %>
+  	<% del_flg = "del_n" %>
+  <% else %>
+  	<% del_flg = "del_y" %>
+  <% end %>
+
+  <tr>
+    <td class="<%= "#{del_flg}" %>"><%= m_audit_check.check_code %></td>
+    <td class="<%= "#{del_flg}" %>"><%= m_audit_check.item %></td>
+    <td class="<%= "#{del_flg}" %>"><%= m_audit_check.content %></td>
+    <td class="icon">
+    	<%- if m_audit_check.deleted_flg == 0 -%>
+    	<%= link_to image_tag('icon/24_edit.png'), {:action=>"edit",:id=>m_audit_check.id,:input_check=>@check_del_flg} %>
+    	<%- end -%>
+    </td>
+    
+    <td class="icon">
+    <%- if m_audit_check.deleted_flg == 0 -%>
+    <%= link_to image_tag('icon/24_delete.png'), {:action=>"destroy",:id=>m_audit_check.id,:input_check=>@check_del_flg}, :confirm => '削除します。よろしいですか？', :method => :delete %>
+    <%- else -%>
+    <%= link_to image_tag('icon/refresh.png'), {:action=>"destroy",:id=>m_audit_check.id,:input_check=>@check_del_flg}, :confirm => '削除の取消をします。よろしいですか？', :method => :delete %>
+    <%- end -%>
+    </td>
+    
+  </tr>
+<% end %>
+</table>
