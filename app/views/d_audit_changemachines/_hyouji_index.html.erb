@@ -4,7 +4,7 @@
  * 
  */
 
-	//整数数字に強制変換する(変換負荷の場合は0)
+	//整数数字に強制変換する(変換不可の場合は0)
 	function toNum(str) {
 		var num = new String( str ).replace( /,/g, "" );
 		if (isNaN(num)) {
@@ -34,7 +34,42 @@
 
 <%= f.hidden_field :audit_date %>
 
+<!-- コメント入力用 BEGIN -->
+<div id="dialog_comment" style="display: none;">
+	<!-- JQuery.dialog をした部分はPOSTで送信されないため divの外のhiddenで送信する -->
+	<textarea id="textarea_comment" cols="30" rows="10" ></textarea>
+</div>
+<%= f.hidden_field :comment %>
+<script>
+	$(function() {
+		$("#textarea_comment").val($("#d_audit_changemachine_comment").val());
+	});
+
+	function input_comment() {
+		$('#dialog_comment').dialog({
+			autoOpen:true,
+			width:400,
+			modal:true,
+			title:'コメントを入力してください',
+			close: function(event) {
+				$("#d_audit_changemachine_comment").val($("#textarea_comment").val());
+			}
+		});
+	}
+</script>
+<!-- コメント入力用 END -->
+
 <table class='rounded-corner' >
+
+	<tr>
+		<th>釣銭機合計<br/>指定額</th>
+		<td colspan="2" align="right"><%=number_with_delimiter(@m_fix_money.total_change_money) unless @m_fix_money.nil?%></td>
+		<td colspan="5" style="border: none;">&nbsp;</td>
+		<td align="center">
+			<a href="javascript:input_comment();">コメント入力</a>
+		</td> 
+	</tr>
+
 	<tr>
 		<th>POS1</th>
 		<th>監査前有高</th>
@@ -50,14 +85,14 @@
 	<% for i in 1..7 %>
 	<tr>
 		<th>釣銭機№<%=i%></th>
-		<td><%=f.text_field 'pos1_before_money' + i.to_s , :size=>10, :style=>"text-align:right;" %></td>
-		<td><%=f.text_field 'pos1_after_money' + i.to_s  , :size=>10, :style=>"text-align:right;" %></td>
+		<td><%=f.text_field 'pos1_before_money' + i.to_s , :size=>10, :maxlength => 11, :style=>"text-align:right;" %></td>
+		<td><%=f.text_field 'pos1_after_money' + i.to_s  , :size=>10, :maxlength => 11, :style=>"text-align:right;" %></td>
 		<th>釣銭機№<%=i%></th>
-		<td><%=f.text_field 'pos2_before_money' + i.to_s , :size=>10, :style=>"text-align:right;"  %></td>
-		<td><%=f.text_field 'pos2_after_money' + i.to_s  , :size=>10, :style=>"text-align:right;"  %></td>
+		<td><%=f.text_field 'pos2_before_money' + i.to_s , :size=>10, :maxlength => 11, :style=>"text-align:right;"  %></td>
+		<td><%=f.text_field 'pos2_after_money' + i.to_s  , :size=>10, :maxlength => 11, :style=>"text-align:right;"  %></td>
 		<th>釣銭機№<%=i%></th>
-		<td><%=f.text_field 'pos3_before_money' + i.to_s , :size=>10, :style=>"text-align:right;"  %></td>
-		<td><%=f.text_field 'pos3_after_money' + i.to_s  , :size=>10, :style=>"text-align:right;"  %></td>
+		<td><%=f.text_field 'pos3_before_money' + i.to_s , :size=>10, :maxlength => 11, :style=>"text-align:right;"  %></td>
+		<td><%=f.text_field 'pos3_after_money' + i.to_s  , :size=>10, :maxlength => 11, :style=>"text-align:right;"  %></td>
 	</tr>
 	<% end %> <!-- for i in 1..7 -->
 
@@ -76,30 +111,30 @@
 	<tr>
 		<th>補充金額</th>
 		<td colspan="2">
-			<%=f.text_field 'pos1_supplement_money', :size=>10, :style=>"text-align:right;" %>			
+			<%=f.text_field 'pos1_supplement_money', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>			
 		</td>
 		<th>補充金額</th>
 		<td colspan="2">
-			<%=f.text_field 'pos2_supplement_money', :size=>10, :style=>"text-align:right;" %>	
+			<%=f.text_field 'pos2_supplement_money', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>	
 		</td>
 		<th>補充金額</th>
 		<td colspan="2">
-			<%=f.text_field 'pos3_supplement_money', :size=>10, :style=>"text-align:right;" %>	
+			<%=f.text_field 'pos3_supplement_money', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>	
 		</td>
 	</tr>
 		
 	<tr>
 		<th>回収金額</th>
 		<td colspan="2">
-			<%=f.text_field 'pos1_collectt_money', :size=>10, :style=>"text-align:right;" %>			
+			<%=f.text_field 'pos1_collectt_money', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>			
 		</td>
 		<th>回収金額</th>
 		<td colspan="2">
-			<%=f.text_field 'pos2_collectt_money', :size=>10, :style=>"text-align:right;" %>	
+			<%=f.text_field 'pos2_collectt_money', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>	
 		</td>
 		<th>回収金額</th>
 		<td colspan="2">
-			<%=f.text_field 'pos3_collectt_money', :size=>10, :style=>"text-align:right;" %>	
+			<%=f.text_field 'pos3_collectt_money', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>	
 		</td>
 	</tr>
 	
@@ -148,21 +183,267 @@
 		</td>
 	</tr>	
 	
+<!-- 本監査のみ BEGIN -->
+<%if session[:audit_class] == "1" then%>
+
+	<tr>
+		<td colspan="9" style="border: none">&nbsp;</td>
+	</tr>
+	
+	<tr>
+		<td colspan="5" valign="bottom" style="border: none; padding-bottom: 0px">[前日釣銭繰越額]</td>
+		<td colspan="4" valign="bottom" style="border: none; padding-bottom: 0px">[監査時金庫内有高]</td>
+	</tr>
+	
+	<tr>
+		<th colspan="2">金庫額</th>
+		<td colspan="2">
+			<%=f.text_field 'before_cashbox', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+		<td style="border: none">&nbsp;</td>
+		<th colspan="2">金庫額(a)</th>
+		<td colspan="2">
+			<%=f.text_field 'cashbox_money', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+	</tr>
+	
+	<tr>
+		<th colspan="2">釣銭機額</th>
+		<td colspan="2">
+			<%=f.text_field 'before_changemachine', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+		<td style="border: none">&nbsp;</td>
+		<td colspan="4" valign="bottom" style="border: none; padding-bottom: 0px">[監査時釣銭機内有高]</td>
+	</tr>
+
+	<tr>
+		<th colspan="2">合計(A)</th>
+		<td colspan="2" align="right"><span id="sum_left_a"></span></td>
+		<td style="border: none">&nbsp;</td>
+		<th colspan="2">POS1</th>
+		<td colspan="2">
+			<%=f.text_field 'changemachine_pos1', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan="5" valign="bottom" style="border: none; padding-bottom: 0px" >[釣銭持込額]</td>
+		<th colspan="2">POS2</th>
+		<td colspan="2">
+			<%=f.text_field 'changemachine_pos2', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+	</tr>
+	
+	<tr>
+		<th colspan="2">ASS(B)</th>
+		<td colspan="2">
+			<%=f.text_field 'ass', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+		<td style="border:none">&nbsp;</td>
+		<th colspan="2">POS3</th>
+		<td colspan="2">
+			<%=f.text_field 'changemachine_pos3', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan="5" valign="bottom" style="border: none; padding-bottom: 0px" >[監査時売上額]</td>
+		<th colspan="2">翌日出し(ASS遅用)</th>
+		<td colspan="2">
+			<%=f.text_field 'changemachine_after', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+	</tr>
+	
+	<tr>
+		<th colspan="2">POS1</th>
+		<td colspan="2">
+			<%=f.text_field 'sale_pos1', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+		<td style="border:none">&nbsp;</td>
+		<th colspan="2">合計(b)</th>
+		<td colspan="2"><span id="sum_right_b"></span></td>
+	</tr>
+	
+	<tr>
+		<th colspan="2">POS2</th>
+		<td colspan="2">
+			<%=f.text_field 'sale_pos2', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+		<td style="border: none"></td>
+		<td colspan="4" valign="bottom" style="border: none; padding-bottom: 0px" >[入金額]</td>
+	</tr>
+	
+	<tr>
+		<th colspan="2">POS3</th>
+		<td colspan="2">
+			<%=f.text_field 'sale_pos3', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+		<td style="border:none">&nbsp;</td>
+		<th colspan="2">売上入金額(c)</th>
+		<td colspan="2">
+			<%=f.text_field 'receive_money', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+	</tr>
+		
+	<tr>
+		<th colspan="2">WAIWAIMAX</th>
+		<td colspan="2">
+			<%=f.text_field 'sale_waiwai', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+		<td colspan="5" style="border:none">&nbsp;</td>
+	</tr>
+	
+	<tr>
+		<th colspan="2">入金額(雑収入)</th>
+		<td colspan="2">
+			<%=f.text_field 'sale_receive', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+		<td colspan="5" style="border:none">&nbsp;</td>
+	</tr>
+		
+	<tr>
+		<th colspan="2">出金額</th>
+		<td colspan="2">
+			<%=f.text_field 'sale_pay', :size=>10, :maxlength => 11, :style=>"text-align:right;" %>
+		</td>
+		<td style="border: none">&nbsp;</td>
+		<th colspan="2">実有高(a+b+c)</th>
+		<td colspan="2"><span id="sum_right_abc"></span></td>
+	</tr>
+		
+	<tr>
+		<th colspan="2">合計(C)</th>
+		<td colspan="2" align="right"><span id="sum_left_c"></span></td>
+		<td colspan="5" style="border: none">&nbsp;</td>
+	</tr>
+	
+	<tr>
+		<td colspan="9" style="border: none">&nbsp;</td>
+	</tr>
+	
+	<tr>
+		<th colspan="2">計算有高(A+B+C)</th>
+		<td colspan="2" align="right"><span id="sum_left_abc"></span></td>
+		<td style="border: none">&nbsp;</td>
+		<th colspan="2">監査過不足額</th>
+		<td colspan="2"><span id="sum_kabusoku"></span></td>
+	</tr>
+
+<%end%> <!--  if session[:audit_class] = "1" then -->
+<!-- 本監査のみ END -->
+
+	<tr>
+		<td colspan="6" style="border:none">
+
+		<table class='rounded-corner' >
+		<tr>
+			<th rowspan="2">立会人</th>
+			<td>
+				<%=render :partial => 'confirm_shop_id', :locals => {:c_shop_id => f.object[:confirm_shop_id], 
+					                                                 :c_user_id => f.object[:confirm_user_id]} %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="confirm_user_id_div">
+					<%=render :partial => 'confirm_user_id', :locals => {:c_shop_id => f.object[:confirm_shop_id], 
+					                                                     :c_user_id => f.object[:confirm_user_id]} %>
+				</div>
+			</td>
+		</tr>
+		</table>
+
+		</td>
+		<td colspan="3" style="border:none" align="right">
+			<%
+				url = "./d_audit_changemachines?audit_class=#{session[:audit_class]}&kansa[ymd]=#{f.object.audit_date}"
+			%>
+			<input type="button" value="キャンセル" 
+				onclick="this.value='キャンセル中です...';this.disabled=true;document.location='<%=url%>';" />
+			&nbsp;&nbsp;
+			<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...' %>			
+		</td>	
+	</tr>
+	
 </table>
+
 
 <script>
 
-	//金額入力欄更新後イベント(テキストボックスのIDにmoneyが含まれるもの)
-	$("input:text[id*=money]").blur(function() {
-		//カンマ編集及び、数値入力以外を禁止
-		this.value = toCurrency(this.value);
+	$(function() {
 		
-		//合計欄計算表示
-		upd_sum();
-	});
+		//上段部分のテキストボックスを定義
+		var input1 = [
+			"input:text[id*=pos1_before_money]",
+			"input:text[id*=pos1_after_money]",
+			"input:text[id*=pos2_before_money]",
+			"input:text[id*=pos2_after_money]",
+			"input:text[id*=pos3_before_money]",
+			"input:text[id*=pos3_after_money]",
+			"input:text[id$=_supplement_money]",
+			"input:text[id$=_collectt_money]"
+		];
+		
+		//下段部分のテキストボックスを定義
+		var input2 = [
+			"input:text[id$=before_cashbox]",
+			"input:text[id$=before_changemachine]",
+			"input:text[id$=ass]",
+			"input:text[id*=sale_pos]",
+			"input:text[id$=sale_waiwai]",
+			"input:text[id$=sale_receive]",
+			"input:text[id$=sale_pay]",
+			"input:text[id$=cashbox_money]",
+			"input:text[id$=changemachine_pos1]",
+			"input:text[id$=changemachine_pos2]",
+			"input:text[id$=changemachine_pos3]",
+			"input:text[id$=changemachine_after]",
+			"input:text[id$=receive_money]"
+		];
+		
+		//上段金額入力欄更新後イベント
+		$(input1.join(",")).blur(function() {
+			//カンマ編集及び、数値入力以外を禁止
+			this.value = toCurrency(this.value);
+		
+			//合計欄計算表示
+			upd_sum1();
+		});
 
-	//合計欄計算ロジック
-	function upd_sum() {
+		//下段金額入力欄更新後イベント
+		$(input2.join(",")).blur(function() {
+			//カンマ編集及び、数値入力以外を禁止
+			this.value = toCurrency(this.value);
+		
+			//合計欄計算表示
+			upd_sum2();
+		});
+
+
+		//上段読込時にテキストボックスのカンマ編集
+		$(input1.join(",")).each(function(i, obj) {
+			//カンマ編集及び、数値入力以外を禁止
+			obj.value = toCurrency(obj.value);	
+		});
+		
+		//下段読込時にテキストボックスのカンマ編集
+		$(input2.join(",")).each(function(i, obj) {
+			//カンマ編集及び、数値入力以外を禁止
+			obj.value = toCurrency(obj.value);	
+		});
+		
+		//上段読込時に合計欄更新
+		upd_sum1();
+		
+		//下段読込時に合計欄更新
+		if ($(input2.join(",")).length > 0) {
+			upd_sum2();
+		}
+		
+	});
+	
+	//上段合計欄計算ロジック
+	function upd_sum1() {
 		
 		for (var pos = 1; pos < 4; pos++) {
 
@@ -216,46 +497,63 @@
 		}
 		$("#pos_all_kabusoku").html(toCurrency(sum_value));
 	
+		return true;
 	}
 		
-	//読込時にテキストボックスのカンマ編集
-	$("input:text[id*=money]").each(function(i, obj) {
-		//カンマ編集及び、数値入力以外を禁止
-		obj.value = toCurrency(obj.value);	
-	});
+	//下段合計欄計算ロジック
+	function upd_sum2() {
+		 
+		// 合計(A)
+		var sum_value = 0;
+		sum_value += toNum($("input:text[id$=before_cashbox]").val());
+		sum_value += toNum($("input:text[id$=before_changemachine]").val());
+		$("#sum_left_a").html(toCurrency(sum_value));
 		
-	//読込時に合計欄更新
-	upd_sum();
+		// 合計(C)
+		var sum_value = 0;
+		sum_value += toNum($("input:text[id$=sale_pos1]").val());
+		sum_value += toNum($("input:text[id$=sale_pos2]").val());
+		sum_value += toNum($("input:text[id$=sale_pos3]").val());
+		sum_value += toNum($("input:text[id$=sale_waiwai]").val());
+		sum_value += toNum($("input:text[id$=sale_receive]").val());
+		sum_value -= toNum($("input:text[id$=sale_pay]").val());		
+		$("#sum_left_c").html(toCurrency(sum_value));
+		
+		// 合計(A+B+C)
+		var sum_value = 0;
+		sum_value += toNum($("#sum_left_a").html());
+		sum_value += toNum($("input:text[id$=ass]").val());
+		sum_value += toNum($("#sum_left_c").html());
+		$("#sum_left_abc").html(toCurrency(sum_value));
+		
+		// 合計(b)
+		var sum_value = 0;
+		sum_value += toNum($("input:text[id$=changemachine_pos1]").val());
+		sum_value += toNum($("input:text[id$=changemachine_pos2]").val());
+		sum_value += toNum($("input:text[id$=changemachine_pos3]").val());
+		sum_value += toNum($("input:text[id$=changemachine_after]").val());
+		$("#sum_right_b").html(toCurrency(sum_value));
+		
+		// 合計(a+b+c)
+		var sum_value = 0;
+		sum_value += toNum($("input:text[id$=cashbox_money]").val());
+		sum_value += toNum($("#sum_right_b").html());
+		sum_value += toNum($("input:text[id$=receive_money]").val());
+		$("#sum_right_abc").html(toCurrency(sum_value));
+		
+		// 監査過不足額
+		var sum_value = 0;
+		sum_value += toNum($("#sum_right_abc").html());
+		sum_value -= toNum($("#sum_left_abc").html());
+		$("#sum_kabusoku").html(toCurrency(sum_value));
+		
+		return true;
+	}
 	
 </script>
 
+
 <br/>
-
-	<!-- 立会人 -->
-	<%
-		unless  @d_audit_changemachine[0].nil?
-  			c_shop_id = @d_audit_changemachine[0].confirm_shop_id
-  			c_user_id = @d_audit_changemachine[0].confirm_user_id
-		end 
-	%>
-<table class='rounded-corner' >
-<tr>
-	<th rowspan="2">立会人</th>
-	<td>
-		<%=select :confirm, :shop_id, MShop.find(:all, :conditions => "deleted_flg=0", :order => "shop_cd").collect{|i| [i.shop_name ,i.id]},
-			:selected => c_shop_id, :include_blank => "選択してください" %>
-	</td>
-</tr>
-<tr>
-	<td>
-		<div id="confirm_user_id_div">
-			<%=render :partial => 'confirm_user_id', :locals => {:c_shop_id => c_shop_id, :c_user_id => c_user_id} %>
-		</div>
-	</td>
-</tr>
-</table>
-
-	<%= submit_tag '更新', :onclick => "return update_chk()" ,:disable_with => '更新中です...' %>
 
 <!-- 参照ダイアログ -->
 <div id="dialog_div" style="display: none;" >
@@ -264,17 +562,6 @@
 
 <script language="JavaScript">
 
-  	$("#confirm_shop_id").change(function() {
-  		  		
-  		$.ajax({
-  			type: "GET",
-  			url:  "d_audit_etcs/confirm_shop_id_select?shop_id=" + this.value,
- 			async: false,
- 			timeout: 5000
-  		});
-  		
-  	});
-  	  	
   	// 更新前チェック
   	function update_chk() {
   		var sel_shop = $("#confirm_shop_id")[0];
