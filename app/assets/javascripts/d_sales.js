@@ -168,6 +168,8 @@ $(function () {
     	$("#sale_am_out2").text(format_kanma(total));
     	
     	cash_aridaka_calc();//現金有高を計算
+        tucyo_money_calc(); //通帳預金額
+
     };
     
     //翌日出後
@@ -285,7 +287,7 @@ $(function () {
     	
     	num[0]=Number(format_kanma($("#syo_total").text(), 2));
     	num[1]=Number(format_kanma($("#zenjitu_cashbox").text(), 2));
-    	num[2]=Number(format_kanma($("#zenjitu_change").text(), 2));
+    	num[2]=Number(format_kanma($("#zenjitu_changebox").text(), 2));
     	num[3]=Number(format_kanma($("#sale_ass").text(), 2));
 
 		var i=0;
@@ -304,21 +306,22 @@ $(function () {
     
     //通帳預金額
     function tucyo_money_calc() {
-    	//前日出＋当日出ーASS
-    	var num = new Array(3);
+    	//前日出＋当日出ーASS＋翌日出（前）
+    	var num = new Array(4);
     	var total=0;
 
     	num[0]=Number(format_kanma($("#zenjitu_sale_pm_out").text(), 2));
     	num[1]=Number(format_kanma($("#sale_today_out2").text(), 2));
     	num[2]=Number(format_kanma($("#sale_ass").text(), 2));
+		num[3]=Number(format_kanma($("#sale_am_out2").text(), 2));
 
 		var i=0;
-      	while(i<3){
+      	while(i<4){
         	if (isNaN(num[i])) {num[i] = 0};
         	i=i+1;
      	};    	
 
-		total = num[0] + num[1] - num[2];
+		total = num[0] + num[1] - num[2] + num[3];
 		
 		$("#tucyo_money").text(format_kanma( total ));  	
     	
@@ -326,7 +329,7 @@ $(function () {
     
     //釣銭有高2
     function changebox_aridaka2_calc() {
-    	//前日出＋当日出＋釣銭合計ー小計ーASSー当日出
+    	//前日出＋当日出＋釣銭合計ー小計ーASSー前日出
     	var num = new Array(6);
     	var total=0;
 
@@ -335,7 +338,7 @@ $(function () {
     	num[2]=Number(format_kanma($("#sale_change_total").text(), 2));
     	num[3]=Number(format_kanma($("#syo_total").text(), 2));
     	num[4]=Number(format_kanma($("#sale_ass").text(), 2));
-    	num[5]=Number(format_kanma($("#sale_today_out2").text(), 2));
+    	num[5]=Number(format_kanma($("#zenjitu_sale_pm_out").text(), 2));
 
 		var i=0;
       	while(i<6){

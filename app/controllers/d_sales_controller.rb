@@ -118,7 +118,7 @@ p params
     @syo_total=@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i + @d_sale.sale_purika.to_i + @d_sale.recive_money.to_i - @d_sale.pay_money.to_i 
     @total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + @zenjitu_d_sale.sale_changebox.to_i + @d_sale.sale_ass.to_i 
     @sale_change_total = @d_sale.sale_change1.to_i + @d_sale.sale_change2.to_i + @d_sale.sale_change3.to_i 
-    @changebox_aridaka = @zenjitu_d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i + @sale_change_total - @syo_total - @d_sale.sale_ass.to_i - @d_sale.sale_today_out.to_i 
+    @changebox_aridaka = @zenjitu_d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i + @sale_change_total - @syo_total - @d_sale.sale_ass.to_i - @zenjitu_d_sale.sale_pm_out.to_i 
     @cash_aridaka = @m_fix_money.total_cash_box.to_i + @changebox_aridaka.to_i + @d_sale.sale_today_out.to_i + @d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i 
 
     #固定金庫(マスタより)
@@ -229,7 +229,21 @@ p params
     @head[:input_day] = key_data.sale_date.to_s[0,4] + "/" + key_data.sale_date.to_s[4,2] + "/" + key_data.sale_date.to_s[6,2]
     @head[:input_shop_kbn] = params[:input_shop_kbn]
 
-    #前月の現金有高、過不足を集計
+    #前月末現金有高、過不足取得
+    zengetu = key_data.sale_date.to_s[4,2]
+    if zengetu == 1
+      zengetu = (key_data.sale_date.to_s[0,4].to_i - 1).to_s + "12"
+    else
+      zengetu = (key_data.sale_date.to_s[0,4].to_i).to_s + (zengetu.to_i - 1).to_s
+    end
+    
+    zengetumatu = (Date.new(zengetu[0,4].to_i, zengetu[4,2].to_i, -1)).strftime("%Y%m%d")
+    
+    @d_sale_zengetumatu = DSale.find(:first, :conditions=>["m_shop_id = ? and sale_date = ?", @head[:m_shop_id], zengetumatu]) 
+    
+    unless @d_sale_zengetumatu 
+        @d_sale_zengetumatu = DSale.new
+    end
     
     respond_to do |format|
       format.html 

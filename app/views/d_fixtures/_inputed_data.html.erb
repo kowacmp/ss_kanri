@@ -16,7 +16,13 @@
 		  <td ><%= text_field_tag("now_num_#{i+1}", fixture.now_num ,
 		  		    :style => "text-align:right",:size => 2) %></td>
 		  <td >
-		  	<%= text_field_tag("buy_day_#{i+1}", fixture.buy_day[0,4] + '/' + fixture.buy_day[4,2] + '/' + fixture.buy_day[6,2], :size => 10 ,:class => 'datepicker') if fixture.approve_flg == 1 %>
+		  	<% if fixture.approve_flg == 1 %>
+		  	<% unless fixture.buy_day == nil or fixture.buy_day == "" %>
+		  	<%= text_field_tag("buy_day_#{i+1}",(fixture.buy_day[0,4] + '/' + fixture.buy_day[4,2] + '/' + fixture.buy_day[6,2]), :size => 10 ,:class => 'datepicker')  %>
+            <% else %>
+		  	<%= text_field_tag("buy_day_#{i+1}","", :size => 10 ,:class => 'datepicker')  %>
+		  	<% end %>
+		  	<% end %>
       	  </td>
 		  <td><%= if fixture.approve_flg == 1 then "承認" elsif fixture.approve_flg == 2 then "却下" else "未承認" end %></td><!-- 承認-->
 		  <td>

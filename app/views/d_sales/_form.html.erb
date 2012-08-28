@@ -67,7 +67,7 @@
       <div class="title_alias">釣銭合計</div>
       <div class="info_alias"><label id="sale_change_total"><%= num_fmt(@sale_change_total) %></label></div>
       <div class="title_alias">通帳預金額</div>
-      <div class="info_alias"><label id="tucyo_money"><%= num_fmt(@zenjitu_d_sale.sale_today_out.to_i + @d_sale.sale_today_out.to_i -  @d_sale.sale_ass.to_i ) %></label></div>
+      <div class="info_alias"><label id="tucyo_money"><%= num_fmt(@zenjitu_d_sale.sale_today_out.to_i + @d_sale.sale_today_out.to_i -  @d_sale.sale_ass.to_i + @d_sale.sale_am_out.to_i) %></label></div>
 
       <br /><br />
       
