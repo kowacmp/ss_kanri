@@ -2,6 +2,8 @@
 class AddrecordUsers < ActiveRecord::Migration
   def up
 
+           execute "TRUNCATE TABLE users;"
+           
           execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shop_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (3, '000006', 'KOWA社員SS', NULL, 2, 16, 0, NULL, NULL, 0, NULL, 'kowa11@com.jp', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
            "
            execute "INSERT INTO users (id, account, user_name, user_name_kana, m_shop_id, m_authority_id, user_class, nyusya_date, birthday, deleted_flg, deleted_at, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) VALUES (8, '000010', 'KOWAバイト', NULL, 2, 17, 0, NULL, NULL, 0, NULL, 'kowa5@', '$2a$10$bd976DPdnruu.AxdVcfYjunP7SvbZ/3qyqt.LqflOHAEFwo8U0woq', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -20,6 +22,8 @@ class AddrecordUsers < ActiveRecord::Migration
            "
            execute "select setval('users_id_seq',(select max(id) from users));"
 
+           execute "TRUNCATE TABLE m_codes;"
+           
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (1, 'user_class', '0', '社員', '社員', '2012-10-01', '2012-10-01');"
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (2, 'user_class', '1', '社員以外', '社員以外', '2012-10-01', '2012-10-01');"
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (3, 'user_class', '2', '監査人', '監査人', '2012-10-01', '2012-10-01');"
@@ -52,7 +56,17 @@ class AddrecordUsers < ActiveRecord::Migration
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (30, 'oiletc_group', '2', '夢ポイント', '夢ポイント', '2012-10-01', '2012-10-01');"
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (31, 'fix_item_class', '0', '金種別', '金種別', '2012-10-01', '2012-10-01');"
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (32, 'fix_item_class', '1', '一括', '一括', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (33, 'pos_class', '1', 'POS1', 'POS1', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (34, 'pos_class', '2', 'POS2', 'POS2', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (35, 'pos_class', '3', 'POS3', 'POS3', '2012-10-01', '2012-10-01');"           
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (36, 'm_etc_group', '0', '洗用品', '洗用品', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (37, 'm_etc_group', '1', 'ヘルス', 'ヘルス', '2012-10-01', '2012-10-01');"           
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (38, 'm_etc_group', '2', 'スロット', 'スロット', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (39, 'm_etc_group', '3', '充電器', '充電器', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (40, 'm_etc_group', '4', '予備', '予備', '2012-10-01', '2012-10-01');"
            execute "select setval('m_codes_id_seq',(select max(id) from m_codes));"
+           
+           execute "TRUNCATE TABLE m_shops;"
            
            execute "INSERT INTO m_shops(
             id, shop_cd, shop_name, shop_kana, shop_ryaku, shop_zip_cd, shop_adress,shop_tel, shop_fax, shop_mail_adress, shop_kbn, m_shop_group_id, m_oil_id1, tank1_all, m_oil_id2, tank2_all, m_oil_id3, tank3_all, 
@@ -293,7 +307,8 @@ class AddrecordUsers < ActiveRecord::Migration
           execute "
           select setval('m_shops_id_seq',(select max(id) from m_shops));
           "
-
+           execute "TRUNCATE TABLE m_shop_groups;"
+           
            execute "INSERT INTO m_shop_groups (id, group_cd, group_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (1, 1, '重野石油', 0, NULL, '2012-10-01', '2012-10-01');
            "
            execute "INSERT INTO m_shop_groups (id, group_cd, group_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (2, 2, '小郡スタンダード石油', 0, NULL, '2012-10-01', '2012-10-01');
@@ -310,6 +325,8 @@ class AddrecordUsers < ActiveRecord::Migration
           select setval('m_shop_groups_id_seq',(select max(id) from m_shop_groups));
           
           "
+           execute "TRUNCATE TABLE m_oils;"
+           
            execute "INSERT INTO m_oils (id, oil_cd, oil_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (1, 1, 'ハイオク', 0, NULL, '2012-10-01', '2012-10-01');
            "
            execute "INSERT INTO m_oils (id, oil_cd, oil_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (2, 2, 'レギュラー', 0, NULL, '2012-10-01', '2012-10-01');
@@ -322,6 +339,8 @@ class AddrecordUsers < ActiveRecord::Migration
           select setval('m_oils_id_seq',(select max(id) from m_oils));
           "
           
+           execute "TRUNCATE TABLE menus;"
+           
            execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (80, 8, 1, '会社情報マスタ', NULL, NULL, NULL, NULL, 0);
            "
            execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (61, 7, 1, '油外マスタメンテ', 'm_oiletcs', NULL, NULL, NULL, 3);
@@ -462,6 +481,8 @@ class AddrecordUsers < ActiveRecord::Migration
           select setval('menus_id_seq',(select max(id) from menus));
           "
 
+           execute "TRUNCATE TABLE authority_menus;"
+           
            execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (1,1,3,'2012-10-01','2012-10-01');
            "
            execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (2,1,20,'2012-10-01','2012-10-01');
@@ -1156,6 +1177,8 @@ class AddrecordUsers < ActiveRecord::Migration
           select setval('authority_menus_id_seq',(select max(id) from authority_menus));
           "
 
+           execute "TRUNCATE TABLE m_authorities;"
+           
            execute "INSERT INTO m_authorities (id, authority_cd, authority_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (2, 1, '社長', 0, NULL, '2012-10-01', '2012-10-01');
            "
            execute "INSERT INTO m_authorities (id, authority_cd, authority_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (3, 2, '専務', 0, NULL, '2012-10-01', '2012-10-01');
