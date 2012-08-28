@@ -272,7 +272,7 @@ input.text{
   text-align: left;
 }
 
-input[ type=checkbox ] {
+div#result input[ type=checkbox ] {
   width: 40px; height: 40px;
   /*-moz-transform-origin: right bottom;*/
   -moz-transform: scale( 1.5 , 1.5 );

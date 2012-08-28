@@ -287,7 +287,7 @@ $(function () {
     	
     	num[0]=Number(format_kanma($("#syo_total").text(), 2));
     	num[1]=Number(format_kanma($("#zenjitu_cashbox").text(), 2));
-    	num[2]=Number(format_kanma($("#zenjitu_change").text(), 2));
+    	num[2]=Number(format_kanma($("#zenjitu_changebox").text(), 2));
     	num[3]=Number(format_kanma($("#sale_ass").text(), 2));
 
 		var i=0;
