@@ -28,6 +28,7 @@ class DFixturesController < ApplicationController
         end          
           #新規作成 ここから
           fixture.application_date = input_ymd_s
+          fixture.m_shop_id = current_user.m_shop_id
           fixture.buy_shop   = params["buy_shop_#{i+1}"]
           fixture.buy_item   = params["buy_item_#{i+1}"]
           fixture.buy_num    = params["buy_num_#{i+1}"]
