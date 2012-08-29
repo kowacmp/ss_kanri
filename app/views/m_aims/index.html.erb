@@ -1,27 +1,16 @@
-<h1>Listing m_aims</h1>
+<h1>目標値マスタメンテ</h1>
 
-<table>
-  <tr>
-    <th>Aim code</th>
-    <th>Aim name</th>
-    <th>Shop kbn</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @m_aims.each do |m_aim| %>
-  <tr>
-    <td><%= m_aim.aim_code %></td>
-    <td><%= m_aim.aim_name %></td>
-    <td><%= m_aim.shop_kbn %></td>
-    <td><%= link_to 'Show', m_aim %></td>
-    <td><%= link_to 'Edit', edit_m_aim_path(m_aim) %></td>
-    <td><%= link_to 'Destroy', m_aim, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
+<%= form_tag({:action => 'search' }, { :remote => true }) do %>
+  <% if @check_del_flg == 0%>
+  	<%= check_box(:check,:deleted_flg,{},true,false) %>
+  <% else %>
+  	<%= check_box(:check,:deleted_flg,{:checked => true},true,false) %>
+  <% end %>
+  
+  削除項目も表示する。
+  <%= submit_tag '表示' %>
 <% end %>
-</table>
 
+<%= link_to '新規登録', new_m_aim_path, :class => 'add_icon' %>
 <br />
-
-<%= link_to 'New M aim', new_m_aim_path %>
+<div id="result"><%= render 'result_list' %></div>

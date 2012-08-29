@@ -22,7 +22,7 @@ class DResultsController < ApplicationController
                                                       current_user.m_shop_id, @result_date])
     
     #出荷数量取得
-    oil_sql = "select m.id, m.oil_name, d.pos1_data, d.pos2_data, d.pos3_data"
+    oil_sql = "select m.id, m.oil_name, d.pos1_data, d.pos2_data, d.pos3_data, d.pos1_data + d.pos2_data + d.pos3_data as pos_total"
     oil_sql << " from m_oils m left join d_result_oils d on (m.id = d.m_oil_id"
     if @d_result.blank?
       oil_sql << " and d.d_result_id is null)"
@@ -33,7 +33,7 @@ class DResultsController < ApplicationController
     oil_sql << " where m.deleted_flg = 0 order by m.oil_cd"
     @m_oil_totals = MOil.find_by_sql(oil_sql)
     @m_oil_totals.each do |m_oil| 
-      session[:m_oil_totals][m_oil.id][:total] = m_oil.pos1_data.to_f + m_oil.pos2_data.to_f + m_oil.pos3_data.to_f
+      session[:m_oil_totals][m_oil.id][:total] = m_oil.pos_total
     end
     
     #油外販売取得
@@ -246,6 +246,24 @@ class DResultsController < ApplicationController
       d_tank_compute_report.save    
     end
      
+    #実績表データ
+    if @m_shop.shop_kbn == 0
+      #セルフ実績表データ
+      d_result_self_report = DResultSelfReport.find(:first, :conditions => ["d_result_id = ?", d_result.id])
+      
+      if d_result_self_report.blank?
+        d_result_self_report = DResultSelfReport.new
+        d_result_self_report.d_result_id = d_result.id        
+      end
+      d_result_self_report.mo_gas = session[:m_oil_totals][1][:total].to_f + session[:m_oil_totals][2][:total].to_f
+      d_result_self_report.keiyu = session[:m_oil_totals][3][:total]
+      d_result_self_report.touyu = session[:m_oil_totals][4][:total]
+    else
+      #実績表データ
+      d_result_report = DResultReport.find(:first, :conditions => ["d_result_id = ?", d_result.id])
+        
+    end 
+     
     head :ok
   end
   
@@ -438,12 +456,12 @@ class DResultsController < ApplicationController
           sql << " left join d_result_meters d on (m.id = d.m_meter_id and d.d_result_id = #{old_d_result.id})"
           sql << " left join m_tanks t on (m.m_tank_id = t.id)"
           sql << " left join m_oils o on (t.m_oil_id = o.id)"
-          sql << " where m.pos_class = #{m_code.id} and o.id = #{m_oil.id} and t.m_shop_id = #{@d_result.m_shop_id}"
+          sql << " where m.pos_class = #{m_code.code} and o.id = #{m_oil.id} and t.m_shop_id = #{@d_result.m_shop_id}"
           sql << "  and m.deleted_flg = 0 and t.deleted_flg = 0 and o.deleted_flg = 0"
           sql << " order by m.number"
                               
-          old_meter["#{m_oil.id}_#{m_code.id}"] = MOil.find_by_sql(sql)
-          old_max_no = old_meter["#{m_oil.id}_#{m_code.id}"].size if old_meter["#{m_oil.id}_#{m_code.id}"].size > old_max_no
+          old_meter["#{m_oil.id}_#{m_code.code}"] = MOil.find_by_sql(sql)
+          old_max_no = old_meter["#{m_oil.id}_#{m_code.code}"].size if old_meter["#{m_oil.id}_#{m_code.code}"].size > old_max_no
         end
       end
     
@@ -454,10 +472,10 @@ class DResultsController < ApplicationController
       @m_oils.each do |m_oil|
         @m_codes.each do |m_code|
                                       
-          old_meter["#{m_oil.id}_#{m_code.id}"].each_with_index do |m_meter, idx|
-            @old_meters[idx]["#{m_oil.id}_#{m_code.id}_m_meter_id"] = m_meter.m_meter_id
-            @old_meters[idx]["#{m_oil.id}_#{m_code.id}_meter_no"] = m_meter.meter_no
-            @old_meters[idx]["#{m_oil.id}_#{m_code.id}_meter"] = m_meter.meter
+          old_meter["#{m_oil.id}_#{m_code.code}"].each_with_index do |m_meter, idx|
+            @old_meters[idx]["#{m_oil.id}_#{m_code.code}_m_meter_id"] = m_meter.m_meter_id
+            @old_meters[idx]["#{m_oil.id}_#{m_code.code}_meter_no"] = m_meter.meter_no
+            @old_meters[idx]["#{m_oil.id}_#{m_code.code}_meter"] = m_meter.meter
           end
         end
       end 
@@ -474,12 +492,12 @@ class DResultsController < ApplicationController
         sql << " left join d_result_meters d on (m.id = d.m_meter_id and d.d_result_id = #{@d_result.id})"
         sql << " left join m_tanks t on (m.m_tank_id = t.id)"
         sql << " left join m_oils o on (t.m_oil_id = o.id)"
-        sql << " where m.pos_class = #{m_code.id} and o.id = #{m_oil.id} and t.m_shop_id = #{@d_result.m_shop_id}"
+        sql << " where m.pos_class = #{m_code.code} and o.id = #{m_oil.id} and t.m_shop_id = #{@d_result.m_shop_id}"
         sql << "  and m.deleted_flg = 0 and t.deleted_flg = 0 and o.deleted_flg = 0"
         sql << " order by m.number"
-p "sql=#{sql}"                             
-        meter["#{m_oil.id}_#{m_code.id}"] = MOil.find_by_sql(sql)
-        max_no = meter["#{m_oil.id}_#{m_code.id}"].size if meter["#{m_oil.id}_#{m_code.id}"].size > max_no
+                            
+        meter["#{m_oil.id}_#{m_code.code}"] = MOil.find_by_sql(sql)
+        max_no = meter["#{m_oil.id}_#{m_code.code}"].size if meter["#{m_oil.id}_#{m_code.code}"].size > max_no
       end
     end
     
@@ -491,10 +509,10 @@ p "sql=#{sql}"
     @m_oils.each do |m_oil|
       @m_codes.each do |m_code|
                                       
-        meter["#{m_oil.id}_#{m_code.id}"].each_with_index do |m_meter, idx|
-          @meters[idx]["#{m_oil.id}_#{m_code.id}_m_meter_id"] = m_meter.m_meter_id
-          @meters[idx]["#{m_oil.id}_#{m_code.id}_meter_no"] = m_meter.meter_no
-          @meters[idx]["#{m_oil.id}_#{m_code.id}_meter"] = m_meter.meter
+        meter["#{m_oil.id}_#{m_code.code}"].each_with_index do |m_meter, idx|
+          @meters[idx]["#{m_oil.id}_#{m_code.code}_m_meter_id"] = m_meter.m_meter_id
+          @meters[idx]["#{m_oil.id}_#{m_code.code}_meter_no"] = m_meter.meter_no
+          @meters[idx]["#{m_oil.id}_#{m_code.code}_meter"] = m_meter.meter
         end
       end
     end
@@ -575,8 +593,8 @@ p "sql=#{sql}"
     meter_sql << " left join d_result_meters dm on (dm.m_meter_id = m.id and dm.d_result_id = #{d_result.id})"
     meter_sql << " left join d_result_meters old_dm on (old_dm.m_meter_id = m.id and old_dm.d_result_id = #{old_d_result_id})"
     meter_sql << " where t.deleted_flg = 0 and m.deleted_flg = 0 and t.id = m.m_tank_id"
-    meter_sql << "   and m_shop_id = #{d_result.m_shop_id} group by t.id"                                                     
-     
+    meter_sql << "   and t.m_shop_id = #{d_result.m_shop_id} group by t.id"                                                     
+  
     meter_sales = MMeter.find_by_sql(meter_sql)          
     sales = Array::new
     
@@ -615,15 +633,17 @@ p "sql=#{sql}"
         d_tank_compute_report.decrease_total = old_d_tank_compute_report.decrease_total + d_tank_compute_report.decrease
         d_tank_compute_report.sale_total = old_d_tank_compute_report.sale_total + sales[m_tank.id][:sale] 
       end
-      
       total_percentage = d_tank_compute_report.decrease_total.to_f / d_tank_compute_report.sale_total.to_f * 100      
+
+      #桁オーバーフロー対策
+      total_percentage = 999.999  if total_percentage > 1000
       d_tank_compute_report.total_percentage = total_percentage.round(3)
       d_tank_compute_report.save      
     end
     
     
     #地下タンク過不足データ
-    compute_sql = "select o.id m_oil_id, SUM(cr.decrease) decrease_sum, SUM(cr.sale) sale_sum"
+    compute_sql = "select o.id m_oil_id, SUM(cr.decrease) decrease_sum, SUM(cr.sale) sale_sum, SUM(cr.sale_total) sale_total_sum"
     compute_sql << " from m_oils o, m_tanks t, d_tank_compute_reports cr"
     compute_sql << " where o.deleted_flg = 0 and t.deleted_flg = 0 and o.id = t.m_oil_id"
     compute_sql << "   and cr.m_tank_id = t.id and cr.d_result_id = #{d_result.id}"
@@ -660,7 +680,14 @@ p "sql=#{sql}"
     d_tank_compute_reports.each do |d_tank_compute_report|
       if d_tank_compute_report.m_oil_id.to_i == 2
         oil_percent = d_tank_decrease_report.oil2_num.to_f / d_tank_compute_report.sale_sum.to_f * 100
+        #桁オーバーフロー対策
+        oil_percent = 999.99  if oil_percent > 1000
         d_tank_decrease_report.oil_percent = oil_percent.round(2)
+        
+        oil_percent_total = d_tank_decrease_report.oil2_num_total.to_f / d_tank_compute_report.sale_total_sum.to_f * 100
+        #桁オーバーフロー対策
+        oil_percent_total = 999.99  if oil_percent_total > 1000        
+        d_tank_decrease_report.oil_percent_total = oil_percent_total.round(2)        
       end
     end
         

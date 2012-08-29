@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120828043333) do
+ActiveRecord::Schema.define(:version => 20120828121327) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -326,13 +326,13 @@ ActiveRecord::Schema.define(:version => 20120828043333) do
   end
 
   create_table "d_result_oiletcs", :force => true do |t|
-    t.integer  "d_result_id",     :null => false
-    t.integer  "m_oiletc_id",     :null => false
-    t.integer  "pos1_data"
-    t.integer  "pos2_data"
-    t.integer  "pos3_data"
-    t.integer  "created_user_id", :null => false
-    t.integer  "updated_user_id", :null => false
+    t.integer  "d_result_id",                                    :null => false
+    t.integer  "m_oiletc_id",                                    :null => false
+    t.decimal  "pos1_data",       :precision => 11, :scale => 2
+    t.decimal  "pos2_data",       :precision => 11, :scale => 2
+    t.decimal  "pos3_data",       :precision => 11, :scale => 2
+    t.integer  "created_user_id",                                :null => false
+    t.integer  "updated_user_id",                                :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -590,12 +590,14 @@ ActiveRecord::Schema.define(:version => 20120828043333) do
   end
 
   create_table "m_aims", :force => true do |t|
-    t.integer  "aim_code",   :limit => 2,  :null => false
-    t.string   "aim_name",   :limit => 30
-    t.integer  "shop_kbn",   :limit => 2
-    t.integer  "input_kbn",  :limit => 2
+    t.integer  "aim_code",    :limit => 2,                 :null => false
+    t.string   "aim_name",    :limit => 30
+    t.integer  "shop_kbn",    :limit => 2
+    t.integer  "input_kbn",   :limit => 2
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "deleted_flg", :limit => 2,  :default => 0
+    t.datetime "deleted_at"
   end
 
   create_table "m_approvals", :force => true do |t|
@@ -679,6 +681,16 @@ ActiveRecord::Schema.define(:version => 20120828043333) do
     t.datetime "updated_at"
   end
 
+  create_table "m_fix_items", :force => true do |t|
+    t.integer  "fix_item_cd",    :limit => 2,                 :null => false
+    t.string   "fix_item_name",  :limit => 20,                :null => false
+    t.integer  "fix_item_class", :limit => 2,                 :null => false
+    t.integer  "deleted_flg",    :limit => 2,  :default => 0, :null => false
+    t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "m_fix_moneys", :force => true do |t|
     t.integer  "m_shop_id",                                      :null => false
     t.integer  "start_month",                                    :null => false
@@ -698,7 +710,7 @@ ActiveRecord::Schema.define(:version => 20120828043333) do
   end
 
   create_table "m_info_costs", :force => true do |t|
-    t.integer  "users_id"
+    t.integer  "user_id",                                 :null => false
     t.integer  "base_pay"
     t.integer  "night_pay"
     t.integer  "welfare_pay"
@@ -706,27 +718,33 @@ ActiveRecord::Schema.define(:version => 20120828043333) do
     t.integer  "etc_pay2"
     t.integer  "etc_pay3"
     t.integer  "etc_pay4"
-    t.integer  "deleted_flg"
+    t.integer  "deleted_flg", :limit => 2, :default => 0, :null => false
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "etc_pay5"
+    t.integer  "etc_pay6"
   end
 
   create_table "m_item_accounts", :force => true do |t|
-    t.integer  "item_account_code",                :null => false
-    t.string   "item_account_name", :limit => 20,  :null => false
+    t.integer  "item_account_code",                               :null => false
+    t.string   "item_account_name", :limit => 20,                 :null => false
     t.string   "outline",           :limit => 100
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "deleted_flg",       :limit => 2,   :default => 0
+    t.datetime "deleted_at"
   end
 
   create_table "m_items", :force => true do |t|
-    t.integer  "item_class",     :limit => 2,  :null => false
-    t.string   "item_name",      :limit => 30
-    t.string   "item_ryaku",     :limit => 10
-    t.integer  "m_item_account",               :null => false
+    t.integer  "item_class",        :limit => 2,                 :null => false
+    t.string   "item_name",         :limit => 30
+    t.string   "item_ryaku",        :limit => 10
+    t.integer  "m_item_account_id",                              :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "deleted_flg",       :limit => 2,  :default => 0
+    t.datetime "deleted_at"
   end
 
   create_table "m_meters", :force => true do |t|
@@ -813,6 +831,7 @@ ActiveRecord::Schema.define(:version => 20120828043333) do
     t.datetime "updated_at"
     t.integer  "tank_no",     :limit => 2
     t.integer  "volume"
+    t.string   "tank_name",   :limit => 20
   end
 
   create_table "m_washes", :force => true do |t|

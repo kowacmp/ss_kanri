@@ -1,0 +1,60 @@
+<% old_group_name = nil %>
+<% 
+  @sum_oil1 = 0
+  @sum_oil2 = 0
+  @sum_oil3 = 0
+  @sum_oil4 = 0
+%>
+<%= form_tag({:action => 'print',:input_ymd_s => @input_ymd_s ,:rbtn => @rbtn}) do %>
+<table id="rounded-corner">
+	<tr>
+		<th>所属会社</th>
+		<th>店舗</th>
+		<th><%= get_title(1) %></th>
+		<th><%= get_title(2) %></th>
+		<th><%= get_title(3) %></th>
+		<th><%= get_title(4) %></th>
+		<th>MG欠減率(%)</th>
+	</tr>
+	<% @groups.each do |group| %>
+	  <% @shops = get_shops(group.id) %>
+      <% @shops.each do |shop| %>
+        <% result = get_d_result(shop.id,@input_ymd_s) %>
+        <% unless result == nil %>
+          <% @print = DTankDecreaseReport.find(result.id) %>
+        <% else %>
+          <% @print = nil %>
+        <% end %>
+	  <tr>
+	  	<td><%= group.group_name unless old_group_name == group.group_name %>
+	  		<% old_group_name = group.group_name %>
+	  	</td>
+	  	<td>
+	  		<%= shop.shop_cd.to_s + ' ' + shop.shop_name %>
+	    </td>
+	    <% unless @print == nil or @rbtn == nil %><!-- if 2-->
+    	  <% if @rbtn.to_i == 1 %><!-- if 1-->
+	        <%= render partial: 'detail_day',:locals => {:print => @print} %>
+	      <% elsif @rbtn.to_i == 2 %>
+	        <%= render partial: 'detail_total',:locals => {:print => @print} %>
+          <% end %> <!-- if 1-->
+	    <% else %><!-- if 2-->
+	      <%= render partial: 'detail_non' %>
+	    <% end %><!-- if 2-->
+        <%# end %>
+	  </tr>
+    <% end %>
+	<% end %>
+	<tr>
+		<th colspan="2">合計</th>
+		<td><%= @sum_oil1 %></td>
+		<td><%= @sum_oil2 %></td>
+		<td><%= @sum_oil3 %></td>
+		<td><%= @sum_oil4 %></td>
+		<td></td>
+	</tr>
+	<%= hidden_field_tag 'rbtn',@rbtn %>
+	<%= hidden_field_tag 'input_ymd_s',@input_ymd_s %>
+</table>
+<%= submit_tag '印刷',format: 'pdf' %>
+<% end %>

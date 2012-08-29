@@ -1,18 +1,33 @@
-<% users = User.find(:all, :conditions => ["deleted_flg=0 and m_shop_id=?", c_shop_id], :order => "account") %>
+<!-- d_audit系で共通 -->
+<% 
+	if session[:audit_class] == "0" then
+		# 自主監査はだれでもよい
+		users = User.find(:all, :conditions => ["deleted_flg=0 and m_shop_id=?", c_shop_id], :order => "account") 
+	else
+		# 本監査は監査人のみ
+		users = User.find(:all, :conditions => ["deleted_flg=0 and m_shop_id=? and user_class=2", c_shop_id], :order => "account") 
+	end 
+%>
+
 <%=select       :confirm, :user_id, users.collect{|i| [i.user_name, i.id]}, 
 				:selected => c_user_id, :include_blank => "選択してください" %>
 		
 <script language="JavaScript">		
-  	$("#confirm_user_id").change(function() {
-  		  
-  		if (this.value != '') {		
-  			$.ajax({
-  				type: "GET",
-  				url:  "d_audit_etcs/confirm_user_id_select?user_id=" + this.value,
- 				async: false,
- 				timeout: 5000
-  			});
-  		}	
+	$(function (){
   		
-  	});
+  		$("#confirm_user_id").change(function() {
+  		  
+  			if (this.value != '') {		
+  				$.ajax({
+  					type: "GET",
+  					url:  "d_audit_changemachines/confirm_user_id_select?user_id=" + this.value,
+ 					async: false,
+ 					timeout: 5000
+  				});
+  			}	
+  			
+  		});		
+		
+	});
+
 </script>

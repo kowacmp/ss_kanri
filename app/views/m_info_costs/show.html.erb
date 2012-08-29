@@ -1,9 +1,9 @@
-<p id="notice"><%= notice %></p>
+<!--<p id="notice"><%#= notice %></p>-->
 
   <table id='rounded-corner'>
   	<tr>
-  	  <th>ユーザID</th>
-  	  <td><%= @m_info_cost.users_id %></td>  	  
+  	  <th>ユーザ</th>
+  	  <td><%= @m_info_cost.user_name %></td>  	  
   	</tr>
   	<tr>
   	  <th>基本給</th>
@@ -33,7 +33,17 @@
   	  <th>手当4</th>
   	  <td><%= @m_info_cost.etc_pay4 %></td>  	  
   	</tr>
+  	<tr>
+  	  <th>手当5</th>
+  	  <td><%= @m_info_cost.etc_pay5 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>手当6</th>
+  	  <td><%= @m_info_cost.etc_pay6 %></td>  	  
+  	</tr>
   </table>
 
-<%= link_to '編集', edit_m_info_cost_path(@m_info_cost), :class => 'edit_icon' %> |
-<%= link_to '戻る', m_info_costs_path, :class => 'return_icon' %>
+<%#= link_to '編集', edit_m_info_cost_path(@m_info_cost), :class => 'edit_icon' %> 
+<%#= link_to '戻る', m_info_costs_path, :class => 'return_icon' %>
+<%= link_to '編集', {:action=>"edit",:id=>@m_info_cost.id,:input_check=>@check_del_flg}, :class => 'edit_icon' %> |
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>

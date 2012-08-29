@@ -1,4 +1,4 @@
-<p id="notice"><%= notice %></p>
+<!--<p id="notice"><%#= notice %></p>-->
 
   <table id='rounded-corner'>
   	<tr>
@@ -11,5 +11,7 @@
   	</tr>
   </table>
 
-<%= link_to '編集', edit_m_oil_path(@m_oil), :class => 'edit_icon' %> |
-<%= link_to '戻る', m_oils_path, :class => 'return_icon' %>
+<%#= link_to '編集', edit_m_oil_path(@m_oil), :class => 'edit_icon' %> 
+<%#= link_to '戻る', m_oils_path, :class => 'return_icon' %>
+<%= link_to '編集', {:action=>"edit",:id=>@m_oil.id,:input_check=>@check_del_flg}, :class => 'edit_icon' %> |
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>

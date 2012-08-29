@@ -1,29 +1,34 @@
 <%= form_for(@m_item_account) do |f| %>
   <% if @m_item_account.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@m_item_account.errors.count, "error") %> prohibited this m_item_account from being saved:</h2>
+      <h2><%= pluralize(@m_item_account.errors.count, "") %> 件のエラーがあります。</h2>
 
       <ul>
       <% @m_item_account.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= sliceString(msg) %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :item_account_code %><br />
-    <%= f.number_field :item_account_code %>
-  </div>
-  <div class="field">
-    <%= f.label :item_account_name %><br />
-    <%= f.text_field :item_account_name %>
-  </div>
-  <div class="field">
-    <%= f.label :outline %><br />
-    <%= f.text_field :outline %>
-  </div>
+  <%= hidden_field "input",'check',:value=>@check_del_flg%>
+
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th><%= f.label '勘定科目コード' %></th>
+  	  <td><%= f.number_field :item_account_code, :style=>"ime-mode:disabled" ,:maxlength=>4 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '勘定科目名称' %></th>
+  	  <td><%= f.text_field :item_account_name,:maxlength=>20 %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '摘要' %></th>
+  	  <td><%= f.text_field :outline,:maxlength=>40 %></td>  	  
+  	</tr>
+  </table>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div>
+
 <% end %>

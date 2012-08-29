@@ -1,0 +1,17 @@
+	  	<td>
+	  		<%= print.oil1_num_total unless print == nil  unless print == nil %>
+	  		<% @sum_oil1 = @sum_oil1 + print.oil1_num_total unless print == nil %>
+	  	</td>
+	  	<td>
+	  		<%= print.oil2_num_total unless print == nil %>
+	  		<% @sum_oil2 = @sum_oil2 + print.oil2_num_total unless print == nil %>
+	  	</td>
+	  	<td>
+	  		<%= print.oil3_num_total unless print == nil %>
+	  		<% @sum_oil3 = @sum_oil3 + print.oil3_num_total unless print == nil %>
+	  	</td>
+	  	<td>
+	  		<%= print.oil4_num_total unless print == nil %>
+	  		<% @sum_oil4 = @sum_oil4 + print.oil4_num_total unless print == nil %>
+	  	</td>
+	  	<td><%= print.oil_percent_total unless print == nil %></td>

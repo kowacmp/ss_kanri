@@ -1,0 +1,17 @@
+<h1>固定額内訳マスタメンテ</h1>
+
+<%= form_tag({:action => 'search' }, { :remote => true }) do %>
+  <% if @check_del_flg == 0%>
+  	<%= check_box(:check,:deleted_flg,{},true,false) %>
+  <% else %>
+  	<%= check_box(:check,:deleted_flg,{:checked => true},true,false) %>
+  <% end %>
+  
+  削除項目も表示する。
+  <%= submit_tag '表示' %>
+<% end %>
+
+<%= link_to '新規登録', new_m_fix_item_path, :class => 'add_icon' %>
+<br />
+<div id="result"><%= render 'result_list' %></div>
+

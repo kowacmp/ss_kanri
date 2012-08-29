@@ -1,31 +1,16 @@
-<h1>Listing m_audit_checks</h1>
+<h1>監査チェックマスタメンテ</h1>
 
-<table>
-  <tr>
-    <th>Check code</th>
-    <th>M class check</th>
-    <th>Content</th>
-    <th>Deleted flg</th>
-    <th>Deleted at</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @m_audit_checks.each do |m_audit_check| %>
-  <tr>
-    <td><%= m_audit_check.check_code %></td>
-    <td><%= m_audit_check.m_class_check_id %></td>
-    <td><%= m_audit_check.content %></td>
-    <td><%= m_audit_check.deleted_flg %></td>
-    <td><%= m_audit_check.deleted_at %></td>
-    <td><%= link_to 'Show', m_audit_check %></td>
-    <td><%= link_to 'Edit', edit_m_audit_check_path(m_audit_check) %></td>
-    <td><%= link_to 'Destroy', m_audit_check, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
+<%= form_tag({:action => 'search' }, { :remote => true }) do %>
+  <% if @check_del_flg == 0%>
+  	<%= check_box(:check,:deleted_flg,{},true,false) %>
+  <% else %>
+  	<%= check_box(:check,:deleted_flg,{:checked => true},true,false) %>
+  <% end %>
+  
+  削除項目も表示する。
+  <%= submit_tag '表示' %>
 <% end %>
-</table>
 
+<%= link_to '新規登録', new_m_audit_check_path, :class => 'add_icon' %>
 <br />
-
-<%= link_to 'New M audit check', new_m_audit_check_path %>
+<div id="result"><%= render 'result_list' %></div>

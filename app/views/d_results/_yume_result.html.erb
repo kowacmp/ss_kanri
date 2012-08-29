@@ -9,12 +9,12 @@
 </table>
 
 <div style="height:200px;width:455px;overflow-y:auto;overflow-x:hidden;">
-<table id='rounded-corner2'style="margin-top:-1px; width:430px;">
+<table id='rounded-corner'style="margin-top:-1px; width:430px;">
 <% @d_result_yumes.each do |d_result_yume| %>
   <tr>
-    <td width="25%"><%= d_result_yume.pos1_data %></td>
-    <td width="25%"><%= d_result_yume.pos2_data %></td>
-    <td width="24%"><%= d_result_yume.pos3_data %></td>
+    <td width="25%" class="input_no"><%= num_fmt(d_result_yume.pos1_data) %></td>
+    <td width="25%" class="input_no"><%= num_fmt(d_result_yume.pos2_data) %></td>
+    <td width="24%" class="input_no"><%= num_fmt(d_result_yume.pos3_data) %></td>
     <td  width="13%" align="center">
       <%= link_to image_tag('icon/edit.png'), {:action => 'yume_edit', :id => d_result_yume.id}, {:remote => true } %>
     </td>

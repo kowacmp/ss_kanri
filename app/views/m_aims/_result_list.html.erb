@@ -1,0 +1,39 @@
+<table id='rounded-corner'>
+  <tr>
+    <th>目標値コード</th>
+    <th>目標値名</th>
+    <th>店舗種別</th>
+    <th>入力区分</th>
+    <th>編集</th>
+    <th>削除</th>
+  </tr>
+
+<% @m_aims.each do |m_aim| %>
+  <% if m_aim.deleted_flg == 0 %>
+  	<% del_flg = "del_n" %>
+  <% else %>
+  	<% del_flg = "del_y" %>
+  <% end %>
+
+  <tr>
+    <td class="<%= "#{del_flg}" %>"><%= m_aim.aim_code %></td>
+    <td class="<%= "#{del_flg}" %>"><%= m_aim.aim_name %></td>
+    <td class="<%= "#{del_flg}" %>"><%= m_aim.shop_kbn_name %></td>
+    <td class="<%= "#{del_flg}" %>"><%= m_aim.input_kbn_name %></td>
+    <td class="icon">
+    	<%- if m_aim.deleted_flg == 0 -%>
+    	<%= link_to image_tag('icon/24_edit.png'), {:action=>"edit",:id=>m_aim.id,:input_check=>@check_del_flg} %>
+    	<%- end -%>
+    </td>
+    
+    <td class="icon">
+    <%- if m_aim.deleted_flg == 0 -%>
+    <%= link_to image_tag('icon/24_delete.png'), {:action=>"destroy",:id=>m_aim.id,:input_check=>@check_del_flg}, :confirm => '削除します。よろしいですか？', :method => :delete %>
+    <%- else -%>
+    <%= link_to image_tag('icon/refresh.png'), {:action=>"destroy",:id=>m_aim.id,:input_check=>@check_del_flg}, :confirm => '削除の取消をします。よろしいですか？', :method => :delete %>
+    <%- end -%>
+    </td>
+    
+  </tr>
+<% end %>
+</table>

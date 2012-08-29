@@ -1,6 +1,6 @@
 <%= form_tag({:action => 'd_result_meter_create' }, { :remote => true }) do %>
 
-<div style="float: left;width: 59%;">
+<div style="float: left;width: 56%;">
 <table border="0" cellspacing="0" cellpadding="0" style="width: 430px;">
 <!-- HEAD -->
   <tr>
@@ -60,12 +60,12 @@
             <tr>
   	          <% @m_oils.each do |m_oil| %>
   	            <% @m_codes.each do |m_code| %>
-  	              <% if meter["#{m_oil.id}_#{m_code.id}_m_meter_id"].blank? %>  
+  	              <% if meter["#{m_oil.id}_#{m_code.code}_m_meter_id"].blank? %>  
                     <td width="40"></td>
                     <td width="90"></td>
   	              <% else %>  	      	
-  	                <td width="40" align="center"><%= meter["#{m_oil.id}_#{m_code.id}_meter_no"] %></td>
-  	                <td width="90" align="right"><%= meter["#{m_oil.id}_#{m_code.id}_meter"] %></td>
+  	                <td width="40" align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %></td>
+  	                <td width="90" align="right"><%= meter["#{m_oil.id}_#{m_code.code}_meter"] %></td>
                   <% end %> 	        
   	            <% end %>
   	          <% end %>
@@ -139,12 +139,12 @@
             <tr>
   	          <% @m_oils.each do |m_oil| %>
   	            <% @m_codes.each do |m_code| %>
-  	              <% if meter["#{m_oil.id}_#{m_code.id}_m_meter_id"].blank? %>  
+  	              <% if meter["#{m_oil.id}_#{m_code.code}_m_meter_id"].blank? %>  
                     <td width="30"></td>
                     <td width="90"></td>
   	              <% else %>  	      	
-  	                <td width="30" align="center"><%= meter["#{m_oil.id}_#{m_code.id}_meter_no"] %></td>
-  	                <td width="90"><%= number_field :meter, meter["#{m_oil.id}_#{m_code.id}_m_meter_id"], :value => meter["#{m_oil.id}_#{m_code.id}_meter"], :size => 2 %></td>
+  	                <td width="30" align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %></td>
+  	                <td width="90"><%= number_field :meter, meter["#{m_oil.id}_#{m_code.code}_m_meter_id"], :value => meter["#{m_oil.id}_#{m_code.code}_meter"], :size => 2 %></td>
                   <% end %> 	        
   	            <% end %>
   	          <% end %>
@@ -157,68 +157,35 @@
   </tr>
 </table>	
 <br/>
-
-
-
-
-<table id='rounded-corner' class="end_meter" width="1500">
-  <tr>
-  	<th colspan="2">油種</th>
-  	<% @m_oils.each do |m_oil| %>
-  	  <th colspan="6"><%= m_oil.oil_name %></th>
-  	<% end %>
-  </tr>
-  <tr>
-  	<td rowspan="<%= @meters.size + 1%>">終<br/>了<br/>時<br/>メ<br/>|<br/>タ<br/>|</td>
-  	<td>No</td>
-  	<% @m_oils.each do |m_oil| %>
-  	  <% @m_codes.each do |m_code| %>
-  	    <th>計量</th>
-  	    <th><%= m_code.code_name %></th>
-  	  <% end %> 	
-  	<% end %>
-  </tr>
-  <% @meters.each_with_index do |meter, idx| %>
-    <tr>
-      <td><%= idx + 1 %></td>	
-  	  <% @m_oils.each do |m_oil| %>
-  	    <% @m_codes.each do |m_code| %>
-  	      <% if meter["#{m_oil.id}_#{m_code.id}_m_meter_id"].blank? %>  
-            <td></td>
-            <td></td>
-  	      <% else %>  	      	
-  	        <td><%= meter["#{m_oil.id}_#{m_code.id}_meter_no"] %></td>
-  	        <td><%= number_field :meter, meter["#{m_oil.id}_#{m_code.id}_m_meter_id"], :value => meter["#{m_oil.id}_#{m_code.id}_meter"], :size => 4 %></td>
-          <% end %> 	        
-  	    <% end %>
-  	  <% end %>
-    </tr>
-  <% end %>
-</table>
 </div>
 
-<div style="float: right;width: 41%;">
-<table id='rounded-corner'>
-  <tr>
-  	<th>タンク</th>
-  	<th>容量</th>
-  	<th>油種</th>
-  	<th>仕入</th>
-  	<th>在庫</th>  	  	  	  	
-  </tr>
+
+<div style="float: right;width: 44%;">
+  <table id='rounded-corner' width="340">
+    <tr>
+  	  <th width="16%">タンク</th>
+  	  <th width="15%">容量</th>
+  	  <th width="19%">油種</th>
+  	  <th width="25%">仕入</th>
+  	  <th width="25%">在庫</th>  	  	  	  	
+    </tr>
+  </table>
+  <div style="height:440px;width:365px;overflow-y:auto;overflow-x:hidden;">
+  <table id='rounded-corner2'style="margin-top:-1px; width:340px;">
   <% @m_tanks.each do |m_tank| %>
     <tr>
-      <th>タンク<%= m_tank.tank_no %></th>
-      <th><%= m_tank.volume %>KL</th>
-      <th><%= m_tank.oil_name %></th>
-      <td><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :size => 1 %></td>
-      <td><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :size => 1 %></td>                  
+      <th width="16%">タンク<%= m_tank.tank_no %></th>
+      <th width="15%"><%= m_tank.volume %>KL</th>
+      <th width="19%"><%= m_tank.oil_name %></th>
+      <td width="25%"><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :size => 1 %></td>
+      <td width="25%"><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :size => 1 %></td>                  
     </tr>
   <% end %>
-</table>
+  </table>
+  </div>
 </div>
   <%= hidden_field :select, :d_result_id, :value => @d_result.id %>
-  <div><%= submit_tag '登録' %></div>
+  <%= submit_tag '登録' %>
 <% end %>
 
 

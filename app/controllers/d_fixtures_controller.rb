@@ -37,7 +37,7 @@ class DFixturesController < ApplicationController
           fixture.buy_day    = params["buy_day_#{i+1}"].delete("/") unless params["buy_day_#{i+1}"] == nil
           fixture.created_user_id = current_user.id
           fixture.updated_user_id = current_user.id 
-          unless  params["fixture_id_#{i+1}"] == nil or params["fixture_id_#{i+1}"] == ""
+          unless  params["buy_item_#{i+1}"] == nil or params["buy_item_#{i+1}"] == ""
             fixture.save!
           end 
           #新規作成　ここまで  

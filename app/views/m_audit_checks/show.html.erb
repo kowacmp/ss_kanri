@@ -1,30 +1,24 @@
-<p id="notice"><%= notice %></p>
+<!--<p id="notice"><%#= notice %></p>-->
 
-<p>
-  <b>Check code:</b>
-  <%= @m_audit_check.check_code %>
-</p>
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>チェックコード</th>
+  	  <td><%= @m_audit_check.check_code %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>分類</th>
+  	  <td><%= @m_audit_check.item %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>内容</th>
+  	  <td><%= @m_audit_check.content %></td>  	  
+  	</tr>
+  </table>
 
-<p>
-  <b>M class check:</b>
-  <%= @m_audit_check.m_class_check_id %>
-</p>
-
-<p>
-  <b>Content:</b>
-  <%= @m_audit_check.content %>
-</p>
-
-<p>
-  <b>Deleted flg:</b>
-  <%= @m_audit_check.deleted_flg %>
-</p>
-
-<p>
-  <b>Deleted at:</b>
-  <%= @m_audit_check.deleted_at %>
-</p>
+<%#= link_to 'Edit', edit_m_audit_check_path(@m_audit_check) %> 
+<%#= link_to 'Back', m_audit_checks_path %>
+<%= link_to '編集', {:action=>"edit",:id=>@m_audit_check.id,:input_check=>@check_del_flg}, :class => 'edit_icon' %> |
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>
 
 
-<%= link_to 'Edit', edit_m_audit_check_path(@m_audit_check) %> |
-<%= link_to 'Back', m_audit_checks_path %>
+

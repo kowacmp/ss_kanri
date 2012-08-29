@@ -1,25 +1,17 @@
-<p id="notice"><%= notice %></p>
+<!--<p id="notice"><%#= notice %></p>-->
 
-<p>
-  <b>Group cd:</b>
-  <%= @m_shop_group.group_cd %>
-</p>
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>所属コード</th>
+  	  <td><%= @m_shop_group.group_cd %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>所属会社名</th>
+  	  <td><%= @m_shop_group.group_name %></td>  	  
+  	</tr>
+  </table>
 
-<p>
-  <b>Group name:</b>
-  <%= @m_shop_group.group_name %>
-</p>
-
-<p>
-  <b>Deleted flg:</b>
-  <%= @m_shop_group.deleted_flg %>
-</p>
-
-<p>
-  <b>Deleted at:</b>
-  <%= @m_shop_group.deleted_at %>
-</p>
-
-
-<%= link_to 'Edit', edit_m_shop_group_path(@m_shop_group) %> |
-<%= link_to 'Back', m_shop_groups_path %>
+<%#= link_to 'Edit', edit_m_shop_group_path(@m_shop_group) %> 
+<%#= link_to 'Back', m_shop_groups_path %>
+<%= link_to '編集', {:action=>"edit",:id=>@m_shop_group.id,:input_check=>@check_del_flg}, :class => 'edit_icon' %> |
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>
