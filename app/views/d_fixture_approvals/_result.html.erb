@@ -1,0 +1,33 @@
+  <table id="rounded-corner">
+  	<tr>
+  		<th>店舗</th>
+  		<th>申請日</th>
+  		<th>申請者</th>
+  		<th>店舗種別</th>
+  		<th></th>
+  	</tr>
+  	<% unless @fixtures == nil %>
+    <% @fixtures.each do |fixture| %>
+    <% shop = MShop.find(fixture.m_shop_id) %>
+   	<% if @shop_kbn.to_i == shop.shop_kbn %>
+    <tr>
+      <td><%= shop.shop_cd %> <%= shop.shop_name %></td>
+      <td><%= fixture.application_date[0,4] + "/"+ fixture.application_date[4,2] + "/" + fixture.application_date[6,2] %></td>
+      <td><% user = User.find(fixture.created_user_id) %>
+      	<%= user.account %> <%= user.user_name %></td>
+      <td>
+      	<%= if shop.shop_kbn == 0 then '直営' else '油外' end %>
+      </td>
+      <td><%= link_to '確認',{:action => 'edit',:shop_kbn => @shop_kbn,:from_ymd => @from_ymd,:to_ymd => @to_ymd,:shop_id => fixture.m_shop_id,:date => fixture.application_date, :user_id => fixture.created_user_id } %> 
+      	  <% approve_flg = DFixture.minimum('approve_flg',:conditions => ['application_date = ? and m_shop_id = ? and created_user_id = ?',
+      	  	fixture.application_date,fixture.m_shop_id,fixture.created_user_id]) %>
+      	  <% if approve_flg == 0 %>
+            | 未承認あり
+          <% end %>
+      </td>
+    </tr>
+    <% end %><!-- if -->
+    <% end %><!-- each -->
+    <% end %><!-- unless -->
+  </table>
+

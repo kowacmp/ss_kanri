@@ -1,4 +1,8 @@
-<h1>釣銭機監査報告</h1>
+<%if session[:audit_class] == "0" then %>
+	<h1>釣銭機自主監査報告</h1>
+<%else%>
+	<h1>釣銭機本監査報告</h1>
+<%end%>
 
 <!-- 検索条件入力領域 BEGIN -->
 <%= form_tag({:action => 'hyouji_index' }, { :remote => true }) do %>
@@ -8,10 +12,16 @@
 	
   <table class='rounded-corner' >
   	<tr>
-  		<th>対象店舗</th><td><%=@m_shops.shop_cd%>&nbsp<%=@m_shops.shop_name%></td>
+  		<th>対象店舗</th>
+  		<td style="background-color: #A5D7AA;">
+  			<%=@m_shops.shop_cd%>&nbsp<%=@m_shops.shop_name%>
+  		</td>
   	</tr>
   	<tr>
-  		<th>監査人</th><td><%=current_user.account%>&nbsp;<%=current_user.user_name%></td>
+  		<th>監査人</th>
+  		<td style="background-color: #A5D7AA;">
+  			<%=current_user.account%>&nbsp;<%=current_user.user_name%>
+  		</td>
   	</tr>
   </table>
   
