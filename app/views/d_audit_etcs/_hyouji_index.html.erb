@@ -41,9 +41,9 @@
   			<tr>
   				<td colspan="2" style="border-left-width: 0px; border-bottom-width: 0px;">&nbsp;</td>
   				<th              ><%= dt_rec[:etc_name] %>計</th>
-  				<td align="right"><%= number_with_delimiter(dt_rec[:k_uri]) %></td>
-  				<td align="right"><%= number_with_delimiter(dt_rec[:g_uri]) %></td>
-  				<td align="right"><%= number_with_delimiter(dt_rec[:gosa])  %></td>
+  				<td align="right" style="background-color: #A5D7AA;"><%= number_with_delimiter(dt_rec[:k_uri]) %></td>
+  				<td align="right" style="background-color: #A5D7AA;"><%= number_with_delimiter(dt_rec[:g_uri]) %></td>
+  				<td align="right" style="background-color: #A5D7AA;"><%= number_with_delimiter(dt_rec[:gosa])  %></td>
   			</tr>		
   			
   		　　<%  #最終行集計用合算
@@ -59,10 +59,10 @@
 	<!-- 最終合計 -->
   	<tr>
   		<td colspan="2" style="border-left-width: 0px; border-top-width: 0px; border-bottom-width: 0px;">&nbsp;</td>
-  		<th style="border-width: 3px;"              >売上合計</th>
-  		<td style="border-width: 3px;" align="right"><%= number_with_delimiter(k_uri_sum) %></td>
-  		<td style="border-width: 3px;" align="right"><%= number_with_delimiter(g_uri_sum) %></td>
-  		<td style="border-width: 3px;" align="right"><%= number_with_delimiter(gosa_sum)  %></td>
+  		<th style="border-width: 3px; "                                        >売上合計</th>
+  		<td style="border-width: 3px; background-color: #A5D7AA;" align="right"><%= number_with_delimiter(k_uri_sum) %></td>
+  		<td style="border-width: 3px; background-color: #A5D7AA;" align="right"><%= number_with_delimiter(g_uri_sum) %></td>
+  		<td style="border-width: 3px; background-color: #A5D7AA;" align="right"><%= number_with_delimiter(gosa_sum)  %></td>
   	</tr>
   	  	
 <tr><td colspan="6" style="border: none; text-align: right;">
@@ -116,7 +116,10 @@
 		url = "./d_audit_etcs?audit_class=#{session[:audit_class]}&kansa[from]=#{@dt[0][:audit_date_from]}&kansa[to]=#{@dt[0][:audit_date_to]}"
 	%>
 	<input type="button" value="キャンセル" 
-			onclick="this.value='キャンセル中です...';this.disabled=true;document.location='<%=url%>';" />
+			onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
+						this.value='キャンセル中です...';
+						this.disabled=true;document.location='<%=url%>';
+					}" />
 	<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...', :confirm => '保存しても良いですか？' %>
 </div>
 </td></tr>
