@@ -1,16 +1,24 @@
 class DAuditEtcsController < ApplicationController
-  # GET /d_audit_etcs
-  # GET /d_audit_etcs.json
+
   def index
     
-    @d_audit_etcs = DAuditEtc.all
+    # 自主監査 or 本監査を取得しセッションへ保存
+    if params[:audit_class] == "0" or params[:audit_class] == "1" then
+      session[:audit_class] = params[:audit_class].to_s
+    else
+      redirect_to :controller => "homes", :action => "index"
+      return
+    end 
+    
     @m_shops = MShop.find(current_user.m_shop_id)
     
     #監査日FromTo読み込み
     @from = Array.new    
     @to   = Array.new
     d_audit_etcs = DAuditEtc.find(:all, 
-                                  :conditions => ["audit_class=0 AND m_shop_id=?", current_user.m_shop_id], 
+                                  :conditions => ["audit_class=? AND m_shop_id=?", 
+                                                    session[:audit_class],
+                                                    current_user.m_shop_id],      
                                   :order => "audit_date_from desc")
     
     if d_audit_etcs.length == 0 then
@@ -30,16 +38,14 @@ class DAuditEtcsController < ApplicationController
       end
 
     end
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @d_audit_etcs }
+    
+    # 監査日が指定されている場合は再読込
+    if not(params[:kansa].nil?) then
+      hyouji_index
     end
     
   end
 
-  # PUT /d_audit_etcs/1
-  # PUT /d_audit_etcs/1.json
   def update
       
     #更新日時をバッファ
@@ -50,8 +56,9 @@ class DAuditEtcsController < ApplicationController
     
     #その他監査データUpdate
     d_audit_etc = DAuditEtc.find(:first, 
-                                 :conditions => ["audit_date_from=? AND audit_class=0 AND m_shop_id=?",
+                                 :conditions => ["audit_date_from=? AND audit_class=? AND m_shop_id=?",
                                                       params['dt1'][:audit_date_from],
+                                                      session[:audit_class],
                                                       params['dt1'][:m_shop_id]])
     
     if d_audit_etc.nil? then
@@ -60,7 +67,7 @@ class DAuditEtcsController < ApplicationController
       
       d_audit_etc.audit_date_from   = params['dt1'][:audit_date_from]
       d_audit_etc.audit_date_to     = params['dt1'][:audit_date_to]
-      d_audit_etc.audit_class       = 0
+      d_audit_etc.audit_class       = session[:audit_class]
       d_audit_etc.m_shop_id         = params['dt1'][:m_shop_id]
       d_audit_etc.kakutei_flg       = 0
       d_audit_etc.kakunin_flg       = 0
@@ -145,30 +152,19 @@ class DAuditEtcsController < ApplicationController
     } #トランザクションCommit
     
     # トップに戻る
-    redirect_to  :action  =>  "index"
+    redirect_to  :action  =>  "index", 
+                 :audit_class => session[:audit_class],
+                 :kansa => {:from => params['dt1'][:audit_date_from],
+                            :to => params['dt1'][:audit_date_to]}
     
   end
-
-  # DELETE /d_audit_etcs/1
-  # DELETE /d_audit_etcs/1.json
-  def destroy
-    @d_audit_etc = DAuditEtc.find(params[:id])
-    @d_audit_etc.destroy
-
-    respond_to do |format|
-      format.html { redirect_to d_audit_etcs_url }
-      format.json { head :ok }
-    end
-  end
   
-# 表示ボタンクリック時
+  # 表示ボタンクリック時
   def hyouji_index
     
     #パラメータ編集
     p_from   = params[:kansa][:from].gsub("/","")
-    if not(params[:kansa][:to].nil?) then
-      p_to     = params[:kansa][:to].gsub("/","")
-    end
+    p_to     = params[:kansa][:to].gsub("/","")
     p_shopid = current_user.m_shop_id
     
     #Viewに渡す配列
@@ -176,22 +172,20 @@ class DAuditEtcsController < ApplicationController
       
     #その他売上監査データRead
     d_audit_etc = DAuditEtc.find(:first, 
-                                   :conditions => ["audit_date_from=? AND audit_class=0 AND m_shop_id=?",
+                                   :conditions => ["audit_date_from=? AND audit_class=? AND m_shop_id=?",
                                                       p_from,
+                                                      session[:audit_class],
                                                       p_shopid])
     
     @d_audit_etc = DAuditEtc.find(:first, 
-                                    :conditions => ["audit_date_from=? AND audit_class=0 AND m_shop_id=?",
+                                    :conditions => ["audit_date_from=? AND audit_class=? AND m_shop_id=?",
                                                       p_from,
+                                                      session[:audit_class],
                                                       p_shopid])
-    
-    if not(d_audit_etc.nil?) then
-      p_to = d_audit_etc.audit_date_to
-    end
     
     #前回監査データRead
     d_audit_etc_z = DAuditEtc.find(:first, 
-                                   :conditions => ["audit_date_from<? AND audit_class=0 AND m_shop_id=?",
+                                   :conditions => ["audit_date_from<? AND m_shop_id=?",
                                                         p_from,
                                                         p_shopid],
                                    :order => "audit_date_from desc")
@@ -257,7 +251,7 @@ class DAuditEtcsController < ApplicationController
         dt_rec = Hash.new 
         dt_rec[:audit_date_from] = p_from    #d_audit_etcs.audit_date_from
         dt_rec[:audit_date_to] = p_to        #d_audit_etcs.audit_date_to
-        dt_rec[:audit_class] = 0             #d_audit_etcs.audit_class
+        dt_rec[:audit_class] = session[:audit_class] #d_audit_etcs.audit_class
         dt_rec[:m_shop_id] = p_shopid        #d_audit_etcs.m_shop_id
         dt_rec[:m_etc_id] = m_etc_rec.id     #d_audit_etc_details.m_etc_id
         dt_rec[:etc_cd]   = m_etc_rec.etc_cd    #他売上CD
@@ -336,7 +330,7 @@ class DAuditEtcsController < ApplicationController
       dt_rec = Hash.new 
       dt_rec[:audit_date_from] = p_from    #d_audit_etcs.audit_date_from
       dt_rec[:audit_date_to] = p_to        #d_audit_etcs.audit_date_to
-      dt_rec[:audit_class] = 0             #d_audit_etcs.audit_class
+      dt_rec[:audit_class] = session[:audit_class] #d_audit_etcs.audit_class
       dt_rec[:m_shop_id] = p_shopid        #d_audit_etcs.m_shop_id
       dt_rec[:m_etc_id] = m_etc_rec.id     #d_audit_etc_details.m_etc_id
       dt_rec[:etc_cd]   = m_etc_rec.etc_cd      #他売上CD
@@ -364,45 +358,6 @@ class DAuditEtcsController < ApplicationController
     end #for m_etc_rec in m_etc
     
   end
-  
-  # 立会人(店舗)選択時イベント
-  def confirm_shop_id_select
-    
-    if params[:shop_id] == '' then
-      @shop_id = nil
-    else
-      @shop_id = params[:shop_id]
-    end 
-    
-    # TO:confirm_shop_id_select.js.erb
-    
-  end
-
-  # 立会人(ユーザ)選択時イベント
-  def confirm_user_id_select
-    
-    # TO:confirm_user_id_select.js.erb
-    
-  end
-
-  # 立会人(パスワード)選択イベント
-  def confirm_user_pass_select
-  
-    p "user_id=" + params[:pass][:user_id]
-    p "user_pass=" + params[:pass][:user_pass]
-  
-    pass1 = params[:pass][:user_pass]
-    pass2 = "abc"
-  
-    if pass1 == pass2
-      @pass_ok = true
-    else
-      @pass_ok = false
-    end 
-
-    # TO:confirm_user_pass_select.js.erb
-
-  end 
   
   # 誤差選択時イベント
   def dialog_gosa

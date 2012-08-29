@@ -132,19 +132,11 @@ class DAuditChangemachinesController < ApplicationController
 
   # 立会人(パスワード)選択イベント(d_audit系で共通)
   def confirm_user_pass_select
-  
-    p "user_id=" + params[:pass][:user_id]
-    p "user_pass=" + params[:pass][:user_pass]
-  
-    # TODO:パスワードの取得方法を考える必要有
-    pass1 = params[:pass][:user_pass] 
-    pass2 = "abc" 
-  
-    if pass1 == pass2 
-      @pass_ok = true
-    else
-      @pass_ok = false
-    end 
+      
+    i_pass = params[:pass][:user_pass] 
+    i_user = User.find(params[:pass][:user_id])
+    
+    @pass_ok = i_user.valid_password?(i_pass)
 
     # TO:confirm_user_pass_select.js.erb
 

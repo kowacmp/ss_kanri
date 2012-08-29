@@ -1,15 +1,24 @@
 class DAuditWashesController < ApplicationController
-  # GET /d_audit_washes
-  # GET /d_audit_washes.json
+
   def index
-    @d_audit_washes = DAuditWash.all
+    
+    # 自主監査 or 本監査を取得しセッションへ保存
+    if params[:audit_class] == "0" or params[:audit_class] == "1" then
+      session[:audit_class] = params[:audit_class].to_s
+    else
+      redirect_to :controller => "homes", :action => "index"
+      return
+    end 
+    
     @m_shops = MShop.find(current_user.m_shop_id)
     
     #監査日FromTo読み込み
     @from = Array.new    
     @to   = Array.new
     d_audit_washes = DAuditWash.find(:all, 
-                                     :conditions => ["audit_class=0 AND m_shop_id=?", current_user.m_shop_id], 
+                                     :conditions => ["audit_class=? AND m_shop_id=?", 
+                                                    session[:audit_class],
+                                                    current_user.m_shop_id],   
                                      :order => "audit_date_from desc")
     
     if d_audit_washes.length == 0 then
@@ -30,14 +39,13 @@ class DAuditWashesController < ApplicationController
 
     end
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @d_audit_washes }
+    # 監査日が指定されている場合は再読込
+    if not(params[:kansa].nil?) then
+      hyouji_index
     end
+
   end
 
-  # PUT /d_audit_washes/1
-  # PUT /d_audit_washes/1.json
   def update
         
     #更新日時をバッファ
@@ -48,8 +56,9 @@ class DAuditWashesController < ApplicationController
     
     #洗車機監査データUpdate
     d_audit_wash = DAuditWash.find(:first, 
-                                   :conditions => ["audit_date_from=? AND audit_class=0 AND m_shop_id=?",
+                                   :conditions => ["audit_date_from=? AND audit_class=? AND m_shop_id=?",
                                                       params['dt1'][:audit_date_from],
+                                                      session[:audit_class],
                                                       params['dt1'][:m_shop_id]])
     
     if d_audit_wash.nil? then
@@ -58,7 +67,7 @@ class DAuditWashesController < ApplicationController
       
       d_audit_wash.audit_date_from   = params['dt1'][:audit_date_from]
       d_audit_wash.audit_date_to     = params['dt1'][:audit_date_to]
-      d_audit_wash.audit_class       = 0
+      d_audit_wash.audit_class       = session[:audit_class]
       d_audit_wash.m_shop_id         = params['dt1'][:m_shop_id]
       d_audit_wash.kakutei_flg       = 0
       d_audit_wash.kakunin_flg       = 0
@@ -143,7 +152,10 @@ class DAuditWashesController < ApplicationController
     } #トランザクションCommit
     
     # トップに戻る
-    redirect_to  :action  =>  "index"
+    redirect_to  :action  =>  "index", 
+                 :audit_class => session[:audit_class],
+                 :kansa => {:from => params['dt1'][:audit_date_from],
+                            :to => params['dt1'][:audit_date_to]}
     
   end
 
@@ -152,9 +164,7 @@ class DAuditWashesController < ApplicationController
     
     #パラメータ編集
     p_from   = params[:kansa][:from].gsub("/","")
-    if not(params[:kansa][:to].nil?) then
-      p_to     = params[:kansa][:to].gsub("/","")
-    end
+    p_to     = params[:kansa][:to].gsub("/","")
     p_shopid = current_user.m_shop_id
     
     #Viewに渡す配列
@@ -162,22 +172,20 @@ class DAuditWashesController < ApplicationController
       
     #洗車監査データRead
     d_audit_wash = DAuditWash.find(:first, 
-                                   :conditions => ["audit_date_from=? AND audit_class=0 AND m_shop_id=?",
+                                   :conditions => ["audit_date_from=? AND audit_class=? AND m_shop_id=?",
                                                       p_from,
+                                                      session[:audit_class],
                                                       p_shopid])
     
     @d_audit_wash = DAuditWash.find(:first, 
-                                    :conditions => ["audit_date_from=? AND audit_class=0 AND m_shop_id=?",
+                                    :conditions => ["audit_date_from=? AND audit_class=? AND m_shop_id=?",
                                                       p_from,
+                                                      session[:audit_class],
                                                       p_shopid])
-    
-    if not(d_audit_wash.nil?) then
-      p_to = d_audit_wash.audit_date_to
-    end
     
     #前回監査データRead
     d_audit_wash_z = DAuditWash.find(:first, 
-                                     :conditions => ["audit_date_from<? AND audit_class=0 AND m_shop_id=?",
+                                     :conditions => ["audit_date_from<? AND m_shop_id=?",
                                                         p_from,
                                                         p_shopid],
                                      :order => "audit_date_from desc")
@@ -241,7 +249,7 @@ class DAuditWashesController < ApplicationController
         dt_rec = Hash.new 
         dt_rec[:audit_date_from] = p_from    #d_audit_washes.audit_date_from
         dt_rec[:audit_date_to] = p_to        #d_audit_washes.audit_date_to
-        dt_rec[:audit_class] = 0             #d_audit_washes.audit_class
+        dt_rec[:audit_class] = session[:audit_class] #d_audit_washes.audit_class
         dt_rec[:m_shop_id] = p_shopid        #d_audit_washes.m_shop_id
         dt_rec[:m_wash_id] = m_wash_rec.id   #d_audit_wash_details.m_wash_id
         dt_rec[:wash_cd]   = m_wash_rec.wash_cd   #洗車機CD
@@ -320,7 +328,7 @@ class DAuditWashesController < ApplicationController
       dt_rec = Hash.new 
       dt_rec[:audit_date_from] = p_from    #d_audit_washes.audit_date_from
       dt_rec[:audit_date_to] = p_to        #d_audit_washes.audit_date_to
-      dt_rec[:audit_class] = 0             #d_audit_washes.audit_class
+      dt_rec[:audit_class] = session[:audit_class] #d_audit_washes.audit_class
       dt_rec[:m_shop_id] = p_shopid        #d_audit_washes.m_shop_id
       dt_rec[:m_wash_id] = m_wash_rec.id   #d_audit_wash_details.m_wash_id
       dt_rec[:wash_cd]   = m_wash_rec.wash_cd   #洗車機CD
@@ -348,45 +356,6 @@ class DAuditWashesController < ApplicationController
     end #for m_wash_rec in m_wash
     
   end
-  
-  # 立会人(店舗)選択時イベント
-  def confirm_shop_id_select
-    
-    if params[:shop_id] == '' then
-      @shop_id = nil
-    else
-      @shop_id = params[:shop_id]
-    end 
-    
-    # TO:confirm_shop_id_select.js.erb
-    
-  end
-
-  # 立会人(ユーザ)選択時イベント
-  def confirm_user_id_select
-    
-    # TO:confirm_user_id_select.js.erb
-    
-  end
-
-  # 立会人(パスワード)選択イベント
-  def confirm_user_pass_select
-  
-    #p "user_id=" + params[:pass][:user_id]
-    #p "user_pass=" + params[:pass][:user_pass]
-  
-    pass1 = params[:pass][:user_pass]
-    pass2 = "abc"
-  
-    if pass1 == pass2
-      @pass_ok = true
-    else
-      @pass_ok = false
-    end 
-
-    # TO:confirm_user_pass_select.js.erb
-
-  end 
 
   # 誤差選択時イベント
   def dialog_gosa

@@ -27,8 +27,9 @@ class DTankDecreaseReportsController < ApplicationController
     oil4_sum = 0
     @rbtn = params[:rbtn].to_i
     @input_ymd_s = params[:input_ymd_s]
+    old_group_name = ''
     #list_cnt = 0
-    datas = MShop.find_by_sql(['select b.m_shop_group_id,a.group_name,b.shop_cd,shop_name ,d.*
+    datas = MShop.find_by_sql(['select b.m_shop_group_id,a.group_name,b.shop_cd,shop_name,shop_ryaku ,d.*
                                 from m_shop_groups a 
                                 left join m_shops b
                                   on a.id = b.m_shop_group_id
@@ -73,8 +74,13 @@ end
     datas.each do |data|
     # Set header datas.
       report.page.list(:list).add_row do |row|
-        row.item(:group_name).value(data.group_name)
-        row.item(:shop_name).value(data.shop_name)
+        unless old_group_name == data.group_name
+          row.item(:group_name).value(data.group_name)
+        else
+          row.item(:group_name).value("") 
+        end
+        old_group_name = data.group_name
+        row.item(:shop_name).value(data.shop_ryaku) 
         if @rbtn == 1
           row.item(:oil1).value(data.oil1_num)
           row.item(:oil2).value(data.oil2_num)

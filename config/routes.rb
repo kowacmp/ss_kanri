@@ -24,7 +24,7 @@ SsKanri::Application.routes.draw do
   resources :m_item_accounts
   
   resources :m_approvals
-
+  
   get "d_washsale_reports/index"
 
   get "d_washsale_reports/search"
@@ -69,8 +69,6 @@ SsKanri::Application.routes.draw do
   match "d_audit_washes/confirm_user_id_select", :to => "d_audit_washes#confirm_user_id_select"
   resources :d_audit_washes
   
-  match "d_audit_etcs/confirm_shop_id_select", :to => "d_audit_etcs#confirm_shop_id_select"
-  match "d_audit_etcs/confirm_user_id_select", :to => "d_audit_etcs#confirm_user_id_select"
   resources :d_audit_etcs
  
   resources :m_shop_groups
