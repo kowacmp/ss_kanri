@@ -12,10 +12,16 @@
 	
   <table class='rounded-corner' >
   	<tr>
-  		<th>対象店舗</th><td><%=@m_shops.shop_cd%>&nbsp<%=@m_shops.shop_name%></td>
+  		<th>対象店舗</th>
+  		<td style="background-color: #A5D7AA;">
+  			<%=@m_shops.shop_cd%>&nbsp<%=@m_shops.shop_name%>
+  		</td>
   	</tr>
   	<tr>
-  		<th>監査人</th><td><%=current_user.account%>&nbsp;<%=current_user.user_name%></td>
+  		<th>監査人</th>
+  		<td style="background-color: #A5D7AA;">
+  			<%=current_user.account%>&nbsp;<%=current_user.user_name%>
+  		</td>
   	</tr>
   </table>
   
