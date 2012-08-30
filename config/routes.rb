@@ -1,5 +1,13 @@
 SsKanri::Application.routes.draw do
 
+  get "d_tank_compute_report_details/index"
+  get "d_tank_compute_report_details/search"
+  get "d_tank_compute_report_details/print"
+  get "d_tank_compute_report_details/change_oil"
+
+  get "d_tank_compute_reports/index"
+  get "d_tank_compute_reports/search"
+
   resources :m_fix_items
 
   resources :establishes
