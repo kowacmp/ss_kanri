@@ -1,37 +1,31 @@
-<h1>Listing establishes</h1>
+<h1>会社情報</h1>
 
+<%= render 'form' %>
+
+<!--
 <table>
   <tr>
-    <th>Name</th>
-    <th>Zip cd</th>
-    <th>Address</th>
-    <th>System name</th>
-    <th>Tax rate</th>
-    <th>Limit</th>
-    <th>Deleted flg</th>
-    <th>Deleted at</th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th>会社名</th>
+    <th>郵便番号</th>
+    <th>住所</th>
+    <th>システム名</th>
+    <th>消費税率</th>
+    <th>制限範囲</th>
   </tr>
 
-<% @establishes.each do |establish| %>
+<%# @establishes.each do |establish| %>
   <tr>
-    <td><%= establish.name %></td>
-    <td><%= establish.zip_cd %></td>
-    <td><%= establish.address %></td>
-    <td><%= establish.system_name %></td>
-    <td><%= establish.tax_rate %></td>
-    <td><%= establish.limit %></td>
-    <td><%= establish.deleted_flg %></td>
-    <td><%= establish.deleted_at %></td>
-    <td><%= link_to 'Show', establish %></td>
-    <td><%= link_to 'Edit', edit_establish_path(establish) %></td>
-    <td><%= link_to 'Destroy', establish, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%#= establish.name %></td>
+    <td><%#= establish.zip_cd %></td>
+    <td><%#= establish.address %></td>
+    <td><%#= establish.system_name %></td>
+    <td><%#= establish.tax_rate %></td>
+    <td><%#= establish.limit %></td>
   </tr>
-<% end %>
+<%# end %>
 </table>
 
 <br />
 
-<%= link_to 'New Establish', new_establish_path %>
+<%#= link_to 'New Establish', new_establish_path %>
+-->

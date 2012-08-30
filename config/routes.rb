@@ -8,6 +8,9 @@ SsKanri::Application.routes.draw do
   get "d_tank_compute_reports/index"
   get "d_tank_compute_reports/search"
 
+  get "d_audit_checks/edit"
+  resources :d_audit_checks
+
   resources :m_fix_items
 
   resources :establishes
@@ -77,8 +80,6 @@ SsKanri::Application.routes.draw do
   match "d_audit_washes/confirm_user_id_select", :to => "d_audit_washes#confirm_user_id_select"
   resources :d_audit_washes
   
-  match "d_audit_etcs/confirm_shop_id_select", :to => "d_audit_etcs#confirm_shop_id_select"
-  match "d_audit_etcs/confirm_user_id_select", :to => "d_audit_etcs#confirm_user_id_select"
   resources :d_audit_etcs
  
   resources :m_shop_groups
@@ -208,6 +209,8 @@ SsKanri::Application.routes.draw do
   
   devise_for :users  
   get 'homes', :to => 'homes#index', :as => :user_root  
+
+  resources :users
 
 #devise_for :users, :path => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
 

@@ -28,7 +28,11 @@
   	</tr>
   	<tr>
   	  <th><%= f.label '単位' %></th>
-  	  <td><%= f.text_field :oiletc_tani,:maxlength=>10 %></td>  	  
+  	  <td>
+  	  	<%= f.select(:oiletc_tani, MCode.find(:all, :conditions => ["kbn = ?",'tani'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
+  	  </td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label 'グループ種類' %></th>

@@ -245,6 +245,13 @@ p params
         @d_sale_zengetumatu = DSale.new
     end
     
+    #その他売上合計
+    select_sql = "select sum(a.item_money) item_money "
+    select_sql << " from d_sale_items a inner join d_sales b on a.d_sale_id = b.id "
+    select_sql << " where a.item_class = 4 and b.m_shop_id= #{@head[:m_shop_id]} and b.sale_date between '#{key_data.sale_date.to_s[0,6]}01' and '#{key_data.sale_date.to_s[0,6]}99' "
+    @etc_item_total = DSaleItem.find_by_sql(select_sql)
+    @etc_item_total = @etc_item_total[0]
+    
     respond_to do |format|
       format.html 
       format.json { render json: @d_sale }

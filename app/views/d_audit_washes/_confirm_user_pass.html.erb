@@ -1,9 +1,0 @@
-<%= form_tag({:action => 'confirm_user_pass_select' }, { :remote => true }) do %>
-	パスワード=abc<br/>
-	<%= hidden_field :pass, :user_id, :value => params[:user_id] %>
-	<%= password_field :pass, :user_pass %>
-	<%= submit_tag 'ＯＫ', :disable_with => "処理中です..." %>
-	<br/>
-	<span id='msg'></span>
-	<%= hidden_field :pass, :ret, :value => '0' %>
-<% end %>
