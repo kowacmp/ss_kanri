@@ -1,5 +1,8 @@
 SsKanri::Application.routes.draw do
 
+  get "d_audit_checks/edit"
+  resources :d_audit_checks
+
   resources :m_fix_items
 
   resources :establishes

@@ -1,0 +1,13 @@
+<h1>SSチェック入力</h1>
+
+<br/>
+
+<%=render :partial => 'header' , :locals => {:audit_date => params[:header][:audit_date] , 
+	                                         :m_shop_id => params[:header][:m_shop_id]} %>
+	                                         
+<br/>
+
+<%=render :partial => 'form' , :locals => {:audit_date => params[:header][:audit_date] , 
+  	                                       :m_shop_id => params[:header][:m_shop_id]} %>
+	                                       
+<br/>
