@@ -1,4 +1,4 @@
 <h1>SSチェック入力</h1>
 
-<%=render :partial => 'header' , :locals => {:audit_date => '', 
+<%=render :partial => 'header' , :locals => {:audit_date => Time.now.strftime('%Y/%m/%d'), 
 	                                         :m_shop_id => ''     } %>
