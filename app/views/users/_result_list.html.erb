@@ -1,0 +1,31 @@
+<table id='rounded-corner'>
+  <tr>
+  	<th>社員コード</th>
+    <th>ユーザ名</th>
+    <th>所属店舗</th>
+    <th>社員種別</th>
+    <th>権限</th>
+    <th>編集</th>
+    <th>パスワード変更</th>
+  </tr>
+
+<% @users.each do |user| %>
+  <tr>
+  	<td><%= user.account %></td>
+    <td><%= user.user_name %></td>
+    <td><%= user.shop_name %></td>
+    <td><%= user.user_class_name %></td>
+    <td><%= user.authority_name %></td>
+    <td class="icon">
+    	<%#= link_to image_tag('icon/24_edit.png'), edit_user_path(user) %>
+    	<%= link_to image_tag('icon/24_edit.png'), {:action=>"edit",:id=>user.id,:pass_flg=>0} %>
+    </td>
+    <td class="icon">
+    	<%#= current_user.id %>
+    	<%= link_to image_tag('icon/24_edit.png'), {:action=>"edit",:id=>user.id,:pass_flg=>1} %>
+    </td>
+    
+    
+  </tr>
+<% end %>
+</table>

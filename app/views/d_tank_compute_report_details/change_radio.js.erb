@@ -1,0 +1,7 @@
+<% if @rbtn == 1 %>
+  $('#select_text').text("油種");
+  $('#select_box').html("<%= j(render :partial => 'select_oil')%>");
+<% else %>
+  $('#select_text').text("タンク");
+ $('#select_box').html("<%= j(render :partial => 'select_tank')%>");
+<% end %>

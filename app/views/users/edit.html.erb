@@ -1,0 +1,103 @@
+
+<% if @pass_flg == 1 %>
+<h1>パスワード変更</h1>
+<% else %>
+<h1>更新</h1>
+<% end %>
+
+<%= form_for @user, :url=>{:controller=>'users',:action=> 'update',:id=>@user.id,:pass_flg=>@pass_flg} do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "") %> 件のエラーがあります。</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= sliceString(msg) %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  	<table id='rounded-corner'>
+	  	<% if @pass_flg == 0 %>
+	  	<tr>
+	  	  <th><%= f.label "社員コード" %></th>
+	  	  <td><%= f.text_field :account %></td>  	  
+	  	</tr>
+	  	<tr>
+	  	  <th><%= f.label "氏名" %></th>
+	  	  <td><%= f.text_field :user_name %></td>  	  
+	  	</tr>
+	  	<tr>
+	  	  <th><%= f.label "氏名カナ" %></th>
+	  	  <td><%= f.text_field :user_name_kana %></td>  	  
+	  	</tr>
+	  	<tr>
+	  	  <th><%= f.label "所属店舗" %></th>
+	  	  <td>
+			<%= f.select(:m_shop_id, MShop.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'shop_cd').map do |u|
+	      		[u.shop_name,u.id]
+	        end, {:include_blank => "選択して下さい"}) %>
+		  </td>  	  
+	  	</tr>
+	  	<tr>
+	  	  <th><%= f.label "社員種別" %></th>
+	  	  <td>
+			<%= f.select(:user_class, MCode.find(:all, :conditions => ["kbn = ?",'user_class'], :order => 'code').map do |u|
+	      		[u.code_name,u.code]
+	        end, {:include_blank => "選択して下さい"}) %>
+		  </td>  	  
+	  	</tr>
+	  	<tr>
+	  	  <th><%= f.label "権限" %></th>
+	  	  <td>
+			<%= f.select(:m_authority_id, MAuthority.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'authority_cd').map do |u|
+	      		[u.authority_name,u.id]
+	        end, {:include_blank => "選択して下さい"}) %>
+		  </td>  	  
+	  	</tr>
+	  	<tr>
+	  	  <th><%= f.label "入社日" %></th>
+	  	  <td><%= f.date_select :nyusya_date,:use_month_numbers=>true,:start_year=>Date.today.year - 100 %></td>  	  
+	  	</tr>
+	  	<tr>
+	  	  <th><%= f.label "生年月日" %></th>
+	  	  <td><%= f.date_select :birthday,:use_month_numbers=>true,:start_year=>Date.today.year - 100 %></td>  	  
+	  	</tr>
+		<% end %>
+	
+		<% if @pass_flg == 1 %>
+		<tr>
+	  	  <th><%= f.label "社員コード" %></th>
+	  	  <td><%= @user.account %></td>  	  
+	  	</tr>
+	  	<tr>
+	  	  <th><%= f.label "氏名" %></th>
+	  	  <td><%= @user.user_name %></td>  	  
+	  	</tr>
+	  	<tr>
+	  	  <th><%= f.label "所属店舗" %></th>
+	  	  <td>
+				<% m_shop = MShop.find(:first,:conditions=>["id = ?",@user.m_shop_id]) %>
+			    <% if m_shop != nil %>
+			    <%= m_shop.shop_name %>
+			    <% end %>
+		  </td>  	  
+	  	</tr>
+		<tr>
+	  	  <th><%= f.label "新パスワード" %></th>
+	  	  <td><%= f.password_field :password %></td>  	  
+	  	</tr>
+	  	<tr>
+	  	  <th><%= f.label "新確認用パスワード" %></th>
+	  	  <td><%= f.password_field :password_confirmation %></td>  	  
+	  	</tr>
+	    <% end %>
+    </table>
+    
+  <div class="actions">
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div>
+<% end %>
+
+<%= link_to '戻る', users_path, :class => 'return_icon' %>

@@ -1,0 +1,4 @@
+<%= select_tag('select_tank', options_from_collection_for_select(
+  MTank.find(:all,:conditions => ['m_shop_id = ?',@shop_id],:order => 'm_oil_id,tank_no'),
+  :id,:tank_name)) %>
+

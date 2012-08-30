@@ -178,6 +178,29 @@
 		 		}
 		 	}
 		 	
+		 	
+		 	loopout: for (i = 0; i < counter3; i++) {
+		 		
+		 		if (document.getElementById('m_tank_' + i + '_tank_no') != null) {
+			 			
+			 			for (j = 0; j < counter3; j++) {
+					 		if (document.getElementById('m_tank_' + j + '_tank_no') != null) {
+					 			
+					 			if (i != j) {
+						 			if (document.getElementById('m_tank_' + i + '_tank_no').value 
+						 					== document.getElementById('m_tank_' + j + '_tank_no').value) {
+						 				error_msg_m = error_msg_m + '<li>タンクNoが重複しています。</li>';
+						 				break loopout;
+						 			 }
+					 			 }
+					 			
+					 		 }
+					 	}
+					 	
+		 		 }
+		 	 }
+		 	
+		 	
 		 	//タンク情報  >>>>>>>>>>>>>>>>>>>>>>>
 		 	
 		 	
