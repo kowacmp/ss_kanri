@@ -33,7 +33,7 @@
       <td>
       	<%= unless d_wash_sale == nil then "済" else "未" end %>
       </td>
-      <td>
+      <td align="center">
       	<% unless d_wash_sale == nil %>
       	  <% if d_wash_sale.kakutei_flg == 1  %>
       	    <%= check_box_tag("cbox[]",d_wash_sale.id,{:checked => true}) %>
