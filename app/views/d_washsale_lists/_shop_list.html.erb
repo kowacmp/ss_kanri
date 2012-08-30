@@ -17,7 +17,6 @@
 	</tr>
   <% @shops.each do |shop| %>
     <% nyuryoku_flg = wday_hantei(@wday,shop.id) %>
-    <% if nyuryoku_flg > 0 %>
     <tr>
       <td><%= shop.shop_cd.to_s + '　' + shop.shop_name %></td>
         <% d_wash_sale = DWashSale.find(:all,:conditions => ['sale_date = ? and m_shop_id = ?',@input_ymd_s,shop.id]).first %>
@@ -47,18 +46,6 @@
       <td><%= link_to('編集' ,{:controller => 'd_wash_sales',:action => 'index',
             :input_ymd => @input_ymd,:m_shop_id => shop.id,:shop_kbn => @shop_kbn,:mode => 'list'}) %></td>
     </tr>
-    <% else %> <!-- nyuryoku_flg -->
-    <tr>
-    	<td><%= shop.shop_cd.to_s + '　' + shop.shop_name %></td>
-    	<td></td>
-    	<td></td>
-    	<td><% if shop.shop_kbn == 0 %> 直営 	<% else %> 	油外 <% end %></td>
-    	<td></td>
-    	<td></td>
-        <td><%= link_to('参照' ,{:action => 'show',:m_shop_id => shop.id},:class => 'modal') %></td>
-        <td></td>
-    </tr>
-    <% end %> <!-- nyuryoku_flg -->
   <% end %>
   <%= hidden_field_tag "input_ymd",@input_ymd %>
   <%= hidden_field_tag "shop_kbn",@shop_kbn %>
