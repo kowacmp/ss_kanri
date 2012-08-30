@@ -47,4 +47,31 @@ module DSalesHelper
 
 
   end
+  
+  #
+  def calc_total(d_sale_total)
+    return_hash = d_sale_total
+    
+    if @d_sale
+      return_hash[:sale_money] = return_hash[:sale_money].to_i + @d_sale.sale_money.to_i
+      return_hash[:sale_purika] = return_hash[:sale_purika].to_i + @d_sale.sale_purika.to_i
+      return_hash[:purika_tesuryo] = return_hash[:purika_tesuryo].to_i + @d_sale.purika_tesuryo.to_i
+      return_hash[:sonota_money] = return_hash[:sonota_money].to_i + @d_sale.sonota_money.to_i
+      return_hash[:recive_money] = return_hash[:recive_money].to_i + @d_sale.recive_money.to_i
+      return_hash[:pay_money] = return_hash[:pay_money].to_i + @d_sale.pay_money.to_i
+      return_hash[:d_sale_syokei] = return_hash[:d_sale_syokei].to_i + @d_sale_syokei.to_i
+      return_hash[:sale_ass] = return_hash[:sale_ass].to_i + @d_sale.sale_ass.to_i
+      return_hash[:d_sale_ass] = return_hash[:d_sale_ass].to_i + @d_sale_ass.to_i
+      return_hash[:zenjitu_d_sale_sale_pm_out] = return_hash[:zenjitu_d_sale_sale_pm_out].to_i + @zenjitu_d_sale.sale_pm_out.to_i
+      return_hash[:sale_today_out] = return_hash[:sale_today_out].to_i + @d_sale.sale_today_out.to_i
+      return_hash[:sale_am_out] = return_hash[:sale_am_out].to_i + @d_sale.sale_am_out.to_i
+      return_hash[:sale_pm_out] = return_hash[:sale_pm_out].to_i + @d_sale.sale_pm_out.to_i
+      return_hash[:d_sale_calc_aridaka] = return_hash[:d_sale_calc_aridaka].to_i + @d_sale_calc_aridaka.to_i
+      return_hash[:d_sale_cash_aridaka] = return_hash[:d_sale_cash_aridaka].to_i + @d_sale_cash_aridaka.to_i
+      return_hash[:kabusoku] = return_hash[:kabusoku].to_i + (@d_sale_cash_aridaka.to_i - @d_sale_calc_aridaka.to_i)
+    end  
+    return return_hash
+
+  end
+  
 end

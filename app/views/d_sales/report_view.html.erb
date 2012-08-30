@@ -46,17 +46,18 @@
 			<th>現金有高</th>
 			<th>過不足</th>
 		</tr>
-		<%  loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, -1)).strftime("%d").to_i %>
+		<% d_sale_total = Hash::new %>
+		<% loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, -1)).strftime("%d").to_i %>
 		<% loopcnt.times { |i| %>
 			<% select_day = Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, i + 1) %>				
-			<% d_sale, zenjitu_d_sale = get_d_sales_data(select_day.strftime("%Y%m%d")) %>
+			<% @d_sale, @zenjitu_d_sale = get_d_sales_data(select_day.strftime("%Y%m%d")) %>
 			
-			<% if d_sale then%>
-				<% d_sale_ass = zenjitu_d_sale.sale_pm_out.to_i + d_sale.sale_today_out.to_i + d_sale.sale_am_out.to_i   #ASS入金額%>
-				<% d_sale_syokei = d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i - d_sale.purika_tesuryo.to_i + d_sale.pay_money.to_i #小計 %>
-				<% zenjitu_d_sale_cash_arigaka = zenjitu_d_sale.sale_change1.to_i + zenjitu_d_sale.sale_change2.to_i + zenjitu_d_sale.sale_change3.to_i + zenjitu_d_sale.sale_cashbox.to_i %>
-				<% d_sale_calc_aridaka = zenjitu_d_sale_cash_arigaka.to_i + d_sale_syokei.to_i + d_sale.sale_ass.to_i + d_sale_ass.to_i %>
-				<% d_sale_cash_aridaka = d_sale.sale_change.to_i + d_sale.sale_cashbox.to_i %>
+			<% if @d_sale then%>
+				<% @d_sale_ass = @zenjitu_d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i + @d_sale.sale_am_out.to_i   #ASS入金額%>
+				<% @d_sale_syokei = @d_sale.sale_money.to_i + @d_sale.sale_purika.to_i + @d_sale.sonota_money.to_i - @d_sale.purika_tesuryo.to_i + @d_sale.pay_money.to_i #小計 %>
+				<% @zenjitu_d_sale_cash_arigaka = @zenjitu_d_sale.sale_change1.to_i + @zenjitu_d_sale.sale_change2.to_i + @zenjitu_d_sale.sale_change3.to_i + @zenjitu_d_sale.sale_cashbox.to_i %>
+				<% @d_sale_calc_aridaka = @zenjitu_d_sale_cash_arigaka.to_i + @d_sale_syokei.to_i + @d_sale.sale_ass.to_i + @d_sale_ass.to_i %>
+				<% @d_sale_cash_aridaka = @d_sale.sale_change.to_i + @d_sale.sale_cashbox.to_i %>
 			<% end %>
 			
 			<tr>
@@ -64,24 +65,56 @@
 				<td class="title">
 					<%= day_of_the_week(select_day.wday) %>
 				</td>
-				<td class="money"><%= num_fmt(d_sale.sale_money) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale.sale_purika) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale.purika_tesuryo) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale.sonota_money) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale.recive_money) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale.pay_money) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale_syokei) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale.sale_ass) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale_ass) if d_sale %></td>
-				<td class="money"><%= num_fmt(zenjitu_d_sale.sale_pm_out) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale.sale_today_out) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale.sale_am_out) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale.sale_pm_out) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale_calc_aridaka) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale_cash_aridaka) if d_sale %></td>
-				<td class="money"><%= num_fmt(d_sale_cash_aridaka - d_sale_calc_aridaka) if d_sale %></td>
+				<td class="money"><%= num_fmt(@d_sale.sale_money) if @d_sale %></td><!--現金売上-->
+				<td class="money"><%= num_fmt(@d_sale.sale_purika) if @d_sale %></td><!--プリカ売上-->
+				<td class="money"><%= num_fmt(@d_sale.purika_tesuryo) if @d_sale %></td><!--ﾌﾟﾘｶ手数料-->
+				<td class="money"><%= num_fmt(@d_sale.sonota_money) if @d_sale %></td><!--その他売上-->
+				<td class="money"><%= num_fmt(@d_sale.recive_money) if @d_sale %></td><!--掛入金-->
+				<td class="money"><%= num_fmt(@d_sale.pay_money) if @d_sale %></td><!--出金-->
+				<td class="money"><%= num_fmt(@d_sale_syokei) if @d_sale %></td><!--小計-->
+				<td class="money"><%= num_fmt(@d_sale.sale_ass) if @d_sale %></td><!--釣銭追加-->
+				<td class="money"><%= num_fmt(@d_sale_ass) if @d_sale %></td><!--ＡＳＳ入金-->
+				<td class="money"><%= num_fmt(@zenjitu_d_sale.sale_pm_out) if @d_sale %></td><!--前日入金-->
+				<td class="money"><%= num_fmt(@d_sale.sale_today_out) if @d_sale %></td><!--当日入金-->
+				<td class="money"><%= num_fmt(@d_sale.sale_am_out) if @d_sale %></td><!--翌日入金(前)-->
+				<td class="money"><%= num_fmt(@d_sale.sale_pm_out) if @d_sale %></td><!--翌日入金(後)-->
+				<td class="money"><%= num_fmt(@d_sale_calc_aridaka) if @d_sale %></td><!--計算上有高-->
+				<td class="money"><%= num_fmt(@d_sale_cash_aridaka) if @d_sale %></td><!--現金有高-->
+				<td class="money"><%= num_fmt(@d_sale_cash_aridaka - @d_sale_calc_aridaka) if @d_sale %></td><!--過不足-->
 			</tr>
+			<% d_sale_total = calc_total(d_sale_total) %>
 		<% } %>
+		<tr>
+			<td class="title" colspan="2">合計</td>
+			<td class="money"><%= num_fmt(d_sale_total[:sale_money]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:sale_purika]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:purika_tesuryo]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:sonota_money]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:recive_money]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:pay_money]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:d_sale_syokei]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:sale_ass]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:d_sale_ass]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:zenjitu_d_sale_sale_pm_out]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:sale_today_out]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:sale_am_out]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:sale_pm_out]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:d_sale_calc_aridaka]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:d_sale_cash_aridaka]) %></td>
+			<td class="money"><%= num_fmt(d_sale_total[:kabusoku]) %></td>
+		</tr>
+		<tr>
+			<td class="title" colspan="2">現金売上</td>
+			<td class="money"><%= num_fmt(d_sale_total[:sale_money].to_i - @etc_item_total.item_money.to_i) %></td>
+		</tr>
+		<tr>
+			<td class="title" colspan="2">コイン手数料</td>
+			<td class="money"><%= num_fmt(@etc_item_total.item_money.to_i) %></td>
+		</tr>
+		<tr>
+			<td class="title" colspan="2">出納帳残高</td>
+			<td class="money"><%= num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka)  %></td>
+		</tr>
 	</table>
 </div>
 
