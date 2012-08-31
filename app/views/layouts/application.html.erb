@@ -9,7 +9,7 @@
   <%= stylesheet_link_tag    "icon" %>   
   <%= javascript_include_tag "modal" %>
   <%= javascript_include_tag "jquery" %>
-      <%= javascript_include_tag "tablefix" %>
+  <%= javascript_include_tag "tablefix" %>
 
   <!--カレンダー用↓ --> 
   <%= stylesheet_link_tag 'jquery-ui-1.8.22.custom' %>    
@@ -32,15 +32,25 @@
       <div class="background"></div>
       <div class="container"></div>
     </div>
-  <div id="header">  
-  福岡スタンダードSS管理システム
-
-    <%= current_user.user_name %>&nbsp; &nbsp; 
+  <div id="header">
+  	<span style="float:left font-weight:bold;">
+  	<% @establish = Establish.find(:first)%>
+  	<label style="font-size: 20px">
+    &nbsp;＜&nbsp;
+  	<%= @establish.system_name %>
+    &nbsp;＞&nbsp;
+    </label>
+  	</span>
+    <span style="float:right">
+    ログイン者：<%= current_user.user_name %>
+    &nbsp; &nbsp;
+    <%= link_to "パスワード変更", {:controller=>"users",:action=>"edit",:id=>current_user.id,:pass_flg=>1}, :class => 'key_icon' %>
+    &nbsp;
     <%= link_to "ログアウト", destroy_user_session_path, method: :delete, :class => 'logout_icon' %>
-	<%= link_to "パスワード変更", {:controller=>"users",:action=>"edit",:id=>current_user.id,:pass_flg=>1} %>
-
-
-  <%= render :partial => "/layouts/menus.html" %> 
+    &nbsp;
+    </span>
+    <br>
+  	<%= render :partial => "/layouts/menus.html" %> 
    </div>   
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>

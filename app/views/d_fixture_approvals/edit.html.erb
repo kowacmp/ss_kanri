@@ -36,21 +36,43 @@
     <td><%= fixture.buy_day %>
     <% else %>
     <td><%= fixture.buy_day[0,4] + "/"+ fixture.buy_day[4,2] + "/" + fixture.buy_day[6,2] %></td>
-    <% end %>    
-    <td><% if fixture.approve_flg == 1 %>
-    	  <%= radio_button_tag("rbtn#{fixture.id}",1,:checked => true) %>
-    	<% else %>
-    	  <%= radio_button_tag("rbtn#{fixture.id}",1) %>
-    	<% end %>
-    	承認
-    	<% if fixture.approve_flg == 2 %>
-    	  <%= radio_button_tag("rbtn#{fixture.id}",2,:checked => true) %>
-    	<% else %>
-    	  <%= radio_button_tag("rbtn#{fixture.id}",2) %>
-    	<% end %>
-    	却下
-    </td>
-    <td align="center"><%= link_to '入力',{:action => 'entry_comment',:id => fixture.id},:class => 'modal' %></td>
+    <% end %>
+
+    <% menu = Menu.find(:all,:conditions => ['uri = ?','d_fixture_approvals']).first %>    
+    <% m_approval = MApproval.find(:all,:conditions => ['menu_id = ?',menu.id]).first %>
+
+    <% unless m_approval == nil %> 
+      <% if m_approval.approval_id1 == current_user.id %>
+        <% @appraval_id = m_approval.approval_id1 %>
+      <% elsif m_approval.approval_id2 == current_user.id %>
+        <% @appraval_id = m_approval.approval_id2 %>
+      <% elsif m_approval.approval_id3 == current_user.id %>
+        <% @appraval_id = m_approval.approval_id3 %>
+      <% elsif m_approval.approval_id4 == current_user.id %>
+        <% @appraval_id = m_approval.approval_id4 %>
+      <% elsif m_approval.approval_id5 == current_user.id %>
+        <% @appraval_id = m_approval.approval_id5 %> 
+      <% end %>
+    <% end %>
+    <% unless @appraval_id == nil or @appraval_id == ""%>
+	    <td><% if fixture.approve_flg == 1 %>
+	    	  <%= radio_button_tag("rbtn#{fixture.id}",1,:checked => true) %>
+	    	<% else %>
+	    	  <%= radio_button_tag("rbtn#{fixture.id}",1) %>
+	    	<% end %>
+	    	承認
+	    	<% if fixture.approve_flg == 2 %>
+	    	  <%= radio_button_tag("rbtn#{fixture.id}",2,:checked => true) %>
+	    	<% else %>
+	    	  <%= radio_button_tag("rbtn#{fixture.id}",2) %>
+	    	<% end %>
+	    	却下
+	    </td>
+	    <td align="center"><%= link_to '入力',{:action => 'entry_comment',:id => fixture.id},:class => 'modal' %></td>
+    <% else %>
+	    <td></td>
+	    <td></td>
+    <% end %> 
     </tr>
 <% end %>
   <tr>

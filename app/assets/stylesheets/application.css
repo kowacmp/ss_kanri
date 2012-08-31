@@ -58,13 +58,13 @@ div#modal div.container {
 }
 
 #header {
-  /*background-image:url("th_001.gif"); 
+  background-image:url("th_001.gif"); 
   background-color: #3256B6; 
     color: white; 
   border-bottom: 4px solid #fc0; 
 
-  font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;*/
-  padding-top: 10px;
+  font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+  padding-top: 5px;
 }
 
 #footer{
