@@ -301,6 +301,7 @@
   </div>
 <% end %>
 
+<%= javascript_include_tag "comma" %>
 
 <script>
 $(function () {
@@ -349,14 +350,15 @@ $(function () {
       colWidths :  [30, 200, 200, 100, 60]
     });
 
-    //保存の時に金額はカンマを消す
+    //保存の時
     $("form").submit(function() {
     	
          	//金額欄のカンマを消す
-         	$("input.money").each(function(){
-         		var num = new String($(this).val()).replace(/,/g, "");
-           		$(this).val(num); 
-         	});
+         	//Application.jsに移行
+         	//$("input.money").each(function(){
+         	//	var num = new String($(this).val()).replace(/,/g, "");
+           	//	$(this).val(num); 
+         	//});
          	
          	//必須入力チェック
          	//その他内訳　金額、または、その他名が入力されている場合は、内訳は必須入力
@@ -383,11 +385,11 @@ $(function () {
     });
 
     //カンマ編集して表示する
- 	$("input.money").each(function(){
-	    var num = new String($(this).val()).replace(/,/g, "");
-	    while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
-	    $(this).val(num); 
- 	});
+ 	//$("input.money").each(function(){
+	//    var num = new String($(this).val()).replace(/,/g, "");
+	//    while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
+	//    $(this).val(num); 
+ 	//});
 
 })();	
 </script>

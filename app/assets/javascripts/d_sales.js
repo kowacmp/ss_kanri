@@ -4,7 +4,7 @@ $(function () {
     $("#head_input_day")
       .change(function() { 
       	   //店舗種別があるときは、INDEXメソッドを実行、以外はNEWメソッドを実行、
-           if ($("#head_from_view").val() == 'index'){
+           if ($("div#shop_kbn_info").size() != 0){
            	  //Index
            	   $.get(
 				    '/d_sales',                 // 送信先
@@ -19,7 +19,9 @@ $(function () {
 			   //New
 		       $.get(
 				    '/d_sales/new',                 // 送信先
-				    { input_day: $(this).val() , m_shop_id: $("#m_shop_id").val(), remote: true},
+				    { input_day: $(this).val() , m_shop_id: $("#m_shop_id").val(), 
+				      input_shop_kbn: $("#head_input_shop_kbn").val(), 
+				      from_view: $("#head_from_view").val(), remote: true},
 				    function(data, status) {        // 通信成功時にデータを表示
 				       $('#form_d_sale').empty();
 		               $('#form_d_sale').append(data);
@@ -84,14 +86,14 @@ $(function () {
 	    	});
        
     //金額のカンマ編集
-    $("input.money")
-   		.live('focusout', function () { 
-            $(this).val(format_kanma($(this).val()));
-   		})
-   		.live('focus', function () {
-            $(this).val(format_kanma($(this).val(), 2)); 
-            $(this).select();
-  		});
+    //$("input.money")
+   	//	.live('focusout', function () { 
+    //        $(this).val(format_kanma($(this).val()));
+   	//	})
+   	//	.live('focus', function () {
+    //        $(this).val(format_kanma($(this).val(), 2)); 
+    //        $(this).select();
+  	//	});
   
     //値がかわったら再計算
     //売上１、売上２、売上３
@@ -403,19 +405,19 @@ $(function () {
     //カンマ編集
     //set…1:カンマ編集する（デフォルト）
     //     以外:カンマを消す
-    function format_kanma(para_num, para_set) {
-    
-    	if (para_set == undefined) para_set = 1;
-
-    	if (para_set == 1) {
-			var num = new String(para_num).replace(/,/g, "");
-            while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
-            return num; 
-    	} else {
-        	var num = new String(para_num).replace(/,/g, "");
-            return num;
-    	}
-    	
-    };
+    //function format_kanma(para_num, para_set) {
+    //
+    //	if (para_set == undefined) para_set = 1;
+    //
+    //	if (para_set == 1) {
+	//		var num = new String(para_num).replace(/,/g, "");
+    //        while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
+    //        return num; 
+    //	} else {
+    //    	var num = new String(para_num).replace(/,/g, "");
+    //        return num;
+    //	}
+    //	
+    //};
 })();
 

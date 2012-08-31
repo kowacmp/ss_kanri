@@ -67,6 +67,22 @@ div#modal div.container {
   padding-top: 10px;
 }
 
+input.money{
+  ime-mode: inactive;
+  text-align: right;
+}
+
+input.number{
+  ime-mode: inactive;
+  text-align: left;
+}
+
+input.text{
+  ime-mode: active;
+  text-align: left;
+}
+
+
 #footer{
       height:25px;
       /* width: 1325px; */
