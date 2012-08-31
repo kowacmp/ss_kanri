@@ -18,21 +18,28 @@
 <h1>ユーザーマスタメンテ</h1>  
 
 	<%= form_tag({:action => 'search' }, { :remote => true }) do %>
-
 		<div id="search_shop">
 			<div class="title_alias">対象店舗</div>
-			<div class="select_alias_from">
+			<div class="select_alias">
 		   	<%= select("select",'shop_id' ,
 		  	 	MShop.find(:all,:conditions => "deleted_flg = 0", :order => 'shop_cd').map do |u|
 		      	[u.shop_ryaku,u.id]
 		   		end, :include_blank => "") %>
 		   	</div>
+		   	
+		   	<% if @check_del_flg == 0%>
+			  	<%= check_box(:check,:deleted_flg,{},true,false) %>
+			<% else %>
+			  	<%= check_box(:check,:deleted_flg,{:checked => true},true,false) %>
+			<% end %>
+		  
+		    削除項目も表示する。
+		   	
 		</div>
-		
   		<%= submit_tag '検索' %>
-  	
-  	
 	<% end %>
+
+<hr>
 
 <%#= link_to "Sign up", new_registration_path('user') %>
 <%#= link_to 'パスワード変更', edit_user_path(current_user.id), :class => 'add_icon' %>

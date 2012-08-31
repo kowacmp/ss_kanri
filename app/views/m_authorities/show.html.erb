@@ -1,25 +1,16 @@
-<p id="notice"><%= notice %></p>
+<!--<p id="notice"><%#= notice %></p>-->
 
-<p>
-  <b>Authority classd:</b>
-  <%= @m_authority.authority_cd %>
-</p>
-
-<p>
-  <b>Authority class name:</b>
-  <%= @m_authority.authority_name %>
-</p>
-
-<p>
-  <b>Deleted flg:</b>
-  <%= @m_authority.deleted_flg %>
-</p>
-
-<p>
-  <b>Deleted at:</b>
-  <%= @m_authority.deleted_at %>
-</p>
+  <table id='rounded-corner'>
+  	<tr>
+  	  <th>権限コード</th>
+  	  <td><%= @m_authority.authority_cd %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>権限名</th>
+  	  <td><%= @m_authority.authority_name %></td>  	  
+  	</tr>
+  </table>
 
 
-<%= link_to 'Edit', edit_m_authority_path(@m_authority) %> |
-<%= link_to 'Back', m_authorities_path %>
+<%= link_to '編集', {:action=>"edit",:id=>@m_authority.id,:input_check=>@check_del_flg}, :class => 'edit_icon' %> |
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>

@@ -1,20 +1,17 @@
-<h1>Listing m_authorities</h1>
-<%= link_to '新規登録', new_m_authority_path, :class => 'add_icon' %>
+<h1>権限マスタメンテ</h1>
 
-<table id='rounded-corner'>
-  <tr>
-    <th>Authority classd</th>
-    <th>権限名</th>
-    <th colspan="3"></th>
-  </tr>
+<%= form_tag({:action => 'search' }, { :remote => true }) do %>
+  <% if @check_del_flg == 0%>
+  	<%= check_box(:check,:deleted_flg,{},true,false) %>
+  <% else %>
+  	<%= check_box(:check,:deleted_flg,{:checked => true},true,false) %>
+  <% end %>
   
-<% @m_authorities.each do |m_authority| %>
-  <tr>
-    <td><%= m_authority.authority_cd %></td>
-    <td><%= m_authority.authority_name %></td>
-    <td><%= link_to '詳細', m_authority, :class => 'show_icon' %></td>
-    <td><%= link_to '編集', edit_m_authority_path(m_authority), :class => 'edit_icon' %></td>
-    <td><%= link_to '削除', m_authority, :confirm => '削除します。よろしいですか？', :method => :delete, :class=> 'delete_icon' %></td>
-  </tr>
+  削除項目も表示する。
+  <%= submit_tag '表示' %>
 <% end %>
-</table>
+
+<%= link_to '新規登録', new_m_authority_path, :class => 'add_icon' %>
+<br />
+<div id="result"><%= render 'result_list' %></div>
+

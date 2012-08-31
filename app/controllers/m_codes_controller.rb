@@ -45,7 +45,7 @@ class MCodesController < ApplicationController
 
     respond_to do |format|
       if @m_code.save
-        format.html { redirect_to @m_code, notice: 'M code was successfully created.' }
+        format.html { redirect_to @m_code }
         format.json { render json: @m_code, status: :created, location: @m_code }
       else
         format.html { render action: "new" }
@@ -61,7 +61,7 @@ class MCodesController < ApplicationController
 
     respond_to do |format|
       if @m_code.update_attributes(params[:m_code])
-        format.html { redirect_to @m_code, notice: 'M code was successfully updated.' }
+        format.html { redirect_to @m_code }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
