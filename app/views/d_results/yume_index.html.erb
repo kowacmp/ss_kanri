@@ -6,8 +6,17 @@
 
 
 <%= link_to '新規登録', {:action => 'yume_new', :d_result_id => @d_result.id}, { :remote => true ,:class => 'add_icon'} %>
-<div id="yume_result">
-  <%= render 'yume_result' %>
-</div>
+<table>
+  <td>
+    <div id="yume_result"><%= render 'yume_result' %></div>
+  </td>
+  <td valign="top">
+    <div id="new"></div>
+  </td>
+</table>
 
-<div id="new"></div>
+<style type="text/css">
+ input.yume_input { 
+     text-align:right;
+                   }　
+</style>

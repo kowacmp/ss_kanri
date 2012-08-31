@@ -1,1 +1,4 @@
-$('#d_result_meter').html("<%= j(render :partial => 'd_result_meter')%>");
+<% if @m_tanks_count == @d_result_tanks_count %>
+  $('#d_result_meter').html("<%= j(render :partial => 'd_result_meter')%>");
+  $('#d_tank_compute').html("<%= j(render :partial => 'd_tank_compute')%>");
+<% end %>

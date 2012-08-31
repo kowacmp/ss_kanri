@@ -1,0 +1,34 @@
+<%= form_tag({:action => 'd_result_tank_create' }, { :remote => true }) do %>
+  <table id='rounded-corner' width="380">
+    <tr>
+  	  <th width="16%">タンク</th>
+  	  <th width="15%">容量</th>
+  	  <th width="19%">油種</th>
+  	  <th width="25%">仕入</th>
+  	  <th width="25%">在庫</th>  	  	  	  	
+    </tr>
+  </table>
+  <div style="height:440px;width:405px;overflow-y:auto;overflow-x:hidden;">
+  <table id='rounded-corner2'style="margin-top:-1px; width:380px;">
+  <% @m_tanks.each do |m_tank| %>
+    <tr>
+      <td width="16%">タンク<%= m_tank.tank_no %></td>
+      <td width="15%"><%= m_tank.volume %>KL</td>
+      <td width="19%"><%= m_tank.oil_name %></td>
+      <td width="25%"><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :class => "tank_input" %></td>
+      <td width="25%"><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :class => "tank_input" %></td>                  
+    </tr>
+  <% end %>
+  </table>
+  </div>
+  
+  <%= hidden_field :select, :d_result_id, :value => @d_result.id %>
+  <div style="text-align:right; width: 380px;"><%= submit_tag '登録' %></div>
+<% end %>
+
+<style type="text/css">
+ input.tank_input { 
+ 	 width: 75px;
+     text-align:right;
+                   }　
+</style>

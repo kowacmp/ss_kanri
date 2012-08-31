@@ -11,9 +11,9 @@
     <th colspan="4">夢ポイント報告</th>
   </tr>
   <tr>
-    <th>金額</th>
+  	<th>件数</th>
     <th>ポイント</th>
-	<th>件数</th>
+	<th>金額</th>
 	<td rowspan="<%= row %>">
 	  <%= link_to '入力', {:controller => 'd_results', :action => 'yume_index', :result_date => @result_date}, :class => "modal" %>
 	</td>	  	  	  
@@ -21,9 +21,9 @@
   <% unless @d_result_yumes.blank? %>
     <% @d_result_yumes.each do |d_result_yume| %>
       <tr>
-        <td><%= d_result_yume.pos1_data %></td> 	
-        <td><%= d_result_yume.pos2_data %></td> 
-        <td><%= d_result_yume.pos3_data %></td>           
+        <td class="input_no"><%= num_fmt(d_result_yume.pos1_data) %></td> 	
+        <td class="input_no"><%= num_fmt(d_result_yume.pos2_data) %></td> 
+        <td class="input_no"><%= num_fmt(d_result_yume.pos3_data) %></td>           
       </tr>	
     <% end %>
   <% end %>

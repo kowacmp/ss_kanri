@@ -1,10 +1,10 @@
 <table id='rounded-corner'>
 	<tr>
 	  <th width="150">出荷数量(リットル)</th>
-	  <th width="60">POS1</th>
-	  <th width="60">POS2</th>	
-	  <th width="60">POS3</th>
-	  <th width="60">POS日計</th>
+	  <th width="80">POS1</th>
+	  <th width="80">POS2</th>	
+	  <th width="80">POS3</th>
+	  <th width="105">POS日計</th>
 	</tr>
   <% @m_oil_totals.each do |m_oil| %>
     <tr>
@@ -17,17 +17,17 @@
   <% end %>
     <tr>
       <th>ガソリン合計</th>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td class="input_no"><%= num_fmt(@pos1_gasorin, true) %></td>
+      <td class="input_no"><%= num_fmt(@pos2_gasorin, true) %></td>
+      <td class="input_no"><%= num_fmt(@pos3_gasorin, true) %></td>
+      <td class="input_no"><%= num_fmt(@total_gasorin, true) %></td>
     </tr>
     <tr>
       <th>MOFUEL計</th>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td class="input_no"><%= num_fmt(@pos1_mofuel, true) %></td>
+      <td class="input_no"><%= num_fmt(@pos2_mofuel, true) %></td>
+      <td class="input_no"><%= num_fmt(@pos3_mofuel, true) %></td>
+      <td class="input_no"><%= num_fmt(@total_mofuel, true) %></td>
     </tr>   
 </table>
 <br/>
@@ -35,18 +35,18 @@
 <table id='rounded-corner'>
 	<tr>
 	  <th width="150">油外販売</th>
-	  <th width="60">POS1</th>
-	  <th width="60">POS2</th>	
-	  <th width="60">POS3</th>
-	  <th width="60">POS日計</th>	
+	  <th width="80">POS1</th>
+	  <th width="80">POS2</th>	
+	  <th width="80">POS3</th>
+	  <th width="105">POS日計</th>	
 	</tr>
   <% @oiletc0s.each do |oiletc0| %>
     <tr>
       <th><%= oiletc0.oiletc_name %></th> 	
-      <td class="input_no"><%= num_fmt(oiletc0.pos1_data) %></td>
-      <td class="input_no"><%= num_fmt(oiletc0.pos2_data) %></td>
-      <td class="input_no"><%= num_fmt(oiletc0.pos3_data) %></td>  
-      <td class="input_no"><%= num_fmt(oiletc0.pos_total) %></td>              
+      <td class="input_no"><%= num_fmt(oiletc0.pos1_data) %>&nbsp;<%= oiletc0.oiletc_tani%></td>
+      <td class="input_no"><%= num_fmt(oiletc0.pos2_data) %>&nbsp;<%= oiletc0.oiletc_tani%></td>
+      <td class="input_no"><%= num_fmt(oiletc0.pos3_data) %>&nbsp;<%= oiletc0.oiletc_tani%></td>  
+      <td class="input_no"><%= num_fmt(oiletc0.pos_total) %>&nbsp;<%= oiletc0.oiletc_tani%></td>              
     </tr>
   <% end %>	
     <tr>
@@ -62,18 +62,18 @@
 <table id='rounded-corner'>
 	<tr>
 	  <th width="150">その他商品</th>
-	  <th width="60">POS1</th>
-	  <th width="60">POS2</th>	
-	  <th width="60">POS3</th>
-	  <th width="60">POS日計</th>	
+	  <th width="80">POS1</th>
+	  <th width="80">POS2</th>	
+	  <th width="80">POS3</th>
+	  <th width="105">POS日計</th>	
 	</tr>
   <% @oiletc1s.each do |oiletc1| %>
     <tr>
       <th><%= oiletc1.oiletc_name %></th> 	
-      <td class="input_no"><%= num_fmt(oiletc1.pos1_data) %></td>
-      <td class="input_no"><%= num_fmt(oiletc1.pos2_data) %></td>
-      <td class="input_no"><%= num_fmt(oiletc1.pos3_data) %></td>  
-      <td class="input_no"><%= num_fmt(oiletc1.pos_total) %></td>              
+      <td class="input_no"><%= num_fmt(oiletc1.pos1_data) %>&nbsp;<%= oiletc1.oiletc_tani%></td>
+      <td class="input_no"><%= num_fmt(oiletc1.pos2_data) %>&nbsp;<%= oiletc1.oiletc_tani%></td>
+      <td class="input_no"><%= num_fmt(oiletc1.pos3_data) %>&nbsp;<%= oiletc1.oiletc_tani%></td>  
+      <td class="input_no"><%= num_fmt(oiletc1.pos_total) %>&nbsp;<%= oiletc1.oiletc_tani%></td>              
     </tr>
   <% end %>	
 </table>	
@@ -82,18 +82,18 @@
 <table id='rounded-corner'>
 	<tr>
 	  <th width="150">その他売上</th>
-	  <th width="60">POS1</th>
-	  <th width="60">POS2</th>	
-	  <th width="60">POS3</th>
-	  <th width="60">POS日計</th>	
+	  <th width="80">POS1</th>
+	  <th width="80">POS2</th>	
+	  <th width="80">POS3</th>
+	  <th width="105">POS日計</th>	
 	</tr>
   <% @m_etcs.each do |m_etc| %>
     <tr>
-      <th><%= m_etc.etc_name + m_etc.no.to_s %></th> 	
-      <td class="input_no"><%= num_fmt(m_etc.pos1_data) %></td>
-      <td class="input_no"><%= num_fmt(m_etc.pos2_data) %></td>
-      <td class="input_no"><%= num_fmt(m_etc.pos3_data) %></td>  
-      <td class="input_no"><%= num_fmt(m_etc.pos_total) %></td>              
+      <th><%= m_etc.etc_name %></th> 	
+      <td class="input_no"><%= num_fmt(m_etc.pos1_data) %>&nbsp;<%= m_etc.etc_tani%></td>
+      <td class="input_no"><%= num_fmt(m_etc.pos2_data) %>&nbsp;<%= m_etc.etc_tani%></td>
+      <td class="input_no"><%= num_fmt(m_etc.pos3_data) %>&nbsp;<%= m_etc.etc_tani%></td>  
+      <td class="input_no"><%= num_fmt(m_etc.pos_total) %>&nbsp;<%= m_etc.etc_tani%></td>              
     </tr>      
   <% end %>	
 </table>	
@@ -183,6 +183,9 @@
   </td>
   <% if @m_shop.shop_kbn == 1 %> <!-- 油外店のみ表示 -->
     <td valign="top">
+      <div id="d_result_reserve"><%= render 'd_result_reserve' %></div>
+    </td>  
+    <td valign="top">
       <table id='rounded-corner'>
 	    <tr>
 	      <th colspan="3">営業POS伝回収報告</th>
@@ -196,28 +199,9 @@
           <tr>
             <th><%= m_oil_etc.oiletc_name %></th> 	
             <td class="input_no"><%= m_oil_etc.get_num %></td>
-            <td></td>              
+            <td class="input_no"><%= @ruikei_eigyos[m_oil_etc.id][:ruikei] %></td>              
           </tr>
         <% end %>	
-      </table>
-    </td>
-    <td valign="top">
-      <table id='rounded-corner'>
-	    <tr>
-	      <th colspan="4">車検予約カード獲得</th>
-	    </tr>
-	    <tr>
-	      <th>月</th>
-	      <th>日計</th>
-	      <th>累計</th>	  	  
-	    </tr>
-        <% @syukei_reserves.each do |syukei_reserve| %>
-          <tr>
-            <th><%= syukei_reserve[:month] %></th> 	
-            <td class="input_no"><%= syukei_reserve[:nikkei] %></td> 
-            <td class="input_no"><%= syukei_reserve[:ruikei] %></td>           
-          </tr>
-        <% end %>
       </table>
     </td>
   <% end %>

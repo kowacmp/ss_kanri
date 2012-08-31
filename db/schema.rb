@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120828121327) do
+ActiveRecord::Schema.define(:version => 20120830123550) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -354,7 +354,7 @@ ActiveRecord::Schema.define(:version => 20120828121327) do
     t.decimal  "mo_gas",        :precision => 10, :scale => 1
     t.decimal  "keiyu",         :precision => 10, :scale => 1
     t.decimal  "touyu",         :precision => 10, :scale => 1
-    t.decimal  "koua",          :precision => 5,  :scale => 2
+    t.decimal  "koua",          :precision => 11, :scale => 2
     t.integer  "buyou"
     t.integer  "tokusei"
     t.integer  "sensya"
@@ -369,12 +369,12 @@ ActiveRecord::Schema.define(:version => 20120828121327) do
     t.integer  "sc"
     t.integer  "taiyaw"
     t.integer  "coating"
-    t.integer  "atf"
+    t.decimal  "atf",           :precision => 11, :scale => 2
     t.integer  "kousen"
     t.integer  "bt"
     t.integer  "bankin"
     t.integer  "waiper"
-    t.decimal  "mobil1",        :precision => 4,  :scale => 1
+    t.decimal  "mobil1",        :precision => 11, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end

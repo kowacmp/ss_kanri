@@ -4,10 +4,13 @@
 </table>	
 <br/>
 
-
 <%= link_to '新規登録', {:action => 'reserve_new', :d_result_id => @d_result.id}, { :remote => true ,:class => 'add_icon'} %>
-<div id="result">
-  <%= render 'reserve_result' %>
-</div>
 
-<div id="new"></div>
+<table>
+  <td>
+  	<div id="result"><%= render 'reserve_result' %></div>
+  </td>
+  <td valign="top">
+  	<div id="new"></div>
+  </td>
+</table>

@@ -1,6 +1,15 @@
 module DResultsHelper
+  def old_result_date(result_date)
+    today = Time.parse(result_date)
+    day = today.strftime("%d")
+    yesterday = (today - 1.days).strftime("%Y%m%d")    
+    
+    return day, yesterday
+  end
+  
   def m_oiletc_sql(d_result, oiletc_group)
-    sql = "select m.id, m.oiletc_name, m.oiletc_tani, d.pos1_data, d.pos2_data, d.pos3_data, d.pos1_data + d.pos2_data + d.pos3_data as pos_total"
+    sql = "select m.id, m.oiletc_name, m.oiletc_tani, d.pos1_data, d.pos2_data, d.pos3_data,"
+    sql << " COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0) as pos_total"
     sql << " from m_oiletcs m left join d_result_oiletcs d"
     sql << "   on (m.id = d.m_oiletc_id "
     if d_result.blank?
@@ -10,12 +19,11 @@ module DResultsHelper
     end
     
     sql << " where m.oiletc_group = #{oiletc_group} and m.deleted_flg = 0 order by m.oiletc_cd" 
-
+p "sql=#{sql}"
     return sql  
   end
   
   def syukei_data(d_result, select_date)
-    p "syukei_data   syukei_data   syukei_data"
     if d_result.blank?
       now = Time.parse(select_date)
       result_date = Time.parse(select_date).strftime("%Y%m%d")
@@ -41,16 +49,16 @@ module DResultsHelper
              
       #累計                                                        
       sql = "select count(*) from d_result_reserves r, d_results d"
-      sql << " where r.d_result_id = d.id and d.result_date <= '#{result_date}'"
-      sql << "   and r.get_date between '#{start_ymd}' and '#{end_ymd}'"
+      sql << " where r.d_result_id = d.id and d.m_shop_id = #{current_user.m_shop_id}"
+      sql << " and d.result_date <= '#{result_date}'"
+      sql << " and r.get_date between '#{start_ymd}' and '#{end_ymd}'"
     
-      ruikei = DResultReserve.find_by_sql(sql) 
-      
+      ruikei = DResultReserve.count_by_sql(sql) 
 
       @syukei_reserves[i] = Hash::new
       @syukei_reserves[i][:month] = ymd.strftime("%m")
       @syukei_reserves[i][:nikkei] = nikkei_count
-      @syukei_reserves[i][:ruikei] = ruikei[0].count
+      @syukei_reserves[i][:ruikei] = ruikei
     end    
   end
   
@@ -82,8 +90,9 @@ module DResultsHelper
   def meter_total(d_result_id)
     #油種別集計----------------------------------
     d_result = DResult.find(d_result_id)
-    today = Time.parse(d_result.result_date)
-    yesterday = (today - 1.days).strftime("%Y%m%d")
+    day, yesterday = old_result_date(d_result.result_date)
+    #today = Time.parse(d_result.result_date)
+    #yesterday = (today - 1.days).strftime("%Y%m%d")
     old_d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                          d_result.m_shop_id, yesterday])
     
@@ -209,4 +218,188 @@ module DResultsHelper
     cr_sql << "   and t.m_shop_id = #{current_user.m_shop_id} order by t.tank_no"
     @d_tank_compute_reports = DTankComputeReport.find_by_sql(cr_sql)       
   end
+  
+  def m_meters_count_sql(m_shop_id)
+    sql = "select count(*) from m_meters m , m_tanks t"
+    sql << " where m.m_tank_id = t.id and m.deleted_flg = 0"
+    sql << "  and t.deleted_flg = 0 and t.m_shop_id = #{m_shop_id}"
+    
+    return sql    
+  end
+  
+  def tika_data_create(d_result_id)
+    p "tika_data_create   tika_data_create   tika_data_create   tika_data_create"
+    d_result = DResult.find(d_result_id)
+    day, yesterday = old_result_date(d_result.result_date)
+    old_d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
+                                                         d_result.m_shop_id, yesterday])
+    if old_d_result.blank?
+      old_d_result_id = 0
+    else
+      old_d_result_id = old_d_result.id  
+    end
+    
+    
+  #地下タンク計算データ-------------------------
+    
+    #販売数量SQL
+    meter_sql = "select t.id m_tank_id, SUM(COALESCE(dm.meter, 0)) meter_sum, SUM(COALESCE(old_dm.meter, 0)) old_meter_sum"                                                     
+    meter_sql << " from m_tanks t, m_meters m"
+    meter_sql << " left join d_result_meters dm on (dm.m_meter_id = m.id and dm.d_result_id = #{d_result.id})"
+    meter_sql << " left join d_result_meters old_dm on (old_dm.m_meter_id = m.id and old_dm.d_result_id = #{old_d_result_id})"
+    meter_sql << " where t.deleted_flg = 0 and m.deleted_flg = 0 and t.id = m.m_tank_id"
+    meter_sql << "   and t.m_shop_id = #{d_result.m_shop_id} group by t.id"                                                     
+
+    meter_sales = MMeter.find_by_sql(meter_sql)          
+    sales = Array::new
+    
+    meter_sales.each do |meter_sale|
+      sales[meter_sale.m_tank_id] = Hash::new
+      sales[meter_sale.m_tank_id][:sale] = meter_sale.meter_sum.to_i - meter_sale.old_meter_sum.to_i
+    end                                                       
+    
+    #地下タンク仕入量、在庫量抽出
+    d_result_tanks = DResultTank.find(:all, :conditions => ["d_result_id = ?", d_result.id])   
+    tanks = Array::new
+    d_result_tanks.each do |d_result_tank|
+      tanks[d_result_tank.m_tank_id] = Hash::new
+      tanks[d_result_tank.m_tank_id][:receive] = d_result_tank.receive.to_i
+      tanks[d_result_tank.m_tank_id][:stock] = d_result_tank.stock.to_i
+    end
+    
+    m_tanks = MTank.find(:all, :conditions => ["m_shop_id = ? and deleted_flg = 0",current_user.m_shop_id])
+    m_tanks.each do |m_tank|
+      d_tank_compute_report = DTankComputeReport.find(:first, :conditions => ["d_result_id = ? and m_tank_id = ?", d_result_id, m_tank.id])
+      old_d_tank_compute_report = DTankComputeReport.find(:first, :conditions => ["d_result_id = ? and m_tank_id = ?", old_d_result_id, m_tank.id])
+      
+      if d_tank_compute_report.blank?
+        d_tank_compute_report = DTankComputeReport.new
+        d_tank_compute_report.d_result_id = d_result_id
+        d_tank_compute_report.m_tank_id = m_tank.id
+        d_tank_compute_report.inspect_flg = 0             
+      end
+      
+      if old_d_tank_compute_report.blank?
+        d_tank_compute_report.before_stock = 0
+      else
+        d_tank_compute_report.before_stock = old_d_tank_compute_report.after_stock     
+      end
+
+      d_tank_compute_report.receive = tanks[m_tank.id][:receive]
+      d_tank_compute_report.sale = sales[m_tank.id][:sale]
+      d_tank_compute_report.compute_stock = d_tank_compute_report.before_stock + d_tank_compute_report.receive - d_tank_compute_report.sale
+      d_tank_compute_report.after_stock = tanks[m_tank.id][:stock]
+      d_tank_compute_report.decrease = d_tank_compute_report.after_stock - d_tank_compute_report.compute_stock
+      
+      if old_d_tank_compute_report.blank? or day == "01"#前回レコードがない、または月初だと今回の値を代入
+        d_tank_compute_report.sale_total = sales[m_tank.id][:sale]
+        d_tank_compute_report.decrease_total = d_tank_compute_report.decrease 
+      else
+        d_tank_compute_report.decrease_total = old_d_tank_compute_report.decrease_total + d_tank_compute_report.decrease
+        d_tank_compute_report.sale_total = old_d_tank_compute_report.sale_total + sales[m_tank.id][:sale] 
+      end
+      total_percentage = d_tank_compute_report.decrease_total.to_f / d_tank_compute_report.sale_total.to_f * 100      
+
+      #桁オーバーフロー対策
+      total_percentage = 999.999  if total_percentage >= 1000     
+      d_tank_compute_report.total_percentage = total_percentage.round(3)
+      d_tank_compute_report.save      
+    end
+    
+    
+  #地下タンク過不足データ--------------------------
+    compute_sql = "select o.id m_oil_id, SUM(cr.decrease) decrease_sum, SUM(cr.sale) sale_sum, SUM(cr.sale_total) sale_total_sum"
+    compute_sql << " from m_oils o, m_tanks t, d_tank_compute_reports cr"
+    compute_sql << " where o.deleted_flg = 0 and t.deleted_flg = 0 and o.id = t.m_oil_id"
+    compute_sql << "   and cr.m_tank_id = t.id and cr.d_result_id = #{d_result.id}"
+    compute_sql << " group by o.id order by o.id"
+    
+    d_tank_compute_reports = DTankComputeReport.find_by_sql(compute_sql)    
+    d_tank_decrease_report = DTankDecreaseReport.find(:first, :conditions => ["d_result_id = ?", d_result.id])
+    old_d_tank_decrease_report = DTankDecreaseReport.find(:first, :conditions => ["d_result_id = ?", old_d_result.id])
+    
+    if d_tank_decrease_report.blank?
+      d_tank_decrease_report = DTankDecreaseReport.new
+      d_tank_decrease_report.d_result_id = d_result.id      
+    end
+    
+    d_tank_compute_reports.each do |d_tank_compute_report|
+      d_tank_decrease_report["oil#{d_tank_compute_report.m_oil_id}_id"] = d_tank_compute_report.m_oil_id
+      d_tank_decrease_report["oil#{d_tank_compute_report.m_oil_id}_num"] = d_tank_compute_report.decrease_sum
+    end
+    
+    #前回レコードがない場合、または月初めの場合は累計項目に今回の値を代入
+    if old_d_tank_decrease_report.blank? or day == "01" 
+      d_tank_decrease_report.oil1_num_total = d_tank_decrease_report.oil1_num
+      d_tank_decrease_report.oil2_num_total = d_tank_decrease_report.oil2_num
+      d_tank_decrease_report.oil3_num_total = d_tank_decrease_report.oil3_num
+      d_tank_decrease_report.oil4_num_total = d_tank_decrease_report.oil4_num
+    else
+      d_tank_decrease_report.oil1_num_total = d_tank_decrease_report.oil1_num + old_d_tank_decrease_report.oil1_num_total
+      d_tank_decrease_report.oil2_num_total = d_tank_decrease_report.oil2_num + old_d_tank_decrease_report.oil2_num_total
+      d_tank_decrease_report.oil3_num_total = d_tank_decrease_report.oil3_num + old_d_tank_decrease_report.oil3_num_total
+      d_tank_decrease_report.oil4_num_total = d_tank_decrease_report.oil4_num + old_d_tank_decrease_report.oil4_num_total        
+    end
+      
+      #レギュラーのみの欠減率を求める
+    d_tank_compute_reports.each do |d_tank_compute_report|
+      if d_tank_compute_report.m_oil_id.to_i == 2
+        oil_percent = d_tank_decrease_report.oil2_num.to_f / d_tank_compute_report.sale_sum.to_f * 100
+        #桁オーバーフロー対策
+        oil_percent = 999.99  if oil_percent >= 1000
+        d_tank_decrease_report.oil_percent = oil_percent.round(2)
+        
+        oil_percent_total = d_tank_decrease_report.oil2_num_total.to_f / d_tank_compute_report.sale_total_sum.to_f * 100
+        #桁オーバーフロー対策
+        oil_percent_total = 999.99  if oil_percent_total >= 1000        
+        d_tank_decrease_report.oil_percent_total = oil_percent_total.round(2)        
+      end
+    end
+        
+    d_tank_decrease_report.save    
+  end
+  
+  def m_oiletc_pos_total(d_result_id, m_oiletc_cd, tax_rate)
+    sql = "select COALESCE(r.pos1_data, 0) + COALESCE(r.pos2_data, 0) + COALESCE(r.pos3_data, 0) as pos_total, m.tax_flg"
+    sql << " from d_result_oiletcs r, m_oiletcs m"
+    sql << " where r.m_oiletc_id = m.id and m.oiletc_cd = #{m_oiletc_cd}"
+    sql << "   and r.d_result_id = #{d_result_id}"
+    
+    d_result_oiletc = DResultOiletc.find_by_sql(sql)
+    
+    if d_result_oiletc.blank?
+      pos_total = 0
+    else
+      #課税フラグが１の場合のみ税抜き値を代入
+      if d_result_oiletc[0].tax_flg.to_i == 1
+        pos_total = d_result_oiletc[0].pos_total.to_i / tax_rate
+      else
+        pos_total = d_result_oiletc[0].pos_total  
+      end   
+    end
+    
+    return pos_total
+  end
+
+  def m_etc_pos_total(d_result_id, m_etc_cd, tax_rate)
+    sql = "select COALESCE(r.pos1_data, 0) + COALESCE(r.pos2_data, 0) + COALESCE(r.pos3_data, 0) as pos_total, m.tax_flg"
+    sql << " from d_result_etcs r, m_etcs m"
+    sql << " where r.m_etc_id = m.id and m.etc_cd = #{m_etc_cd}"
+    sql << " and r.d_result_id = #{d_result_id}"
+    
+    d_result_etc = DResultEtc.find_by_sql(sql)
+    
+    if d_result_etc.blank?
+      pos_total = 0
+    else
+      #課税フラグが１の場合のみ税抜き値を代入
+      if d_result_etc[0].tax_flg.to_i == 1
+        pos_total = d_result_etc[0].pos_total.to_i / tax_rate
+      else
+        pos_total = d_result_etc[0].pos_total
+      end
+    end
+    
+    return pos_total
+  end   
 end
