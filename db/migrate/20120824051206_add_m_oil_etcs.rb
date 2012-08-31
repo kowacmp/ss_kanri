@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 class AddMOilEtcs < ActiveRecord::Migration
   def up
-    add_column :m_oiletcs, :tax_flg, :smallint, :null => false
+    add_column :m_oiletcs, :tax_flg, :smallint, :null => false, :default => 0
     execute "COMMENT ON COLUMN m_oiletcs.tax_flg IS '課税フラグ　0:非課税　1:課税'"
     
     change_column :m_oiletcs, :oiletc_cd,     :smallint,  :null => false,:limit => 2

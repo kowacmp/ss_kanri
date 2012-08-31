@@ -6,6 +6,8 @@
   <%= f.hidden_field :recive_money, :class=>"money" %>
   <%= f.hidden_field :sale_cashbox, :class=>"money" %>
   <%= f.hidden_field :sale_changebox, :class=>"money" %>
+  <%= f.hidden_field :exist_money, :class=>"money" %>
+  <%= f.hidden_field :over_short, :class=>"money" %>
   
   <%= hidden_field_tag 'head_input_shop_kbn', @head[:input_shop_kbn] %>
   <%= hidden_field_tag 'head_from_view', @head[:from_view] %>
@@ -55,7 +57,7 @@
 	  <div class="input_alias"><%= f.text_field :sale_am_out, :size=>4, :class=>"money" %></div>
 	  <div class="title_alias">釣銭機３</div>
 	  <div class="input_alias"><%= f.text_field :sale_change3, :size=>4, :class=>"money" %></div>
-	  <div class="title_alias">　〃　釣銭機</div>
+	  <div class="title_alias">釣銭機固定額</div>
 	  <div class="info_alias"><%= num_fmt(@m_fix_money.total_change_money.to_i) %></div>
 	  
 	  <br />
@@ -110,9 +112,8 @@
 						<%= link_to 'クリア', {:action => "destroy_d_sale_item", :id => @pay_item.id, :kbn=> "pay_item", :index=>i }, :confirm => 'この行をクリアします。よろしいですか？', :remote => true, :method => :delete, :class=> 'delete_icon' %>
 						<% end %>
 					</td>
-				</tr>				
+				</tr>
             <% } %>
-
 		</table>
       </div>
 

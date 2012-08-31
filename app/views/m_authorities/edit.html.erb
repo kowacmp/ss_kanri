@@ -1,6 +1,5 @@
-<h1>Editing m_authority</h1>
+<h1>更新</h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @m_authority %> |
-<%= link_to 'Back', m_authorities_path %>
+<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>

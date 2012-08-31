@@ -1,24 +1,4 @@
-<script>
-	jQuery(function () {
-
-	    //監査フラグが変更された場合のイベント
-	    jQuery("#m_etc_kansa_flg")
-	      .change(function() { 
-	      	
-	      	if (jQuery("#m_etc_kansa_flg").val() == 1) {
-	      		//実績の場合、最大数に１を入力し変更不可にする。
-				jQuery("#m_etc_max_num").val(1);
-				jQuery("#m_etc_max_num").attr('readonly',true);
-			}else{
-				//監査の場合、最大数を変更可能にする。
-				jQuery("#m_etc_max_num").attr('readonly',false);
-			};
-	      	
-	     });
-	     
-	 })();
-</script>
-
+<%= javascript_include_tag "m_etcs" %>
 
 <%= form_for(@m_etc) do |f| %>
   <% if @m_etc.errors.any? %>

@@ -272,6 +272,13 @@ input.text{
   text-align: left;
 }
 
+tr.total {
+  td.money {
+    ime-mode: inactive;
+    text-align: right;    
+    background-color: #A5D7AA;  
+  }
+}
 div#result input[ type=checkbox ] {
   width: 40px; height: 40px;
   /*-moz-transform-origin: right bottom;*/

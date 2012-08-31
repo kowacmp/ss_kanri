@@ -121,11 +121,11 @@ p params
     @changebox_aridaka = @zenjitu_d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i + @sale_change_total - @syo_total - @d_sale.sale_ass.to_i - @zenjitu_d_sale.sale_pm_out.to_i 
     @cash_aridaka = @m_fix_money.total_cash_box.to_i + @changebox_aridaka.to_i + @d_sale.sale_today_out.to_i + @d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i 
 
-    #固定金庫(マスタより)
-    @d_sale.sale_cashbox = @m_fix_money.total_cash_box.to_i
-    #釣銭機固定金庫（前日の翌日出(後)＋当日出＋釣銭機ー小計ーASSー当日出）
-    #@d_sale.sale_changebox = @changebox_aridaka
-
+    @d_sale.sale_cashbox = @m_fix_money.total_cash_box.to_i #固定金庫(マスタより)
+    @d_sale.sale_changebox = @changebox_aridaka #釣銭機固定金庫
+    @d_sale.exist_money = @cash_aridaka #現金有高
+    @d_sale.over_short = @cash_aridaka - @total #過不足
+    
     respond_to do |format|
       if params[:remote]
         format.html { render :partial => 'form'  }
