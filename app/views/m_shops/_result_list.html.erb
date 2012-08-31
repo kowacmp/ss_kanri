@@ -64,7 +64,7 @@
 	</td>
     <!--td class="icon"><%#= link_to image_tag('icon/24_show.png'), m_shop %></td-->
     <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_shop_path(m_shop) %></td>
-    <td class="icon"><%= link_to image_tag('icon/24_edit.png'), :controller => "m_meters",:action => "new",:id => m_shop.id %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_meter.png'), :controller => "m_meters",:action => "new",:id => m_shop.id %></td>
     <td class="icon">
     	<%= link_to image_tag('icon/24_delete.png'), m_shop, :confirm => '削除します。よろしいですか？', :method => :delete %>
     </td>

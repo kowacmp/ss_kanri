@@ -17,6 +17,8 @@
       </ul>
     </div>
   <% end %>
+  
+  <%= hidden_field "input",'check',:value=>@check_del_flg%>
 
   	<table id='rounded-corner'>
 	  	<% if @pass_flg == 0 %>
@@ -100,4 +102,4 @@
   </div>
 <% end %>
 
-<%= link_to '戻る', users_path, :class => 'return_icon' %>
+<%#= link_to '戻る', users_path, :class => 'return_icon' %>

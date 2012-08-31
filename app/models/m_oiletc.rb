@@ -9,4 +9,10 @@ class MOiletc < ActiveRecord::Base
   validates :tax_flg, :presence => {:message => '課税フラグは必須です。'}
   validates :oiletc_trade, :presence => {:message => '営業項目は必須です。'}
   
+  validates :oiletc_cd, :uniqueness => {:message => '油外コードが重複しています。'}
+  
+  validates :oiletc_cd, :numericality => {:greater_than_or_equal_to => 0,
+                                          :less_than_or_equal_to => 99,
+                                          :message => '油外コードは数値で入力してください。'}
+  
 end
