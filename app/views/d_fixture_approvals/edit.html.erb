@@ -5,6 +5,7 @@
 <%= link_to '一覧に戻る',{:action => 'index',:from_ymd => @from_ymd,:to_ymd => @to_ymd,:shop_kbn => @shop_kbn} %>
 
 <table id="rounded-corner">
+
 	<tr>
 		<th>No</th>
 		<th>購入先</th>
@@ -24,14 +25,18 @@
     <td><%= i %></td>
     <td><%= fixture.buy_shop %></td>
     <td><%= fixture.buy_item %></td>
-    <td><%= fixture.buy_num %></td>
-    <td><%= fixture.buy_price %></td>
-    <td><%= goukei = fixture.buy_num * fixture.buy_price %>
+    <td align="right"><%= number_with_delimiter(fixture.buy_num) %></td>
+    <td align="right"><%= number_with_delimiter(fixture.buy_price) %></td>
+    <td align="right"><%= number_with_delimiter(goukei = fixture.buy_num * fixture.buy_price) %>
     	<% sum_goukei = sum_goukei + goukei %>
     </td>
     <td><%= fixture.buy_object %></td>
-    <td><%= fixture.now_num %></td>
-    <td><%= fixture.buy_day %></td>
+    <td align="right"><%= number_with_delimiter(fixture.now_num) %></td>
+    <% if fixture.buy_day == nil or fixture.buy_day == "" %>
+    <td><%= fixture.buy_day %>
+    <% else %>
+    <td><%= fixture.buy_day[0,4] + "/"+ fixture.buy_day[4,2] + "/" + fixture.buy_day[6,2] %></td>
+    <% end %>    
     <td><% if fixture.approve_flg == 1 %>
     	  <%= radio_button_tag("rbtn#{fixture.id}",1,:checked => true) %>
     	<% else %>
@@ -45,12 +50,12 @@
     	<% end %>
     	却下
     </td>
-    <td><%= link_to '入力',{:action => 'entry_comment',:id => fixture.id},:class => 'modal' %></td>
+    <td align="center"><%= link_to '入力',{:action => 'entry_comment',:id => fixture.id},:class => 'modal' %></td>
     </tr>
 <% end %>
   <tr>
-  	<td colspan="5"></td>
-  	<td><%= sum_goukei %></td>
+  	<th colspan="5">購入合計額</th>
+  	<td align="right"><%= number_with_delimiter(sum_goukei) %></td>
   	<td colspan="5"></td>
   </tr>
 </table>

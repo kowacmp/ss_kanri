@@ -1,0 +1,80 @@
+<%= form_tag({:action => 'edit' }) do %>
+<table class='rounded-corner' >
+	<tr>
+  		<th>
+  			監査日
+  		</th>
+  		<td>
+			<%=text_field :header, :audit_date, :maxlength => 10 , :style => "width:80px;" , :value => audit_date %>
+  		</td>
+  		<th>
+  			対象店舗
+  		</th>
+  		<td>
+  			<% m_shops = MShop.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'shop_cd') %>
+			<%=select :header, :m_shop_id, m_shops.collect{|i| [i.shop_name ,i.id]},
+				:selected => m_shop_id, :include_blank => "選択してください" %>
+  		</td>
+  		<td style="border: none;">
+			&nbsp;
+			<%= submit_tag '　表　示　', :onclick => "return header_chk()", :disable_with => "処理中です..." %>
+  		</td>
+	</tr>
+</table>
+<%end%> <!-- form_tag :action = "edit" -->
+
+<script language="JavaScript">
+
+	$(function() {
+  		// 監査日のカレンダー機能
+    	$("#header_audit_date").datepicker();
+    	
+	});
+	
+	// 表示ボタンクリック時のチェック
+	function header_chk() {
+		
+		// 監査日チェック
+		if (!ckDate($("#header_audit_date").val())) {
+			alert("監査日を正しく入力してください。");
+			return false;
+		}
+		
+		// 対象店舗チェック
+		if ($("#header_m_shop_id").val() == "") {
+			alert("対象店舗を選択してください。");
+			return false;
+		}
+		
+		return true;
+		
+	}
+	
+/****************************************************************
+* 機　能： 入力された値が日付でYYYY/MM/DD形式になっているか調べる
+* 引　数： datestr　入力された値
+* 戻り値： 正：true　不正：false
+****************************************************************/
+function ckDate(datestr) {
+    // 正規表現による書式チェック
+    if(!datestr.match(/^\d{4}\/\d{2}\/\d{2}$/)){
+        return false;
+    }
+    var vYear = datestr.substr(0, 4) - 0;
+    var vMonth = datestr.substr(5, 2) - 1; // Javascriptは、0-11で表現
+    var vDay = datestr.substr(8, 2) - 0;
+    // 月,日の妥当性チェック
+    if(vMonth >= 0 && vMonth <= 11 && vDay >= 1 && vDay <= 31){
+        var vDt = new Date(vYear, vMonth, vDay);
+        if(isNaN(vDt)){
+            return false;
+        }else if(vDt.getFullYear() == vYear && vDt.getMonth() == vMonth && vDt.getDate() == vDay){
+            return true;
+        }else{
+            return false;
+        }
+    }else{
+        return false;
+    }
+}
+</script>

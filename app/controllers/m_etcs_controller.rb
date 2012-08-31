@@ -3,14 +3,14 @@ class MEtcsController < ApplicationController
   # GET /m_etcs.json
   def index
     #@m_etcs = MEtc.all
-    p "index----"
     
-    select_sql = "select a.*, b.code_name as etc_group_name,"
-    select_sql << "           c.code_name as kansa_flg_name, d.code_name as tax_flg_name " 
+    select_sql = "select a.*, b.code_name as etc_tani_name,c.code_name as etc_group_name,"
+    select_sql << "           d.code_name as kansa_flg_name, e.code_name as tax_flg_name " 
     select_sql << " from m_etcs a " 
-    select_sql << " left join (select * from m_codes where kbn='m_etc_group') b on a.etc_group = cast(b.code as integer) "
-    select_sql << " left join (select * from m_codes where kbn='kansa_flg') c on a.kansa_flg = cast(c.code as integer) "
-    select_sql << " left join (select * from m_codes where kbn='tax_flg') d on a.tax_flg = cast(d.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='tani') b on a.etc_tani = cast(b.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='m_etc_group') c on a.etc_group = cast(c.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='kansa_flg') d on a.kansa_flg = cast(d.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='tax_flg') e on a.tax_flg = cast(e.code as integer) "
     
     condition_sql = ""
     
@@ -43,12 +43,13 @@ class MEtcsController < ApplicationController
   # GET /m_etcs/1.json
   def show
     
-    select_sql = "select a.*, b.code_name as etc_group_name,"
-    select_sql << "           c.code_name as kansa_flg_name, d.code_name as tax_flg_name " 
+    select_sql = "select a.*, b.code_name as etc_tani_name,c.code_name as etc_group_name,"
+    select_sql << "           d.code_name as kansa_flg_name, e.code_name as tax_flg_name " 
     select_sql << " from m_etcs a " 
-    select_sql << " left join (select * from m_codes where kbn='m_etc_group') b on a.etc_group = cast(b.code as integer) "
-    select_sql << " left join (select * from m_codes where kbn='kansa_flg') c on a.kansa_flg = cast(c.code as integer) "
-    select_sql << " left join (select * from m_codes where kbn='tax_flg') d on a.tax_flg = cast(d.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='tani') b on a.etc_tani = cast(b.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='m_etc_group') c on a.etc_group = cast(c.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='kansa_flg') d on a.kansa_flg = cast(d.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='tax_flg') e on a.tax_flg = cast(e.code as integer) "
     
     condition_sql = " where a.id = " + params[:id]
     
@@ -102,7 +103,6 @@ class MEtcsController < ApplicationController
   # PUT /m_etcs/1
   # PUT /m_etcs/1.json
   def update
-    p "update----"
     @m_etc = MEtc.find(params[:id])
 
     respond_to do |format|
@@ -121,7 +121,6 @@ class MEtcsController < ApplicationController
   # DELETE /m_etcs/1
   # DELETE /m_etcs/1.json
   def destroy
-    p "delete-----------------"
     @m_etc = MEtc.find(params[:id])
     #@m_etc.destroy
     if @m_etc.deleted_flg == 1
@@ -140,12 +139,13 @@ class MEtcsController < ApplicationController
   
   def search
     
-    select_sql = "select a.*, b.code_name as etc_group_name,"
-    select_sql << "           c.code_name as kansa_flg_name, d.code_name as tax_flg_name " 
+    select_sql = "select a.*, b.code_name as etc_tani_name,c.code_name as etc_group_name,"
+    select_sql << "           d.code_name as kansa_flg_name, e.code_name as tax_flg_name " 
     select_sql << " from m_etcs a " 
-    select_sql << " left join (select * from m_codes where kbn='m_etc_group') b on a.etc_group = cast(b.code as integer) "
-    select_sql << " left join (select * from m_codes where kbn='kansa_flg') c on a.kansa_flg = cast(c.code as integer) "
-    select_sql << " left join (select * from m_codes where kbn='tax_flg') d on a.tax_flg = cast(d.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='tani') b on a.etc_tani = cast(b.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='m_etc_group') c on a.etc_group = cast(c.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='kansa_flg') d on a.kansa_flg = cast(d.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='tax_flg') e on a.tax_flg = cast(e.code as integer) "
     
     condition_sql = ""
     

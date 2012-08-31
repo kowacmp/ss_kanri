@@ -1,0 +1,115 @@
+<%= form_tag({:action => 'update' }, :id => "form_update") do %>
+<table class='rounded-corner' >
+  <tr>
+  	<th>分類</th>
+  	<th>チェック内容</th>
+  	<th>ＯＫ／ＮＧ</th>
+  	<th>チェックコメント</th>
+  </tr>
+  
+  <% tmp_item = '' %> <!-- 前行の分類名 -->
+  <% rec_cnt = 0 %> <!-- レコードの連番 -->
+ 
+  <%for m_audit_check in @m_audit_checks%>
+    <% 
+      #レコード連番イクリメント
+      rec_cnt += 1 
+    
+      #d_audit_checksの読込
+      d_audit_check = DAuditCheck.find(:first, 
+      	:conditions => ["m_shop_id=? AND audit_date=? AND m_audit_check_id=?",
+				m_shop_id,
+      			audit_date.gsub("/",""),
+      		    m_audit_check.id])
+      
+      #レコードがない場合は新規
+      if d_audit_check.nil? then
+      	d_audit_check = DAuditCheck.new()
+      end
+    %>
+    
+    <tr>
+    
+      <!-- 分類部分の作成(縦方向に連結したセル) -->
+  	  <%if tmp_item != m_audit_check.item then %>
+  	    <td align="center" rowspan="<%=m_audit_check.cnt%>" style="background-color: #61B4CF;">
+  	      <%=m_audit_check.item%><%tmp_item = m_audit_check.item%>
+  	    </td>
+  	  <% end %> <!-- if tmp_item != m_audit_check.item then -->
+      
+      <!-- チェック内容 -->
+      <td style="background-color: #A5D7AA;">
+        <%=m_audit_check.content%>	
+        <!-- KEY項目hidden -->
+        <%= hidden_field "d_audit_check#{rec_cnt}", :id,         :value => d_audit_check.id  %>
+        <%= hidden_field "d_audit_check#{rec_cnt}", :m_shop_id,  :value => m_shop_id %>
+        <%= hidden_field "d_audit_check#{rec_cnt}", :audit_date, :value => audit_date.gsub("/","") %> 
+        <%= hidden_field "d_audit_check#{rec_cnt}", :m_audit_check_id, :value => m_audit_check.id %>
+      </td>
+  
+      <!-- ＯＫ／ＮＧ -->
+      <td>
+      	<%= radio_button "d_audit_check#{rec_cnt}", :check_flg, '1', {:checked => (d_audit_check.check_flg == 1) } %>
+      	<label for="d_audit_check<%=rec_cnt%>_check_flg_1">ＯＫ</label>
+      	&nbsp;&nbsp;
+      	<%= radio_button "d_audit_check#{rec_cnt}", :check_flg, '2', {:checked => (d_audit_check.check_flg == 2) } %>
+      	<label for="d_audit_check<%=rec_cnt%>_check_flg_2">ＮＧ</label>
+      </td>
+
+      <!-- チェックコメント -->
+      <td>
+      	<%= text_area "d_audit_check#{rec_cnt}", :comment, :size=>"30x2", :maxlength=> "100", :value=> d_audit_check.comment %>
+      </td>
+
+	</tr>
+  <% end %> <!-- for m_audit_check in @m_audit_checks -->
+
+
+  <%
+     #d_audit_checks(総評)の読込
+     d_audit_check = DAuditCheck.find(:first, 
+      	:conditions => ["m_shop_id=? AND audit_date=? AND m_audit_check_id=?",
+				m_shop_id,
+      			audit_date.gsub("/",""),
+      		    999])
+      		    
+      #レコードがない場合は新規
+      if d_audit_check.nil? then
+      	d_audit_check = DAuditCheck.new()
+      end
+  %>
+
+　<tr>
+    <td align="center" style="background-color: #61B4CF;">
+		総評
+    </td>
+	<td colspan="4" >
+		<%= hidden_field "d_audit_check", :id,               :value => d_audit_check.id %>
+        <%= hidden_field "d_audit_check", :m_shop_id,        :value => m_shop_id %>
+        <%= hidden_field "d_audit_check", :audit_date,       :value => audit_date.gsub("/","") %> 
+        <%= hidden_field "d_audit_check", :m_audit_check_id, :value => 999 %>
+        <%= hidden_field "d_audit_check", :check_flg,        :value => 0 %>
+      	<%= text_area "d_audit_check", :comment, :size=>"60x2", :maxlength=> "100", :value=> d_audit_check.comment %>
+	</td>
+  </tr>
+  
+  <tr>
+  	<td colspan="5" align="right" style="border: none">
+  		<br/>
+		<%
+			url = "./edit?header[audit_date]=#{url_encode(audit_date)}&header[m_shop_id]=#{m_shop_id}"
+		%>
+			<input type="button" value="キャンセル" 
+				onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
+								this.value='キャンセル中です...';
+								this.disabled=true;document.location='<%=url%>';
+						}" />
+			&nbsp;&nbsp;
+			<%= submit_tag '　保　存　', :disable_with => '保存中です...', :confirm => '保存しても良いですか？' %>
+			&nbsp;&nbsp;	
+  	</td>
+  <tr>
+  
+</table>
+
+<% end %> <!-- form_tag({:action => 'update' }) do -->

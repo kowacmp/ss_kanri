@@ -36,6 +36,8 @@ module SsKanri
     # Configure the default encoding used in templates for Ruby 1.9.
     config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
     
+    config.active_record.default_timezone = :local
+    
     config.encoding = "utf-8"
 
     # Configure sensitive parameters which will be filtered from the log file.

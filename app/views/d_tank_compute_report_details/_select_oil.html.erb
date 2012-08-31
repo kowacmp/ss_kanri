@@ -1,0 +1,2 @@
+<%= select_tag('select_oil', options_from_collection_for_select(MOil.find(:all,:order => 'id'),
+      :id,:oil_name)) %>

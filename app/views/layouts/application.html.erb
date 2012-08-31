@@ -37,6 +37,8 @@
 
     <%= current_user.user_name %>&nbsp; &nbsp; 
     <%= link_to "ログアウト", destroy_user_session_path, method: :delete, :class => 'logout_icon' %>
+	<%= link_to "パスワード変更", {:controller=>"users",:action=>"edit",:id=>current_user.id,:pass_flg=>1} %>
+
 
   <%= render :partial => "/layouts/menus.html" %> 
    </div>   

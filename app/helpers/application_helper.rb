@@ -67,4 +67,14 @@ module ApplicationHelper
       return number_with_delimiter(num.to_f.round)
     end
   end
+  
+  def format_month(month)
+    month = month.to_s
+    if month.length == 1
+      month = "0" + month
+    else
+      month = month
+    end
+    return month
+  end
 end

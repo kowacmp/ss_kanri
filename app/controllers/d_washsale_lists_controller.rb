@@ -12,8 +12,12 @@ class DWashsaleListsController < ApplicationController
     @wday = @input_ymd.to_time.wday
     
     @d_wash_sales.each do |d_wash_sale|
-      if params[:cbox].include?(d_wash_sale.id.to_s)
-        d_wash_sale.kakutei_flg = 1
+      unless params[:cbox] == nil
+        if params[:cbox].include?(d_wash_sale.id.to_s)
+          d_wash_sale.kakutei_flg = 1
+        else
+          d_wash_sale.kakutei_flg = 0
+        end
       else
         d_wash_sale.kakutei_flg = 0
       end
