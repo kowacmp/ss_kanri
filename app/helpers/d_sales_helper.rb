@@ -18,6 +18,8 @@ module DSalesHelper
     select_sql << " , a.sale_pm_out "
     select_sql << " , a.sale_cashbox "
     select_sql << " , a.sale_changebox "
+    select_sql << " , a.exist_money "
+    select_sql << " , a.over_short "
     
     select_sql << " from d_sales a "
     select_sql << " left join(select d_sale_id, sum(item_money) item_money from d_sale_items where m_shop_id = #{@head[:m_shop_id]} and item_class = 3 group by d_sale_id) b on a.id = b.d_sale_id "
@@ -66,9 +68,9 @@ module DSalesHelper
       return_hash[:sale_today_out] = return_hash[:sale_today_out].to_i + @d_sale.sale_today_out.to_i
       return_hash[:sale_am_out] = return_hash[:sale_am_out].to_i + @d_sale.sale_am_out.to_i
       return_hash[:sale_pm_out] = return_hash[:sale_pm_out].to_i + @d_sale.sale_pm_out.to_i
-      return_hash[:d_sale_calc_aridaka] = return_hash[:d_sale_calc_aridaka].to_i + @d_sale_calc_aridaka.to_i
-      return_hash[:d_sale_cash_aridaka] = return_hash[:d_sale_cash_aridaka].to_i + @d_sale_cash_aridaka.to_i
-      return_hash[:kabusoku] = return_hash[:kabusoku].to_i + (@d_sale_cash_aridaka.to_i - @d_sale_calc_aridaka.to_i)
+      return_hash[:d_sale_calc_aridaka] = return_hash[:d_sale_calc_aridaka].to_i + ((@d_sale.exist_money.to_i * -1) + @d_sale.over_short.to_i) * -1
+      return_hash[:d_sale_cash_aridaka] = return_hash[:d_sale_cash_aridaka].to_i + @d_sale.exist_money.to_i
+      return_hash[:kabusoku] = return_hash[:kabusoku].to_i + @d_sale.over_short.to_i
     end  
     return return_hash
 
