@@ -7,6 +7,12 @@
 <% get_ymd = @from_ymd %>
 <% start_ymd = (@from_ymd[0,4].to_s + '/' + @from_ymd[4,2] + '/' + @from_ymd[6,2]).to_time %>
 <% start_day = start_ymd.end_of_month.day %>
+<%= form_tag({:action => 'print'}) do %>
+  <%= hidden_field_tag 'tank_id',@tank_id %>
+  <%= hidden_field_tag 'oil_id',@oil_id %>
+  <%= hidden_field_tag 'from_ymd',@from_ymd %>
+  <%= hidden_field_tag 'to_ymd',@to_ymd %>
+
 <table id="rounded-corner">
 <tr>
 	<th colspan="2" rowspan="3"><%= @from_ymd[0,4]%>年<br /><%= @from_ymd[4,2].to_i %>月</th>
@@ -122,3 +128,5 @@
 	<td><%= sprintf("%-8.3f",(sum_decrease_total * 1.000 / last_sale_total * 1.000)*100) + "%"%></td>
 </tr>
 </table>
+<%= submit_tag '印刷',format: 'pdf' %>
+<% end %>
