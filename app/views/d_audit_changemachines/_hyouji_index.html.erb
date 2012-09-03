@@ -87,14 +87,14 @@
 	<% for i in 1..7 %>
 	<tr>
 		<th>釣銭機№<%=i%></th>
-		<td><%=f.text_field 'pos1_before_money' + i.to_s , :size=>10, :maxlength => 11, :style=>"text-align:right; width:90px;" %></td>
-		<td><%=f.text_field 'pos1_after_money' + i.to_s  , :size=>10, :maxlength => 11, :style=>"text-align:right; width:90px;" %></td>
+		<td><%=f.text_field 'pos1_before_money' + i.to_s , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;" %></td>
+		<td><%=f.text_field 'pos1_after_money' + i.to_s  , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;" %></td>
 		<th>釣銭機№<%=i%></th>
-		<td><%=f.text_field 'pos2_before_money' + i.to_s , :size=>10, :maxlength => 11, :style=>"text-align:right; width:90px;"  %></td>
-		<td><%=f.text_field 'pos2_after_money' + i.to_s  , :size=>10, :maxlength => 11, :style=>"text-align:right; width:90px;"  %></td>
+		<td><%=f.text_field 'pos2_before_money' + i.to_s , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;"  %></td>
+		<td><%=f.text_field 'pos2_after_money' + i.to_s  , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;"  %></td>
 		<th>釣銭機№<%=i%></th>
-		<td><%=f.text_field 'pos3_before_money' + i.to_s , :size=>10, :maxlength => 11, :style=>"text-align:right; width:90px;"  %></td>
-		<td><%=f.text_field 'pos3_after_money' + i.to_s  , :size=>10, :maxlength => 11, :style=>"text-align:right; width:90px;"  %></td>
+		<td><%=f.text_field 'pos3_before_money' + i.to_s , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;"  %></td>
+		<td><%=f.text_field 'pos3_after_money' + i.to_s  , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;"  %></td>
 	</tr>
 	<% end %> <!-- for i in 1..7 -->
 
@@ -113,30 +113,30 @@
 	<tr>
 		<th>補充金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'pos1_supplement_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>			
+			<%=f.text_field 'pos1_supplement_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>			
 		</td>
 		<th>補充金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'pos2_supplement_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>	
+			<%=f.text_field 'pos2_supplement_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>	
 		</td>
 		<th>補充金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'pos3_supplement_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>	
+			<%=f.text_field 'pos3_supplement_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>	
 		</td>
 	</tr>
 		
 	<tr>
 		<th>回収金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'pos1_collectt_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>			
+			<%=f.text_field 'pos1_collectt_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>			
 		</td>
 		<th>回収金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'pos2_collectt_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>	
+			<%=f.text_field 'pos2_collectt_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>	
 		</td>
 		<th>回収金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'pos3_collectt_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>	
+			<%=f.text_field 'pos3_collectt_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>	
 		</td>
 	</tr>
 	
@@ -200,19 +200,19 @@
 	<tr>
 		<th colspan="2">金庫額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'before_cashbox', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'before_cashbox', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border: none">&nbsp;</td>
 		<th colspan="2">金庫額(a)</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'cashbox_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'cashbox_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 	</tr>
 	
 	<tr>
 		<th colspan="2">釣銭機額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'before_changemachine', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'before_changemachine', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border: none">&nbsp;</td>
 		<td colspan="4" valign="bottom" style="border: none; padding-bottom: 0px">[監査時釣銭機内有高]</td>
@@ -224,7 +224,7 @@
 		<td style="border: none">&nbsp;</td>
 		<th colspan="2">POS1</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'changemachine_pos1', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'changemachine_pos1', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 	</tr>
 	
@@ -232,19 +232,19 @@
 		<td colspan="5" valign="bottom" style="border: none; padding-bottom: 0px" >[釣銭持込額]</td>
 		<th colspan="2">POS2</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'changemachine_pos2', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'changemachine_pos2', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 	</tr>
 	
 	<tr>
 		<th colspan="2">ASS(B)</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'ass', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'ass', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border:none">&nbsp;</td>
 		<th colspan="2">POS3</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'changemachine_pos3', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'changemachine_pos3', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 	</tr>
 	
@@ -252,14 +252,14 @@
 		<td colspan="5" valign="bottom" style="border: none; padding-bottom: 0px" >[監査時売上額]</td>
 		<th colspan="2">翌日出し(ASS遅用)</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'changemachine_after', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'changemachine_after', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 	</tr>
 	
 	<tr>
 		<th colspan="2">POS1</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'sale_pos1', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'sale_pos1', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border:none">&nbsp;</td>
 		<th colspan="2">合計(b)</th>
@@ -269,7 +269,7 @@
 	<tr>
 		<th colspan="2">POS2</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'sale_pos2', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'sale_pos2', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border: none"></td>
 		<td colspan="4" valign="bottom" style="border: none; padding-bottom: 0px" >[入金額]</td>
@@ -278,19 +278,19 @@
 	<tr>
 		<th colspan="2">POS3</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'sale_pos3', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'sale_pos3', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border:none">&nbsp;</td>
 		<th colspan="2">売上入金額(c)</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'receive_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'receive_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 	</tr>
 		
 	<tr>
 		<th colspan="2">WAIWAIMAX</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'sale_waiwai', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'sale_waiwai', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td colspan="5" style="border:none">&nbsp;</td>
 	</tr>
@@ -298,7 +298,7 @@
 	<tr>
 		<th colspan="2">入金額(雑収入)</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'sale_receive', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'sale_receive', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td colspan="5" style="border:none">&nbsp;</td>
 	</tr>
@@ -306,7 +306,7 @@
 	<tr>
 		<th colspan="2">出金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'sale_pay', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'sale_pay', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border: none">&nbsp;</td>
 		<th colspan="2">実有高(a+b+c)</th>
@@ -372,7 +372,7 @@
 								this.disabled=true;document.location='<%=url%>';
 						}" />
 			&nbsp;&nbsp;
-			<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...', :confirm => '保存しても良いですか？' %>			
+			<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...' %>			
 		</td>	
 	</tr>
 	
@@ -414,18 +414,14 @@
 		
 		//上段金額入力欄更新後イベント
 		$(input1.join(",")).blur(function() {
-			//カンマ編集及び、数値入力以外を禁止
-			this.value = toCurrency(this.value);
-		
+
 			//合計欄計算表示
 			upd_sum1();
 		});
 
 		//下段金額入力欄更新後イベント
 		$(input2.join(",")).blur(function() {
-			//カンマ編集及び、数値入力以外を禁止
-			this.value = toCurrency(this.value);
-		
+
 			//合計欄計算表示
 			upd_sum2();
 		});
@@ -596,4 +592,5 @@
   	
 </script>
 
-<% end %> <!-- form_for(@d_audit_changemachine) do |f| %> >
+<% end %> <!-- form_for(@d_audit_changemachine) do |f| %> -->
+<%= javascript_include_tag "comma" %>
