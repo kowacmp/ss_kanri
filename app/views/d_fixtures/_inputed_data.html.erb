@@ -1,5 +1,14 @@
 	     <tr>
 	  	  <td rowspan="2"><%= i + 1 %></td>
+	  	  <% if fixture.approve_flg == 1 or fixture.approve_flg == 2%>
+          <!-- 承認者更新後 -->
+	  	  <td><%= fixture.buy_shop %></td>
+	  	  <td><%= fixture.buy_item %></td>
+	  	  <td align="right"><%= fixture.buy_num %></td>
+	  	  <td align="right"><%= fixture.buy_price %></td>
+	  	  <td colspan="2" align="right"><%= fixture.buy_num * fixture.buy_price %></td>
+	  	  <% else %>
+	  	  <!-- 申請時入力 -->
 		  <td ><%= text_field_tag("buy_shop_#{i+1}", fixture.buy_shop ,
 		  		    :size => 10) %></td>
 		  <td ><%= text_field_tag("buy_item_#{i+1}", fixture.buy_item ,
@@ -9,12 +18,20 @@
 		  <td class="input-num"><%= text_field_tag("buy_price_#{i+1}", fixture.buy_price ,
 		  		    :style => "text-align:right",:size => 2) %></td>  
 		  <td colspan="2"  class="no-input-num"><%= fixture.buy_num * fixture.buy_price %></td><!-- 金額--> 
+		  <% end %>
 	    </tr>
 	    <tr>
+	      <% if fixture.approve_flg == 1 or fixture.approve_flg == 2%>
+	      <!-- 承認者更新後 -->
+	  	  <td colspan="2"><%= fixture.buy_object %></td>
+	  	  <td align="right"><%= fixture.now_num %></td>
+	      <% else %>
+	      <!-- 申請時入力 -->
 		  <td colspan="2"><%= text_field_tag("buy_object_#{i+1}", fixture.buy_object ,
 		  		    :size => 35) %></td>
 		  <td ><%= text_field_tag("now_num_#{i+1}", fixture.now_num ,
 		  		    :style => "text-align:right",:size => 2) %></td>
+		  <% end %>
 		  <td >
 		  	<% if fixture.approve_flg == 1 %>
 		  	<% unless fixture.buy_day == nil or fixture.buy_day == "" %>
@@ -33,7 +50,6 @@
 		  <%= hidden_field_tag "fixture_id_#{i+1}",fixture.id %>
 	    </tr>
 	    
-
 
  <!-- カレンダー表示↓ -->
   <script>

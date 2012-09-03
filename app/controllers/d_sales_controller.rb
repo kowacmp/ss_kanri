@@ -121,11 +121,11 @@ p params
     @changebox_aridaka = @zenjitu_d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i + @sale_change_total - @syo_total - @d_sale.sale_ass.to_i - @zenjitu_d_sale.sale_pm_out.to_i 
     @cash_aridaka = @m_fix_money.total_cash_box.to_i + @changebox_aridaka.to_i + @d_sale.sale_today_out.to_i + @d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i 
 
-    #固定金庫(マスタより)
-    @d_sale.sale_cashbox = @m_fix_money.total_cash_box.to_i
-    #釣銭機固定金庫（前日の翌日出(後)＋当日出＋釣銭機ー小計ーASSー当日出）
-    #@d_sale.sale_changebox = @changebox_aridaka
-
+    @d_sale.sale_cashbox = @m_fix_money.total_cash_box.to_i #固定金庫(マスタより)
+    @d_sale.sale_changebox = @changebox_aridaka #釣銭機固定金庫
+    @d_sale.exist_money = @cash_aridaka #現金有高
+    @d_sale.over_short = @cash_aridaka - @total #過不足
+    
     respond_to do |format|
       if params[:remote]
         format.html { render :partial => 'form'  }
@@ -244,6 +244,13 @@ p params
     unless @d_sale_zengetumatu 
         @d_sale_zengetumatu = DSale.new
     end
+    
+    #その他売上合計
+    select_sql = "select sum(a.item_money) item_money "
+    select_sql << " from d_sale_items a inner join d_sales b on a.d_sale_id = b.id "
+    select_sql << " where a.item_class = 4 and b.m_shop_id= #{@head[:m_shop_id]} and b.sale_date between '#{key_data.sale_date.to_s[0,6]}01' and '#{key_data.sale_date.to_s[0,6]}99' "
+    @etc_item_total = DSaleItem.find_by_sql(select_sql)
+    @etc_item_total = @etc_item_total[0]
     
     respond_to do |format|
       format.html 

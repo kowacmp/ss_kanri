@@ -374,6 +374,7 @@ $(function () {
     	total = num[0] + num[1] + num[2] + num[3] + num[4];
     	
     	$("#cash_aridaka").text(format_kanma( total )); 
+    	$("#d_sale_exist_money").val(total);
     	
     	kabusoku_calc(); //過不足を計算    	
     };
@@ -395,7 +396,8 @@ $(function () {
      	};  
      	total = num[0] - num[1];
      	
-     	$("#kabusoku").text(format_kanma( total ));  	
+     	$("#kabusoku").text(format_kanma( total )); 
+     	$("#d_sale_over_short").val(total); 	
     };
     
     //カンマ編集

@@ -1,0 +1,22 @@
+<% old_group_name = '' %>
+<table id="rounded-corner">
+	<tr>
+		<th>所属会社</th>
+		<th>店舗</th>
+		<th>店舗種別</th>
+		<th>最終入力日</th>
+		<th></th>
+	</tr>
+	<% @results.each do |result|%>
+	<tr>
+		<td><%= result.group_name unless old_group_name == result.group_name %>
+			<% old_group_name = result.group_name %>
+		</td>
+		<td><%= result.shop_cd%> <%= result.shop_name %></td>
+		<td><%= if result.shop_kbn.to_i == 0 then '直営' else '油外' end %></td>
+		<td><%= result.result_date[0,4] + '/' + result.result_date[4,2] + '/' + result.result_date[6,2]  unless result.result_date == nil or result.result_date == ''%></td>
+		<td><%= link_to('参照',{:action => 'show',:result_date => result.result_date,:shop_id => result.m_shop_id }) unless result.result_date == nil or result.result_date == '' %></td>
+	</tr>
+	<% end %>
+</table>
+<% %>

@@ -1,8 +1,5 @@
-<% p "----------------------------------------------"
-    p "@m_meters_count=#{@m_meters_count}"
-    p "@d_result_meters_count=#{@d_result_meters_count}"
-%>
 <% if @m_meters_count == @d_result_meters_count %>
   $('#d_result_meter').html("<%= j(render :partial => 'd_result_meter')%>");
   $('#d_tank_compute').html("<%= j(render :partial => 'd_tank_compute')%>");
+  $(alert("更新しました。"));
 <% end %>

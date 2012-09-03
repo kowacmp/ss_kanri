@@ -19,8 +19,9 @@
     <td><%= m_shop.shop_cd %></td>
     <td><%= m_shop.shop_name %></td>
     <td>
-    	<% @shopkbn_first = MCode.find(:first,:conditions => ["kbn = 'shop_kbn' and code = ?",m_shop.shop_kbn.to_s])%>
-		<%= @shopkbn_first.code_name1%>
+    	<%# @shopkbn_first = MCode.find(:first,:conditions => ["kbn = 'shop_kbn' and code = ?",m_shop.shop_kbn.to_s])%>
+		<%#= @shopkbn_first.code_name1%>
+		<%= m_shop.shop_kbn_name %>
     </td>
     
     <% @m_oils.each do |m_oil| %>

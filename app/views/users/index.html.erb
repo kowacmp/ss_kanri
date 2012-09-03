@@ -1,4 +1,5 @@
-<%=raw jqgrid("Listing users", "users", "/users", 
+<!--
+<%#=raw jqgrid("Listing users", "users", "/users", 
 [ 
    
   { :field => "id", :label => "id" }, 
@@ -11,3 +12,34 @@
    
   ] , {:autowidth=>true} 
   ) %>
+-->
+
+
+<h1>ユーザーマスタメンテ</h1>  
+
+	<%= form_tag({:action => 'search' }, { :remote => true }) do %>
+
+		<div id="search_shop">
+			<div class="title_alias">対象店舗</div>
+			<div class="select_alias_from">
+		   	<%= select("select",'shop_id' ,
+		  	 	MShop.find(:all,:conditions => "deleted_flg = 0", :order => 'shop_cd').map do |u|
+		      	[u.shop_ryaku,u.id]
+		   		end, :include_blank => "") %>
+		   	</div>
+		</div>
+		
+  		<%= submit_tag '検索' %>
+  	
+  	
+	<% end %>
+
+<%#= link_to "Sign up", new_registration_path('user') %>
+<%#= link_to 'パスワード変更', edit_user_path(current_user.id), :class => 'add_icon' %>
+<%= link_to '新規登録', new_user_path, :class => 'add_icon' %>
+<%#= render 'result_list' %>
+
+<div id="result">
+	<%= render :partial => 'result_list' %>
+</div>
+

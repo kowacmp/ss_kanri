@@ -1,3 +1,25 @@
+<script>
+	jQuery(function () {
+
+	    //監査フラグが変更された場合のイベント
+	    jQuery("#m_etc_kansa_flg")
+	      .change(function() { 
+	      	
+	      	if (jQuery("#m_etc_kansa_flg").val() == 1) {
+	      		//実績の場合、最大数に１を入力し変更不可にする。
+				jQuery("#m_etc_max_num").val(1);
+				jQuery("#m_etc_max_num").attr('readonly',true);
+			}else{
+				//監査の場合、最大数を変更可能にする。
+				jQuery("#m_etc_max_num").attr('readonly',false);
+			};
+	      	
+	     });
+	     
+	 })();
+</script>
+
+
 <%= form_for(@m_etc) do |f| %>
   <% if @m_etc.errors.any? %>
     <div id="error_explanation">
@@ -28,7 +50,11 @@
   	</tr>
   	<tr>
   	  <th><%= f.label '単位' %></th>
-  	  <td><%= f.text_field :etc_tani,:maxlength=>4 %></td>  	  
+  	  <td>
+  	  	<%= f.select(:etc_tani, MCode.find(:all, :conditions => ["kbn = ?",'tani'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
+  	  </td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label 'グループ種類' %></th>

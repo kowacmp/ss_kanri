@@ -152,6 +152,18 @@ ActiveRecord::Schema.define(:version => 20120830123550) do
     t.datetime "updated_at",                           :null => false
   end
 
+  create_table "d_audit_checks", :force => true do |t|
+    t.integer  "m_shop_id",                       :null => false
+    t.string   "audit_date",       :limit => 8,   :null => false
+    t.integer  "m_audit_check_id",                :null => false
+    t.integer  "check_flg"
+    t.string   "comment",          :limit => 100
+    t.integer  "created_user_id",                 :null => false
+    t.datetime "created_at",                      :null => false
+    t.integer  "updated_user_id",                 :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
   create_table "d_audit_etc_details", :force => true do |t|
     t.integer  "d_audit_etc_id",  :null => false
     t.integer  "m_etc_id",        :null => false
@@ -492,6 +504,8 @@ ActiveRecord::Schema.define(:version => 20120830123550) do
     t.datetime "updated_at"
     t.integer  "sale_am_out"
     t.integer  "sale_pm_out"
+    t.integer  "exist_money"
+    t.integer  "over_short"
   end
 
   create_table "d_tank_compute_reports", :force => true do |t|
@@ -657,7 +671,6 @@ ActiveRecord::Schema.define(:version => 20120830123550) do
     t.integer  "etc_cd",      :limit => 2,                 :null => false
     t.string   "etc_name",    :limit => 20,                :null => false
     t.string   "etc_ryaku",   :limit => 10,                :null => false
-    t.string   "etc_tani",    :limit => 4,                 :null => false
     t.integer  "etc_group",   :limit => 2,                 :null => false
     t.integer  "deleted_flg", :limit => 2,  :default => 0, :null => false
     t.datetime "deleted_at"
@@ -666,6 +679,7 @@ ActiveRecord::Schema.define(:version => 20120830123550) do
     t.integer  "max_num",     :limit => 2
     t.integer  "kansa_flg",   :limit => 2
     t.integer  "tax_flg",     :limit => 2
+    t.integer  "etc_tani",    :limit => 2
   end
 
   create_table "m_etcsales", :force => true do |t|
@@ -764,7 +778,6 @@ ActiveRecord::Schema.define(:version => 20120830123550) do
     t.integer  "oiletc_cd",    :limit => 2,                 :null => false
     t.string   "oiletc_name",  :limit => 20,                :null => false
     t.string   "oiletc_ryaku", :limit => 10,                :null => false
-    t.string   "oiletc_tani",  :limit => 10,                :null => false
     t.integer  "oiletc_group", :limit => 2,                 :null => false
     t.integer  "deleted_flg",  :limit => 2,  :default => 0, :null => false
     t.datetime "deleted_at"
@@ -772,6 +785,7 @@ ActiveRecord::Schema.define(:version => 20120830123550) do
     t.datetime "updated_at"
     t.integer  "oiletc_trade", :limit => 2
     t.integer  "tax_flg",      :limit => 2
+    t.integer  "oiletc_tani",  :limit => 2
   end
 
   create_table "m_oils", :force => true do |t|
@@ -908,7 +922,6 @@ ActiveRecord::Schema.define(:version => 20120830123550) do
     t.datetime "updated_at"
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end

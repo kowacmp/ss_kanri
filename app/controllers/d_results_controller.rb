@@ -367,7 +367,7 @@ class DResultsController < ApplicationController
       d_result_report.save
     end 
      
-    head :ok
+   # head :ok
   end
   
   def reserve_index

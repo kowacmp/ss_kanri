@@ -5,7 +5,17 @@ class MShopsController < ApplicationController
   # GET /m_shops.json
   def index
     #@m_shops = MShop.all
-    @m_shops = MShop.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'shop_cd')
+    
+    select_sql = "select a.*, b.code_name as shop_kbn_name"
+    select_sql << " from m_shops a " 
+    select_sql << " left join (select * from m_codes where kbn='shop_kbn') b on a.shop_kbn = cast(b.code as integer) "
+    
+    condition_sql = " where deleted_flg = 0 "
+    
+    @m_shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.shop_cd")
+    
+    
+    #@m_shops = MShop.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'shop_cd')
     
     @m_oils = MOil.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'oil_cd')
 
@@ -123,7 +133,8 @@ class MShopsController < ApplicationController
 
     respond_to do |format|
       #if @m_shop.save
-        format.html { redirect_to @m_shop, notice: 'M shop was successfully created.' }
+        #format.html { redirect_to @m_shop, notice: 'M shop was successfully created.' }
+        format.html { redirect_to @m_shop }
         format.json { render json: @m_shop, status: :created, location: @m_shop }
       #else
       #  format.html { render action: "new" }
@@ -169,33 +180,29 @@ class MShopsController < ApplicationController
     
     
     #釣銭固定額　保存 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    ##洗車売上報告有無が「有」の場合、保存
-    #if params[:m_shop][:wash_sale_flg] = 1
-        #初めにdelete insert の替わりに削除フラグを立てる
-        @m_fix_moneys = MFixMoney.find(:all,:conditions=>["m_shop_id = ?",params[:id]])
-        
-        @m_fix_moneys.each do |m_fix_money| 
-          m_fix_money.update_attributes(:deleted_flg => 1, :deleted_at => Time.current)
-        end
-        p params[:m_fix_money]
-        #idを見てあれば更新、無ければ新規作成
-        if params[:m_fix_money]
-          params[:m_fix_money].each do |key,value| 
-            @m_fix_money = MFixMoney.find(:first,:conditions=>["id = ?",value['id']])
-      
-            if @m_fix_money == nil then
-              @m_fix_money = MFixMoney.new(value)
-              @m_fix_money.m_shop_id = params[:id]
-              @m_fix_money.save      
-            else
-              @m_fix_money.deleted_flg = 0
-              @m_fix_money.deleted_at = nil
-              @m_fix_money.update_attributes(value)
-            end
-          end
-        end
+    #初めにdelete insert の替わりに削除フラグを立てる
+    @m_fix_moneys = MFixMoney.find(:all,:conditions=>["m_shop_id = ?",params[:id]])
     
-    #end
+    @m_fix_moneys.each do |m_fix_money| 
+      m_fix_money.update_attributes(:deleted_flg => 1, :deleted_at => Time.current)
+    end
+    p params[:m_fix_money]
+    #idを見てあれば更新、無ければ新規作成
+    if params[:m_fix_money]
+      params[:m_fix_money].each do |key,value| 
+        @m_fix_money = MFixMoney.find(:first,:conditions=>["id = ?",value['id']])
+  
+        if @m_fix_money == nil then
+          @m_fix_money = MFixMoney.new(value)
+          @m_fix_money.m_shop_id = params[:id]
+          @m_fix_money.save      
+        else
+          @m_fix_money.deleted_flg = 0
+          @m_fix_money.deleted_at = nil
+          @m_fix_money.update_attributes(value)
+        end
+      end
+    end
     #釣銭固定額　保存 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     
     
@@ -232,7 +239,9 @@ class MShopsController < ApplicationController
 
     respond_to do |format|
     #  if @m_shop.update_attributes(params[:m_shop])
-        format.html { redirect_to @m_shop, notice: 'M shop was successfully updated.' }
+        #format.html { redirect_to @m_shop, notice: 'M shop was successfully updated.' }
+        #format.html { redirect_to @m_shop }
+        format.html { redirect_to :controller => "m_shops", :action => "edit" }
         format.json { head :ok }
     #  else
     #    format.html { render action: "edit" }
@@ -291,25 +300,36 @@ class MShopsController < ApplicationController
   end
   
   
-  
   def search 
-    p "search-----------------------------------"
     
-    sql_where = "deleted_flg = 0"
+    select_sql = "select a.*, b.code_name as shop_kbn_name"
+    select_sql << " from m_shops a " 
+    select_sql << " left join (select * from m_codes where kbn='shop_kbn') b on a.shop_kbn = cast(b.code as integer) "
+    
+    condition_sql = " where deleted_flg = 0 "
+    
+    
+    
+    
+    #sql_where = "deleted_flg = 0"
     
     if params[:select][:shop_kbn] != ""
-      sql_where = sql_where + " and shop_kbn = " + params[:select][:shop_kbn]
+      #sql_where = sql_where + " and shop_kbn = " + params[:select][:shop_kbn]
+      condition_sql = condition_sql + " and shop_kbn = " + params[:select][:shop_kbn]
     end
     
     if params[:select][:shop_from] != ""
-      sql_where = sql_where + " and shop_cd >= " + params[:select][:shop_from]
+      #sql_where = sql_where + " and shop_cd >= " + params[:select][:shop_from]
+      condition_sql = condition_sql + " and shop_cd >= " + params[:select][:shop_from]
     end
     
     if params[:select][:shop_to] != ""
-      sql_where = sql_where + " and shop_cd <= " + params[:select][:shop_to]
+      #sql_where = sql_where + " and shop_cd <= " + params[:select][:shop_to]
+      condition_sql = condition_sql + " and shop_cd <= " + params[:select][:shop_to]
     end
     
-    @m_shops = MShop.find(:all, :conditions => [sql_where], :order => 'shop_cd')
+    #@m_shops = MShop.find(:all, :conditions => [sql_where], :order => 'shop_cd')
+    @m_shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.shop_cd")
     
     @m_oils = MOil.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'oil_cd')
 

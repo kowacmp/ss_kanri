@@ -41,7 +41,7 @@ COMMENT ON COLUMN d_sales.sale_ass IS 'ass';
 COMMENT ON COLUMN d_sales.recive_money IS '入金';
 COMMENT ON COLUMN d_sales.pay_money IS '出金';
 COMMENT ON COLUMN d_sales.sale_cashbox IS '固定金庫';
-COMMENT ON COLUMN d_sales.sale_changebox IS '釣銭機固定金庫';
+COMMENT ON COLUMN d_sales.sale_changebox IS '釣銭機有高';
 COMMENT ON COLUMN d_sales.created_user_id IS '作成者id';
 COMMENT ON COLUMN d_sales.created_at IS '作成日時';
 COMMENT ON COLUMN d_sales.updated_user_id IS '更新者id';

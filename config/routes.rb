@@ -1,5 +1,16 @@
 SsKanri::Application.routes.draw do
 
+  get "d_tank_compute_report_details/index"
+  get "d_tank_compute_report_details/search"
+  get "d_tank_compute_report_details/print"
+  get "d_tank_compute_report_details/change_oil"
+
+  get "d_tank_compute_reports/index"
+  get "d_tank_compute_reports/search"
+
+  get "d_audit_checks/edit"
+  resources :d_audit_checks
+
   resources :m_fix_items
 
   resources :establishes
@@ -198,6 +209,8 @@ SsKanri::Application.routes.draw do
   
   devise_for :users  
   get 'homes', :to => 'homes#index', :as => :user_root  
+
+  resources :users
 
 #devise_for :users, :path => "usuarios", :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'verification', :unlock => 'unblock', :registration => 'register', :sign_up => 'cmon_let_me_in' }
 
