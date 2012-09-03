@@ -39,34 +39,32 @@
 		  	<% end %>
 		  	<% unless (d_washsales_item == nil) %>
 		  		<% if kakutei_flg == 1 %>
-		  		  <td class="no-input-num"><%= d_washsales_item.meter %></td>
+		  		  <td><%= d_washsales_item.meter %></td>
 		  		<% else %>
 		  		  <div class="field">
    	  	  	      <% meter_id = "meter_" + d_washsales_item.m_wash_id.to_s + '_'+ d_washsales_item.wash_no.to_s %>
-		  		  <td class="input-num"><%= text_field_tag(meter_id, d_washsales_item.meter ,
-		  		    :style => "text-align:right",:size => 10,
-		  		    :class => "valid range","data-max" => "10000","data-min" => "0") %></td>
+		  		  <td><%= text_field_tag(meter_id, d_washsales_item.meter ,:class => "number") %></td>
 		  		  </div>
 		  		<% end %>
 		  	<% else %>
 		  	  <% unless d_wash_sale == nil %>
 		  	    <% if kakutei_flg == 1 %>
-		  	      <td class="no-input-num">0</td>
+		  	      <td>0</td>
 		  	    <% else %>
-		  	      <td class="input-num">
+		  	      <td>
 		  	        <% meter_id = "meter_" + wash.wash_cd.to_s + '_'+ (i+1).to_s %>
-		  	        <%= text_field_tag(meter_id,0,:style => "text-align:right",:size => 10) %>
+		  	        <%= text_field_tag(meter_id,0,:class => 'number') %>
 		  	      </td>
 		  	    <% end %>
 		  	  <% else %>
-		  	    <td class="input-num">
+		  	    <td>
 		  	      <% meter_id = "meter_" + wash.wash_cd.to_s + '_'+ (i+1).to_s %>
-		  	      <%= text_field_tag(meter_id,0,:style => "text-align:right",:size => 10) %>
+		  	      <%= text_field_tag(meter_id,0,:class => "number") %>
 		  	    </td>
 		  	  <% end %>
 		  	<% end %>
 
-		  <td class="no-input-num"><!-- 前回メーター-->
+		  <td><!-- 前回メーター-->
 		  	<% d_wash_sale_mae = get_d_wash_sale(@input_ymd_mae_s,@shop.id,@mode) %>
 		  	<% unless d_wash_sale_mae == nil  %>
  		  	  <% d_washsales_item_mae = get_d_washsale_item(d_wash_sale_mae.id, wash.wash_cd,(i+1)) %>
@@ -80,7 +78,7 @@
 		  	  <%= d_washsales_item_mae.meter %>
 		  	<% end %>
 		  	</td>
-		  <td class="no-input-num"><!-- 計算上売上高 -->
+		  <td><!-- 計算上売上高 -->
 		  	<% display_keisan_uriage = keisan_uriage(d_washsales_item,d_washsales_item_mae) %>
 		  	<%= display_keisan_uriage %>
 		  	<% sum_keisan_uriage = sum_keisan_uriage + display_keisan_uriage %>
@@ -113,7 +111,7 @@
 	  <tr>
 	   	<td colspan="2">&nbsp;</td>
 	   	<th><%= wash.wash_name + "計" %></th>
-	   	<td class="no-input-num"><%= sum_keisan_uriage %>
+	   	<td><%= sum_keisan_uriage %>
 	   		<% sum_goukei_uriage = sum_goukei_uriage + sum_keisan_uriage %>
 	   	</td>
 	   	
@@ -122,19 +120,19 @@
 	   		  <% d_washsales_item_99 = get_d_washsale_item(d_wash_sale.id, wash.wash_cd,99) %>
 	   		  <% unless d_washsales_item_99 == nil %>
 	   		    <% if kakutei_flg == 1 %>
-	   		    <td class="no-input-num"><%= d_washsales_item_99.meter %></td>
+	   		    <td><%= d_washsales_item_99.meter %></td>
 	   		    <% else %>
-		  	    <td class="input-num"><%= text_field_tag(meter_id, d_washsales_item_99.meter ,
-		  	      :style => "text-align:right",:size => 10) %></td>
+		  	    <td><%= text_field_tag(meter_id, d_washsales_item_99.meter ,
+		  	      :class => "number") %></td>
 		  	    <% end %>
 		  	    <% sum_genkin_uriage = sum_genkin_uriage + d_washsales_item_99.meter %>
 		  	  <% else %>
-		  	    <td class="input-num"><%= text_field_tag(meter_id,0 ,:style => "text-align:right",:size => 10) %></td>
+		  	    <td><%= text_field_tag(meter_id,0 ,:class => "number") %></td>
 		  	<% end%>
 	   		<% else %>
-	   		   <td class="input-num"><%= text_field_tag(meter_id,0 ,:style => "text-align:right",:size => 10) %></td>
+	   		   <td><%= text_field_tag(meter_id,0 ,:class => "number") %></td>
 	   		<% end %>
-		<td class="no-input-num">
+		<td>
 			<% unless d_washsales_item_99 == nil %>
 			  <% if sum_keisan_uriage -  d_washsales_item_99.meter == d_washsales_item_99.error_money %>
 			    <%= d_washsales_item_99.error_money %>
@@ -153,9 +151,9 @@
 	  <% end %>
 	  <tr><td colspan="2">&nbsp;</td>
 	  	  <th>売上合計</th>
-	  	  <td class="no-input-num"><%= sum_goukei_uriage %></td>
-	  	  <td class="no-input-num"><%= sum_genkin_uriage %></td>
-	  	  <td class="no-input-num">
+	  	  <td><%= sum_goukei_uriage %></td>
+	  	  <td><%= sum_genkin_uriage %></td>
+	  	  <td>
 	  	  	  <%= sum_gosa %>
 	  	  </td>
 	  </tr>
