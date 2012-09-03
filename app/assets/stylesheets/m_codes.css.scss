@@ -1,3 +1,36 @@
 // Place all the styles related to the m_codes controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+div#exp{
+  margin:0 0 20px 0; padding:0;
+}
+
+#exp.ui-tabs {
+  padding: 0;
+  border-width: 0;
+}
+
+#exp.ui-tabs {
+  padding: 0;
+  border-width: 0;
+}
+
+#exp .ui-widget-header {
+  border: 0;
+}
+
+#exp .ui-tabs-nav {
+  border-width: 0;
+  padding: 0;
+}
+
+#exp .ui-tabs-panel {
+  border-width: 5px;
+}
+
+#exp .ui-tabs-nav li.ui-tabs-selected {
+  border-width: 5px;
+  margin-bottom: -5px;
+}
+
+

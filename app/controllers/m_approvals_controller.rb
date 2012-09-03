@@ -2,7 +2,15 @@ class MApprovalsController < ApplicationController
   # GET /m_approvals
   # GET /m_approvals.json
   def index
-    @m_approvals = MApproval.all
+    #@m_approvals = MApproval.all
+    
+    select_sql = "select a.*, b.display_name"
+    select_sql << " from m_approvals a " 
+    select_sql << " left join (select * from menus) b on a.menu_id = b.id "
+    
+    condition_sql = ""
+
+    @m_approvals = MApproval.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +21,17 @@ class MApprovalsController < ApplicationController
   # GET /m_approvals/1
   # GET /m_approvals/1.json
   def show
-    @m_approval = MApproval.find(params[:id])
+    #@m_approval = MApproval.find(params[:id])
+    
+    select_sql = "select a.*, b.display_name"
+    select_sql << " from m_approvals a " 
+    select_sql << " left join (select * from menus) b on a.menu_id = b.id "
+    
+    condition_sql = " where a.id = " + params[:id]
+    
+    @m_approvals = MApproval.find_by_sql("#{select_sql} #{condition_sql}")
+    
+    @m_approval = @m_approvals[0]
 
     respond_to do |format|
       format.html # show.html.erb
@@ -44,7 +62,7 @@ class MApprovalsController < ApplicationController
 
     respond_to do |format|
       if @m_approval.save
-        format.html { redirect_to @m_approval, notice: 'M approval was successfully created.' }
+        format.html { redirect_to @m_approval }
         format.json { render json: @m_approval, status: :created, location: @m_approval }
       else
         format.html { render action: "new" }
@@ -60,7 +78,7 @@ class MApprovalsController < ApplicationController
 
     respond_to do |format|
       if @m_approval.update_attributes(params[:m_approval])
-        format.html { redirect_to @m_approval, notice: 'M approval was successfully updated.' }
+        format.html { redirect_to @m_approval }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
@@ -74,10 +92,11 @@ class MApprovalsController < ApplicationController
   def destroy
     @m_approval = MApproval.find(params[:id])
     @m_approval.destroy
-
+    
     respond_to do |format|
       format.html { redirect_to m_approvals_url }
       format.json { head :ok }
     end
   end
+   
 end

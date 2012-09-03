@@ -15,15 +15,15 @@
 	
 	<div id="search_shop">
 		<div class="title_alias">対象店舗(From)</div>
-		<div class="select_alias_from">
+		<div class="select_alias">
 	   	<%= select("select",'shop_from' ,
 	  	 	MShop.find(:all,:conditions => "deleted_flg = 0", :order => 'shop_cd').map do |u|
 	      	[u.shop_ryaku,u.shop_cd]
 	   		end, :include_blank => "") %>
 	   	</div>
-		<br />
-		<div class="title_alias">対象店舗(To)</div>
-		<div class="select_alias_to">
+	   	～
+		<div class="title_alias_to">対象店舗(To)</div>
+		<div class="select_alias">
 	   	<%= select("select",'shop_to' ,
 	  	 	MShop.find(:all,:conditions => "deleted_flg = 0", :order => 'shop_cd').map do |u|
 	      	[u.shop_ryaku,u.shop_cd]
@@ -32,8 +32,9 @@
 	</div>
   		<%= submit_tag '検索' %>
   	
-  	
 	<% end %>
+
+<hr>
 
 <%= link_to '新規登録', new_m_shop_path, :class => 'add_icon' %>
 

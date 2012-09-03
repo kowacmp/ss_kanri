@@ -16,7 +16,22 @@ class UsersController < ApplicationController
     
     condition_sql = ""
     
-    @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
+    
+    if params[:input_check] == nil
+        @check_del_flg = 0
+        condition_sql = " where a.deleted_flg = 0 "
+        @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
+    else
+        @check_del_flg = params[:input_check].to_i
+        if @check_del_flg == 0
+          condition_sql = " where a.deleted_flg = 0 "
+          @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
+        else
+          @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
+        end
+    end
+    
+    #@users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -49,6 +64,7 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @user = User.find(params[:id])
+    
     @pass_flg = params[:pass_flg].to_i
   end
 
@@ -89,7 +105,9 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       else
         if @user.update_attributes(params[:user])
-          format.html { redirect_to :controller => "users", :action => "index" }
+          input_check = params[:input][:check].to_i
+          format.html { redirect_to :controller => "users", :action => "index",:input_check => input_check }
+          #format.html { redirect_to :controller => "users", :action => "index" }
           #format.html { redirect_to @establish, notice: 'Establish was successfully updated.' }
           format.json { head :ok }
         else
@@ -104,10 +122,22 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
+    #@user.destroy
+    if @user.deleted_flg == 1
+      #@user.update_attributes(:deleted_flg => 0)
+      @user.deleted_flg = 0
+      @user.save
+    else
+      #@user.update_attributes(:deleted_flg => 1, :deleted_at => Time.current)
+      @user.deleted_flg = 1
+      @user.deleted_at = Time.current
+      @user.save
+    end
 
     respond_to do |format|
-      format.html { redirect_to users_url }
+      input_check = params[:input_check].to_i
+      format.html { redirect_to :controller => "users", :action => "index", :input_check => input_check }
+      #format.html { redirect_to users_url }
       format.json { head :ok }
     end
   end
@@ -129,7 +159,20 @@ class UsersController < ApplicationController
       condition_sql = " where a.m_shop_id = " + params[:select][:shop_id]
     end
     
-    @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
+    if params[:check][:deleted_flg] == "true"
+      @check_del_flg = 1
+      @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
+    else
+      @check_del_flg = 0
+      if condition_sql == ""
+        condition_sql = " where a.deleted_flg = 0 "
+      else
+        condition_sql = condition_sql + " and a.deleted_flg = 0 "
+      end
+      @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
+    end
+    
+    #@users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
 
   end
   

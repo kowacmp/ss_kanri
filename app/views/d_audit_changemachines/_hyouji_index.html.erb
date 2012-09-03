@@ -1,33 +1,16 @@
-<script>
-/*
- * 本当はApplication.jsにいれたい‥
- * 
- */
+<%= javascript_include_tag "comma" %>
 
-	//整数数字に強制変換する(変換不可の場合は0)
-	function toNum(str) {
-		var num = new String( str ).replace( /,/g, "" );
-		if (isNaN(num)) {
-			return 0;
-		} else {
-			num = Number(num);
-			return Math.floor(num);	
-		}
+<script>
+//整数数字に強制変換する(変換不可の場合は0)
+function toNum(str) {
+	var num = new String( str ).replace( /,/g, "" );
+	if (isNaN(num)) {
+		return 0;
+	} else {
+		num = Number(num);
+		return Math.floor(num);	
 	}
-	
-	//整数カンマ数値に強制変換する(数値ではない場合は空文字列)
-	function toCurrency(str) {
-		var num = new String( str ).replace( /,/g, "" );
-		if (num == '' || isNaN(num)) {
-			return '';
-		} else {
-			num = Math.floor(num);
-			num = String(num);
-			while ( num != ( num = num.replace( /^(-?\d+)(\d{3})/, "$1,$2" ) ) );
-			return num;
-		}
-	}
-	
+}	
 </script>
 
 <%= form_for(@d_audit_changemachine, :url => {:action => "update"} ) do |f| %>
@@ -87,14 +70,14 @@
 	<% for i in 1..7 %>
 	<tr>
 		<th>釣銭機№<%=i%></th>
-		<td><%=f.text_field 'pos1_before_money' + i.to_s , :size=>10, :maxlength => 11, :style=>"text-align:right; width:90px;" %></td>
-		<td><%=f.text_field 'pos1_after_money' + i.to_s  , :size=>10, :maxlength => 11, :style=>"text-align:right; width:90px;" %></td>
+		<td><%=f.text_field 'pos1_before_money' + i.to_s , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;" %></td>
+		<td><%=f.text_field 'pos1_after_money' + i.to_s  , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;" %></td>
 		<th>釣銭機№<%=i%></th>
-		<td><%=f.text_field 'pos2_before_money' + i.to_s , :size=>10, :maxlength => 11, :style=>"text-align:right; width:90px;"  %></td>
-		<td><%=f.text_field 'pos2_after_money' + i.to_s  , :size=>10, :maxlength => 11, :style=>"text-align:right; width:90px;"  %></td>
+		<td><%=f.text_field 'pos2_before_money' + i.to_s , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;"  %></td>
+		<td><%=f.text_field 'pos2_after_money' + i.to_s  , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;"  %></td>
 		<th>釣銭機№<%=i%></th>
-		<td><%=f.text_field 'pos3_before_money' + i.to_s , :size=>10, :maxlength => 11, :style=>"text-align:right; width:90px;"  %></td>
-		<td><%=f.text_field 'pos3_after_money' + i.to_s  , :size=>10, :maxlength => 11, :style=>"text-align:right; width:90px;"  %></td>
+		<td><%=f.text_field 'pos3_before_money' + i.to_s , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;"  %></td>
+		<td><%=f.text_field 'pos3_after_money' + i.to_s  , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;"  %></td>
 	</tr>
 	<% end %> <!-- for i in 1..7 -->
 
@@ -113,30 +96,30 @@
 	<tr>
 		<th>補充金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'pos1_supplement_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>			
+			<%=f.text_field 'pos1_supplement_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>			
 		</td>
 		<th>補充金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'pos2_supplement_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>	
+			<%=f.text_field 'pos2_supplement_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>	
 		</td>
 		<th>補充金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'pos3_supplement_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>	
+			<%=f.text_field 'pos3_supplement_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>	
 		</td>
 	</tr>
 		
 	<tr>
 		<th>回収金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'pos1_collectt_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>			
+			<%=f.text_field 'pos1_collectt_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>			
 		</td>
 		<th>回収金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'pos2_collectt_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>	
+			<%=f.text_field 'pos2_collectt_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>	
 		</td>
 		<th>回収金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'pos3_collectt_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>	
+			<%=f.text_field 'pos3_collectt_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>	
 		</td>
 	</tr>
 	
@@ -200,19 +183,19 @@
 	<tr>
 		<th colspan="2">金庫額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'before_cashbox', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'before_cashbox', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border: none">&nbsp;</td>
 		<th colspan="2">金庫額(a)</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'cashbox_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'cashbox_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 	</tr>
 	
 	<tr>
 		<th colspan="2">釣銭機額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'before_changemachine', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'before_changemachine', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border: none">&nbsp;</td>
 		<td colspan="4" valign="bottom" style="border: none; padding-bottom: 0px">[監査時釣銭機内有高]</td>
@@ -224,7 +207,7 @@
 		<td style="border: none">&nbsp;</td>
 		<th colspan="2">POS1</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'changemachine_pos1', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'changemachine_pos1', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 	</tr>
 	
@@ -232,19 +215,19 @@
 		<td colspan="5" valign="bottom" style="border: none; padding-bottom: 0px" >[釣銭持込額]</td>
 		<th colspan="2">POS2</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'changemachine_pos2', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'changemachine_pos2', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 	</tr>
 	
 	<tr>
 		<th colspan="2">ASS(B)</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'ass', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'ass', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border:none">&nbsp;</td>
 		<th colspan="2">POS3</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'changemachine_pos3', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'changemachine_pos3', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 	</tr>
 	
@@ -252,14 +235,14 @@
 		<td colspan="5" valign="bottom" style="border: none; padding-bottom: 0px" >[監査時売上額]</td>
 		<th colspan="2">翌日出し(ASS遅用)</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'changemachine_after', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'changemachine_after', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 	</tr>
 	
 	<tr>
 		<th colspan="2">POS1</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'sale_pos1', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'sale_pos1', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border:none">&nbsp;</td>
 		<th colspan="2">合計(b)</th>
@@ -269,7 +252,7 @@
 	<tr>
 		<th colspan="2">POS2</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'sale_pos2', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'sale_pos2', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border: none"></td>
 		<td colspan="4" valign="bottom" style="border: none; padding-bottom: 0px" >[入金額]</td>
@@ -278,19 +261,19 @@
 	<tr>
 		<th colspan="2">POS3</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'sale_pos3', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'sale_pos3', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border:none">&nbsp;</td>
 		<th colspan="2">売上入金額(c)</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'receive_money', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'receive_money', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 	</tr>
 		
 	<tr>
 		<th colspan="2">WAIWAIMAX</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'sale_waiwai', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'sale_waiwai', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td colspan="5" style="border:none">&nbsp;</td>
 	</tr>
@@ -298,7 +281,7 @@
 	<tr>
 		<th colspan="2">入金額(雑収入)</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'sale_receive', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'sale_receive', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td colspan="5" style="border:none">&nbsp;</td>
 	</tr>
@@ -306,7 +289,7 @@
 	<tr>
 		<th colspan="2">出金額</th>
 		<td colspan="2" align="right">
-			<%=f.text_field 'sale_pay', :maxlength => 11, :style=>"text-align:right; width:120px;" %>
+			<%=f.text_field 'sale_pay', :maxlength => 11, :class=>"money", :style=>"width:120px;" %>
 		</td>
 		<td style="border: none">&nbsp;</td>
 		<th colspan="2">実有高(a+b+c)</th>
@@ -372,7 +355,7 @@
 								this.disabled=true;document.location='<%=url%>';
 						}" />
 			&nbsp;&nbsp;
-			<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...', :confirm => '保存しても良いですか？' %>			
+			<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...' %>			
 		</td>	
 	</tr>
 	
@@ -414,33 +397,16 @@
 		
 		//上段金額入力欄更新後イベント
 		$(input1.join(",")).blur(function() {
-			//カンマ編集及び、数値入力以外を禁止
-			this.value = toCurrency(this.value);
-		
+
 			//合計欄計算表示
 			upd_sum1();
 		});
 
 		//下段金額入力欄更新後イベント
 		$(input2.join(",")).blur(function() {
-			//カンマ編集及び、数値入力以外を禁止
-			this.value = toCurrency(this.value);
-		
+
 			//合計欄計算表示
 			upd_sum2();
-		});
-
-
-		//上段読込時にテキストボックスのカンマ編集
-		$(input1.join(",")).each(function(i, obj) {
-			//カンマ編集及び、数値入力以外を禁止
-			obj.value = toCurrency(obj.value);	
-		});
-		
-		//下段読込時にテキストボックスのカンマ編集
-		$(input2.join(",")).each(function(i, obj) {
-			//カンマ編集及び、数値入力以外を禁止
-			obj.value = toCurrency(obj.value);	
 		});
 		
 		//上段読込時に合計欄更新
@@ -463,27 +429,27 @@
 			$("input:text[id*=pos{POS}_before_money]".replace("{POS}", pos)).each(function(i, obj){
 				sum_value += toNum(obj.value);
 			});
-			$("#pos{POS}_before_money_sum".replace("{POS}", pos)).html(toCurrency(sum_value));		
+			$("#pos{POS}_before_money_sum".replace("{POS}", pos)).html(format_kanma(sum_value));		
 
 			// POS1～3 監査後有高
 			var sum_value = 0;
 			$("input:text[id*=pos{POS}_after_money]".replace("{POS}", pos)).each(function(i, obj){
 				sum_value += toNum(obj.value);
 			});
-			$("#pos{POS}_after_money_sum".replace("{POS}", pos)).html(toCurrency(sum_value));			
+			$("#pos{POS}_after_money_sum".replace("{POS}", pos)).html(format_kanma(sum_value));			
 	
 			// POS1～3 計算上有高
 			var sum_value = 0;
 			sum_value += toNum($("#pos{POS}_before_money_sum".replace("{POS}", pos)).html());
 			sum_value += toNum($("input:text[id$=pos{POS}_supplement_money]".replace("{POS}", pos)).val())
 			sum_value -= toNum($("input:text[id$=pos{POS}_collectt_money]".replace("{POS}", pos)).val())		
-			$("#pos{POS}_keisan_aridaka".replace("{POS}", pos)).html(toCurrency(sum_value));
+			$("#pos{POS}_keisan_aridaka".replace("{POS}", pos)).html(format_kanma(sum_value));
 		
 			// POS1～3 過不足額
 			var sum_value = 0;
 			sum_value += toNum($("#pos{POS}_after_money_sum".replace("{POS}", pos)).html());
 			sum_value -= toNum($("#pos{POS}_keisan_aridaka".replace("{POS}", pos)).html());
-			$("#pos{POS}_kabusoku_gak".replace("{POS}", pos)).html(toCurrency(sum_value));
+			$("#pos{POS}_kabusoku_gak".replace("{POS}", pos)).html(format_kanma(sum_value));
 
 		}		
 	
@@ -492,21 +458,21 @@
 		for (var pos = 1; pos < 4; pos++) {
 			sum_value += toNum($("#pos{POS}_keisan_aridaka".replace("{POS}", pos)).html());
 		}
-		$("#pos_all_keisan_aridaka").html(toCurrency(sum_value));
+		$("#pos_all_keisan_aridaka").html(format_kanma(sum_value));
 		
 		// 全POS合計 実有高
 		var sum_value = 0;
 		for (var pos = 1; pos < 4; pos++) {
 			sum_value += toNum($("#pos{POS}_after_money_sum".replace("{POS}", pos)).html());
 		}
-		$("#pos_all_jitu_aridaka").html(toCurrency(sum_value));
+		$("#pos_all_jitu_aridaka").html(format_kanma(sum_value));
 		
 		// 全POS合計過不足額
 		var sum_value = 0;
 		for (var pos = 1; pos < 4; pos++) {
 			sum_value += toNum($("#pos{POS}_kabusoku_gak".replace("{POS}", pos)).html());
 		}
-		$("#pos_all_kabusoku").html(toCurrency(sum_value));
+		$("#pos_all_kabusoku").html(format_kanma(sum_value));
 	
 		return true;
 	}
@@ -518,7 +484,7 @@
 		var sum_value = 0;
 		sum_value += toNum($("input:text[id$=before_cashbox]").val());
 		sum_value += toNum($("input:text[id$=before_changemachine]").val());
-		$("#sum_left_a").html(toCurrency(sum_value));
+		$("#sum_left_a").html(format_kanma(sum_value));
 		
 		// 合計(C)
 		var sum_value = 0;
@@ -528,14 +494,14 @@
 		sum_value += toNum($("input:text[id$=sale_waiwai]").val());
 		sum_value += toNum($("input:text[id$=sale_receive]").val());
 		sum_value -= toNum($("input:text[id$=sale_pay]").val());		
-		$("#sum_left_c").html(toCurrency(sum_value));
+		$("#sum_left_c").html(format_kanma(sum_value));
 		
 		// 合計(A+B+C)
 		var sum_value = 0;
 		sum_value += toNum($("#sum_left_a").html());
 		sum_value += toNum($("input:text[id$=ass]").val());
 		sum_value += toNum($("#sum_left_c").html());
-		$("#sum_left_abc").html(toCurrency(sum_value));
+		$("#sum_left_abc").html(format_kanma(sum_value));
 		
 		// 合計(b)
 		var sum_value = 0;
@@ -543,20 +509,20 @@
 		sum_value += toNum($("input:text[id$=changemachine_pos2]").val());
 		sum_value += toNum($("input:text[id$=changemachine_pos3]").val());
 		sum_value += toNum($("input:text[id$=changemachine_after]").val());
-		$("#sum_right_b").html(toCurrency(sum_value));
+		$("#sum_right_b").html(format_kanma(sum_value));
 		
 		// 合計(a+b+c)
 		var sum_value = 0;
 		sum_value += toNum($("input:text[id$=cashbox_money]").val());
 		sum_value += toNum($("#sum_right_b").html());
 		sum_value += toNum($("input:text[id$=receive_money]").val());
-		$("#sum_right_abc").html(toCurrency(sum_value));
+		$("#sum_right_abc").html(format_kanma(sum_value));
 		
 		// 監査過不足額
 		var sum_value = 0;
 		sum_value += toNum($("#sum_right_abc").html());
 		sum_value -= toNum($("#sum_left_abc").html());
-		$("#sum_kabusoku").html(toCurrency(sum_value));
+		$("#sum_kabusoku").html(format_kanma(sum_value));
 		
 		return true;
 	}
@@ -596,4 +562,4 @@
   	
 </script>
 
-<% end %> <!-- form_for(@d_audit_changemachine) do |f| %> >
+<% end %> <!-- form_for(@d_audit_changemachine) do |f| %> -->

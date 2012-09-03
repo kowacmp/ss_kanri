@@ -3,9 +3,8 @@
  * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
- *= require_tree . 
+ *=# require_tree . 
 */
-
 
 html,
 body {
@@ -58,14 +57,30 @@ div#modal div.container {
 }
 
 #header {
-  /*background-image:url("th_001.gif"); 
+  background-image:url("th_001.gif"); 
   background-color: #3256B6; 
     color: white; 
   border-bottom: 4px solid #fc0; 
 
-  font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;*/
-  padding-top: 10px;
+  font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+  padding-top: 5px;
 }
+
+input.money{
+  ime-mode: inactive;
+  text-align: right;
+}
+
+input.number{
+  ime-mode: inactive;
+  text-align: right;
+}
+
+input.text{
+  ime-mode: active;
+  text-align: left;
+}
+
 
 #footer{
       height:25px;

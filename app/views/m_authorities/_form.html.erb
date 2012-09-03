@@ -1,11 +1,11 @@
 <%= form_for(@m_authority) do |f| %>
   <% if @m_authority.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@m_authority.errors.count, "error") %> prohibited this m_authority from being saved:</h2>
+      <h2><%= pluralize(@m_authority.errors.count, "") %> 件のエラーがあります。</h2>
 
       <ul>
       <% @m_authority.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= sliceString(msg) %></li>
       <% end %>
       </ul>
     </div>
@@ -13,12 +13,12 @@
   
   <table id='rounded-corner'>
   	<tr>
-  	  <th><%= f.label '' %></th>
-  	  <td><%= f.number_field :authority_cd %></td>  	  
+  	  <th><%= f.label '権限コード' %></th>
+  	  <td><%= f.number_field :authority_cd, :style=>"ime-mode:disabled" ,:maxlength=>2 %></td>  	  
   	</tr>	  	
   	<tr>
   	  <th><%= f.label '権限名' %></th>
-  	  <td><%= f.number_field :authority_name %></td>  	  
+  	  <td><%= f.text_field :authority_name,:maxlength=>40 %></td>  	  
   	</tr>	   	 	
   </table>  
   <div class="actions">
