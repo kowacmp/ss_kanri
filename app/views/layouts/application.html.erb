@@ -2,8 +2,10 @@
 <html>
 <head>
   <title>SsKanri</title>
-  <%= stylesheet_link_tag    "application" %>  
+  <%= stylesheet_link_tag    "application" %> 
+  <%= stylesheet_link_tag    params[:controller] %> <!-- 呼出元のコントローラのCSSを読込 -->
   <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag params[:controller] %> <!-- 呼出元のコンtノローラのJSを読込 -->
   <%= javascript_include_tag "jquery.mini" %>
   <%= stylesheet_link_tag    "table" %> 
   <%= stylesheet_link_tag    "icon" %>   
