@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SsKanri</title>
+  <% @establish = Establish.find(:first)%>
+  <title><%= @establish.system_name %></title>
   <%= stylesheet_link_tag    "application" %> 
   <%= stylesheet_link_tag    params[:controller] %> <!-- 呼出元のコントローラのCSSを読込 -->
   <%= javascript_include_tag "application" %>
@@ -36,7 +37,6 @@
     </div>
   <div id="header">
   	<span style="float:left font-weight:bold;">
-  	<% @establish = Establish.find(:first)%>
   	<label style="font-size: 20px">
     &nbsp;＜&nbsp;
   	<%= @establish.system_name %>
