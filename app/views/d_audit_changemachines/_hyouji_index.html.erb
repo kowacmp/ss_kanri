@@ -1,33 +1,16 @@
-<script>
-/*
- * 本当はApplication.jsにいれたい‥
- * 
- */
+<%= javascript_include_tag "comma" %>
 
-	//整数数字に強制変換する(変換不可の場合は0)
-	function toNum(str) {
-		var num = new String( str ).replace( /,/g, "" );
-		if (isNaN(num)) {
-			return 0;
-		} else {
-			num = Number(num);
-			return Math.floor(num);	
-		}
+<script>
+//整数数字に強制変換する(変換不可の場合は0)
+function toNum(str) {
+	var num = new String( str ).replace( /,/g, "" );
+	if (isNaN(num)) {
+		return 0;
+	} else {
+		num = Number(num);
+		return Math.floor(num);	
 	}
-	
-	//整数カンマ数値に強制変換する(数値ではない場合は空文字列)
-	function toCurrency(str) {
-		var num = new String( str ).replace( /,/g, "" );
-		if (num == '' || isNaN(num)) {
-			return '';
-		} else {
-			num = Math.floor(num);
-			num = String(num);
-			while ( num != ( num = num.replace( /^(-?\d+)(\d{3})/, "$1,$2" ) ) );
-			return num;
-		}
-	}
-	
+}	
 </script>
 
 <%= form_for(@d_audit_changemachine, :url => {:action => "update"} ) do |f| %>
@@ -425,19 +408,6 @@
 			//合計欄計算表示
 			upd_sum2();
 		});
-
-
-		//上段読込時にテキストボックスのカンマ編集
-		$(input1.join(",")).each(function(i, obj) {
-			//カンマ編集及び、数値入力以外を禁止
-			obj.value = toCurrency(obj.value);	
-		});
-		
-		//下段読込時にテキストボックスのカンマ編集
-		$(input2.join(",")).each(function(i, obj) {
-			//カンマ編集及び、数値入力以外を禁止
-			obj.value = toCurrency(obj.value);	
-		});
 		
 		//上段読込時に合計欄更新
 		upd_sum1();
@@ -459,27 +429,27 @@
 			$("input:text[id*=pos{POS}_before_money]".replace("{POS}", pos)).each(function(i, obj){
 				sum_value += toNum(obj.value);
 			});
-			$("#pos{POS}_before_money_sum".replace("{POS}", pos)).html(toCurrency(sum_value));		
+			$("#pos{POS}_before_money_sum".replace("{POS}", pos)).html(format_kanma(sum_value));		
 
 			// POS1～3 監査後有高
 			var sum_value = 0;
 			$("input:text[id*=pos{POS}_after_money]".replace("{POS}", pos)).each(function(i, obj){
 				sum_value += toNum(obj.value);
 			});
-			$("#pos{POS}_after_money_sum".replace("{POS}", pos)).html(toCurrency(sum_value));			
+			$("#pos{POS}_after_money_sum".replace("{POS}", pos)).html(format_kanma(sum_value));			
 	
 			// POS1～3 計算上有高
 			var sum_value = 0;
 			sum_value += toNum($("#pos{POS}_before_money_sum".replace("{POS}", pos)).html());
 			sum_value += toNum($("input:text[id$=pos{POS}_supplement_money]".replace("{POS}", pos)).val())
 			sum_value -= toNum($("input:text[id$=pos{POS}_collectt_money]".replace("{POS}", pos)).val())		
-			$("#pos{POS}_keisan_aridaka".replace("{POS}", pos)).html(toCurrency(sum_value));
+			$("#pos{POS}_keisan_aridaka".replace("{POS}", pos)).html(format_kanma(sum_value));
 		
 			// POS1～3 過不足額
 			var sum_value = 0;
 			sum_value += toNum($("#pos{POS}_after_money_sum".replace("{POS}", pos)).html());
 			sum_value -= toNum($("#pos{POS}_keisan_aridaka".replace("{POS}", pos)).html());
-			$("#pos{POS}_kabusoku_gak".replace("{POS}", pos)).html(toCurrency(sum_value));
+			$("#pos{POS}_kabusoku_gak".replace("{POS}", pos)).html(format_kanma(sum_value));
 
 		}		
 	
@@ -488,21 +458,21 @@
 		for (var pos = 1; pos < 4; pos++) {
 			sum_value += toNum($("#pos{POS}_keisan_aridaka".replace("{POS}", pos)).html());
 		}
-		$("#pos_all_keisan_aridaka").html(toCurrency(sum_value));
+		$("#pos_all_keisan_aridaka").html(format_kanma(sum_value));
 		
 		// 全POS合計 実有高
 		var sum_value = 0;
 		for (var pos = 1; pos < 4; pos++) {
 			sum_value += toNum($("#pos{POS}_after_money_sum".replace("{POS}", pos)).html());
 		}
-		$("#pos_all_jitu_aridaka").html(toCurrency(sum_value));
+		$("#pos_all_jitu_aridaka").html(format_kanma(sum_value));
 		
 		// 全POS合計過不足額
 		var sum_value = 0;
 		for (var pos = 1; pos < 4; pos++) {
 			sum_value += toNum($("#pos{POS}_kabusoku_gak".replace("{POS}", pos)).html());
 		}
-		$("#pos_all_kabusoku").html(toCurrency(sum_value));
+		$("#pos_all_kabusoku").html(format_kanma(sum_value));
 	
 		return true;
 	}
@@ -514,7 +484,7 @@
 		var sum_value = 0;
 		sum_value += toNum($("input:text[id$=before_cashbox]").val());
 		sum_value += toNum($("input:text[id$=before_changemachine]").val());
-		$("#sum_left_a").html(toCurrency(sum_value));
+		$("#sum_left_a").html(format_kanma(sum_value));
 		
 		// 合計(C)
 		var sum_value = 0;
@@ -524,14 +494,14 @@
 		sum_value += toNum($("input:text[id$=sale_waiwai]").val());
 		sum_value += toNum($("input:text[id$=sale_receive]").val());
 		sum_value -= toNum($("input:text[id$=sale_pay]").val());		
-		$("#sum_left_c").html(toCurrency(sum_value));
+		$("#sum_left_c").html(format_kanma(sum_value));
 		
 		// 合計(A+B+C)
 		var sum_value = 0;
 		sum_value += toNum($("#sum_left_a").html());
 		sum_value += toNum($("input:text[id$=ass]").val());
 		sum_value += toNum($("#sum_left_c").html());
-		$("#sum_left_abc").html(toCurrency(sum_value));
+		$("#sum_left_abc").html(format_kanma(sum_value));
 		
 		// 合計(b)
 		var sum_value = 0;
@@ -539,20 +509,20 @@
 		sum_value += toNum($("input:text[id$=changemachine_pos2]").val());
 		sum_value += toNum($("input:text[id$=changemachine_pos3]").val());
 		sum_value += toNum($("input:text[id$=changemachine_after]").val());
-		$("#sum_right_b").html(toCurrency(sum_value));
+		$("#sum_right_b").html(format_kanma(sum_value));
 		
 		// 合計(a+b+c)
 		var sum_value = 0;
 		sum_value += toNum($("input:text[id$=cashbox_money]").val());
 		sum_value += toNum($("#sum_right_b").html());
 		sum_value += toNum($("input:text[id$=receive_money]").val());
-		$("#sum_right_abc").html(toCurrency(sum_value));
+		$("#sum_right_abc").html(format_kanma(sum_value));
 		
 		// 監査過不足額
 		var sum_value = 0;
 		sum_value += toNum($("#sum_right_abc").html());
 		sum_value -= toNum($("#sum_left_abc").html());
-		$("#sum_kabusoku").html(toCurrency(sum_value));
+		$("#sum_kabusoku").html(format_kanma(sum_value));
 		
 		return true;
 	}
@@ -593,4 +563,3 @@
 </script>
 
 <% end %> <!-- form_for(@d_audit_changemachine) do |f| %> -->
-<%= javascript_include_tag "comma" %>
