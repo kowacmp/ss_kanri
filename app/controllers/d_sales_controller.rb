@@ -47,12 +47,14 @@ p params
     @head = DSale.new
         
     #売上入力確認から飛んできた時は、IDがくるのでIDでデータを取得する
-    if params[:from_view] == "index"
+    if params[:from_view] == "index" 
+       @head[:input_shop_kbn] = params[:input_shop_kbn]
+       @head[:from_view] = params[:from_view]
+    end
+    if params[:id] != nil
        key_data =  DSale.find(params[:id])
        params[:m_shop_id] = key_data.m_shop_id
        params[:input_day] = key_data.sale_date.to_s[0,4] + "/" + key_data.sale_date.to_s[4,2] + "/" + key_data.sale_date.to_s[6,2]
-       @head[:input_shop_kbn] = params[:input_shop_kbn]
-       @head[:from_view] = params[:from_view]
     end
     
     
