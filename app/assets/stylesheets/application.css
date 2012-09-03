@@ -74,7 +74,7 @@ input.money{
 
 input.number{
   ime-mode: inactive;
-  text-align: left;
+  text-align: right;
 }
 
 input.text{
