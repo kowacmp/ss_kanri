@@ -72,7 +72,7 @@ class DResultsController < ApplicationController
     
     
     #その他売上取得
-    etc_sql = "select m.id, m.etc_name, m.etc_tani, m.max_num,m.etc_cd, d.id d_result_etc_id, d.no,"
+    etc_sql = "select m.id, m.etc_name, m.etc_tani, c.code_name, m.max_num,m.etc_cd, d.id d_result_etc_id, d.no,"
     etc_sql << "      d.pos1_data, d.pos2_data, d.pos3_data,"
     etc_sql << "      COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0) as pos_total"
     etc_sql << " from m_etcs m left join d_result_etcs d on (m.id = d.m_etc_id"
@@ -82,9 +82,10 @@ class DResultsController < ApplicationController
       etc_sql << " and d.d_result_id = #{@d_result.id})"  
     end
     
+    etc_sql << " left join m_codes c on (to_number(c.code, '999999999') = m.etc_tani and c.kbn = 'tani')"
     etc_sql << " where m.deleted_flg = 0 and m.kansa_flg = 1 order by m.etc_cd, d.no"
     @m_etcs = MEtc.find_by_sql(etc_sql)
-
+p "etc_sql=#{etc_sql}"
  
     #営業POS伝回収報告
     m_oil_etc_sql = "select m.id, m.oiletc_name, d.get_num"
