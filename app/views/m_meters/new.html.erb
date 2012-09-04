@@ -1,4 +1,5 @@
-<h1>登録</h1>
+<%#= javascript_include_tag "m_meters" %>
+<h1>計量機マスタメンテ</h1>
 
 <%= form_tag({:action => 'search' }, { :remote => true }) do %>
 	<%= select( "m_oil", 'm_oil_id',@m_oils.map do |u| [u.oil_name,u.id] end ) %>

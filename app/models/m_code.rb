@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 class MCode < ActiveRecord::Base
   
-  validates :kbn, :presence => {:message => '権限コードは必須です。'}
-  validates :code, :presence => {:message => '権限名は必須です。'}
+  validates :kbn, :presence => {:message => 'コード区分は必須です。'}
+  validates :code, :presence => {:message => 'コードは必須です。'}
   
   validates :code, :uniqueness => {:scope => :kbn,
                                    :message => 'コードが重複しています。'}

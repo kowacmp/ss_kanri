@@ -5,7 +5,7 @@
 <h1>更新</h1>
 <% end %>
 
-<%= form_for @user, :url=>{:controller=>'users',:action=> 'update',:id=>@user.id,:pass_flg=>@pass_flg} do |f| %>
+<%= form_for @user, :url=>{:controller=>'users',:action=> 'update',:id=>@user.id,:pass_flg=>@pass_flg,:return_flg=>@return_flg} do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@user.errors.count, "") %> 件のエラーがあります。</h2>
@@ -101,5 +101,7 @@
     <%= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div>
 <% end %>
+<% if @return_flg == 1 %>
+<%= link_to '戻る', users_path, :class => 'return_icon' %>
+<% end %>
 
-<%#= link_to '戻る', users_path, :class => 'return_icon' %>
