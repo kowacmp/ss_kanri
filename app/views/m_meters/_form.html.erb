@@ -45,7 +45,7 @@
 <%#= select( "m_oil", 'm_oil_id',@m_oils.map do |u| [u.oil_name,u.id] end ,:onChange => 'test_alert()') %>
 <%#= select "m_oil", 'm_oil_id',@m_oils.map {|u| [u.oil_name,u.id]},{:include_blank => "選択して下さい"},:onChange => "test_alert();" %>
 <%#= select "m_oil", 'm_oil_id',@m_oils.map {|u| [u.oil_name,u.id]},{:include_blank => "選択して下さい"},:onChange => {url_for :controller => 'm_meters', :action => 'index'}%>
-
+<%= hidden_field "m_shop" ,'m_shop_id', :value => @m_shop_id %>
 
 	<table id='rounded-corner'>
 	  	
@@ -75,9 +75,9 @@
 	  	  <td>
 	  	  	<%- if @m_meter -%>
 	  	  		<%= hidden_field "m_meter[#{idx}][#{i}]", 'id',:value=>@m_meter.id %>
-			  	<%= text_field "m_meter[#{idx}][#{i}]", 'meter_no',:value=>@m_meter.meter_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"numberCheck(this)" %>
+			  	<%= text_field "m_meter[#{idx}][#{i}]", 'meter_no',:value=>@m_meter.meter_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:class=>"number",:onkeyup=>"numberCheck(this)" %>
 			<%- else -%>
-		  	  	<%= text_field "m_meter[#{idx}][#{i}]", 'meter_no',:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"numberCheck(this)" %>
+		  	  	<%= text_field "m_meter[#{idx}][#{i}]", 'meter_no',:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:class=>"number",:onkeyup=>"numberCheck(this)" %>
 	  	  	<%- end -%>
 	  	  	</td>
 	  	  <%= hidden_field "m_meter[#{idx}][#{i}]", 'pos_class',:value=>m_code.code.to_i  %>
@@ -129,9 +129,9 @@
 	  	  <td>
 			<%- if @m_meter -%>
 				<%= hidden_field "m_meter[#{idx}][#{i}]", 'id',:value=>@m_meter.id %>
-	  	  		<%= text_field "m_meter[#{idx}][#{i}]", 'meter_no',:value=>@m_meter.meter_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"numberCheck(this)" %>
+	  	  		<%= text_field "m_meter[#{idx}][#{i}]", 'meter_no',:value=>@m_meter.meter_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:class=>"number",:onkeyup=>"numberCheck(this)" %>
 	  	  	<%- else -%>
-	  	  		<%= text_field "m_meter[#{idx}][#{i}]", 'meter_no',:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"numberCheck(this)" %>
+	  	  		<%= text_field "m_meter[#{idx}][#{i}]", 'meter_no',:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:class=>"number",:onkeyup=>"numberCheck(this)" %>
 	  	  	<%- end -%>
 		  </td>
 	  	  <%= hidden_field "m_meter[#{idx}][#{i}]", 'pos_class',:value=>m_code.code.to_i  %>

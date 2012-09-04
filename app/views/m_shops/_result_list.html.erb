@@ -60,7 +60,7 @@
     <td>
 		<% @m_fix_money_totals = MFixMoney.find(:all,
                                    :conditions=>["m_shop_id = ? and (deleted_flg is null or deleted_flg <> ?)",m_shop.id,1])%>
-    	<div class="money_total"><%= @m_fix_money_totals.sum{|money| money.total_cash_box}%></div>
+    	<div class="money_total"><%= number_with_delimiter(@m_fix_money_totals.sum{|money| money.total_cash_box.to_i}) %></div>
 	</td>
     <!--td class="icon"><%#= link_to image_tag('icon/24_show.png'), m_shop %></td-->
     <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_shop_path(m_shop) %></td>

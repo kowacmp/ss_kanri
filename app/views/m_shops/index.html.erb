@@ -14,7 +14,7 @@
 	</div>
 	
 	<div id="search_shop">
-		<div class="title_alias">対象店舗(From)</div>
+		<div class="title_alias_from">対象店舗(From)</div>
 		<div class="select_alias">
 	   	<%= select("select",'shop_from' ,
 	  	 	MShop.find(:all,:conditions => "deleted_flg = 0", :order => 'shop_cd').map do |u|

@@ -13,6 +13,7 @@ class MMetersController < ApplicationController
   # GET /m_meters/1
   # GET /m_meters/1.json
   def show
+    p "show--------------------"
     @m_meter = MMeter.find(params[:id])
 
     respond_to do |format|
@@ -85,7 +86,8 @@ class MMetersController < ApplicationController
       end
     end
     
-    redirect_to :controller => "m_shops", :action => "index"
+    #redirect_to :controller => "m_shops", :action => "index"
+    redirect_to :controller => "m_meters", :action => "new", :id => params[:m_shop][:m_shop_id]
     
     
     #@m_meter = MMeter.new(params[:m_meter])
@@ -131,6 +133,7 @@ class MMetersController < ApplicationController
   
   
   def search 
+    p "search----------------"
     p params[:m_shop][:m_shop_id]
     
     @m_shop_id = params[:m_shop][:m_shop_id]
