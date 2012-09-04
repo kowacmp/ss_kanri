@@ -5,9 +5,16 @@
       <th>入力日</th>
       <td><%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 10%></td>
 	  <th>店舗種別</th>
-	  <td><%= select_tag "shop_kbn",
-	        raw('<option value="0">直営</option><option value="1">油外</option>')
-	        %></td> 
+	  <td><% if @shop_kbn == 0 %>
+	  	<%= select_tag "shop_kbn",
+	        raw('<option value="0" selected>直営</option><option value="1">油外</option>')
+	        %>
+	      <% else %>  
+	        <%= select_tag "shop_kbn",
+	        raw('<option value="0">直営</option><option value="1" selected>油外</option>')
+	        %>
+	      <% end %>
+	        </td> 
 	  <td><%= submit_tag "検索" %></td>
       </tr>
 </table>

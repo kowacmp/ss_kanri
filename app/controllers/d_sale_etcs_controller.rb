@@ -75,7 +75,7 @@ class DSaleEtcsController < ApplicationController
     DSaleEtcDetail.transaction do
       @d_sale_etc = get_d_sale_etc(params[:sale_date])
       @d_sale_etc_mae = get_d_sale_etc(params[:sale_date])
-      if (@d_sale_etc == nil)
+      if (params[:sale_date] == nil) or (params[:sale_date] == "")
         create_d_sale_etc(params[:sale_date])
       end
       @d_sale_etc = get_d_sale_etc(params[:sale_date]) 
@@ -87,6 +87,8 @@ class DSaleEtcsController < ApplicationController
         @d_sale_etc_mae = get_d_sale_etc(get_zenkai_date(params[:sale_date]))
 
         etc.max_num.times do |i| #times
+          
+         p "@d_sale_etc.id = #{@d_sale_etc.id} etc.id = #{etc.id} i #{i}"
          @d_sale_etc_detail = get_d_sale_etc_detail(@d_sale_etc.id,etc.id,(i+1))
          unless @d_sale_etc_detail == nil #unless1
            #データあり
