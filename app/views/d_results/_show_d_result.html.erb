@@ -41,12 +41,19 @@
 	  <th width="105">POS日計</th>	
 	</tr>
   <% @oiletc0s.each do |oiletc0| %>
+    <% 
+    if oiletc0.oiletc_tani == 6
+      flg = true
+    else
+      flg = false    	
+    end		
+    %>
     <tr>
       <th><%= oiletc0.oiletc_name %></th> 	
-      <td class="input_no"><%= num_fmt(oiletc0.pos1_data) %>&nbsp;<%= oiletc0.code_name %></td>
-      <td class="input_no"><%= num_fmt(oiletc0.pos2_data) %>&nbsp;<%= oiletc0.code_name %></td>
-      <td class="input_no"><%= num_fmt(oiletc0.pos3_data) %>&nbsp;<%= oiletc0.code_name %></td>  
-      <td class="input_no"><%= num_fmt(oiletc0.pos_total) %>&nbsp;<%= oiletc0.code_name %></td>              
+      <td class="input_no"><%= num_fmt(oiletc0.pos1_data, flg) %>&nbsp;<%= oiletc0.code_name %></td>
+      <td class="input_no"><%= num_fmt(oiletc0.pos2_data, flg) %>&nbsp;<%= oiletc0.code_name %></td>
+      <td class="input_no"><%= num_fmt(oiletc0.pos3_data, flg) %>&nbsp;<%= oiletc0.code_name %></td>  
+      <td class="input_no"><%= num_fmt(oiletc0.pos_total, flg) %>&nbsp;<%= oiletc0.code_name %></td>              
     </tr>
   <% end %>	
     <tr>
@@ -68,12 +75,19 @@
 	  <th width="105">POS日計</th>	
 	</tr>
   <% @oiletc1s.each do |oiletc1| %>
+    <% 
+    if oiletc1.oiletc_tani == 6
+      flg = true
+    else
+      flg = false    	
+    end		
+    %>  
     <tr>
       <th><%= oiletc1.oiletc_name %></th> 	
-      <td class="input_no"><%= num_fmt(oiletc1.pos1_data) %>&nbsp;<%= oiletc1.code_name %></td>
-      <td class="input_no"><%= num_fmt(oiletc1.pos2_data) %>&nbsp;<%= oiletc1.code_name %></td>
-      <td class="input_no"><%= num_fmt(oiletc1.pos3_data) %>&nbsp;<%= oiletc1.code_name %></td>  
-      <td class="input_no"><%= num_fmt(oiletc1.pos_total) %>&nbsp;<%= oiletc1.code_name %></td>              
+      <td class="input_no"><%= num_fmt(oiletc1.pos1_data, flg) %>&nbsp;<%= oiletc1.code_name %></td>
+      <td class="input_no"><%= num_fmt(oiletc1.pos2_data, flg) %>&nbsp;<%= oiletc1.code_name %></td>
+      <td class="input_no"><%= num_fmt(oiletc1.pos3_data, flg) %>&nbsp;<%= oiletc1.code_name %></td>  
+      <td class="input_no"><%= num_fmt(oiletc1.pos_total, flg) %>&nbsp;<%= oiletc1.code_name %></td>              
     </tr>
   <% end %>	
 </table>	
@@ -88,12 +102,19 @@
 	  <th width="105">POS日計</th>	
 	</tr>
   <% @m_etcs.each do |m_etc| %>
+    <% 
+    if m_etc.etc_tani == 6
+      flg = true
+    else
+      flg = false    	
+    end		
+    %>   
     <tr>
       <th><%= m_etc.etc_name %></th> 	
-      <td class="input_no"><%= num_fmt(m_etc.pos1_data) %>&nbsp;<%= m_etc.code_name %></td>
-      <td class="input_no"><%= num_fmt(m_etc.pos2_data) %>&nbsp;<%= m_etc.code_name %></td>
-      <td class="input_no"><%= num_fmt(m_etc.pos3_data) %>&nbsp;<%= m_etc.code_name %></td>  
-      <td class="input_no"><%= num_fmt(m_etc.pos_total) %>&nbsp;<%= m_etc.code_name %></td>              
+      <td class="input_no"><%= num_fmt(m_etc.pos1_data, flg) %>&nbsp;<%= m_etc.code_name %></td>
+      <td class="input_no"><%= num_fmt(m_etc.pos2_data, flg) %>&nbsp;<%= m_etc.code_name %></td>
+      <td class="input_no"><%= num_fmt(m_etc.pos3_data, flg) %>&nbsp;<%= m_etc.code_name %></td>  
+      <td class="input_no"><%= num_fmt(m_etc.pos_total, flg) %>&nbsp;<%= m_etc.code_name %></td>              
     </tr>      
   <% end %>	
 </table>	
