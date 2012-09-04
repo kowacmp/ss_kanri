@@ -88,7 +88,7 @@ $(function () {
     	var total;
     	total = 0
     	
-    	<% @m_oiletc0s.each do |m_oiletc| %>
+    	<% @m_oiletc0_pos_totals.each do |m_oiletc| %>
     	  var num<%= m_oiletc.id %> = Number(format_kanma($("#etc0_pos<%= i %>_<%= m_oiletc.id %>").val(), 2));
     	
     	  if (isNaN(num<%= m_oiletc.id %>)) {num<%= m_oiletc.id %> = 0};

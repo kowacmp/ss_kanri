@@ -402,5 +402,13 @@ module DResultsHelper
     end
     
     return pos_total
+  end
+  
+  def m_oiletc0_en_pos_total_sql
+    sql = "select o.*, c.code from m_oiletcs o, m_codes c"
+    sql << " where to_number(c.code, '999999999') = o.oiletc_tani and o.oiletc_group = 0"
+    sql << " and o.deleted_flg = 0 and c.kbn = 'tani' and c.code = '0'"
+    
+    return sql    
   end   
 end

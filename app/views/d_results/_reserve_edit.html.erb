@@ -3,7 +3,7 @@
 <%= javascript_include_tag "jquery.ui.datepicker-ja" %> 
 
 <%= form_tag({:action => 'reserve_update' }, { :remote => true }) do %>
-  <table>
+  <table id='rounded-corner'>
   	<tr>
   	  <th>車検予約日</th>
       <td><%= number_field :reserve, :get_date, :readonly => true, :value => Time.parse(@d_result_reserve.get_date).strftime("%Y/%m/%d"), :size => 10, :class => "datepicker" %></td>

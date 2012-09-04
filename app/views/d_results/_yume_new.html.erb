@@ -1,5 +1,5 @@
 <%= form_tag({:action => 'yume_create' }, { :remote => true }) do %>
-  <table>
+  <table id='rounded-corner'>
     <tr>
       <th>件数</th>
       <td><%= number_field :yume, :kensu, :class => "yume_input", :size => 10 %></td>

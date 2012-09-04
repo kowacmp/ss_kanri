@@ -4,9 +4,10 @@ class DResultsController < ApplicationController
   def index
     @m_shop = MShop.find(current_user.m_shop_id)
     @m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"])
-    @m_oiletc0s = MOiletc.find(:all, :conditions => ["oiletc_group = 0 and deleted_flg = 0"])
+    @m_oiletc0s = MOiletc.find(:all, :conditions => ["oiletc_group = 0 and deleted_flg = 0"])  
     @m_oiletc1s = MOiletc.find(:all, :conditions => ["oiletc_group = 1 and deleted_flg = 0"])
     @etcs = MEtc.find(:all, :conditions => ["deleted_flg = 0 and kansa_flg = 1"])
+    @m_oiletc0_pos_totals = MOiletc.find_by_sql(m_oiletc0_en_pos_total_sql)
     
     session[:m_oil_totals] = Array::new                 
     @m_oils.each do |m_oil|
@@ -57,12 +58,16 @@ class DResultsController < ApplicationController
     #油外販売取得
     oiletc0_sql = m_oiletc_sql(@d_result, 0)
     @oiletc0s = MOiletc.find_by_sql(oiletc0_sql)
+    
     @etc0_pos1_total, @etc0_pos2_total, @etc0_pos3_total, @etc0_pos_total = 0,0,0,0  
     @oiletc0s.each do |oiletc0|
-      @etc0_pos1_total += oiletc0.pos1_data.to_f
-      @etc0_pos2_total += oiletc0.pos2_data.to_f 
-      @etc0_pos3_total += oiletc0.pos3_data.to_f
-      @etc0_pos_total += oiletc0.pos_total.to_f   
+      #単位が円のものだけ合計する
+      if oiletc0.oiletc_tani == 0 
+        @etc0_pos1_total += oiletc0.pos1_data.to_f
+        @etc0_pos2_total += oiletc0.pos2_data.to_f 
+        @etc0_pos3_total += oiletc0.pos3_data.to_f
+        @etc0_pos_total += oiletc0.pos_total.to_f
+      end   
     end
 
  
@@ -85,7 +90,7 @@ class DResultsController < ApplicationController
     etc_sql << " left join m_codes c on (to_number(c.code, '999999999') = m.etc_tani and c.kbn = 'tani')"
     etc_sql << " where m.deleted_flg = 0 and m.kansa_flg = 1 order by m.etc_cd, d.no"
     @m_etcs = MEtc.find_by_sql(etc_sql)
-p "etc_sql=#{etc_sql}"
+
  
     #営業POS伝回収報告
     m_oil_etc_sql = "select m.id, m.oiletc_name, d.get_num"
