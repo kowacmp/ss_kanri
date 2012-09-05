@@ -1,0 +1,2 @@
+module DAuditApprovesHelper
+end
