@@ -68,7 +68,7 @@ module DResultsHelper
     sql << " where d.m_meter_id = m.id and m.m_tank_id = t.id"
     sql << "   and t.m_shop_id = #{m_shop_id} and d.d_result_id = #{d_result_id}"
     sql << "   and m.deleted_flg = 0 and t.deleted_flg = 0 group by t.m_oil_id order by t.m_oil_id"
-    
+    p "oil_betu_meter_sql=#{sql}"
     return sql
   end
   

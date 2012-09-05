@@ -1,86 +1,6 @@
 <%= form_tag({:action => 'd_result_meter_create' }, { :remote => true }) do %>
 
-<div style="float: left;width: 56%;">
-<table border="0" cellspacing="0" cellpadding="0" style="width: 430px;">
-<!-- HEAD -->
-  <tr>
-    <td>
-      <div style="overflow:hidden;height; 1em;">
-	    <table id="rounded-corner3">	
-		  <tr>
-			<th width="50">油種</th>			
-		  </tr>	
-		  <tr>
-			<th>No</th>			
-		  </tr>			
-		</table>
-	  </div>
-	</td>
-	<td>
-	  <div id="trow" style="overflow:hidden; width: 380px;">
-	    <table id="rounded-corner3" style=" width: 1575px;">
-		  <tr>
-  	        <% @m_oils.each do |m_oil| %>
-  	          <th colspan="6"><%= m_oil.oil_name %></th>
-  	        <% end %>
-			<th style="width:15px;"></th>
-		  </tr>	
-		  <tr>
-  	        <% @m_oils.each do |m_oil| %>
-  	          <% @m_codes.each do |m_code| %>
-  	            <th width="40">計量</th>
-  	            <th width="90"><%= m_code.code_name %></th>
-  	          <% end %> 	
-  	        <% end %>
-			<th style="width:15px;"></th>
-		  </tr>									
-		</table>
-	  </div>
-	</td>
-  </tr>
- 
-<!-- BODY -->
-  <tr>
-    <td>
-      <div id="tcol" style="overflow: hidden; height: 180px;">
-		<table  id="rounded-corner3" style="padding-bottom:15px;">
-          <% @old_meters.each_with_index do |meter, idx| %>
-            <tr>
-              <th width="50"><%= idx + 1 %></th>
-            </tr> 
-          <% end %>  
-		  <tr style="height:15px;" border="0"></tr>					
-		</table>
-	  </div>
-	</td>
-    <td>
-      <div onScroll="scrollRC()" id="tbody" style="overflow:auto; width: 380px; height: 180px;">
-		<table id="rounded-corner3" style="width: 1560px;">
-          <% @old_meters.each_with_index do |meter, idx| %>
-            <tr>
-  	          <% @m_oils.each do |m_oil| %>
-  	            <% @m_codes.each do |m_code| %>
-  	              <% if meter["#{m_oil.id}_#{m_code.code}_m_meter_id"].blank? %>  
-                    <td width="40"></td>
-                    <td width="90"></td>
-  	              <% else %>  	      	
-  	                <td width="40" align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %></td>
-  	                <td width="90" align="right"><%= meter["#{m_oil.id}_#{m_code.code}_meter"] %></td>
-                  <% end %> 	        
-  	            <% end %>
-  	          <% end %>
-            </tr>
-          <% end %>
-		  <tr border="0"></tr>													
-		</table>
-	  </div>
-	</td>
-  </tr>
-</table>	
-<br/>
-
-
-<table border="0" cellspacing="0" cellpadding="0" style="width: 430px;">
+<table border="0" cellspacing="0" cellpadding="0" style="width: 695px;">
 <!-- HEAD -->
   <tr>
     <td>
@@ -96,19 +16,19 @@
 	  </div>
 	</td>
 	<td>
-	  <div id="trow2" style="overflow:hidden; width: 380px;">
-	    <table id="rounded-corner4" style=" width: 1575px;">
+	  <div id="trow2" style="overflow:hidden; width: 645px;">
+	    <table id="rounded-corner4" style=" width: 2595px;">
 		  <tr>
   	        <% @m_oils.each do |m_oil| %>
-  	          <th colspan="6"><%= m_oil.oil_name %></th>
+  	          <th colspan="9"><%= m_oil.oil_name %></th>
   	        <% end %>
 			<th style="width:15px;"></th>
 		  </tr>	
 		  <tr>
   	        <% @m_oils.each do |m_oil| %>
   	          <% @m_codes.each do |m_code| %>
-  	            <th width="30">計量</th>
-  	            <th width="90"><%= m_code.code_name %></th>
+  	            <th width="45">計量</th>
+  	            <th width="160" colspan="2"><%= m_code.code_name %></th>
   	          <% end %> 	
   	        <% end %>
 			<th style="width:15px;"></th>
@@ -121,7 +41,7 @@
 <!-- BODY -->
   <tr>
     <td>
-      <div id="tcol2" style="overflow: hidden; height: 180px;">
+      <div id="tcol2" style="overflow: hidden; height: 400px;">
 		<table  id="rounded-corner4" style="padding-bottom:15px;">
           <% @meters.each_with_index do |meter, idx| %>
             <tr>
@@ -133,18 +53,20 @@
 	  </div>
 	</td>
     <td>
-      <div onScroll="scrollRC2()" id="tbody2" style="overflow:auto; width: 380px; height: 180px;">
-		<table id="rounded-corner4" style="width: 1560px;">
+      <div onScroll="scrollRC2()" id="tbody2" style="overflow:auto; width: 645px; height: 400px;">
+		<table id="rounded-corner4" style="width: 2580px;">
           <% @meters.each_with_index do |meter, idx| %>
             <tr>
   	          <% @m_oils.each do |m_oil| %>
   	            <% @m_codes.each do |m_code| %>
   	              <% if meter["#{m_oil.id}_#{m_code.code}_m_meter_id"].blank? %>  
-                    <td width="30"></td>
+                    <td width="45"></td>
+                    <td width="70"></td>
                     <td width="90"></td>
   	              <% else %>  	      	
-  	                <td width="30" align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %></td>
-  	                <td width="90"><%= number_field :meter, meter["#{m_oil.id}_#{m_code.code}_m_meter_id"], :value => meter["#{m_oil.id}_#{m_code.code}_meter"], :size => 2 %></td>
+  	                <td width="45" align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %></td>
+  	                <td width="70" style="text-align: right;"><%= @old_meters[idx]["#{m_oil.id}_#{m_code.code}_meter"] %>&nbsp;</td>
+  	                <td width="90" align="center"><%= number_field :meter, meter["#{m_oil.id}_#{m_code.code}_m_meter_id"], :value => meter["#{m_oil.id}_#{m_code.code}_meter"], :readonly => @text, :class=> "meter_input" %></td>
                   <% end %> 	        
   	            <% end %>
   	          <% end %>
@@ -157,47 +79,16 @@
   </tr>
 </table>	
 <br/>
-</div>
 
 
-<div style="float: right;width: 44%;">
-  <table id='rounded-corner' width="340">
-    <tr>
-  	  <th width="16%">タンク</th>
-  	  <th width="15%">容量</th>
-  	  <th width="19%">油種</th>
-  	  <th width="25%">仕入</th>
-  	  <th width="25%">在庫</th>  	  	  	  	
-    </tr>
-  </table>
-  <div style="height:440px;width:365px;overflow-y:auto;overflow-x:hidden;">
-  <table id='rounded-corner2'style="margin-top:-1px; width:340px;">
-  <% @m_tanks.each do |m_tank| %>
-    <tr>
-      <th width="16%">タンク<%= m_tank.tank_no %></th>
-      <th width="15%"><%= m_tank.volume %>KL</th>
-      <th width="19%"><%= m_tank.oil_name %></th>
-      <td width="25%"><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :size => 1 %></td>
-      <td width="25%"><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :size => 1 %></td>                  
-    </tr>
-  <% end %>
-  </table>
-  </div>
-</div>
   <%= hidden_field :select, :d_result_id, :value => @d_result.id %>
-  <%= submit_tag '登録' %>
+  <% if @d_result.kakutei_flg == 0 %>
+    <div style="text-align:right; width: 650px;"><%= submit_tag '登録' %></div>
+  <% end %>
 <% end %>
 
 
 <script type="text/javascript">
-  function scrollRC()
-  {
-    document.getElementById('trow').scrollLeft
-          = document.getElementById('tbody').scrollLeft;
-    document.getElementById('tcol').scrollTop
-          = document.getElementById('tbody').scrollTop;
-  }
-
   function scrollRC2()
   {
     document.getElementById('trow2').scrollLeft
@@ -207,3 +98,9 @@
   }
 </script>
 
+<style type="text/css">
+ input.meter_input { 
+ 	 width: 80px;
+     text-align:right;
+                   }　
+</style>

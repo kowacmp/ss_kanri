@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120830123550) do
+ActiveRecord::Schema.define(:version => 20120904104255) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -389,6 +389,9 @@ ActiveRecord::Schema.define(:version => 20120830123550) do
     t.decimal  "mobil1",        :precision => 11, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "oiletc_sale"
+    t.integer  "oiletc_pace"
+    t.integer  "arari_total"
   end
 
   create_table "d_result_reserves", :force => true do |t|

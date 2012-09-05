@@ -1,35 +1,23 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Send day:</b>
-  <%= @d_comment.send_day %>
-</p>
+<table id='rounded-corner'>
+  <tr>	
+    <th>入力日</th>
+    <td><%= @d_comment.send_day.strftime("%Y/%m/%d") %></td>
+  </tr>
+  <tr>	
+    <th>タイトル</th>
+    <td><%= @display_name %></td>
+  </tr>
+  <tr>	
+    <th>内容</th>
+    <td><%= @d_comment.contents %></td>
+  </tr>
+  <tr>	
+    <th>表示先</th>
+    <td><%= @receive_user.account %>&nbsp;<%= @receive_user.user_name %></td>
+  </tr>
+</table>
 
-<p>
-  <b>Menu:</b>
-  <%= @d_comment.menu_id %>
-</p>
-
-<p>
-  <b>Contents:</b>
-  <%= @d_comment.contents %>
-</p>
-
-<p>
-  <b>Send:</b>
-  <%= @d_comment.send_id %>
-</p>
-
-<p>
-  <b>Receive:</b>
-  <%= @d_comment.receive_id %>
-</p>
-
-<p>
-  <b>Created user:</b>
-  <%= @d_comment.created_user_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_d_comment_path(@d_comment) %> |
-<%= link_to 'Back', d_comments_path %>
+<%= link_to '編集', edit_d_comment_path(@d_comment), :class => 'edit_icon' %> |
+<%= link_to '戻る', d_comments_path, :class => 'return_icon' %>

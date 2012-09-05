@@ -1,6 +1,13 @@
-<h1>Editing d_comment</h1>
+<h1>編集</h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @d_comment %> |
-<%= link_to 'Back', d_comments_path %>
+<%= link_to '詳細', @d_comment, :class => 'show_icon' %> |
+<%= link_to '戻る', d_comments_path, :class => 'return_icon' %>
+
+<script type="text/javascript">
+$("#m_shop_id").change(function(){
+    var m_shop_id = $("#m_shop_id").val();
+    $.get("/d_comments/change_m_shop?m_shop_id=" + m_shop_id);
+});
+</script>

@@ -1,0 +1,10 @@
+社員
+<% if @m_shop_id.blank? %>
+<%= select(:d_comment, :receive_id, options_from_collection_for_select(User.find(:all, 
+               :conditions => ["deleted_flg = 0"], :order => 'account'),
+                       :id, :user_name)) %>
+<% else %>                       
+<%= select(:d_comment, :receive_id, options_from_collection_for_select(User.find(:all, 
+               :conditions => ["deleted_flg = 0 and m_shop_id = ?", @m_shop_id], :order => 'account'),
+                       :id, :user_name)) %>
+<% end %>                       
