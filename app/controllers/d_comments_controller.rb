@@ -2,8 +2,15 @@ class DCommentsController < ApplicationController
   # GET /d_comments
   # GET /d_comments.json
   def index
-    @d_comments = DComment.all
-
+    sql =  "select c.*, u.account receive_user_account, u.user_name receive_user_name, m.display_name"
+    sql << "  from d_comments c"
+    sql << "  left join users u on (c.receive_id = u.id)"
+    sql << "  left join menus m on (c.menu_id = m.id)"
+    sql << " where created_user_id = #{current_user.id} order by c.send_day desc"
+        
+    p "sql=#{sql}"
+    @d_comments = DComment.find_by_sql(sql)
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @d_comments }
@@ -14,7 +21,9 @@ class DCommentsController < ApplicationController
   # GET /d_comments/1.json
   def show
     @d_comment = DComment.find(params[:id])
-
+    @display_name = Menu.find(@d_comment.menu_id).display_name
+    @receive_user = User.find(@d_comment.receive_id)
+     
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @d_comment }
@@ -35,13 +44,16 @@ class DCommentsController < ApplicationController
   # GET /d_comments/1/edit
   def edit
     @d_comment = DComment.find(params[:id])
+    @d_comment.send_day = @d_comment.send_day.strftime("%Y/%m/%d")
   end
 
   # POST /d_comments
   # POST /d_comments.json
   def create
     @d_comment = DComment.new(params[:d_comment])
-
+    @d_comment.created_user_id = current_user.id
+    @d_comment.send_id = current_user.id
+    
     respond_to do |format|
       if @d_comment.save
         format.html { redirect_to @d_comment, notice: 'D comment was successfully created.' }
@@ -80,4 +92,13 @@ class DCommentsController < ApplicationController
       format.json { head :ok }
     end
   end
+  
+  def change_m_shop
+    @m_shop_id = params[:m_shop_id]
+  
+    respond_to do |format|
+      format.js
+    end    
+  end
+  
 end

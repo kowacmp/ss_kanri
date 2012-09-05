@@ -128,7 +128,12 @@
 	  <th>メーター過不足</th>
 	  <th>地下タンク過不足</th>
 	  <th>仕入(リットル)</th>
-	  <th>在庫(リットル)</th>	  	  	  	  	  	  
+	  <th>在庫(リットル)</th>	
+	  <td rowspan="<%= @meters.size + 1 %>">
+	  	<%= link_to 'メーター詳細', {:controller => 'd_results', :action => 'meter_index', :result_date => @result_date}, :class => "modal" %>
+	    <br/>
+	    <%= link_to 'タンク詳細', {:controller => 'd_results', :action => 'tank_index', :result_date => @result_date}, :class => "modal" %>
+	  </td>	 	    	  	  	  	  	  
 	</tr>	
   <% @meters.each do |meter| %>
     <tr>

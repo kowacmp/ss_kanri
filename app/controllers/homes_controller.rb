@@ -6,6 +6,13 @@ class HomesController < ApplicationController
     m_authority_id = current_user.m_authority_id
     user_id = current_user.id
 
+    #１週間の予定
+    sql = "select wp.*, w.wash_name from m_washsale_plans wp, m_washes w"
+    sql << " where wp.m_wash_id = w.id and wp.deleted_flg = 0"
+    sql << " and m_shop_id = #{current_user.m_shop_id} and w.deleted_flg = 0 order by w.wash_cd"
+    
+    @m_washsale_plans = MWashsalePlan.find_by_sql(sql) 
+
     #イベント取得
     sql = <<-SQL
       select d.*, m.display_name
@@ -37,9 +44,8 @@ class HomesController < ApplicationController
          and d.receive_id = #{current_user.id}
       order by d.send_day desc
     SQL
-
-    @d_comments = DComment.find_by_sql(sql)    
-    
+p "sql=#{sql}"
+    @d_comments = DComment.find_by_sql(sql)
   end
 
   def show_d_comment
@@ -50,5 +56,11 @@ class HomesController < ApplicationController
     @menu = Menu.find(@d_comment.menu_id)
     
     render :layout => 'modal'
+  end
+  
+  def d_message_delete
+    p "d_message_delete   d_message_delete   d_message_delete"
+    p "id=#{params[:id]}"
+    
   end
 end

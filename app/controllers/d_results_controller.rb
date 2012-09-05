@@ -305,8 +305,11 @@ class DResultsController < ApplicationController
     
     #消費税取得
     tax_rate = Establish.find(:first).tax_rate
-
-    #実績表データ
+    #前日のd_result_id取得
+    day, yesterday = old_result_date(d_result.result_date)
+    old_d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
+                                                         d_result.m_shop_id, yesterday])
+    #実績表
     if m_shop.shop_kbn == 0
       #セルフ実績表データ
       d_result_self_report = DResultSelfReport.find(:first, :conditions => ["d_result_id = ?", d_result.id])
@@ -339,7 +342,12 @@ class DResultsController < ApplicationController
     else
       #実績表データ
       d_result_report = DResultReport.find(:first, :conditions => ["d_result_id = ?", d_result.id])
-     
+      if old_d_result.blank?
+        old_d_result_report = ""
+      else  
+        old_d_result_report = DResultReport.find(:first, :conditions => ["d_result_id = ?", old_d_result.id])
+      end
+      
       if d_result_report.blank?
         d_result_report = DResultReport.new
         d_result_report.d_result_id = d_result.id        
@@ -355,8 +363,9 @@ class DResultsController < ApplicationController
       d_result_report.sensya = m_oiletc_pos_total(d_result.id, 4, tax_rate)
       d_result_report.koutin = m_oiletc_pos_total(d_result.id, 5, tax_rate)
       d_result_report.taiya = m_oiletc_pos_total(d_result.id, 6, tax_rate)
-      d_result_report.chousei = m_oiletc_pos_total(d_result.id, 27, tax_rate)    
-      d_result_report.arari = (d_result_report.koua * 500) + (d_result_report.buyou * 0.3) + (d_result_report.tokusei * 0.7) + (d_result_report.sensya * 0.95) + (d_result_report.koutin * 0.95) + (d_result_report.taiya * 1500) +  d_result_report.chousei      
+      d_result_report.chousei = m_oiletc_pos_total(d_result.id, 27, tax_rate)  
+      d_result_report.oiletc_sale = (d_result_report.koua * 500) + (d_result_report.buyou * 0.3) + (d_result_report.tokusei * 0.7) + (d_result_report.sensya * 0.95) + (d_result_report.koutin * 0.95) + (d_result_report.taiya * 1500)  
+      d_result_report.arari = d_result_report.oiletc_sale + d_result_report.chousei      
       d_result_report.syaken = m_oiletc_pos_total(d_result.id, 12, tax_rate)
       d_result_report.kyuyu_purika = m_oiletc_pos_total(d_result.id, 8, tax_rate)
       d_result_report.sensya_purika = m_oiletc_pos_total(d_result.id, 10, tax_rate)
@@ -370,10 +379,20 @@ class DResultsController < ApplicationController
       d_result_report.bankin = m_oiletc_pos_total(d_result.id, 7, tax_rate)
       d_result_report.waiper = m_oiletc_pos_total(d_result.id, 17, tax_rate)
       d_result_report.mobil1 = m_oiletc_pos_total(d_result.id, 18, tax_rate)
+       
+      #前回レコードがない場合、または月初めの場合は累計項目に今回の値を代入
+      if old_d_result_report.blank? or day == "01" 
+        d_result_report.arari_total = d_result_report.arari
+      else
+        d_result_report.arari_total = old_d_result_report.arari + d_result_report.arari 
+      end
+      
+      today = Time.parse(d_result.result_date).strftime("%d") 
+      month_end_day = Time.parse(d_result.result_date).end_of_month.strftime("%d")   
+      d_result_report.oiletc_pace = (d_result_report.arari_total / today.to_i) * month_end_day.to_i
+              
       d_result_report.save
-    end 
-     
-   # head :ok
+    end
   end
   
   def reserve_index
@@ -635,6 +654,12 @@ class DResultsController < ApplicationController
                                             
     #@m_tanks = MTank.find_by_sql(sql)
         
+    if @d_result.kakutei_flg == 1
+      @text = true
+    else
+      @text = false  
+    end          
+        
     render :layout => 'modal'
   end
   
@@ -728,6 +753,12 @@ class DResultsController < ApplicationController
     sql << " order by t.tank_no"
                                             
     @m_tanks = MTank.find_by_sql(sql)
+        
+    if @d_result.kakutei_flg == 1
+      @text = true
+    else
+      @text = false  
+    end    
         
     render :layout => 'modal'
   end  

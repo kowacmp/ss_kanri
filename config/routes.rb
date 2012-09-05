@@ -111,7 +111,11 @@ SsKanri::Application.routes.draw do
 
   resources :m_oils
 
-  resources :d_comments
+  resources :d_comments do
+    collection do
+      get :change_m_shop
+    end
+  end
 
   resources :d_events
 
