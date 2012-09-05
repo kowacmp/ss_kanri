@@ -24,28 +24,31 @@
 <hr>
 
 
-<div id="report_view">
+<!--div id="report_view"-->
   	<table id="report_view_table" class="rounded-corner">
+  		<thead>
 		<tr>
-			<th>日付</th>
-			<th>曜日</th>
-			<th>現金売上</th>
-			<th>プリカ売上</th>
-			<th>ﾌﾟﾘｶ手数料</th>
-			<th>その他売上</th>
-			<th>掛入金</th>
-			<th>出金</th>
-			<th>小計</th>
-			<th>釣銭追加</th>
-			<th>ＡＳＳ入金</th>
-			<th>前日入金</th>
-			<th>当日入金</th>
-			<th>翌日入金<br />(前)</th>
-			<th>翌日入金<br />(後)</th>
-			<th>計算上有高</th>
-			<th>現金有高</th>
-			<th>過不足</th>
+			<th style="min-width: 40px;">日付</th>
+			<th style="min-width: 40px;">曜日</th>
+			<th style="min-width: 100px;">現金売上</th>
+			<th style="min-width: 100px;">プリカ売上</th>
+			<th style="min-width: 100px;">ﾌﾟﾘｶ手数料</th>
+			<th style="min-width: 100px;">その他売上</th>
+			<th style="min-width: 100px;">掛入金</th>
+			<th style="min-width: 100px;">出金</th>
+			<th style="min-width: 100px;">小計</th>
+			<th style="min-width: 100px;">釣銭追加</th>
+			<th style="min-width: 100px;">ＡＳＳ入金</th>
+			<th style="min-width: 100px;">前日入金</th>
+			<th style="min-width: 100px;">当日入金</th>
+			<th style="min-width: 100px;">翌日入金<br />(前)</th>
+			<th style="min-width: 100px;">翌日入金<br />(後)</th>
+			<th style="min-width: 100px;">計算上有高</th>
+			<th style="min-width: 100px;">現金有高</th>
+			<th style="min-width: 100px;">過不足</th>
 		</tr>
+		</thead>
+		<tbody>
 		<% d_sale_total = Hash::new %>
 		<% loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, -1)).strftime("%d").to_i %>
 		<% loopcnt.times { |i| %>
@@ -115,20 +118,22 @@
 			<td class="title" colspan="2">出納帳残高</td>
 			<td class="money"><%= num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i)  %></td>
 		</tr>
+		</tbody>
 	</table>
-</div>
+<!--/div-->
 
 <%= link_to "戻る", {:controller => "d_sales", :action => "index", :input_day => @head[:input_day], :input_shop_kbn => @head[:input_shop_kbn]}, :method => :get, :class => 'return_icon' %>
 
 <script>
 $(function () {
+	$('#report_view_table').tablefix({width: 925, height: 900, fixRows: 1, fixCols: 2});
     //テーブルにスクロールバーを設定
-    new superTable("report_view_table", {
-      cssSkin : "sSky",
-      headerRows : 1,
-      fixedCols : 2,
-      colWidths :  [40, 40, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
-    });
+//    new superTable("report_view_table", {
+//      cssSkin : "sSky",
+//      headerRows : 1,
+//      fixedCols : 2,
+//      colWidths :  [40, 40, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+//    });
     
-})();	
+});	
 </script>

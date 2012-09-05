@@ -111,9 +111,9 @@ $(function () {
 	//ASS
 	$("#d_sale_sale_ass").live('change', function(){ sale_ass_calc(); });
 	//入金
-	$("div.sData table#recive_table :input[id*=_item_money]").live('change', function(){ recive_money_total_calc(); });
+	$("div.bodyDiv table#recive_table :input[id*=_item_money]").live('change', function(){ recive_money_total_calc(); });
 	//出金
-	$("div.sData table#pay_table :input[id*=_item_money]").live('change', function(){ pay_money_total_calc(); });
+	$("div.bodyDiv table#pay_table :input[id*=_item_money]").live('change', function(){ pay_money_total_calc(); });
 	
     //売上合計を計算
     function sale_money_total_calc(){
@@ -224,7 +224,7 @@ $(function () {
 		var num;
 		var total=0;
 		
-		$("div.sData table#pay_table :input[id*=_item_money]").each(function(i){
+		$("div.bodyDiv table#pay_table :input[id*=_item_money]").each(function(i){
 		    num = Number(format_kanma($(this).val(), 2));
 		    if (isNaN(num)) {num = 0};
 		    total = total + num;
@@ -243,7 +243,7 @@ $(function () {
 		var num;
 		var total=0;
 		
-		$("div.sData table#recive_table :input[id*=_item_money]").each(function(i){
+		$("div.bodyDiv table#recive_table :input[id*=_item_money]").each(function(i){
 		    num = Number(format_kanma($(this).val(), 2));
 		    if (isNaN(num)) {num = 0};
 		    total = total + num;
@@ -419,5 +419,5 @@ $(function () {
     //	}
     //	
     //};
-})();
+});
 

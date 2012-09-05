@@ -55,6 +55,7 @@
 					return false;
 				}
 			});
+			offsetX = offsetX + 1;
 			// テーブルの分割と初期化
 			var crossTable = baseTable.wrap('<div></div>');
 			var rowTable = baseTable.clone().wrap('<div></div>');
@@ -86,8 +87,9 @@
 				marginBottom: (withWidth ? 20 : 0) + (withHeight ? 20 : 0) + 'px'
 			});
 			bodyDiv
-				.width(bodyWidth + (withWidth ? 20 : 0) + (withHeight ? 20 : 0))
-				.height(bodyHeight + (withWidth ? 20 : 0) + (withHeight ? 20 : 0))
+			    .addClass('bodyDiv')
+				.width(bodyWidth + (withWidth ? 40 : 0) + (withHeight ? 20 : 0))
+				.height(bodyHeight + (withWidth ? 20 : 0) + (withHeight ? 40 : 0))
 				.css({left: offsetX + 'px', top: offsetY + 'px'});
 			bodyTable.css({
 				marginLeft: -offsetX + 'px',

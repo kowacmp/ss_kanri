@@ -26,68 +26,71 @@
   <% end %>
 
   <div id="d_sale">
-	  <div class="title_alias">売上１</div>
-	  <div class="input_alias"><%= f.text_field :sale_money1, :size=>4, :class=>"money" %></div>
-	  <div class="title_alias">プリカ</div>
-	  <div class="input_alias"><%= f.text_field :sale_purika, :size=>4, :class=>"money" %></div>
-	  <div class="title_alias">前日出</div>
-	  <div class="info_alias"><%= label :zenjitu_d_sale, :sale_pm_out, num_fmt(@zenjitu_d_sale.sale_pm_out.to_i), :id=>'zenjitu_sale_pm_out' %></div>
-	  <div class="title_alias">釣銭機１</div>
-	  <div class="input_alias"><%= f.text_field :sale_change1, :size=>4, :class=>"money" %></div>
-	  <div class="title_alias">ＡＳＳ</div>
-	  <div class="input_alias"><%= f.text_field :sale_ass, :size=>4, :class=>"money" %></div>
-	  
-	  
-	  <br />
-	  <div class="title_alias">売上２</div>
-	  <div class="input_alias"><%= f.text_field :sale_money2, :size=>4, :class=>"money" %></div>
-	  <div class="none_alias"></div>
-	  <div class="title_alias">当日出</div>
-	  <div class="input_alias"><%= f.text_field :sale_today_out, :size=>4, :class=>"money" %></div>
-	  <div class="title_alias">釣銭機２</div>
-	  <div class="input_alias"><%= f.text_field :sale_change2, :size=>4, :class=>"money" %></div>
-	  <div class="title_alias">固定金庫</div>
-	  <div class="info_alias"><%= num_fmt(@m_fix_money.total_cash_box.to_i) %></div>
-	  
-	  <br />
-	  <div class="title_alias">売上３</div>
-	  <div class="input_alias"><%= f.text_field :sale_money3, :size=>4, :class=>"money" %></div>
-	  <div class="none_alias"></div>	  
-	  <div class="title_alias">翌日出前</div>
-	  <div class="input_alias"><%= f.text_field :sale_am_out, :size=>4, :class=>"money" %></div>
-	  <div class="title_alias">釣銭機３</div>
-	  <div class="input_alias"><%= f.text_field :sale_change3, :size=>4, :class=>"money" %></div>
-	  <div class="title_alias">釣銭機固定額</div>
-	  <div class="info_alias"><%= num_fmt(@m_fix_money.total_change_money.to_i) %></div>
-	  
-	  <br />
-	  <div class="title_alias">売上合計</div>
-	  <div class="info_alias"><label id="sale_money_total"><%= num_fmt(@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i) %></label></div>
-      <div class="none_alias"></div>
-	  <div class="title_alias">翌日出後</div>
-	  <div class="input_alias"><%= f.text_field :sale_pm_out, :size=>4, :class=>"money" %></div>
-      <div class="title_alias">釣銭合計</div>
-      <div class="info_alias"><label id="sale_change_total"><%= num_fmt(@sale_change_total) %></label></div>
-      <div class="title_alias">通帳預金額</div>
-      <div class="info_alias"><label id="tucyo_money"><%= num_fmt(@zenjitu_d_sale.sale_today_out.to_i + @d_sale.sale_today_out.to_i -  @d_sale.sale_ass.to_i + @d_sale.sale_am_out.to_i) %></label></div>
-
-      <br /><br />
+	<table class="rounded-corner">
+		<tr>
+		  <td class="title_alias">売上１</td>
+		  <td class="input_alias"><%= f.text_field :sale_money1, :size=>4, :class=>"money" %></td>
+		  <td class="title_alias">プリカ</td>
+		  <td class="input_alias"><%= f.text_field :sale_purika, :size=>4, :class=>"money" %></td>
+		  <td class="title_alias">前日出</td>
+		  <td class="info_alias"><%= label :zenjitu_d_sale, :sale_pm_out, num_fmt(@zenjitu_d_sale.sale_pm_out.to_i), :id=>'zenjitu_sale_pm_out' %></td>
+		  <td class="title_alias">釣銭機１</td>
+		  <td class="input_alias"><%= f.text_field :sale_change1, :size=>4, :class=>"money" %></td>
+		  <td class="title_alias">ＡＳＳ</td>
+		  <td class="input_alias"><%= f.text_field :sale_ass, :size=>4, :class=>"money" %></td>
+		</tr>
+		<tr>
+		  <td class="title_alias">売上２</td>
+		  <td class="input_alias"><%= f.text_field :sale_money2, :size=>4, :class=>"money" %></td>
+		  <td class="none_alias" colspan="2" rowspan="3"></td>
+		  <td class="title_alias">当日出</td>
+		  <td class="input_alias"><%= f.text_field :sale_today_out, :size=>4, :class=>"money" %></td>
+		  <td class="title_alias">釣銭機２</td>
+		  <td class="input_alias"><%= f.text_field :sale_change2, :size=>4, :class=>"money" %></td>
+		  <td class="title_alias">固定金庫</td>
+		  <td class="info_alias"><%= num_fmt(@m_fix_money.total_cash_box.to_i) %></td>
+		</tr>
+		<tr>
+		  <td class="title_alias">売上３</td>
+		  <td class="input_alias"><%= f.text_field :sale_money3, :size=>4, :class=>"money" %></td>  
+		  <td class="title_alias">翌日出前</td>
+		  <td class="input_alias"><%= f.text_field :sale_am_out, :size=>4, :class=>"money" %></td>
+		  <td class="title_alias">釣銭機３</td>
+		  <td class="input_alias"><%= f.text_field :sale_change3, :size=>4, :class=>"money" %></td>
+		  <td class="title_alias">釣銭機固定額</td>
+		  <td class="info_alias"><%= num_fmt(@m_fix_money.total_change_money.to_i) %></td>
+		</tr>
+		<tr>
+		  <td class="title_alias">売上合計</td>
+		  <td class="info_alias"><label id="sale_money_total"><%= num_fmt(@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i) %></label></td>	  
+		  <td class="title_alias">翌日出後</td>
+		  <td class="input_alias"><%= f.text_field :sale_pm_out, :size=>4, :class=>"money" %></td>
+	      <td class="title_alias">釣銭合計</td>
+	      <td class="info_alias"><label id="sale_change_total"><%= num_fmt(@sale_change_total) %></label></td>
+	      <td class="title_alias">通帳預金額</td>
+	      <td class="info_alias"><label id="tucyo_money"><%= num_fmt(@zenjitu_d_sale.sale_today_out.to_i + @d_sale.sale_today_out.to_i -  @d_sale.sale_ass.to_i + @d_sale.sale_am_out.to_i) %></label></td>
+		</tr>
+	</table>
       
+      <br />
       <div class="title_alias">入金</div>
       <div class="info_alias"><%= label :d_sale, :recive_money, num_fmt(@d_sale.recive_money.to_i), :id=>'recive_money_total' %></div>
       <div class="title_alias">出金</div>
       <div class="info_alias"><%= label :d_sale, :pay_money, num_fmt(@d_sale.pay_money.to_i), :id=>'pay_money_total' %></div>
-　　　
+　　　<br />
 	
       <div id="pay_item">
-		<table id="pay_table" class="rounded-corner">
+		<table id="pay_table" class="rounded-corner" style="margin-left: 0px;">
+			<thead>
 			<tr>
-				<th>No.</th>
-				<th>出金内訳</th>
-				<th>出金先</th>
-				<th>金額</th>
-				<th></th>
+				<th style="min-width:15px"></th>
+				<th style="min-width:200px">出金内訳</th>
+				<th style="min-width:200px">出金先</th>
+				<th style="min-width:100px">金額</th>
+				<th style="min-width:60px"></th>
 			</tr>
+			</thead>
+			<tbody>
 			<% if @d_sale.id == nil %>
 			  <% d_sale_items = DSaleItem.new %>
 			<% else %>
@@ -114,18 +117,22 @@
 					</td>
 				</tr>
             <% } %>
+            </tbody>
 		</table>
       </div>
 
       <div id="recive_item">
-      	<table id="recive_table" class="rounded-corner">
+      	<table id="recive_table" class="rounded-corner" style="margin-left: 0px;">
+			<thead>
 			<tr>
-				<th>No.</th>
-				<th>入金内訳</th>
-				<th>入金元</th>
-				<th>金額</th>
-				<th></th>
+				<th style="min-width:15px"></th>
+				<th style="min-width:200px">入金内訳</th>
+				<th style="min-width:200px">入金元</th>
+				<th style="min-width:100px">金額</th>
+				<th style="min-width:60px"></th>
 			</tr>
+			</thead>
+			<tbody>
 			<% if @d_sale.id == nil %>
 			  <% d_sale_items = DSaleItem.new %>
 			<% else %>
@@ -152,18 +159,22 @@
 					</td>
 				</tr>				
             <% } %>
+			</tbody>
 		</table>
       </div>
 
       <div id="etc_item">
-      	<table id="etc_table" class="rounded-corner">
+      	<table id="etc_table" class="rounded-corner" style="margin-left: 0px;">
+			<thead>
 			<tr>
-				<th>No.</th>
-				<th>その他内訳</th>
-				<th>その他名</th>
-				<th>金額</th>
-				<th></th>
+				<th style="min-width:15px"></th>
+				<th style="min-width:200px">その他内訳</th>
+				<th style="min-width:200px">その他名</th>
+				<th style="min-width:100px">金額</th>
+				<th style="min-width:60px"></th>
 			</tr>
+			</thead>
+			<tbody>
 			<% if @d_sale.id == nil %>
 			  <% d_sale_items = DSaleItem.new %>
 			<% else %>
@@ -190,21 +201,25 @@
 					</td>
 				</tr>				
             <% } %>
+			</tbody>
 		</table>
       </div>
       
       <div id="purika_item">
-      	<table id="purika_table" class="rounded-corner">
+      	<table id="purika_table" class="rounded-corner" style="margin-left: 0px;">
+			<thead>
 			<tr>
-				<th rowspan="2">No.</th>
+				<th style="min-width:15px" rowspan="2"></th>
 				<th colspan="3">プリカ送付内訳</th>
-				<th  rowspan="2"></th>
+				<th style="min-width:60px" rowspan="2"></th>
 			</tr>
 			<tr>
-				<th>店舗</th>
-				<th>シリアルNo</th>
-				<th>金額</th>
+				<th style="min-width:300px" >店舗</th>
+				<th style="min-width:100px" >シリアルNo</th>
+				<th style="min-width:100px" >金額</th>
 			</tr>
+			</thead>
+			<tbody>
 			<% if @d_sale.id == nil %>
 			  <% d_sale_items = DSaleItem.new %>
 			<% else %>
@@ -233,6 +248,7 @@
 					</td>
 				</tr>				
             <% } %>
+			</tbody>
 		</table>      	
       </div>
 
@@ -250,7 +266,7 @@
       <div class="info_alias"><%= label :d_sale, :pay_money, num_fmt(@d_sale.pay_money.to_i), :id=>'pay_money_total2' %></div>
       <br />
       <div class="title_alias">小計</div>
-      <div class="info_alias"><label id="syo_total"><%= num_fmt(@syo_total) %></div>
+      <div class="info_alias"><label id="syo_total"><%= num_fmt(@syo_total) %></label></div>
       <br /><br />
       <div class="title_alias">金庫(＋)</div>
       <div class="info_alias"><%= label :zenjitu_d_sale, :sale_cashbox, num_fmt(@zenjitu_d_sale.sale_cashbox.to_i), :id=>'zenjitu_cashbox' %></div>
@@ -302,15 +318,20 @@
 <% end %>
 
 <%= javascript_include_tag "comma" %>
-
+  
 <script>
 $(function () {
+    $('#pay_table').tablefix({width: 695, height: 190, fixRows: 1, fixCols: 0});
+    $('#recive_table').tablefix({width: 695, height: 190, fixRows: 1, fixCols: 0});
+    $('#purika_table').tablefix({width: 695, height: 190, fixRows: 2, fixCols: 0});
+    $('#etc_table').tablefix({width: 695, height: 190, fixRows: 1, fixCols: 0});
+
     //テーブルにスクロールバーを設定
-    var pytables = new superTable("pay_table", {
-      cssSkin : "sSky",
-      headerRows : 1,
-      fixedCols : 0,
-      colWidths :  [30, 200, 200, 100, 60],
+  //  var pytables = new superTable("pay_table", {
+  //    cssSkin : "sSky",
+   //   headerRows : 1,
+   //   fixedCols : 0,
+   //   colWidths :  [30, 200, 200, 100, 60],
 	  //onStart : function () {
 	  //    //this.start = new Date();
 	  //    var table1 = document.getElementById("pay_table");
@@ -327,28 +348,28 @@ $(function () {
 	  //onFinish : function () {
 	  //   alert("Finished... " + ((new Date()) - this.start) + "ms.");
 	  //}
-    });
+//    });
     //テーブルにスクロールバーを設定
-    new superTable("recive_table", {
-      cssSkin : "sSky",
-      headerRows : 1,
-      fixedCols : 0,
-      colWidths :  [30, 200, 200, 100, 60]
-    });
+//    new superTable("recive_table", {
+//      cssSkin : "sSky",
+//      headerRows : 1,
+//      fixedCols : 0,
+//      colWidths :  [30, 200, 200, 100, 60]
+//    });
     //テーブルにスクロールバーを設定
-    new superTable("purika_table", {
-      cssSkin : "sSky",
-      headerRows : 2,
-      fixedCols : 0,
-      colWidths :  [30, 300, 100, 100, 60]
-    });
+//    new superTable("purika_table", {
+//      cssSkin : "sSky",
+//      headerRows : 2,
+//      fixedCols : 0,
+//      colWidths :  [30, 300, 100, 100, 60]
+//    });
     //テーブルにスクロールバーを設定
-    new superTable("etc_table", {
-      cssSkin : "sSky",
-      headerRows : 1,
-      fixedCols : 0,
-      colWidths :  [30, 200, 200, 100, 60]
-    });
+//    new superTable("etc_table", {
+//      cssSkin : "sSky",
+//      headerRows : 1,
+//      fixedCols : 0,
+//      colWidths :  [30, 200, 200, 100, 60]
+//    });
 
     //保存の時
     $("form").submit(function() {
@@ -391,5 +412,5 @@ $(function () {
 	//    $(this).val(num); 
  	//});
 
-})();	
+});	
 </script>
