@@ -1,0 +1,13 @@
+<h1>監査承認一覧</h1>
+
+<br/>
+
+<%=render :partial => 'header' , :locals => {:kansa => params[:header][:kansa],
+	                                         :shop_kbn => params[:header][:shop_kbn],
+                                             :audit_class => params[:header][:audit_class],
+                                             :zumi_flg => params[:header][:zumi_flg]} %>
+
+<hr style="width: 100%;" />
+
+<%=render :partial => 'form' %>
+

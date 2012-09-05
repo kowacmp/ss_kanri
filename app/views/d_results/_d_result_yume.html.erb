@@ -3,7 +3,9 @@
      row = 1
    else
    	 row = @d_result_yumes.size + 1
-   end	   
+   end
+   
+   m_oiletc = MOiletc.find(:first, :conditions => ["oiletc_group = 2"])	   
 %>
 
 <table id='rounded-corner'>
@@ -15,7 +17,9 @@
     <th>ポイント</th>
 	<th>金額</th>
 	<td rowspan="<%= row %>">
-	  <%= link_to '入力', {:controller => 'd_results', :action => 'yume_index', :result_date => @result_date}, :class => "modal" %>
+	  <% unless m_oiletc.blank? %> 	
+	    <%= link_to '入力', {:controller => 'd_results', :action => 'yume_index', :result_date => @result_date}, :class => "modal" %>
+	  <% end %>
 	</td>	  	  	  
   </tr>
   <% unless @d_result_yumes.blank? %>

@@ -9,43 +9,40 @@ class DAuditEtcsController < ApplicationController
       redirect_to :controller => "homes", :action => "index"
       return
     end 
-    
-    @m_shops = MShop.find(current_user.m_shop_id)
-    
-    #監査日FromTo読み込み
-    @from = Array.new    
-    @to   = Array.new
-    d_audit_etcs = DAuditEtc.find(:all, 
-                                  :conditions => ["audit_class=? AND m_shop_id=?", 
-                                                    session[:audit_class],
-                                                    current_user.m_shop_id],      
-                                  :order => "audit_date_from desc")
-    
-    if d_audit_etcs.length == 0 then
-      @from.push '0000/00/00'
-      @to.push   ''  
-    else
-      @from.push Date.strptime(d_audit_etcs[0].audit_date_to, "%Y%m%d").next.strftime('%Y/%m/%d')
-      @to.push   ''
 
-      for d_audit_etc_rec in d_audit_etcs
-        if d_audit_etc_rec.audit_date_from == '00000000' then
-          @from.push '0000/00/00'
-        else
-          @from.push Date.strptime(d_audit_etc_rec.audit_date_from, "%Y%m%d").strftime('%Y/%m/%d')
-        end
-        @to.push   Date.strptime(d_audit_etc_rec.audit_date_to, "%Y%m%d").strftime('%Y/%m/%d')
-      end
-
-    end
-    
-    # 監査日が指定されている場合は再読込
-    if not(params[:kansa].nil?) then
-      hyouji_index
-    end
+    # from ～ to の読込
+    load_from_to(session[:audit_class], current_user.m_shop_id)
     
   end
-
+  
+  def edit
+    
+    if not(params[:id].nil?) then
+      # IDを指定した呼出
+      d_audit_etc = DAuditEtc.find(params[:id]) 
+      session[:audit_class] = d_audit_etc[:audit_class].to_s
+      @m_shop_id            = d_audit_etc[:m_shop_id]
+      @created_user_id      = d_audit_etc[:created_user_id]
+      @audit_date_from      = d_audit_etc[:audit_date_from]
+      @audit_date_from      = @audit_date_from[0..3] + "/" + @audit_date_from[4..5] + "/" + @audit_date_from[6..7]
+      @audit_date_to        = d_audit_etc[:audit_date_to]
+      @audit_date_to        = @audit_date_to[0..3] + "/" + @audit_date_to[4..5] + "/" + @audit_date_to[6..7]
+    else
+      # 検索から呼出
+      @m_shop_id       = params[:header][:m_shop_id] 
+      @created_user_id = params[:header][:created_user_id]
+      @audit_date_from = params[:header][:audit_date_from]
+      @audit_date_to   = params[:header][:audit_date_to]
+    end
+    
+    # from ～ to の読込
+    load_from_to(session[:audit_class], @m_shop_id)
+  
+    # _form用のデータ読込
+    read_from
+    
+  end
+  
   def update
       
     #更新日時をバッファ
@@ -98,6 +95,8 @@ class DAuditEtcsController < ApplicationController
       d_audit_etc.updated_at        = upd_time
     end
     d_audit_etc.save!
+    
+    @id = d_audit_etc.id #redirect時のために保存しておく
     
     #その他自主監査詳細データUpdate
     rec_no = 1
@@ -152,42 +151,64 @@ class DAuditEtcsController < ApplicationController
     } #トランザクションCommit
     
     # トップに戻る
-    redirect_to  :action  =>  "index", 
-                 :audit_class => session[:audit_class],
-                 :kansa => {:from => params['dt1'][:audit_date_from],
-                            :to => params['dt1'][:audit_date_to]}
+    redirect_to :action => "edit", :id => @id
     
   end
   
-  # 表示ボタンクリック時
-  def hyouji_index
+  # 誤差選択時イベント
+  def dialog_gosa
     
-    #パラメータ編集
-    p_from   = params[:kansa][:from].gsub("/","")
-    p_to     = params[:kansa][:to].gsub("/","")
-    p_shopid = current_user.m_shop_id
+    # 誤差が発生した日を取得
+    sql = <<-SQL
+        select 
+            a.sale_date
+        from 
+                     d_sale_etcs        a 
+          inner join d_sale_etc_details b
+        on 
+              a.id = b.d_sale_etc_id
+        where 
+                a.sale_date  >=  '#{params[:dialog_gosa][:sale_date_from]}' 
+            and a.sale_date  <=  '#{params[:dialog_gosa][:sale_date_to]}'
+            and a.m_shop_id  =  #{params[:dialog_gosa][:m_shop_id]} 
+            and b.m_etc_id   =  #{params[:dialog_gosa][:m_etc_id]}
+            and b.etc_no     =  99
+            and b.error_money >  0
+        order by
+            a.sale_date
+     
+     SQL
+    
+    @d_sale_etcs = DSaleEtc.find_by_sql(sql)
+    
+  end
+  
+private 
+  
+  # _form用データ読込
+  def read_from
     
     #Viewに渡す配列
     @dt = Array.new
       
     #その他売上監査データRead
     d_audit_etc = DAuditEtc.find(:first, 
-                                   :conditions => ["audit_date_from=? AND audit_class=? AND m_shop_id=?",
-                                                      p_from,
+                                 :conditions => ["audit_date_from=? AND audit_class=? AND m_shop_id=?",
+                                                      @audit_date_from.gsub("/",""),
                                                       session[:audit_class],
-                                                      p_shopid])
+                                                      @m_shop_id])
     
     @d_audit_etc = DAuditEtc.find(:first, 
-                                    :conditions => ["audit_date_from=? AND audit_class=? AND m_shop_id=?",
-                                                      p_from,
+                                  :conditions => ["audit_date_from=? AND audit_class=? AND m_shop_id=?",
+                                                      @audit_date_from.gsub("/",""),
                                                       session[:audit_class],
-                                                      p_shopid])
+                                                      @m_shop_id])
     
     #前回監査データRead
     d_audit_etc_z = DAuditEtc.find(:first, 
                                    :conditions => ["audit_date_from<? AND m_shop_id=?",
-                                                        p_from,
-                                                        p_shopid],
+                                                        @audit_date_from.gsub("/",""),
+                                                        @m_shop_id],
                                    :order => "audit_date_from desc")
     
     #その他売上Read
@@ -234,9 +255,9 @@ class DAuditEtcsController < ApplicationController
                     on 
                         a.id = b.d_sale_etc_id
                     where 
-                           a.sale_date  >=  '#{p_from}' 
-                       and a.sale_date  <=  '#{p_to}'
-                       and a.m_shop_id  =   #{p_shopid} 
+                           a.sale_date  >=  '#{@audit_date_from.gsub("/","")}' 
+                       and a.sale_date  <=  '#{@audit_date_to.gsub("/","")}'
+                       and a.m_shop_id  =   #{@m_shop_id} 
                        and b.m_etc_id   =  #{m_etc_rec.id}
                        and b.etc_no     =  #{num}
                 SQL
@@ -249,14 +270,14 @@ class DAuditEtcsController < ApplicationController
          
         #明細レコード定義
         dt_rec = Hash.new 
-        dt_rec[:audit_date_from] = p_from    #d_audit_etcs.audit_date_from
-        dt_rec[:audit_date_to] = p_to        #d_audit_etcs.audit_date_to
-        dt_rec[:audit_class] = session[:audit_class] #d_audit_etcs.audit_class
-        dt_rec[:m_shop_id] = p_shopid        #d_audit_etcs.m_shop_id
-        dt_rec[:m_etc_id] = m_etc_rec.id     #d_audit_etc_details.m_etc_id
-        dt_rec[:etc_cd]   = m_etc_rec.etc_cd    #他売上CD
-        dt_rec[:etc_name] = m_etc_rec.etc_name  #他売上名
-        dt_rec[:max_num]   = m_etc_rec.max_num  #売上行最大数
+        dt_rec[:audit_date_from] = @audit_date_from.gsub("/","") #d_audit_etcs.audit_date_from
+        dt_rec[:audit_date_to] = @audit_date_to.gsub("/","")     #d_audit_etcs.audit_date_to
+        dt_rec[:audit_class] = session[:audit_class]             #d_audit_etcs.audit_class
+        dt_rec[:m_shop_id] = @m_shop_id        #d_audit_etcs.m_shop_id
+        dt_rec[:m_etc_id] = m_etc_rec.id       #d_audit_etc_details.m_etc_id
+        dt_rec[:etc_cd]   = m_etc_rec.etc_cd   #他売上CD
+        dt_rec[:etc_name] = m_etc_rec.etc_name #他売上名
+        dt_rec[:max_num]   = m_etc_rec.max_num #売上行最大数
         dt_rec[:etc_no] = num                #d_audit_etc_details.etc_no
         dt_rec[:t_meter] = 0                 #当日メータ(明細のみ)
         dt_rec[:z_meter] = 0                 #前回メータ(明細のみ)
@@ -279,7 +300,11 @@ class DAuditEtcsController < ApplicationController
         end
         
         #計算上売上高(当日メータ - 前回メータ)
-        dt_rec[:k_uri]     = dt_rec[:t_meter] - dt_rec[:z_meter]
+        if dt_rec[:t_meter] < dt_rec[:z_meter] then
+          dt_rec[:k_uri] = dt_rec[:t_meter] #故障の場合は0から再カウント
+        else
+          dt_rec[:k_uri] = dt_rec[:t_meter] - dt_rec[:z_meter]
+        end
         
         #売上集計
         k_uri_sum += dt_rec[:k_uri]
@@ -315,9 +340,9 @@ class DAuditEtcsController < ApplicationController
                     on 
                         a.id = b.d_sale_etc_id
                     where 
-                           a.sale_date  >=  '#{p_from}' 
-                       and a.sale_date  <=  '#{p_to}'
-                       and a.m_shop_id   =  #{p_shopid} 
+                           a.sale_date  >=  '#{@audit_date_from.gsub("/","")}' 
+                       and a.sale_date  <=  '#{@audit_date_to.gsub("/","")}'
+                       and a.m_shop_id   =  #{@m_shop_id} 
                        and b.m_etc_id   =  #{m_etc_rec.id}
                        and b.etc_no     =  99
                 SQL
@@ -328,10 +353,10 @@ class DAuditEtcsController < ApplicationController
       
       #合計レコード定義
       dt_rec = Hash.new 
-      dt_rec[:audit_date_from] = p_from    #d_audit_etcs.audit_date_from
-      dt_rec[:audit_date_to] = p_to        #d_audit_etcs.audit_date_to
-      dt_rec[:audit_class] = session[:audit_class] #d_audit_etcs.audit_class
-      dt_rec[:m_shop_id] = p_shopid        #d_audit_etcs.m_shop_id
+      dt_rec[:audit_date_from] = @audit_date_from.gsub("/","") #d_audit_etcs.audit_date_from
+      dt_rec[:audit_date_to] = @audit_date_to.gsub("/","")     #d_audit_etcs.audit_date_to
+      dt_rec[:audit_class] = session[:audit_class]             #d_audit_etcs.audit_class
+      dt_rec[:m_shop_id] = @m_shop_id      #d_audit_etcs.m_shop_id
       dt_rec[:m_etc_id] = m_etc_rec.id     #d_audit_etc_details.m_etc_id
       dt_rec[:etc_cd]   = m_etc_rec.etc_cd      #他売上CD
       dt_rec[:etc_name] = m_etc_rec.etc_name    #他売上名
@@ -358,32 +383,36 @@ class DAuditEtcsController < ApplicationController
     end #for m_etc_rec in m_etc
     
   end
-  
-  # 誤差選択時イベント
-  def dialog_gosa
+
+  # from～toのコンボ用データ読込
+  def load_from_to(audit_class, m_shop_id)
     
-    # 誤差が発生した日を取得
-    sql = <<-SQL
-        select 
-            a.sale_date
-        from 
-                     d_sale_etcs        a 
-          inner join d_sale_etc_details b
-        on 
-              a.id = b.d_sale_etc_id
-        where 
-                a.sale_date  >=  '#{params[:dialog_gosa][:sale_date_from]}' 
-            and a.sale_date  <=  '#{params[:dialog_gosa][:sale_date_to]}'
-            and a.m_shop_id  =  #{params[:dialog_gosa][:m_shop_id]} 
-            and b.m_etc_id   =  #{params[:dialog_gosa][:m_etc_id]}
-            and b.etc_no     =  99
-            and b.error_money >  0
-        order by
-            a.sale_date
-     
-     SQL
+    #監査日FromTo読み込み
+    @from = Array.new    
+    @to   = Array.new
+    d_audit_etcs = DAuditEtc.find(:all, 
+                                   :conditions => ["audit_class=? AND m_shop_id=?", 
+                                                    audit_class,
+                                                    m_shop_id],      
+                                   :order => "audit_date_from desc")
     
-    @d_sale_etcs = DSaleEtc.find_by_sql(sql)
+    if d_audit_etcs.length == 0 then
+      @from.push '0000/00/00'
+      @to.push   ''  
+    else
+      @from.push Date.strptime(d_audit_etcs[0].audit_date_to, "%Y%m%d").next.strftime('%Y/%m/%d')
+      @to.push   ''
+
+      for d_audit_etc_rec in d_audit_etcs
+        if d_audit_etc_rec.audit_date_from == '00000000' then
+          @from.push '0000/00/00'
+        else
+          @from.push Date.strptime(d_audit_etc_rec.audit_date_from, "%Y%m%d").strftime('%Y/%m/%d')
+        end
+        @to.push   Date.strptime(d_audit_etc_rec.audit_date_to, "%Y%m%d").strftime('%Y/%m/%d')
+      end
+
+    end    
     
   end
   

@@ -1,0 +1,38 @@
+<%= form_tag({:action => 'edit' }) do %>
+<table class='rounded-corner' >
+	<tr>
+  		<th>
+  			処理選択
+  		</th>
+  		<td>
+  			<%# TODO:仮のリスト %>
+			<%=select :header, :kansa, ["aaaa","bbbb"], :selected => kansa %>
+  		</td>
+  		<th>
+  			店舗種別
+  		</th>
+  		<td>
+  			<% shop_kbn_list = MCode.find(:all, :conditions => ["kbn='shop_kbn'"], :order => "code").collect{|i| [i.code_name, i.code]} %>
+  			<%=select :header, :shop_kbn, shop_kbn_list, :selected => shop_kbn %>
+  		</td>
+  		<th>
+  			監査種別
+  		</th>
+  		<td>
+  			<%=radio_button :header, :audit_class, "0", {:checked => (audit_class.to_s == "0")} %>
+  			<label for="header_audit_class_0">自主監査</label>
+  			&nbsp;&nbsp;
+  			<%=radio_button :header, :audit_class, "1", {:checked => (audit_class.to_s == "1")} %>
+  			<label for="header_audit_class_1">本監査</label>
+  			&nbsp;&nbsp;
+  			<%=check_box :header, :zumi_flg, {:checked => (zumi_flg.to_s == "1")} %>
+  			<label for="header_zumi_flg">承認済含む</label>
+  		</td>
+  		<td style="border: none;">
+			&nbsp;
+			<%= submit_tag '　表　示　', :disable_with => "処理中です..." %>
+  		</td>
+	</tr>
+</table>
+<%end%> <!-- form_tag :action = "edit" -->
+

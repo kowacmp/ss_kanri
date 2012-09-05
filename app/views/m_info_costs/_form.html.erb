@@ -24,42 +24,44 @@
   	</tr>
   	<tr>
   	  <th><%= f.label '基本給' %></th>
-  	  <td><%= f.number_field :base_pay, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
+  	  <td><%= f.number_field :base_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money" %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '深夜給' %></th>
-  	  <td><%= f.number_field :night_pay, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
+  	  <td><%= f.number_field :night_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money" %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '福利費' %></th>
-  	  <td><%= f.number_field :welfare_pay, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
+  	  <td><%= f.number_field :welfare_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money" %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '手当1' %></th>
-  	  <td><%= f.number_field :etc_pay1, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
+  	  <td><%= f.number_field :etc_pay1, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money" %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '手当2' %></th>
-  	  <td><%= f.number_field :etc_pay2, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
+  	  <td><%= f.number_field :etc_pay2, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money" %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '手当3' %></th>
-  	  <td><%= f.number_field :etc_pay3, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
+  	  <td><%= f.number_field :etc_pay3, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money" %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '手当4' %></th>
-  	  <td><%= f.number_field :etc_pay4, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
+  	  <td><%= f.number_field :etc_pay4, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money" %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '手当5' %></th>
-  	  <td><%= f.number_field :etc_pay5, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
+  	  <td><%= f.number_field :etc_pay5, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money" %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '手当6' %></th>
-  	  <td><%= f.number_field :etc_pay6, :style=>"ime-mode:disabled" ,:maxlength=>9 %></td>  	  
+  	  <td><%= f.number_field :etc_pay6, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money" %></td>  	  
   	</tr>
   </table>
   <div class="actions">
     <%= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div>
 <% end %>
+
+<%= javascript_include_tag "comma" %>

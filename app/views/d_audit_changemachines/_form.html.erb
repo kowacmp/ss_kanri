@@ -346,9 +346,10 @@ function toNum(str) {
 
 		</td>
 		<td colspan="3" style="border:none" align="right">
-			<%
-				url = "./d_audit_changemachines?audit_class=#{session[:audit_class]}&kansa[ymd]=#{f.object.audit_date}"
-			%>
+
+<%
+	url = "./edit?header[m_shop_id]=#{@m_shop_id}&header[created_user_id]=#{@created_user_id}&header[audit_date]=#{@audit_date}"			
+%>
 			<input type="button" value="キャンセル" 
 				onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
 								this.value='キャンセル中です...';

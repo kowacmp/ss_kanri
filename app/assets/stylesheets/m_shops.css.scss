@@ -25,7 +25,6 @@ div#search_shop_kbn{
       text-align: right;
       
       margin-left: -4px;
-      
   }
   
 }
@@ -33,7 +32,18 @@ div#search_shop_kbn{
 div#search_shop{
   display: inline-block; _display: inline;
 
-  div.title_alias{
+  //div.title_alias{
+  //    display: inline-block; _display: inline;
+  //    border-color: black;
+  //    border-style: solid;
+  //    border-width: 1px;
+  //    padding: 7px;
+  //    margin-left: 30px;
+  //    background: url("th_001.gif") repeat-x scroll 0 0 transparent;
+  //    width: 100px;
+  //}
+
+  div.title_alias_from{
       display: inline-block; _display: inline;
       border-color: black;
       border-style: solid;
@@ -41,8 +51,9 @@ div#search_shop{
       padding: 7px;
       margin-left: 30px;
       background: url("th_001.gif") repeat-x scroll 0 0 transparent;
-      width: 100px;
+      width: 120px;
   }
+  
   div.title_alias_to{
       display: inline-block; _display: inline;
       border-color: black;
@@ -50,7 +61,7 @@ div#search_shop{
       border-width: 1px;
       padding: 7px;
       background: url("th_001.gif") repeat-x scroll 0 0 transparent;
-      width: 100px;
+      width: 120px;
   }
   
   div.select_alias{
@@ -69,7 +80,7 @@ div#search_shop{
 div#result{
   
   div.oil_total{
-    text-align: center;
+    text-align: right;
   }
   
   div.money_total{
@@ -77,7 +88,6 @@ div#result{
   }
   
 }
-
 
 
 

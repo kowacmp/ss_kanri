@@ -66,6 +66,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     
     @pass_flg = params[:pass_flg].to_i
+    @return_flg = params[:return_flg].to_i
   end
 
   # POST /users
@@ -93,6 +94,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @pass_flg = params[:pass_flg].to_i
+    @return_flg = params[:return_flg].to_i
 
     if @user.valid_password?(params[:user][:password])
       @user.errors[:base] = "前回とパスワードが同じです。"

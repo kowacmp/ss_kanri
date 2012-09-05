@@ -23,15 +23,15 @@
 
   <tr>
     <td class="<%= "#{del_flg}" %>"><%= m_info_cost.user_name %></td>
-    <td class="<%= "#{del_flg}" %>"><%= m_info_cost.base_pay %></td>
-    <td class="<%= "#{del_flg}" %>"><%= m_info_cost.night_pay %></td>
-    <td class="<%= "#{del_flg}" %>"><%= m_info_cost.welfare_pay %></td>
-    <td class="<%= "#{del_flg}" %>"><%= m_info_cost.etc_pay1 %></td>
-    <td class="<%= "#{del_flg}" %>"><%= m_info_cost.etc_pay2 %></td>
-    <td class="<%= "#{del_flg}" %>"><%= m_info_cost.etc_pay3 %></td>
-    <td class="<%= "#{del_flg}" %>"><%= m_info_cost.etc_pay4 %></td>
-    <td class="<%= "#{del_flg}" %>"><%= m_info_cost.etc_pay5 %></td>
-    <td class="<%= "#{del_flg}" %>"><%= m_info_cost.etc_pay6 %></td>
+    <td class="<%= "#{del_flg}" %>"><%= number_with_delimiter(m_info_cost.base_pay) %></td>
+    <td class="<%= "#{del_flg}" %>"><%= number_with_delimiter(m_info_cost.night_pay) %></td>
+    <td class="<%= "#{del_flg}" %>"><%= number_with_delimiter(m_info_cost.welfare_pay) %></td>
+    <td class="<%= "#{del_flg}" %>"><%= number_with_delimiter(m_info_cost.etc_pay1) %></td>
+    <td class="<%= "#{del_flg}" %>"><%= number_with_delimiter(m_info_cost.etc_pay2) %></td>
+    <td class="<%= "#{del_flg}" %>"><%= number_with_delimiter(m_info_cost.etc_pay3) %></td>
+    <td class="<%= "#{del_flg}" %>"><%= number_with_delimiter(m_info_cost.etc_pay4) %></td>
+    <td class="<%= "#{del_flg}" %>"><%= number_with_delimiter(m_info_cost.etc_pay5) %></td>
+    <td class="<%= "#{del_flg}" %>"><%= number_with_delimiter(m_info_cost.etc_pay6) %></td>
     <td class="icon">
     	<%- if m_info_cost.deleted_flg == 0 -%>
     	<%= link_to image_tag('icon/24_edit.png'), {:action=>"edit",:id=>m_info_cost.id,:input_check=>@check_del_flg} %>

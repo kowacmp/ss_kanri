@@ -1,4 +1,4 @@
-<h2>メニュー一覧</h2>
+<h1>メニュー一覧</h1>
 <%= link_to '新規登録', new_menu_path, :class => 'add_icon' %>
 
 <table id='rounded-corner'>
@@ -9,7 +9,7 @@
     <th>メニュー名</th>
     <th>処理名</th>
     <th>メッセージ種別</th>
-    <th>詳細</th>
+    <!--<th>詳細</th>-->
     <th>編集</th>
     <th>削除</th>
   </tr>
@@ -22,7 +22,7 @@
     <td><%= menu.display_name %></td>
     <td><%= menu.uri %></td>
     <td><%= menu.messege_send %></td>    
-    <td class="icon"><%= link_to image_tag('icon/24_show.png'), menu %></td>
+    <!--<td class="icon"><%#= link_to image_tag('icon/24_show.png'), menu %></td>-->
     <td class="icon"><%#= link_to '編集', edit_menu_path(menu), :class => 'edit_icon' %>
     	<%= link_to image_tag('icon/24_edit.png'), edit_menu_path(menu) %>
     </td>
@@ -34,7 +34,8 @@
 </table>
 
 <%# menus = Menu.find(:all, :order => 'parent_menu_id, display_order') %>
-<%= select :select, :prefecture_id, Menu.all.collect {|u| [ u.display_name, u.id]} %>
+<%#= select :select, :prefecture_id, Menu.all.collect {|u| [ u.display_name, u.id]} %>
+<%#
 <div id="city_id">test</div>
 <script>
 $(function(){
@@ -47,11 +48,6 @@ $.get("menus/city_select?pref_id=" + pref_id);
 
 
 <p>Date: <input type="text" class="datepicker"></p>
-
-
-
-
-
 
 
 <html>
@@ -204,3 +200,4 @@ function scrollRC()
 </table>
 </body>
 </html>
+%>

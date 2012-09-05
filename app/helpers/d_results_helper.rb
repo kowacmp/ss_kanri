@@ -8,7 +8,7 @@ module DResultsHelper
   end
   
   def m_oiletc_sql(d_result, oiletc_group)
-    sql = "select m.id, m.oiletc_name, m.oiletc_tani, d.pos1_data, d.pos2_data, d.pos3_data,"
+    sql = "select m.id, m.oiletc_name, m.oiletc_tani, c.code_name, d.pos1_data, d.pos2_data, d.pos3_data,"
     sql << " COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0) as pos_total"
     sql << " from m_oiletcs m left join d_result_oiletcs d"
     sql << "   on (m.id = d.m_oiletc_id "
@@ -18,8 +18,9 @@ module DResultsHelper
       sql << " and d.d_result_id = #{d_result.id})"  
     end
     
+    sql << " left join m_codes c on (to_number(c.code, '999999999') = m.oiletc_tani and c.kbn = 'tani')"
     sql << " where m.oiletc_group = #{oiletc_group} and m.deleted_flg = 0 order by m.oiletc_cd" 
-p "sql=#{sql}"
+
     return sql  
   end
   
@@ -401,5 +402,13 @@ p "sql=#{sql}"
     end
     
     return pos_total
+  end
+  
+  def m_oiletc0_en_pos_total_sql
+    sql = "select o.*, c.code from m_oiletcs o, m_codes c"
+    sql << " where to_number(c.code, '999999999') = o.oiletc_tani and o.oiletc_group = 0"
+    sql << " and o.deleted_flg = 0 and c.kbn = 'tani' and c.code = '0'"
+    
+    return sql    
   end   
 end
