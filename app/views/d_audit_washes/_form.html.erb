@@ -1,10 +1,10 @@
 <%  #最終行集計用初期化
-		k_uri_sum = 0
-		g_uri_sum = 0
-		gosa_sum  = 0
+	k_uri_sum = 0
+	g_uri_sum = 0
+	gosa_sum  = 0
 %>
 
-<table class='rounded-corner' >
+<table class='rounded-corner' >	
 	<!-- 共通ヘッダ -->
 	<tr>
 		<th>機種名</th>
@@ -16,21 +16,21 @@
 	</tr>  	
 
 	<% for dt_rec in @dt%>
-		<%if dt_rec[:wash_no] != 99 then %>
+		<%if dt_rec[:etc_no] != 99 then %>
 			<!--明細レコード-->
 			<tr>
-				<th              ><%= dt_rec[:wash_name] %><%= dt_rec[:wash_no]   %></th>
+				<th              ><%= dt_rec[:etc_name] %><%= dt_rec[:etc_no] %></th>
   				<td align="right"><%= number_with_delimiter(dt_rec[:t_meter]) %></td>
   				<td align="right"><%= number_with_delimiter(dt_rec[:z_meter]) %></td>
   				<td align="right"><%= number_with_delimiter(dt_rec[:k_uri])   %></td>
-  				<% if dt_rec[:wash_no] == 1 then %>
+  				<% if dt_rec[:etc_no] == 1 then %>
   					<td rowspan="<%= dt_rec[:max_num] %>" style="background-color: #C3C3C3;">&nbsp;</td>
   					<td rowspan="<%= dt_rec[:max_num] %>">
   						<%= form_tag({:action => 'dialog_gosa' }, { :remote => true }) do %>
   							<%= hidden_field(:dialog_gosa, :sale_date_from, :value => dt_rec[:audit_date_from]) %>
   							<%= hidden_field(:dialog_gosa, :sale_date_to,   :value => dt_rec[:audit_date_to]) %>
   							<%= hidden_field(:dialog_gosa, :m_shop_id,      :value => dt_rec[:m_shop_id]) %>
-  							<%= hidden_field(:dialog_gosa, :m_wash_id,      :value => dt_rec[:m_wash_id]) %>
+  							<%= hidden_field(:dialog_gosa, :m_etc_id,      :value => dt_rec[:m_etc_id]) %>
 							<%= submit_tag '参照', :disable_with => "処理中です..." %>
   						<% end %>
 					</td>
@@ -40,18 +40,18 @@
 			<!--合計レコード-->
   			<tr>
   				<td colspan="2" style="border-left-width: 0px; border-bottom-width: 0px;">&nbsp;</td>
-  				<th              ><%= dt_rec[:wash_name] %>計</th>
+  				<th              ><%= dt_rec[:etc_name] %>計</th>
   				<td align="right" style="background-color: #A5D7AA;"><%= number_with_delimiter(dt_rec[:k_uri]) %></td>
   				<td align="right" style="background-color: #A5D7AA;"><%= number_with_delimiter(dt_rec[:g_uri]) %></td>
   				<td align="right" style="background-color: #A5D7AA;"><%= number_with_delimiter(dt_rec[:gosa])  %></td>
   			</tr>		
-			
-			<%  #最終行集計用合算
+  			
+  		　　<%  #最終行集計用合算
 				k_uri_sum += dt_rec[:k_uri]
 				g_uri_sum += dt_rec[:g_uri]
 				gosa_sum  += dt_rec[:gosa]
 			%>
-			
+  			
 		<%end%>
 		
 	<% end %>
@@ -59,10 +59,10 @@
 	<!-- 最終合計 -->
   	<tr>
   		<td colspan="2" style="border-left-width: 0px; border-top-width: 0px; border-bottom-width: 0px;">&nbsp;</td>
-  		<th style="border-width: 3px;"              >売上合計</th>
-  		<td style="border-width: 3px; background-color: #A5D7AA;" align="right" ><%= number_with_delimiter(k_uri_sum) %></td>
-  		<td style="border-width: 3px; background-color: #A5D7AA;" align="right" ><%= number_with_delimiter(g_uri_sum) %></td>
-  		<td style="border-width: 3px; background-color: #A5D7AA;" align="right" ><%= number_with_delimiter(gosa_sum)  %></td>
+  		<th style="border-width: 3px; "                                        >売上合計</th>
+  		<td style="border-width: 3px; background-color: #A5D7AA;" align="right"><%= number_with_delimiter(k_uri_sum) %></td>
+  		<td style="border-width: 3px; background-color: #A5D7AA;" align="right"><%= number_with_delimiter(g_uri_sum) %></td>
+  		<td style="border-width: 3px; background-color: #A5D7AA;" align="right"><%= number_with_delimiter(gosa_sum)  %></td>
   	</tr>
   	  	
 <tr><td colspan="6" style="border: none; text-align: right;">
@@ -70,8 +70,8 @@
 <%=form_tag :action => 'update' do %>
 	<!-- 立会人 -->
 	<%
-		c_shop_id = @d_audit_wash.confirm_shop_id unless @d_audit_wash.nil?
-		c_user_id = @d_audit_wash.confirm_user_id unless @d_audit_wash.nil?
+  		c_shop_id = @d_audit_etc.confirm_shop_id unless @d_audit_etc.nil?
+  		c_user_id = @d_audit_etc.confirm_user_id unless @d_audit_etc.nil?
 	%>
 	<table class='rounded-corner' >
 	<tr>
@@ -91,7 +91,7 @@
 			</div>
 		</td>
     </tr>
-  	</table>
+	</table>
 
 	<!-- 更新内容 -->
 	<% rec_no = 0 %>
@@ -101,25 +101,26 @@
     	<%= hidden_field("dt#{rec_no}", :audit_date_to,   :value => dt_rec[:audit_date_to]) %>	
     	<%= hidden_field("dt#{rec_no}", :audit_class,     :value => dt_rec[:audit_class]) %>	
     	<%= hidden_field("dt#{rec_no}", :m_shop_id,       :value => dt_rec[:m_shop_id]) %>	
-    	<%= hidden_field("dt#{rec_no}", :m_wash_id,       :value => dt_rec[:m_wash_id]) %>	
-    	<%= hidden_field("dt#{rec_no}", :wash_no,         :value => dt_rec[:wash_no]) %>	
+    	<%= hidden_field("dt#{rec_no}", :m_etc_id,        :value => dt_rec[:m_etc_id]) %>	
+    	<%= hidden_field("dt#{rec_no}", :etc_no,          :value => dt_rec[:etc_no]) %>	
     
     	<%= hidden_field("dt#{rec_no}", :t_meter,         :value => dt_rec[:t_meter]) %>	
     	<%= hidden_field("dt#{rec_no}", :z_meter,         :value => dt_rec[:z_meter]) %>	
     	<%= hidden_field("dt#{rec_no}", :k_uri,           :value => dt_rec[:k_uri]) %>	
     	<%= hidden_field("dt#{rec_no}", :g_uri,           :value => dt_rec[:g_uri]) %>	
     	<%= hidden_field("dt#{rec_no}", :gosa,            :value => dt_rec[:gosa]) %>	
-  	<% end %>
+  	
+	<% end %>
 	<br/>
-	<%
-		url = "./d_audit_washes?audit_class=#{session[:audit_class]}&kansa[from]=#{@dt[0][:audit_date_from]}&kansa[to]=#{@dt[0][:audit_date_to]}"
-	%>
+<%
+	url = "./edit?header[m_shop_id]=#{@m_shop_id}&header[created_user_id]=#{@created_user_id}&header[audit_date_from]=#{@audit_date_from}&header[audit_date_to]=#{@audit_date_to}"			
+%>
 	<input type="button" value="キャンセル" 
 			onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
 						this.value='キャンセル中です...';
 						this.disabled=true;document.location='<%=url%>';
 					}" />
-	<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...'  %>
+	<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...' %>
 </div>
 </td></tr>
 </table>
@@ -127,11 +128,12 @@
 
 <!-- 参照ダイアログ -->
 <div id="dialog_div" style="display: none;" >
-	&nbsp;
+
+
 </div>
 
 <script language="JavaScript">
-
+  	  	
   	// 更新前チェック
   	function update_chk() {
   		var sel_shop = $("#confirm_shop_id")[0];

@@ -1,0 +1,24 @@
+<%=render :partial => 'header' , :locals => {:m_shop_id => @m_shop_id ,
+	                                         :created_user_id => @created_user_id,
+	                                         :audit_date => @audit_date } %>
+
+<br/>
+
+<!-- 戻るボタンを実装する -->
+<% if params[:back].to_s == "true" then %>
+<a href="javascript:history.back();">戻る</a>
+<% end %>
+
+<%=render :partial => 'form' %>
+
+<!-- 読取専用スクリプト -->
+<% if params[:readonly].to_s == "true" then %>
+<script>
+	//readonlyの場合はボタンを潰す
+	$(function(){
+		$(":submit,:button").each(function(){
+			this.disabled = true;
+		});
+	});
+</script>
+<% end %>

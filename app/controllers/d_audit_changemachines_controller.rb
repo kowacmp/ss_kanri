@@ -10,36 +10,44 @@ class DAuditChangemachinesController < ApplicationController
       return
     end 
 
-    @m_shops = MShop.find(current_user.m_shop_id)
-
-    # 監査日が指定されている場合は再読込
-    if not(params[:kansa].nil?) then
-      hyouji_index
-    end
-
   end
   
-  def hyouji_index
+  def edit
+
+    if not(params[:id].nil?) then
+      # IDを指定した呼出
+      d_audit_changemachine = DAuditChangemachine.find(params[:id]) 
+      session[:audit_class] = d_audit_changemachine[:audit_class].to_s
+      @m_shop_id            = d_audit_changemachine[:m_shop_id]
+      @created_user_id      = d_audit_changemachine[:created_user_id]
+      @audit_date           = d_audit_changemachine[:audit_date]
+      @audit_date = @audit_date[0..3] + "/" + @audit_date[4..5] + "/" + @audit_date[6..7] 
+    else
+      # 検索から呼出
+      @m_shop_id       = params[:header][:m_shop_id] 
+      @created_user_id = params[:header][:created_user_id]
+      @audit_date      = params[:header][:audit_date]
+    end
 
     # 釣銭機内監査データ読込
     @d_audit_changemachine = DAuditChangemachine.find(:all, :conditions => 
       ["audit_date=? AND audit_class=? AND m_shop_id=?",
-          params[:kansa][:ymd].to_s.gsub("/",""),
+          @audit_date.to_s.gsub("/",""),
           session[:audit_class],
-          current_user.m_shop_id])
+          @m_shop_id])
    
     # データがない場合は新規
     if @d_audit_changemachine.length == 0 then
       @d_audit_changemachine = DAuditChangemachine.new()
             
       #監査日を設定
-      @d_audit_changemachine.audit_date  = params[:kansa][:ymd].gsub("/","");
+      @d_audit_changemachine.audit_date  = @audit_date.to_s.gsub("/","")
       
       #前回監査データより一部データを読込し設定
       zenkansa = DAuditChangemachine.find(:first, :conditions => 
         ["audit_date<? AND m_shop_id=?",
-          params[:kansa][:ymd].gsub("/",""),
-          current_user.m_shop_id])
+          @audit_date.to_s.gsub("/",""),
+          @m_shop_id])
       
       if not(zenkansa.nil?) then
         for pos in 1..3
@@ -54,10 +62,10 @@ class DAuditChangemachinesController < ApplicationController
     # 釣銭固定額読込
     @m_fix_money = MFixMoney.find(:first, :conditions => 
       ["m_shop_id = ? AND start_month <= ? AND end_month >= ? ",
-          current_user.m_shop_id, 
-          params[:kansa][:ymd].gsub("/","")[0..5],
-          params[:kansa][:ymd].gsub("/","")[0..5]])
-          
+          @m_shop_id, 
+          @audit_date.to_s.gsub("/","")[0..5],
+          @audit_date.to_s.gsub("/","")[0..5]])
+        
   end
 
   def update
@@ -104,9 +112,7 @@ class DAuditChangemachinesController < ApplicationController
     @d_audit_changemachine.save
     
     #トップに戻る
-    redirect_to :action => "index", 
-      :audit_class => session[:audit_class],
-      :kansa => {:ymd => params[:d_audit_changemachine][:audit_date]}
+    redirect_to :action => "edit", :id => @d_audit_changemachine.id, :readonly => false
 
   end
 

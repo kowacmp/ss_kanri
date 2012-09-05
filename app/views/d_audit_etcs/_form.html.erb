@@ -112,15 +112,15 @@
   	
 	<% end %>
 	<br/>
-	<%
-		url = "./d_audit_etcs?audit_class=#{session[:audit_class]}&kansa[from]=#{@dt[0][:audit_date_from]}&kansa[to]=#{@dt[0][:audit_date_to]}"
-	%>
+<%
+	url = "./edit?header[m_shop_id]=#{@m_shop_id}&header[created_user_id]=#{@created_user_id}&header[audit_date_from]=#{@audit_date_from}&header[audit_date_to]=#{@audit_date_to}"			
+%>
 	<input type="button" value="キャンセル" 
 			onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
 						this.value='キャンセル中です...';
 						this.disabled=true;document.location='<%=url%>';
 					}" />
-	<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...', :confirm => '保存しても良いですか？' %>
+	<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...' %>
 </div>
 </td></tr>
 </table>

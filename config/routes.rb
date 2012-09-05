@@ -72,15 +72,16 @@ SsKanri::Application.routes.draw do
     end
   end
  
-  match "d_audit_changemachines/confirm_shop_id_select", :to => "d_audit_changemachines#confirm_shop_id_select"
-  match "d_audit_changemachines/confirm_user_id_select", :to => "d_audit_changemachines#confirm_user_id_select"
-  resources :d_audit_changemachines
- 
-  match "d_audit_washes/confirm_shop_id_select", :to => "d_audit_washes#confirm_shop_id_select"
-  match "d_audit_washes/confirm_user_id_select", :to => "d_audit_washes#confirm_user_id_select"
-  resources :d_audit_washes
+  get "d_audit_changemachines/confirm_shop_id_select"
+  get "d_audit_changemachines/confirm_user_id_select"
+  get "d_audit_changemachines/edit"
+  get "d_audit_changemachines/index"
   
-  resources :d_audit_etcs
+  get "d_audit_washes/edit"
+  get "d_audit_washes/index"
+  
+  get "d_audit_etcs/edit"
+  get "d_audit_etcs/index"
  
   resources :m_shop_groups
   
