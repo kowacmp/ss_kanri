@@ -106,11 +106,11 @@ GEM
     rdoc (3.12)
       json (~> 1.4)
     ruby-rc4 (0.1.5)
-    sass (3.1.20)
-    sass-rails (3.1.6)
+    sass (3.1.21)
+    sass-rails (3.1.5)
       actionpack (~> 3.1.0)
       railties (~> 3.1.0)
-      sass (>= 3.1.10)
+      sass (~> 3.1.10)
       tilt (~> 1.3.2)
     sprockets (2.0.4)
       hike (~> 1.2)
@@ -150,7 +150,7 @@ DEPENDENCIES
   jquery_datepicker
   pg
   rails (= 3.1.5)
-  sass-rails (~> 3.1.5)
+  sass-rails (= 3.1.5)
   sqlite3
   therubyracer
   thinreports
