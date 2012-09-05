@@ -1,6 +1,9 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+
   <% @establish = Establish.find(:first)%>
   <title><%= @establish.system_name %></title>
   <%= stylesheet_link_tag    "application" %> 
@@ -12,7 +15,6 @@
   <%= stylesheet_link_tag    "icon" %>   
   <%= javascript_include_tag "modal" %>
   <%= javascript_include_tag "jquery" %>
-  <%= javascript_include_tag "tablefix" %>
 
   <!--カレンダー用↓ --> 
   <%= stylesheet_link_tag 'jquery-ui-1.8.22.custom' %>    
@@ -24,9 +26,11 @@
   <%= stylesheet_link_tag 'ddsmoothmenu' %>  
  
   <!-- テーブル用↓ -->  
-  <%= stylesheet_link_tag    "superTables_compressed" %>  
-  <%= javascript_include_tag "superTables_compressed" %>
+  <%#= stylesheet_link_tag    "superTables_compressed" %>  
+  <%#= javascript_include_tag "superTables_compressed" %>
 
+  <%= javascript_include_tag "jquery.tablefix" %>
+  
   <%= csrf_meta_tags %> 
 </head>
 <body>
@@ -63,7 +67,7 @@
   
   <!-- カレンダー表示↓ -->
   <script>
-  $(function() {
+  $(function () {
     $( ".datepicker" ).datepicker();
   });
   </script>

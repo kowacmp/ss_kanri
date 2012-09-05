@@ -14,13 +14,18 @@ body {
 	padding:0;
 	margin:0;
 	text-align: center;
-	color: #666666;
-	font-family: "メイリオ","ＭＳ Ｐゴシック",Osaka,Verdana,Arial,Helvetica,sans-serif;
-	font-size: 15px;
 	background: #fff url(body.gif) repeat-x;
 height:100%;
 }
 
+body, p, ol, ul, td, input, select, textarea {
+	color: #666666;
+	font-family: "メイリオ","ＭＳ Ｐゴシック",Osaka,Verdana,Arial,Helvetica,sans-serif;
+	font-size: 15px;
+	text-transform:none;
+		
+}
+ 
 #page{
 	  margin-left: auto;
       margin-right: auto;

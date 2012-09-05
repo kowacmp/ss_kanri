@@ -9,41 +9,38 @@ class DAuditWashesController < ApplicationController
       redirect_to :controller => "homes", :action => "index"
       return
     end 
+
+    # from ～ to の読込
+    load_from_to(session[:audit_class], current_user.m_shop_id)
+
+  end
+
+  def edit
     
-    @m_shops = MShop.find(current_user.m_shop_id)
-    
-    #監査日FromTo読み込み
-    @from = Array.new    
-    @to   = Array.new
-    d_audit_washes = DAuditWash.find(:all, 
-                                     :conditions => ["audit_class=? AND m_shop_id=?", 
-                                                    session[:audit_class],
-                                                    current_user.m_shop_id],   
-                                     :order => "audit_date_from desc")
-    
-    if d_audit_washes.length == 0 then
-      @from.push '0000/00/00'
-      @to.push   ''  
+    if not(params[:id].nil?) then
+      # IDを指定した呼出
+      d_audit_wash = DAuditWash.find(params[:id]) 
+      session[:audit_class] = d_audit_wash[:audit_class].to_s
+      @m_shop_id            = d_audit_wash[:m_shop_id]
+      @created_user_id      = d_audit_wash[:created_user_id]
+      @audit_date_from      = d_audit_wash[:audit_date_from]
+      @audit_date_from      = @audit_date_from[0..3] + "/" + @audit_date_from[4..5] + "/" + @audit_date_from[6..7]
+      @audit_date_to        = d_audit_wash[:audit_date_to]
+      @audit_date_to        = @audit_date_to[0..3] + "/" + @audit_date_to[4..5] + "/" + @audit_date_to[6..7]
     else
-      @from.push Date.strptime(d_audit_washes[0].audit_date_to, "%Y%m%d").next.strftime('%Y/%m/%d')
-      @to.push   ''
-
-      for d_audit_wash_rec in d_audit_washes
-        if d_audit_wash_rec.audit_date_from == '00000000' then
-          @from.push '0000/00/00'
-        else
-          @from.push Date.strptime(d_audit_wash_rec.audit_date_from, "%Y%m%d").strftime('%Y/%m/%d')
-        end
-        @to.push   Date.strptime(d_audit_wash_rec.audit_date_to, "%Y%m%d").strftime('%Y/%m/%d')
-      end
-
+      # 検索から呼出
+      @m_shop_id       = params[:header][:m_shop_id] 
+      @created_user_id = params[:header][:created_user_id]
+      @audit_date_from = params[:header][:audit_date_from]
+      @audit_date_to   = params[:header][:audit_date_to]
     end
-
-    # 監査日が指定されている場合は再読込
-    if not(params[:kansa].nil?) then
-      hyouji_index
-    end
-
+    
+    # from ～ to の読込
+    load_from_to(session[:audit_class], @m_shop_id)
+  
+    # _form用のデータ読込
+    read_from
+    
   end
 
   def update
@@ -98,6 +95,8 @@ class DAuditWashesController < ApplicationController
       d_audit_wash.updated_at        = upd_time
     end
     d_audit_wash.save!
+
+    @id = d_audit_wash.id #redirect時のために保存しておく
     
     #洗車機監査詳細データUpdate
     rec_no = 1
@@ -152,42 +151,64 @@ class DAuditWashesController < ApplicationController
     } #トランザクションCommit
     
     # トップに戻る
-    redirect_to  :action  =>  "index", 
-                 :audit_class => session[:audit_class],
-                 :kansa => {:from => params['dt1'][:audit_date_from],
-                            :to => params['dt1'][:audit_date_to]}
+    redirect_to :action => "edit", :id => @id
     
   end
 
-  # 表示ボタンクリック時
-  def hyouji_index
+  # 誤差選択時イベント
+  def dialog_gosa
     
-    #パラメータ編集
-    p_from   = params[:kansa][:from].gsub("/","")
-    p_to     = params[:kansa][:to].gsub("/","")
-    p_shopid = current_user.m_shop_id
+    # 誤差が発生した日を取得
+    sql = <<-SQL
+        select 
+            a.sale_date
+        from 
+                     d_wash_sales     a 
+          inner join d_washsale_items b
+        on 
+              a.id = b.d_wash_sale_id
+        where 
+                a.sale_date  >=  '#{params[:dialog_gosa][:sale_date_from]}' 
+            and a.sale_date  <=  '#{params[:dialog_gosa][:sale_date_to]}'
+            and a.m_shop_id  =  #{params[:dialog_gosa][:m_shop_id]} 
+            and b.m_wash_id   =  #{params[:dialog_gosa][:m_wash_id]}
+            and b.wash_no     =  99
+            and b.error_money >  0
+        order by
+            a.sale_date
+     
+     SQL
     
+    @d_wash_sales = DWashSale.find_by_sql(sql)
+    
+  end
+  
+private
+  
+  # _form用データ読込
+  def read_from
+  
     #Viewに渡す配列
     @dt = Array.new
       
     #洗車監査データRead
     d_audit_wash = DAuditWash.find(:first, 
                                    :conditions => ["audit_date_from=? AND audit_class=? AND m_shop_id=?",
-                                                      p_from,
+                                                      @audit_date_from.gsub("/",""),
                                                       session[:audit_class],
-                                                      p_shopid])
+                                                      @m_shop_id])
     
     @d_audit_wash = DAuditWash.find(:first, 
                                     :conditions => ["audit_date_from=? AND audit_class=? AND m_shop_id=?",
-                                                      p_from,
+                                                      @audit_date_from.gsub("/",""),
                                                       session[:audit_class],
-                                                      p_shopid])
+                                                      @m_shop_id])
     
     #前回監査データRead
     d_audit_wash_z = DAuditWash.find(:first, 
                                      :conditions => ["audit_date_from<? AND m_shop_id=?",
-                                                        p_from,
-                                                        p_shopid],
+                                                        @audit_date_from.gsub("/",""),
+                                                        @m_shop_id],
                                      :order => "audit_date_from desc")
     
     #洗車マスタRead
@@ -234,9 +255,9 @@ class DAuditWashesController < ApplicationController
                     on 
                         a.id = b.d_wash_sale_id
                     where 
-                           a.sale_date  >=  '#{p_from}' 
-                       and a.sale_date  <=  '#{p_to}'
-                       and a.m_shop_id  =   #{p_shopid} 
+                           a.sale_date  >=  '#{@audit_date_from.gsub("/","")}' 
+                       and a.sale_date  <=  '#{@audit_date_to.gsub("/","")}'
+                       and a.m_shop_id  =   #{@m_shop_id} 
                        and b.m_wash_id   =  #{m_wash_rec.id}
                        and b.wash_no     =  #{num}
                 SQL
@@ -247,11 +268,11 @@ class DAuditWashesController < ApplicationController
          
         #明細レコード定義
         dt_rec = Hash.new 
-        dt_rec[:audit_date_from] = p_from    #d_audit_washes.audit_date_from
-        dt_rec[:audit_date_to] = p_to        #d_audit_washes.audit_date_to
-        dt_rec[:audit_class] = session[:audit_class] #d_audit_washes.audit_class
-        dt_rec[:m_shop_id] = p_shopid        #d_audit_washes.m_shop_id
-        dt_rec[:m_wash_id] = m_wash_rec.id   #d_audit_wash_details.m_wash_id
+        dt_rec[:audit_date_from] = @audit_date_from.gsub("/","") #d_audit_washes.audit_date_from
+        dt_rec[:audit_date_to] = @audit_date_to.gsub("/","")     #d_audit_washes.audit_date_to
+        dt_rec[:audit_class] = session[:audit_class]             #d_audit_washes.audit_class
+        dt_rec[:m_shop_id] = @m_shop_id           #d_audit_washes.m_shop_id
+        dt_rec[:m_wash_id] = m_wash_rec.id        #d_audit_wash_details.m_wash_id
         dt_rec[:wash_cd]   = m_wash_rec.wash_cd   #洗車機CD
         dt_rec[:wash_name] = m_wash_rec.wash_name #洗車機名
         dt_rec[:max_num]   = m_wash_rec.max_num   #洗車機最大数
@@ -277,7 +298,11 @@ class DAuditWashesController < ApplicationController
         end
         
         #計算上売上高(当日メータ - 前回メータ)
-        dt_rec[:k_uri]     = dt_rec[:t_meter] - dt_rec[:z_meter]
+        if dt_rec[:t_meter] < dt_rec[:z_meter] then
+          dt_rec[:k_uri] = dt_rec[:t_meter] #故障の場合は0から再カウント
+        else
+          dt_rec[:k_uri] = dt_rec[:t_meter] - dt_rec[:z_meter]
+        end
         
         #売上集計
         k_uri_sum += dt_rec[:k_uri]
@@ -313,9 +338,9 @@ class DAuditWashesController < ApplicationController
                     on 
                         a.id = b.d_wash_sale_id
                     where 
-                           a.sale_date  >=  '#{p_from}' 
-                       and a.sale_date  <=  '#{p_to}'
-                       and a.m_shop_id   =  #{p_shopid} 
+                           a.sale_date  >=  '#{@audit_date_from.gsub("/","")}' 
+                       and a.sale_date  <=  '#{@audit_date_to.gsub("/","")}'
+                       and a.m_shop_id   =  #{@m_shop_id} 
                        and b.m_wash_id   =  #{m_wash_rec.id}
                        and b.wash_no     =  99
                 SQL
@@ -326,11 +351,11 @@ class DAuditWashesController < ApplicationController
       
       #合計レコード定義
       dt_rec = Hash.new 
-      dt_rec[:audit_date_from] = p_from    #d_audit_washes.audit_date_from
-      dt_rec[:audit_date_to] = p_to        #d_audit_washes.audit_date_to
-      dt_rec[:audit_class] = session[:audit_class] #d_audit_washes.audit_class
-      dt_rec[:m_shop_id] = p_shopid        #d_audit_washes.m_shop_id
-      dt_rec[:m_wash_id] = m_wash_rec.id   #d_audit_wash_details.m_wash_id
+      dt_rec[:audit_date_from] = @audit_date_from.gsub("/","")    #d_audit_washes.audit_date_from
+      dt_rec[:audit_date_to] = @audit_date_to.gsub("/","")        #d_audit_washes.audit_date_to
+      dt_rec[:audit_class] = session[:audit_class]                #d_audit_washes.audit_class
+      dt_rec[:m_shop_id] = @m_shop_id           #d_audit_washes.m_shop_id
+      dt_rec[:m_wash_id] = m_wash_rec.id        #d_audit_wash_details.m_wash_id
       dt_rec[:wash_cd]   = m_wash_rec.wash_cd   #洗車機CD
       dt_rec[:wash_name] = m_wash_rec.wash_name #洗車機名
       dt_rec[:max_num]   = m_wash_rec.max_num   #洗車機最大数
@@ -353,35 +378,39 @@ class DAuditWashesController < ApplicationController
       
       @dt.push dt_rec
     
-    end #for m_wash_rec in m_wash
-    
+    end #for m_wash_rec in m_wash  
+  
   end
+  
+  # from～toのコンボ用データ読込
+  def load_from_to(audit_class, m_shop_id)
+    
+    #監査日FromTo読み込み
+    @from = Array.new    
+    @to   = Array.new
+    a_audit_washs = DAuditWash.find(:all, 
+                                    :conditions => ["audit_class=? AND m_shop_id=?", 
+                                                    audit_class,
+                                                    m_shop_id],      
+                                    :order => "audit_date_from desc")
+    
+    if a_audit_washs.length == 0 then
+      @from.push '0000/00/00'
+      @to.push   ''  
+    else
+      @from.push Date.strptime(a_audit_washs[0].audit_date_to, "%Y%m%d").next.strftime('%Y/%m/%d')
+      @to.push   ''
 
-  # 誤差選択時イベント
-  def dialog_gosa
-    
-    # 誤差が発生した日を取得
-    sql = <<-SQL
-        select 
-            a.sale_date
-        from 
-                     d_wash_sales     a 
-          inner join d_washsale_items b
-        on 
-              a.id = b.d_wash_sale_id
-        where 
-                a.sale_date  >=  '#{params[:dialog_gosa][:sale_date_from]}' 
-            and a.sale_date  <=  '#{params[:dialog_gosa][:sale_date_to]}'
-            and a.m_shop_id  =  #{params[:dialog_gosa][:m_shop_id]} 
-            and b.m_wash_id   =  #{params[:dialog_gosa][:m_wash_id]}
-            and b.wash_no     =  99
-            and b.error_money >  0
-        order by
-            a.sale_date
-     
-     SQL
-    
-    @d_wash_sales = DWashSale.find_by_sql(sql)
+      for d_audit_wash_rec in a_audit_washs
+        if d_audit_wash_rec.audit_date_from == '00000000' then
+          @from.push '0000/00/00'
+        else
+          @from.push Date.strptime(d_audit_wash_rec.audit_date_from, "%Y%m%d").strftime('%Y/%m/%d')
+        end
+        @to.push   Date.strptime(d_audit_wash_rec.audit_date_to, "%Y%m%d").strftime('%Y/%m/%d')
+      end
+
+    end    
     
   end
   
