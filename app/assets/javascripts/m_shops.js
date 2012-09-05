@@ -1,4 +1,4 @@
 $(function(){
 	// Tabs
 	$('#tabs').tabs();
-})();
+});
