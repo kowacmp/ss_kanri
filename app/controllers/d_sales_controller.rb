@@ -70,9 +70,12 @@ p params
        @head[:input_day] = params[:input_day]
     end
 
+#p "m_shop_id=#{@m_shop_id}"
+#p "sale_date=" + @head[:input_day].to_s.gsub("/", "")
     #データ取得
     @d_sale = DSale.find(:first,
        :conditions=>["m_shop_id = ? and sale_date = ? ", @m_shop_id, @head[:input_day].to_s.gsub("/", "")])
+#p "@d_sale=#{@d_sale}"       
     if @d_sale == nil 
       @d_sale = DSale.new
       @d_sale.m_shop_id = @m_shop_id
@@ -130,6 +133,7 @@ p params
     
     respond_to do |format|
       if params[:remote]
+        p "@d_sale=#{@d_sale.sale_money1}"
         format.html { render :partial => 'form'  }
       else
         format.html 
@@ -141,6 +145,7 @@ p params
   # GET /d_sales/1/edit
   def edit
     @d_sale = DSale.find(params[:id])
+    
   end
 
   # POST /d_sales

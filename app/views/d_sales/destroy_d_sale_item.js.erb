@@ -2,36 +2,36 @@
 switch("<%= @kbn %>")
 {
   case "pay_item":
-    //$("#pay_item_<%= @index %>_id").val("");
-    $("#pay_item_<%= @index %>_item_name").val("");
-    $("#pay_item_<%= @index %>_item_money").val("");
-	$("#pay_item_<%= @index %>_m_item_id").prop('selectedIndex', 0);
-	$("#pay_item_<%= @index %>_item_money").trigger("change");
+    //$("div.bodyDiv #pay_item_<%= @index %>_id").val("");
+    $("div.bodyDiv #pay_item_<%= @index %>_item_name").val("");
+    $("div.bodyDiv #pay_item_<%= @index %>_item_money").val("");
+	$("div.bodyDiv #pay_item_<%= @index %>_m_item_id").prop('selectedIndex', 0);
+	$("div.bodyDiv #pay_item_<%= @index %>_item_money").trigger("change");
     break;
 
   case "recive_item":
-    //$("#recive_item_<%= @index %>_id").val("");
-    $("#recive_item_<%= @index %>_item_name").val("");
-    $("#recive_item_<%= @index %>_item_money").val("");
-	$("#recive_item_<%= @index %>_m_item_id").prop('selectedIndex', 0);
-	$("#recive_item_<%= @index %>_item_money").trigger("change");
+    //$("div.bodyDiv #recive_item_<%= @index %>_id").val("");
+    $("div.bodyDiv #recive_item_<%= @index %>_item_name").val("");
+    $("div.bodyDiv #recive_item_<%= @index %>_item_money").val("");
+	$("div.bodyDiv #recive_item_<%= @index %>_m_item_id").prop('selectedIndex', 0);
+	$("div.bodyDiv #recive_item_<%= @index %>_item_money").trigger("change");
     break;
 
   case "etc_item":
-    //$("#etc_item_<%= @index %>_id").val("");
-    $("#etc_item_<%= @index %>_item_name").val("");
-    $("#etc_item_<%= @index %>_item_money").val("");
-	$("#etc_item_<%= @index %>_m_item_id").prop('selectedIndex', 0);
-	$("#etc_item_<%= @index %>_item_money").trigger("change");
+    //$("div.bodyDiv #etc_item_<%= @index %>_id").val("");
+    $("div.bodyDiv #etc_item_<%= @index %>_item_name").val("");
+    $("div.bodyDiv #etc_item_<%= @index %>_item_money").val("");
+	$("div.bodyDiv #etc_item_<%= @index %>_m_item_id").prop('selectedIndex', 0);
+	$("div.bodyDiv #etc_item_<%= @index %>_item_money").trigger("change");
     break;
   
   case "purika_item":
-    //$("#purika_item_<%= @index %>_id").val("");
-    $("#purika_item_<%= @index %>_item_money").val("");
-	$("#purika_item_<%= @index %>_item_name").val("");
-	$("#purika_item_<%= @index %>_m_shop_id").prop('selectedIndex', 0);
-	$("#purika_item_<%= @index %>_item_money").trigger("change");
-	//$("#purika_row_<%= @index %>").parent().parent().remove();
+    //$("div.bodyDiv #purika_item_<%= @index %>_id").val("");
+    $("div.bodyDiv #purika_item_<%= @index %>_item_money").val("");
+	$("div.bodyDiv #purika_item_<%= @index %>_item_name").val("");
+	$("div.bodyDiv #purika_item_<%= @index %>_m_shop_id").prop('selectedIndex', 0);
+	$("div.bodyDiv #purika_item_<%= @index %>_item_money").trigger("change");
+	//$("div.bodyDiv #purika_row_<%= @index %>").parent().parent().remove();
     break;
     
 };
