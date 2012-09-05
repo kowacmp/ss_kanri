@@ -1,41 +1,56 @@
 <%= form_for(@d_comment) do |f| %>
   <% if @d_comment.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@d_comment.errors.count, "error") %> prohibited this d_comment from being saved:</h2>
+      <h2><%= pluralize(@d_comment.errors.count, "") %> 件のエラーがあります。</h2>
 
       <ul>
       <% @d_comment.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= sliceString(msg) %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :send_day %><br />
-    <%= f.datetime_select :send_day %>
-  </div>
-  <div class="field">
-    <%= f.label :menu_id %><br />
-    <%= f.number_field :menu_id %>
-  </div>
-  <div class="field">
-    <%= f.label :contents %><br />
-    <%= f.text_field :contents %>
-  </div>
-  <div class="field">
-    <%= f.label :send_id %><br />
-    <%= f.number_field :send_id %>
-  </div>
-  <div class="field">
-    <%= f.label :receive_id %><br />
-    <%= f.number_field :receive_id %>
-  </div>
-  <div class="field">
-    <%= f.label :created_user_id %><br />
-    <%= f.number_field :created_user_id %>
-  </div>
+<table id='rounded-corner'>
+  <tr>
+    <th><%= f.label '入力日' %></th>
+    <td><%#= f.datetime_select :send_day %>
+    	<%= f.number_field :send_day, :readonly => true, :class => "datepicker", :size => 5 %>
+    </td>
+  </tr>
+  <tr>
+    <th><%= f.label 'タイトル' %></th>
+    <td><%#= f.number_field :menu_id %>
+      <%= f.collection_select(:menu_id, Menu.find(:all, :order => 'menu_cd1, menu_cd2, menu_cd3'),
+           :id, :display_name, :include_blank => "選択して下さい") %>  
+    </td>
+  </tr>
+  <tr>
+    <th><%= f.label '内容' %></th>
+    <td><%= f.text_area :contents, :rows => 2 %></td>
+  </tr>
+  <tr>
+    <th><%= f.label '表示先' %></th>
+    <td><%#= f.number_field :receive_id %>
+      <div id="m_shop">店舗
+        <%= select_tag(:m_shop_id, options_from_collection_for_select(MShop.find(:all, 
+                       :conditions => ["deleted_flg = 0"], :order => 'shop_cd'),
+                       :id, :shop_name), :include_blank => "") %>
+      </div>
+
+      <div id="user">社員
+        <%= f.collection_select(:receive_id, User.find(:all, :conditions => ["deleted_flg = 0"],
+         :order => 'account'),:id, :user_name, :include_blank => "選択して下さい") %>              
+      </div>
+    </td>
+  </tr>
+</table>  
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div>
+  
 <% end %>
+
+
+
+

@@ -47,10 +47,10 @@
   <% end %>	
     <tr>
       <th>油外合計</th>
-      <td id="etc0_pos1_total" class="input_no"><%= num_fmt(@etc0_pos1_total) %>&nbsp;円</td>
-      <td id="etc0_pos2_total" class="input_no"><%= num_fmt(@etc0_pos2_total) %>&nbsp;円</td>
-      <td id="etc0_pos3_total" class="input_no"><%= num_fmt(@etc0_pos3_total) %>&nbsp;円</td>
-      <td id="etc0_pos_total" class="input_no"><%= num_fmt(@etc0_pos_total) %>&nbsp;円</td>
+      <td class="input_no"><label id="etc0_pos1_total"><%= num_fmt(@etc0_pos1_total) %></label>&nbsp;円</td>
+      <td class="input_no"><label id="etc0_pos2_total"><%= num_fmt(@etc0_pos2_total) %></label>&nbsp;円</td>
+      <td class="input_no"><label id="etc0_pos3_total"><%= num_fmt(@etc0_pos3_total) %></label>&nbsp;円</td>
+      <td class="input_no"><label id="etc0_pos_total"><%= num_fmt(@etc0_pos_total) %></label>&nbsp;円</td>
     </tr>  
   </table>
   <br/>
@@ -138,16 +138,18 @@
       <td valign="top">
         <table id='rounded-corner'>
 	      <tr>
-	        <th colspan="2">営業POS伝回収報告</th>
+	        <th colspan="3">営業報告</th>
 	      </tr>
 	      <tr>  
 	        <th></th>
 	        <th>日計</th>
+	        <th>累計</th>
 	      </tr>
           <% @m_oil_etcs.each do |m_oil_etc| %>
             <tr>
               <th><%= m_oil_etc.oiletc_name %></th> 	
               <td><%= number_field :get_num, "#{m_oil_etc.id}", :value => m_oil_etc.get_num, :class => "money", :size => 4 %></td>            
+              <td class="input_no"><%= @ruikei_eigyos[m_oil_etc.id][:ruikei] %></td> 
             </tr>
           <% end %>	
         </table>
