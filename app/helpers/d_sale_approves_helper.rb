@@ -1,0 +1,2 @@
+module DSaleApprovesHelper
+end

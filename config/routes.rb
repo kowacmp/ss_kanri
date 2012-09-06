@@ -1,10 +1,11 @@
 SsKanri::Application.routes.draw do
 
   get "d_yume_point_lists/index"
-
   get "d_yume_point_lists/search"
-
   get "d_yume_point_lists/print"
+
+  get "d_sale_approves/index"
+  get "d_sale_approves/edit"
 
   get "d_tank_compute_report_details/index"
   get "d_tank_compute_report_details/search"
