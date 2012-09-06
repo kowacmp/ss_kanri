@@ -300,9 +300,18 @@ module DResultsHelper
         d_tank_compute_report.sale_total = old_d_tank_compute_report.sale_total + sales[m_tank.id][:sale] 
       end
       total_percentage = d_tank_compute_report.decrease_total.to_f / d_tank_compute_report.sale_total.to_f * 100      
+p "d_tank_compute_report.decrease_total=#{d_tank_compute_report.decrease_total}"
+p "d_tank_compute_report.sale_total=#{d_tank_compute_report.sale_total}"
 
       #桁オーバーフロー対策
-      total_percentage = 999.999  if total_percentage >= 1000     
+      p "total_percentage=#{total_percentage}"
+      p "------------------------------------------"
+      if total_percentage >= 1000
+        total_percentage = 999.999 
+      elsif total_percentage.nan?  
+        total_percentage = 0
+      end
+            
       d_tank_compute_report.total_percentage = total_percentage.round(3)
       d_tank_compute_report.save      
     end
