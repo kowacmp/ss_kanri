@@ -1,37 +1,36 @@
-<h1>Listing d_events</h1>
+<h1>イベント通知</h1>
 
-<table>
+<%= link_to '新規登録', new_d_event_path, :class => 'add_icon' %>
+<table id='rounded-corner'>
   <tr>
-    <th>Start day</th>
-    <th>End day</th>
-    <th>action_day</th>
-    <th>Menu</th>
-    <th>Contents</th>
-    <th>Receive group1</th>
-    <th>Receive group2</th>
-    <th>Created user</th>
-    <th></th>
-    <th></th>
-    <th></th>
+  	<th colspan="2">公開期間</th>
+    <th rowspan="2">実施日</th>
+    <th rowspan="2">タイトル</th>
+    <th rowspan="2">内容</th>
+    <th rowspan="2">詳細</th>
+    <th rowspan="2">編集</th>
+    <th rowspan="2">削除</th>
   </tr>
-
+  <tr>
+    <th>開始日</th>
+    <th>終了日</th>    	
+  </tr>
 <% @d_events.each do |d_event| %>
   <tr>
     <td><%= d_event.start_day %></td>
     <td><%= d_event.end_day %></td>
     <td><%= d_event.action_day %></td>    
-    <td><%= d_event.menu_id %></td>
+    <td><%= d_event.display_name %></td>
     <td><%= d_event.contents %></td>
-    <td><%= d_event.receive_group1 %></td>
-    <td><%= d_event.receive_group2 %></td>
-    <td><%= d_event.created_user_id %></td>
-    <td><%= link_to 'Show', d_event %></td>
-    <td><%= link_to 'Edit', edit_d_event_path(d_event) %></td>
-    <td><%= link_to 'Destroy', d_event, confirm: 'Are you sure?', method: :delete %></td>
+    <td class="icon"><%#= link_to 'Show', d_event %>
+      <%= link_to image_tag('icon/24_show.png'), d_event %>
+    </td>
+    <td class="icon"><%#= link_to 'Edit', edit_d_event_path(d_event) %>
+      <%= link_to image_tag('icon/24_edit.png'), edit_d_event_path(d_event) %>
+    </td>
+    <td class="icon"><%#= link_to 'Destroy', d_event, confirm: 'Are you sure?', method: :delete %>
+      <%= link_to image_tag('icon/24_delete.png'), d_event, :confirm => '削除します。よろしいですか？', :method => :delete %>	
+    </td>
   </tr>
 <% end %>
 </table>
-
-<br />
-
-<%= link_to 'New D event', new_d_event_path %>

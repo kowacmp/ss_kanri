@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120904104255) do
+ActiveRecord::Schema.define(:version => 20120906004738) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -248,7 +248,6 @@ ActiveRecord::Schema.define(:version => 20120904104255) do
     t.datetime "send_day",                      :null => false
     t.integer  "menu_id",                       :null => false
     t.string   "contents",        :limit => 40, :null => false
-    t.integer  "send_id",                       :null => false
     t.integer  "receive_id",                    :null => false
     t.integer  "created_user_id",               :null => false
     t.datetime "created_at"
@@ -261,8 +260,6 @@ ActiveRecord::Schema.define(:version => 20120904104255) do
     t.string   "action_day",      :limit => 8,  :null => false
     t.integer  "menu_id"
     t.string   "contents",        :limit => 40, :null => false
-    t.integer  "receive_group1",                :null => false
-    t.integer  "receive_group2"
     t.integer  "created_user_id",               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -284,22 +281,6 @@ ActiveRecord::Schema.define(:version => 20120904104255) do
     t.string   "approve_date1",    :limit => 8
     t.integer  "created_user_id",                 :default => 0, :null => false
     t.integer  "updated_user_id",                 :default => 0, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "d_messages", :force => true do |t|
-    t.datetime "send_day",                      :null => false
-    t.integer  "menu_id",                       :null => false
-    t.string   "contents",        :limit => 40, :null => false
-    t.integer  "receive_id1"
-    t.integer  "receive_id2"
-    t.integer  "receive_id3"
-    t.integer  "receive_id4"
-    t.integer  "receive_id5"
-    t.integer  "receive_group1"
-    t.integer  "receive_group2"
-    t.integer  "created_user_id",               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -890,14 +871,6 @@ ActiveRecord::Schema.define(:version => 20120904104255) do
     t.datetime "updated_at"
     t.integer  "messege_send", :limit => 2
     t.integer  "menu_cd3",     :limit => 2
-  end
-
-  create_table "userdata", :force => true do |t|
-    t.string   "pseudo"
-    t.string   "email"
-    t.string   "firstname"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "users", :force => true do |t|

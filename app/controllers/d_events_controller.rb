@@ -2,7 +2,13 @@ class DEventsController < ApplicationController
   # GET /d_events
   # GET /d_events.json
   def index
-    @d_events = DEvent.all
+    sql = "select substr(start_day, 1, 4) || '/' || substr(start_day, 5, 2) || '/' || substr(start_day, 7, 2) as start_day, "
+    sql << "      substr(end_day, 1, 4) || '/' || substr(end_day, 5, 2) || '/' || substr(end_day, 7, 2) as end_day,"
+    sql << "      substr(action_day, 1, 4) || '/' || substr(action_day, 5, 2) || '/' || substr(action_day, 7, 2) as action_day,"
+    sql << "      e.id, e.contents, m.display_name"
+    sql << " from d_events e, menus m where e.menu_id = m.id  and e.created_user_id = #{current_user.id}"
+    sql << " order by action_day desc"
+    @d_events = DEvent.find_by_sql(sql)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,6 +20,8 @@ class DEventsController < ApplicationController
   # GET /d_events/1.json
   def show
     @d_event = DEvent.find(params[:id])
+
+    @menu = Menu.find(@d_event.menu_id)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -35,6 +43,9 @@ class DEventsController < ApplicationController
   # GET /d_events/1/edit
   def edit
     @d_event = DEvent.find(params[:id])
+    @d_event.start_day = Time.parse(@d_event.start_day).strftime("%Y/%m/%d")
+    @d_event.end_day = Time.parse(@d_event.end_day).strftime("%Y/%m/%d")
+    @d_event.action_day = Time.parse(@d_event.action_day).strftime("%Y/%m/%d")
   end
 
   # POST /d_events
@@ -42,6 +53,11 @@ class DEventsController < ApplicationController
   def create
     @d_event = DEvent.new(params[:d_event])
 
+    @d_event.start_day = params[:d_event][:start_day].delete("/")
+    @d_event.end_day = params[:d_event][:end_day].delete("/")
+    @d_event.action_day = params[:d_event][:action_day].delete("/")
+    @d_event.created_user_id = current_user.id
+    
     respond_to do |format|
       if @d_event.save
         format.html { redirect_to @d_event, notice: 'D event was successfully created.' }
@@ -57,6 +73,9 @@ class DEventsController < ApplicationController
   # PUT /d_events/1.json
   def update
     @d_event = DEvent.find(params[:id])
+    params[:d_event][:start_day] = params[:d_event][:start_day].delete("/")
+    params[:d_event][:end_day] = params[:d_event][:end_day].delete("/")
+    params[:d_event][:action_day] = params[:d_event][:action_day].delete("/")
 
     respond_to do |format|
       if @d_event.update_attributes(params[:d_event])

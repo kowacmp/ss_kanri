@@ -1,50 +1,49 @@
 <%= form_for(@d_event) do |f| %>
   <% if @d_event.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@d_event.errors.count, "error") %> prohibited this d_event from being saved:</h2>
+      <h2><%= pluralize(@d_event.errors.count, "") %> 件のエラーがあります。</h2>
 
       <ul>
       <% @d_event.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= sliceString(msg) %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :start_day %><br />
-    <%= f.text_field :start_day %>
-  </div>
-  <div class="field">
-    <%= f.label :end_day %><br />
-    <%= f.text_field :end_day %>
-  </div>
-  <div class="field">
-    <%= f.label :action_day %><br />
-    <%= f.text_field :action_day %>
-  </div>
+<table id='rounded-corner'>
+  <tr>
+    <th><%= f.label '開始日' %></th>
+    <td><%#= f.text_field :start_day %>
+    	<%= f.number_field :start_day, :readonly => true, :class => "datepicker", :size => 5 %>
+    </td>
+  </tr>
+  <tr>
+    <th><%= f.label '終了日' %></th>
+    <td><%#= f.text_field :end_day %>
+    	<%= f.number_field :end_day, :readonly => true, :class => "datepicker", :size => 5 %>
+    </td>
+  </tr>
+  <tr>
+    <th><%= f.label '実施日' %></th>
+    <td><%#= f.text_field :action_day %>
+    	<%= f.number_field :action_day, :readonly => true, :class => "datepicker", :size => 5 %>
+    </td>
+  </tr>
+  <tr>
+    <th><%= f.label 'タイトル' %></th>
+    <td><%#= f.number_field :menu_id %>
+          <%= f.collection_select(:menu_id, Menu.find(:all, :order => 'menu_cd1, menu_cd2, menu_cd3'),
+           :id, :display_name, :include_blank => "選択して下さい") %> 
+    </td>
+  </tr>
+  <tr>
+    <th><%= f.label '内容' %></th>
+    <td><%= f.text_area :contents, :rows => 2 %></td>
+  </tr>
+</table>
   
-  <div class="field">
-    <%= f.label :menu_id %><br />
-    <%= f.number_field :menu_id %>
-  </div>
-  <div class="field">
-    <%= f.label :contents %><br />
-    <%= f.text_field :contents %>
-  </div>
-  <div class="field">
-    <%= f.label :receive_group1 %><br />
-    <%= f.number_field :receive_group1 %>
-  </div>
-  <div class="field">
-    <%= f.label :receive_group2 %><br />
-    <%= f.number_field :receive_group2 %>
-  </div>
-  <div class="field">
-    <%= f.label :created_user_id %><br />
-    <%= f.number_field :created_user_id %>
-  </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div>
 <% end %>
