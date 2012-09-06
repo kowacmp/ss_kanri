@@ -1,6 +1,13 @@
 <%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
 
 <%= form_tag({:action => 'd_result_create' }, { :remote => true }) do %>
+ <div id="tabs">
+ <ul>
+     <li><a href="#first">商品入力</a></li>
+     <li><a href="#second">メータ入力</a></li>
+     <li><a href="#third">その他入力</a></li>
+ </ul>
+  <div id="first">
   <table id='rounded-corner'>
 	<tr>
 	  <th width="160">出荷数量(リットル)</th>
@@ -127,10 +134,14 @@
   <% end %>	
   </table>	
   <br/>
-
+  </div>
+  
+  <div id="second">
   <div id="d_result_meter"><%= render 'd_result_meter' %></div><br/>
   <div id="d_tank_compute"><%= render 'd_tank_compute' %></div><br/>
   
+  </div>
+  <div id="third">
   <table>  
     <td valign="top"><div id="d_result_yume"><%= render 'd_result_yume' %></div></td>
     <% if @m_shop.shop_kbn == 1 %> <!-- 油外店のみ表示 -->
@@ -156,33 +167,39 @@
       </td>
     <% end %>
   </table>  
+  </div>
+	  
+ </div>
   <br/>  
       
   <%= hidden_field :select, :result_date, :value => @result_date %>
   <div style="text-align:right; width: 570px;"><%= submit_tag '登録' %></div>
 <% end %>
 
+<%= javascript_include_tag "comma" %>
 
 <script>
 $(function () {
     //保存の時に金額はカンマを消す
-    $("form").submit(function() {
-    	
-         	//金額欄のカンマを消す
-         	$("input.money").each(function(){
-         		var num = new String($(this).val()).replace(/,/g, "");
-           		$(this).val(num); 
-         	});
-         	
-     	
-    });
+//    $("form").submit(function() {
+//    	
+//         	//金額欄のカンマを消す
+//         	$("input.money").each(function(){
+//         		var num = new String($(this).val()).replace(/,/g, "");
+//           		$(this).val(num); 
+//         	});
+//         	
+//     	
+//    });
+//
+//    //カンマ編集して表示する
+// 	$("input.money").each(function(){
+//	    var num = new String($(this).val()).replace(/,/g, "");
+//	    while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
+//	    $(this).val(num); 
+// 	});
 
-    //カンマ編集して表示する
- 	$("input.money").each(function(){
-	    var num = new String($(this).val()).replace(/,/g, "");
-	    while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
-	    $(this).val(num); 
- 	});
-
+    // Tabs
+	$('#tabs').tabs();
 });	
 </script>
