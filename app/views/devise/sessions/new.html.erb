@@ -1,28 +1,24 @@
 <br><br><br><br><br><br>
 <center>
   <div style="border-style:double; width: 450px; height: 150px; padding: 2%;">
-    <table>
+
       <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-        <div><%#= f.label :email %><br />
-        <%#= f.email_field :email %></div>
+        
         <%= f.select(:account, 
             User.find(:all, :order => 'id').map do |u|
               [u.user_name,u.account]
             end, :prompt => "選択して下さい") %>
-        <%#= f.text_field :account %></div>
         
-        <div><%= f.label :password %><br />
-        <%= f.password_field :password %></div>
-
-        <%# if devise_mapping.rememberable? -%>
-          <!--  <div><#%= f.check_box :remember_me %> <%#= f.label :remember_me %></div> -->
-        <%# end -%>
-
+        <div>
+	        <%= f.label :password %><br />
+	        <%= f.password_field :password, :size =>"10"%>
+        </div>
+        
         <div><%= f.submit "ログイン" %></div>
       <% end %>
 
       <%= render "devise/shared/links" %>
-    </table>
+
   </div>
 <center>
 <p><%= link_to 'パスワード再発行', [ :new, :user_password ]  %></p>

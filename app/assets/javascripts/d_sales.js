@@ -19,12 +19,12 @@ $(function () {
 			   //New
 		       $.get(
 				    '/d_sales/new',                 // 送信先
-				    { input_day: $(this).val() , m_shop_id: $("#m_shop_id").val(), 
+				    { input_day: $(this).val() , m_shop_id: $("#d_sale_m_shop_id").val(), 
 				      input_shop_kbn: $("#head_input_shop_kbn").val(), 
 				      from_view: $("#head_from_view").val(), remote: true},
 				    function(data, status) {        // 通信成功時にデータを表示
-				       $('#form_d_sale').empty();
-		               $('#form_d_sale').append(data);
+				       $('#result').empty();
+		               $('#result').append(data);
 		             },
 				    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
 		            );

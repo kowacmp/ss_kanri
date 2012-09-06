@@ -393,7 +393,7 @@ class AddrecordUsers < ActiveRecord::Migration
            "
            execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (50, 5, 1, '売上承認一覧', '', NULL, NULL, NULL, 0);
            "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (51, 5, 1, '監査承認一覧', '', NULL, NULL, NULL, 0);
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (51, 5, 1, '監査承認一覧', 'd_audit_approves', NULL, NULL, NULL, 0);
            "
            execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (52, 5, 1, '備品購入申請承認', '', NULL, NULL, NULL, 0);
            "
