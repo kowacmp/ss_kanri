@@ -1,0 +1,94 @@
+<%=form_tag({:action => 'update' }, :id => "form_update") do%>
+
+<!-- 検索パラメータ -->
+<%=hidden_field :header, :ym,       :value => params[:header][:ym] %>
+<%=hidden_field :header, :shop_kbn, :value => params[:header][:shop_kbn] %>
+<%=hidden_field :header, :zumi_flg, :value => params[:header][:zumi_flg] %>
+
+<!-- 書き込み先の情報を付加 -->
+<%=hidden_field :approval, :approval_id,   :value => @approval_id %>
+<%=hidden_field :approval, :approval_name, :value => @approval_name %>
+
+<table class='rounded-corner' >
+
+	<tr>
+		<td colspan="7" align="right" style="border: none;">
+			<input type="button" value=" 　一括 　" onclick="return chk_flgs_all(true);"  <%="disabled = 'disabled'" if (@approval_id == 0) %>><br/>
+			<input type="button" value="一括クリア" onclick="return chk_flgs_all(false);" <%="disabled = 'disabled'" if (@approval_id == 0) %>>
+		</td>
+	</tr>
+
+	<tr>
+		<th>店舗コード</th>
+		<th>店舗名</th>
+		<th>店舗種別</th>
+		<th>現金有高(累計)</th>
+		<th>過不足(累計)</th>
+		<th>&nbsp;</th>
+		<th>承認</th>
+	</tr>
+	
+	<% rec_cnt = 0 %>
+	<% for approval in @approval do %>
+		<% rec_cnt += 1 %>
+
+		<tr>
+			<td align="center">
+				<%=approval.shop_cd%>
+			</td>
+			<td align="center">
+				<%=approval.shop_name%>
+			</td>
+			<td align="center">
+				<%=MCode.find(:first, :conditions=>["kbn='shop_kbn' and code=?", params[:header][:shop_kbn]]).code_name %>
+			</td>
+			<td align="right">
+				<%=number_with_delimiter(approval.exist_money)%>
+			</td>
+			<td align="right">
+				<%=number_with_delimiter(approval.over_short)%>
+			</td>
+			<td align="center">
+				詳細 <%#TODO:リンクを埋め込む%>
+			</td>
+			<td align="center">
+				<%
+					if @approval_id == 0 then
+						approval_id = 0
+						for i in 1..5 do
+							approval_id += approval["approve_id#{i}"] 
+						end
+					else
+						approval_id = approval["approve_id#{@approval_id}"]
+					end 
+				%>
+			    <%=hidden_field "approval#{rec_cnt}", :id,               :value   =>  approval.id %>
+				<%=hidden_field "approval#{rec_cnt}", :old_approval_flg, :value   => (approval_id.to_s != "0") %> 
+				<%=check_box    "approval#{rec_cnt}", :approval_flg,     :checked => (approval_id.to_s != "0") %>
+			</td>
+		</tr>
+		
+	<% end %> <!-- for approval in @approval do -->
+		
+	<tr>
+		<td colspan="7" align="right" style="border: none">
+			<%= submit_tag '　保　存　', :disable_with => "保存中です...", :confirm => "保存してもよろしいですか？",
+			    :disabled => (approval_id == 0) %>
+		</td>
+	</tr>
+		
+</table>
+<% end %> <!-- form_tag({:action => 'update' }, :id => "form_update") do -->
+
+<script language="JavaScript">
+	
+	// 承認の全てを一括ON/OFFする
+	function chk_flgs_all(flg) {
+		$(":checkbox[id$=approval_flg]").each(function() {
+			this.checked = flg;
+		});
+		
+		return true;
+	}
+	
+</script>

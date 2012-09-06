@@ -8,7 +8,6 @@ class DCommentsController < ApplicationController
     sql << "  left join menus m on (c.menu_id = m.id)"
     sql << " where created_user_id = #{current_user.id} order by c.send_day desc"
         
-    p "sql=#{sql}"
     @d_comments = DComment.find_by_sql(sql)
     
     respond_to do |format|
@@ -52,7 +51,6 @@ class DCommentsController < ApplicationController
   def create
     @d_comment = DComment.new(params[:d_comment])
     @d_comment.created_user_id = current_user.id
-    @d_comment.send_id = current_user.id
     
     respond_to do |format|
       if @d_comment.save
@@ -94,11 +92,16 @@ class DCommentsController < ApplicationController
   end
   
   def change_m_shop
-    @m_shop_id = params[:m_shop_id]
-  
+    sql = "select * from users where deleted_flg = 0 and user_class = 3"
+    unless params[:m_shop_id].blank?
+      sql << " and m_shop_id = #{params[:m_shop_id]}"
+    end
+    sql << " order by account"
+    
+    @users = User.find_by_sql(sql)
+    
     respond_to do |format|
       format.js
     end    
   end
-  
 end

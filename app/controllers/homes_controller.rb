@@ -1,4 +1,7 @@
 class HomesController < ApplicationController
+  
+  include HomesHelper
+  
   def index
     @today = Time.now
     @end_day = @today + 6.days
@@ -13,54 +16,33 @@ class HomesController < ApplicationController
     
     @m_washsale_plans = MWashsalePlan.find_by_sql(sql) 
 
+
     #イベント取得
-    sql = <<-SQL
-      select d.*, m.display_name
-        from d_events d, menus m
-       where d.menu_id = m.id and d.start_day <= '#{today}' and d.end_day >= '#{today}' 
-         and (d.receive_group1 = #{m_authority_id} or d.receive_group2 = #{m_authority_id})
-      order by d.action_day desc
-    SQL
+    event_sql = "select substr(action_day, 1, 4) || '/' || substr(action_day, 5, 2) || '/' || substr(action_day, 7, 2) as action_day,"
+    event_sql << "      d.contents, m.display_name"
+    event_sql << " from d_events d, menus m"
+    event_sql << " where d.menu_id = m.id and d.start_day <= '#{today}' and d.end_day >= '#{today}'"
+    event_sql << " order by d.action_day desc"
 
-    @d_events = DEvent.find_by_sql(sql)        
-    
-    #メッセージ取得
-    sql = <<-SQL
-      select d.*, m.display_name 
-        from d_messages d, menus m
-       where d.menu_id = m.id and (d.receive_id1 = #{user_id} or d.receive_id2 = #{user_id} 
-          or d.receive_id3 = #{user_id} or d.receive_id4 = #{user_id} or d.receive_id5 = #{user_id} 
-          or receive_group1 = #{m_authority_id} or receive_group2 = #{m_authority_id})
-      order by d.send_day desc
-    SQL
-
-    @d_messages = DMessage.find_by_sql(sql)         
+    @d_events = DEvent.find_by_sql(event_sql)        
+         
     
     #コメント取得
-    sql = <<-SQL
-      select d.*, m.display_name, u.user_name 
-        from d_comments d, menus m, users u
-       where d.menu_id = m.id and d.send_id = u.id
-         and d.receive_id = #{current_user.id}
-      order by d.send_day desc
-    SQL
-p "sql=#{sql}"
-    @d_comments = DComment.find_by_sql(sql)
+    @d_comments = DComment.find_by_sql(comment_sql(current_user.id))
   end
 
   def show_d_comment
-    p "show_d_comment   show_d_comment   show_d_comment   show_d_comment"
-    p "id=#{params[:id]}"
     @d_comment = DComment.find(params[:id])
-    @send_user = User.find(@d_comment.send_id)
+    @send_user = User.find(@d_comment.created_user_id)
     @menu = Menu.find(@d_comment.menu_id)
     
     render :layout => 'modal'
   end
   
-  def d_message_delete
-    p "d_message_delete   d_message_delete   d_message_delete"
-    p "id=#{params[:id]}"
+  def delete_d_comment
+    @d_comment = DComment.find(params[:id])
+    @d_comment.destroy
     
+    @d_comments = DComment.find_by_sql(comment_sql(current_user.id))
   end
 end

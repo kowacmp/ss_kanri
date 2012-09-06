@@ -1,40 +1,30 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Start day:</b>
-  <%= @d_event.start_day %>
-</p>
-
-<p>
-  <b>End day:</b>
-  <%= @d_event.end_day %>
-</p>
-
-<p>
-  <b>Menu:</b>
-  <%= @d_event.menu_id %>
-</p>
-
-<p>
-  <b>Contents:</b>
-  <%= @d_event.contents %>
-</p>
-
-<p>
-  <b>Receive group1:</b>
-  <%= @d_event.receive_group1 %>
-</p>
-
-<p>
-  <b>Receive group2:</b>
-  <%= @d_event.receive_group2 %>
-</p>
-
-<p>
-  <b>Created user:</b>
-  <%= @d_event.created_user_id %>
-</p>
+<table id='rounded-corner'>
+  <tr>
+    <th>開始日</th>
+    <td><%= Time.parse(@d_event.start_day).strftime("%Y/%m/%d") %></td>
+  </tr>
+  <tr>
+    <th>終了日</th>
+    <td><%= Time.parse(@d_event.end_day).strftime("%Y/%m/%d") %></td>
+  </tr>
+  <tr>
+    <th>実施日</th>
+    <td><%= Time.parse(@d_event.action_day).strftime("%Y/%m/%d") %></td>
+  </tr>
+  <tr>
+    <th>タイトル</th>
+    <td><%= @menu.display_name %></td>
+  </tr>
+  <tr>
+    <th>内容</th>
+    <td><%= @d_event.contents %></td>
+  </tr>
+</table>  
 
 
-<%= link_to 'Edit', edit_d_event_path(@d_event) %> |
-<%= link_to 'Back', d_events_path %>
+
+
+<%= link_to '編集', edit_d_event_path(@d_event), :class => 'edit_icon' %> |
+<%= link_to '戻る', d_events_path, :class => 'return_icon' %>
