@@ -1,2 +1,19 @@
-<h1>DYumePointLists#index</h1>
-<p>Find me in app/views/d_yume_point_lists/index.html.erb</p>
+<%= form_tag(url_for(:action => 'search'),:remote => true) do %>
+<table id='rounded-corner'>
+	<tr>
+      <th>対象年月</th>
+      <td><%= select_year(@time_now,:start_year => @start_year, :end_year => @time_now.year) %><%= select_month(@time_now,:use_month_numbers => true) %></td>
+	  <th>店舗種別</th>
+	  <td><%= select_tag "shop_kbn",
+	        raw('<option value="0">直営</option><option value="1">油外</option>')
+	        %></td> 
+	  <td><%= submit_tag "検索" %></td>
+      </tr>
+</table>
+<% end %>
+
+<p>
+	<div id="result">
+	    <%= render partial: 'result'%>
+	</div>
+</p>
