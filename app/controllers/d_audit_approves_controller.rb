@@ -9,10 +9,44 @@ class DAuditApprovesController < ApplicationController
   def edit
 
     # 処理選択よりメニューIDを取得する
-    @menu_id = 1 #TODO:マスタを表示すること
+    case params[:header][:kansa].to_s
+    when "1" #金庫
+      @table = "d_audit_cashboxes"
+
+      if params[:header][:audit_class].to_s == "0" then
+        @menu_id = "38"
+      else
+        @menu_id = "43"
+      end
+      
+    when "2" #釣銭
+      @table = "d_audit_changemachines"
+
+      if params[:header][:audit_class].to_s == "0" then
+        @menu_id = "39"
+      else
+        @menu_id = "44"
+      end
     
-    # 処理選択より対象テーブルを取得する
-    @table = "d_audit_changemachines" #TODO:決め打ち
+    when "3" #洗車
+      @table = "d_audit_washes"
+
+      if params[:header][:audit_class].to_s == "0" then
+        @menu_id = "40"
+      else
+        @menu_id = "45"
+      end
+    
+    when "4" #その他
+      @table = "d_audit_etcs"
+
+      if params[:header][:audit_class].to_s == "0" then
+        @menu_id = "42"
+      else
+        @menu_id = "46"
+      end
+    
+    end
     
     # 承認ID、及び名称を取得する
     @approval_id = 0
@@ -20,26 +54,27 @@ class DAuditApprovesController < ApplicationController
     m_approval = MApproval.find(:first, :conditions => ["menu_id=?", @menu_id])
     
     for i in 1..5 do
-       if m_approval["apprpval_id#{i}"] = current_user.id then
+       if m_approval["approval_id#{i}"].to_s == current_user.id.to_s then
          @approval_id   = i
-         @approval_name = m_approval["apprpval_name#{i}"] 
+         @approval_name = m_approval["approval_name#{i}"] 
        end
     end
-    
+
     # 承認済を含むの条件を先に作る
     where_zumi = ""
-    if params[:header][:zumi_flg].to_s != "1" then
-      where_zumi = " and coalesce(a.approve_id#{@approval_id}, 0) = 0 "  
+    if params[:header][:zumi_flg].to_s != "1" then #自分が承認していないもの
+      where_zumi = "
+                       and coalesce(a.approve_id1, 0) != #{current_user.id} 
+                       and coalesce(a.approve_id2, 0) != #{current_user.id}
+                       and coalesce(a.approve_id3, 0) != #{current_user.id}
+                       and coalesce(a.approve_id4, 0) != #{current_user.id}
+                       and coalesce(a.approve_id5, 0) != #{current_user.id}
+                   "
     end
     
     sql = <<-SQL
       select
-         a.id 
-        ,a.m_shop_id
-        ,a.audit_date
-        ,a.created_user_id
-        ,a.confirm_user_id
-        ,coalesce(a.approve_id#{@approval_id}, 0) as approve_id
+         a.*
       from 
                     #{ @table } as a
         inner join  m_shops
@@ -51,7 +86,6 @@ class DAuditApprovesController < ApplicationController
         #{ where_zumi }
       order by
          m_shops.shop_cd
-        ,a.audit_date
     SQL
     
     @approval = MApproval.find_by_sql(sql)
@@ -80,17 +114,29 @@ class DAuditApprovesController < ApplicationController
       #チェックが変更されていたら書込する
       if to_boolean(approval[:old_approval_flg]) != to_boolean(approval[:approval_flg]) then
             
-        # TODO:書込テーブルをtableを見て変更すること
-        rec = DAuditChangemachine.find(approval[:id])
-         
+        case params[:approval][:table].to_s
+        when "d_audit_cashboxes"
+          rec = DAuditCashbox.find(approval[:id])
+        when "d_audit_changemachines"
+          rec = DAuditChangemachine.find(approval[:id])
+        when "d_audit_washes"
+          rec = DAutitWash.find(approval[:id])
+        when "d_audit_etcs"
+          rec = DAuditEtc.find(approval[:id])
+        end 
+        
+        # 1～5に自分が書込されていたら初期化
+        for j in 1..5 do
+          if rec["approve_id#{j}"] == current_user.id then
+            rec["approve_id#{j}"] = 0
+            rec["approve_date#{j}"] = nil
+          end
+        end
+                  
         if to_boolean(approval[:approval_flg]) then
-          #ON
+          # マスタに設定されているIDの箇所に書込
           rec["approve_id#{approval_id}"] = current_user.id
           rec["approve_date#{approval_id}"] = upd_time.to_date
-        else
-          #OFF
-          rec["approve_id#{approval_id}"] = 0
-          rec["approve_date#{approval_id}"] = nil
         end
       
         rec[:updated_user_id] = current_user.id
