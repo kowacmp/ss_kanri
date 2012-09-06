@@ -353,838 +353,168 @@ class AddrecordUsers < ActiveRecord::Migration
           
            execute "TRUNCATE TABLE menus;"
            
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (80, 8, 1, '会社情報マスタ', NULL, NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (61, 7, 1, '油外マスタメンテ', 'm_oiletcs', NULL, NULL, NULL, 3);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (62, 7, 1, '他売上マスタメンテ', 'm_etcs', NULL, NULL, NULL, 4);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (81, 6, 1, 'イベント通知入力', NULL, NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (38, 4, 1, '金庫自主監査', '', NULL, NULL, NULL, 1);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (82, 6, 1, 'コメント入力', NULL, NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (40, 4, 1, '洗車売上自主監査', '', NULL, NULL, NULL, 3);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (39, 4, 1, '釣銭機自主監査', '', NULL, NULL, NULL, 2);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (42, 4, 1, '他売上自主監査', '', NULL, NULL, NULL, 4);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (43, 4, 2, ' 金庫本監査', '', NULL, NULL, NULL, 1);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (44, 4, 2, '釣銭機本監査', '', NULL, NULL, NULL, 2);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (45, 4, 2, '洗車売上本監査', '', NULL, NULL, NULL, 3);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (47, 4, 2, '他売上本監査', '', NULL, NULL, NULL, 4);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (88, 6, 2, '売上データ出力', NULL, NULL, NULL, NULL, 1);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (30, 3, 0, '状況一覧', '', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (90, 6, 2, '在庫データ出力', NULL, NULL, NULL, NULL, 2);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (91, 6, 2, '給与データ出力', NULL, NULL, NULL, NULL, 3);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (4, 1, 1, '実績入力', 'd_results', NULL, '2012-08-03 07:35:37.828773', NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (66, 7, 1, '権限マスタ', 'm_authorities', NULL, NULL, NULL, 6);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (50, 5, 1, '売上承認一覧', '', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (51, 5, 1, '監査承認一覧', 'd_audit_approves', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (52, 5, 1, '備品購入申請承認', '', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (11, 1, 5, '洗車売上報告', '', '2012-07-07 06:58:30.287804', '2012-07-07 06:59:01.444927', NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (73, 7, 2, 'メニュー表示マスタメンテ', 'authority_menus', NULL, NULL, NULL, 6);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (31, 3, 1, '実績入力状況一覧', '', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (33, 3, 1, '洗車売上入力状況一覧', '', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (12, 1, 6, '備品購入申請入力', '', '2012-07-07 06:59:59.382459', '2012-07-07 07:04:14.268094', NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (13, 1, 7, '価格調査入力', '', '2012-07-07 07:06:03.730699', '2012-07-07 07:11:44.361278', NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (34, 3, 1, '監査入力状況一覧', '', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (58, 7, 2, 'メンテ2', '#', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (14, 1, 8, '目標値入力', '', '2012-07-09 02:09:26.75036', '2012-07-09 02:09:26.75036', NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (57, 7, 1, 'メンテ1', '#', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (54, 7, 0, 'マスタメンテ', '#', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (53, 6, 0, '運　用', '#', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (74, 8, 0, 'システムメンテ', '#', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (85, 6, 2, '他シス連携', '#', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (23, 2, 1, '実績表', '', NULL, '2012-08-03 05:07:27.811668', NULL, 1);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (49, 5, 0, '承　認', '#', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (24, 2, 1, '地下タンク過不足表', '', NULL, NULL, NULL, 2);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (3, 1, 0, 'データ入力', '#', NULL, '2012-08-03 05:06:13.870381', NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (25, 2, 1, '夢ポイント管理表', '', '2012-08-07 00:45:38.337307', '2012-08-07 00:45:38.337307', 0, 3);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (20, 2, 0, 'データ照会', '#', '2012-07-23 05:19:31.133817', '2012-07-23 05:19:31.133817', NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (26, 2, 2, '売上現金管理表一覧', '', '2012-08-07 05:27:46.779704', '2012-08-07 05:27:46.779704', 0, 1);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (27, 2, 2, '地下タンク計算表一覧', '', '2012-08-07 05:35:58.181427', '2012-08-07 05:35:58.181427', 0, 2);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (28, 2, 2, '洗車売上報告書一覧', '', NULL, NULL, NULL, 3);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (29, 2, 2, '目標値一覧', '', NULL, NULL, NULL, 4);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (21, 2, 1, '照　会', '#', '2012-07-26 00:12:47.741028', '2012-07-26 00:12:47.741028', NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (22, 2, 2, '一覧照会', '#', '2012-07-26 08:22:35.556984', '2012-08-02 02:42:40.503217', 0, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (35, 4, 0, '監　査', '#', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (36, 4, 1, '自主監査', '#', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (37, 4, 2, '本監査', '#', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (67, 7, 2, '所属会社マスタメンテ', 'm_shop_groups', NULL, NULL, NULL, 1);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (59, 7, 1, 'ユーザーマスタメンテ', 'users', NULL, NULL, NULL, 1);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (69, 7, 2, '監査チェックマスタメンテ', NULL, NULL, NULL, NULL, 2);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (70, 7, 2, '人件費マスタメンテ', NULL, NULL, NULL, NULL, 3);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (60, 7, 1, '店舗マスタメンテ', 'm_shops', NULL, NULL, NULL, 2);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (71, 7, 2, '目標値マスタメンテ', NULL, NULL, NULL, NULL, 4);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (72, 7, 2, '内訳マスタメンテ', NULL, NULL, NULL, NULL, 5);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (76, 8, 1, '分類チェックマスタメンテ', NULL, NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (77, 8, 1, '固定額内訳マスタ', NULL, NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (7, 1, 3, '洗車売上入力', 'd_wash_sales', NULL, '2012-07-07 02:49:28.173468', NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (79, 8, 1, 'ログイン履歴', NULL, NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (9, 1, 4, '他売上入力', '', NULL, '2012-07-07 07:05:02.675889', NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (78, 8, 1, '油種マスタメンテ', 'm_oils', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (75, 8, 1, 'コードマスタメンテ', 'm_codes', NULL, NULL, NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (63, 7, 1, '洗車機マスタメンテ', 'm_washes', NULL, NULL, NULL, 5);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (5, 1, 2, '売上入力', 'd_sales/new', NULL, '2012-08-03 05:07:12.589873', NULL, 0);
-           "
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (32, 3, 1, '売上入力状況一覧', 'd_sales', NULL, NULL, NULL, 0);
-           "
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (1,1,0, 'データ入力', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (2,1,1, '実績入力', 'd_results', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (3,1,2, '売上入力', 'd_sales/new', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (4,1,3, '洗車売上入力', 'd_wash_sales', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (5,1,4, '他売上入力', 'd_sale_etcs', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (6,1,5, '洗車売上報告', 'd_washsale_reports', NULL, NULL,2, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (7,1,6, '備品購入申請入力', 'd_fixtures', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (8,1,7, '価格調査入力', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (9,1,8, '人件費入力', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (10,1,9, '目標値入力', 'd_aims', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (11,2,0, 'データ照会', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (12,2,1, '照　会', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (13,2,2, '一覧照会', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (14,2,1, '実績表', '#', NULL, NULL,2, 1);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (15,2,1, '地下タンク過不足表', 'd_tank_decrease_reports', NULL, NULL,0, 2);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (16,2,1, '地下タンク計算表', 'd_tank_compute_reports', NULL, NULL,0, 2);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (17,2,1, '人件費表', '#', NULL, NULL,0, 3);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (18,2,1, '夢ポイント管理表', '#', NULL, NULL,0, 4);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (19,2,1, '見込客集計表', '#', NULL, NULL,0, 5);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (20,2,1, '洗車プリカ目標販売', '#', NULL, NULL,0, 6);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (21,2,2, '売上現金管理表一覧', '#', NULL, NULL,0, 1);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (22,2,2, '地下タンク計算表一覧', 'd_tank_compute_reports', NULL, NULL,0, 2);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (23,2,2, '洗車売上報告書一覧', 'd_washsale_report_lists', NULL, NULL,0, 3);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (24,2,2, '目標値一覧', '#', NULL, NULL,0, 4);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (25,3,0, '状況一覧', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (26,3,1, '実績入力状況一覧', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (27,3,1, '売上入力状況一覧', 'd_sales', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (28,3,1, '洗車売上入力状況一覧', 'd_washsale_lists', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (29,3,1, '監査入力状況一覧', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (30,3,1, '人件費入力状況一覧', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (31,4,0, '監　査', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (32,4,1, '自主監査', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (33,4,2, '本監査', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (34,4,1, '金庫自主監査', '#', NULL, NULL,1, 1);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (35,4,1, '釣銭機自主監査', 'd_audit_changemachines?audit_class=0', NULL, NULL,1, 2);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (36,4,1, '洗車売上自主監査', 'd_audit_washes?audit_class=0', NULL, NULL,1, 3);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (37,4,1, '他売上自主監査', 'd_audit_etcs?audit_class=0', NULL, NULL,1, 4);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (38,4,2, '金庫本監査', '#', NULL, NULL,1, 1);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (39,4,2, '釣銭機本監査', 'd_audit_washes?audit_class=1', NULL, NULL,1, 2);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (40,4,2, '洗車売上本監査', 'd_audit_washes?audit_class=1', NULL, NULL,1, 3);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (41,4,2, '他売上本監査', 'd_audit_etcs?audit_class=1', NULL, NULL,1, 4);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (42,4,2, '監査SSチェック', 'd_audit_checks', NULL, NULL,0, 5);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (43,5,0, '承　認', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (44,5,1, '売上承認一覧', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (45,5,1, '監査承認一覧', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (46,5,1, '備品購入申請承認', 'd_audit_approves', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (47,6,0, '運　用', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (48,6,1, 'イベント通知入力', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (49,6,1, 'コメント入力', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (50,6,2, '他シス連携', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (51,6,2, '売上データ出力', '#', NULL, NULL,0, 1);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (52,6,2, '在庫データ出力', '#', NULL, NULL,0, 2);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (53,6,2, '給与データ出力', '#', NULL, NULL,0, 3);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (54,7,0, 'マスタメンテ', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (55,7,1, 'メンテ1', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (56,7,2, 'メンテ2', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (57,7,1, 'ユーザーマスタメンテ', 'users', NULL, NULL,0, 1);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (58,7,1, '店舗マスタメンテ', 'm_shops', NULL, NULL,0, 2);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (59,7,1, '油外マスタメンテ', 'm_oiletcs', NULL, NULL,0, 3);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (60,7,1, '他売上マスタメンテ', 'm_etcs', NULL, NULL,0, 4);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (61,7,1, '洗車機マスタメンテ', 'm_washes', NULL, NULL,0, 5);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (62,7,1, '内訳マスタメンテ', 'm_items', NULL, NULL,0, 6);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (63,7,2, '所属会社マスタメンテ', 'm_shop_groups', NULL, NULL,0, 1);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (64,7,2, '監査チェックマスタメンテ', 'm_audit_checks', NULL, NULL,0, 2);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (65,7,2, '人件費マスタメンテ', '#', NULL, NULL,0, 3);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (66,7,2, '権限マスタ', 'm_authorities', NULL, NULL,0, 4);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (67,7,2, 'メニュー表示マスタメンテ', 'authority_menus', NULL, NULL,0, 5);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (68,8,0, 'システムメンテ', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (69,8,1, 'コードマスタメンテ', 'm_codes', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (70,8,1, '分類チェックマスタメンテ', 'm_class_checks', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (71,8,1, '釣銭固定額内訳マスタ', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (72,8,1, '目標値マスタメンテ', 'm_aims', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (73,8,1, '油種マスタメンテ', 'm_oils', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (74,8,1, 'ログイン履歴', '#', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (75,8,1, '会社情報マスタ', 'establishes', NULL, NULL,0, 0);"
+
           execute "
           select setval('menus_id_seq',(select max(id) from menus));
           "
 
            execute "TRUNCATE TABLE authority_menus;"
            
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (1,1,3,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (2,1,20,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (3,1,21,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (4,1,22,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (5,1,23,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (6,1,24,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (7,1,25,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (8,1,26,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (9,1,27,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (10,1,28,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (11,1,29,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (12,1,30,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (13,1,31,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (14,1,32,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (15,1,33,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (16,1,34,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (17,1,35,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (18,1,49,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (19,1,50,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (20,1,51,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (21,1,52,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (22,1,53,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (23,1,54,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (24,1,57,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (25,1,58,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (26,1,59,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (27,1,60,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (28,1,61,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (29,1,62,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (30,1,63,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (31,1,66,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (32,1,67,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (33,1,69,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (34,1,70,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (35,1,71,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (36,1,72,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (37,1,73,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (38,1,74,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (39,1,75,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (40,1,76,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (41,1,77,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (42,1,78,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (43,1,79,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (44,1,80,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (45,1,81,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (46,1,82,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (47,1,85,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (48,1,88,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (49,1,90,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (50,1,91,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (51,2,20,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (52,2,21,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (53,2,22,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (54,2,23,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (55,2,24,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (56,2,25,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (57,2,26,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (58,2,27,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (59,2,28,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (60,2,29,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (61,2,30,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (62,2,31,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (63,2,32,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (64,2,33,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (65,2,34,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (66,2,49,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (67,2,50,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (68,2,51,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (69,2,52,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (70,2,53,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (71,2,54,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (72,2,57,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (73,2,58,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (74,2,59,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (75,2,60,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (76,2,61,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (77,2,62,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (78,2,63,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (79,2,66,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (80,2,67,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (81,2,69,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (82,2,70,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (83,2,71,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (84,2,72,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (85,2,73,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (86,2,81,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (87,2,82,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (88,3,20,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (89,3,21,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (90,3,22,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (91,3,23,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (92,3,24,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (93,3,25,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (94,3,26,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (95,3,27,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (96,3,28,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (97,3,29,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (98,3,30,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (99,3,31,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (100,3,32,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (101,3,33,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (102,3,34,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (103,3,49,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (104,3,50,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (105,3,51,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (106,3,52,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (107,3,53,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (108,3,57,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (109,3,58,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (110,3,59,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (111,3,60,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (112,3,61,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (113,3,62,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (114,3,63,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (115,3,66,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (116,3,67,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (117,3,69,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (118,3,70,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (119,3,71,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (120,3,72,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (121,3,73,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (122,3,81,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (123,3,82,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (124,4,20,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (125,4,21,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (126,4,22,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (127,4,23,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (128,4,24,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (129,4,25,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (130,4,26,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (131,4,27,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (132,4,28,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (133,4,29,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (134,4,30,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (135,4,31,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (136,4,32,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (137,4,33,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (138,4,34,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (139,4,35,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (140,4,36,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (141,4,37,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (142,4,38,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (143,4,39,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (144,4,40,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (145,4,42,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (146,4,43,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (147,4,44,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (148,4,45,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (149,4,47,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (150,4,49,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (151,4,50,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (152,4,51,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (153,4,52,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (154,4,53,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (155,4,54,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (156,4,57,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (157,4,58,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (158,4,59,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (159,4,60,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (160,4,61,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (161,4,62,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (162,4,63,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (163,4,66,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (164,4,67,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (165,4,69,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (166,4,70,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (167,4,71,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (168,4,72,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (169,4,73,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (170,4,81,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (171,4,82,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (172,4,85,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (173,4,88,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (174,4,90,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (175,4,91,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (176,5,20,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (177,5,21,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (178,5,22,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (179,5,23,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (180,5,24,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (181,5,25,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (182,5,26,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (183,5,27,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (184,5,28,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (185,5,29,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (186,5,30,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (187,5,31,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (188,5,32,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (189,5,33,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (190,5,34,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (191,5,49,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (192,5,50,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (193,5,51,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (194,5,52,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (195,5,53,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (196,5,54,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (197,5,57,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (198,5,58,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (199,5,59,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (200,5,60,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (201,5,61,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (202,5,62,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (203,5,63,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (204,5,66,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (205,5,67,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (206,5,69,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (207,5,70,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (208,5,71,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (209,5,72,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (210,5,73,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (211,5,81,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (212,5,82,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (213,5,85,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (214,5,88,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (215,5,90,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (216,5,91,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (217,6,3,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (218,6,4,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (219,6,5,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (220,6,7,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (221,6,9,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (222,6,11,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (223,6,12,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (224,6,13,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (225,6,14,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (226,6,20,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (227,6,21,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (228,6,22,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (229,6,23,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (230,6,24,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (231,6,25,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (232,6,26,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (233,6,27,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (234,6,28,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (235,6,29,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (236,6,35,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (237,6,36,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (238,6,37,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (239,6,38,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (240,6,39,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (241,6,40,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (242,6,42,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (243,6,43,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (244,6,44,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (245,6,45,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (246,6,47,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (247,13,21,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (248,13,22,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (249,13,23,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (250,13,24,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (251,13,25,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (252,13,26,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (253,13,27,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (254,13,28,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (255,13,29,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (256,13,30,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (257,13,31,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (258,13,32,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (259,13,33,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (260,13,34,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (261,13,53,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (262,13,54,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (263,13,57,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (264,13,58,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (265,13,59,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (266,13,60,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (267,13,61,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (268,13,62,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (269,13,63,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (270,13,66,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (271,13,67,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (272,13,69,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (273,13,70,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (274,13,71,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (275,13,72,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (276,13,73,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (277,13,81,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (278,13,85,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (279,13,88,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (280,13,90,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (281,13,91,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (282,14,20,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (283,14,21,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (284,14,22,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (285,14,23,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (286,14,24,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (287,14,25,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (288,14,26,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (289,14,27,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (290,14,28,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (291,14,29,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (292,14,30,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (293,14,31,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (294,14,32,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (295,14,33,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (296,14,34,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (297,14,81,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (298,14,85,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (299,14,88,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (300,14,90,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (301,14,91,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (302,16,3,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (303,16,4,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (304,16,5,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (305,16,7,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (306,16,9,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (307,16,11,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (308,16,12,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (309,16,13,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (310,16,14,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (311,16,20,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (312,16,21,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (313,16,22,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (314,16,23,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (315,16,24,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (316,16,25,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (317,16,35,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (318,16,36,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (319,16,37,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (320,16,38,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (321,16,39,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (322,16,40,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (323,16,42,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (324,16,43,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (325,16,44,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (326,16,45,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (327,16,47,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (328,17,3,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (329,17,4,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (330,17,5,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (331,17,7,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (332,17,9,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (333,17,11,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (334,17,12,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (335,17,35,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (336,17,36,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (337,17,37,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (338,17,38,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (339,17,39,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (340,17,40,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (341,17,42,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (342,17,43,'2012-10-01','2012-10-01');
-            "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (343,17,44,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (344,17,45,'2012-10-01','2012-10-01');
-           "
-           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (345,17,47,'2012-10-01','2012-10-01');
-           "
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (1,1,1,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (2,1,2,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (3,1,3,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (4,1,4,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (5,1,5,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (6,1,6,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (7,1,7,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (8,1,8,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (9,1,9,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (10,1,10,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (11,1,11,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (12,1,12,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (13,1,13,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (14,1,14,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (15,1,15,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (16,1,16,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (17,1,17,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (18,1,18,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (19,1,19,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (20,1,20,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (21,1,21,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (22,1,22,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (23,1,23,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (24,1,24,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (25,1,25,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (26,1,26,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (27,1,27,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (28,1,28,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (29,1,29,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (30,1,30,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (31,1,31,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (32,1,32,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (33,1,33,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (34,1,34,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (35,1,35,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (36,1,36,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (37,1,37,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (38,1,38,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (39,1,39,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (40,1,40,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (41,1,41,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (42,1,42,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (43,1,43,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (44,1,44,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (45,1,45,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (46,1,46,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (47,1,47,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (48,1,48,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (49,1,49,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (50,1,50,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (51,1,51,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (52,1,52,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (53,1,53,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (54,1,54,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (55,1,55,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (56,1,56,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (57,1,57,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (58,1,58,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (59,1,59,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (60,1,60,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (61,1,61,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (62,1,62,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (63,1,63,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (64,1,64,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (65,1,65,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (66,1,66,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (67,1,67,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (68,1,68,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (69,1,69,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (70,1,70,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (71,1,71,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (72,1,72,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (73,1,73,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (74,1,74,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (75,1,75,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (76,1,76,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (77,1,77,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (78,1,78,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (79,1,79,'2012-10-01','2012-10-01');"
+           execute "INSERT INTO authority_menus (id, m_authority_id, menu_id, created_at, updated_at) VALUES (80,1,80,'2012-10-01','2012-10-01');"
           execute "
           select setval('authority_menus_id_seq',(select max(id) from authority_menus));
           "
@@ -1213,7 +543,9 @@ class AddrecordUsers < ActiveRecord::Migration
            "
            execute "INSERT INTO m_authorities (id, authority_cd, authority_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (1, 99, '管理者', 0, NULL, '2012-10-01', '2012-10-01');
            "
-           execute "INSERT INTO m_authorities (id, authority_cd, authority_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (17, 12, 'アルバイト', 0, NULL, '2012-10-01', '2012-10-01');
+           execute "INSERT INTO m_authorities (id, authority_cd, authority_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (17, 11, 'アルバイト', 0, NULL, '2012-10-01', '2012-10-01');
+           "
+           execute "INSERT INTO m_authorities (id, authority_cd, authority_name, deleted_flg, deleted_at, created_at, updated_at) VALUES (18, 12, '監査人', 0, NULL, '2012-10-01', '2012-10-01');
            "
           execute "
           select setval('m_authorities_id_seq',(select max(id) from m_authorities));

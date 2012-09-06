@@ -1,30 +1,32 @@
 <%= form_tag({:action => 'd_result_tank_create' }, { :remote => true }) do %>
-  <table id='rounded-corner' width="400">
-    <tr>
-  	  <th width="16%">タンク</th>
-  	  <th width="15%">容量</th>
-  	  <th width="21%">油種</th>
-  	  <th width="24%">仕入</th>
-  	  <th width="24%">在庫</th>  	  	  	  	
-    </tr>
+  <table id="tank_view_table" class="rounded-corner" width="420">
+  	<thead>
+      <tr>
+  	    <th style="max-width: 50px;">タンク</th>
+  	    <th style="max-width: 60px;">容量</th>
+  	    <th style="max-width: 150px;">油種</th>
+  	    <th style="max-width: 80px;">仕入</th>
+  	    <th style="max-width: 80px;">在庫</th>  	  	  	  	
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @m_tanks.each do |m_tank| %>
+        <tr>
+          <td>タンク<%= m_tank.tank_no %></td>
+          <td><%= m_tank.volume %>KL</td>
+          <td><%= m_tank.oil_name %></td>
+          <td><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :readonly => @text, :class => "tank_input" %></td>
+          <td><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :readonly => @text, :class => "tank_input" %></td>                  
+        </tr>
+      <% end %>
+    </tbody>
   </table>
-  <div style="height:440px;width:425px;overflow-y:auto;overflow-x:hidden;">
-  <table id='rounded-corner2'style="margin-top:-1px; width:400px;">
-  <% @m_tanks.each do |m_tank| %>
-    <tr>
-      <td width="16%">タンク<%= m_tank.tank_no %></td>
-      <td width="15%"><%= m_tank.volume %>KL</td>
-      <td width="21%"><%= m_tank.oil_name %></td>
-      <td width="24%"><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :readonly => @text, :class => "tank_input" %></td>
-      <td width="24%"><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :readonly => @text, :class => "tank_input" %></td>                  
-    </tr>
-  <% end %>
-  </table>
-  </div>
+  <br/>
   
   <%= hidden_field :select, :d_result_id, :value => @d_result.id %>
   <% if @d_result.kakutei_flg == 0 %>
-    <div style="text-align:right; width: 400px;"><%= submit_tag '登録' %></div>
+    <div style="text-align:right; width: 420px;"><%= submit_tag '登録' %></div>
   <% end %>
 <% end %>
 
@@ -34,3 +36,9 @@
      text-align:right;
                    }　
 </style>
+
+<script>
+$(function () {
+	$('#tank_view_table').tablefix({width: 420, height: 420, fixRows: 1});
+});	
+</script>

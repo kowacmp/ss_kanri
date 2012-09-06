@@ -569,8 +569,6 @@ class DResultsController < ApplicationController
   
     #開始時メーター
     day, yesterday = old_result_date(@result_date)
-    #today = Time.parse(@result_date)
-    #yesterday = (today - 1.days).strftime("%Y%m%d")
     old_d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                          @d_result.m_shop_id, yesterday])
     old_max_no = 0

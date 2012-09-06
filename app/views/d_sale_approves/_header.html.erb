@@ -1,0 +1,38 @@
+<h1>売上承認一覧</h1>
+
+<%= form_tag({:action => 'edit' }) do %>
+<table class='rounded-corner' >
+	<tr>
+  		<th>
+  			対象年月
+  		</th>
+  		<td>
+  			<%
+  				now = Time.now
+  				ym_list = Array.new
+  				for i in 1..10
+  					ym_list.push([now.strftime("%Y年%m月"), now.strftime("%Y%m")])
+  					now = 1.month.ago now
+  				end
+  			%>
+			<%=select :header, :ym, ym_list, :selected => ym %>
+  		</td>
+  		<th>
+  			店舗種別
+  		</th>
+  		<td>
+  			<% shop_kbn_list = MCode.find(:all, :conditions => ["kbn='shop_kbn'"], :order => "code").collect{|i| [i.code_name, i.code]} %>
+  			<%=select :header, :shop_kbn, shop_kbn_list, :selected => shop_kbn %>
+  		</td>
+  		<td>
+  			<%=check_box :header, :zumi_flg, {:checked => (zumi_flg.to_s == "1")} %>
+  			<label for="header_zumi_flg">承認済含む</label>
+  		</td>
+  		<td style="border: none;">
+			&nbsp;
+			<%= submit_tag '　表　示　', :disable_with => "処理中です..." %>
+  		</td>
+	</tr>
+</table>
+<%end%> <!-- form_tag :action = "edit" -->
+

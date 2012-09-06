@@ -14,13 +14,13 @@
 <table id='rounded-corner'>
   <tr>
     <th><%= f.label '入力日' %></th>
-    <td><%#= f.datetime_select :send_day %>
-    	<%= f.number_field :send_day, :readonly => true, :class => "datepicker", :size => 5 %>
+    <td>
+      <%= f.number_field :send_day, :readonly => true, :class => "datepicker", :size => 5 %>
     </td>
   </tr>
   <tr>
     <th><%= f.label 'タイトル' %></th>
-    <td><%#= f.number_field :menu_id %>
+    <td>
       <%= f.collection_select(:menu_id, Menu.find(:all, :order => 'menu_cd1, menu_cd2, menu_cd3'),
            :id, :display_name, :include_blank => "選択して下さい") %>  
     </td>
@@ -31,17 +31,24 @@
   </tr>
   <tr>
     <th><%= f.label '表示先' %></th>
-    <td><%#= f.number_field :receive_id %>
-      <div id="m_shop">店舗
-        <%= select_tag(:m_shop_id, options_from_collection_for_select(MShop.find(:all, 
-                       :conditions => ["deleted_flg = 0"], :order => 'shop_cd'),
-                       :id, :shop_name), :include_blank => "") %>
-      </div>
-
-      <div id="user">社員
-        <%= f.collection_select(:receive_id, User.find(:all, :conditions => ["deleted_flg = 0"],
-         :order => 'account'),:id, :user_name, :include_blank => "選択して下さい") %>              
-      </div>
+    <td>
+      <table id="hyouji" style="margin: -6px;">
+      	<tr>
+      	  <td style="border: 0;">店舗</td>
+          <td style="border: 0;" id="m_shop">
+            <%= select_tag(:m_shop_id, options_from_collection_for_select(MShop.find(:all, 
+                           :conditions => ["deleted_flg = 0"], :order => 'shop_cd'),
+                           :id, :shop_name), :include_blank => "") %>
+          </td>
+        </tr>
+        <tr>
+      	  <td style="border: 0;">社員</td>
+          <td style="border: 0;" id="user">
+            <%= f.collection_select(:receive_id, User.find(:all, :conditions => ["deleted_flg = 0 and user_class = 3"],
+                            :order => 'account'),:id, :user_name, :include_blank => "選択して下さい") %>                
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
 </table>  
@@ -51,6 +58,9 @@
   
 <% end %>
 
-
-
-
+<script type="text/javascript">
+  $("#m_shop_id").change(function(){
+      var m_shop_id = $("#m_shop_id").val();
+      $.get("/d_comments/change_m_shop?m_shop_id=" + m_shop_id);
+  });
+</script>

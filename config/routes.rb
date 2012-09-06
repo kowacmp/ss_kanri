@@ -1,5 +1,12 @@
 SsKanri::Application.routes.draw do
 
+  get "d_yume_point_lists/index"
+  get "d_yume_point_lists/search"
+  get "d_yume_point_lists/print"
+
+  get "d_sale_approves/index"
+  get "d_sale_approves/edit"
+
   get "d_tank_compute_report_details/index"
   get "d_tank_compute_report_details/search"
   get "d_tank_compute_report_details/print"
@@ -66,12 +73,6 @@ SsKanri::Application.routes.draw do
   get "d_results/select_date"
   get "d_results/result_edit"
 
-  resources :userdata do
-    collection do
-      get :test
-    end
-  end
- 
   get "d_audit_changemachines/confirm_shop_id_select"
   get "d_audit_changemachines/confirm_user_id_select"
   get "d_audit_changemachines/edit"
@@ -129,12 +130,7 @@ SsKanri::Application.routes.draw do
     end
   end
   
-  resources :menus do
-    collection do
-      get :city_select  
-      get :test   
-    end
-  end
+  resources :menus
 
   resources :m_items
 

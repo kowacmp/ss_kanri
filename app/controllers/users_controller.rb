@@ -177,6 +177,5 @@ class UsersController < ApplicationController
     #@users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
 
   end
-  
-  
+
 end
