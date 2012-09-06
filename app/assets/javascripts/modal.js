@@ -33,6 +33,7 @@ function setModal() {
 	//コンテンツの読み込み完了時にモーダルウィンドウを開く
 	function onComplete() {
 		displayModal(true);
+		$("div#modal").css("z-index", "1000");
 		$("div#modal div.container a.close").click(function() {
 			displayModal(false);
 			return false;
