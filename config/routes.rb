@@ -1,5 +1,8 @@
 SsKanri::Application.routes.draw do
 
+  get "d_sale_approves/index"
+  get "d_sale_approves/edit"
+
   get "d_tank_compute_report_details/index"
   get "d_tank_compute_report_details/search"
   get "d_tank_compute_report_details/print"
