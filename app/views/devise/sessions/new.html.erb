@@ -3,12 +3,12 @@
   <div style="border-style:double; width: 450px; height: 150px; padding: 2%;">
 
       <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-        
+    
         <%= f.select(:account, 
             User.find(:all, :order => 'id').map do |u|
               [u.user_name,u.account]
             end, :prompt => "選択して下さい") %>
-        
+
         <div>
 	        <%= f.label :password %><br />
 	        <%= f.password_field :password, :size =>"10"%>
@@ -22,7 +22,6 @@
   </div>
 <center>
 <p><%= link_to 'パスワード再発行', [ :new, :user_password ]  %></p>
-
 
 <style type="text/css">
 
