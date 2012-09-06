@@ -9,7 +9,7 @@ class DSaleApprovesController < ApplicationController
   def edit
 
     # 処理選択よりメニューIDを取得する
-    @menu_id = 1 #TODO:マスタを表示すること
+    @menu_id = 50
     
     # 承認ID、及び名称を取得する
     @approval_id = 0
@@ -17,29 +17,22 @@ class DSaleApprovesController < ApplicationController
     m_approval = MApproval.find(:first, :conditions => ["menu_id=?", @menu_id])
 
     for i in 1..5 do
-       if m_approval["apprpval_id#{i}"] = current_user.id then
+       if m_approval["approval_id#{i}"].to_s == current_user.id.to_s then
          @approval_id   = i
-         @approval_name = m_approval["apprpval_name#{i}"] 
+         @approval_name = m_approval["approval_name#{i}"] 
        end
     end
     
     # 承認済を含むの条件を先に作る
     where_zumi = ""
-    if params[:header][:zumi_flg].to_s != "1" then
-      if @approval_id == 0 then
-        where_zumi = "  
-                       and coalesce(d_sale_reports.approve_id1, 0) = 0 
-                       and coalesce(d_sale_reports.approve_id2, 0) = 0
-                       and coalesce(d_sale_reports.approve_id3, 0) = 0
-                       and coalesce(d_sale_reports.approve_id4, 0) = 0
-                       and coalesce(d_sale_reports.approve_id5, 0) = 0 
-                       
-                     "    
-      else
-        where_zumi = "
-                       and coalesce(d_sale_reports.approve_id#{@approval_id}, 0) = 0 
-                     "  
-      end
+    if params[:header][:zumi_flg].to_s != "1" then #自分が承認していないもの
+      where_zumi = "
+                       and coalesce(d_sale_reports.approve_id1, 0) != #{current_user.id} 
+                       and coalesce(d_sale_reports.approve_id2, 0) != #{current_user.id}
+                       and coalesce(d_sale_reports.approve_id3, 0) != #{current_user.id}
+                       and coalesce(d_sale_reports.approve_id4, 0) != #{current_user.id}
+                       and coalesce(d_sale_reports.approve_id5, 0) != #{current_user.id}
+                   "
     end
     
     sql = "
@@ -111,17 +104,21 @@ class DSaleApprovesController < ApplicationController
       if to_boolean(approval[:old_approval_flg]) != to_boolean(approval[:approval_flg]) then
             
         rec = DSaleReport.find(approval[:id])
-         
+        
+        # 1～5に自分が書込されていたら初期化
+        for j in 1..5 do
+          if rec["approve_id#{j}"].to_s == current_user.id.to_s then
+            rec["approve_id#{j}"] = 0
+            rec["approve_date#{j}"] = nil
+          end
+        end
+                  
         if to_boolean(approval[:approval_flg]) then
-          #ON
+          # マスタに設定されているIDの箇所に書込
           rec["approve_id#{approval_id}"] = current_user.id
           rec["approve_date#{approval_id}"] = upd_time.to_date
-        else
-          #OFF
-          rec["approve_id#{approval_id}"] = 0
-          rec["approve_date#{approval_id}"] = nil
         end
-      
+        
         rec[:updated_user_id] = current_user.id
         rec[:updated_at] = upd_time
       

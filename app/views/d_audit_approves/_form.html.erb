@@ -15,8 +15,8 @@
 
 	<tr>
 		<td colspan="8" align="right" style="border: none;">
-			<input type="button" value=" 　一括 　" onclick="return chk_flgs_all(true);" ><br/>
-			<input type="button" value="一括クリア" onclick="return chk_flgs_all(false);">
+			<input type="button" value=" 　一括 　" onclick="return chk_flgs_all(true);"  <%="disabled = 'disabled'" if (@approval_id == 0) %>><br/>
+			<input type="button" value="一括クリア" onclick="return chk_flgs_all(false);" <%="disabled = 'disabled'" if (@approval_id == 0) %>>
 		</td>
 	</tr>
 
@@ -43,12 +43,23 @@
 				<%= m_shop.shop_name %>
 			</td>
 			<td align="center">
-				<%dt=approval.audit_date%>
-				<%=dt[0..3] + "/" + dt[4..5] + "/" + dt[5..6] %>
+				<%if approval[:audit_date].nil? then%>
+				    <%
+				      dtf = approval.audit_date_from
+				      dts = approval.audit_date_to
+				    %>
+					<%=dtf[0..3] + "/" + dtf[4..5] + "/" + dtf[6..7] %>
+			        ～
+			        <%=dts[0..3] + "/" + dts[4..5] + "/" + dts[6..7] %>
+			    <%else%>
+			        <%
+			          dt = approval.audit_date
+			        %>
+					<%=dt[0..3] + "/" + dt[4..5] + "/" + dt[6..7] %>
+			    <%end%>
 			</td>
 			<td align="center">
-				<% # TODO : あとで変換すること %>
-				釣り銭監査
+				<%=Menu.find(@menu_id).display_name%>
 			</td>
 			<td align="center">
 				<%=MCode.find(:first, :conditions=>["kbn='shop_kbn' and code=?", params[:header][:shop_kbn]]).code_name %>
@@ -69,9 +80,18 @@
 				<a href="../../d_audit_changemachines/edit?readonly=true&back=true&id=<%=approval.id%>">詳細</a>
 			</td>
 			<td align="center">
-			    <%=hidden_field "approval#{rec_cnt}", :id,               :value   =>  approval.id %>
-				<%=hidden_field "approval#{rec_cnt}", :old_approval_flg, :value   => (approval.approve_id.to_s != "0") %> 
-				<%=check_box    "approval#{rec_cnt}", :approval_flg,     :checked => (approval.approve_id.to_s != "0") %>
+				<%
+					flg = false
+					for i in 1..5 do
+						if (approval["approve_id#{i}"].to_s == current_user.id.to_s) then
+							flg = true 
+						end
+					end
+				%>
+			    <%=hidden_field "approval#{rec_cnt}", :id,               :value   => approval.id %>
+				<%=hidden_field "approval#{rec_cnt}", :old_approval_flg, :value   => flg %> 
+				<%=check_box    "approval#{rec_cnt}", :approval_flg,     
+						{:checked => flg, :disabled => (@approval_id == 0)} , true, false %>
 			</td>
 		</tr>
 		
@@ -79,7 +99,8 @@
 		
 	<tr>
 		<td colspan="8" align="right" style="border: none">
-			<%= submit_tag '　保　存　', :disable_with => "保存中です...", :confirm => "保存してもよろしいですか？" %>
+			<%= submit_tag '　保　存　', :disable_with => "保存中です...", :confirm => "保存してもよろしいですか？",
+				:disabled => (@approval_id == 0) %>
 		</td>
 	</tr>
 		

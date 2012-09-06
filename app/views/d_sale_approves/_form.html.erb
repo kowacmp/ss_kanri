@@ -53,18 +53,17 @@
 			</td>
 			<td align="center">
 				<%
-					if @approval_id == 0 then
-						approval_id = 0
-						for i in 1..5 do
-							approval_id += approval["approve_id#{i}"] 
+					flg = false
+					for i in 1..5 do
+						if (approval["approve_id#{i}"].to_s == current_user.id.to_s) then
+							flg = true 
 						end
-					else
-						approval_id = approval["approve_id#{@approval_id}"]
-					end 
+					end
 				%>
-			    <%=hidden_field "approval#{rec_cnt}", :id,               :value   =>  approval.id %>
-				<%=hidden_field "approval#{rec_cnt}", :old_approval_flg, :value   => (approval_id.to_s != "0") %> 
-				<%=check_box    "approval#{rec_cnt}", :approval_flg,     :checked => (approval_id.to_s != "0") %>
+			    <%=hidden_field "approval#{rec_cnt}", :id,               :value   => approval.id %>
+				<%=hidden_field "approval#{rec_cnt}", :old_approval_flg, :value   => flg %> 
+				<%=check_box    "approval#{rec_cnt}", :approval_flg,     
+					{:checked => flg, :disabled => (@approval_id == 0)}, true, false %>
 			</td>
 		</tr>
 		
@@ -73,7 +72,7 @@
 	<tr>
 		<td colspan="7" align="right" style="border: none">
 			<%= submit_tag '　保　存　', :disable_with => "保存中です...", :confirm => "保存してもよろしいですか？",
-			    :disabled => (approval_id == 0) %>
+			    :disabled => (@approval_id == 0) %>
 		</td>
 	</tr>
 		
