@@ -49,7 +49,7 @@
 				<%=number_with_delimiter(approval.over_short)%>
 			</td>
 			<td align="center">
-				詳細 <%#TODO:リンクを埋め込む%>
+				<%=link_to "詳細", :controller => "d_sale_reports", :action => "show", :id => approval.id %>
 			</td>
 			<td align="center">
 				<%

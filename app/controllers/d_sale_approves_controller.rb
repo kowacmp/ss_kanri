@@ -16,11 +16,13 @@ class DSaleApprovesController < ApplicationController
     @approval_name = ""
     m_approval = MApproval.find(:first, :conditions => ["menu_id=?", @menu_id])
 
-    for i in 1..5 do
-       if m_approval["approval_id#{i}"].to_s == current_user.id.to_s then
-         @approval_id   = i
-         @approval_name = m_approval["approval_name#{i}"] 
-       end
+    if not(m_approval.nil?) then
+      for i in 1..5 do
+        if m_approval["approval_id#{i}"].to_s == current_user.id.to_s then
+          @approval_id   = i
+          @approval_name = m_approval["approval_name#{i}"] 
+        end
+      end
     end
     
     # 承認済を含むの条件を先に作る
