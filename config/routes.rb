@@ -16,6 +16,9 @@ SsKanri::Application.routes.draw do
   get "d_tank_compute_reports/search"
 
   get "d_audit_checks/edit"
+  
+  get "d_sale_report_lists/index"
+  
   resources :d_audit_checks
 
   resources :m_fix_items

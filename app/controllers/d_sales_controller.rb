@@ -236,6 +236,8 @@ p params
     @head[:input_day] = key_data.sale_date.to_s[0,4] + "/" + key_data.sale_date.to_s[4,2] + "/" + key_data.sale_date.to_s[6,2]
     @head[:input_shop_kbn] = params[:input_shop_kbn]
 
+    @from_controller = params[:from_controller]
+
     #前月末現金有高、過不足取得
     zengetu = key_data.sale_date.to_s[4,2]
     if zengetu == 1

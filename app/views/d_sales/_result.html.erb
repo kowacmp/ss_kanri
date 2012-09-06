@@ -5,14 +5,12 @@
     <th>作成者</th>
     <th>店舗種別</th>
     <th>入力状況</th>
-    <th>
+    <th>確認<br />
     	<% if @all_kakutei_flg == 0 or @all_kakutei_flg == nil %>
     	  <%=  check_box_tag "all_lock", "0", false  %> 
     	<% else %>
     	  <%=  check_box_tag "all_lock", "1", true  %>
     	<% end %>
-    	全て
-    	<%#= link_to 'ロック', {:action => "all_lock", :input_day=>@head[:input_day], :input_shop_kbn=>@head[:input_shop_kbn], :kbn=>"lock"}, :confirm => 'すべてロックします。よろしいですか？', :remote => true, :method => :get %>
     </th>
     <th></th>
   </tr>
@@ -37,7 +35,7 @@
     <td>
     	<% unless data.sale_date.blank? %>
     		<%= link_to image_tag('icon/24_edit.png'), {:controller => "d_sales", :action => "new", :id => data.id, :input_shop_kbn=>@head[:input_shop_kbn], :from_view=>"index" } %>
-    		<%= link_to image_tag('icon/24_show.png'), {:controller => "d_sales", :action => "report_view", :id => data.id, :input_shop_kbn=>@head[:input_shop_kbn]} %>
+    		<%= link_to image_tag('icon/24_show.png'), {:controller => "d_sales", :action => "report_view", :id => data.id, :input_shop_kbn=>@head[:input_shop_kbn], :from_controller=>"d_sales"} %>
     	<% end %>
     </td>
   </tr>
