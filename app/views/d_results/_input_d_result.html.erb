@@ -22,7 +22,7 @@
       <td><%= number_field :oil_pos1, "#{m_oil.id}", :value => m_oil.pos1_data, :class => "money", :size => 4 %>&nbsp;L</td>
       <td><%= number_field :oil_pos2, "#{m_oil.id}", :value => m_oil.pos2_data, :class => "money", :size => 4 %>&nbsp;L</td>
       <td><%= number_field :oil_pos3, "#{m_oil.id}", :value => m_oil.pos3_data, :class => "money", :size => 4 %>&nbsp;L</td>  
-      <td id="oil_total_<%= m_oil.id %>" class="input_no"><%= num_fmt(session[:m_oil_totals][m_oil.id][:total], true) %>&nbsp;L</td>              
+      <td class="input_no"><label id="oil_total_<%= m_oil.id %>"><%= num_fmt(session[:m_oil_totals][m_oil.id][:total], true) %></label>&nbsp;L</td>              
     </tr>  
   <% end %>    
   </table>

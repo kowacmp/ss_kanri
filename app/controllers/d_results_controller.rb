@@ -44,7 +44,7 @@ class DResultsController < ApplicationController
       oil_sql << " and d.d_result_id = #{@d_result.id})"  
     end    
     oil_sql << " where m.deleted_flg = 0 order by m.oil_cd"
-
+p "oil_sql=#{oil_sql}"
     @pos1_gasorin, @pos2_gasorin, @pos3_gasorin, @total_gasorin = 0,0,0,0
     @pos1_mofuel, @pos2_mofuel, @pos3_mofuel, @total_mofuel = 0,0,0,0
     
@@ -53,7 +53,7 @@ class DResultsController < ApplicationController
       session[:m_oil_totals][m_oil.id][:total] = m_oil.pos_total
       
       if m_oil.id == 1 or m_oil.id == 2
-        @pos1_gasorin += m_oil.pos1_data.to_f.round(2) 
+        @pos1_gasorin += m_oil.pos1_data.to_f
         @pos2_gasorin += m_oil.pos2_data.to_f
         @pos3_gasorin += m_oil.pos3_data.to_f
         @total_gasorin += m_oil.pos_total.to_f
@@ -66,6 +66,14 @@ class DResultsController < ApplicationController
         @total_mofuel += m_oil.pos_total.to_f
       end          
     end
+    @pos1_gasorin = @pos1_gasorin.round(2)
+    @pos2_gasorin = @pos1_gasorin.round(2)
+    @pos3_gasorin = @pos1_gasorin.round(2)
+    @total_gasorin = @total_gasorin.round(2)
+    @pos1_mofuel = @pos1_mofuel.round(2)
+    @pos2_mofuel = @pos2_mofuel.round(2)
+    @pos3_mofuel = @pos3_mofuel.round(2)
+    @total_mofuel = @total_mofuel.round(2)
     
     #油外販売取得
     oiletc0_sql = m_oiletc_sql(@d_result, 0)
