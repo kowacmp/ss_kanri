@@ -1,15 +1,15 @@
 <%=form_tag({:action => 'update' }, :id => "form_update") do%>
 
 <!-- 検索パラメータ -->
-<%=hidden_field :header, :ym,       :value => params[:header][:ym] %>
-<%=hidden_field :header, :shop_kbn, :value => params[:header][:shop_kbn] %>
-<%=hidden_field :header, :zumi_flg, :value => params[:header][:zumi_flg] %>
+<%=hidden_field :hheader, :ym,       :value => params[:header][:ym] %>
+<%=hidden_field :hheader, :shop_kbn, :value => params[:header][:shop_kbn] %>
+<%=hidden_field :hheader, :zumi_flg, :value => params[:header][:zumi_flg] %>
 
 <!-- 書き込み先の情報を付加 -->
 <%=hidden_field :approval, :approval_id,   :value => @approval_id %>
 <%=hidden_field :approval, :approval_name, :value => @approval_name %>
 
-<table class='rounded-corner' >
+<table class='rounded-corner' style="width:95%;" >
 
 	<tr>
 		<td colspan="7" align="right" style="border: none;">
@@ -40,7 +40,7 @@
 				<%=approval.shop_name%>
 			</td>
 			<td align="center">
-				<%=MCode.find(:first, :conditions=>["kbn='shop_kbn' and code=?", params[:header][:shop_kbn]]).code_name %>
+				<%=MCode.find(:first, :conditions=>["kbn='shop_kbn' and code=?", approval.shop_kbn]).code_name %>
 			</td>
 			<td align="right">
 				<%=number_with_delimiter(approval.exist_money)%>
@@ -49,7 +49,7 @@
 				<%=number_with_delimiter(approval.over_short)%>
 			</td>
 			<td align="center">
-				詳細 <%#TODO:リンクを埋め込む%>
+				<%=link_to "詳細", :controller => "d_sale_reports", :action => "show", :id => approval.id %>
 			</td>
 			<td align="center">
 				<%

@@ -16,16 +16,18 @@ class DSaleApprovesController < ApplicationController
     @approval_name = ""
     m_approval = MApproval.find(:first, :conditions => ["menu_id=?", @menu_id])
 
-    for i in 1..5 do
-       if m_approval["approval_id#{i}"].to_s == current_user.id.to_s then
-         @approval_id   = i
-         @approval_name = m_approval["approval_name#{i}"] 
-       end
+    if not(m_approval.nil?) then
+      for i in 1..5 do
+        if m_approval["approval_id#{i}"].to_s == current_user.id.to_s then
+          @approval_id   = i
+          @approval_name = m_approval["approval_name#{i}"] 
+        end
+      end
     end
     
     # 承認済を含むの条件を先に作る
     where_zumi = ""
-    if params[:header][:zumi_flg].to_s != "1" then #自分が承認していないもの
+    if params[:header][:zumi_flg].to_s != "true" then #自分が承認していないもの
       where_zumi = "
                        and coalesce(d_sale_reports.approve_id1, 0) != #{current_user.id} 
                        and coalesce(d_sale_reports.approve_id2, 0) != #{current_user.id}
@@ -51,6 +53,13 @@ class DSaleApprovesController < ApplicationController
         ,d_sales_sum.exist_money
         ,d_sales_sum.over_short
       from 
+         
+        d_sale_reports
+
+        inner join m_shops
+           on d_sale_reports.m_shop_id = m_shops.id
+
+        left join
         ( select 
               m_shop_id
              ,sum(exist_money) as exist_money
@@ -63,15 +72,10 @@ class DSaleApprovesController < ApplicationController
           group by 
               m_shop_id
         ) as d_sales_sum
-        
-        inner join m_shops
            on d_sales_sum.m_shop_id = m_shops.id
-           
-        inner join d_sale_reports
-           on d_sales_sum.m_shop_id = d_sale_reports.m_shop_id
-           
       where 
             d_sale_reports.sale_date = '#{params[:header][:ym]}'
+        and m_shops.shop_kbn = #{params[:header][:shop_kbn]}
             #{ where_zumi }
       order by 
             m_shops.shop_cd
@@ -101,7 +105,7 @@ class DSaleApprovesController < ApplicationController
       approval = params["approval#{i}"]
 
       #チェックが変更されていたら書込する
-      if to_boolean(approval[:old_approval_flg]) != to_boolean(approval[:approval_flg]) then
+      if approval[:old_approval_flg].to_s != approval[:approval_flg].to_s then
             
         rec = DSaleReport.find(approval[:id])
         
@@ -113,7 +117,7 @@ class DSaleApprovesController < ApplicationController
           end
         end
                   
-        if to_boolean(approval[:approval_flg]) then
+        if approval[:approval_flg].to_s == "true" then
           # マスタに設定されているIDの箇所に書込
           rec["approve_id#{approval_id}"] = current_user.id
           rec["approve_date#{approval_id}"] = upd_time.to_date
@@ -133,16 +137,9 @@ class DSaleApprovesController < ApplicationController
     } #トランザクション終了
     
     # 再呼出
-    redirect_to :action => "edit", :header => {:ym       => params[:header][:ym],
-                                               :shop_kbn => params[:header][:shop_kbn],
-                                               :zumi_flg => 0 }
-    
-  end
- 
-  private
-  def to_boolean(obj)
-    
-    return (obj.to_s == "true" or obj.to_s == "1")
+    redirect_to :action => "edit", :header => {:ym       => params[:hheader][:ym],
+                                               :shop_kbn => params[:hheader][:shop_kbn],
+                                               :zumi_flg => true }
     
   end
   

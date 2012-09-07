@@ -48,7 +48,7 @@ function format_kanma(para_num, para_set) {
 		} else {
 			if (num != "") {
 				num = Number(num);
-				num = Math.floor(num);	
+				//num = Math.floor(num);	
 				num = String(num);
 			};
 		};
