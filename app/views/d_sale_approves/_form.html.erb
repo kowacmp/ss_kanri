@@ -10,14 +10,7 @@
 <%=hidden_field :approval, :approval_name, :value => @approval_name %>
 
 <table class='rounded-corner' style="width:95%;" >
-
-	<tr>
-		<td colspan="7" align="right" style="border: none;">
-			<input type="button" value=" 　一括 　" onclick="return chk_flgs_all(true);"  <%="disabled = 'disabled'" if (@approval_id == 0) %>><br/>
-			<input type="button" value="一括クリア" onclick="return chk_flgs_all(false);" <%="disabled = 'disabled'" if (@approval_id == 0) %>>
-		</td>
-	</tr>
-
+		
 	<tr>
 		<th>店舗コード</th>
 		<th>店舗名</th>
@@ -25,7 +18,11 @@
 		<th>現金有高(累計)</th>
 		<th>過不足(累計)</th>
 		<th>&nbsp;</th>
-		<th>承認</th>
+		<th>
+			承認<br/> <%# 一括チェック用 %>
+			<input type="checkbox" onchange="return chk_flgs_all(this.checked);" 
+			      <%="disabled = 'disabled'" if (@approval_id == 0) %>>
+		</th>
 	</tr>
 	
 	<% rec_cnt = 0 %>
