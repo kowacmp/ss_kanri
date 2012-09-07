@@ -51,8 +51,6 @@ class DYumePointListsController < ApplicationController
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_yume_point_list.tlf')
 
     report.layout.config.list(:list) do
-      use_stores :p1_sum_row => Hash.new,
-                 :start_day => 0
     # フッターに合計をセット.
       result_date = @from_ymd
       events.on :footer_insert do |e|
@@ -77,7 +75,7 @@ class DYumePointListsController < ApplicationController
       end
       
 
-        
+    #ページ、作成日、タイトル設定
     report.events.on :page_create do |e|
       e.page.item(:page).value(e.page.no)
       e.page.item(:sakusei_ymd).value(Time.now.strftime("%Y-%m-%d"))
@@ -89,11 +87,7 @@ class DYumePointListsController < ApplicationController
     end #evants.on
     
     report.start_new_page
-
-
-
-
-        
+ 
     # 詳細作成
     shops.each do |shop|
       result_date = @from_ymd
@@ -115,9 +109,9 @@ class DYumePointListsController < ApplicationController
         row.item(:p1_sum).value(p1_sum_col)
         row.item(:p2_sum).value(p2_sum_col)
       end #add_row
-      #sp1_1 = 12354
     end # shops.each
 
+    #フッター用合計データ作成
     result_date = @from_ymd
     start_day.times do |i|
       sum_point = sum_rows_yume_points(result_date,@shop_kbn)
@@ -128,7 +122,7 @@ class DYumePointListsController < ApplicationController
       sum_sp2 = sum_sp2 + sum_point.pos2_data.to_i unless sum_point == nil 
     end
 
-    #タイトルセット     
+    #ファイル名セット     
     pdf_title = "#{title2}_#{@from_ymd[0,6]}.pdf"
     ua = request.env["HTTP_USER_AGENT"]
     pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
