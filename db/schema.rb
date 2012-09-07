@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120907062151) do
+ActiveRecord::Schema.define(:version => 20120907063947) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -453,11 +453,11 @@ ActiveRecord::Schema.define(:version => 20120907062151) do
   end
 
   create_table "d_sale_items", :force => true do |t|
-    t.integer  "d_sale_id",                     :null => false
-    t.integer  "item_class",      :limit => 2,  :null => false
+    t.integer  "d_sale_id",                                    :null => false
+    t.integer  "item_class",      :limit => 2,                 :null => false
     t.integer  "m_item_id"
     t.string   "item_name",       :limit => 30
-    t.integer  "item_money"
+    t.integer  "item_money",                    :default => 0
     t.integer  "m_shop_id"
     t.integer  "created_user_id"
     t.integer  "updated_user_id"
@@ -465,31 +465,51 @@ ActiveRecord::Schema.define(:version => 20120907062151) do
     t.datetime "updated_at"
   end
 
+  create_table "d_sale_reports", :force => true do |t|
+    t.string   "sale_date",     :limit => 6, :null => false
+    t.integer  "m_shop_id",                  :null => false
+    t.integer  "kakutei_flg",   :limit => 2, :null => false
+    t.integer  "confirm_id"
+    t.date     "confirm_date"
+    t.integer  "approve_id1"
+    t.date     "approve_date1"
+    t.integer  "approve_id2"
+    t.date     "approve_date2"
+    t.integer  "approve_id3"
+    t.date     "approve_date3"
+    t.integer  "approve_id4"
+    t.date     "approve_date4"
+    t.integer  "approve_id5"
+    t.date     "approve_date5"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "d_sales", :force => true do |t|
-    t.string   "sale_date",       :limit => 8, :null => false
-    t.integer  "m_shop_id",                    :null => false
-    t.integer  "kakutei_flg",     :limit => 2, :null => false
-    t.integer  "sale_money1"
-    t.integer  "sale_money2"
-    t.integer  "sale_money3"
-    t.integer  "sale_purika"
-    t.integer  "sale_today_out"
-    t.integer  "sale_change1"
-    t.integer  "sale_change2"
-    t.integer  "sale_change3"
-    t.integer  "sale_ass"
-    t.integer  "recive_money"
-    t.integer  "pay_money"
-    t.integer  "sale_cashbox"
-    t.integer  "sale_changebox"
+    t.string   "sale_date",       :limit => 8,                :null => false
+    t.integer  "m_shop_id",                                   :null => false
+    t.integer  "kakutei_flg",     :limit => 2,                :null => false
+    t.integer  "sale_money1",                  :default => 0
+    t.integer  "sale_money2",                  :default => 0
+    t.integer  "sale_money3",                  :default => 0
+    t.integer  "sale_purika",                  :default => 0
+    t.integer  "sale_today_out",               :default => 0
+    t.integer  "sale_change1",                 :default => 0
+    t.integer  "sale_change2",                 :default => 0
+    t.integer  "sale_change3",                 :default => 0
+    t.integer  "sale_ass",                     :default => 0
+    t.integer  "recive_money",                 :default => 0
+    t.integer  "pay_money",                    :default => 0
+    t.integer  "sale_cashbox",                 :default => 0
+    t.integer  "sale_changebox",               :default => 0
     t.integer  "created_user_id"
     t.integer  "updated_user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sale_am_out"
-    t.integer  "sale_pm_out"
-    t.integer  "exist_money"
-    t.integer  "over_short"
+    t.integer  "sale_am_out",                  :default => 0
+    t.integer  "sale_pm_out",                  :default => 0
+    t.integer  "exist_money",                  :default => 0
+    t.integer  "over_short",                   :default => 0
   end
 
   create_table "d_tank_compute_reports", :force => true do |t|

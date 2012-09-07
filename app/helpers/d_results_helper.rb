@@ -8,8 +8,6 @@ module DResultsHelper
   end
   
   def m_oiletc_sql(d_result, oiletc_group)
-#    sql = "select m.id, m.oiletc_name, m.oiletc_tani, c.code_name, d.pos1_data, d.pos2_data, d.pos3_data,"
-#    sql << " COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0) as pos_total"
     sql = "select m.id, m.oiletc_name, m.oiletc_tani, c.code_name,"
     sql << "      CASE m.oiletc_tani WHEN 6 THEN d.pos1_data"
     sql << "                         ELSE trunc(d.pos1_data, 0)"
@@ -82,7 +80,7 @@ module DResultsHelper
     sql << " where d.m_meter_id = m.id and m.m_tank_id = t.id"
     sql << "   and t.m_shop_id = #{m_shop_id} and d.d_result_id = #{d_result_id}"
     sql << "   and m.deleted_flg = 0 and t.deleted_flg = 0 group by t.m_oil_id order by t.m_oil_id"
-    p "oil_betu_meter_sql=#{sql}"
+ 
     return sql
   end
   
@@ -106,8 +104,6 @@ module DResultsHelper
     #油種別集計----------------------------------
     d_result = DResult.find(d_result_id)
     day, yesterday = old_result_date(d_result.result_date)
-    #today = Time.parse(d_result.result_date)
-    #yesterday = (today - 1.days).strftime("%Y%m%d")
     old_d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                          d_result.m_shop_id, yesterday])
     
@@ -227,11 +223,13 @@ module DResultsHelper
   end
   
   def tank_betu_total(d_result_id)
-    cr_sql = "select t.tank_no, o.oil_name, cr.* from m_oils o, m_tanks t"
+    limit = Establish.find(:first).limit
+    cr_sql = "select t.tank_no, t.volume, trunc((t.volume * 1000) * #{limit}, 0) as oil_limit, o.oil_name, cr.* from m_oils o, m_tanks t"
     cr_sql << " left join d_tank_compute_reports cr on (cr.m_tank_id = t.id and cr.d_result_id = #{d_result_id})"
     cr_sql << " where t.m_oil_id = o.id and t.deleted_flg = 0 and o.deleted_flg = 0"
     cr_sql << "   and t.m_shop_id = #{current_user.m_shop_id} order by t.tank_no"
-    @d_tank_compute_reports = DTankComputeReport.find_by_sql(cr_sql)       
+    @d_tank_compute_reports = DTankComputeReport.find_by_sql(cr_sql)
+    p "cr_sql=#{cr_sql}"
   end
   
   def m_meters_count_sql(m_shop_id)

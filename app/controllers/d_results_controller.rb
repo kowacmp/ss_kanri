@@ -44,7 +44,7 @@ class DResultsController < ApplicationController
       oil_sql << " and d.d_result_id = #{@d_result.id})"  
     end    
     oil_sql << " where m.deleted_flg = 0 order by m.oil_cd"
-p "oil_sql=#{oil_sql}"
+
     @pos1_gasorin, @pos2_gasorin, @pos3_gasorin, @total_gasorin = 0,0,0,0
     @pos1_mofuel, @pos2_mofuel, @pos3_mofuel, @total_mofuel = 0,0,0,0
     
@@ -490,7 +490,6 @@ p "oil_sql=#{oil_sql}"
   end
   
   def yume_index
-    p "yume_index   yume_index   yume_index   yume_index"
     @result_date = params[:result_date]
     
     @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
@@ -662,15 +661,6 @@ p "oil_sql=#{oil_sql}"
       end
     end
         
-    #仕入、在庫データ取得    
-    #sql = "select t.id m_tank_id, t.tank_no, t.volume, o.oil_name, d.receive, d.stock from m_tanks t"
-    #sql << " left join d_result_tanks d on (t.id = d.m_tank_id and d.d_result_id = #{@d_result.id})"
-    #sql << " left join m_oils o on (t.m_oil_id = o.id)"
-    #sql << " where t.m_shop_id = #{@d_result.m_shop_id} and t.deleted_flg = 0 and o.deleted_flg = 0 "
-    #sql << " order by t.tank_no"
-                                            
-    #@m_tanks = MTank.find_by_sql(sql)
-        
     if @d_result.kakutei_flg == 1
       @text = true
     else
@@ -704,25 +694,6 @@ p "oil_sql=#{oil_sql}"
       d_result_meter.updated_user_id = current_user.id 
       d_result_meter.save
     end
-    
-    #タンク在庫登録
-    
-#    m_tanks.each do |m_tank|
-#      d_result_tank = DResultTank.find(:first, :conditions => ["d_result_id = ? and m_tank_id = ?", d_result_id, m_tank.id])
-      
-#      if d_result_tank.blank?
-#        d_result_tank = DResultTank.new
-#        d_result_tank.d_result_id = d_result_id
-#        d_result_tank.m_tank_id = m_tank.id
-#        d_result_tank.created_user_id = current_user.id
-#        d_result_tank.updated_user_id = current_user.id           
-#      end
-      
-#      d_result_tank.receive = params[:receive]["#{m_tank.id}"]
-#      d_result_tank.stock = params[:stock]["#{m_tank.id}"]     
-#      d_result_tank.updated_user_id = current_user.id 
-#      d_result_tank.save      
-#    end
 
     @m_tanks_count = MTank.count(:all, :conditions => ["m_shop_id = ? and deleted_flg = 0",current_user.m_shop_id])
     @d_result_tanks_count = DResultTank.count(:all, :conditions => ["d_result_id = ?",d_result_id])
@@ -745,7 +716,6 @@ p "oil_sql=#{oil_sql}"
   end
   
   def tank_index
-    p "tank_index   tank_index   tank_index   tank_index   tank_index   tank_index"
     @result_date = params[:result_date]
     
     @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",

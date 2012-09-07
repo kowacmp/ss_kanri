@@ -16,8 +16,8 @@
           <td>タンク<%= m_tank.tank_no %></td>
           <td><%= m_tank.volume %>KL</td>
           <td><%= m_tank.oil_name %></td>
-          <td><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :readonly => @text, :class => "tank_input" %></td>
-          <td><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :readonly => @text, :class => "tank_input" %></td>                  
+          <td><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :readonly => @text, :class => "money" %></td>
+          <td><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :readonly => @text, :class => "money" %></td>                  
         </tr>
       <% end %>
     </tbody>
@@ -29,6 +29,8 @@
     <div style="text-align:right; width: 420px;"><%= submit_tag '登録' %></div>
   <% end %>
 <% end %>
+
+<%= javascript_include_tag "comma" %>
 
 <style type="text/css">
  input.tank_input { 

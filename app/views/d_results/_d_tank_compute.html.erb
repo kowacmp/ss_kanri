@@ -21,8 +21,14 @@
       <td class="input_no"><%= num_fmt(d_tank_compute_report.receive) %></td>
       <td class="input_no"><%= num_fmt(d_tank_compute_report.sale) %></td>  	
       <td class="input_no"><%= num_fmt(d_tank_compute_report.compute_stock) %></td> 
-      <td class="input_no"><%= num_fmt(d_tank_compute_report.after_stock) %></td> 
-      <td class="input_no"><%= num_fmt(d_tank_compute_report.decrease) %></td> 	
+      <td class="input_no"><%= num_fmt(d_tank_compute_report.after_stock) %></td>
+      
+      <% if d_tank_compute_report.decrease.blank? or ((d_tank_compute_report.decrease).abs < d_tank_compute_report.oil_limit.to_i) %>
+        <td class="input_no"><%= num_fmt(d_tank_compute_report.decrease) %></td> 
+      <% else %>
+        <td class="input_no" style="background: gold;"><%= num_fmt(d_tank_compute_report.decrease) %></td>
+      <% end %>	
+      
       <td class="input_no"><%= num_fmt(d_tank_compute_report.sale_total) %></td> 
       <td class="input_no"><%= num_fmt(d_tank_compute_report.decrease_total) %></td> 
       <td class="input_no"><%= num_fmt(d_tank_compute_report.total_percentage, true) %></td> 
