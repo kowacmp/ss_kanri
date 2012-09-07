@@ -11,13 +11,19 @@
   <td>
     <table id='rounded-corner'>
       <th>入力日</th>
-      <td><%= number_field :select, :date, :readonly => true, :class => "datepicker", :size => 5 %></td>
+      <td><%= number_field :select, :date, :value => @today, :readonly => true, :class => "datepicker", :size => 5 %></td>
     </table>
   </td>
 </table>  
 <br />
 
-<div id="result"></div>
+<div id="result">
+  <% if @d_result.blank? or @d_result.kakutei_flg == 0 %> 	
+	<%= render 'input_d_result' %>
+  <% else %>
+    <%= render 'show_d_result' %>
+  <% end %>	
+</div>
 
 <script type="text/javascript">
 $("#select_date").change(function(){
@@ -192,4 +198,9 @@ $(function () {
       
 });
 </script>
-   
+
+<style type="text/css">
+ input { 
+ 	 width: 90px;
+                   }　
+</style>   
