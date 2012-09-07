@@ -11,8 +11,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120907063947) do
 
+ActiveRecord::Schema.define(:version => 20120907063947) do
+# 81e2151d779642ca8b4ccdd1779af7e615ac8567
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
     t.integer  "menu_id",        :limit => 2, :null => false

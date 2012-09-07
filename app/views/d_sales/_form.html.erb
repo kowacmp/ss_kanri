@@ -78,7 +78,16 @@
       <div class="title_alias">出金</div>
       <div class="info_alias"><%= label :d_sale, :pay_money, num_fmt(@d_sale.pay_money.to_i), :id=>'pay_money_total' %></div>
 　　　<br />
-	
+
+<div id="tabs" style="float:left; width: 720px; ">
+	 <ul>
+	     <li><a href="#pay_tab">出金</a></li>
+	     <li><a href="#recive_tab">入金</a></li>
+	     <li><a href="#etc_tab">その他</a></li>
+	     <li><a href="#purika_tab">プリカ</a></li>
+	     
+	 </ul>	
+	 <div id="pay_tab" style="padding-left: 2px;">
       <div id="pay_item">
 		<table id="pay_table" class="rounded-corner" style="margin-left: 0px;">
 			<thead>
@@ -121,7 +130,8 @@
             </tbody>
 		</table>
       </div>
-
+	 </div>
+	 <div id="recive_tab" style="padding-left: 2px;">
       <div id="recive_item">
       	<table id="recive_table" class="rounded-corner" style="margin-left: 0px;">
 			<thead>
@@ -164,7 +174,8 @@
 			</tbody>
 		</table>
       </div>
-
+	 </div>
+	 <div id="etc_tab" style="padding-left: 2px;">
       <div id="etc_item">
       	<table id="etc_table" class="rounded-corner" style="margin-left: 0px;">
 			<thead>
@@ -207,7 +218,8 @@
 			</tbody>
 		</table>
       </div>
-      
+     </div>
+     <div id="purika_tab" style="padding-left: 2px;">
       <div id="purika_item">
       	<table id="purika_table" class="rounded-corner" style="margin-left: 0px;">
 			<thead>
@@ -255,7 +267,8 @@
 			</tbody>
 		</table>      	
       </div>
-
+     </div>
+</div>
 	  <div id="total_alias">
       <div class="title_alias">売上</div>
       <div class="info_alias"><label id="sale_money_total2"><%= num_fmt(@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i) %></label></div>
@@ -325,11 +338,14 @@
   
 <script>
 $(function () {
-    $('#pay_table').tablefix({width: 697, height: 190, fixRows: 1, fixCols: 0});
-    $('#recive_table').tablefix({width: 697, height: 190, fixRows: 1, fixCols: 0});
-    $('#purika_table').tablefix({width: 697, height: 190, fixRows: 2, fixCols: 0});
-    $('#etc_table').tablefix({width: 697, height: 190, fixRows: 1, fixCols: 0});
-
+    //$('#pay_table').tablefix({width: 697, height: 600, fixRows: 1, fixCols: 0});
+    //$('#recive_table').tablefix({width: 697, height: 600, fixRows: 1, fixCols: 0});
+    //$('#purika_table').tablefix({width: 697, height: 600, fixRows: 2, fixCols: 0});
+    //$('#etc_table').tablefix({width: 697, height: 600, fixRows: 1, fixCols: 0});
+    
+	// Tabs
+	$('#tabs').tabs();
+	
     //テーブルにスクロールバーを設定
   //  var pytables = new superTable("pay_table", {
   //    cssSkin : "sSky",

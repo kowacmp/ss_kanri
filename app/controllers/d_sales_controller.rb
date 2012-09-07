@@ -233,12 +233,20 @@ p params
     
     @head = DSale.new
         
-
-    key_data =  DSale.find(params[:id])
-    @head[:m_shop_id] = key_data.m_shop_id
-    @head[:input_day] = key_data.sale_date.to_s[0,4] + "/" + key_data.sale_date.to_s[4,2] + "/" + key_data.sale_date.to_s[6,2]
-    @head[:input_shop_kbn] = params[:input_shop_kbn]
-
+    if params[:from_controller] == "d_sale_approves"
+      key_data = DSaleReport.find(params[:id])
+      @head[:m_shop_id] = key_data.m_shop_id
+      @head[:input_day] = key_data.sale_date.to_s[0,4] + "/" + key_data.sale_date.to_s[4,2] + "/01"
+      @head[:input_ym] = params[:header][:ym]
+      @head[:input_shop_kbn] = params[:header][:shop_kbn]
+      @head[:input_zumi_flg] = params[:header][:zumi_flg]
+    else
+      key_data =  DSale.find(params[:id])
+      @head[:m_shop_id] = key_data.m_shop_id
+      @head[:input_day] = key_data.sale_date.to_s[0,4] + "/" + key_data.sale_date.to_s[4,2] + "/" + key_data.sale_date.to_s[6,2]
+      @head[:input_shop_kbn] = params[:input_shop_kbn]
+    end
+    
     @from_controller = params[:from_controller]
 
     #前月末現金有高、過不足取得
@@ -541,9 +549,23 @@ p params
     #データセット
     m_shop = MShop.find(@head[:m_shop_id])
     
+    #フッター出力項目退避エリア
+    footer = Hash::new
+    footer[:cash_money] = ""
+    footer[:coin_tesuryo] = ""
+    footer[:suito_zan] = ""
+    
     #設計ファイルOPEN
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_sale_report.tlf')
-
+ 
+   report.layout.config.list(:report_list) do
+    # フッターに合計をセット.
+      events.on :footer_insert do |e|
+        e.section.item(:footer_cash_money).value(footer[:cash_money])
+        e.section.item(:footer_coin_tesuryo).value(footer[:coin_tesuryo])
+        e.section.item(:footer_suito_zan).value(footer[:suito_zan])
+      end #events.on
+    end
 
     report.start_new_page
 
@@ -554,6 +576,7 @@ p params
       h.item(:zengetumatu_over_short).value(num_fmt(@d_sale_zengetumatu.over_short))
     end
     
+    d_sale_total = Hash::new #合計データ
     #繰り返し
     loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, -1)).strftime("%d").to_i 
     loopcnt.times { |i| 
@@ -584,11 +607,36 @@ p params
           row.item(:exist_money).value(num_fmt(@d_sale.exist_money))
           row.item(:over_short).value(num_fmt(@d_sale.over_short))
         end
-        
+        d_sale_total = calc_total(d_sale_total)
       end
     }
+    #合計行
+    report.page.list(:report_list).add_row do |row|
+      row.item(:day).value("計")
+      row.item(:sale_money).value(num_fmt(d_sale_total[:sale_money])) 
+      row.item(:sale_purika).value(num_fmt(d_sale_total[:sale_purika]))
+      row.item(:purika_tesuryo).value(num_fmt(d_sale_total[:purika_tesuryo]))
+      row.item(:sonota_money).value(num_fmt(d_sale_total[:sonota_money]))
+      row.item(:recive_money).value(num_fmt(d_sale_total[:recive_money]))
+      row.item(:pay_money).value(num_fmt(d_sale_total[:pay_money]))
+      row.item(:d_sale_syokei).value(num_fmt(d_sale_total[:d_sale_syokei]))
+      row.item(:sale_ass).value(num_fmt(d_sale_total[:sale_ass]))
+      row.item(:d_sale_ass).value(num_fmt(d_sale_total[:d_sale_ass]))
+      row.item(:zenjitu_d_sale_sale_pm_out).value(num_fmt(d_sale_total[:zenjitu_d_sale_sale_pm_out]))
+      row.item(:sale_today_out).value(num_fmt(d_sale_total[:sale_today_out]))
+      row.item(:sale_am_out).value(num_fmt(d_sale_total[:sale_am_out]))
+      row.item(:sale_pm_out).value(num_fmt(d_sale_total[:sale_pm_out]))
+      row.item(:calc_exist_money).value(num_fmt(d_sale_total[:d_sale_calc_aridaka]))
+      row.item(:exist_money).value(num_fmt(d_sale_total[:d_sale_cash_aridaka]))
+      row.item(:over_short).value(num_fmt(d_sale_total[:kabusoku]))
 
-
+    end
+    
+    #フッターにセットする値をセット
+    footer[:cash_money] = num_fmt(d_sale_total[:sale_money].to_i - @etc_item_total.item_money.to_i)
+    footer[:coin_tesuryo] = num_fmt(@etc_item_total.item_money.to_i)
+    footer[:suito_zan] = num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i)
+    
     #PDF出力
     #タイトルセット
     pdf_title = "売上・現金管理表.pdf"
