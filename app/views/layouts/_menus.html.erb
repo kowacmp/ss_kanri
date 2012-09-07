@@ -9,11 +9,11 @@
 		<ul>
 		  <% $menu2[menu1.menu_cd1.to_i].each do |menu2| %>
 			<li>
-			  <a href="/<%= menu2.uri %>"><%= menu2.display_name %></a>
+			  <a href="/<%= "#{menu2.uri}?#{menu2.id}" %>"><%= menu2.display_name %></a>
 			  <% unless $menu3[menu1.menu_cd1.to_i][menu2.menu_cd2.to_i].blank? %>
 			    <ul>
 			      <% $menu3[menu1.menu_cd1.to_i][menu2.menu_cd2.to_i].each do |menu3| %>
-                    <li><a href="/<%= menu3.uri %>"><%= menu3.display_name %></a></li>
+                    <li><a href="/<%= "#{menu3.uri}?#{menu3.id}" %>"><%= menu3.display_name %></a></li>
                   <% end %>
                 </ul>
               <% end %> 

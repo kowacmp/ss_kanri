@@ -1,0 +1,18 @@
+<table id="rounded-corner" style="width: 600px;">
+	<tr height="80px">
+		<th style="min-width: 120px"><%= @approve_names[0] %></th>
+		<th style="min-width: 120px"><%= @approve_names[1] %></th>
+		<th style="min-width: 120px"><%= @approve_names[2] %></th>
+		<th style="min-width: 120px"><%= @approve_names[3] %></th>
+		<th style="min-width: 120px"><%= @approve_names[4] %></th>
+	</tr>
+	<tr  height="30px">
+		<td style="text-align: center"><%= "#{@d_sale_report.approve_date1.year}/#{@d_sale_report.approve_date1.month}/#{@d_sale_report.approve_date1.day}" unless @d_sale_report.approve_date1.blank? %></td>
+		<td style="text-align: center"><%= "#{@d_sale_report.approve_date2.year}/#{@d_sale_report.approve_date2.month}/#{@d_sale_report.approve_date2.day}" unless @d_sale_report.approve_date2.blank? %></td>
+		<td style="text-align: center"><%= "#{@d_sale_report.approve_date3.year}/#{@d_sale_report.approve_date3.month}/#{@d_sale_report.approve_date3.day}" unless @d_sale_report.approve_date3.blank? %></td>
+		<td style="text-align: center"><%= "#{@d_sale_report.approve_date4.year}/#{@d_sale_report.approve_date4.month}/#{@d_sale_report.approve_date4.day}" unless @d_sale_report.approve_date4.blank? %></td>
+		<td style="text-align: center"><%= "#{@d_sale_report.approve_date5.year}/#{@d_sale_report.approve_date5.month}/#{@d_sale_report.approve_date5.day}" unless @d_sale_report.approve_date5.blank? %></td>
+	</tr>
+</table>
+
+

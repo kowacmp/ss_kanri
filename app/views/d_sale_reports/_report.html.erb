@@ -1,0 +1,72 @@
+<%= form_tag(url_for(:action => 'update')) do %>
+<%= hidden_field_tag "input_shop_kbn", @head[:input_shop_kbn] %>
+<%= hidden_field_tag "input_day", @head[:input_day] %>
+
+<table id="rounded-corner" style="width: 930px;">
+	<tr>
+		<th>店舗</th>
+		<th>年月</th>
+		<th>店舗種別</th>
+		<th>現金有高</th>
+		<th>過不足</th>
+		<th>詳細</th>
+		<th>確認<br /><input type="checkbox" id="all" /></th>
+		<th>印刷</th>
+		<th>承認状況</th>
+	</tr>
+<% @result_datas.each_with_index do |data,i| %>
+  <tr>
+    <td><%= "#{data.shop_cd} | #{data.shop_name}" %></td>
+    <td style="text-align: center"><%= "#{data.sale_date.to_s[0,4]}/#{data.sale_date.to_s[4,2]}" unless data.sale_date.blank? %></td>
+    <td style="text-align: center"><%= data.shop_kbn_name %></td>
+    <td style="text-align: right"><%= num_fmt(data.exist_money) %></td>
+    <td style="text-align: right"><%= num_fmt(data.over_short) %></td>
+    <td style="text-align: center">
+    	<% unless data.sale_date.blank? %>
+    		<%= link_to image_tag('icon/24_show.png'), {:controller => "d_sales", :action => "report_view", :id => data.d_sale_id, :input_shop_kbn=>@head[:input_shop_kbn], :from_controller=>"d_sale_reports"} %>
+    	<% end %>
+    </td>
+    <td style="text-align: center">
+    	<% unless data.sale_date.blank? %>
+    		<% if data.kakutei_flg.to_i == 0 %>
+	    		<%=  check_box_tag "data_kakutei_flg_#{i}", "1", false  %>
+	    	<% else %>
+	    		<%=  check_box_tag "data_kakutei_flg_#{i}", "1", true %>
+	    	<% end%>
+	    	<%= hidden_field_tag "data_id_#{i}", data.id %>
+    	<% end %>
+    	<%= hidden_field_tag "data_sale_date_#{i}", data.sale_date.to_s[0,6] %>
+     	<%= hidden_field_tag "data_m_shop_id_#{i}", data.m_shop_id %>
+    </td>
+	<td style="text-align: center">
+    	<% unless data.sale_date.blank? %>
+    		<%= link_to image_tag('icon/pdf.png'), {:controller => "d_sale_reports", :action => "report", :id => data.id} %>
+    	<% end %>
+	</td>
+	<td style="text-align: center">
+    	<% unless data.sale_date.blank? %>
+    		<%= link_to image_tag('icon/kessai.gif'), {:controller => "d_sale_reports", :action => "show", :id => data.id}, :class => "modal" %>
+    	<% end %>
+	</td>
+<% end %>	
+  <tr>
+  	<td colspan="9">
+  		<%= hidden_field_tag "data_rec_cnt", @result_datas.size %>
+  		<%= submit_tag(" 更新 ",:disable_with => "更新中...",:confirm => '保存しても良いですか？') %>
+  	</td>
+  </tr>
+</table>
+	
+<% end %>
+
+<script type="text/javascript">
+$(function(){
+    $('#all').click(function(){
+    if(this.checked){
+    $(":input[id^=data_kakutei_flg_]").attr('checked','checked');
+    }else{
+    $(":input[id^=data_kakutei_flg_]").removeAttr('checked');
+    }
+  });
+});
+</script>

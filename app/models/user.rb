@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable#, :validatable
 
   # Setup accessible (or protected) attributes for your model
   #attr_accessible :email, :account,:password, :password_confirmation, :remember_me
@@ -23,6 +23,9 @@ class User < ActiveRecord::Base
   
   validates :password,        :confirmation => {:message => 'パスワードが一致していません。'}
   
+  validates :account,        :length => {:minimum => 4, :maximum => 10,
+                                          :message => '社員コードは４文字以上１０文字以内で入力してください。'}
+
   def email_required?
     false
   end

@@ -24,15 +24,15 @@
 	  	<% if @pass_flg == 0 %>
 	  	<tr>
 	  	  <th><%= f.label "社員コード" %></th>
-	  	  <td><%= f.text_field :account %></td>  	  
+	  	  <td><%= f.text_field :account,:maxlength=>10 %></td>  	  
 	  	</tr>
 	  	<tr>
 	  	  <th><%= f.label "氏名" %></th>
-	  	  <td><%= f.text_field :user_name %></td>  	  
+	  	  <td><%= f.text_field :user_name,:maxlength=>50 %></td>  	  
 	  	</tr>
 	  	<tr>
 	  	  <th><%= f.label "氏名カナ" %></th>
-	  	  <td><%= f.text_field :user_name_kana %></td>  	  
+	  	  <td><%= f.text_field :user_name_kana,:maxlength=>50 %></td>  	  
 	  	</tr>
 	  	<tr>
 	  	  <th><%= f.label "所属店舗" %></th>
