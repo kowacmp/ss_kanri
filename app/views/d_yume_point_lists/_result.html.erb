@@ -1,9 +1,12 @@
-<%= @from_ymd %> | <%= @to_ymd %>
 <% yume_point_data = nil %>
 <% gsum_pos1_data = 0
    gsum_pos2_data = 0
 %>
-   
+
+<%= form_tag({:action => 'print'}) do %>
+<%= hidden_field_tag 'from_ymd',@from_ymd %>
+<%= hidden_field_tag 'to_ymd'  ,@to_ymd %>
+<%= hidden_field_tag 'shop_kbn',@shop_kbn %>
 <table id="report_view_table" class="rounded-corner">
   <thead>
 	<tr>
@@ -73,6 +76,9 @@
 </tbody>  	
 
 </table>
+<%= submit_tag '印刷',format: 'pdf' %>
+<% end %>
+
 
 <script>
 	$(function () {
