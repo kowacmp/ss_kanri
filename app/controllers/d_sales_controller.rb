@@ -541,9 +541,22 @@ p params
     #データセット
     m_shop = MShop.find(@head[:m_shop_id])
     
+    select_day = Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, 1)        
+    @d_sale, @zenjitu_d_sale = get_d_sales_data(select_day.strftime("%Y%m%d"))
+    d_sale_total = Hash::new #合計データ
+    d_sale_total = calc_total(d_sale_total)
+    
     #設計ファイルOPEN
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_sale_report.tlf')
-
+ 
+   report.layout.config.list(:report_list) do
+    # フッターに合計をセット.
+      events.on :footer_insert do |e|
+        e.section.item(:footer_cash_money).value(num_fmt(d_sale_total[:sale_money].to_i - @etc_item_total.item_money.to_i))
+        e.section.item(:footer_coin_tesuryo).value(num_fmt(@etc_item_total.item_money.to_i))
+        e.section.item(:footer_suito_zan).value(num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i))
+      end #events.on
+    end
 
     report.start_new_page
 
@@ -584,11 +597,39 @@ p params
           row.item(:exist_money).value(num_fmt(@d_sale.exist_money))
           row.item(:over_short).value(num_fmt(@d_sale.over_short))
         end
-        
+        d_sale_total = calc_total(d_sale_total)
       end
     }
+    #合計行
+    report.page.list(:report_list).add_row do |row|
+      row.item(:day).value("計")
+      row.item(:sale_money).value(num_fmt(d_sale_total[:sale_money])) 
+      row.item(:sale_purika).value(num_fmt(d_sale_total[:sale_purika]))
+      row.item(:purika_tesuryo).value(num_fmt(d_sale_total[:purika_tesuryo]))
+      row.item(:sonota_money).value(num_fmt(d_sale_total[:sonota_money]))
+      row.item(:recive_money).value(num_fmt(d_sale_total[:recive_money]))
+      row.item(:pay_money).value(num_fmt(d_sale_total[:pay_money]))
+      row.item(:d_sale_syokei).value(num_fmt(d_sale_total[:d_sale_syokei]))
+      row.item(:sale_ass).value(num_fmt(d_sale_total[:sale_ass]))
+      row.item(:d_sale_ass).value(num_fmt(d_sale_total[:d_sale_ass]))
+      row.item(:zenjitu_d_sale_sale_pm_out).value(num_fmt(d_sale_total[:zenjitu_d_sale_sale_pm_out]))
+      row.item(:sale_today_out).value(num_fmt(d_sale_total[:sale_today_out]))
+      row.item(:sale_am_out).value(num_fmt(d_sale_total[:sale_am_out]))
+      row.item(:sale_pm_out).value(num_fmt(d_sale_total[:sale_pm_out]))
+      row.item(:calc_exist_money).value(num_fmt(d_sale_total[:d_sale_calc_aridaka]))
+      row.item(:exist_money).value(num_fmt(d_sale_total[:d_sale_cash_aridaka]))
+      row.item(:over_short).value(num_fmt(d_sale_total[:kabusoku]))
 
+    end
+    
+    #フッター
+#    report.page.list(:report_list).footer do |f|
+#      h.item(:footer_cash_money).value(num_fmt(d_sale_total[:sale_money].to_i - @etc_item_total.item_money.to_i))
+#      h.item(:footer_coin_tesuryo).value(num_fmt(@etc_item_total.item_money.to_i))
+#      h.item(:footer_suito_zan).value(num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i))
+#
 
+       
     #PDF出力
     #タイトルセット
     pdf_title = "売上・現金管理表.pdf"
