@@ -236,6 +236,7 @@ p params
     if params[:from_controller] == "d_sale_approves"
       key_data = DSaleReport.find(params[:id])
       @head[:m_shop_id] = key_data.m_shop_id
+      @head[:input_day] = key_data.sale_date.to_s[0,4] + "/" + key_data.sale_date.to_s[4,2] + "/01"
       @head[:input_ym] = params[:header][:ym]
       @head[:input_shop_kbn] = params[:header][:shop_kbn]
       @head[:input_zumi_flg] = params[:header][:zumi_flg]
