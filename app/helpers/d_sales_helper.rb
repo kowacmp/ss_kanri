@@ -5,14 +5,14 @@ module DSalesHelper
     #データ取得SQL
     select_sql = "select " 
     select_sql << " a.sale_date "
-    select_sql << " , a.sale_money1 + sale_money2 + sale_money3 as sale_money "
+    select_sql << " , cast(a.sale_money1 as int) + cast(sale_money2 as int) + cast(sale_money3 as int) as sale_money "
     select_sql << " , a.sale_purika "
     select_sql << " , b.item_money purika_tesuryo "
     select_sql << " , c.item_money sonota_money "
     select_sql << " , a.recive_money "
     select_sql << " , a.pay_money " 
     select_sql << " , a.sale_ass "
-    select_sql << " , a.sale_change1 + a.sale_change2 + a.sale_change3 as sale_change "
+    select_sql << " , cast(a.sale_change1 as int) + cast(a.sale_change2 as int) + cast(a.sale_change3 as int) as sale_change "
     select_sql << " , a.sale_today_out "
     select_sql << " , a.sale_am_out "
     select_sql << " , a.sale_pm_out "
@@ -45,7 +45,17 @@ module DSalesHelper
       zenjitu_d_sale = DSale.new
     end
 
-    return d_sales[0], zenjitu_d_sale 
+    d_sale = d_sales[0]
+    if d_sale then
+       @d_sale_ass = zenjitu_d_sale.sale_pm_out.to_i + d_sale.sale_today_out.to_i + d_sale.sale_am_out.to_i   #ASS入金額
+       @d_sale_syokei = d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i + d_sale.purika_tesuryo.to_i - d_sale.pay_money.to_i #小計
+       @zenjitu_d_sale_cash_arigaka = zenjitu_d_sale.sale_change1.to_i + zenjitu_d_sale.sale_change2.to_i + zenjitu_d_sale.sale_change3.to_i + zenjitu_d_sale.sale_cashbox.to_i
+       #@d_sale_calc_aridaka = @zenjitu_d_sale_cash_arigaka.to_i + @d_sale_syokei.to_i + @d_sale.sale_ass.to_i + @d_sale_ass.to_i
+       @d_sale_cash_aridaka = d_sale.exist_money
+       @calc_exist_money = ((d_sale.exist_money.to_i * -1) + d_sale.over_short.to_i) * -1
+    end
+    
+    return d_sale, zenjitu_d_sale 
 
 
   end
@@ -68,7 +78,7 @@ module DSalesHelper
       return_hash[:sale_today_out] = return_hash[:sale_today_out].to_i + @d_sale.sale_today_out.to_i
       return_hash[:sale_am_out] = return_hash[:sale_am_out].to_i + @d_sale.sale_am_out.to_i
       return_hash[:sale_pm_out] = return_hash[:sale_pm_out].to_i + @d_sale.sale_pm_out.to_i
-      return_hash[:d_sale_calc_aridaka] = return_hash[:d_sale_calc_aridaka].to_i + ((@d_sale.exist_money.to_i * -1) + @d_sale.over_short.to_i) * -1
+      return_hash[:d_sale_calc_aridaka] = return_hash[:d_sale_calc_aridaka].to_i + @calc_exist_money.to_i
       return_hash[:d_sale_cash_aridaka] = return_hash[:d_sale_cash_aridaka].to_i + @d_sale.exist_money.to_i
       return_hash[:kabusoku] = return_hash[:kabusoku].to_i + @d_sale.over_short.to_i
     end  
