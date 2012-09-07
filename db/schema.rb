@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120906004738) do
+ActiveRecord::Schema.define(:version => 20120907062151) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -370,7 +370,6 @@ ActiveRecord::Schema.define(:version => 20120906004738) do
     t.decimal  "mobil1",        :precision => 11, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "oiletc_sale"
     t.integer  "oiletc_pace"
     t.integer  "arari_total"
   end
@@ -386,10 +385,10 @@ ActiveRecord::Schema.define(:version => 20120906004738) do
   end
 
   create_table "d_result_self_reports", :force => true do |t|
-    t.integer  "d_result_id",                                  :null => false
-    t.decimal  "mo_gas",        :precision => 10, :scale => 1
-    t.decimal  "keiyu",         :precision => 10, :scale => 1
-    t.decimal  "touyu",         :precision => 10, :scale => 1
+    t.integer  "d_result_id",                                       :null => false
+    t.decimal  "mo_gas",             :precision => 10, :scale => 1
+    t.decimal  "keiyu",              :precision => 10, :scale => 1
+    t.decimal  "touyu",              :precision => 10, :scale => 1
     t.integer  "kyuyu_purika"
     t.integer  "sensya"
     t.integer  "sensya_purika"
@@ -406,6 +405,7 @@ ActiveRecord::Schema.define(:version => 20120906004738) do
     t.integer  "spare"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sensya_purika_sale"
   end
 
   create_table "d_result_tanks", :force => true do |t|
@@ -580,11 +580,12 @@ ActiveRecord::Schema.define(:version => 20120906004738) do
     t.string   "address"
     t.string   "system_name"
     t.decimal  "tax_rate",                 :precision => 5, :scale => 2, :default => 0.0, :null => false
-    t.decimal  "limit",                    :precision => 3, :scale => 0, :default => 0,   :null => false
+    t.decimal  "limit",                    :precision => 5, :scale => 2, :default => 0.0, :null => false
     t.integer  "deleted_flg", :limit => 2,                               :default => 0
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.decimal  "light_oil",                :precision => 5, :scale => 2
   end
 
   create_table "m_aims", :force => true do |t|

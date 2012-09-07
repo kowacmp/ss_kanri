@@ -2,18 +2,19 @@
 	                                         :created_user_id => @created_user_id,
 	                                         :audit_date => @audit_date } %>
 
-<br/>
 
 <!-- 戻るボタンを実装する -->
 <% if params[:back].to_s == "true" then %>
-<a href="javascript:history.back();">戻る</a>
+<a href="javascript:history.back();" >戻る</a><br/>
 <% end %>
+
+<hr/>
 
 <%=render :partial => 'form' %>
 
 <!-- 読取専用スクリプト -->
 <% if params[:readonly].to_s == "true" then %>
-<script>
+<script language="JavaScript">
 	//readonlyの場合はボタンを潰す
 	$(function(){
 		$(":submit,:button").each(function(){

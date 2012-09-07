@@ -78,12 +78,14 @@ SsKanri::Application.routes.draw do
 
   get "d_audit_changemachines/confirm_shop_id_select"
   get "d_audit_changemachines/confirm_user_id_select"
+  get "d_audit_changemachines/show"
   get "d_audit_changemachines/edit"
   get "d_audit_changemachines/index"
   
   get "d_audit_washes/edit"
   get "d_audit_washes/index"
-  
+
+  get "d_audit_etcs/show"  
   get "d_audit_etcs/edit"
   get "d_audit_etcs/index"
  

@@ -8,8 +8,22 @@ module DResultsHelper
   end
   
   def m_oiletc_sql(d_result, oiletc_group)
-    sql = "select m.id, m.oiletc_name, m.oiletc_tani, c.code_name, d.pos1_data, d.pos2_data, d.pos3_data,"
-    sql << " COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0) as pos_total"
+#    sql = "select m.id, m.oiletc_name, m.oiletc_tani, c.code_name, d.pos1_data, d.pos2_data, d.pos3_data,"
+#    sql << " COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0) as pos_total"
+    sql = "select m.id, m.oiletc_name, m.oiletc_tani, c.code_name,"
+    sql << "      CASE m.oiletc_tani WHEN 6 THEN d.pos1_data"
+    sql << "                         ELSE trunc(d.pos1_data, 0)"
+    sql << "      END pos1_data,"
+    sql << "      CASE m.oiletc_tani WHEN 6 THEN d.pos2_data"
+    sql << "                         ELSE trunc(d.pos2_data, 0)"
+    sql << "      END pos2_data,"
+    sql << "      CASE m.oiletc_tani WHEN 6 THEN d.pos3_data"
+    sql << "                         ELSE trunc(d.pos3_data, 0)"
+    sql << "      END pos3_data,"
+    sql << "      CASE m.oiletc_tani WHEN 6 THEN COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0)"
+    sql << "                         ELSE trunc(COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0), 0)"
+    sql << "      END pos_total"
+    
     sql << " from m_oiletcs m left join d_result_oiletcs d"
     sql << "   on (m.id = d.m_oiletc_id "
     if d_result.blank?
@@ -302,7 +316,14 @@ module DResultsHelper
       total_percentage = d_tank_compute_report.decrease_total.to_f / d_tank_compute_report.sale_total.to_f * 100      
 
       #桁オーバーフロー対策
-      total_percentage = 999.999  if total_percentage >= 1000     
+      if total_percentage >= 1000
+        total_percentage = 999.999 
+      elsif total_percentage <= -1000  
+        total_percentage = -999.999
+      elsif total_percentage.nan?  
+        total_percentage = 0        
+      end
+    
       d_tank_compute_report.total_percentage = total_percentage.round(3)
       d_tank_compute_report.save      
     end
@@ -317,7 +338,7 @@ module DResultsHelper
     
     d_tank_compute_reports = DTankComputeReport.find_by_sql(compute_sql)    
     d_tank_decrease_report = DTankDecreaseReport.find(:first, :conditions => ["d_result_id = ?", d_result.id])
-    old_d_tank_decrease_report = DTankDecreaseReport.find(:first, :conditions => ["d_result_id = ?", old_d_result.id])
+    old_d_tank_decrease_report = DTankDecreaseReport.find(:first, :conditions => ["d_result_id = ?", old_d_result_id])
     
     if d_tank_decrease_report.blank?
       d_tank_decrease_report = DTankDecreaseReport.new
@@ -346,13 +367,28 @@ module DResultsHelper
     d_tank_compute_reports.each do |d_tank_compute_report|
       if d_tank_compute_report.m_oil_id.to_i == 2
         oil_percent = d_tank_decrease_report.oil2_num.to_f / d_tank_compute_report.sale_sum.to_f * 100
+        
         #桁オーバーフロー対策
-        oil_percent = 999.99  if oil_percent >= 1000
+        if oil_percent >= 1000
+          oil_percent = 999.99
+        elsif oil_percent <= -1000  
+          oil_percent = -999.99
+        elsif oil_percent.nan?  
+          oil_percent = 0        
+        end             
+       # oil_percent = 999.99  if oil_percent >= 1000
         d_tank_decrease_report.oil_percent = oil_percent.round(2)
         
-        oil_percent_total = d_tank_decrease_report.oil2_num_total.to_f / d_tank_compute_report.sale_total_sum.to_f * 100
+        oil_percent_total = d_tank_decrease_report.oil2_num_total.to_f / d_tank_compute_report.sale_total_sum.to_f * 100        
         #桁オーバーフロー対策
-        oil_percent_total = 999.99  if oil_percent_total >= 1000        
+        if oil_percent_total >= 1000
+          oil_percent_total = 999.99
+        elsif oil_percent_total <= -1000  
+          oil_percent_total = -999.99
+        elsif oil_percent_total.nan?  
+          oil_percent_total = 0        
+        end        
+        #oil_percent_total = 999.99  if oil_percent_total >= 1000        
         d_tank_decrease_report.oil_percent_total = oil_percent_total.round(2)        
       end
     end

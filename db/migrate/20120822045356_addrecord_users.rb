@@ -73,9 +73,11 @@ class AddrecordUsers < ActiveRecord::Migration
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (45, 'tani', '4', '件', '件', '2012-10-01', '2012-10-01');"
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (46, 'tani', '5', '台', '台', '2012-10-01', '2012-10-01');"
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (47, 'tani', '6', 'Ｌ', 'Ｌ', '2012-10-01', '2012-10-01');"
-           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (48, 'kansa_flg', '0', '監査', '監査', '2012-10-01', '2012-10-01');"
-           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (49, 'kansa_flg', '1', '実績', '実績', '2012-10-01', '2012-10-01');"
-
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (48, 'tani', '7', 'Ｐ', 'Ｐ', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (49, 'kansa_flg', '0', '監査', '監査', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (50, 'kansa_flg', '1', '実績', '実績', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (51, 'shop_kbn', '9', 'その他', 'その他', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (52, 'user_class', '3', '役職', '役職', '2012-10-01', '2012-10-01');"
            execute "select setval('m_codes_id_seq',(select max(id) from m_codes));"
            
            execute "TRUNCATE TABLE m_shops;"

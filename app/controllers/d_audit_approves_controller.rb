@@ -53,16 +53,18 @@ class DAuditApprovesController < ApplicationController
     @approval_name = ""
     m_approval = MApproval.find(:first, :conditions => ["menu_id=?", @menu_id])
     
-    for i in 1..5 do
-       if m_approval["approval_id#{i}"].to_s == current_user.id.to_s then
-         @approval_id   = i
-         @approval_name = m_approval["approval_name#{i}"] 
-       end
+    if not(m_approval.nil?) then
+      for i in 1..5 do
+        if m_approval["approval_id#{i}"].to_s == current_user.id.to_s then
+          @approval_id   = i
+          @approval_name = m_approval["approval_name#{i}"] 
+        end
+      end
     end
-
+    
     # 承認済を含むの条件を先に作る
     where_zumi = ""
-    if params[:header][:zumi_flg].to_s != "1" then #自分が承認していないもの
+    if params[:header][:zumi_flg].to_s != "true" then #自分が承認していないもの
       where_zumi = "
                        and coalesce(a.approve_id1, 0) != #{current_user.id} 
                        and coalesce(a.approve_id2, 0) != #{current_user.id}
@@ -112,7 +114,7 @@ class DAuditApprovesController < ApplicationController
       approval = params["approval#{i}"]
 
       #チェックが変更されていたら書込する
-      if to_boolean(approval[:old_approval_flg]) != to_boolean(approval[:approval_flg]) then
+      if approval[:old_approval_flg].to_s != approval[:approval_flg].to_s then
             
         case params[:approval][:table].to_s
         when "d_audit_cashboxes"
@@ -127,13 +129,13 @@ class DAuditApprovesController < ApplicationController
         
         # 1～5に自分が書込されていたら初期化
         for j in 1..5 do
-          if rec["approve_id#{j}"] == current_user.id then
+          if rec["approve_id#{j}"].to_s == current_user.id.to_s then
             rec["approve_id#{j}"] = 0
             rec["approve_date#{j}"] = nil
           end
         end
                   
-        if to_boolean(approval[:approval_flg]) then
+        if approval[:approval_flg].to_s == "true" then
           # マスタに設定されているIDの箇所に書込
           rec["approve_id#{approval_id}"] = current_user.id
           rec["approve_date#{approval_id}"] = upd_time.to_date
@@ -154,18 +156,11 @@ class DAuditApprovesController < ApplicationController
     
     #トップに戻る
     redirect_to :action => "edit", :header => {
-                                               :kansa => params[:header][:kansa],
-                                               :shop_kbn => params[:header][:shop_kbn],
-                                               :audit_class => params[:header][:audit_class],
-                                               :zumi_flg => 1} #チェックONを強制的に出す    
+                                               :kansa => params[:hheader][:kansa],
+                                               :shop_kbn => params[:hheader][:shop_kbn],
+                                               :audit_class => params[:hheader][:audit_class],
+                                               :zumi_flg => true} #チェックONを強制的に出す    
     
   end
   
-  private
-  def to_boolean(obj)
-    
-    return (obj.to_s == "true" or obj.to_s == "1")
-    
-  end
-
 end

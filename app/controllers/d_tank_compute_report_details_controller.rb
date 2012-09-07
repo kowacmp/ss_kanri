@@ -7,10 +7,16 @@ class DTankComputeReportDetailsController < ApplicationController
   end
 
   def search
+    @mode = params[:mode]
+    if params[:mode] == 'manager'
+      @shop_id = params[:shop_id]
+    else
+      @shop_id = current_user.m_shop_id
+    end    
     @time_now = Time.now
     #select_yearの開始年
-    @start_year = DResult.minimum("result_date",:conditions => ['m_shop_id = ?',current_user.m_shop_id])[0,4].to_i
-
+    @start_year = DResult.minimum("result_date",:conditions => ['m_shop_id = ?',@shop_id])[0,4].to_i
+    
       if params[:date] == nil or params[:date] == ''
         @year = @time_now.year.to_s
         @month = format_month(@time_now.month)
@@ -34,10 +40,8 @@ class DTankComputeReportDetailsController < ApplicationController
       @tank_id = params[:select_tank].to_i unless params[:select_tank] == nil
       @oil_id = params[:select_oil].to_i unless params[:select_oil] == nil
 
-      
-      @d_results = DResult.find(:all,
-      :conditions => ['result_date between ? and ? and m_shop_id = ?',@from_ymd,@to_ymd,current_user.m_shop_id])
-
+        @d_results = DResult.find(:all,
+          :conditions => ['result_date between ? and ? and m_shop_id = ?',@from_ymd,@to_ymd,@shop_id])
   end
 
   def change_radio

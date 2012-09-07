@@ -31,7 +31,7 @@
   			<%=radio_button :header, :audit_class, "1", {:checked => (audit_class.to_s == "1")} %>
   			<label for="header_audit_class_1">本監査</label>
   			&nbsp;&nbsp;
-  			<%=check_box :header, :zumi_flg, {:checked => (zumi_flg.to_s == "1")} %>
+  			<%=check_box :header, :zumi_flg, {:checked => (zumi_flg.to_s == "true")}, true, false %>
   			<label for="header_zumi_flg">承認済含む</label>
   		</td>
   		<td style="border: none;">

@@ -13,12 +13,24 @@ class DResultsController < ApplicationController
     @m_oils.each do |m_oil|
       session[:m_oil_totals][m_oil.id] = Hash::new
       session[:m_oil_totals][m_oil.id][:total] = 0
-    end    
+    end  
+    
+    @today = Time.now.strftime("%Y/%m/%d")
+    @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
+                                                      current_user.m_shop_id, Time.now.strftime("%Y%m%d")])
+    select_date
   end
   
   def select_date
     @m_shop = MShop.find(current_user.m_shop_id)
-    @result_date = params[:select_date][0,4] + params[:select_date][5,2] + params[:select_date][8,2]
+    
+    #indexからselect_dateに来た場合は今日の日付
+    if params[:select_date].blank?
+      @result_date = Time.now.strftime("%Y%m%d")
+    else  
+      @result_date = params[:select_date].delete("/")
+    end
+    
     @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       current_user.m_shop_id, @result_date])
     
@@ -32,7 +44,7 @@ class DResultsController < ApplicationController
       oil_sql << " and d.d_result_id = #{@d_result.id})"  
     end    
     oil_sql << " where m.deleted_flg = 0 order by m.oil_cd"
-
+p "oil_sql=#{oil_sql}"
     @pos1_gasorin, @pos2_gasorin, @pos3_gasorin, @total_gasorin = 0,0,0,0
     @pos1_mofuel, @pos2_mofuel, @pos3_mofuel, @total_mofuel = 0,0,0,0
     
@@ -41,7 +53,7 @@ class DResultsController < ApplicationController
       session[:m_oil_totals][m_oil.id][:total] = m_oil.pos_total
       
       if m_oil.id == 1 or m_oil.id == 2
-        @pos1_gasorin += m_oil.pos1_data.to_f 
+        @pos1_gasorin += m_oil.pos1_data.to_f
         @pos2_gasorin += m_oil.pos2_data.to_f
         @pos3_gasorin += m_oil.pos3_data.to_f
         @total_gasorin += m_oil.pos_total.to_f
@@ -54,11 +66,19 @@ class DResultsController < ApplicationController
         @total_mofuel += m_oil.pos_total.to_f
       end          
     end
+    @pos1_gasorin = @pos1_gasorin.round(2)
+    @pos2_gasorin = @pos1_gasorin.round(2)
+    @pos3_gasorin = @pos1_gasorin.round(2)
+    @total_gasorin = @total_gasorin.round(2)
+    @pos1_mofuel = @pos1_mofuel.round(2)
+    @pos2_mofuel = @pos2_mofuel.round(2)
+    @pos3_mofuel = @pos3_mofuel.round(2)
+    @total_mofuel = @total_mofuel.round(2)
     
     #油外販売取得
     oiletc0_sql = m_oiletc_sql(@d_result, 0)
     @oiletc0s = MOiletc.find_by_sql(oiletc0_sql)
-    
+
     @etc0_pos1_total, @etc0_pos2_total, @etc0_pos3_total, @etc0_pos_total = 0,0,0,0  
     @oiletc0s.each do |oiletc0|
       #単位が円のものだけ合計する
@@ -324,13 +344,14 @@ class DResultsController < ApplicationController
       d_result_self_report.touyu = (session[:m_oil_totals][4][:total].to_f).round(1)   
       #油外
       d_result_self_report.kyuyu_purika = m_oiletc_pos_total(d_result.id, 8, tax_rate)
-      d_result_self_report.sensya = m_oiletc_pos_total(d_result.id, 4, tax_rate)
-      d_result_self_report.sensya_purika = m_oiletc_pos_total(d_result.id, 10, tax_rate)
-      d_result_self_report.muton = m_oiletc_pos_total(d_result.id, 21, tax_rate)
-      d_result_self_report.coating = m_oiletc_pos_total(d_result.id, 25, tax_rate)
-      d_result_self_report.taiyaw = m_oiletc_pos_total(d_result.id, 26, tax_rate)
+      d_result_self_report.sensya = m_oiletc_pos_total(d_result.id, 12, tax_rate)
+      d_result_self_report.sensya_purika = m_oiletc_pos_total(d_result.id, 11, tax_rate)
+      d_result_self_report.sensya_purika_sale = m_oiletc_pos_total(d_result.id, 10, tax_rate)
+      d_result_self_report.muton = m_oiletc_pos_total(d_result.id, 22, tax_rate)
+      d_result_self_report.coating = m_oiletc_pos_total(d_result.id, 26, tax_rate)
+      d_result_self_report.taiyaw = m_oiletc_pos_total(d_result.id, 27, tax_rate)
       d_result_self_report.sp = m_oiletc_pos_total(d_result.id, 9, tax_rate)
-      d_result_self_report.sc = m_oiletc_pos_total(d_result.id, 22, tax_rate)
+      d_result_self_report.sc = m_oiletc_pos_total(d_result.id, 23, tax_rate)
       #他売上
       d_result_self_report.wash_item = m_etc_pos_total(d_result.id, 10, tax_rate)
       d_result_self_report.game = m_etc_pos_total(d_result.id, 12, tax_rate)
@@ -363,22 +384,21 @@ class DResultsController < ApplicationController
       d_result_report.sensya = m_oiletc_pos_total(d_result.id, 4, tax_rate)
       d_result_report.koutin = m_oiletc_pos_total(d_result.id, 5, tax_rate)
       d_result_report.taiya = m_oiletc_pos_total(d_result.id, 6, tax_rate)
-      d_result_report.chousei = m_oiletc_pos_total(d_result.id, 27, tax_rate)  
-      d_result_report.oiletc_sale = (d_result_report.koua * 500) + (d_result_report.buyou * 0.3) + (d_result_report.tokusei * 0.7) + (d_result_report.sensya * 0.95) + (d_result_report.koutin * 0.95) + (d_result_report.taiya * 1500)  
-      d_result_report.arari = d_result_report.oiletc_sale + d_result_report.chousei      
-      d_result_report.syaken = m_oiletc_pos_total(d_result.id, 12, tax_rate)
+      d_result_report.chousei = m_oiletc_pos_total(d_result.id, 28, tax_rate) 
+      d_result_report.arari = (d_result_report.koua * 500) + (d_result_report.buyou * 0.3) + (d_result_report.tokusei * 0.7) + (d_result_report.sensya * 0.95) + (d_result_report.koutin * 0.95) + (d_result_report.taiya * 1500) + d_result_report.chousei      
+      d_result_report.syaken = m_oiletc_pos_total(d_result.id, 13, tax_rate)
       d_result_report.kyuyu_purika = m_oiletc_pos_total(d_result.id, 8, tax_rate)
-      d_result_report.sensya_purika = m_oiletc_pos_total(d_result.id, 10, tax_rate)
+      d_result_report.sensya_purika = m_oiletc_pos_total(d_result.id, 11, tax_rate)
       d_result_report.sp = m_oiletc_pos_total(d_result.id, 9, tax_rate)
-      d_result_report.sc = m_oiletc_pos_total(d_result.id, 22, tax_rate)
-      d_result_report.taiyaw = m_oiletc_pos_total(d_result.id, 26, tax_rate)
-      d_result_report.coating = m_oiletc_pos_total(d_result.id, 25, tax_rate)
-      d_result_report.atf = m_oiletc_pos_total(d_result.id, 13, tax_rate)
-      d_result_report.kousen = m_oiletc_pos_total(d_result.id, 14, tax_rate)
-      d_result_report.bt = m_oiletc_pos_total(d_result.id, 16, tax_rate)
+      d_result_report.sc = m_oiletc_pos_total(d_result.id, 23, tax_rate)
+      d_result_report.taiyaw = m_oiletc_pos_total(d_result.id, 27, tax_rate)
+      d_result_report.coating = m_oiletc_pos_total(d_result.id, 26, tax_rate)
+      d_result_report.atf = m_oiletc_pos_total(d_result.id, 14, tax_rate)
+      d_result_report.kousen = m_oiletc_pos_total(d_result.id, 15, tax_rate)
+      d_result_report.bt = m_oiletc_pos_total(d_result.id, 17, tax_rate)
       d_result_report.bankin = m_oiletc_pos_total(d_result.id, 7, tax_rate)
-      d_result_report.waiper = m_oiletc_pos_total(d_result.id, 17, tax_rate)
-      d_result_report.mobil1 = m_oiletc_pos_total(d_result.id, 18, tax_rate)
+      d_result_report.waiper = m_oiletc_pos_total(d_result.id, 18, tax_rate)
+      d_result_report.mobil1 = m_oiletc_pos_total(d_result.id, 19, tax_rate)
        
       #前回レコードがない場合、または月初めの場合は累計項目に今回の値を代入
       if old_d_result_report.blank? or day == "01" 
@@ -397,7 +417,6 @@ class DResultsController < ApplicationController
   
   def reserve_index
     @result_date = params[:result_date]
-    
     @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       current_user.m_shop_id, @result_date])
     
