@@ -38,8 +38,14 @@
   	  <th><%= f.label '最大数' %></th>
   	  <td><%= f.number_field :max_num, :style=>"ime-mode:disabled" ,:maxlength=>2,:class=>"number" %></td>  	  
   	</tr>
+  	<tr>
+  	  <th><%= f.label '単価' %></th>
+  	  <td><%= f.text_field :price ,:maxlength=>10, :class=>"money" %></td>  	  
+  	</tr>
   </table>
   <div class="actions">
     <%= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div>
 <% end %>
+<%= javascript_include_tag "comma" %>
+
