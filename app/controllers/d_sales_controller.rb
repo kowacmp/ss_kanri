@@ -1,7 +1,10 @@
+# -*- coding:utf-8 -*-
 class DSalesController < ApplicationController
   
-  include ApplicationHelper;
-  
+  include ActionView::Helpers::NumberHelper
+  include ApplicationHelper
+  include DSalesHelper
+ 
   # GET /d_sales
   # GET /d_sales.json
   def index
@@ -226,7 +229,7 @@ p params
   #売上現金管理表
   def report_view
     
-    p "report_view"
+    #p "report_view"
     
     @head = DSale.new
         
@@ -261,12 +264,17 @@ p params
     @etc_item_total = DSaleItem.find_by_sql(select_sql)
     @etc_item_total = @etc_item_total[0]
     
-    respond_to do |format|
-      format.html 
-      format.json { render json: @d_sale }
-    end    
+    #印刷場合は出力ロジックへ
+    if params[:output] == "print"
+      report_print #印刷
+    else
+      respond_to do |format|
+        format.html 
+        format.json { render json: @d_sale }
+      end 
+    end   
   end
-  
+     
   #D_SALE_IMTES update
   def update_d_sale_item(params, d_sale_id)
 
@@ -526,6 +534,72 @@ p params
          
     
     return DSale.find_by_sql("#{select_sql} #{condition_sql} order by shop_cd")    
+  end
+  
+  #売上管理表印刷
+  def report_print
+    #データセット
+    m_shop = MShop.find(@head[:m_shop_id])
+    
+    #設計ファイルOPEN
+    report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_sale_report.tlf')
+
+
+    report.start_new_page
+
+    report.page.list(:report_list).header do |h|
+      h.item(:title).value("#{m_shop.shop_name} 売上・現金管理表")
+      h.item(:sale_date).value("#{@head[:input_day][0,4]}年#{@head[:input_day][5,2]}月")
+      h.item(:zengetumatu_exist_money).value(num_fmt(@d_sale_zengetumatu.exist_money))
+      h.item(:zengetumatu_over_short).value(num_fmt(@d_sale_zengetumatu.over_short))
+    end
+    
+    #繰り返し
+    loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, -1)).strftime("%d").to_i 
+    loopcnt.times { |i| 
+      select_day = Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, i + 1)        
+      @d_sale, @zenjitu_d_sale = get_d_sales_data(select_day.strftime("%Y%m%d"))
+      
+                       
+      #明細データセット
+      report.page.list(:report_list).add_row do |row|
+        
+        row.item(:day).value(i + 1)
+        row.item(:week).value(day_of_the_week(select_day.wday))
+        if @d_sale
+          row.item(:sale_money).value(num_fmt(@d_sale.sale_money)) 
+          row.item(:sale_purika).value(num_fmt(@d_sale.sale_purika))
+          row.item(:purika_tesuryo).value(num_fmt(@d_sale.purika_tesuryo))
+          row.item(:sonota_money).value(num_fmt(@d_sale.sonota_money))
+          row.item(:recive_money).value(num_fmt(@d_sale.recive_money))
+          row.item(:pay_money).value(num_fmt(@d_sale.pay_money))
+          row.item(:d_sale_syokei).value(num_fmt(@d_sale_syokei))
+          row.item(:sale_ass).value(num_fmt(@d_sale.sale_ass))
+          row.item(:d_sale_ass).value(num_fmt(@d_sale_ass))
+          row.item(:zenjitu_d_sale_sale_pm_out).value(num_fmt(@zenjitu_d_sale.sale_pm_out))
+          row.item(:sale_today_out).value(num_fmt(@d_sale.sale_today_out))
+          row.item(:sale_am_out).value(num_fmt(@d_sale.sale_am_out))
+          row.item(:sale_pm_out).value(num_fmt(@d_sale.sale_pm_out))
+          row.item(:calc_exist_money).value(num_fmt(@calc_exist_money))
+          row.item(:exist_money).value(num_fmt(@d_sale.exist_money))
+          row.item(:over_short).value(num_fmt(@d_sale.over_short))
+        end
+        
+      end
+    }
+
+
+    #PDF出力
+    #タイトルセット
+    pdf_title = "売上・現金管理表.pdf"
+    ua = request.env["HTTP_USER_AGENT"]
+    pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
+
+    #pdfを作成
+    send_data report.generate, :filename    => pdf_title ,#URI.encode(pdf_title), #KOWA IEでファイルをダウンロードすると文字化けするため
+                               :type        => 'application/pdf',
+                               :disposition => 'attachment'
+
   end
   
 end

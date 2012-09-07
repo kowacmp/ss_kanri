@@ -25,9 +25,7 @@ class User < ActiveRecord::Base
   
   validates :account,        :length => {:minimum => 4, :maximum => 10,
                                           :message => '社員コードは４文字以上１０文字以内で入力してください。'}
-  validates :password,        :length => {:minimum => 4, :maximum => 40,
-                                          :message => 'パスワードは４文字以上４０文字以内で入力してください。'}
-  
+
   def email_required?
     false
   end

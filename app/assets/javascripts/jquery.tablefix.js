@@ -88,7 +88,7 @@
 			});
 			bodyDiv
 			    .addClass('bodyDiv')
-				.width(bodyWidth + (withWidth ? 20 : 0) + (withHeight ? 40 : 0))
+				.width(bodyWidth + (withWidth ? 20 : 0) + (withHeight ? 20 : 0) + (withWidth && withHeight ? 20 : 0) )
 				.height(bodyHeight + (withWidth ? 20 : 0) + (withHeight ? 20 : 0))
 				.css({left: offsetX + 'px', top: offsetY + 'px'});
 			bodyTable.css({

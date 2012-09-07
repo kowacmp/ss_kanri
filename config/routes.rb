@@ -145,6 +145,7 @@ SsKanri::Application.routes.draw do
       get :lock
       get :all_lock
       get :report_view
+      get :report_print
     end
   end
   

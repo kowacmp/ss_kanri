@@ -96,8 +96,16 @@ class UsersController < ApplicationController
     @pass_flg = params[:pass_flg].to_i
     @return_flg = params[:return_flg].to_i
 
-    if @user.valid_password?(params[:user][:password])
-      @user.errors[:base] = "前回とパスワードが同じです。"
+    if @pass_flg == 1
+      if @user.valid_password?(params[:user][:password])
+        @user.errors[:base] = "前回とパスワードが同じです。"
+      end
+      
+      unless params[:user][:password] == nil
+        if params[:user][:password].length < 4 or params[:user][:password].length > 40
+           @user.errors[:base] = "パスワードは４文字以上４０文字以内で入力してください。"
+        end
+      end
     end
 
     respond_to do |format|
