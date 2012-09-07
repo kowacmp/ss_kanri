@@ -48,7 +48,7 @@ class DYumePointListsController < ApplicationController
 
     shops = MShop.find(:all,:conditions => ['shop_kbn = ?', @shop_kbn],:order => 'shop_cd')
     
-    report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_yume_point_list2.tlf')
+    report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_yume_point_list.tlf')
 
     report.layout.config.list(:list) do
       use_stores :p1_sum_row => Hash.new,
