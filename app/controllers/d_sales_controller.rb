@@ -233,12 +233,19 @@ p params
     
     @head = DSale.new
         
-
-    key_data =  DSale.find(params[:id])
-    @head[:m_shop_id] = key_data.m_shop_id
-    @head[:input_day] = key_data.sale_date.to_s[0,4] + "/" + key_data.sale_date.to_s[4,2] + "/" + key_data.sale_date.to_s[6,2]
-    @head[:input_shop_kbn] = params[:input_shop_kbn]
-
+    if params[:from_controller] == "d_sale_approves"
+      key_data = DSaleReport.find(params[:id])
+      @head[:m_shop_id] = key_data.m_shop_id
+      @head[:input_ym] = key_data.sale_date
+      @head[:input_shop_kbn] = params[:head][:shop_kbn]
+      @head[:input_zumi_flg] = params[:head][:zumi_flg]
+    else
+      key_data =  DSale.find(params[:id])
+      @head[:m_shop_id] = key_data.m_shop_id
+      @head[:input_day] = key_data.sale_date.to_s[0,4] + "/" + key_data.sale_date.to_s[4,2] + "/" + key_data.sale_date.to_s[6,2]
+      @head[:input_shop_kbn] = params[:input_shop_kbn]
+    end
+    
     @from_controller = params[:from_controller]
 
     #前月末現金有高、過不足取得
@@ -552,7 +559,7 @@ p params
    report.layout.config.list(:report_list) do
     # フッターに合計をセット.
       events.on :footer_insert do |e|
-        e.section.item(:footer_cash_money).value(num_fmt(d_sale_total[:sale_money].to_i - @etc_item_total.item_money.to_i))
+        e.section.item(:footer_cash_money).value("")
         e.section.item(:footer_coin_tesuryo).value(num_fmt(@etc_item_total.item_money.to_i))
         e.section.item(:footer_suito_zan).value(num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i))
       end #events.on

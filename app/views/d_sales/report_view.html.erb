@@ -113,8 +113,11 @@
 		</tbody>
 	</table>
 <!--/div-->
-
-<%= link_to "戻る", {:controller => @from_controller, :action => "index", :input_day => @head[:input_day], :input_shop_kbn => @head[:input_shop_kbn]}, :method => :get, :class => 'return_icon' %>
+<% if @from_controller == "d_sale_approves" %>
+	<%= link_to "戻る", {:controller => @from_controller, :action => "edit", :header=> {:ym => @head[:input_ym], :shop_kbn => @head[:input_shop_kbn], :zumi_flg =>  @head[:input_zumi_flg]}}, :method => :get, :class => 'return_icon' %>
+<% else %>
+	<%= link_to "戻る", {:controller => @from_controller, :action => "index", :input_day => @head[:input_day], :input_shop_kbn => @head[:input_shop_kbn]}, :method => :get, :class => 'return_icon' %>
+<% end %>
 
 <script>
 $(function () {
