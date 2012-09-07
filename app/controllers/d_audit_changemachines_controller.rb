@@ -12,6 +12,12 @@ class DAuditChangemachinesController < ApplicationController
 
   end
   
+  def show
+    
+    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true
+    
+  end
+  
   def edit
 
     if not(params[:id].nil?) then

@@ -49,7 +49,4 @@ class DTankComputeReportsController < ApplicationController
        order by group_cd,shop_cd',@from_ymd,@to_ymd,@shop_kbn])
   end
 
-  def show
-    
-  end
 end

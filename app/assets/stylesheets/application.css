@@ -136,10 +136,21 @@ input.text{
 
 /*--------------------------------------見出し*/
 h2 {
-	margin: 20px 100px 30px 30px;
+	margin: 10px 100px 30px 30px;
 	padding: 3px 10px;
 	border-left: 8px solid #2a83a2;
 	border-bottom: 1px solid #2a83a2;
+	font-size: 16px;
 }
 
-
+h1 {
+	margin: 5px 5px 10px 10px;
+	padding: 2px 2px;
+	border-left: 20px solid #3256B6;
+	border-right: 20px solid #3256B6;
+	border-top: 1px solid #3256B6;
+	border-bottom: 1px solid #3256B6;
+	font-size: 20px;
+	color: #039;
+    font-weight:bold;
+}

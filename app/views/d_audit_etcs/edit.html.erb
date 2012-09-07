@@ -3,5 +3,23 @@
 	                                         :audit_date_from => @audit_date_from,
 	                                         :audit_date_to => @audit_date_to } %>
 	                                         
-<br/>                                        
+<!-- 戻るボタンを実装する -->
+<% if params[:back].to_s == "true" then %>
+<a href="javascript:history.back();" >戻る</a><br/>
+<% end %>
+
+<hr/>
+                            
 <%=render :partial => 'form' %>
+
+<!-- 読取専用スクリプト -->
+<% if params[:readonly].to_s == "true" then %>
+<script language="JavaScript">
+	//readonlyの場合はボタンを潰す
+	$(function(){
+		$(":submit,:button").each(function(){
+			this.disabled = true;
+		});
+	});
+</script>
+<% end %>

@@ -99,6 +99,7 @@
 			<% 10.times { |i| %>
 				<% if d_sale_items[i] == nil %>
 				  <% @pay_item = DSaleItem.new %>
+				  <% @pay_item.item_money = ""  %>
 				<% else %>
 				  <% @pay_item = d_sale_items[i] %>
 				<% end %>
@@ -141,6 +142,7 @@
 			<% 10.times { |i| %>
 				<% if d_sale_items[i] == nil %>
 				  <% @recive_item = DSaleItem.new %>
+				  <% @recive_item.item_money = "" %>
 				<% else %>
 				  <% @recive_item = d_sale_items[i] %>
 				<% end %>
@@ -183,6 +185,7 @@
 			<% 10.times { |i| %>
 				<% if d_sale_items[i] == nil %>
 				  <% @etc_item = DSaleItem.new %>
+				  <% @etc_item.item_money = "" %>
 				<% else %>
 				  <% @etc_item = d_sale_items[i] %>
 				<% end %>
@@ -214,7 +217,7 @@
 				<th style="min-width:60px" rowspan="2"></th>
 			</tr>
 			<tr>
-				<th style="min-width:300px" >店舗</th>
+				<th style="min-width:320px" >店舗</th>
 				<th style="min-width:100px" >シリアルNo</th>
 				<th style="min-width:100px" >金額</th>
 			</tr>
@@ -228,6 +231,7 @@
 			<% 10.times { |i| %>
 				<% if d_sale_items[i] == nil %>
 				  <% @purika_item = DSaleItem.new %>
+				  <% @purika_item.item_money = "" %>
 				<% else %>
 				  <% @purika_item = d_sale_items[i] %>
 				<% end %>
@@ -321,10 +325,10 @@
   
 <script>
 $(function () {
-    $('#pay_table').tablefix({width: 695, height: 190, fixRows: 1, fixCols: 0});
-    $('#recive_table').tablefix({width: 695, height: 190, fixRows: 1, fixCols: 0});
-    $('#purika_table').tablefix({width: 695, height: 190, fixRows: 2, fixCols: 0});
-    $('#etc_table').tablefix({width: 695, height: 190, fixRows: 1, fixCols: 0});
+    $('#pay_table').tablefix({width: 697, height: 190, fixRows: 1, fixCols: 0});
+    $('#recive_table').tablefix({width: 697, height: 190, fixRows: 1, fixCols: 0});
+    $('#purika_table').tablefix({width: 697, height: 190, fixRows: 2, fixCols: 0});
+    $('#etc_table').tablefix({width: 697, height: 190, fixRows: 1, fixCols: 0});
 
     //テーブルにスクロールバーを設定
   //  var pytables = new superTable("pay_table", {

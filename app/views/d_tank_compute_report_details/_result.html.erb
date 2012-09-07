@@ -64,11 +64,12 @@
     <td>&nbsp;</td>
   </tr>
 <% start_day.times do |i| %>
-<% result = DResult.find(:all,:conditions => ['result_date = ? and m_shop_id = ?',get_ymd,current_user.m_shop_id]).first %>
+<% result = DResult.find(:all,:conditions => ['result_date = ? and m_shop_id = ?',
+	  get_ymd,@shop_id]).first %>
 <% get_ymd = (get_ymd.to_i + 1).to_s %>
   <% unless @oil_id == nil %><!-- 油種の場合-->
-  <% tank_compute = get_select_oil(result.id,@oil_id,current_user.m_shop_id) unless result == nil %>
-  	<% end %>
+    <% tank_compute = get_select_oil(result.id,@oil_id,@shop_id) unless result == nil %>
+  <% end %>
   <% unless @tank_id == nil %><!-- タンクの場合-->
   <% tank_compute = DTankComputeReport.find(:all,:conditions => ['d_result_id = ? and m_tank_id = ?',
   	result.id,@tank_id]).first unless result == nil %>

@@ -1,11 +1,14 @@
 <table id="rounded-corner">
 	<tr><th>店舗名</th>
-		<td><%= MShop.find(current_user.m_shop_id).shop_name %></td>
+		<td><%= MShop.find(@shop_id).shop_name %>
+	    </td>
 	</tr>
 </table>
 <%= radio_button_tag("rbtn",1,:checked => true) %>油種　
 <%= radio_button_tag("rbtn",2) %>タンク
 <%= form_tag(url_for(:action => 'search'),:remote => true) do %>
+<%= hidden_field_tag 'mode',@mode %>
+<%= hidden_field_tag 'shop_id',@shop_id %>
 <table id='rounded-corner'>
 	<tr>
       <th>対象年月</th>
@@ -20,18 +23,23 @@
       </tr>
 </table>
 <% end %>
-
+<% if @mode == 'manager' %>
+  <%= link_to '地下タンク計算表一覧',{:controller => 'd_tank_compute_reports',:action => 'index'}%>
+<% end %>
 <p>
 	<div id="result">
 	    <%= render partial: 'result'%>
 	</div>
 </p>
+<% if @mode == 'manager' %>
+  <%= link_to('地下タンク計算表一覧',{:controller => 'd_tank_compute_reports',:action => 'index'}) %>
+<% end %>
 
 <script type="text/javascript">
 jQuery(function() {
     jQuery('input[name="rbtn"]').change(function(){
         var data = jQuery(this).val();
-        $.get("<%=url_for({:action => 'change_radio'}) %>?rbtn=" + data + "&shop_id=" + <%= current_user.m_shop_id %>);
+        $.get("<%=url_for({:action => 'change_radio'}) %>?rbtn=" + data + "&shop_id=" + <%= @shop_id %> + "&mode=" + <%= @mode %> );
     });
 });
 </script>

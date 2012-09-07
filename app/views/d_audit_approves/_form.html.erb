@@ -1,17 +1,17 @@
 <%=form_tag({:action => 'update' }, :id => "form_update") do%>
 
 <!-- 検索パラメータ -->
-<%=hidden_field :header, :kansa,       :value => params[:header][:kansa] %>
-<%=hidden_field :header, :shop_kbn,    :value => params[:header][:shop_kbn] %>
-<%=hidden_field :header, :audit_class, :value => params[:header][:audit_class] %>
-<%=hidden_field :header, :zumi_flg,    :value => params[:header][:zumi_flg] %>
+<%=hidden_field :hheader, :kansa,       :value => params[:header][:kansa] %>
+<%=hidden_field :hheader, :shop_kbn,    :value => params[:header][:shop_kbn] %>
+<%=hidden_field :hheader, :audit_class, :value => params[:header][:audit_class] %>
+<%=hidden_field :hheader, :zumi_flg,    :value => params[:header][:zumi_flg] %>
 
 <!-- 書き込み先の情報を付加 -->
 <%=hidden_field :approval, :table,         :value => @table %>
 <%=hidden_field :approval, :approval_id,   :value => @approval_id %>
 <%=hidden_field :approval, :approval_name, :value => @approval_name %>
 
-<table class='rounded-corner' >
+<table class='rounded-corner' style="width:98%" >
 
 	<tr>
 		<td colspan="8" align="right" style="border: none;">
@@ -77,7 +77,7 @@
 				<%= user.user_name %>
 			</td>
 			<td align="center">
-				<a href="../../d_audit_changemachines/edit?readonly=true&back=true&id=<%=approval.id%>">詳細</a>
+				<%= link_to '参照', :controller => @table, :action => "show", :id => approval.id %>
 			</td>
 			<td align="center">
 				<%
