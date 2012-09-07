@@ -21,6 +21,10 @@
   	  <th>最大数</th>
   	  <td><%= @m_wash.max_num %></td>  	  
   	</tr>
+  	<tr>
+  	  <th>単価</th>
+  	  <td align="right"><%= number_with_delimiter(@m_wash.price) %></td>  	  
+  	</tr>
   </table>
 
 <%#= link_to '編集', edit_m_wash_path(@m_wash), :class => 'edit_icon' %> 
