@@ -61,8 +61,27 @@ module DSalesHelper
   end
   
   #
-  def calc_total(d_sale_total)
+  def calc_total(d_sale_total,init = false)
     return_hash = d_sale_total
+    
+    if init 
+      return_hash[:sale_money] = ""
+      return_hash[:sale_purika] = ""
+      return_hash[:purika_tesuryo] = ""
+      return_hash[:sonota_money] = ""
+      return_hash[:recive_money] = ""
+      return_hash[:pay_money] = ""
+      return_hash[:d_sale_syokei] = ""
+      return_hash[:sale_ass] = ""
+      return_hash[:d_sale_ass] = ""
+      return_hash[:zenjitu_d_sale_sale_pm_out] = ""
+      return_hash[:sale_today_out] = ""
+      return_hash[:sale_am_out] = ""
+      return_hash[:sale_pm_out] = ""
+      return_hash[:d_sale_calc_aridaka] = ""
+      return_hash[:d_sale_cash_aridaka] = ""
+      return_hash[:kabusoku] = ""
+    end
     
     if @d_sale
       return_hash[:sale_money] = return_hash[:sale_money].to_i + @d_sale.sale_money.to_i

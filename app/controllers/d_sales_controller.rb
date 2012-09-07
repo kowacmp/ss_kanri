@@ -549,10 +549,11 @@ p params
     #データセット
     m_shop = MShop.find(@head[:m_shop_id])
     
-    select_day = Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, 1)        
-    @d_sale, @zenjitu_d_sale = get_d_sales_data(select_day.strftime("%Y%m%d"))
-    d_sale_total = Hash::new #合計データ
-    d_sale_total = calc_total(d_sale_total)
+    #フッター出力項目退避エリア
+    footer = Hash::new
+    footer[:cash_money] = ""
+    footer[:coin_tesuryo] = ""
+    footer[:suito_zan] = ""
     
     #設計ファイルOPEN
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_sale_report.tlf')
@@ -560,9 +561,9 @@ p params
    report.layout.config.list(:report_list) do
     # フッターに合計をセット.
       events.on :footer_insert do |e|
-        e.section.item(:footer_cash_money).value("")
-        e.section.item(:footer_coin_tesuryo).value(num_fmt(@etc_item_total.item_money.to_i))
-        e.section.item(:footer_suito_zan).value(num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i))
+        e.section.item(:footer_cash_money).value(footer[:cash_money])
+        e.section.item(:footer_coin_tesuryo).value(footer[:coin_tesuryo])
+        e.section.item(:footer_suito_zan).value(footer[:suito_zan])
       end #events.on
     end
 
@@ -575,6 +576,7 @@ p params
       h.item(:zengetumatu_over_short).value(num_fmt(@d_sale_zengetumatu.over_short))
     end
     
+    d_sale_total = Hash::new #合計データ
     #繰り返し
     loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, -1)).strftime("%d").to_i 
     loopcnt.times { |i| 
@@ -630,14 +632,11 @@ p params
 
     end
     
-    #フッター
-#    report.page.list(:report_list).footer do |f|
-#      h.item(:footer_cash_money).value(num_fmt(d_sale_total[:sale_money].to_i - @etc_item_total.item_money.to_i))
-#      h.item(:footer_coin_tesuryo).value(num_fmt(@etc_item_total.item_money.to_i))
-#      h.item(:footer_suito_zan).value(num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i))
-#
-
-       
+    #フッターにセットする値をセット
+    footer[:cash_money] = num_fmt(d_sale_total[:sale_money].to_i - @etc_item_total.item_money.to_i)
+    footer[:coin_tesuryo] = num_fmt(@etc_item_total.item_money.to_i)
+    footer[:suito_zan] = num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i)
+    
     #PDF出力
     #タイトルセット
     pdf_title = "売上・現金管理表.pdf"
