@@ -9,7 +9,7 @@ class DSaleApprovesController < ApplicationController
   def edit
 
     # 処理選択よりメニューIDを取得する
-    @menu_id = 50
+    @menu_id = 44
     
     # 承認ID、及び名称を取得する
     @approval_id = 0
