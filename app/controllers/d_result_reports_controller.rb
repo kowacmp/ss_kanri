@@ -20,19 +20,38 @@ class DResultReportsController < ApplicationController
     @input_ymd_s = @input_ymd[0,4] + @input_ymd[5,2] + "01"
     @input_ymd_e = @input_ymd.delete("/")
     
-    @select_kbn = params[:select_kbn].to_i
-    
     @shop_info = MShop.find(current_user.m_shop_id)
     
-    if @shop_info.shop_kbn == 0 or @shop_info.shop_kbn == 1
-      where_sql_a = " and a2.shop_kbn = #{@shop_info.shop_kbn} "
-      where_sql_b = " and b2.shop_kbn = #{@shop_info.shop_kbn} "
-      where_sql_c = " and c1.shop_kbn = #{@shop_info.shop_kbn} "
+    if params[:select_kbn] == nil
+      if @shop_info.shop_kbn == 0
+        @select_kbn = 2
+      else
+        @select_kbn = 0
+      end
     else
-      where_sql_a = " and (a2.shop_kbn = 0 or a2.shop_kbn = 1) "
-      where_sql_b = " and (b2.shop_kbn = 0 or b2.shop_kbn = 1) "
-      where_sql_c = " and (c1.shop_kbn = 0 or c1.shop_kbn = 1) "
+      @select_kbn = params[:select_kbn].to_i
     end
+    
+    #if @shop_info.shop_kbn == 0 or @shop_info.shop_kbn == 1
+    #  where_sql_a = " and a2.shop_kbn = #{@shop_info.shop_kbn} "
+    #  where_sql_b = " and b2.shop_kbn = #{@shop_info.shop_kbn} "
+    #  where_sql_c = " and c1.shop_kbn = #{@shop_info.shop_kbn} "
+    #else
+    #  where_sql_a = " and (a2.shop_kbn = 0 or a2.shop_kbn = 1) "
+    #  where_sql_b = " and (b2.shop_kbn = 0 or b2.shop_kbn = 1) "
+    #  where_sql_c = " and (c1.shop_kbn = 0 or c1.shop_kbn = 1) "
+    #end
+    
+    if @select_kbn == 0 or @select_kbn == 1
+      where_sql_a = " and a2.shop_kbn = 1 "
+      where_sql_b = " and b2.shop_kbn = 1 "
+      where_sql_c = " and c1.shop_kbn = 1 "
+    else
+      where_sql_a = " and a2.shop_kbn = 0 "
+      where_sql_b = " and b2.shop_kbn = 0 "
+      where_sql_c = " and c1.shop_kbn = 0 "
+    end
+    
     
     select_sql =  " select * from "
     select_sql << " (select count(*) as mikakutei "
@@ -502,28 +521,19 @@ class DResultReportsController < ApplicationController
     
     input_month = input_ymd_e[0,6]
     
-    if select_kbn == 1 or select_kbn == 3
-      select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*"
-    elsif  select_kbn == 2
-      select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*, g.*, h.*, i.*"
-    else  
-      select_sql = "select a.*, b.*, c.*, d.*"
-    end
     
-    select_sql << " from (select id, shop_cd, shop_name,shop_ryaku from m_shops where deleted_flg = 0 "
     
-    if shop_info.shop_kbn == 0 or shop_info.shop_kbn == 1
-      select_sql <<              " and shop_kbn = #{shop_info.shop_kbn} " 
-    else
-      select_sql <<              " and (shop_kbn = 0 or shop_kbn = 1)"  
-    end
     
-    select_sql << " ) a"
-    
-    select_sql << " left join (select id ,m_shop_id"
-    select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
     
     if select_kbn == 0
+      
+      select_sql = "select a.*, b.*, c.*, d.*"
+    
+      select_sql << " from (select id, shop_cd, shop_name,shop_ryaku from m_shops where deleted_flg = 0 and shop_kbn = 1) a "
+
+      select_sql << " left join (select id ,m_shop_id"
+      select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
+      
       select_sql << " left join (select d_result_id,mo_gas,keiyu,touyu,koua,buyou,tokusei, "
       select_sql <<                   " sensya,koutin,taiya,arari"
       select_sql <<            " from d_result_reports) c on b.id = c.d_result_id"
@@ -540,6 +550,14 @@ class DResultReportsController < ApplicationController
       select_sql <<      " group by d1.m_shop_id"
       select_sql <<      " ) d on a.id = d.m_shop_id "
     elsif select_kbn == 1
+      
+      select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*"
+    
+      select_sql << " from (select id, shop_cd, shop_name,shop_ryaku from m_shops where deleted_flg = 0 and shop_kbn = 1) a "
+      
+      select_sql << " left join (select id ,m_shop_id"
+      select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
+      
       select_sql << " left join (select d_result_id,chousei,oiletc_pace,syaken,kyuyu_purika,sensya_purika,sp,sc, "
       select_sql <<                   " taiyaw,coating,atf,kousen,bt,bankin,waiper,mobil1"
       select_sql <<            " from d_result_reports) c on b.id = c.d_result_id"
@@ -566,6 +584,14 @@ class DResultReportsController < ApplicationController
       select_sql << " where f1.date = '#{input_month}' and f2.aim_code = 14 ) f on a.id = f.m_shop_id "
       
     elsif select_kbn == 2
+      
+      select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*, g.*, h.*, i.*"
+
+      select_sql << " from (select id, shop_cd, shop_name,shop_ryaku from m_shops where deleted_flg = 0 and shop_kbn = 0) a"  
+      
+      select_sql << " left join (select id ,m_shop_id"
+      select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
+      
       select_sql << " left join (select d_result_id,mo_gas,keiyu,touyu,kyuyu_purika "
       select_sql <<            " from d_result_self_reports) c on b.id = c.d_result_id"
       
@@ -600,6 +626,14 @@ class DResultReportsController < ApplicationController
       select_sql << " where i1.date = '#{input_month}' and i2.aim_code = 7 ) i on a.id = i.m_shop_id "
       
     elsif select_kbn == 3
+      
+      select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*"
+    
+      select_sql << " from (select id, shop_cd, shop_name,shop_ryaku from m_shops where deleted_flg = 0 and shop_kbn = 0) a"  
+      
+      select_sql << " left join (select id ,m_shop_id"
+      select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
+      
       select_sql << " left join (select d_result_id,sensya,sensya_purika,muton, "
       select_sql <<                   " coating,taiyaw,sp,sc "
       select_sql <<            " from d_result_self_reports) c on b.id = c.d_result_id"
@@ -627,6 +661,31 @@ class DResultReportsController < ApplicationController
       select_sql << " where f1.date = '#{input_month}' and f2.aim_code = 8 ) f on a.id = f.m_shop_id "
       
     else
+      
+      if select_kbn == 1 or select_kbn == 3
+      select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*"
+    elsif  select_kbn == 2
+      select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*, g.*, h.*, i.*"
+    else  
+      select_sql = "select a.*, b.*, c.*, d.*"
+    end
+    
+    select_sql << " from (select id, shop_cd, shop_name,shop_ryaku from m_shops where deleted_flg = 0 "
+    
+    if shop_info.shop_kbn == 0 or shop_info.shop_kbn == 1
+      select_sql <<              " and shop_kbn = #{shop_info.shop_kbn} " 
+    else
+      select_sql <<              " and (shop_kbn = 0 or shop_kbn = 1)"  
+    end
+    
+    select_sql << " ) a"
+      
+      
+      select_sql << " left join (select id ,m_shop_id"
+      select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
+      
+      
+      
       select_sql << " left join (select d_result_id,mo_gas,keiyu,touyu,koua,buyou,tokusei, "
       select_sql <<                   " sensya,koutin,taiya,arari"
       select_sql <<            " from d_result_reports) c on b.id = c.d_result_id"
