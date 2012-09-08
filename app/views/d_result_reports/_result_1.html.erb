@@ -1,0 +1,165 @@
+<% @mo_gas_total = 0 %><% @keiyu_total = 0 %><% @touyu_total = 0 %>
+<% @koua_total = 0 %><% @buyou_total = 0 %><% @tokusei_total = 0 %>
+<% @sensya_total = 0 %><% @koutin_total = 0 %><% @taiya_total = 0 %><% @arari_total = 0 %>
+
+<% @r_mo_gas_total = 0 %><% @r_keiyu_total = 0 %><% @r_touyu_total = 0 %>
+<% @r_koua_total = 0 %><% @r_buyou_total = 0 %><% @r_tokusei_total = 0 %>
+<% @r_sensya_total = 0 %><% @r_koutin_total = 0 %><% @r_taiya_total = 0 %><% @r_arari_total = 0 %>
+
+
+<div style="width: 900px">
+<span style="float:right">
+<% if @kakutei_flg_count.mikakutei.to_i > 0 %>
+<b>未確定</b>
+<% elsif @kakutei_flg_count.shop_count.to_i > @kakutei_flg_count.kakutei.to_i %>
+<b>未確定</b>
+<% elsif @kakutei_flg_count.kakutei.to_i > 0 %>
+<b>確定済</b>
+<% else %>
+<b></b>
+<% end %>
+</span>
+</div>
+<br clear="right">
+
+
+
+<%= form_tag({:action => 'print',:input_ymd_s => @input_ymd_s }) do %>
+
+<table id="report_view_table" class="rounded-corner">
+	<thead>
+	<tr>
+		<th style="min-width: 200px">店舗</th>
+		<th style="min-width: 100px">モーガス</th>
+		<th style="min-width: 100px">Rモーガス</th>
+		<th style="min-width: 100px">軽油</th>
+		<th style="min-width: 100px">R軽油</th>
+		<th style="min-width: 100px">灯油</th>
+		<th style="min-width: 100px">R灯油</th>
+		<th style="min-width: 100px">高A</th>
+		<th style="min-width: 100px">R高A</th>
+		<th style="min-width: 100px">部用</th>
+		<th style="min-width: 100px">R部用</th>
+		<th style="min-width: 100px">特製</th>
+		<th style="min-width: 100px">R特製</th>
+		<th style="min-width: 100px">洗車</th>
+		<th style="min-width: 100px">R洗車</th>
+		<th style="min-width: 100px">工賃</th>
+		<th style="min-width: 100px">R工賃</th>
+		<th style="min-width: 100px">タイヤ</th>
+		<th style="min-width: 100px">Rタイヤ</th>
+		<th style="min-width: 100px">粗利</th>
+		<th style="min-width: 100px">R粗利</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	<% @m_shops.each do |m_shop| %>
+	  <tr>
+	  	<td><%= m_shop.shop_cd.to_s + ' ' +  m_shop.shop_ryaku %></td>
+	  	<td class="input_no"><%= m_shop.mo_gas %></td>
+	  	<td class="input_no"><%= m_shop.r_mo_gas %></td>
+	  	<td class="input_no"><%= m_shop.keiyu %></td>
+	  	<td class="input_no"><%= m_shop.r_keiyu %></td>
+	  	<td class="input_no"><%= m_shop.touyu %></td>
+	  	<td class="input_no"><%= m_shop.r_touyu %></td>
+	  	<td class="input_no"><%= m_shop.koua %></td>
+	  	<td class="input_no"><%= m_shop.r_koua %></td>
+	  	<td class="input_no"><%= m_shop.buyou %></td>
+	  	<td class="input_no"><%= m_shop.r_buyou %></td>
+	  	<td class="input_no"><%= m_shop.tokusei %></td>
+	  	<td class="input_no"><%= m_shop.r_tokusei %></td>
+	  	<td class="input_no"><%= m_shop.sensya %></td>
+	  	<td class="input_no"><%= m_shop.r_sensya %></td>
+	  	<td class="input_no"><%= m_shop.koutin %></td>
+	  	<td class="input_no"><%= m_shop.r_koutin %></td>
+	  	<td class="input_no"><%= m_shop.taiya %></td>
+	  	<td class="input_no"><%= m_shop.r_taiya %></td>
+	  	<td class="input_no"><%= m_shop.arari %></td>
+	  	<td class="input_no"><%= m_shop.r_arari %></td>
+	  </tr>
+	  
+	  <% @mo_gas_total = @mo_gas_total + m_shop.mo_gas.to_f %>
+	  <% @keiyu_total = @keiyu_total + m_shop.keiyu.to_f %>
+	  <% @touyu_total = @touyu_total + m_shop.touyu.to_f %>
+	  <% @koua_total = @koua_total + m_shop.koua.to_f %>
+	  <% @buyou_total = @buyou_total + m_shop.buyou.to_i %>
+	  <% @tokusei_total = @tokusei_total + m_shop.tokusei.to_i %>
+	  <% @sensya_total = @sensya_total + m_shop.sensya.to_i %>
+	  <% @koutin_total = @koutin_total + m_shop.koutin.to_i %>
+	  <% @taiya_total = @taiya_total + m_shop.taiya.to_i %>
+	  <% @arari_total = @arari_total + m_shop.arari.to_f %>
+	  
+	  <% @r_mo_gas_total = @r_mo_gas_total + m_shop.r_mo_gas.to_f %>
+	  <% @r_keiyu_total = @r_keiyu_total + m_shop.r_keiyu.to_f %>
+	  <% @r_touyu_total = @r_touyu_total + m_shop.r_touyu.to_f %>
+	  <% @r_koua_total = @r_koua_total + m_shop.r_koua.to_f %>
+	  <% @r_buyou_total = @r_buyou_total + m_shop.r_buyou.to_i %>
+	  <% @r_tokusei_total = @r_tokusei_total + m_shop.r_tokusei.to_i %>
+	  <% @r_sensya_total = @r_sensya_total + m_shop.r_sensya.to_i %>
+	  <% @r_koutin_total = @r_koutin_total + m_shop.r_koutin.to_i %>
+	  <% @r_taiya_total = @r_taiya_total + m_shop.r_taiya.to_i %>
+	  <% @r_arari_total = @r_arari_total + m_shop.r_arari.to_f %>
+	  
+    <% end %>
+    
+    <tr>
+		<th>日計</th>
+		<td class="input_no"><%= @mo_gas_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @keiyu_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @touyu_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @koua_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @buyou_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @tokusei_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @sensya_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @koutin_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @taiya_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @arari_total %></td>
+	  	<td class="input_no"></td>
+	</tr>
+	
+	<tr>
+		<th>累計</th>
+		<td class="input_no"></td>
+		<td class="input_no"><%= @r_mo_gas_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_keiyu_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_touyu_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_koua_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_buyou_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_tokusei_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_sensya_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_koutin_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_taiya_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_arari_total %></td>
+	</tr>
+    </tbody>
+    <%= hidden_field_tag 'select_kbn',@select_kbn %>
+	<%= hidden_field_tag 'input_ymd_s',@input_ymd_s %>
+	<%= hidden_field_tag 'input_ymd_e',@input_ymd_e %>
+</table>
+<%= submit_tag '印刷',format: 'pdf' %>
+<% end %>
+
+<script>
+$(function () {
+	$("#report_view_table").tablefix({width:900,fixCols:1 });
+})();
+</script>

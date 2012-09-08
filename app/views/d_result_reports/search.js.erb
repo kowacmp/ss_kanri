@@ -1,0 +1,12 @@
+<% if @select_kbn == 0 %>
+	$('#result').html("<%= j(render :partial => 'result_1')%>");
+<% elsif @select_kbn == 1 %>
+	$('#result').html("<%= j(render :partial => 'result_2')%>");
+<% elsif @select_kbn == 2 %>
+	$('#result').html("<%= j(render :partial => 'result_self_1')%>");
+<% elsif @select_kbn == 3 %>
+	$('#result').html("<%= j(render :partial => 'result_self_2')%>");
+<% else %>	
+	$('#result').html("<%= j(render :partial => 'result_1')%>");
+<% end %>
+  

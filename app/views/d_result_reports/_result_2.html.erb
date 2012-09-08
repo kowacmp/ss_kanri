@@ -1,0 +1,217 @@
+<% @chousei_total = 0 %>
+
+<% @syaken_total = 0 %><% @kyuyu_purika_total = 0 %><% @sensya_purika_total = 0 %>
+<% @sp_total = 0 %><% @sc_total = 0 %><% @taiyaw_total = 0 %>
+<% @coating_total = 0 %><% @atf_total = 0 %><% @kousen_total = 0 %>
+<% @bt_total = 0 %><% @bankin_total = 0 %><% @waiper_total = 0 %><% @mobil1_total = 0 %>
+
+<% @r_syaken_total = 0 %><% @r_kyuyu_purika_total = 0 %><% @r_sensya_purika_total = 0 %>
+<% @r_sp_total = 0 %><% @r_sc_total = 0 %><% @r_taiyaw_total = 0 %>
+<% @r_coating_total = 0 %><% @r_atf_total = 0 %><% @r_kousen_total = 0 %>
+<% @r_bt_total = 0 %><% @r_bankin_total = 0 %><% @r_waiper_total = 0 %><% @r_mobil1_total = 0 %>
+
+
+<div style="width: 900px">
+<span style="float:right">
+<% if @kakutei_flg_count.mikakutei.to_i > 0 %>
+<b>未確定</b>
+<% elsif @kakutei_flg_count.shop_count.to_i > @kakutei_flg_count.kakutei.to_i %>
+<b>未確定</b>
+<% elsif @kakutei_flg_count.kakutei.to_i > 0 %>
+<b>確定済</b>
+<% else %>
+<b></b>
+<% end %>
+</span>
+</div>
+<br clear="right">
+
+
+<%= form_tag({:action => 'print',:input_ymd_s => @input_ymd_s }) do %>
+<table id="report_view_table" class="rounded-corner">
+	<thead>
+	<tr>
+		<th style="min-width: 200px">店舗</th>
+		<th style="min-width: 100px">調整</th>
+		<th style="min-width: 100px">油外目標</th>
+		<th style="min-width: 100px">油外ペ</th>
+		<th style="min-width: 100px">車検</th>
+		<th style="min-width: 100px">日計</th>
+		<th style="min-width: 100px">月計</th>
+		<th style="min-width: 100px">ガPPC</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">洗車PPC</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">SP</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">SC</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">タイヤW</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">コーティング</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">ATF</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">高洗</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">BT</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">板金</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">ワイパー</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">M-1</th>
+		<th style="min-width: 100px">累計</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	<% @m_shops.each do |m_shop| %>
+	  <tr>
+	  	<td><%= m_shop.shop_cd.to_s + ' ' +  m_shop.shop_ryaku %></td>
+	  	<td class="input_no"><%= m_shop.chousei %></td>
+	  	<td class="input_no"><%= m_shop.oiletc_aim %></td>
+	  	<td class="input_no"><%= m_shop.oiletc_pace %></td>
+	  	<td class="input_no"><%= m_shop.syaken_aim %></td>
+	  	<td class="input_no"><%= m_shop.syaken %></td>			
+	  	<td class="input_no"><%= m_shop.r_syaken %></td>
+	  	<td class="input_no"><%= m_shop.kyuyu_purika %></td>		
+	  	<td class="input_no"><%= m_shop.r_kyuyu_purika %></td>
+	  	<td class="input_no"><%= m_shop.sensya_purika %></td>	
+	  	<td class="input_no"><%= m_shop.r_sensya_purika %></td>
+	  	<td class="input_no"><%= m_shop.sp %></td>				
+	  	<td class="input_no"><%= m_shop.r_sp %></td>
+	  	<td class="input_no"><%= m_shop.sc %></td>				
+	  	<td class="input_no"><%= m_shop.r_sc %></td>
+	  	<td class="input_no"><%= m_shop.taiyaw %></td>			
+	  	<td class="input_no"><%= m_shop.r_taiyaw %></td>
+	  	<td class="input_no"><%= m_shop.coating %></td>			
+	  	<td class="input_no"><%= m_shop.r_coating %></td>
+	  	<td class="input_no"><%= m_shop.atf %></td>				
+	  	<td class="input_no"><%= m_shop.r_atf %></td>
+	  	<td class="input_no"><%= m_shop.kousen %></td>			
+	  	<td class="input_no"><%= m_shop.r_kousen %></td>
+	  	<td class="input_no"><%= m_shop.bt %></td>				
+	  	<td class="input_no"><%= m_shop.r_bt %></td>
+	  	<td class="input_no"><%= m_shop.bankin %></td>			
+	  	<td class="input_no"><%= m_shop.r_bankin %></td>
+	  	<td class="input_no"><%= m_shop.waiper %></td>			
+	  	<td class="input_no"><%= m_shop.r_waiper %></td>
+	  	<td class="input_no"><%= m_shop.mobil1 %></td>			
+	  	<td class="input_no"><%= m_shop.r_mobil1 %></td>
+	  </tr>
+	  
+	  <% @chousei_total = @chousei_total + m_shop.chousei.to_i %>
+	  
+	  <% @syaken_total = @syaken_total + m_shop.syaken.to_i %>
+	  <% @kyuyu_purika_total = @kyuyu_purika_total + m_shop.kyuyu_purika.to_i %>
+	  <% @sensya_purika_total = @sensya_purika_total + m_shop.sensya_purika.to_i %>
+	  <% @sp_total = @sp_total + m_shop.sp.to_i %>
+	  <% @sc_total = @sc_total + m_shop.sc.to_i %>
+	  <% @taiyaw_total = @taiyaw_total + m_shop.taiyaw.to_i %>
+	  <% @coating_total = @coating_total + m_shop.coating.to_i %>
+	  <% @atf_total = @atf_total + m_shop.atf.to_f %>
+	  <% @kousen_total = @kousen_total + m_shop.kousen.to_i %>
+	  <% @bt_total = @bt_total + m_shop.bt.to_i %>
+	  <% @bankin_total = @bankin_total + m_shop.bankin.to_i %>
+	  <% @waiper_total = @waiper_total + m_shop.waiper.to_i %>
+	  <% @mobil1_total = @mobil1_total + m_shop.mobil1.to_f %>
+	  
+	  <% @r_syaken_total = @r_syaken_total + m_shop.r_syaken.to_i %>
+	  <% @r_kyuyu_purika_total = @r_kyuyu_purika_total + m_shop.r_kyuyu_purika.to_i %>
+	  <% @r_sensya_purika_total = @r_sensya_purika_total + m_shop.r_sensya_purika.to_i %>
+	  <% @r_sp_total = @r_sp_total + m_shop.r_sp.to_i %>
+	  <% @r_sc_total = @r_sc_total + m_shop.r_sc.to_i %>
+	  <% @r_taiyaw_total = @r_taiyaw_total + m_shop.r_taiyaw.to_i %>
+	  <% @r_coating_total = @r_coating_total + m_shop.r_coating.to_i %>	
+	  <% @r_atf_total = @r_atf_total + m_shop.r_atf.to_f %>
+	  <% @r_kousen_total = @r_kousen_total + m_shop.r_kousen.to_i %>
+	  <% @r_bt_total = @r_bt_total + m_shop.r_bt.to_i %>
+	  <% @r_bankin_total = @r_bankin_total + m_shop.r_bankin.to_i %>
+	  <% @r_waiper_total = @r_waiper_total + m_shop.r_waiper.to_i %>
+	  <% @r_mobil1_total = @r_mobil1_total + m_shop.r_mobil1.to_f %>
+	  		
+    <% end %>
+    
+    <tr>
+		<th>日計</th>
+		<td class="input_no"></td>
+		<td class="input_no"></td>
+		<td class="input_no"></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @syaken_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @kyuyu_purika_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @sensya_purika_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @sp_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @sc_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @taiyaw_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @coating_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @atf_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @kousen_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @bt_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @bankin_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @waiper_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @mobil1_total %></td>
+	  	<td class="input_no"></td>
+	</tr>
+	
+	<tr>
+		<th>累計</th>
+		<td class="input_no"><%= @chousei_total %></td>
+		<td class="input_no"></td>
+		<td class="input_no"></td>
+		<td class="input_no"></td>
+		<td class="input_no"></td>
+		<td class="input_no"><%= @r_syaken_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_kyuyu_purika_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_sensya_purika_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_sp_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_sc_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_taiyaw_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_coating_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_atf_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_kousen_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_bt_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_bankin_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_waiper_total %></td>
+	  	<td class="input_no"></td>
+	  	<td class="input_no"><%= @r_mobil1_total %></td>
+	</tr>
+    </tbody>
+    <%= hidden_field_tag 'select_kbn',@select_kbn %>
+	<%= hidden_field_tag 'input_ymd_s',@input_ymd_s %>
+	<%= hidden_field_tag 'input_ymd_e',@input_ymd_e %>
+</table>
+<%= submit_tag '印刷',format: 'pdf' %>
+<% end %>
+
+<script>
+$(function () {
+	$("#report_view_table").tablefix({width:900,fixCols:1 });
+})();
+</script>
+
+

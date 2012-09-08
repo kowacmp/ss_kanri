@@ -1,0 +1,21 @@
+<%= form_tag({:action => 'search'},:remote => true ) do  %>
+<table id='rounded-corner'>
+	<tr>
+      <th>対象日</th>
+        <td>
+	        <%= text_field_tag  "input_ymd" , @input_ymd, :readonly => true ,:class => 'datepicker',:size => 10%>
+	    </td>
+	  <th>実績表種別</th>
+	    <td>
+	    	<%#= select_tag "select_kbn",options_for_select({'SS実績表1' => 0,'SS実績表1' => 1},@shop_kbn) %>
+	    	<%= select_tag "select_kbn",options_for_select({'SS実績表1' => 0,'SS実績表2' => 1,'SSセルフ実績表1' => 2,'SSセルフ実績表2' => 3}) %>
+	    </td>
+	    <td><%= submit_tag '表示'%></td>
+    </tr>
+</table>
+<% end %>
+<hr>
+
+<div id="result">
+	  <%= render :partial => 'result_1'%>
+</div>

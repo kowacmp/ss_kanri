@@ -1,0 +1,91 @@
+
+<div style="width: 900px">
+<span style="float:right">
+<% if @kakutei_flg_count.mikakutei.to_i > 0 %>
+<b>未確定</b>
+<% elsif @kakutei_flg_count.shop_count.to_i > @kakutei_flg_count.kakutei.to_i %>
+<b>未確定</b>
+<% elsif @kakutei_flg_count.kakutei.to_i > 0 %>
+<b>確定済</b>
+<% else %>
+<b></b>
+<% end %>
+</span>
+</div>
+<br clear="right">
+
+<%= form_tag({:action => 'print',:input_ymd_s => @input_ymd_s }) do %>
+<table id="report_view_table" class="rounded-corner">
+	<thead>
+	<tr>
+		<th style="min-width: 200px">店舗</th>
+		<th style="min-width: 100px">洗車</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">ペース</th>
+		<th style="min-width: 100px">洗車目標</th>
+		<th style="min-width: 100px">洗車PPC</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">洗車P目標</th>
+		<th style="min-width: 100px">ムートンパス</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">コーティング</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">タイヤW</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">SC</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">SP</th>
+		<th style="min-width: 100px">累計</th>
+		<th style="min-width: 100px">R洗車用品</th>
+		<th style="min-width: 100px">Rスロット</th>
+		<th style="min-width: 100px">Rヘルス</th>
+		<th style="min-width: 100px">Rネット</th>
+		<th style="min-width: 100px">R充電器</th>
+		<th style="min-width: 100px">R予備</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	<% @m_shops.each do |m_shop| %>
+	  <tr>
+	  	<td><%= m_shop.shop_cd.to_s + ' ' +  m_shop.shop_ryaku %></td>
+	  	<td class="input_no"><%= m_shop.sensya %></td>
+	  	<td class="input_no"><%= m_shop.r_sensya %></td>
+	  	<td class="input_no"><%#= m_shop.sensya_pace %></td>
+	  	<td class="input_no"><%= m_shop.sensya_aim %></td>
+	  	<td class="input_no"><%= m_shop.sensya_purika %></td>
+	  	<td class="input_no"><%= m_shop.r_sensya_purika %></td>
+	  	<td class="input_no"><%= m_shop.sensya_purika_aim %></td>
+	  	<td class="input_no"><%= m_shop.muton %></td>			
+	  	<td class="input_no"><%= m_shop.r_muton %></td>
+	  	<td class="input_no"><%= m_shop.coating %></td>			
+	  	<td class="input_no"><%= m_shop.r_coating %></td>
+	  	<td class="input_no"><%= m_shop.taiyaw %></td>			
+	  	<td class="input_no"><%= m_shop.r_taiyaw %></td>
+	  	<td class="input_no"><%= m_shop.sc %></td>				
+	  	<td class="input_no"><%= m_shop.r_sc %></td>
+	  	<td class="input_no"><%= m_shop.sp %></td>
+	  	<td class="input_no"><%= m_shop.r_sp %></td>
+	  	<td class="input_no"><%= m_shop.r_wash_item %></td>
+	  	<td class="input_no"><%= m_shop.r_game %></td>
+	  	<td class="input_no"><%= m_shop.r_health %></td>
+	  	<td class="input_no"><%= m_shop.r_net %></td>
+	  	<td class="input_no"><%= m_shop.r_charge %></td>
+	  	<td class="input_no"><%= m_shop.r_spare %></td>
+	  </tr>
+	  		
+    <% end %>
+    
+    </tbody>
+    <%= hidden_field_tag 'select_kbn',@select_kbn %>
+	<%= hidden_field_tag 'input_ymd_s',@input_ymd_s %>
+	<%= hidden_field_tag 'input_ymd_e',@input_ymd_e %>
+</table>
+<%= submit_tag '印刷',format: 'pdf' %>
+<% end %>
+
+<script>
+$(function () {
+	$("#report_view_table").tablefix({width:900,fixCols:1 });
+})();
+</script>
