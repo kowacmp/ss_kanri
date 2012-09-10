@@ -109,6 +109,8 @@ class DWashSalesController < ApplicationController
       @m_washes = get_m_washes
       #メーター更新
       @m_washes.each do |wash| #each
+        @price = wash.price
+        
         sum_uriage = 0
         @d_wash_sale_mae = get_d_wash_sale(get_zenkai_date(@sale_date,@shop_id,@mode),@shop_id,@mode)
 
@@ -124,12 +126,24 @@ class DWashSalesController < ApplicationController
            create_d_washsale_item(@d_wash_sale.id,wash.wash_cd,(i+1))
          end #unless1
 
-         unless @d_wash_sale_mae == nil
-           sum_uriage = sum_uriage + 
-             (@d_washsale_item.meter - get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)).meter )
-         else
-           sum_uriage = sum_uriage + @d_washsale_item.meter
+         #unless @d_wash_sale_mae == nil
+         #  sum_uriage = sum_uriage + 
+         #    (@d_washsale_item.meter - get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)).meter )
+         #else
+         #  sum_uriage = sum_uriage + @d_washsale_item.meter
+         #end
+         
+         v1 = @d_washsale_item.meter
+         v2 = 0
+         if not(@d_wash_sale_mae.nil?) then
+           v2 = get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)).meter
          end
+         if v1 < v2 then
+           sum_uriage += v1 * @price
+         else
+           sum_uriage += (v1 - v2) * @price
+         end
+         
         end #times
         
         #誤差更新
@@ -139,13 +153,20 @@ class DWashSalesController < ApplicationController
            #データあり
            unless @d_washsale_item.meter == params["meter_#{wash.wash_cd.to_s}_99"] #unless2
              
-             sum_meter = get_sum_meter(@d_wash_sale.id,wash.id)
-             if  @d_wash_sale_mae == nil
-               sum_meter_mae = 0
-             else
-             sum_meter_mae = get_sum_meter(@d_wash_sale_mae.id,wash.id) 
-             end
-             update_d_washsale_item(wash.wash_cd,99,sum_meter,sum_meter_mae)
+             #sum_meter = get_sum_meter(@d_wash_sale.id,wash.id)
+             #if  @d_wash_sale_mae == nil
+             #  sum_meter_mae = 0
+             #else
+             #sum_meter_mae = get_sum_meter(@d_wash_sale_mae.id,wash.id) 
+             #end
+             #update_d_washsale_item(wash.wash_cd,99,sum_meter,sum_meter_mae)
+             
+             @d_washsale_item.meter = params["meter_#{wash.wash_cd}_#{99}"]
+             @d_washsale_item.error_money =  sum_uriage - @d_washsale_item.meter
+             @d_washsale_item.price = @price
+             @d_washsale_item.updated_user_id = current_user.id
+             @d_washsale_item.save!
+             
            end #unless2
          else
            #データなし
@@ -200,6 +221,7 @@ private
     end
     @d_washsale_item.created_user_id = current_user.id
     @d_washsale_item.updated_user_id = current_user.id
+    @d_washsale_item.price = @price
     @d_washsale_item.save!
   end
   
@@ -212,6 +234,7 @@ private
       @d_washsale_item.error_money =  (sum_meter - sum_meter_mae) - @d_washsale_item.meter
     end
     @d_washsale_item.updated_user_id = current_user.id
+    @d_washsale_item.price = @price
     @d_washsale_item.save!
   end
 end
