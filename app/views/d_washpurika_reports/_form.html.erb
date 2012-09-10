@@ -1,0 +1,17 @@
+<%= form_for(@d_washpurika_report) do |f| %>
+  <% if @d_washpurika_report.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@d_washpurika_report.errors.count, "error") %> prohibited this d_washpurika_report from being saved:</h2>
+
+      <ul>
+      <% @d_washpurika_report.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

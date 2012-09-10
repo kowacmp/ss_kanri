@@ -1,0 +1,21 @@
+<h1>Listing d_washpurika_reports</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @d_washpurika_reports.each do |d_washpurika_report| %>
+  <tr>
+    <td><%= link_to 'Show', d_washpurika_report %></td>
+    <td><%= link_to 'Edit', edit_d_washpurika_report_path(d_washpurika_report) %></td>
+    <td><%= link_to 'Destroy', d_washpurika_report, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New D washpurika report', new_d_washpurika_report_path %>

@@ -1,5 +1,7 @@
 SsKanri::Application.routes.draw do
 
+  resources :d_washpurika_reports
+
   resources :d_result_reports do
    collection do
      get :print

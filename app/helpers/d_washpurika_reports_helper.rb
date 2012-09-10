@@ -1,0 +1,2 @@
+module DWashpurikaReportsHelper
+end
