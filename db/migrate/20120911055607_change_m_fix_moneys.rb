@@ -35,7 +35,7 @@ class ChangeMFixMoneys < ActiveRecord::Migration
       t.integer :m_fix_item_id13
       t.integer :fix_money13
 
-      t.integer :total_fix_money
+      t.integer :total_cash_box
       t.integer :total_change_money
       t.integer :total_money
       t.column  :deleted_flg,            :smallint, :default => 0
@@ -74,7 +74,7 @@ class ChangeMFixMoneys < ActiveRecord::Migration
              COMMENT ON COLUMN m_fix_moneys.m_fix_item_id13 IS '固定額内訳id13';
              COMMENT ON COLUMN m_fix_moneys.fix_money13 IS '固定額内訳額13';
              
-             COMMENT ON COLUMN m_fix_moneys.total_fix_money IS '金庫合計';
+             COMMENT ON COLUMN m_fix_moneys.total_cash_box IS '金庫合計';
              COMMENT ON COLUMN m_fix_moneys.total_change_money IS '釣銭機合計';
              COMMENT ON COLUMN m_fix_moneys.total_money IS '釣銭合計';
              COMMENT ON COLUMN m_fix_moneys.deleted_flg IS '削除フラグ';
