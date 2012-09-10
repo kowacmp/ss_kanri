@@ -138,6 +138,8 @@ class DWashSalesController < ApplicationController
          if not(@d_wash_sale_mae.nil?) then
            v2 = get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)).meter
          end
+         v1 = 0 if v1.nil?
+         v2 = 0 if v2.nil?
          if v1 < v2 then
            sum_uriage += v1 * @price
          else
