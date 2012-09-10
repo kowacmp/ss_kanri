@@ -540,7 +540,7 @@ p params
       condition_sql << " and b.shop_kbn = " + input_shop_kbn
     end    
          
-    
+    p "select_sql=#{select_sql}"
     return DSale.find_by_sql("#{select_sql} #{condition_sql} order by shop_cd")    
   end
   
