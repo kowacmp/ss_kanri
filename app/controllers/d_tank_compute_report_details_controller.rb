@@ -55,6 +55,13 @@ class DTankComputeReportDetailsController < ApplicationController
   end
   
   def print
+    @mode = params[:mode]
+    if params[:mode] == 'manager'
+      @shop_id = params[:shop_id]
+    else
+      @shop_id = current_user.m_shop_id
+    end   
+    
       sum_receive = 0
       sum_compute_stock = 0
       sum_decrease = 0
@@ -86,7 +93,7 @@ class DTankComputeReportDetailsController < ApplicationController
         page.item(:year).value(params[:from_ymd][0,4])
         page.item(:month).value(params[:from_ymd][4,2].to_i)
         unless params[:oil_id] == nil or params[:oil_id] == ""
-          tanks = MTank.find(:all,:conditions => ['m_oil_id = ? and m_shop_id = ?',params[:oil_id],current_user.m_shop_id],:order => 'tank_no')
+          tanks = MTank.find(:all,:conditions => ['m_oil_id = ? and m_shop_id = ?',params[:oil_id],@shop_id],:order => 'tank_no')
           tanks.each do |tank|
             tank_no << tank.tank_no
             tank_volume = tank_volume + tank.volume
@@ -107,17 +114,17 @@ class DTankComputeReportDetailsController < ApplicationController
 
 
       @d_results = DResult.find(:all,
-      :conditions => ['result_date between ? and ? and m_shop_id = ?',@from_ymd,@to_ymd,current_user.m_shop_id])
+      :conditions => ['result_date between ? and ? and m_shop_id = ?',@from_ymd,@to_ymd,@shop_id])
 
       get_ymd = @from_ymd
       start_ymd = (@from_ymd[0,4].to_s + '/' + @from_ymd[4,2] + '/' + @from_ymd[6,2]).to_time
       start_day = start_ymd.end_of_month.day
       
     start_day.times do |i|
-      result = DResult.find(:all,:conditions => ['result_date = ? and m_shop_id = ?',get_ymd,current_user.m_shop_id]).first
+      result = DResult.find(:all,:conditions => ['result_date = ? and m_shop_id = ?',get_ymd,@shop_id]).first
       get_ymd = (get_ymd.to_i + 1).to_s
       unless params[:oil_id] == nil or params[:oil_id] == "" # 油種の場合
-        tank_compute = get_select_oil(result.id,@oil_id,current_user.m_shop_id) unless result == nil
+        tank_compute = get_select_oil(result.id,@oil_id,@shop_id) unless result == nil
         #p "***** tank_compute_oil = #{tank_compute}"
       end
       unless params[:tank_id] == nil or params[:tank_id] == "" #タンクの場合

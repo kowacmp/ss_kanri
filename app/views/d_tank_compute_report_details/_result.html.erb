@@ -129,5 +129,6 @@
 	<td><%= sprintf("%-8.3f",(sum_decrease_total * 1.000 / last_sale_total * 1.000)*100) + "%"%></td>
 </tr>
 </table>
-<%= submit_tag '印刷',format: 'pdf' %>
+
+<%= submit_tag '印刷',format: 'pdf' unless @mode == 'manager' %>
 <% end %>

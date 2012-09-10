@@ -6,6 +6,12 @@ SsKanri::Application.routes.draw do
    end
   end
 
+  get "d_business_count_reports/index"
+
+  get "d_business_count_reports/search"
+
+  get "d_business_count_reports/print"
+
   get "d_yume_point_lists/index"
   get "d_yume_point_lists/search"
   get "d_yume_point_lists/print"
