@@ -5,12 +5,13 @@ class MEtcsController < ApplicationController
     #@m_etcs = MEtc.all
     
     select_sql = "select a.*, b.code_name as etc_tani_name,c.code_name as etc_group_name,"
-    select_sql << "           d.code_name as kansa_flg_name, e.code_name as tax_flg_name " 
+    select_sql << "           d.code_name as kansa_flg_name, e.code_name as tax_flg_name, f.code_name as etc_class_name " 
     select_sql << " from m_etcs a " 
     select_sql << " left join (select * from m_codes where kbn='tani') b on a.etc_tani = cast(b.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='m_etc_group') c on a.etc_group = cast(c.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='kansa_flg') d on a.kansa_flg = cast(d.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='tax_flg') e on a.tax_flg = cast(e.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='etc_class') f on a.etc_class = cast(f.code as integer) "
     
     condition_sql = ""
     
@@ -44,12 +45,13 @@ class MEtcsController < ApplicationController
   def show
     
     select_sql = "select a.*, b.code_name as etc_tani_name,c.code_name as etc_group_name,"
-    select_sql << "           d.code_name as kansa_flg_name, e.code_name as tax_flg_name " 
+    select_sql << "           d.code_name as kansa_flg_name, e.code_name as tax_flg_name, f.code_name as etc_class_name " 
     select_sql << " from m_etcs a " 
     select_sql << " left join (select * from m_codes where kbn='tani') b on a.etc_tani = cast(b.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='m_etc_group') c on a.etc_group = cast(c.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='kansa_flg') d on a.kansa_flg = cast(d.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='tax_flg') e on a.tax_flg = cast(e.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='etc_class') f on a.etc_class = cast(f.code as integer) "
     
     condition_sql = " where a.id = " + params[:id]
     
@@ -140,12 +142,13 @@ class MEtcsController < ApplicationController
   def search
     
     select_sql = "select a.*, b.code_name as etc_tani_name,c.code_name as etc_group_name,"
-    select_sql << "           d.code_name as kansa_flg_name, e.code_name as tax_flg_name " 
+    select_sql << "           d.code_name as kansa_flg_name, e.code_name as tax_flg_name, f.code_name as etc_class_name " 
     select_sql << " from m_etcs a " 
     select_sql << " left join (select * from m_codes where kbn='tani') b on a.etc_tani = cast(b.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='m_etc_group') c on a.etc_group = cast(c.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='kansa_flg') d on a.kansa_flg = cast(d.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='tax_flg') e on a.tax_flg = cast(e.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='etc_class') f on a.etc_class = cast(f.code as integer) "
     
     condition_sql = ""
     
