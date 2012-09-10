@@ -312,7 +312,7 @@
 				</td>
 				
 				<td class="tank_union_no">
-					<%= text_field "m_tank[#{idx}]", 'tank_union_no',:value=>m_tank.tank_union_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"showPreview(#{idx});"%>
+					<%= text_field "m_tank[#{idx}]", 'tank_union_no',:value=>m_tank.tank_union_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"numberCheck(this);"%>
 				</td>
 				   
 				<td class="clear">
@@ -925,7 +925,7 @@
 					+ '_volume" name="m_tank[' + (counter3) + '][volume]" size="9" maxlength="9" style="ime-mode:disabled" class="number" onkeyup="numberCheck(this)"/>';
 		
 		var HTML5 = '<input type="text" id="m_tank_' + (counter3) 
-					+ '_tank_union_no" name="m_tank[' + (counter3) + '][tank_union_no]" size="2" maxlength="2" style="ime-mode:disabled" onkeyup="showPreview(' + (counter3) + ')" />';
+					+ '_tank_union_no" name="m_tank[' + (counter3) + '][tank_union_no]" size="2" maxlength="2" style="ime-mode:disabled" onkeyup="numberCheck(this)" />';
 		//var HTML5 = '<input type="button" name="clear" value="クリア" onClick="form_clear3(' + (counter3) + ');" />'
 		//			+ '<input type="button" name="clear" value="削 除" onClick="DelTableRows3(this);" />';
 		var HTML6 = '<input type="button" value="クリア" onClick="form_clear3(' + (counter3) + ');" />'
@@ -975,14 +975,9 @@
 
 	function showPreview(idx){
 		var v = document.getElementById('m_tank_' + idx + '_tank_no').value;
-		var v2 = document.getElementById('m_tank_' + idx + '_tank_union_no').value;
 		
 		if (v.match(/[^0-9]/g)) {
 			document.getElementById('m_tank_' + idx + '_tank_no').value = v.replace(/[^0-9]/g,'');
-		}
-		
-		if (v2.match(/[^0-9]/g)) {
-			document.getElementById('m_tank_' + idx + '_tank_union_no').value = v.replace(/[^0-9]/g,'');
 		}
 		
 		var html = document.getElementById('m_tank_' + idx + '_tank_no').value;
@@ -991,10 +986,7 @@
 			document.getElementById('m_tank_' + idx + '_tank_union_no').value = html;
 		}
 		
-		var html2 = document.getElementById('m_tank_' + idx + '_tank_union_no').value;
-		
-		document.getElementById('m_tank_' + idx + '_tank_name').value = "タンク" + html + "-" + html2;
-		
+		document.getElementById('m_tank_' + idx + '_tank_name').value = "タンク" + html
 		
 	};
         
