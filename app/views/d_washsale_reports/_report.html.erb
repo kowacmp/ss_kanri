@@ -31,11 +31,33 @@
 	<% @m_washes.each do |wash| %>
 	  <% wash.max_num.times do |i| %>
 		<tr>
+			<!-- 機種名 -->
 			<th  id="wash_cd_<%= wash.wash_cd.to_s %>_<%= (i+1).to_s %>"><%= wash.wash_name + (i+1).to_s %></th>
-			<% @d_wash_sales = get_d_wash_sales_month(@this_month ,@m_shop_id) %>
-			<% sum_meter = sum_d_washsale_item_meter(@d_wash_sales,wash.id,(i+1)) %>
+			
+			<%# @d_wash_sales = get_d_wash_sales_month(@this_month ,@m_shop_id) %>
+			<%# sum_meter = sum_d_washsale_item_meter(@d_wash_sales,wash.id,(i+1)) %>
+            <%
+			   @d_wash_sales = DWashSale.find(:all, :conditions => ["sale_date between ? and ? and m_shop_id = ?",
+                                                                    @this_month + "01",
+                                                                    @this_month + "31",
+                                                                    @m_shop_id],
+                                                    :order => 'sale_date')  
+			   
+			   
+			   if @d_wash_sales.length > 0 then
+			   sum_meter = DWashsaleItem.find(:last, :conditions => ["d_wash_sale_id=? and m_wash_id=? and wash_no=?",
+				                                                     @d_wash_sales.last.id,
+				                                                     wash.id,
+				                                                     (i+1)]).meter
+			   end if
+			   
+			   sum_meter = 0 if sum_meter.nil?
+			%>
 			<% meter_id = "meter_" + wash.id.to_s + '_'+ (i+1).to_s %>
-			<td class="no-input-num"><%= sum_meter %><%= hidden_field_tag meter_id, sum_meter %></td>
+			
+			<!-- 月末メータ -->
+			<td class="no-input-num"><%= number_with_delimiter(sum_meter) %><%= hidden_field_tag meter_id, sum_meter %></td>
+            
             <% if @d_washsale_report_last == nil %>
               <% d_washsale_detail_report = nil %>
 			<% else %>
@@ -46,19 +68,50 @@
 			<% else %>
 			  <% sum_meter_last = d_washsale_detail_report.meter %>
 			<% end %>
-			<td class="no-input-num"><%= sum_meter_last %></td>
+			
+			<!-- 月初メータ -->
+			<td class="no-input-num"><%= number_with_delimiter(sum_meter_last) %></td>
+			
 			<% last_meter_id = "sale_meter_" + wash.id.to_s + '_'+ (i+1).to_s %>
-			<td class="no-input-num"><%= sum_meter - sum_meter_last %><%= hidden_field_tag last_meter_id, (sum_meter - sum_meter_last) %></td>
-            <% k_sale_sum = k_sale_sum + (sum_meter - sum_meter_last) %>
+			<%
+				sql = "
+					select 
+					   coalesce(sum(b.uriage), 0) as sum_uriage
+					from 
+					  d_wash_sales a inner join d_washsale_items b
+				    on 
+				      a.id = b.d_wash_sale_id
+				    where
+				          a.sale_date >= '#{@this_month}01'
+				      and a.sale_date <= '#{@this_month}31'
+				      and a.m_shop_id  = #{@m_shop_id}
+				      and b.m_wash_id  = #{wash.id}
+				      and b.wash_no    = #{(i+1)}
+				"
+				
+				g_meter_uriage = DWashSale.find_by_sql(sql)[0].sum_uriage.to_i
+			%>
+			<!-- 月間メータ売上 -->
+			<td class="no-input-num"><%= number_with_delimiter(g_meter_uriage) %><%= hidden_field_tag last_meter_id, g_meter_uriage %></td>
+            
+            <% k_sale_sum = k_sale_sum + g_meter_uriage %>
+            
             <% if i == 0 %>
+              <!-- POS売上 -->
               <td rowspan="<%= wash.max_num %>"></td>
+              
+              <!-- 誤差 -->
               <td rowspan="<%= wash.max_num %>">
               	<%= link_to '誤差',{:action => 'show_error',
 		    	    	   :sale_date=> @this_month,:wash_cd => wash.wash_cd,
 		    	    	   :shop_id => @shop.id  },:class => 'modal'%> 
               	</td>
+              
+              <!-- 前月差 -->
               <td rowspan="<%= wash.max_num %>"></td>
             <% end %>
+            
+            <!-- 前月売上 -->
             <td  class="no-input-num">
             	<% unless d_washsale_detail_report == nil %>
             	  <% sale_meter = d_washsale_detail_report.sale_meter %>
@@ -66,31 +119,31 @@
             	  <% sale_meter = 0 %>
             	<% end %>
             	<% k_sale_meter = k_sale_meter + sale_meter %>
-            	<%= sale_meter %>
+            	<%= number_with_delimiter(sale_meter) %>
             </td>
 		</tr>
       <% end %><!-- times -->
         <tr>
-        	<td colspan="2"></td>
+          <td colspan="2"></td>
           <th><%= wash.wash_name + "計" %></th>
-          <td class="no-input-num"><%= k_sale_sum %></td>
+          <td class="no-input-num"><%= number_with_delimiter(k_sale_sum) %></td>
           <% g_sale_sum = g_sale_sum + k_sale_sum %>
           <% k_sale_sum = 0 %>
           <td class="no-input-num"><!-- POS売上 -->
           	  <% meter_99 = "meter_" + wash.id.to_s + '_'+ 99.to_s %>
           	  <% sum_meter_pos = sum_d_washsale_item_meter(@d_wash_sales,wash.id,99) %>
-              <%= sum_meter_pos %><%= hidden_field_tag meter_99, sum_meter_pos %>
+              <%= number_with_delimiter(sum_meter_pos) %><%= hidden_field_tag meter_99, sum_meter_pos %>
               <% g_sum_meter_pos = g_sum_meter_pos + sum_meter_pos %>
           </td>
           <td class="no-input-num">
-          	<%= sum_d_washsale_item_gosa(@d_wash_sales,wash.id) %>
+          	<%= number_with_delimiter(sum_d_washsale_item_gosa(@d_wash_sales,wash.id)) %>
           	<% g_sum_gosa = g_sum_gosa + sum_d_washsale_item_gosa(@d_wash_sales,wash.id) %>	
           </td><!-- 誤差-->
           <td class="no-input-num">
-          	<%= sum_meter_pos - k_sale_meter %>
+          	<%= number_with_delimiter(sum_meter_pos - k_sale_meter) %>
           	<% g_sum_zengetu_sa = g_sum_zengetu_sa - (sum_meter_pos - k_sale_meter) %>
           	</td><!--前月差 -->
-          <td class="no-input-num"><%= k_sale_meter %>
+          <td class="no-input-num"><%= number_with_delimiter(k_sale_meter) %>
           	<% g_sale_meter = g_sale_meter + k_sale_meter %>
           	<% k_sale_meter = 0 %></td><!-- 前月売上 -->
         </tr>
@@ -98,11 +151,11 @@
 	<tr>
 		<td colspan="2"></td>
 		<th>売上合計</th>
-		<td class="no-input-num"><%= g_sale_sum %></td>
-		<td class="no-input-num"><%= g_sum_meter_pos %></td>
-		<td class="no-input-num"><%= g_sum_gosa %></td>
-		<td class="no-input-num"><%= g_sum_zengetu_sa %></td>
-		<td class="no-input-num"><%= g_sale_meter %></td>
+		<td class="no-input-num"><%= number_with_delimiter(g_sale_sum) %></td>
+		<td class="no-input-num"><%= number_with_delimiter(g_sum_meter_pos) %></td>
+		<td class="no-input-num"><%= number_with_delimiter(g_sum_gosa) %></td>
+		<td class="no-input-num"><%= number_with_delimiter(g_sum_zengetu_sa) %></td>
+		<td class="no-input-num"><%= number_with_delimiter(g_sale_meter) %></td>
 	</tr>
 	<tr>
 		<td colspan="8">
