@@ -35,10 +35,8 @@
 		  	<%= wash.wash_name + (i + 1).to_s %>
 		  	
 		  	<%# 単価情報埋め込み %>
-		  	<% class_id = "class_" + wash.wash_cd.to_s + '_'+ (i+1).to_s %>
-		  	<%= hidden_field_tag class_id, etc.etc_class %>
 		  	<% price_id = "price_" + wash.wash_cd.to_s + '_'+ (i+1).to_s %>
-		  	<%= hidden_field_tag price_id, etc.price %>
+		  	<%= hidden_field_tag price_id, wash.price %>
 		  </th>
 		  	<% unless d_wash_sale == nil %>
 		  	  <% d_washsales_item = get_d_washsale_item(d_wash_sale.id, wash.wash_cd,(i+1)) %>
