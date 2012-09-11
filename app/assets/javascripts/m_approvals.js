@@ -1,5 +1,5 @@
 $(function () {
-
+/*
 		if ($("#m_approval_approval_id1").val() == "") {
       		//承認者が未選択の場合、承認者名を空にして、変更不可にする。
 			$("#m_approval_approval_name1").val("");
@@ -110,5 +110,5 @@ $(function () {
 				$("#m_approval_approval_name5").attr('readonly',false);
 			};
 	     });
-	     
+*/	     
 });

@@ -115,6 +115,22 @@ class DWashSalesController < ApplicationController
         @d_wash_sale_mae = get_d_wash_sale(get_zenkai_date(@sale_date,@shop_id,@mode),@shop_id,@mode)
 
         wash.max_num.times do |i| #times
+          
+         v1 = params["meter_#{wash.wash_cd.to_s}_#{i+1}"].to_i
+         v2 = 0
+         if not(@d_wash_sale_mae.nil?) then
+           v2 = get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)).meter
+         end
+         v1 = 0 if v1.nil?
+         v2 = 0 if v2.nil?
+         if v1 < v2 then
+           @uriage = v1 * @price
+           sum_uriage += @uriage
+         else
+           @uriage = (v1 - v2) * @price
+           sum_uriage += @uriage
+         end    
+          
          @d_washsale_item = get_d_washsale_item(@d_wash_sale.id,wash.id,(i+1))
          unless @d_washsale_item == nil #unless1
            #データあり
@@ -132,20 +148,7 @@ class DWashSalesController < ApplicationController
          #else
          #  sum_uriage = sum_uriage + @d_washsale_item.meter
          #end
-         
-         v1 = @d_washsale_item.meter
-         v2 = 0
-         if not(@d_wash_sale_mae.nil?) then
-           v2 = get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)).meter
-         end
-         v1 = 0 if v1.nil?
-         v2 = 0 if v2.nil?
-         if v1 < v2 then
-           sum_uriage += v1 * @price
-         else
-           sum_uriage += (v1 - v2) * @price
-         end
-         
+               
         end #times
         
         #誤差更新
@@ -165,7 +168,7 @@ class DWashSalesController < ApplicationController
              
              @d_washsale_item.meter = params["meter_#{wash.wash_cd}_#{99}"]
              @d_washsale_item.error_money =  sum_uriage - @d_washsale_item.meter
-             @d_washsale_item.price = @price
+             @d_washsale_item.uriage = 0
              @d_washsale_item.updated_user_id = current_user.id
              @d_washsale_item.save!
              
@@ -223,7 +226,7 @@ private
     end
     @d_washsale_item.created_user_id = current_user.id
     @d_washsale_item.updated_user_id = current_user.id
-    @d_washsale_item.price = @price
+    @d_washsale_item.uriage = @uriage
     @d_washsale_item.save!
   end
   
@@ -236,7 +239,7 @@ private
       @d_washsale_item.error_money =  (sum_meter - sum_meter_mae) - @d_washsale_item.meter
     end
     @d_washsale_item.updated_user_id = current_user.id
-    @d_washsale_item.price = @price
+    @d_washsale_item.uriage = @uriage
     @d_washsale_item.save!
   end
 end
