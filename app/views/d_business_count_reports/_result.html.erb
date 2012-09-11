@@ -1,6 +1,5 @@
-<%= @input_ymd %>
 
-
+<%= form_tag({:action => 'print'}) do %>
 <table id="report_view_table" class="rounded-corner">
   <tr>
     <th scope="col">&nbsp;</th>
@@ -56,8 +55,7 @@
     <th rowspan="2" scope="row"><%= shop.shop_cd %><br /><%= shop.shop_ryaku %></th>
     <% @m_aims.each do |m_aim| %>
     <td rowspan="2"><!-- 目標 -->
-    	<% d_aim = get_d_aim(@ym,shop.id,m_aim.id) %>
-    	<%= if d_aim == nil  then 0 else d_aim.aim_total end%>
+    	<%= get_d_aim_total(@ym,shop.id,m_aim.id) %>
     </td>
     <td><!-- 日計 -->
     	<% d_result = get_result(@input_ymd.delete("/"),shop.id) %>
@@ -69,19 +67,17 @@
     </td>
     <% end %>
     <td rowspan="2"><!-- 現金会員 目標-->
-    	<% d_aim = get_d_aim(@ym,shop.id,9) %>
-    	<%= if d_aim == nil then 0 else d_aim.aim_total end  %>
+    	<%= get_d_aim_total(@ym,shop.id,9) %>
     </td>
     <td><!-- 現金会員 日計-->
     	<% d_result = get_result(@input_ymd.delete("/"),shop.id) %>
-    	<%= if d_result == nil then 0 else get_d_result_oiletc_daily(d_result.id,9) end %>
+    	<%= get_d_result_oiletc_daily(d_result,9) %>
     </td>
     <td rowspan="2"><!-- 車検書換 目標-->
-    	<% d_aim = get_d_aim(@ym,shop.id,10) %>
-    	<%= if d_aim == nil then 0 else d_aim.aim_total end %>
+    	<%= get_d_aim_total(@ym,shop.id,10) %>
     </td>
     <td><!-- 車検書換 日計-->
-    	<%= if d_result == nil then 0 else get_d_result_oiletc_daily(d_result.id,10) end %>
+    	<%= get_d_result_oiletc_daily(d_result,10) %>
     </td>
     <td rowspan="2"><%= get_count_d_result_reserve_day(tmp_ymd1.strftime("%Y%m%d"),shop.id) %></td>
     <td rowspan="2">
@@ -121,6 +117,9 @@
   </tr>
   <% end %>
 </table>
+<%= hidden_field_tag 'input_ymd', @input_ymd %>
+<%= submit_tag '印刷',format: 'pdf' %>
+<% end %>
 
 
 

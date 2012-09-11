@@ -1,8 +1,13 @@
 module DBusinessCountReportsHelper
   
-  def get_d_aim(ym,shop_id,aim_id)
-    DAim.where(:date => ym,:m_shop_id => shop_id,
+  def get_d_aim_total(ym,shop_id,aim_id)
+    aim = DAim.where(:date => ym,:m_shop_id => shop_id,
            :m_aim_id => aim_id).select('id,date,m_shop_id,m_aim_id,aim_total').first
+    unless aim == nil
+      aim.aim_total
+    else
+      0
+    end
   end  
   
   def get_result(result_date,shop_id)
@@ -32,13 +37,19 @@ module DBusinessCountReportsHelper
     return sum_get_num
   end
   
-  def get_d_result_oiletc_daily(d_result_id,m_oiletc_id)
-    sum_oiletc = nil
-    d_resutl_oiletc = DResultOiletc.where(:d_result_id => d_result_id,:m_oiletc_id => m_oiletc_id).first
+  def get_d_result_oiletc_daily(d_result,m_oiletc_id)
+    sum_oiletc = 0
+    unless d_result == nil
+      d_resutl_oiletc = DResultOiletc.where(:d_result_id => d_result.id,:m_oiletc_id => m_oiletc_id).first
+    else
+      d_resutl_oiletc = nil
+    end
     unless d_resutl_oiletc == nil
      sum_oiletc = d_resutl_oiletc.pos1_data + d_resutl_oiletc.pos2_data + d_resutl_oiletc.pos3_data
+    else
+      sum_oiletc = 0
     end 
-    return sum_oiletc
+    return sum_oiletc.to_i
   end
   
   def get_count_d_result_reserve_day(get_date,shop_id)
@@ -66,6 +77,14 @@ module DBusinessCountReportsHelper
       return_ymd = tmp_ymd.strftime("%Y%m") + '01'
     else #to_ymd
       return_ymd = tmp_ymd.strftime("%Y%m") + '31'
+    end
+  end
+  
+  def get_d_result_collect_get_num(d_result,m_aim_id)
+    unless d_result == nil
+      DResultCollect.where(:d_result_id => d_result.id,:m_oiletc_id => m_aim_id).first.get_num
+    else
+      0
     end
   end
 end
