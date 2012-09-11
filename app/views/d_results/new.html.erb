@@ -20,7 +20,7 @@
 
 
 <div id="result">
-  <% if @d_result.blank? or @d_result.kakutei_flg == 0 %> 	
+  <% if @d_result.blank? or @edit_flg == 1 or @d_result.kakutei_flg == 0 %> 	
 	<%= render 'input_d_result' %>
   <% else %>
     <%= render 'show_d_result' %>

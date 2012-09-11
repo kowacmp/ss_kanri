@@ -1,2 +1,6 @@
-$('#d_result_reserve').html("<%= j(render :partial => 'd_result_reserve')%>");
-$('#result').html("<%= j(render :partial => 'reserve_result')%>");
+<% if @message.blank? %>
+  $('#d_result_reserve').html("<%= j(render :partial => 'd_result_reserve')%>");
+  $('#result').html("<%= j(render :partial => 'reserve_result')%>");
+<% else %>
+  $(alert("<%= @message %>"));
+<% end %>  

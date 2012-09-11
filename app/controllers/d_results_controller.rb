@@ -1,17 +1,18 @@
+# -*- coding:utf-8 -*-
 class DResultsController < ApplicationController
   include DResultsHelper
 
   def index
     @today = Time.now.strftime("%Y/%m/%d")
+    
+    sql = result_index_sql(Time.now.strftime("%Y%m%d"), '')
+    @m_shops = MShop.find_by_sql(sql)    
   end
   
   def index_select
     p "index_select_date   index_select_date   index_select_date   index_select_date"
-    p params
-    p "select_date=#{params[:select_date]}"
-    p "shop_kbn=#{params[:select_shop_kbn]}"
     select_date = params[:select_date].delete("/")
-    p "select_date=#{select_date}"
+  
     sql = result_index_sql(select_date, params[:select_shop_kbn])
     @m_shops = MShop.find_by_sql(sql)
   end
@@ -67,9 +68,6 @@ class DResultsController < ApplicationController
   end  
 
   def new
-    p "new   new   new   new   new   new   new   new   new"
-    p "d_result_id=#{params[:d_result_id]}"
-       
     @m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"])
     @m_oiletc0s = MOiletc.find(:all, :conditions => ["oiletc_group = 0 and deleted_flg = 0"])  
     @m_oiletc1s = MOiletc.find(:all, :conditions => ["oiletc_group = 1 and deleted_flg = 0"])
@@ -100,18 +98,13 @@ class DResultsController < ApplicationController
       session[:d_result_params][:m_shop_id] = @d_result.m_shop_id
       @today = @d_result.result_date[0,4] + "/" + @d_result.result_date[4,2] + "/" + @d_result.result_date[6,2]
       @m_shop_id = @d_result.m_shop_id
+      @edit_flg = 1
     end
     
     select_date
   end
   
   def select_date
-    p "select_date   select_date   select_date   select_date   select_date"
-    p "params[:select_date]=#{params[:select_date]}"
-    p "params[:m_shop]=#{params[:m_shop_id]}"
-    p "@today=#{@today}"
-    p "@m_shop_id=#{@m_shop_id}"
-    
     if params[:select_date].blank?
       #newから来た場合
       @result_date = @today.delete("/")
@@ -555,20 +548,33 @@ class DResultsController < ApplicationController
   end
   
   def reserve_create
-    d_result = DResult.find(params[:reserve][:d_result_id]) 
-    d_result_reserve = DResultReserve.new
-    d_result_reserve.d_result_id = d_result.id
-    d_result_reserve.get_date = params[:reserve][:get_date][0,4] + params[:reserve][:get_date][5,2] + params[:reserve][:get_date][8,2]
-    d_result_reserve.reserve_name = params[:reserve][:reserve_name] 
-    d_result_reserve.created_user_id = current_user.id
-    d_result_reserve.updated_user_id = current_user.id
-    d_result_reserve.save
-    @d_result_reserves = DResultReserve.find(:all, :conditions => ["d_result_id = ?", d_result.id], :order => 'get_date, id')
+    d_result = DResult.find(params[:reserve][:d_result_id])
     
-    @result_date = d_result.result_date
-    @m_shop = MShop.find(d_result.m_shop_id) 
-    #現在月から４ヶ月先までの車検予約実績データ集計
-    syukei_data(d_result, '', d_result.m_shop_id)
+    if params[:reserve][:get_date].blank?
+      get_date = ""
+    else
+      get_date = params[:reserve][:get_date].delete("/")     
+    end
+
+    if get_date.blank?
+      @message = "車検予約日は入力必須です。"
+    elsif d_result.result_date > get_date
+      @message = "車検予約日が獲得日より前になっています。"
+    else     
+      d_result_reserve = DResultReserve.new
+      d_result_reserve.d_result_id = d_result.id
+      d_result_reserve.get_date = get_date
+      d_result_reserve.reserve_name = params[:reserve][:reserve_name] 
+      d_result_reserve.created_user_id = current_user.id
+      d_result_reserve.updated_user_id = current_user.id
+      d_result_reserve.save
+      @d_result_reserves = DResultReserve.find(:all, :conditions => ["d_result_id = ?", d_result.id], :order => 'get_date, id')
+    
+      @result_date = d_result.result_date
+      @m_shop = MShop.find(d_result.m_shop_id) 
+      #現在月から４ヶ月先までの車検予約実績データ集計
+      syukei_data(d_result, '', d_result.m_shop_id)
+    end
   end
   
   def reserve_edit
@@ -577,19 +583,26 @@ class DResultsController < ApplicationController
   end
   
   def reserve_update
+    p "reserve_update   reserve_update   reserve_update   reserve_update"
     d_result_reserve = DResultReserve.find(params[:reserve][:id])
-    d_result_reserve.get_date = params[:reserve][:get_date][0,4] + params[:reserve][:get_date][5,2] + params[:reserve][:get_date][8,2]
-    d_result_reserve.reserve_name = params[:reserve][:reserve_name]
-    d_result_reserve.updated_user_id = current_user.id
-    d_result_reserve.save
-    
     d_result = DResult.find(d_result_reserve.d_result_id)
-    @d_result_reserves = DResultReserve.find(:all, :conditions => ["d_result_id = ?", d_result.id], :order => 'get_date, id')
+    get_date = params[:reserve][:get_date].delete("/")
+    
+    if d_result.result_date > get_date
+      @message = "車検予約日が獲得日より前になっています。"
+    else    
+      d_result_reserve.get_date = get_date
+      d_result_reserve.reserve_name = params[:reserve][:reserve_name]
+      d_result_reserve.updated_user_id = current_user.id
+      d_result_reserve.save
+    
+      @d_result_reserves = DResultReserve.find(:all, :conditions => ["d_result_id = ?", d_result.id], :order => 'get_date, id')
   
-    @result_date = d_result.result_date
-    @m_shop = MShop.find(d_result.m_shop_id) 
-    #現在月から４ヶ月先までの車検予約実績データ集計
-    syukei_data(d_result, '', d_result.m_shop_id)  
+      @result_date = d_result.result_date
+      @m_shop = MShop.find(d_result.m_shop_id) 
+      #現在月から４ヶ月先までの車検予約実績データ集計
+      syukei_data(d_result, '', d_result.m_shop_id)  
+    end
   end
   
   def reserve_delete

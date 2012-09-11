@@ -96,7 +96,7 @@ p "oil_betu_meter_sql=#{sql}"
   def tank_volume_sql(m_shop_id)
     sql = "select m_oil_id, SUM(volume) from m_tanks"
     sql << " where deleted_flg = 0 and m_shop_id = #{m_shop_id} group by m_oil_id order by m_oil_id"    
-
+p "tank_volume_sql=#{sql}"
     return sql
   end
   
@@ -261,7 +261,7 @@ p "oil_betu_meter_sql=#{sql}"
     cr_sql << " left join d_tank_compute_reports cr on (cr.m_tank_id = t.id and cr.d_result_id = #{d_result_id})"
     cr_sql << " where t.m_oil_id = o.id and t.deleted_flg = 0 and o.deleted_flg = 0"
     cr_sql << "   and t.m_shop_id = #{m_shop_id} order by t.tank_union_no, t.tank_no"
-
+p "cr_sql=#{cr_sql}"
     d_tank_compute_reports = DTankComputeReport.find_by_sql(cr_sql)
     idx, union_no = 0,0
     @d_tank_compute_reports = Array::new
@@ -338,7 +338,8 @@ p "oil_betu_meter_sql=#{sql}"
         end
         
       end  
-    end  
+    end  #d_tank_compute_reports.each_with_index
+    p "@d_tank_compute_reports=#{@d_tank_compute_reports}"
   end
   
   def m_meters_count_sql(m_shop_id)

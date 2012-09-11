@@ -20,22 +20,22 @@
       <td class="input_no"><%= num_fmt(m_oil.pos1_data, true) %>&nbsp;L</td>
       <td class="input_no"><%= num_fmt(m_oil.pos2_data, true) %>&nbsp;L</td>
       <td class="input_no"><%= num_fmt(m_oil.pos3_data, true) %>&nbsp;L</td>
-      <td class="input_no"><%= num_fmt(m_oil.pos_total, true) %>&nbsp;L</td>                
+      <td class="input_no" id="display"><%= num_fmt(m_oil.pos_total, true) %>&nbsp;L</td>                
     </tr>
   <% end %>
     <tr>
       <th>ガソリン合計</th>
-      <td class="input_no"><%= num_fmt(@pos1_gasorin, true) %>&nbsp;L</td>
-      <td class="input_no"><%= num_fmt(@pos2_gasorin, true) %>&nbsp;L</td>
-      <td class="input_no"><%= num_fmt(@pos3_gasorin, true) %>&nbsp;L</td>
-      <td class="input_no"><%= num_fmt(@total_gasorin, true) %>&nbsp;L</td>
+      <td class="input_no" id="display"><%= num_fmt(@pos1_gasorin, true) %>&nbsp;L</td>
+      <td class="input_no" id="display"><%= num_fmt(@pos2_gasorin, true) %>&nbsp;L</td>
+      <td class="input_no" id="display"><%= num_fmt(@pos3_gasorin, true) %>&nbsp;L</td>
+      <td class="input_no" id="display"><%= num_fmt(@total_gasorin, true) %>&nbsp;L</td>
     </tr>
     <tr>
       <th>MOFUEL計</th>
-      <td class="input_no"><%= num_fmt(@pos1_mofuel, true) %>&nbsp;L</td>
-      <td class="input_no"><%= num_fmt(@pos2_mofuel, true) %>&nbsp;L</td>
-      <td class="input_no"><%= num_fmt(@pos3_mofuel, true) %>&nbsp;L</td>
-      <td class="input_no"><%= num_fmt(@total_mofuel, true) %>&nbsp;L</td>
+      <td class="input_no" id="display"><%= num_fmt(@pos1_mofuel, true) %>&nbsp;L</td>
+      <td class="input_no" id="display"><%= num_fmt(@pos2_mofuel, true) %>&nbsp;L</td>
+      <td class="input_no" id="display"><%= num_fmt(@pos3_mofuel, true) %>&nbsp;L</td>
+      <td class="input_no" id="display"><%= num_fmt(@total_mofuel, true) %>&nbsp;L</td>
     </tr>   
   </table>
   <br/>
@@ -61,15 +61,15 @@
       <td class="input_no"><%= num_fmt(oiletc0.pos1_data, flg) %>&nbsp;<%= oiletc0.code_name %></td>
       <td class="input_no"><%= num_fmt(oiletc0.pos2_data, flg) %>&nbsp;<%= oiletc0.code_name %></td>
       <td class="input_no"><%= num_fmt(oiletc0.pos3_data, flg) %>&nbsp;<%= oiletc0.code_name %></td>  
-      <td class="input_no"><%= num_fmt(oiletc0.pos_total, flg) %>&nbsp;<%= oiletc0.code_name %></td>              
+      <td class="input_no" id="display"><%= num_fmt(oiletc0.pos_total, flg) %>&nbsp;<%= oiletc0.code_name %></td>              
     </tr>
   <% end %>	
     <tr>
       <th>油外合計</th>
-      <td class="input_no"><%= num_fmt(@etc0_pos1_total)%>&nbsp;円</td>
-      <td class="input_no"><%= num_fmt(@etc0_pos2_total) %>&nbsp;円</td>
-      <td class="input_no"><%= num_fmt(@etc0_pos3_total) %>&nbsp;円</td>
-      <td class="input_no"><%= num_fmt(@etc0_pos_total) %>&nbsp;円</td>
+      <td class="input_no" id="display"><%= num_fmt(@etc0_pos1_total)%>&nbsp;円</td>
+      <td class="input_no" id="display"><%= num_fmt(@etc0_pos2_total) %>&nbsp;円</td>
+      <td class="input_no" id="display"><%= num_fmt(@etc0_pos3_total) %>&nbsp;円</td>
+      <td class="input_no" id="display"><%= num_fmt(@etc0_pos_total) %>&nbsp;円</td>
     </tr>  
   </table>	
   <br/>
@@ -95,7 +95,7 @@
       <td class="input_no"><%= num_fmt(oiletc1.pos1_data, flg) %>&nbsp;<%= oiletc1.code_name %></td>
       <td class="input_no"><%= num_fmt(oiletc1.pos2_data, flg) %>&nbsp;<%= oiletc1.code_name %></td>
       <td class="input_no"><%= num_fmt(oiletc1.pos3_data, flg) %>&nbsp;<%= oiletc1.code_name %></td>  
-      <td class="input_no"><%= num_fmt(oiletc1.pos_total, flg) %>&nbsp;<%= oiletc1.code_name %></td>              
+      <td class="input_no" id="display"><%= num_fmt(oiletc1.pos_total, flg) %>&nbsp;<%= oiletc1.code_name %></td>              
     </tr>
   <% end %>	
   </table>	
@@ -122,7 +122,7 @@
       <td class="input_no"><%= num_fmt(m_etc.pos1_data, flg) %>&nbsp;<%= m_etc.code_name %></td>
       <td class="input_no"><%= num_fmt(m_etc.pos2_data, flg) %>&nbsp;<%= m_etc.code_name %></td>
       <td class="input_no"><%= num_fmt(m_etc.pos3_data, flg) %>&nbsp;<%= m_etc.code_name %></td>  
-      <td class="input_no"><%= num_fmt(m_etc.pos_total, flg) %>&nbsp;<%= m_etc.code_name %></td>              
+      <td class="input_no" id="display"><%= num_fmt(m_etc.pos_total, flg) %>&nbsp;<%= m_etc.code_name %></td>              
     </tr>      
   <% end %>	
   </table>	
@@ -148,20 +148,20 @@
     <tr>
       <th><%= meter[:oil_name] %></th>
       <th><%= meter[:volume] %></th>
-      <td class="input_no"><%= meter[:meter_susumi] %></td>
+      <td class="input_no" id="display"><%= meter[:meter_susumi] %></td>
       <% if meter[:meter_kabusoku].to_i < 0 %>
-        <td class="input_no" style="color: red;"><%= meter[:meter_kabusoku] %></td>
+        <td class="input_no" id="display" style="color: red;"><%= meter[:meter_kabusoku] %></td>
       <% else %>  
-        <td class="input_no"><%= meter[:meter_kabusoku] %></td>
+        <td class="input_no" id="display"><%= meter[:meter_kabusoku] %></td>
       <% end %>   
       
       <% if meter[:tank_kabusoku].to_i < 0 %>
-        <td class="input_no" style="color: red;"><%= meter[:tank_kabusoku] %></td>
+        <td class="input_no" id="display" style="color: red;"><%= meter[:tank_kabusoku] %></td>
       <% else %>
-        <td class="input_no"><%= meter[:tank_kabusoku] %></td>
+        <td class="input_no" id="display"><%= meter[:tank_kabusoku] %></td>
       <% end %>
-      <td class="input_no"><%= meter[:receive] %></td>
-      <td class="input_no"><%= meter[:stock] %></td>                                            
+      <td class="input_no" id="display"><%= meter[:receive] %></td>
+      <td class="input_no" id="display"><%= meter[:stock] %></td>                                            
     </tr>
   <% end %>	
   </table>
@@ -184,24 +184,24 @@
     </tr>
   <% @d_tank_compute_reports.each do |d_tank_compute_report| %>
     <tr>
-      <td>タンク<%= d_tank_compute_report.tank_no %></td> 	
-      <td><%= d_tank_compute_report.oil_name %></td> 
-      <td class="input_no"><%= num_fmt(d_tank_compute_report.before_stock) %></td> 
-      <td class="input_no"><%= num_fmt(d_tank_compute_report.receive) %></td>
-      <td class="input_no"><%= num_fmt(d_tank_compute_report.sale) %></td>  	
-      <td class="input_no"><%= num_fmt(d_tank_compute_report.compute_stock) %></td> 
-      <td class="input_no"><%= num_fmt(d_tank_compute_report.after_stock) %></td> 
+      <th>タンク<%= d_tank_compute_report[:tank_no] %></th> 	
+      <th><%= d_tank_compute_report[:oil_name] %></th> 
+      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:before_stock]) %></td> 
+      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:receive]) %></td>
+      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:sale]) %></td>  	
+      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:compute_stock]) %></td> 
+      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:after_stock]) %></td> 
       
-      <% if d_tank_compute_report.decrease.blank? or ((d_tank_compute_report.decrease).abs < d_tank_compute_report.oil_limit.to_i) %>
-        <td class="input_no"><%= num_fmt(d_tank_compute_report.decrease) %></td> 
+      <% if d_tank_compute_report[:decrease].blank? or ((d_tank_compute_report[:decrease]).abs < d_tank_compute_report[:oil_limit].to_i) %>
+        <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:decrease]) %></td> 
       <% else %>
-        <td class="input_no" style="background: gold;"><%= num_fmt(d_tank_compute_report.decrease) %></td>
+        <td class="input_no" id="display" style="background: gold;"><%= num_fmt(d_tank_compute_report[:decrease]) %></td>
       <% end %>	
-      <td class="input_no"><%= num_fmt(d_tank_compute_report.sale_total) %></td> 
-      <td class="input_no"><%= num_fmt(d_tank_compute_report.decrease_total) %></td> 
-      <td class="input_no"><%= num_fmt(d_tank_compute_report.total_percentage, true) %></td> 
-      <td align="center" style="font-size: 30px;">
-      	<% if d_tank_compute_report.inspect_flg == 1 %>
+      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:sale_total]) %></td> 
+      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:decrease_total]) %></td> 
+      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:total_percentage], true) %></td> 
+      <td align="center" id="display" style="font-size: 30px;">
+      	<% if d_tank_compute_report[:inspect_flg] == 1 %>
       	  ○
       	<% end %>
       </td>                             
@@ -224,9 +224,9 @@
         </tr>
         <% @d_result_yumes.each do |d_result_yume| %>
           <tr>
-            <td class="input_no"><%= num_fmt(d_result_yume.pos1_data) %></td> 	
-            <td class="input_no"><%= num_fmt(d_result_yume.pos2_data) %></td> 
-            <td class="input_no"><%= num_fmt(d_result_yume.pos3_data) %></td>           
+            <td class="input_no" id="display"><%= num_fmt(d_result_yume.pos1_data) %></td> 	
+            <td class="input_no" id="display"><%= num_fmt(d_result_yume.pos2_data) %></td> 
+            <td class="input_no" id="display"><%= num_fmt(d_result_yume.pos3_data) %></td>           
           </tr>	
         <% end %>
       </table>
@@ -248,8 +248,8 @@
           <% @m_oil_etcs.each do |m_oil_etc| %>
             <tr>
               <th><%= m_oil_etc.oiletc_name %></th> 	
-              <td class="input_no"><%= m_oil_etc.get_num %></td>
-              <td class="input_no"><%= @ruikei_eigyos[m_oil_etc.id][:ruikei] %></td>              
+              <td class="input_no" id="display"><%= m_oil_etc.get_num %></td>
+              <td class="input_no" id="display"><%= @ruikei_eigyos[m_oil_etc.id][:ruikei] %></td>              
             </tr>
           <% end %>	
         </table>
