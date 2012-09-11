@@ -128,7 +128,7 @@ class DResultsController < ApplicationController
       oil_sql << " and d.d_result_id = #{@d_result.id})"  
     end    
     oil_sql << " where m.deleted_flg = 0 order by m.oil_cd"
-
+p "oil_sql=#{oil_sql}"
     @pos1_gasorin, @pos2_gasorin, @pos3_gasorin, @total_gasorin = 0,0,0,0
     @pos1_mofuel, @pos2_mofuel, @pos3_mofuel, @total_mofuel = 0,0,0,0
     
@@ -150,9 +150,10 @@ class DResultsController < ApplicationController
         @total_mofuel += m_oil.pos_total.to_f
       end          
     end
+   
     @pos1_gasorin = @pos1_gasorin.round(2)
-    @pos2_gasorin = @pos1_gasorin.round(2)
-    @pos3_gasorin = @pos1_gasorin.round(2)
+    @pos2_gasorin = @pos2_gasorin.round(2)
+    @pos3_gasorin = @pos3_gasorin.round(2)
     @total_gasorin = @total_gasorin.round(2)
     @pos1_mofuel = @pos1_mofuel.round(2)
     @pos2_mofuel = @pos2_mofuel.round(2)
@@ -862,7 +863,7 @@ class DResultsController < ApplicationController
     if @d_result.blank?
       @d_result = DResult.new
       @d_result.result_date = @result_date
-      @d_result.m_shop_id = @d_result.m_shop_id
+      @d_result.m_shop_id = params[:m_shop_id]
       @d_result.kakutei_flg = 0
       @d_result.created_user_id = current_user.id
       @d_result.updated_user_id = current_user.id

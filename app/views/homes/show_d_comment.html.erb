@@ -1,5 +1,13 @@
-発信者  ： <%= @send_user.user_name %><br />
-タイトル： <%= @menu.display_name %><br /><br />
+<table id='rounded-corner'>
+  <tr>	
+    <th>発信者</th>
+    <td><%= @send_user.user_name %></td>
+  </tr>
+  <tr>	
+    <th>タイトル</th>
+    <td><%= @d_comment.title %></td>
+  </tr>
+</table><br />
 
 <table id='rounded-corner2'>
   <td width="430"><%= @d_comment.contents %></td>	

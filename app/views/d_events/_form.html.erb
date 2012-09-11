@@ -14,27 +14,25 @@
 <table id='rounded-corner'>
   <tr>
     <th><%= f.label '開始日' %></th>
-    <td><%#= f.text_field :start_day %>
-    	<%= f.number_field :start_day, :readonly => true, :class => "datepicker", :size => 5 %>
+    <td>
+      <%= f.number_field :start_day, :readonly => true, :class => "datepicker", :size => 5 %>
     </td>
   </tr>
   <tr>
     <th><%= f.label '終了日' %></th>
-    <td><%#= f.text_field :end_day %>
-    	<%= f.number_field :end_day, :readonly => true, :class => "datepicker", :size => 5 %>
+    <td>
+      <%= f.number_field :end_day, :readonly => true, :class => "datepicker", :size => 5 %>
     </td>
   </tr>
   <tr>
     <th><%= f.label '実施日' %></th>
-    <td><%#= f.text_field :action_day %>
-    	<%= f.number_field :action_day, :readonly => true, :class => "datepicker", :size => 5 %>
+    <td>
+      <%= f.number_field :action_day, :readonly => true, :class => "datepicker", :size => 5 %>
     </td>
   </tr>
   <tr>
     <th><%= f.label 'タイトル' %></th>
-    <td><%#= f.number_field :menu_id %>
-          <%= f.collection_select(:menu_id, Menu.find(:all, :order => 'menu_cd1, menu_cd2, menu_cd3'),
-           :id, :display_name, :include_blank => "選択して下さい") %> 
+    <td><%= f.text_field :title %>
     </td>
   </tr>
   <tr>

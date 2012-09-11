@@ -15,7 +15,7 @@
 <% @d_comments.each do |d_comment| %>
   <tr>
     <td><%= d_comment.send_day.strftime("%Y/%m/%d") %></td>
-    <td><%= d_comment.display_name %></td>
+    <td><%= d_comment.title %></td>
     <td><%= d_comment.contents %></td>
     <td><%= d_comment.receive_user_account%>&nbsp;<%= d_comment.receive_user_name %></td>
     <td class="icon">

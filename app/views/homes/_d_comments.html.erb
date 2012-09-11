@@ -1,31 +1,31 @@
-<table id='rounded-corner2'>
-  <tr>
-    <th width='550'colspan="5" class="title"><%= image_tag 'comment.png' %>コメント</th>
-  </tr>
-  <tr>
-  	<th width="16%">発信日</th>
-  	<th width="34%">タイトル</th>
-  	<th width="30%">発信者</th>
-  	<th width="10%">詳細</th>  	
-    <th width="10%">削除</th>
-  </tr>
-</table>
+<table id='rounded-corner2' class="comment_view_table" width="550">
+  <thead>	
+    <tr>
+      <th colspan="5" class="title" style="max-width: 550px;"><%= image_tag 'comment.png' %>コメント</th>
+    </tr>
+    <tr>
+  	  <th style="max-width: 88px;">発信日</th>
+  	  <th style="max-width: 187px;">タイトル</th>
+  	  <th style="max-width: 165px;">発信者</th>
+  	  <th style="max-width: 55px;">詳細</th>  	
+      <th style="max-width: 55px;">削除</th>
+    </tr>
+  </thead>
 
-<div style="height:100px;width:575px;overflow-y:auto;overflow-x:hidden;">
-  <table id='rounded-corner2'style="margin-top:-1px; width:554px;">
+  <tbody>
     <% @d_comments.each do |d_comment| %>
       <tr>
-   	    <td width="16%"><%= d_comment.send_day.strftime("%Y/%m/%d") %></td>
-        <td width="34%"><%= d_comment.display_name %></td>
-  	    <td width="30%"><%= d_comment.user_name %></td>
-  	    <td width="10%" align="center">
+   	    <td><%= d_comment.send_day.strftime("%Y/%m/%d") %></td>
+        <td><%= d_comment.title %></td>
+  	    <td><%= d_comment.user_name %></td>
+  	    <td align="center">
   	  	  <%= link_to image_tag('icon/show.png'), {:controller => 'homes', :action => 'show_d_comment', :id => d_comment.id}, :class => "modal" %>
   	    </td>
-  	    <td width="10%" align="center">
+  	    <td align="center">
   	      <%= link_to image_tag('icon/delete.png'), {:action => 'delete_d_comment', :id => d_comment.id}, 
   	          {:remote => true, :confirm => '削除します。よろしいですか？'} %>
   	    </td>  	
       </tr>
     <% end %>
-  </table>
-</div>
+  </tbody>
+</table>

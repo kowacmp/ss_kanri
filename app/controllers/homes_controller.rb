@@ -19,9 +19,9 @@ class HomesController < ApplicationController
 
     #イベント取得
     event_sql = "select substr(action_day, 1, 4) || '/' || substr(action_day, 5, 2) || '/' || substr(action_day, 7, 2) as action_day,"
-    event_sql << "      d.contents, m.display_name"
-    event_sql << " from d_events d, menus m"
-    event_sql << " where d.menu_id = m.id and d.start_day <= '#{today}' and d.end_day >= '#{today}'"
+    event_sql << "      d.contents, d.title"
+    event_sql << " from d_events d"
+    event_sql << " where d.start_day <= '#{today}' and d.end_day >= '#{today}'"
     event_sql << " order by d.action_day desc"
 
     @d_events = DEvent.find_by_sql(event_sql)        
@@ -34,7 +34,6 @@ class HomesController < ApplicationController
   def show_d_comment
     @d_comment = DComment.find(params[:id])
     @send_user = User.find(@d_comment.created_user_id)
-    @menu = Menu.find(@d_comment.menu_id)
     
     render :layout => 'modal'
   end

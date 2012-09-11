@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120911055606) do
+ActiveRecord::Schema.define(:version => 20120911115517) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -247,7 +247,7 @@ ActiveRecord::Schema.define(:version => 20120911055606) do
 
   create_table "d_comments", :force => true do |t|
     t.datetime "send_day",                      :null => false
-    t.integer  "menu_id",                       :null => false
+    t.string   "title",           :limit => 20, :null => false
     t.string   "contents",        :limit => 40, :null => false
     t.integer  "receive_id",                    :null => false
     t.integer  "created_user_id",               :null => false
@@ -259,7 +259,7 @@ ActiveRecord::Schema.define(:version => 20120911055606) do
     t.string   "start_day",       :limit => 8,  :null => false
     t.string   "end_day",         :limit => 8,  :null => false
     t.string   "action_day",      :limit => 8,  :null => false
-    t.integer  "menu_id"
+    t.string   "title",           :limit => 20
     t.string   "contents",        :limit => 40, :null => false
     t.integer  "created_user_id",               :null => false
     t.datetime "created_at"
@@ -441,7 +441,7 @@ ActiveRecord::Schema.define(:version => 20120911055606) do
     t.integer  "updated_user_id",                               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "price"
+    t.integer  "uriage"
   end
 
   create_table "d_sale_etcs", :force => true do |t|
@@ -561,6 +561,54 @@ ActiveRecord::Schema.define(:version => 20120911055606) do
     t.datetime "updated_at"
   end
 
+  create_table "d_washpurika_reports", :force => true do |t|
+    t.string   "date",            :limit => 6,                :null => false
+    t.integer  "m_shop_id",                                   :null => false
+    t.integer  "total_rank",                                  :null => false
+    t.integer  "league",                                      :null => false
+    t.integer  "before_rank",                                 :null => false
+    t.integer  "total_point",                  :default => 0
+    t.integer  "result1",                      :default => 0
+    t.integer  "result2",                      :default => 0
+    t.integer  "result3",                      :default => 0
+    t.integer  "result4",                      :default => 0
+    t.integer  "result5",                      :default => 0
+    t.integer  "result6",                      :default => 0
+    t.integer  "result7",                      :default => 0
+    t.integer  "result8",                      :default => 0
+    t.integer  "result9",                      :default => 0
+    t.integer  "result10",                     :default => 0
+    t.integer  "result11",                     :default => 0
+    t.integer  "result12",                     :default => 0
+    t.integer  "result13",                     :default => 0
+    t.integer  "result14",                     :default => 0
+    t.integer  "result15",                     :default => 0
+    t.integer  "result16",                     :default => 0
+    t.integer  "result17",                     :default => 0
+    t.integer  "result18",                     :default => 0
+    t.integer  "result19",                     :default => 0
+    t.integer  "result20",                     :default => 0
+    t.integer  "result21",                     :default => 0
+    t.integer  "result22",                     :default => 0
+    t.integer  "result23",                     :default => 0
+    t.integer  "result24",                     :default => 0
+    t.integer  "result25",                     :default => 0
+    t.integer  "result26",                     :default => 0
+    t.integer  "result27",                     :default => 0
+    t.integer  "result28",                     :default => 0
+    t.integer  "result29",                     :default => 0
+    t.integer  "result30",                     :default => 0
+    t.integer  "result31",                     :default => 0
+    t.integer  "pace",                         :default => 0
+    t.integer  "wash_sale",                    :default => 0
+    t.integer  "same_day_pace",                :default => 0
+    t.integer  "same_day_result",              :default => 0
+    t.integer  "created_user_id"
+    t.integer  "updated_user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "d_washsale_detail_reports", :force => true do |t|
     t.integer  "d_washsale_report_id",              :default => 0, :null => false
     t.integer  "m_wash_id",                         :default => 0, :null => false
@@ -623,17 +671,12 @@ ActiveRecord::Schema.define(:version => 20120911055606) do
   end
 
   create_table "m_approvals", :force => true do |t|
-    t.integer  "menu_id",                      :null => false
+    t.integer  "menu_id",      :null => false
     t.integer  "approval_id1"
-    t.string   "approval_name1", :limit => 10
     t.integer  "approval_id2"
-    t.string   "approval_name2", :limit => 10
     t.integer  "approval_id3"
-    t.string   "approval_name3", :limit => 10
     t.integer  "approval_id4"
-    t.string   "approval_name4", :limit => 10
     t.integer  "approval_id5"
-    t.string   "approval_name5", :limit => 10
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -746,7 +789,7 @@ ActiveRecord::Schema.define(:version => 20120911055606) do
     t.integer  "fix_money12"
     t.integer  "m_fix_item_id13"
     t.integer  "fix_money13"
-    t.integer  "total_fix_money"
+    t.integer  "total_cash_box"
     t.integer  "total_change_money"
     t.integer  "total_money"
     t.integer  "deleted_flg",        :limit => 2, :default => 0

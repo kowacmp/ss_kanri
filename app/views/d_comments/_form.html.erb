@@ -21,8 +21,7 @@
   <tr>
     <th><%= f.label 'タイトル' %></th>
     <td>
-      <%= f.collection_select(:menu_id, Menu.find(:all, :order => 'menu_cd1, menu_cd2, menu_cd3'),
-           :id, :display_name, :include_blank => "選択して下さい") %>  
+      <%= f.text_field :title %>
     </td>
   </tr>
   <tr>

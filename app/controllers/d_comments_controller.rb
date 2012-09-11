@@ -2,12 +2,11 @@ class DCommentsController < ApplicationController
   # GET /d_comments
   # GET /d_comments.json
   def index
-    sql =  "select c.*, u.account receive_user_account, u.user_name receive_user_name, m.display_name"
+    sql =  "select c.*, u.account receive_user_account, u.user_name receive_user_name"
     sql << "  from d_comments c"
     sql << "  left join users u on (c.receive_id = u.id)"
-    sql << "  left join menus m on (c.menu_id = m.id)"
     sql << " where created_user_id = #{current_user.id} order by c.send_day desc"
-        
+        p "sql=#{sql}"
     @d_comments = DComment.find_by_sql(sql)
     
     respond_to do |format|
@@ -20,7 +19,6 @@ class DCommentsController < ApplicationController
   # GET /d_comments/1.json
   def show
     @d_comment = DComment.find(params[:id])
-    @display_name = Menu.find(@d_comment.menu_id).display_name
     @receive_user = User.find(@d_comment.receive_id)
      
     respond_to do |format|
