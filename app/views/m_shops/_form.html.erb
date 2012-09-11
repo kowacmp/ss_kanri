@@ -158,7 +158,7 @@
 				<% @m_fix_items.each_with_index do |m_fix_item,idx_item| %>
 					<td class="fix_money<%= idx_item + 1 %>">
 						<% if eval("m_fix_money.m_fix_item_id#{idx_item+1}") == m_fix_item.id %>
-							<%= text_field "m_fix_money[#{idx}]", "fix_money#{idx_item+1}",:value=>eval("m_fix_money.fix_money#{idx_item+1}"),:size=>7,:maxlength=>9,:class=>"money" %>
+							<%= text_field "m_fix_money[#{idx}]", "fix_money#{idx_item+1}",:value=>eval("m_fix_money.fix_money#{idx_item+1}"),:size=>7,:maxlength=>8,:class=>"money",:onchange=>"totalMoney(#{idx});" %>
 							<% if eval("m_fix_money.m_fix_item_id#{idx_item+1}") %>
 							<%= hidden_field "m_fix_money[#{idx}]", "m_fix_item_id#{idx_item+1}",:value=>eval("m_fix_money.m_fix_item_id#{idx_item+1}") %>
 							<% else %>
@@ -168,14 +168,14 @@
 							<% money_item_flg = 0 %>
 							<% for i in 1..13 %>
 								<% if eval("m_fix_money.m_fix_item_id#{i}") == m_fix_item.id %>
-									<%= text_field "m_fix_money[#{idx}]", "fix_money#{idx_item+1}",:value=>eval("m_fix_money.fix_money#{i}"),:size=>7,:maxlength=>9,:class=>"money" %>
+									<%= text_field "m_fix_money[#{idx}]", "fix_money#{idx_item+1}",:value=>eval("m_fix_money.fix_money#{i}"),:size=>7,:maxlength=>8,:class=>"money",:onchange=>"totalMoney(#{idx});" %>
 									<%= hidden_field "m_fix_money[#{idx}]", "m_fix_item_id#{idx_item+1}",:value=>m_fix_item.id %>
 									<% money_item_flg = 1 %>
 								<% end%>
 							<% end %>
 							
 							<% if money_item_flg == 0 %>
-								<%= text_field "m_fix_money[#{idx}]", "fix_money#{idx_item+1}",:size=>7,:maxlength=>9,:class=>"money" %>
+								<%= text_field "m_fix_money[#{idx}]", "fix_money#{idx_item+1}",:size=>7,:maxlength=>8,:class=>"money",:onchange=>"totalMoney(#{idx});" %>
 								<%= hidden_field "m_fix_money[#{idx}]", "m_fix_item_id#{idx_item+1}",:value=>m_fix_item.id %>
 							<% end %>
 							
@@ -185,13 +185,13 @@
 				<% end %>
 				
 				<td class="total_cash_box">
-					<%= text_field "m_fix_money[#{idx}]", 'total_cash_box',:value=>m_fix_money.total_cash_box,:size=>7,:maxlength=>9,:class=>"money" %>
+					<%= text_field "m_fix_money[#{idx}]", 'total_cash_box',:value=>m_fix_money.total_cash_box,:size=>7,:maxlength=>9,:class=>"money", :readonly=>true %>
 				</td>
 				<td class="total_change_money">
-					<%= text_field "m_fix_money[#{idx}]", 'total_change_money',:value=>m_fix_money.total_change_money,:size=>7,:maxlength=>9,:class=>"money" %>
+					<%= text_field "m_fix_money[#{idx}]", 'total_change_money',:value=>m_fix_money.total_change_money,:size=>7,:maxlength=>8,:class=>"money",:onchange=>"totalMoney(#{idx});" %>
 				</td>
 				<td class="total_money">
-					<%= text_field "m_fix_money[#{idx}]", 'total_money',:value=>m_fix_money.total_money,:size=>7,:maxlength=>9,:class=>"money" %>
+					<%= text_field "m_fix_money[#{idx}]", 'total_money',:value=>m_fix_money.total_money,:size=>7,:maxlength=>9,:class=>"money", :readonly=>true %>
 				</td>
 				<td class="clear">
 					<input type="button" value="クリア" onClick="form_clear2(<%= idx %>);" />
@@ -321,20 +321,16 @@
 						end, :selected => m_tank.m_oil_id,:include_blank => "選択して下さい") %>
 				</td>
 				<td class="tank_no">
-					<%#= text_field "m_tank[#{idx}]", 'tank_no',:value=>m_tank.tank_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"showPreview(#{idx});"%>
 					<%= text_field "m_tank[#{idx}]", 'tank_no',:value=>m_tank.tank_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onchange=>"showPreview(#{idx});"%>
 				</td>
 				<td class="tank_name">
 					<%= text_field "m_tank[#{idx}]", 'tank_name',:value=>m_tank.tank_name,:size=>8, :readonly=>true %>
 				</td>
 				<td class="volume">
-					<%#= text_field "m_tank[#{idx}]", 'volume',:value=>m_tank.volume,:size=>9,:style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
-					<%#= text_field "m_tank[#{idx}]", 'volume',:value=>m_tank.volume,:size=>9,:style=>"ime-mode:disabled",:maxlength=>9,:class=>"number",:onkeyup=>"numberCheck(this)" %>
 					<%= text_field "m_tank[#{idx}]", 'volume',:value=>m_tank.volume,:size=>9,:style=>"ime-mode:disabled",:maxlength=>9,:class=>"number",:onchange=>"numberCheck(this)" %>
 				</td>
 				
 				<td class="tank_union_no">
-					<%#= text_field "m_tank[#{idx}]", 'tank_union_no',:value=>m_tank.tank_union_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"numberCheck(this);"%>
 					<%= text_field "m_tank[#{idx}]", 'tank_union_no',:value=>m_tank.tank_union_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onchange=>"numberCheck(this);"%>
 				</td>
 				   
@@ -703,7 +699,7 @@
 	   	<% if @m_fix_items %>
 		<% @m_fix_items.each_with_index do |m_fix_item,idx_item| %>
 			var HTML<%= idx_item + 3 %> = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_fix_money<%= idx_item + 1 %>" name="m_fix_money[' + (counter2) + '][fix_money<%= idx_item + 1 %>]" size="7" maxlength="9" class="money" />'
+					+ '_fix_money<%= idx_item + 1 %>" name="m_fix_money[' + (counter2) + '][fix_money<%= idx_item + 1 %>]" size="7" maxlength="8" class="money" onChange="totalMoney(' + (counter2) + ')" />'
 					
 					+ '<input type="hidden" id="m_fix_money_' + (counter2) + '_m_fix_item_id<%= idx_item + 1 %>"'
 					+ ' name="m_fix_money[' + (counter2) + '][m_fix_item_id<%= idx_item + 1 %>]" value=<%= m_fix_item.id %> />';
@@ -712,11 +708,11 @@
 		<% end %>
 	   	
 	   	var HTML16 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_total_cash_box" name="m_fix_money[' + (counter2) + '][total_cash_box]" size="7" maxlength="9" class="money" />';
+					+ '_total_cash_box" name="m_fix_money[' + (counter2) + '][total_cash_box]" size="7" maxlength="9" class="money", readonly=true />';
 		var HTML17 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_total_change_money" name="m_fix_money[' + (counter2) + '][total_change_money]" size="7" maxlength="9" class="money" />';
+					+ '_total_change_money" name="m_fix_money[' + (counter2) + '][total_change_money]" size="7" maxlength="9" class="money" onChange="totalMoney(' + (counter2) + ')" />';
 		var HTML18 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_total_money" name="m_fix_money[' + (counter2) + '][total_money]" size="7" maxlength="9" class="money" />';
+					+ '_total_money" name="m_fix_money[' + (counter2) + '][total_money]" size="7" maxlength="9" class="money", readonly=true />';
 		
 		var HTML19 = '<input type="button" name="clear" value="クリア" onClick="form_clear2(' + (counter2) + ');" />'
 					+ '<input type="button" name="clear" value="削 除" onClick="DelTableRows2(this);" />';
@@ -989,6 +985,38 @@
 		document.getElementById('m_tank_' + idx + '_tank_name').value = "タンク" + html
 		
 	};
+	
+	
+	function totalMoney(idx){
+		
+		var total_cash_box = 0
+		var total_change_money = 0
+		
+		<% if @m_fix_items %>
+		<% @m_fix_items.each_with_index do |m_fix_item,idx_item| %>
+			var money<%= idx_item + 1 %> = document.getElementById('m_fix_money_' + idx + '_fix_money<%= idx_item + 1 %>').value;
+			
+			if (money<%= idx_item + 1 %>.match(/[^0-9]/g)) {
+				document.getElementById('m_fix_money_' + idx + '_fix_money<%= idx_item + 1 %>').value = money<%= idx_item + 1 %>.replace(/[^0-9]/g,'');
+			}
+			
+			total_cash_box = total_cash_box + Number(document.getElementById('m_fix_money_' + idx + '_fix_money<%= idx_item + 1 %>').value)
+		<% end %>
+		<% end %>
+		
+		var v = document.getElementById('m_fix_money_' + idx + '_total_change_money').value;
+		
+		if (v.match(/[^0-9]/g)) {
+			document.getElementById('m_fix_money_' + idx + '_total_change_money').value = v.replace(/[^0-9]/g,'');
+		}
+		
+		total_change_money = Number(document.getElementById('m_fix_money_' + idx + '_total_change_money').value)
+		
+		document.getElementById('m_fix_money_' + idx + '_total_cash_box').value = total_cash_box
+		document.getElementById('m_fix_money_' + idx + '_total_money').value = total_cash_box + total_change_money
+		
+	};
+	
 	
 </script>
 
