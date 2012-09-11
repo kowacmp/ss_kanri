@@ -184,14 +184,14 @@
 				<% end %>
 				<% end %>
 				
-				<td class="total_fix_money">
-					<%= text_field "m_fix_money[#{idx}]", 'total_fix_money',:value=>m_fix_money.total_fix_money,:size=>7,:maxlength=>9,:class=>"money",:onchange=>"totalMoney(#{idx});" %>
+				<td class="total_cash_box">
+					<%= text_field "m_fix_money[#{idx}]", 'total_cash_box',:value=>m_fix_money.total_cash_box,:size=>7,:maxlength=>9,:class=>"money" %>
 				</td>
 				<td class="total_change_money">
-					<%= text_field "m_fix_money[#{idx}]", 'total_change_money',:value=>m_fix_money.total_change_money,:size=>7,:maxlength=>9,:class=>"money",:onchange=>"totalMoney(#{idx});" %>
+					<%= text_field "m_fix_money[#{idx}]", 'total_change_money',:value=>m_fix_money.total_change_money,:size=>7,:maxlength=>9,:class=>"money" %>
 				</td>
 				<td class="total_money">
-					<%= text_field "m_fix_money[#{idx}]", 'total_money',:value=>m_fix_money.total_money,:size=>7,:maxlength=>9,:class=>"money", :readonly=>true %>
+					<%= text_field "m_fix_money[#{idx}]", 'total_money',:value=>m_fix_money.total_money,:size=>7,:maxlength=>9,:class=>"money" %>
 				</td>
 				<td class="clear">
 					<input type="button" value="クリア" onClick="form_clear2(<%= idx %>);" />
@@ -601,7 +601,7 @@
 	 	loopout: for (i = 0; i < counter; i++) {
 	 		if (document.getElementById('m_washsale_plan_' + i + '_m_wash_id') != null) {
 		 			for (j = 0; j < counter; j++) {
-				 		if (document.getElementById('m_washsale_plan_' + i + '_m_wash_id') != null) {
+				 		if (document.getElementById('m_washsale_plan_' + j + '_m_wash_id') != null) {
 				 			if (i != j) {
 					 			if (document.getElementById('m_washsale_plan_' + i + '_m_wash_id').value 
 					 					== document.getElementById('m_washsale_plan_' + j + '_m_wash_id').value) {
@@ -664,7 +664,7 @@
 		<% end %>
 		<% end %>
 		
-		cell16.setAttribute("class","total_fix_money");
+		cell16.setAttribute("class","total_cash_box");
 		cell17.setAttribute("class","total_change_money");
 		cell18.setAttribute("class","total_money");
 		cell19.setAttribute("class","clear");
@@ -679,7 +679,7 @@
 		<% end %>
 		<% end %>
 		
-		cell16.className = 'total_fix_money';
+		cell16.className = 'total_cash_box';
 		cell17.className = 'total_change_money';
 		cell18.className = 'total_money';
 		cell19.className = 'clear';
@@ -703,8 +703,7 @@
 	   	<% if @m_fix_items %>
 		<% @m_fix_items.each_with_index do |m_fix_item,idx_item| %>
 			var HTML<%= idx_item + 3 %> = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_fix_money<%= idx_item + 1 %>" name="m_fix_money[' + (counter2) + '][fix_money<%= idx_item + 1 %>]" size="7" maxlength="9" class="money"/>'
-					
+					+ '_fix_money<%= idx_item + 1 %>" name="m_fix_money[' + (counter2) + '][fix_money<%= idx_item + 1 %>]" size="7" maxlength="9" class="money" />'
 					
 					+ '<input type="hidden" id="m_fix_money_' + (counter2) + '_m_fix_item_id<%= idx_item + 1 %>"'
 					+ ' name="m_fix_money[' + (counter2) + '][m_fix_item_id<%= idx_item + 1 %>]" value=<%= m_fix_item.id %> />';
@@ -713,11 +712,11 @@
 		<% end %>
 	   	
 	   	var HTML16 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_total_fix_money" name="m_fix_money[' + (counter2) + '][total_fix_money]" size="7" maxlength="9" class="money" onChange="totalMoney(' + (counter2) + ')"/>';
+					+ '_total_cash_box" name="m_fix_money[' + (counter2) + '][total_cash_box]" size="7" maxlength="9" class="money" />';
 		var HTML17 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_total_change_money" name="m_fix_money[' + (counter2) + '][total_change_money]" size="7" maxlength="9" class="money" onChange="totalMoney(' + (counter2) + ')"/>';
+					+ '_total_change_money" name="m_fix_money[' + (counter2) + '][total_change_money]" size="7" maxlength="9" class="money" />';
 		var HTML18 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_total_money" name="m_fix_money[' + (counter2) + '][total_money]" size="7" maxlength="9" class="money" readonly=true />';
+					+ '_total_money" name="m_fix_money[' + (counter2) + '][total_money]" size="7" maxlength="9" class="money" />';
 		
 		var HTML19 = '<input type="button" name="clear" value="クリア" onClick="form_clear2(' + (counter2) + ');" />'
 					+ '<input type="button" name="clear" value="削 除" onClick="DelTableRows2(this);" />';
@@ -928,8 +927,7 @@
 		
 		var HTML5 = '<input type="text" id="m_tank_' + (counter3) 
 					+ '_tank_union_no" name="m_tank[' + (counter3) + '][tank_union_no]" size="2" maxlength="2" style="ime-mode:disabled" onChange="numberCheck(this)" />';
-		//var HTML5 = '<input type="button" name="clear" value="クリア" onClick="form_clear3(' + (counter3) + ');" />'
-		//			+ '<input type="button" name="clear" value="削 除" onClick="DelTableRows3(this);" />';
+		
 		var HTML6 = '<input type="button" value="クリア" onClick="form_clear3(' + (counter3) + ');" />'
 					+ '<input type="button" value="削 除" onClick="DelTableRows3(this);" />';
 		
@@ -992,25 +990,6 @@
 		
 	};
 	
-	function totalMoney(idx){
-		var v1 = document.getElementById('m_fix_money_' + idx + '_total_fix_money').value;
-		var v2 = document.getElementById('m_fix_money_' + idx + '_total_change_money').value;
-		
-		if (v1.match(/[^0-9]/g)) {
-			document.getElementById('m_fix_money_' + idx + '_total_fix_money').value = v1.replace(/[^0-9]/g,'');
-		}
-		
-		if (v2.match(/[^0-9]/g)) {
-			document.getElementById('m_fix_money_' + idx + '_total_change_money').value = v2.replace(/[^0-9]/g,'');
-		}
-		
-		var html1 = document.getElementById('m_fix_money_' + idx + '_total_fix_money').value;
-		var html2 = document.getElementById('m_fix_money_' + idx + '_total_change_money').value;
-		
-		document.getElementById('m_fix_money_' + idx + '_total_money').value = Number(html1) + Number(html2)
-		
-	};
-        
 </script>
 
 <style type="text/css">
