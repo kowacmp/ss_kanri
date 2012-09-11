@@ -3,16 +3,16 @@
 <table id='rounded-corner'>
 	<tr>
 	  <th>油種</th>
-	  <th>タンク容量</th>
+	  <th>タンク容量(KL)</th>
 	  <th>メーター進み</th>
 	  <th>メーター過不足</th>
 	  <th>地下タンク過不足</th>
-	  <th>仕入(リットル)</th>
-	  <th>在庫(リットル)</th>
+	  <th>仕入(L)</th>
+	  <th>在庫(L)</th>
 	  <td rowspan="<%= @meters.size + 1 %>">
-	  	<%= link_to 'メーター入力', {:controller => 'd_results', :action => 'meter_index', :result_date => @result_date}, :class => "modal" %>
+	  	<%= link_to 'メーター入力', {:controller => 'd_results', :action => 'meter_index', :result_date => @result_date}, :id => "meter_icon", :class => "modal" %>
 	    <br/><br/><br/>
-	    <%= link_to 'タンク入力', {:controller => 'd_results', :action => 'tank_index', :result_date => @result_date}, :class => "modal" %>
+	    <%= link_to 'タンク入力', {:controller => 'd_results', :action => 'tank_index', :result_date => @result_date}, :id => "tank_icon", :class => "modal" %>
 	  </td>	  	  	  	  	  	  	  
 	</tr>	
   <% @meters.each do |meter| %>

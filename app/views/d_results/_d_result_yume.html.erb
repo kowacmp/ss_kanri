@@ -18,7 +18,7 @@
 	<th>金額</th>
 	<td rowspan="<%= row %>">
 	  <% unless m_oiletc.blank? %> 	
-	    <%= link_to '入力', {:controller => 'd_results', :action => 'yume_index', :result_date => @result_date}, :class => "modal" %>
+	    <%= link_to '入力', {:controller => 'd_results', :action => 'yume_index', :result_date => @result_date}, :id => "add_icon", :class => "modal" %>
 	  <% end %>
 	</td>	  	  	  
   </tr>

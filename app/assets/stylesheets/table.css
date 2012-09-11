@@ -55,6 +55,11 @@ body
 {
 	text-align: right;
 }
+#rounded-corner td.display,.rounded-corner td.display
+{
+	background-color: #A5D7AA; 
+}
+
 td.input-num
 {
 	background: #fdf3b5;

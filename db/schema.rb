@@ -11,9 +11,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+ActiveRecord::Schema.define(:version => 20120908055610) do
 
-ActiveRecord::Schema.define(:version => 20120907063947) do
-# 81e2151d779642ca8b4ccdd1779af7e615ac8567
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
     t.integer  "menu_id",        :limit => 2, :null => false
@@ -206,15 +205,16 @@ ActiveRecord::Schema.define(:version => 20120907063947) do
   end
 
   create_table "d_audit_wash_details", :force => true do |t|
-    t.integer  "d_audit_wash_id", :null => false
-    t.integer  "m_wash_id",       :null => false
-    t.integer  "wash_no",         :null => false
+    t.integer  "d_audit_wash_id",                :null => false
+    t.integer  "m_wash_id",                      :null => false
+    t.integer  "wash_no",                        :null => false
     t.integer  "meter"
     t.integer  "error_money"
-    t.integer  "created_user_id", :null => false
-    t.datetime "created_at",      :null => false
-    t.integer  "updated_user_id", :null => false
-    t.datetime "updated_at",      :null => false
+    t.integer  "created_user_id",                :null => false
+    t.datetime "created_at",                     :null => false
+    t.integer  "updated_user_id",                :null => false
+    t.datetime "updated_at",                     :null => false
+    t.integer  "uriage",          :default => 0
   end
 
   create_table "d_audit_washes", :force => true do |t|
@@ -849,9 +849,10 @@ ActiveRecord::Schema.define(:version => 20120907063947) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "tank_no",     :limit => 2
+    t.integer  "tank_no",       :limit => 2
     t.integer  "volume"
-    t.string   "tank_name",   :limit => 20
+    t.string   "tank_name",     :limit => 20
+    t.integer  "tank_union_no", :limit => 2,  :default => 0
   end
 
   create_table "m_washes", :force => true do |t|
@@ -864,6 +865,7 @@ ActiveRecord::Schema.define(:version => 20120907063947) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "price",       :default => 0
   end
 
   create_table "m_washsale_plans", :force => true do |t|

@@ -8,7 +8,7 @@
 	  <th>日計</th>
 	  <th>累計</th>
 	  <td rowspan="6">
-	  	<%= link_to '入力', {:controller => 'd_results', :action => 'reserve_index', :result_date => @result_date}, :class => "modal" %>
+	  	<%= link_to '入力', {:controller => 'd_results', :action => 'reserve_index', :result_date => @result_date}, :id => "add_icon", :class => "modal" %>
 	  </td>	  	  	  
 	</tr>
   <% unless @syukei_reserves.blank?%>	

@@ -75,23 +75,24 @@ class DResultsController < ApplicationController
     @pos3_mofuel = @pos3_mofuel.round(2)
     @total_mofuel = @total_mofuel.round(2)
     
-    #油外販売取得
-    oiletc0_sql = m_oiletc_sql(@d_result, 0)
-    @oiletc0s = MOiletc.find_by_sql(oiletc0_sql)
+    #油外販売取得  油外店のみ取得
+    if @m_shop.shop_kbn == 1
+      oiletc0_sql = m_oiletc_sql(@d_result, 0)
+      @oiletc0s = MOiletc.find_by_sql(oiletc0_sql)
 
-    @etc0_pos1_total, @etc0_pos2_total, @etc0_pos3_total, @etc0_pos_total = 0,0,0,0  
-    @oiletc0s.each do |oiletc0|
-      #単位が円のものだけ合計する
-      if oiletc0.oiletc_tani == 0 
-        @etc0_pos1_total += oiletc0.pos1_data.to_f
-        @etc0_pos2_total += oiletc0.pos2_data.to_f 
-        @etc0_pos3_total += oiletc0.pos3_data.to_f
-        @etc0_pos_total += oiletc0.pos_total.to_f
-      end   
+      @etc0_pos1_total, @etc0_pos2_total, @etc0_pos3_total, @etc0_pos_total = 0,0,0,0  
+      @oiletc0s.each do |oiletc0|
+        #単位が円のものだけ合計する
+        if oiletc0.oiletc_tani == 0 
+          @etc0_pos1_total += oiletc0.pos1_data.to_f
+          @etc0_pos2_total += oiletc0.pos2_data.to_f 
+          @etc0_pos3_total += oiletc0.pos3_data.to_f
+          @etc0_pos_total += oiletc0.pos_total.to_f
+        end   
+      end
     end
-
  
-    #油外販売取得
+    #その他商品取得
     oiletc1_sql = m_oiletc_sql(@d_result, 1)
     @oiletc1s = MOiletc.find_by_sql(oiletc1_sql)
     
@@ -224,25 +225,27 @@ class DResultsController < ApplicationController
       d_result_oil.save
     end
 
-    #油外販売データ作成
-    m_oiletc0s = MOiletc.find(:all, :conditions => ["oiletc_group = 0 and deleted_flg = 0"])
+    #油外販売データ作成  油外店のみ作成
+    if m_shop.shop_kbn == 1
+      m_oiletc0s = MOiletc.find(:all, :conditions => ["oiletc_group = 0 and deleted_flg = 0"])
 
-    m_oiletc0s.each do |m_oiletc0|
-      d_result_oiletc0 = DResultOiletc.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc0.id])
+      m_oiletc0s.each do |m_oiletc0|
+        d_result_oiletc0 = DResultOiletc.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc0.id])
      
-      if d_result_oiletc0.blank?
-        d_result_oiletc0 = DResultOiletc.new
-        d_result_oiletc0.d_result_id = d_result.id
-        d_result_oiletc0.m_oiletc_id = m_oiletc0.id
-        d_result_oiletc0.created_user_id = current_user.id       
-      end
+        if d_result_oiletc0.blank?
+          d_result_oiletc0 = DResultOiletc.new
+          d_result_oiletc0.d_result_id = d_result.id
+          d_result_oiletc0.m_oiletc_id = m_oiletc0.id
+          d_result_oiletc0.created_user_id = current_user.id       
+        end
            
-      d_result_oiletc0.pos1_data = params[:etc0_pos1]["#{m_oiletc0.id}"]
-      d_result_oiletc0.pos2_data = params[:etc0_pos2]["#{m_oiletc0.id}"]
-      d_result_oiletc0.pos3_data = params[:etc0_pos3]["#{m_oiletc0.id}"]
-      d_result_oiletc0.updated_user_id = current_user.id
-      d_result_oiletc0.save
-    end    
+        d_result_oiletc0.pos1_data = params[:etc0_pos1]["#{m_oiletc0.id}"]
+        d_result_oiletc0.pos2_data = params[:etc0_pos2]["#{m_oiletc0.id}"]
+        d_result_oiletc0.pos3_data = params[:etc0_pos3]["#{m_oiletc0.id}"]
+        d_result_oiletc0.updated_user_id = current_user.id
+        d_result_oiletc0.save
+      end    
+    end
     
     #他売上データ作成
     m_oiletc1s = MOiletc.find(:all, :conditions => ["oiletc_group = 1 and deleted_flg = 0"])
@@ -315,13 +318,27 @@ class DResultsController < ApplicationController
     end
         
     #タンク点検フラグ更新
-    d_tank_compute_reports = DTankComputeReport.find(:all, :conditions => ["d_result_id = ?",d_result.id])
     unless params[:inspect_flg].blank?
-      d_tank_compute_reports.each do |d_tank_compute_report|
-        d_tank_compute_report.inspect_flg = params[:inspect_flg]["#{d_tank_compute_report.id}"]
-        d_tank_compute_report.save    
-      end
+      m_tank_sql = "select distinct tank_union_no from m_tanks"
+      m_tank_sql << " where m_shop_id = #{current_user.m_shop_id} and deleted_flg = 0"
+      m_tanks = MTank.find_by_sql(m_tank_sql)
+
+      m_tanks.each do |m_tank|
+        up_sql = "update d_tank_compute_reports set inspect_flg = #{params[:inspect_flg]["#{m_tank.tank_union_no}"]}, updated_at = '#{Time.now}'"
+        up_sql << " where d_result_id = #{d_result.id} and m_tank_id in"
+        up_sql << " (select id from m_tanks where m_shop_id = #{current_user.m_shop_id}"
+        up_sql << "     and deleted_flg = 0 and tank_union_no = #{m_tank.tank_union_no})"
+        ActiveRecord::Base.connection.execute(up_sql)
+      end 
     end
+      
+    #d_tank_compute_reports = DTankComputeReport.find(:all, :conditions => ["d_result_id = ?",d_result.id])
+    #unless params[:inspect_flg].blank?
+      #d_tank_compute_reports.each do |d_tank_compute_report|
+        #d_tank_compute_report.inspect_flg = params[:inspect_flg]["#{d_tank_compute_report.id}"]
+        #d_tank_compute_report.save    
+      #end
+    #end
     
     #消費税取得
     tax_rate = Establish.find(:first).tax_rate

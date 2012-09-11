@@ -5,7 +5,7 @@
   <td>	
     <table id='rounded-corner'>
       <th>対象店舗</th>
-      <td><%= @m_shop.shop_name %></td>
+      <td><%= @m_shop.shop_cd %>&nbsp;&nbsp;&nbsp;<%= @m_shop.shop_name %></td>
     </table>	
   </td>
   <td>
@@ -15,7 +15,9 @@
     </table>
   </td>
 </table>  
-<br />
+
+<hr />
+
 
 <div id="result">
   <% if @d_result.blank? or @d_result.kakutei_flg == 0 %> 	

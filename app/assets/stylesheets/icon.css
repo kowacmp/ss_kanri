@@ -1,4 +1,4 @@
-.add_icon
+.add_icon, #add_icon
 {
   background: url(icon/add.png);
   background-position: left;
@@ -68,7 +68,7 @@
   line-height: 16px;
   display:inline-block;
 }
-.meter_icon
+#meter_icon
 {
   background-image: url(icon/meter.png);
   background-position: left;
@@ -77,7 +77,7 @@
   line-height: 16px;
   display:inline-block;
 }
-.tank_icon
+#tank_icon
 {
   background-image: url(icon/tank.png);
   background-position: left;
