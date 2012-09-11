@@ -11,9 +11,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+ActiveRecord::Schema.define(:version => 20120911055606) do
 
-ActiveRecord::Schema.define(:version => 20120907063947) do
-# 81e2151d779642ca8b4ccdd1779af7e615ac8567
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
     t.integer  "menu_id",        :limit => 2, :null => false
@@ -206,15 +205,16 @@ ActiveRecord::Schema.define(:version => 20120907063947) do
   end
 
   create_table "d_audit_wash_details", :force => true do |t|
-    t.integer  "d_audit_wash_id", :null => false
-    t.integer  "m_wash_id",       :null => false
-    t.integer  "wash_no",         :null => false
+    t.integer  "d_audit_wash_id",                :null => false
+    t.integer  "m_wash_id",                      :null => false
+    t.integer  "wash_no",                        :null => false
     t.integer  "meter"
     t.integer  "error_money"
-    t.integer  "created_user_id", :null => false
-    t.datetime "created_at",      :null => false
-    t.integer  "updated_user_id", :null => false
-    t.datetime "updated_at",      :null => false
+    t.integer  "created_user_id",                :null => false
+    t.datetime "created_at",                     :null => false
+    t.integer  "updated_user_id",                :null => false
+    t.datetime "updated_at",                     :null => false
+    t.integer  "uriage",          :default => 0
   end
 
   create_table "d_audit_washes", :force => true do |t|
@@ -362,7 +362,7 @@ ActiveRecord::Schema.define(:version => 20120907063947) do
     t.integer  "sp"
     t.integer  "sc"
     t.integer  "taiyaw"
-    t.integer  "coating"
+    t.integer  "sp_plus"
     t.decimal  "atf",           :precision => 11, :scale => 2
     t.integer  "kousen"
     t.integer  "bt"
@@ -394,7 +394,7 @@ ActiveRecord::Schema.define(:version => 20120907063947) do
     t.integer  "sensya"
     t.integer  "sensya_purika"
     t.integer  "muton"
-    t.integer  "coating"
+    t.integer  "sp_plus"
     t.integer  "taiyaw"
     t.integer  "sp"
     t.integer  "sc"
@@ -441,6 +441,7 @@ ActiveRecord::Schema.define(:version => 20120907063947) do
     t.integer  "updated_user_id",                               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "price"
   end
 
   create_table "d_sale_etcs", :force => true do |t|
@@ -583,6 +584,7 @@ ActiveRecord::Schema.define(:version => 20120907063947) do
     t.integer  "updated_user_id",                               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "price"
   end
 
   create_table "d_washsale_reports", :force => true do |t|
@@ -686,6 +688,8 @@ ActiveRecord::Schema.define(:version => 20120907063947) do
     t.integer  "kansa_flg",   :limit => 2
     t.integer  "tax_flg",     :limit => 2
     t.integer  "etc_tani",    :limit => 2
+    t.integer  "etc_class",   :limit => 2
+    t.integer  "price"
   end
 
   create_table "m_etcsales", :force => true do |t|
@@ -709,18 +713,40 @@ ActiveRecord::Schema.define(:version => 20120907063947) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "fix_item_ryaku", :limit => 10
   end
 
   create_table "m_fix_moneys", :force => true do |t|
     t.integer  "m_shop_id",                                      :null => false
     t.integer  "start_month",                                    :null => false
     t.integer  "end_month",                                      :null => false
-    t.integer  "cash_box"
-    t.integer  "pos_register"
-    t.integer  "part_time"
-    t.integer  "wash_money"
-    t.integer  "money_change"
-    t.integer  "total_cash_box"
+    t.integer  "m_fix_item_id1"
+    t.integer  "fix_money1"
+    t.integer  "m_fix_item_id2"
+    t.integer  "fix_money2"
+    t.integer  "m_fix_item_id3"
+    t.integer  "fix_money3"
+    t.integer  "m_fix_item_id4"
+    t.integer  "fix_money4"
+    t.integer  "m_fix_item_id5"
+    t.integer  "fix_money5"
+    t.integer  "m_fix_item_id6"
+    t.integer  "fix_money6"
+    t.integer  "m_fix_item_id7"
+    t.integer  "fix_money7"
+    t.integer  "m_fix_item_id8"
+    t.integer  "fix_money8"
+    t.integer  "m_fix_item_id9"
+    t.integer  "fix_money9"
+    t.integer  "m_fix_item_id10"
+    t.integer  "fix_money10"
+    t.integer  "m_fix_item_id11"
+    t.integer  "fix_money11"
+    t.integer  "m_fix_item_id12"
+    t.integer  "fix_money12"
+    t.integer  "m_fix_item_id13"
+    t.integer  "fix_money13"
+    t.integer  "total_fix_money"
     t.integer  "total_change_money"
     t.integer  "total_money"
     t.integer  "deleted_flg",        :limit => 2, :default => 0
@@ -849,9 +875,10 @@ ActiveRecord::Schema.define(:version => 20120907063947) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "tank_no",     :limit => 2
+    t.integer  "tank_no",       :limit => 2
     t.integer  "volume"
-    t.string   "tank_name",   :limit => 20
+    t.string   "tank_name",     :limit => 20
+    t.integer  "tank_union_no", :limit => 2,  :default => 0
   end
 
   create_table "m_washes", :force => true do |t|
@@ -864,6 +891,7 @@ ActiveRecord::Schema.define(:version => 20120907063947) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "price",       :default => 0
   end
 
   create_table "m_washsale_plans", :force => true do |t|

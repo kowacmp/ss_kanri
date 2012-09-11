@@ -3,36 +3,36 @@
 <table id='rounded-corner'>
 	<tr>
 	  <th>油種</th>
-	  <th>タンク容量</th>
+	  <th>タンク容量(KL)</th>
 	  <th>メーター進み</th>
 	  <th>メーター過不足</th>
 	  <th>地下タンク過不足</th>
-	  <th>仕入(リットル)</th>
-	  <th>在庫(リットル)</th>
+	  <th>仕入(L)</th>
+	  <th>在庫(L)</th>
 	  <td rowspan="<%= @meters.size + 1 %>">
-	  	<%= link_to 'メーター入力', {:controller => 'd_results', :action => 'meter_index', :result_date => @result_date}, :class => "modal" %>
+	  	<%= link_to 'メーター入力', {:controller => 'd_results', :action => 'meter_index', :result_date => @result_date, :m_shop_id => @m_shop.id}, :id => "meter_icon", :class => "modal" %>
 	    <br/><br/><br/>
-	    <%= link_to 'タンク入力', {:controller => 'd_results', :action => 'tank_index', :result_date => @result_date}, :class => "modal" %>
+	    <%= link_to 'タンク入力', {:controller => 'd_results', :action => 'tank_index', :result_date => @result_date, :m_shop_id => @m_shop.id}, :id => "tank_icon", :class => "modal" %>
 	  </td>	  	  	  	  	  	  	  
 	</tr>	
   <% @meters.each do |meter| %>
     <tr>
       <th><%= meter[:oil_name] %></th>
       <th><%= meter[:volume] %></th>
-      <td class="input_no"><%= meter[:meter_susumi] %></td>
+      <td class="input_no" id="display"><%= meter[:meter_susumi] %></td>
       <% if meter[:meter_kabusoku].to_i < 0 %>
-        <td class="input_no" style="color: red;"><%= num_fmt(meter[:meter_kabusoku]) %></td>
+        <td class="input_no" id="display" style="color: red;"><%= num_fmt(meter[:meter_kabusoku]) %></td>
       <% else %>
-        <td class="input_no"><%= num_fmt(meter[:meter_kabusoku]) %></td>
+        <td class="input_no" id="display"><%= num_fmt(meter[:meter_kabusoku]) %></td>
       <% end %>
       
       <% if meter[:tank_kabusoku].to_i < 0 %>
-        <td class="input_no" style="color: red;"><%= num_fmt(meter[:tank_kabusoku]) %></td>
+        <td class="input_no" id="display" style="color: red;"><%= num_fmt(meter[:tank_kabusoku]) %></td>
       <% else %>
-        <td class="input_no"><%= num_fmt(meter[:tank_kabusoku]) %></td>
+        <td class="input_no" id="display"><%= num_fmt(meter[:tank_kabusoku]) %></td>
       <% end %>
-      <td class="input_no"><%= num_fmt(meter[:receive]) %></td>
-      <td class="input_no"><%= num_fmt(meter[:stock]) %></td>                                            
+      <td class="input_no" id="display"><%= num_fmt(meter[:receive]) %></td>
+      <td class="input_no" id="display"><%= num_fmt(meter[:stock]) %></td>                                            
     </tr>
   <% end %>	
 </table>

@@ -10,7 +10,7 @@
   <div id="first">
   <table id='rounded-corner'>
 	<tr>
-	  <th width="160">出荷数量(リットル)</th>
+	  <th width="160">出荷数量(L)</th>
 	  <th width="115">POS1</th>
 	  <th width="115">POS2</th>	
 	  <th width="115">POS3</th>
@@ -22,12 +22,13 @@
       <td><%= number_field :oil_pos1, "#{m_oil.id}", :value => m_oil.pos1_data, :class => "money", :size => 4 %>&nbsp;L</td>
       <td><%= number_field :oil_pos2, "#{m_oil.id}", :value => m_oil.pos2_data, :class => "money", :size => 4 %>&nbsp;L</td>
       <td><%= number_field :oil_pos3, "#{m_oil.id}", :value => m_oil.pos3_data, :class => "money", :size => 4 %>&nbsp;L</td>  
-      <td class="input_no"><label id="oil_total_<%= m_oil.id %>"><%= num_fmt(session[:m_oil_totals][m_oil.id][:total], true) %></label>&nbsp;L</td>              
+      <td class="input_no" id="display"><label id="oil_total_<%= m_oil.id %>"><%= num_fmt(session[:m_oil_totals][m_oil.id][:total], true) %></label>&nbsp;L</td>              
     </tr>  
   <% end %>    
   </table>
   <br/>
   
+  <% if @m_shop.shop_kbn == 1 %> <!-- 油外店のみ表示 -->
   <table id='rounded-corner'>
 	<tr>
 	  <th width="160">油外販売</th>
@@ -43,21 +44,22 @@
       <td><%= number_field :etc0_pos2, "#{oiletc0.id}", :value => oiletc0.pos2_data, :class => "money", :size => 4 %>&nbsp;<%= oiletc0.code_name %></td>
       <td><%= number_field :etc0_pos3, "#{oiletc0.id}", :value => oiletc0.pos3_data, :class => "money", :size => 4 %>&nbsp;<%= oiletc0.code_name %></td>
       <% if oiletc0.oiletc_tani == 6 %>  
-        <td class="input_no"><label id="etc0_total_<%= oiletc0.id %>"><%= num_fmt(oiletc0.pos_total, true) %></label>&nbsp;<%= oiletc0.code_name %></td>              
+        <td class="input_no" id="display"><label id="etc0_total_<%= oiletc0.id %>"><%= num_fmt(oiletc0.pos_total, true) %></label>&nbsp;<%= oiletc0.code_name %></td>              
       <% else %>  
-        <td class="input_no"><label id="etc0_total_<%= oiletc0.id %>"><%= num_fmt(oiletc0.pos_total) %></label>&nbsp;<%= oiletc0.code_name %></td>         
+        <td class="input_no" id="display"><label id="etc0_total_<%= oiletc0.id %>"><%= num_fmt(oiletc0.pos_total) %></label>&nbsp;<%= oiletc0.code_name %></td>         
       <% end %> 
     </tr>
   <% end %>	
     <tr>
       <th>油外合計</th>
-      <td class="input_no"><label id="etc0_pos1_total"><%= num_fmt(@etc0_pos1_total) %></label>&nbsp;円</td>
-      <td class="input_no"><label id="etc0_pos2_total"><%= num_fmt(@etc0_pos2_total) %></label>&nbsp;円</td>
-      <td class="input_no"><label id="etc0_pos3_total"><%= num_fmt(@etc0_pos3_total) %></label>&nbsp;円</td>
-      <td class="input_no"><label id="etc0_pos_total"><%= num_fmt(@etc0_pos_total) %></label>&nbsp;円</td>
+      <td class="input_no" id="display"><label id="etc0_pos1_total"><%= num_fmt(@etc0_pos1_total) %></label>&nbsp;円</td>
+      <td class="input_no" id="display"><label id="etc0_pos2_total"><%= num_fmt(@etc0_pos2_total) %></label>&nbsp;円</td>
+      <td class="input_no" id="display"><label id="etc0_pos3_total"><%= num_fmt(@etc0_pos3_total) %></label>&nbsp;円</td>
+      <td class="input_no" id="display"><label id="etc0_pos_total"><%= num_fmt(@etc0_pos_total) %></label>&nbsp;円</td>
     </tr>  
   </table>
   <br/>
+  <% end %>
   
   <table id='rounded-corner'>
 	<tr>
@@ -74,9 +76,9 @@
       <td><%= number_field :etc1_pos2, "#{oiletc1.id}", :value => oiletc1.pos2_data, :class => "money", :size => 4 %>&nbsp;<%= oiletc1.code_name %></td>
       <td><%= number_field :etc1_pos3, "#{oiletc1.id}", :value => oiletc1.pos3_data, :class => "money", :size => 4 %>&nbsp;<%= oiletc1.code_name %></td>       
       <% if oiletc1.oiletc_tani == 6 %> 
-        <td class="input_no"><label id="etc1_total_<%= oiletc1.id %>"><%= num_fmt(oiletc1.pos_total, true) %></label>&nbsp;<%= oiletc1.code_name %></td>              
+        <td class="input_no" id="display"><label id="etc1_total_<%= oiletc1.id %>"><%= num_fmt(oiletc1.pos_total, true) %></label>&nbsp;<%= oiletc1.code_name %></td>              
       <% else %> 
-        <td class="input_no"><label id="etc1_total_<%= oiletc1.id %>"><%= num_fmt(oiletc1.pos_total) %></label>&nbsp;<%= oiletc1.code_name %></td>          
+        <td class="input_no" id="display"><label id="etc1_total_<%= oiletc1.id %>"><%= num_fmt(oiletc1.pos_total) %></label>&nbsp;<%= oiletc1.code_name %></td>          
       <% end %>
     </tr>
   <% end %>	
@@ -100,9 +102,9 @@
         <td><%= number_field :m_etc_pos2, "#{m_etc.id}_no#{i}", :value => m_etc.pos2_data, :class => "money", :size => 4 %>&nbsp;<%= m_etc.code_name %></td>
         <td><%= number_field :m_etc_pos3, "#{m_etc.id}_no#{i}", :value => m_etc.pos3_data, :class => "money", :size => 4 %>&nbsp;<%= m_etc.code_name %></td>         
         <% if m_etc.etc_tani == 6 %> 	 
-          <td class="input_no"><label id="m_etc_total_<%= m_etc.id %>_no<%= i %>"><%= num_fmt(m_etc.pos_total, true) %></label>&nbsp;<%= m_etc.code_name %></td>              
+          <td class="input_no" id="display"><label id="m_etc_total_<%= m_etc.id %>_no<%= i %>"><%= num_fmt(m_etc.pos_total, true) %></label>&nbsp;<%= m_etc.code_name %></td>              
         <% else %> 
-          <td class="input_no"><label id="m_etc_total_<%= m_etc.id %>_no<%= i %>"><%= num_fmt(m_etc.pos_total) %></label>&nbsp;<%= m_etc.code_name %></td>           
+          <td class="input_no" id="display"><label id="m_etc_total_<%= m_etc.id %>_no<%= i %>"><%= num_fmt(m_etc.pos_total) %></label>&nbsp;<%= m_etc.code_name %></td>           
         <% end %>
       </tr>
       <% end %>
@@ -113,9 +115,9 @@
         <td><%= number_field :m_etc_pos2, "#{m_etc.id}_no#{m_etc.no}", :value => m_etc.pos2_data, :class => "money", :size => 4 %>&nbsp;<%= m_etc.code_name %></td>
         <td><%= number_field :m_etc_pos3, "#{m_etc.id}_no#{m_etc.no}", :value => m_etc.pos3_data, :class => "money", :size => 4 %>&nbsp;<%= m_etc.code_name %></td>        
         <% if m_etc.etc_tani == 6 %>	  
-          <td class="input_no"><label id="m_etc_total_<%= m_etc.id %>_no<%= m_etc.no %>"><%= num_fmt(m_etc.pos_total, true) %></label>&nbsp;<%= m_etc.code_name %></td>             
+          <td class="input_no" id="display"><label id="m_etc_total_<%= m_etc.id %>_no<%= m_etc.no %>"><%= num_fmt(m_etc.pos_total, true) %></label>&nbsp;<%= m_etc.code_name %></td>             
         <% else %> 
-          <td class="input_no"><label id="m_etc_total_<%= m_etc.id %>_no<%= m_etc.no %>"><%= num_fmt(m_etc.pos_total) %></label>&nbsp;<%= m_etc.code_name %></td>          
+          <td class="input_no" id="display"><label id="m_etc_total_<%= m_etc.id %>_no<%= m_etc.no %>"><%= num_fmt(m_etc.pos_total) %></label>&nbsp;<%= m_etc.code_name %></td>          
         <% end %>
       </tr>      
     <% end %>
@@ -147,7 +149,7 @@
             <tr>
               <th><%= m_oil_etc.oiletc_name %></th> 	
               <td><%= number_field :get_num, "#{m_oil_etc.id}", :value => m_oil_etc.get_num, :class => "money", :size => 4 %></td>            
-              <td class="input_no"><%= @ruikei_eigyos[m_oil_etc.id][:ruikei] %></td> 
+              <td class="input_no" id="display"><%= @ruikei_eigyos[m_oil_etc.id][:ruikei] %></td> 
             </tr>
           <% end %>	
         </table>
@@ -160,6 +162,7 @@
   <br/>  
       
   <%= hidden_field :select, :result_date, :value => @result_date %>
+  <%= hidden_field :select, :m_shop_id, :value => @m_shop.id %>
   <div style="text-align:right; width: 570px;"><%= submit_tag '登録' %></div>
 <% end %>
 

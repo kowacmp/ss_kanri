@@ -36,7 +36,7 @@ module DResultsHelper
     return sql  
   end
   
-  def syukei_data(d_result, select_date)
+  def syukei_data(d_result, select_date, m_shop_id)
     if d_result.blank?
       now = Time.parse(select_date)
       result_date = Time.parse(select_date).strftime("%Y%m%d")
@@ -62,7 +62,7 @@ module DResultsHelper
              
       #累計                                                        
       sql = "select count(*) from d_result_reserves r, d_results d"
-      sql << " where r.d_result_id = d.id and d.m_shop_id = #{current_user.m_shop_id}"
+      sql << " where r.d_result_id = d.id and d.m_shop_id = #{m_shop_id}"
       sql << " and d.result_date <= '#{result_date}'"
       sql << " and r.get_date between '#{start_ymd}' and '#{end_ymd}'"
     
@@ -80,7 +80,7 @@ module DResultsHelper
     sql << " where d.m_meter_id = m.id and m.m_tank_id = t.id"
     sql << "   and t.m_shop_id = #{m_shop_id} and d.d_result_id = #{d_result_id}"
     sql << "   and m.deleted_flg = 0 and t.deleted_flg = 0 group by t.m_oil_id order by t.m_oil_id"
- 
+p "oil_betu_meter_sql=#{sql}" 
     return sql
   end
   
@@ -96,7 +96,7 @@ module DResultsHelper
   def tank_volume_sql(m_shop_id)
     sql = "select m_oil_id, SUM(volume) from m_tanks"
     sql << " where deleted_flg = 0 and m_shop_id = #{m_shop_id} group by m_oil_id order by m_oil_id"    
-  
+
     return sql
   end
   
@@ -117,17 +117,27 @@ module DResultsHelper
       volumes[m_tank.m_oil_id.to_i][:sum_volume] = m_tank.sum
     end
     
-    
-    #メーター進み
-    m_sql = oil_betu_meter_sql(d_result.m_shop_id, d_result.id)
-    d_result_meters = DResultMeter.find_by_sql(m_sql)
-    unless old_d_result.blank?
-      old_m_sql = oil_betu_meter_sql(d_result.m_shop_id, old_d_result.id)                           
-      old_d_result_meters = DResultMeter.find_by_sql(old_m_sql)
+    if old_d_result.blank?
+      old_d_result_id = 0
+    else  
+      old_d_result_id = old_d_result.id
     end
     
-    if d_result_meters.blank?
-      sql = tank_volume_sql(current_user.m_shop_id)
+    #メーター進み
+    #m_sql = oil_betu_meter_sql(d_result.m_shop_id, d_result.id)
+    #d_result_meters = DResultMeter.find_by_sql(m_sql)
+    #unless old_d_result.blank?
+      #old_m_sql = oil_betu_meter_sql(d_result.m_shop_id, old_d_result.id)                           
+      #old_d_result_meters = DResultMeter.find_by_sql(old_m_sql)
+    #end
+    
+
+   
+    
+    result_meter = DResultMeter.find(:first, :conditions => ["d_result_id = ?", d_result.id])
+    if result_meter.blank?
+    #if d_result_meters.blank?  
+      sql = tank_volume_sql(d_result.m_shop_id)
       m_tanks = MTank.find_by_sql(sql)
         
       volumes = Array::new                 
@@ -150,23 +160,49 @@ module DResultsHelper
         @meters[idx][:meter_kabusoku] = ""  
       end
     else  
+      m_sql = "select t.m_oil_id, dm.meter, COALESCE(old_dm.meter, 0) old_meter"
+      m_sql << " from m_meters m"
+      m_sql << " left join m_tanks t on (m.m_tank_id = t.id)"
+      m_sql << " left join d_result_meters dm on (dm.m_meter_id = m.id and dm.d_result_id = #{d_result.id})"
+      m_sql << " left join d_result_meters old_dm on (old_dm.m_meter_id = m.id and old_dm.d_result_id = #{old_d_result_id})"
+      m_sql << " where m.deleted_flg = 0 and t.deleted_flg = 0  and t.m_shop_id = #{d_result.m_shop_id}"       
+      m_sql << " order by t.m_oil_id, m.pos_class, m.number"
+      d_result_meters = DResultMeter.find_by_sql(m_sql)
+      
       result_meters = Array::new
-    
-      if old_d_result.blank?
-        d_result_meters.each do |d_result_meter|
-          result_meters[d_result_meter.m_oil_id.to_i] = Hash::new
-          result_meters[d_result_meter.m_oil_id.to_i][:meter] = d_result_meter.sum
-          result_meters[d_result_meter.m_oil_id.to_i][:old_meter] = 0
-        end            
-      else
-        d_result_meters.each do |d_result_meter| 
-          result_meters[d_result_meter.m_oil_id.to_i] = Hash::new
-          result_meters[d_result_meter.m_oil_id.to_i][:meter] = d_result_meter.sum
-        end         
-        old_d_result_meters.each do |old_d_result_meter|
-          result_meters[old_d_result_meter.m_oil_id.to_i][:old_meter] = old_d_result_meter.sum
+      @m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"], :order => 'oil_cd')
+      
+      @m_oils.each do |m_oil|
+        result_meters[m_oil.id.to_i] = Hash::new
+        result_meters[m_oil.id.to_i][:meter] = 0
+        result_meters[m_oil.id.to_i][:old_meter] = 0
+      end  
+
+      d_result_meters.each do |d_result_meter| 
+        result_meters[d_result_meter.m_oil_id.to_i][:meter] += d_result_meter.meter.to_i
+        if d_result_meter.meter.to_i > d_result_meter.old_meter.to_i
+          result_meters[d_result_meter.m_oil_id.to_i][:old_meter] += d_result_meter.old_meter.to_i        
         end
       end
+      
+    
+    
+    
+#      if old_d_result.blank?
+#        d_result_meters.each do |d_result_meter|
+#          result_meters[d_result_meter.m_oil_id.to_i] = Hash::new
+#          result_meters[d_result_meter.m_oil_id.to_i][:meter] = d_result_meter.sum
+#          result_meters[d_result_meter.m_oil_id.to_i][:old_meter] = 0
+#        end            
+#      else
+#        d_result_meters.each do |d_result_meter| 
+#          result_meters[d_result_meter.m_oil_id.to_i] = Hash::new
+#          result_meters[d_result_meter.m_oil_id.to_i][:meter] = d_result_meter.sum
+#        end         
+#        old_d_result_meters.each do |old_d_result_meter|
+#          result_meters[old_d_result_meter.m_oil_id.to_i][:old_meter] = old_d_result_meter.sum
+#        end
+#      end
           
           
       #地下タンク過不足、仕入、在庫
@@ -197,9 +233,6 @@ module DResultsHelper
         end
       end    
          
-         
-      @m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"], :order => 'oil_cd')
-
       @meters = Array::new
       @m_oils.each_with_index do |m_oil, idx|
         @meters[idx] = Hash::new
@@ -222,14 +255,90 @@ module DResultsHelper
     return sql    
   end
   
-  def tank_betu_total(d_result_id)
+  def tank_betu_total(d_result_id, m_shop_id)
     limit = Establish.find(:first).limit
-    cr_sql = "select t.tank_no, t.volume, trunc((t.volume * 1000) * #{limit}, 0) as oil_limit, o.oil_name, cr.* from m_oils o, m_tanks t"
+    cr_sql = "select t.tank_no, t.tank_union_no, t.volume, trunc((t.volume * 1000) * #{limit}, 0) as oil_limit, o.oil_name, cr.* from m_oils o, m_tanks t"
     cr_sql << " left join d_tank_compute_reports cr on (cr.m_tank_id = t.id and cr.d_result_id = #{d_result_id})"
     cr_sql << " where t.m_oil_id = o.id and t.deleted_flg = 0 and o.deleted_flg = 0"
-    cr_sql << "   and t.m_shop_id = #{current_user.m_shop_id} order by t.tank_no"
-    @d_tank_compute_reports = DTankComputeReport.find_by_sql(cr_sql)
-    p "cr_sql=#{cr_sql}"
+    cr_sql << "   and t.m_shop_id = #{m_shop_id} order by t.tank_union_no, t.tank_no"
+
+    d_tank_compute_reports = DTankComputeReport.find_by_sql(cr_sql)
+    idx, union_no = 0,0
+    @d_tank_compute_reports = Array::new
+    
+    d_tank_compute_reports.each_with_index do |cr, index|
+      if union_no != cr.tank_union_no
+        idx += 1 unless index == 0
+        union_no = cr.tank_union_no
+
+        @d_tank_compute_reports[idx] = Hash::new
+        @d_tank_compute_reports[idx][:tank_no] = cr.tank_no
+        @d_tank_compute_reports[idx][:tank_union_no] = union_no
+        @d_tank_compute_reports[idx][:oil_name] = cr.oil_name
+        @d_tank_compute_reports[idx][:volume] = cr.volume
+        @d_tank_compute_reports[idx][:oil_limit] = cr.oil_limit.to_i
+        @d_tank_compute_reports[idx][:before_stock] = cr.before_stock.to_i
+        @d_tank_compute_reports[idx][:receive] = cr.receive.to_i
+        @d_tank_compute_reports[idx][:sale] = cr.sale.to_i
+        @d_tank_compute_reports[idx][:compute_stock] = cr.compute_stock.to_i
+        @d_tank_compute_reports[idx][:after_stock] = cr.after_stock.to_i
+        @d_tank_compute_reports[idx][:sale_total] = cr.sale_total.to_i
+        @d_tank_compute_reports[idx][:decrease] = cr.decrease.to_i
+        @d_tank_compute_reports[idx][:decrease_total] = cr.decrease_total.to_i
+        @d_tank_compute_reports[idx][:total_percentage] = cr.total_percentage
+        @d_tank_compute_reports[idx][:inspect_flg] = cr.inspect_flg
+      else
+        union_no = cr.tank_union_no
+      
+        @d_tank_compute_reports[idx][:tank_no] = @d_tank_compute_reports[idx][:tank_no].to_s + " - " + cr.tank_no.to_s
+        @d_tank_compute_reports[idx][:oil_name] = cr.oil_name
+        @d_tank_compute_reports[idx][:volume] += cr.volume
+        @d_tank_compute_reports[idx][:oil_limit] += cr.oil_limit.to_i
+        @d_tank_compute_reports[idx][:before_stock] += cr.before_stock.to_i
+        @d_tank_compute_reports[idx][:receive] += cr.receive.to_i
+        @d_tank_compute_reports[idx][:sale] += cr.sale.to_i
+        @d_tank_compute_reports[idx][:compute_stock] += cr.compute_stock.to_i
+        @d_tank_compute_reports[idx][:after_stock] += cr.after_stock.to_i
+        @d_tank_compute_reports[idx][:sale_total] += cr.sale_total.to_i
+        @d_tank_compute_reports[idx][:decrease] += cr.decrease.to_i
+        @d_tank_compute_reports[idx][:decrease_total] += cr.decrease_total.to_i
+        
+        joken = " where cr.m_tank_id = t.id and t.deleted_flg = 0"
+        joken << "   and d_result_id = #{d_result_id} and t.tank_union_no = #{union_no}"
+        
+        count_sql = "select count(*) from d_tank_compute_reports cr, m_tanks t" + joken
+        count = DTankComputeReport.count_by_sql(count_sql)
+        
+        inspect_sql = "select sum(cr.inspect_flg) from d_tank_compute_reports cr, m_tanks t" + joken
+        inspect = DTankComputeReport.find_by_sql(inspect_sql)
+        
+        if inspect[0].sum.blank?
+          @d_tank_compute_reports[idx][:inspect_flg] = ""
+        elsif count.to_i == inspect[0].sum.to_i
+          @d_tank_compute_reports[idx][:inspect_flg] = 1
+        else  
+          @d_tank_compute_reports[idx][:inspect_flg] = 0
+        end
+
+        total_percentage = @d_tank_compute_reports[idx][:decrease_total].to_f / @d_tank_compute_reports[idx][:sale_total].to_f * 100
+
+        #桁オーバーフロー対策
+        if total_percentage >= 1000
+          total_percentage = 999.999 
+        elsif total_percentage <= -1000  
+          total_percentage = -999.999
+        elsif total_percentage.nan?  
+          total_percentage = 0        
+        end     
+
+        if total_percentage == 0
+          @d_tank_compute_reports[idx][:total_percentage] = ""
+        else  
+          @d_tank_compute_reports[idx][:total_percentage] = total_percentage.round(3) 
+        end
+        
+      end  
+    end  
   end
   
   def m_meters_count_sql(m_shop_id)
@@ -299,7 +408,7 @@ module DResultsHelper
       end
 
       d_tank_compute_report.receive = tanks[m_tank.id][:receive]
-      d_tank_compute_report.sale = sales[m_tank.id][:sale]
+      d_tank_compute_report.sale = sales[m_tank.id][:sale] #--
       d_tank_compute_report.compute_stock = d_tank_compute_report.before_stock + d_tank_compute_report.receive - d_tank_compute_report.sale
       d_tank_compute_report.after_stock = tanks[m_tank.id][:stock]
       d_tank_compute_report.decrease = d_tank_compute_report.after_stock - d_tank_compute_report.compute_stock
@@ -442,7 +551,26 @@ module DResultsHelper
     sql = "select o.*, c.code from m_oiletcs o, m_codes c"
     sql << " where to_number(c.code, '999999999') = o.oiletc_tani and o.oiletc_group = 0"
     sql << " and o.deleted_flg = 0 and c.kbn = 'tani' and c.code = '0'"
-    
+
     return sql    
-  end   
+  end 
+  
+  def result_index_sql(date, shop_kbn)
+    sql = "select s.shop_cd, s.shop_name, r.id, r.kakutei_flg, u.user_name, u.account, d.code_name shop_kbn_name, m.code_name flg,"
+    sql << "      substr(r.result_date, 1, 4) || '/' || substr(r.result_date, 5, 2) || '/' || substr(r.result_date, 7, 2) as result_date"
+    sql << " from m_shops s"
+    sql << " left join d_results r on (r.m_shop_id = s.id and r.result_date = '#{date}')"
+    sql << " left join users u on (r.created_user_id = u.id)"
+    sql << " left join (select * from m_codes where kbn='shop_kbn') d on s.shop_kbn = cast(d.code as integer)"
+    sql << " left join (select * from m_codes where kbn='misumi_flg') m on r.kakutei_flg = cast(m.code as integer)"
+    sql << " where s.deleted_flg = 0"
+    
+    unless shop_kbn.blank?
+      sql << " and s.shop_kbn = #{shop_kbn}"
+    end
+    
+    sql << " order by s.shop_cd"
+
+    return sql
+  end  
 end

@@ -1,0 +1,41 @@
+<table id='rounded-corner'>
+	<tr>
+	  <th>店舗</th> 
+	  <th>入力日</th>
+	  <th>作成者</th>
+	  <th>店舗種別</th>
+	  <th>入力状況</th>
+      <th>確認<br />
+    	<% if @all_kakutei_flg == 0 or @all_kakutei_flg == nil %>
+    	  <%=  check_box_tag "all_lock", "0", false  %> 
+    	<% else %>
+    	  <%=  check_box_tag "all_lock", "1", true  %>
+    	<% end %>
+      </th>
+	  <th></th> 	  	  	  	  	  	  
+	</tr>	
+  <% @m_shops.each.each_with_index do |m_shop, i| %>
+    <tr>
+      <td><%= m_shop.shop_cd %>&nbsp;&nbsp;&nbsp;<%= m_shop.shop_name %></td>
+      <td><%= m_shop.result_date %></td>
+      <td><%= m_shop.account %>&nbsp;&nbsp;&nbsp;<%= m_shop.user_name %></td>
+      <td><%= m_shop.shop_kbn_name %></td>
+      <td style="text-align: center"><%= m_shop.flg %></td>
+      <td style="text-align: center">
+    	<% unless m_shop.result_date.blank? %>
+    		<% if m_shop.kakutei_flg.to_i == 0 %>
+	    		<%=  check_box_tag "data_kakutei_flg_#{i}", "0", false  %>
+	    	<% else %>
+	    		<%=  check_box_tag "data_kakutei_flg_#{i}", "1", true %>
+	    	<% end%>
+	    	<%= hidden_field_tag "data_id_#{i}", m_shop.id %>
+    	<% end %>      	
+      </td>	
+      <td>
+    	<% unless m_shop.result_date.blank? %>
+    		<%= link_to image_tag('icon/24_edit.png'), {:controller => "d_results", :action => "new", :d_result_id => m_shop.id} %>
+    	<% end %>      	
+      </td>
+    </tr>
+  <% end %>	
+</table>
