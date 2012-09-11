@@ -71,10 +71,9 @@
     <% tank_compute = get_select_oil(result.id,@oil_id,@shop_id) unless result == nil %>
   <% end %>
   <% unless @tank_id == nil %><!-- タンクの場合-->
-  <% tank_compute = DTankComputeReport.find(:all,:conditions => ['d_result_id = ? and m_tank_id = ?',
-  	result.id,@tank_id]).first unless result == nil %>
+  <% tank_compute = get_select_tank(result.id,@tank_id,@shop_id) unless result == nil %>
   	<% end %>
-<tr>
+  <tr>
 	<th><center><%= i + 1 %></center></th>
 	<th><center><%= day_of_the_week(start_ymd.wday) %><% start_ymd = start_ymd.tomorrow %></center></th>
 	<td>
