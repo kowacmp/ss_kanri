@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 include DTankComputeReportDetailsHelper
-
+include DResultsHelper
 class DTankComputeReportDetailsController < ApplicationController
   def index
     search
@@ -100,15 +100,16 @@ class DTankComputeReportDetailsController < ApplicationController
             page.item(:tank_no).value(tank_no.join(","))
           end
           else
-            tank = MTank.find(params[:tank_id])
-            tank_no = tank.tank_no
-            tank_volume = tank.volume
+            tank_no = get_tank_ids_tank(params[:tank_id],@shop_id,1)
+            tank_volume = get_tank_ids_tank(params[:tank_id],@shop_id,2)
             page.item(:tank_no).value(tank_no)
           end
         page.item(:tank_volume).value(tank_volume)
         page.item(:oil_name).value(MOil.find(@oil_id).oil_name) unless params[:oil_id] == nil or params[:oil_id] == ""
-        page.item(:oil_name).value(MOil.find(tank.m_oil_id).oil_name) unless params[:tank_id] == nil or params[:tank_id] == ""
-        
+        unless params[:tank_id] == nil or params[:tank_id] == ""
+          tank = MTank.find(params[:tank_id]) 
+          page.item(:oil_name).value(MOil.find(tank.m_oil_id).oil_name)
+        end
         page.item(:user_name).value(current_user.user_name)
       end
 
@@ -128,8 +129,7 @@ class DTankComputeReportDetailsController < ApplicationController
         #p "***** tank_compute_oil = #{tank_compute}"
       end
       unless params[:tank_id] == nil or params[:tank_id] == "" #タンクの場合
-       tank_compute = DTankComputeReport.find(:all,:conditions => ['d_result_id = ? and m_tank_id = ?',
-         result.id,@tank_id]).first unless result == nil 
+       tank_compute = get_select_tank(result.id,@tank_id,@shop_id) unless result == nil 
          #p "***** tank_compute_tank = #{tank_compute}"
       end
       
