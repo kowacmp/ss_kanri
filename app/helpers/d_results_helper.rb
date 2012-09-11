@@ -36,7 +36,7 @@ module DResultsHelper
     return sql  
   end
   
-  def syukei_data(d_result, select_date)
+  def syukei_data(d_result, select_date, m_shop_id)
     if d_result.blank?
       now = Time.parse(select_date)
       result_date = Time.parse(select_date).strftime("%Y%m%d")
@@ -62,7 +62,7 @@ module DResultsHelper
              
       #累計                                                        
       sql = "select count(*) from d_result_reserves r, d_results d"
-      sql << " where r.d_result_id = d.id and d.m_shop_id = #{current_user.m_shop_id}"
+      sql << " where r.d_result_id = d.id and d.m_shop_id = #{m_shop_id}"
       sql << " and d.result_date <= '#{result_date}'"
       sql << " and r.get_date between '#{start_ymd}' and '#{end_ymd}'"
     
@@ -137,7 +137,7 @@ p "oil_betu_meter_sql=#{sql}"
     result_meter = DResultMeter.find(:first, :conditions => ["d_result_id = ?", d_result.id])
     if result_meter.blank?
     #if d_result_meters.blank?  
-      sql = tank_volume_sql(current_user.m_shop_id)
+      sql = tank_volume_sql(d_result.m_shop_id)
       m_tanks = MTank.find_by_sql(sql)
         
       volumes = Array::new                 
@@ -255,14 +255,13 @@ p "oil_betu_meter_sql=#{sql}"
     return sql    
   end
   
-  def tank_betu_total(d_result_id)
+  def tank_betu_total(d_result_id, m_shop_id)
     limit = Establish.find(:first).limit
     cr_sql = "select t.tank_no, t.tank_union_no, t.volume, trunc((t.volume * 1000) * #{limit}, 0) as oil_limit, o.oil_name, cr.* from m_oils o, m_tanks t"
     cr_sql << " left join d_tank_compute_reports cr on (cr.m_tank_id = t.id and cr.d_result_id = #{d_result_id})"
     cr_sql << " where t.m_oil_id = o.id and t.deleted_flg = 0 and o.deleted_flg = 0"
-    cr_sql << "   and t.m_shop_id = #{current_user.m_shop_id} order by t.tank_union_no, t.tank_no"
-    #@d_tank_compute_reports = DTankComputeReport.find_by_sql(cr_sql)
-p "cr_sql=#{cr_sql}"
+    cr_sql << "   and t.m_shop_id = #{m_shop_id} order by t.tank_union_no, t.tank_no"
+
     d_tank_compute_reports = DTankComputeReport.find_by_sql(cr_sql)
     idx, union_no = 0,0
     @d_tank_compute_reports = Array::new
@@ -552,7 +551,26 @@ p "cr_sql=#{cr_sql}"
     sql = "select o.*, c.code from m_oiletcs o, m_codes c"
     sql << " where to_number(c.code, '999999999') = o.oiletc_tani and o.oiletc_group = 0"
     sql << " and o.deleted_flg = 0 and c.kbn = 'tani' and c.code = '0'"
-    
+
     return sql    
-  end   
+  end 
+  
+  def result_index_sql(date, shop_kbn)
+    sql = "select s.shop_cd, s.shop_name, r.id, r.kakutei_flg, u.user_name, u.account, d.code_name shop_kbn_name, m.code_name flg,"
+    sql << "      substr(r.result_date, 1, 4) || '/' || substr(r.result_date, 5, 2) || '/' || substr(r.result_date, 7, 2) as result_date"
+    sql << " from m_shops s"
+    sql << " left join d_results r on (r.m_shop_id = s.id and r.result_date = '#{date}')"
+    sql << " left join users u on (r.created_user_id = u.id)"
+    sql << " left join (select * from m_codes where kbn='shop_kbn') d on s.shop_kbn = cast(d.code as integer)"
+    sql << " left join (select * from m_codes where kbn='misumi_flg') m on r.kakutei_flg = cast(m.code as integer)"
+    sql << " where s.deleted_flg = 0"
+    
+    unless shop_kbn.blank?
+      sql << " and s.shop_kbn = #{shop_kbn}"
+    end
+    
+    sql << " order by s.shop_cd"
+
+    return sql
+  end  
 end

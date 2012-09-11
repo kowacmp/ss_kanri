@@ -139,9 +139,9 @@
 	  <th>仕入(L)</th>
 	  <th>在庫(L)</th>	
 	  <td rowspan="<%= @meters.size + 1 %>">
-	  	<%= link_to 'メーター詳細', {:controller => 'd_results', :action => 'meter_index', :result_date => @result_date}, :id => "meter_icon", :class => "modal" %>
+	  	<%= link_to 'メーター詳細', {:controller => 'd_results', :action => 'meter_index', :result_date => @result_date, :m_shop_id => @m_shop.id}, :id => "meter_icon", :class => "modal" %>
 	    <br/><br/><br/>
-	    <%= link_to 'タンク詳細', {:controller => 'd_results', :action => 'tank_index', :result_date => @result_date}, :id => "tank_icon", :class => "modal" %>
+	    <%= link_to 'タンク詳細', {:controller => 'd_results', :action => 'tank_index', :result_date => @result_date, :m_shop_id => @m_shop.id}, :id => "tank_icon", :class => "modal" %>
 	  </td>	 	    	  	  	  	  	  
 	</tr>	
   <% @meters.each do |meter| %>
