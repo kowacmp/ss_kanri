@@ -32,7 +32,15 @@
   	<tr>
   	  <th>課税フラグ</th>
   	  <td><%= @m_etc.tax_flg_name %></td>  	  
-  	</tr> 	
+  	</tr> 
+  	<tr>
+  	  <th>他売上種別</th>
+  	  <td><%= @m_etc.etc_class_name %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th>単価</th>
+  	  <td><%= @m_etc.price %></td>  	  
+  	</tr>	
   </table>
 
 <%#= link_to '編集', edit_m_etc_path(@m_etc), :class => 'edit_icon' %> 

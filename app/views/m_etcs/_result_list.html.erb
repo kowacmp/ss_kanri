@@ -9,6 +9,8 @@
     <th>監査フラグ</th>
     <th>課税フラグ</th>
     <!--<th>詳細</th>-->
+    <th>他売上種別</th>
+    <th>単価</th>
     <th>編集</th>
     <th>削除</th>
   </tr>
@@ -29,6 +31,8 @@
     <td class="<%= "#{del_flg}" %>" align="right"><%= m_etc.max_num %></td>    
     <td class="<%= "#{del_flg}" %>"><%= m_etc.kansa_flg_name %></td>
     <td class="<%= "#{del_flg}" %>"><%= m_etc.tax_flg_name %></td>
+    <td class="<%= "#{del_flg}" %>"><%= m_etc.etc_class_name %></td>
+    <td class="<%= "#{del_flg}" %>"><%= m_etc.price %></td>
     <!--<td class="icon">
     	<%#= link_to image_tag('icon/24_show.png'), m_etc %>
     	<%#= link_to image_tag('icon/24_show.png'), {:action=>"show",:id=>m_etc.id,:input_check=>@check_del_flg} %>

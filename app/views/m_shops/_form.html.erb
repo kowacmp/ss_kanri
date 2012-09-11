@@ -301,18 +301,21 @@
 						end, :selected => m_tank.m_oil_id,:include_blank => "選択して下さい") %>
 				</td>
 				<td class="tank_no">
-					<%= text_field "m_tank[#{idx}]", 'tank_no',:value=>m_tank.tank_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"showPreview(#{idx});"%>
+					<%#= text_field "m_tank[#{idx}]", 'tank_no',:value=>m_tank.tank_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"showPreview(#{idx});"%>
+					<%= text_field "m_tank[#{idx}]", 'tank_no',:value=>m_tank.tank_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onchange=>"showPreview(#{idx});"%>
 				</td>
 				<td class="tank_name">
 					<%= text_field "m_tank[#{idx}]", 'tank_name',:value=>m_tank.tank_name,:size=>8, :readonly=>true %>
 				</td>
 				<td class="volume">
 					<%#= text_field "m_tank[#{idx}]", 'volume',:value=>m_tank.volume,:size=>9,:style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
-					<%= text_field "m_tank[#{idx}]", 'volume',:value=>m_tank.volume,:size=>9,:style=>"ime-mode:disabled",:maxlength=>9,:class=>"number",:onkeyup=>"numberCheck(this)" %>
+					<%#= text_field "m_tank[#{idx}]", 'volume',:value=>m_tank.volume,:size=>9,:style=>"ime-mode:disabled",:maxlength=>9,:class=>"number",:onkeyup=>"numberCheck(this)" %>
+					<%= text_field "m_tank[#{idx}]", 'volume',:value=>m_tank.volume,:size=>9,:style=>"ime-mode:disabled",:maxlength=>9,:class=>"number",:onchange=>"numberCheck(this)" %>
 				</td>
 				
 				<td class="tank_union_no">
-					<%= text_field "m_tank[#{idx}]", 'tank_union_no',:value=>m_tank.tank_union_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"numberCheck(this);"%>
+					<%#= text_field "m_tank[#{idx}]", 'tank_union_no',:value=>m_tank.tank_union_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onkeyup=>"numberCheck(this);"%>
+					<%= text_field "m_tank[#{idx}]", 'tank_union_no',:value=>m_tank.tank_union_no,:size=>2, :style=>"ime-mode:disabled" ,:maxlength=>2,:onchange=>"numberCheck(this);"%>
 				</td>
 				   
 				<td class="clear">
@@ -918,14 +921,14 @@
 	   	HTML1 = HTML1 + '</select>'
 	   	
 	   	var HTML2 = '<input type="text" id="m_tank_' + (counter3) 
-					+ '_tank_no" name="m_tank[' + (counter3) + '][tank_no]" size="2" maxlength="2" style="ime-mode:disabled" onkeyup="showPreview(' + (counter3) + ')"/>';
+					+ '_tank_no" name="m_tank[' + (counter3) + '][tank_no]" size="2" maxlength="2" style="ime-mode:disabled" onChange="showPreview(' + (counter3) + ')"/>';
 		var HTML3 = '<input type="text" id="m_tank_' + (counter3) 
 					+ '_tank_name" name="m_tank[' + (counter3) + '][tank_name]" size="8", readonly=true />';
 		var HTML4 = '<input type="text" id="m_tank_' + (counter3) 
-					+ '_volume" name="m_tank[' + (counter3) + '][volume]" size="9" maxlength="9" style="ime-mode:disabled" class="number" onkeyup="numberCheck(this)"/>';
+					+ '_volume" name="m_tank[' + (counter3) + '][volume]" size="9" maxlength="9" style="ime-mode:disabled" class="number" onChange="numberCheck(this)"/>';
 		
 		var HTML5 = '<input type="text" id="m_tank_' + (counter3) 
-					+ '_tank_union_no" name="m_tank[' + (counter3) + '][tank_union_no]" size="2" maxlength="2" style="ime-mode:disabled" onkeyup="numberCheck(this)" />';
+					+ '_tank_union_no" name="m_tank[' + (counter3) + '][tank_union_no]" size="2" maxlength="2" style="ime-mode:disabled" onChange="numberCheck(this)" />';
 		//var HTML5 = '<input type="button" name="clear" value="クリア" onClick="form_clear3(' + (counter3) + ');" />'
 		//			+ '<input type="button" name="clear" value="削 除" onClick="DelTableRows3(this);" />';
 		var HTML6 = '<input type="button" value="クリア" onClick="form_clear3(' + (counter3) + ');" />'
