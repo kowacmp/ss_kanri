@@ -32,16 +32,6 @@ class DResultReportsController < ApplicationController
       @select_kbn = params[:select_kbn].to_i
     end
     
-    #if @shop_info.shop_kbn == 0 or @shop_info.shop_kbn == 1
-    #  where_sql_a = " and a2.shop_kbn = #{@shop_info.shop_kbn} "
-    #  where_sql_b = " and b2.shop_kbn = #{@shop_info.shop_kbn} "
-    #  where_sql_c = " and c1.shop_kbn = #{@shop_info.shop_kbn} "
-    #else
-    #  where_sql_a = " and (a2.shop_kbn = 0 or a2.shop_kbn = 1) "
-    #  where_sql_b = " and (b2.shop_kbn = 0 or b2.shop_kbn = 1) "
-    #  where_sql_c = " and (c1.shop_kbn = 0 or c1.shop_kbn = 1) "
-    #end
-    
     if @select_kbn == 0 or @select_kbn == 1
       where_sql_a = " and a2.shop_kbn = 1 "
       where_sql_b = " and b2.shop_kbn = 1 "
@@ -522,9 +512,6 @@ class DResultReportsController < ApplicationController
     input_month = input_ymd_e[0,6]
     
     
-    
-    
-    
     if select_kbn == 0
       
       select_sql = "select a.*, b.*, c.*, d.*"
@@ -575,10 +562,11 @@ class DResultReportsController < ApplicationController
       select_sql <<      " group by d1.m_shop_id"
       select_sql <<      " ) d on a.id = d.m_shop_id "
       
+      #油外売上
       select_sql << " left join (select e1.m_shop_id,e1.aim_value#{input_day} as oiletc_aim from d_aims e1"
       select_sql <<            " left join m_aims e2 on e1.m_aim_id = e2.id"
       select_sql << " where e1.date = '#{input_month}' and e2.aim_code = 1 ) e on a.id = e.m_shop_id "
-      
+      #車検
       select_sql << " left join (select f1.m_shop_id,f1.aim_total as syaken_aim from d_aims f1"
       select_sql <<            " left join m_aims f2 on f1.m_aim_id = f2.id"
       select_sql << " where f1.date = '#{input_month}' and f2.aim_code = 14 ) f on a.id = f.m_shop_id "
@@ -605,23 +593,23 @@ class DResultReportsController < ApplicationController
       select_sql <<      " ) d on a.id = d.m_shop_id "
       
       #ハイオク
-      select_sql << " left join (select e1.m_shop_id,e1.aim_value#{input_day} as hg_aim from d_aims e1"
+      select_sql << " left join (select e1.m_shop_id,e1.aim_total as hg_aim from d_aims e1"
       select_sql <<            " left join m_aims e2 on e1.m_aim_id = e2.id"
       select_sql << " where e1.date = '#{input_month}' and e2.aim_code = 3 ) e on a.id = e.m_shop_id "
       #レギュラー
-      select_sql << " left join (select f1.m_shop_id,f1.aim_value#{input_day} as rg_aim from d_aims f1"
+      select_sql << " left join (select f1.m_shop_id,f1.aim_total as rg_aim from d_aims f1"
       select_sql <<            " left join m_aims f2 on f1.m_aim_id = f2.id"
       select_sql << " where f1.date = '#{input_month}' and f2.aim_code = 4 ) f on a.id = f.m_shop_id "
       #軽油
-      select_sql << " left join (select g1.m_shop_id,g1.aim_value#{input_day} as keiyu_aim from d_aims g1"
+      select_sql << " left join (select g1.m_shop_id,g1.aim_total as keiyu_aim from d_aims g1"
       select_sql <<            " left join m_aims g2 on g1.m_aim_id = g2.id"
       select_sql << " where g1.date = '#{input_month}' and g2.aim_code = 5 ) g on a.id = g.m_shop_id "
       #灯油
-      select_sql << " left join (select h1.m_shop_id,h1.aim_value#{input_day} as touyu_aim from d_aims h1"
+      select_sql << " left join (select h1.m_shop_id,h1.aim_total as touyu_aim from d_aims h1"
       select_sql <<            " left join m_aims h2 on h1.m_aim_id = h2.id"
       select_sql << " where h1.date = '#{input_month}' and h2.aim_code = 6 ) h on a.id = h.m_shop_id "
       #ガソリンプリカ
-      select_sql << " left join (select i1.m_shop_id,i1.aim_value#{input_day} as kyuyu_purika_aim from d_aims i1"
+      select_sql << " left join (select i1.m_shop_id,i1.aim_total as kyuyu_purika_aim from d_aims i1"
       select_sql <<            " left join m_aims i2 on i1.m_aim_id = i2.id"
       select_sql << " where i1.date = '#{input_month}' and i2.aim_code = 7 ) i on a.id = i.m_shop_id "
       
@@ -652,39 +640,21 @@ class DResultReportsController < ApplicationController
       select_sql <<      " group by d1.m_shop_id"
       select_sql <<      " ) d on a.id = d.m_shop_id "
       
+      #洗車売上
       select_sql << " left join (select e1.m_shop_id,e1.aim_value#{input_day} as sensya_aim from d_aims e1"
       select_sql <<            " left join m_aims e2 on e1.m_aim_id = e2.id"
       select_sql << " where e1.date = '#{input_month}' and e2.aim_code = 2 ) e on a.id = e.m_shop_id "
-      
+      #洗車プリカ
       select_sql << " left join (select f1.m_shop_id,f1.aim_total as sensya_purika_aim from d_aims f1"
       select_sql <<            " left join m_aims f2 on f1.m_aim_id = f2.id"
       select_sql << " where f1.date = '#{input_month}' and f2.aim_code = 8 ) f on a.id = f.m_shop_id "
       
     else
       
-      if select_kbn == 1 or select_kbn == 3
-      select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*"
-    elsif  select_kbn == 2
-      select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*, g.*, h.*, i.*"
-    else  
       select_sql = "select a.*, b.*, c.*, d.*"
-    end
-    
-    select_sql << " from (select id, shop_cd, shop_name,shop_ryaku from m_shops where deleted_flg = 0 "
-    
-    if shop_info.shop_kbn == 0 or shop_info.shop_kbn == 1
-      select_sql <<              " and shop_kbn = #{shop_info.shop_kbn} " 
-    else
-      select_sql <<              " and (shop_kbn = 0 or shop_kbn = 1)"  
-    end
-    
-    select_sql << " ) a"
-      
-      
+      select_sql << " from (select id, shop_cd, shop_name,shop_ryaku from m_shops where deleted_flg = 0 and shop_kbn = 1) a "
       select_sql << " left join (select id ,m_shop_id"
       select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
-      
-      
       
       select_sql << " left join (select d_result_id,mo_gas,keiyu,touyu,koua,buyou,tokusei, "
       select_sql <<                   " sensya,koutin,taiya,arari"
