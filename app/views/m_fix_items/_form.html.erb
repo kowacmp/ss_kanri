@@ -23,6 +23,10 @@
   	  <td><%= f.text_field :fix_item_name,:maxlength=>20 %></td>  	  
   	</tr>
   	<tr>
+  	  <th><%= f.label '固定額内訳略称' %></th>
+  	  <td><%= f.text_field :fix_item_ryaku,:maxlength=>10 %></td>  	  
+  	</tr>
+  	<tr>
   	  <th><%= f.label '固定額内訳種別' %></th>
   	  <td>
 		<%= f.select(:fix_item_class, MCode.find(:all, :conditions => ["kbn = ?",'fix_item_class'], :order => 'code').map do |u|

@@ -27,30 +27,39 @@
     <% @m_oils.each do |m_oil| %>
     	<%- if m_oil.id == m_shop.m_oil_id1 -%>
     		<td>
-    			<% @tank1_totals = MTank.find(:all,
+    			<%# @tank1_totals = MTank.find(:all,
 		                                   :conditions=>["deleted_flg = 0 and m_shop_id = ? and m_oil_id = ?",m_shop.id,m_shop.m_oil_id1])%>
-		    	<div class="oil_total"><%= @tank1_totals.sum{|tank| tank.volume}%></div>
+		    	<div class="oil_total"><%#= @tank1_totals.sum{|tank| tank.volume}%>
+		    		<%= m_shop.tank1_all %>
+		    	</div>
+		    	
 		    	
     		</td>
     	<%- elsif m_oil.id == m_shop.m_oil_id2 -%>
     		<td>
     			<% @tank2_totals = MTank.find(:all,
 		                                   :conditions=>["deleted_flg = 0 and m_shop_id = ? and m_oil_id = ?",m_shop.id,m_shop.m_oil_id2])%>
-		    	<div class="oil_total"><%= @tank2_totals.sum{|tank| tank.volume}%></div>
+		    	<div class="oil_total"><%#= @tank2_totals.sum{|tank| tank.volume}%>
+		    		<%= m_shop.tank2_all %>
+		    	</div>
     			
     		</td>
     	<%- elsif m_oil.id == m_shop.m_oil_id3 -%>
     		<td>
     			<% @tank3_totals = MTank.find(:all,
 		                                   :conditions=>["deleted_flg = 0 and m_shop_id = ? and m_oil_id = ?",m_shop.id,m_shop.m_oil_id3])%>
-		    	<div class="oil_total"><%= @tank3_totals.sum{|tank| tank.volume}%></div>
+		    	<div class="oil_total"><%#= @tank3_totals.sum{|tank| tank.volume}%>
+		    		<%= m_shop.tank3_all %>
+		    	</div>
     	
     		</td>
     	<%- elsif m_oil.id == m_shop.m_oil_id4 -%>
     		<td>
     			<% @tank4_totals = MTank.find(:all,
 		                                   :conditions=>["deleted_flg = 0 and m_shop_id = ? and m_oil_id = ?",m_shop.id,m_shop.m_oil_id4])%>
-		    	<div class="oil_total"><%= @tank4_totals.sum{|tank| tank.volume}%></div>
+		    	<div class="oil_total"><%#= @tank4_totals.sum{|tank| tank.volume}%>
+		    		<%= m_shop.tank4_all %>
+		    	</div>
     			
     		</td>
     	<%- else -%>
@@ -60,7 +69,9 @@
     <td>
 		<% @m_fix_money_totals = MFixMoney.find(:all,
                                    :conditions=>["m_shop_id = ? and (deleted_flg is null or deleted_flg <> ?)",m_shop.id,1])%>
-    	<div class="money_total"><%= number_with_delimiter(@m_fix_money_totals.sum{|money| money.total_cash_box.to_i}) %></div>
+    	<div class="money_total"><%#= number_with_delimiter(@m_fix_money_totals.sum{|money| money.total_cash_box.to_i}) %>
+    		<%= number_with_delimiter(@m_fix_money_totals.sum{|money| money.total_fix_money.to_i}) %>
+    	</div>
 	</td>
     <!--td class="icon"><%#= link_to image_tag('icon/24_show.png'), m_shop %></td-->
     <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_shop_path(m_shop) %></td>

@@ -3,6 +3,7 @@ class MFixItem < ActiveRecord::Base
   
   validates :fix_item_cd, :presence => {:message => '固定額内訳コードは必須です。'}
   validates :fix_item_name, :presence => {:message => '固定額内訳名は必須です。'}
+  validates :fix_item_ryaku, :presence => {:message => '固定額内訳略称は必須です。'}
   validates :fix_item_class, :presence => {:message => '固定額内訳種別は必須です。'}
   
   validates :fix_item_cd, :uniqueness => {:message => '固定額内訳コードが重複しています。'}

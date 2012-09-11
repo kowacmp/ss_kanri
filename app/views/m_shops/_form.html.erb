@@ -1,5 +1,5 @@
 <!-- CODE -->
-<%= form_for(@m_shop ,:html => {:onsubmit=>"return test_val();" }) do |f| %>
+<%= form_for(@m_shop ,:html => {:onsubmit=>"return m_shop_val();" }) do |f| %>
 	
 	<div id="tabs">
 		<ul>
@@ -8,7 +8,24 @@
 		<li><a href="#third">洗車売上報告</a></li>
 		<li><a href="#fourth">タンク情報</a></li>
 		</ul>
-		 
+		
+		<div id="error_msg"></div>
+		
+		<br />
+		<div style="padding-left: 20px">
+		<table id='rounded-corner'>
+		<tr>
+		  <th style="min-width: 100px"><%= f.label '店舗コード' %></th>
+		  <td><%= f.number_field :shop_cd , :style=>"ime-mode:disabled" ,:maxlength=>6,:onkeyup=>"numberCheck(this)"%></td> 	  
+		</tr>
+		<tr>
+		  <th><%= f.label '店舗名' %></th>
+		  <td><%= f.text_field :shop_name %></td>  	  
+		</tr>
+		</table>
+		</div>
+		
+		
 		<div id="first">
 		 	<% if @m_shop.errors.any? %>
 				<div id="error_explanation">
@@ -22,19 +39,17 @@
 				</div>
 			<% end %>
 		
-		<div id="error_test1"></div>
-		
 		<table id='rounded-corner'>
-		<tr>
-		  <th><%= f.label '店舗コード' %></th>
-		  <td><%= f.number_field :shop_cd , :style=>"ime-mode:disabled" ,:maxlength=>6,:onkeyup=>"numberCheck(this)"%></td> 	  
+		<!--tr>
+		  <th><%#= f.label '店舗コード' %></th>
+		  <td><%#= f.number_field :shop_cd , :style=>"ime-mode:disabled" ,:maxlength=>6,:onkeyup=>"numberCheck(this)"%></td> 	  
 		</tr>
 		<tr>
-		  <th><%= f.label '店舗名' %></th>
-		  <td><%= f.text_field :shop_name %></td>  	  
-		</tr>
+		  <th><%#= f.label '店舗名' %></th>
+		  <td><%#= f.text_field :shop_name %></td>  	  
+		</tr-->
 		<tr>
-		  <th><%= f.label '店舗カナ' %></th>
+		  <th style="min-width: 100px"><%= f.label '店舗カナ' %></th>
 		  <td><%= f.text_field :shop_kana %></td>  	  
 		</tr>
 		<tr>
@@ -98,27 +113,26 @@
 		</div>
 			  
 		<div id="second">
-		  
-		<div id="error_test2"></div>
 		
-		<!--form method="GET" action="#">
-		  <input type="button" value="追加" onClick="AddTableRows2();" />
-		</form-->
 		<input type="button" value="追加" onClick="AddTableRows2();" />
 		<div class="scr" style="width: 900px;"> 
 		<table id='rounded-corner'>
 		<tr>
-			<th>開始月</th>
-			<th>終了月</th>
-			<th>金庫</th>
-			<th>POSレジ</th>
-			<th>バイト用</th>
-			<th>洗車機釣銭</th>
-			<th>ｹﾞｰﾑ両替機</th>
-			<th>金庫合計</th>
-			<th>釣銭機合計</th>
-			<th>釣銭合計</th>
-			<th width="5%"></th>
+			
+			<th style="min-width: 50px">開始月</th>
+			<th style="min-width: 50px">終了月</th>
+			
+			<% @m_fix_items = MFixItem.find(:all,:conditions=>"deleted_flg=0",:order=>"fix_item_cd")%>
+			<% if @m_fix_items %>
+			<% @m_fix_items.each do |m_fix_item| %>
+				<th style="min-width: 100px"><%= m_fix_item.fix_item_ryaku %></th>
+			<% end %>
+			<% end %>
+			
+			<th style="min-width: 100px">金庫合計</th>
+			<th style="min-width: 100px">釣銭機合計</th>
+			<th style="min-width: 100px">釣銭合計</th>
+			<th style="min-width: 130px"></th>
 		</tr>
 		<tbody id="tbody2-row">
 		<% if @m_fix_moneys %>
@@ -138,30 +152,46 @@
 						[(i + 1).to_s + "月", i + 1]
 				  	 	end, :selected => m_fix_money.end_month,:include_blank => "") %>
 				</td>
-				<td class="cash_box">
-					<%#= text_field "m_fix_money[#{idx}]", 'cash_box',:value=>m_fix_money.cash_box,:size=>7, :style=>"ime-mode:disabled" ,:maxlength=>9,:class=>"money2",:onkeyup=>"numberCheck(this)"%>
-					<%= text_field "m_fix_money[#{idx}]", 'cash_box',:value=>m_fix_money.cash_box,:size=>7,:maxlength=>9,:class=>"money" %>
-				</td>
-				<td class="pos_register">
-					<%= text_field "m_fix_money[#{idx}]", 'pos_register',:value=>m_fix_money.pos_register,:size=>7,:maxlength=>9,:class=>"money" %>
-				</td>
-				<td class="part_time">
-					<%= text_field "m_fix_money[#{idx}]", 'part_time',:value=>m_fix_money.part_time,:size=>7,:maxlength=>9,:class=>"money" %>
-				</td>
-				<td class="wash_money">
-					<%= text_field "m_fix_money[#{idx}]", 'wash_money',:value=>m_fix_money.wash_money,:size=>7,:maxlength=>9,:class=>"money" %>
-				</td>
-				<td class="money_change">
-					<%= text_field "m_fix_money[#{idx}]", 'money_change',:value=>m_fix_money.money_change,:size=>7,:maxlength=>9,:class=>"money" %>
-				</td>
-				<td class="total_cash_box">
-					<%= text_field "m_fix_money[#{idx}]", 'total_cash_box',:value=>m_fix_money.total_cash_box,:size=>7,:maxlength=>9,:class=>"money" %>
+				
+				
+				<% if @m_fix_items %>
+				<% @m_fix_items.each_with_index do |m_fix_item,idx_item| %>
+					<td class="fix_money<%= idx_item + 1 %>">
+						<% if eval("m_fix_money.m_fix_item_id#{idx_item+1}") == m_fix_item.id %>
+							<%= text_field "m_fix_money[#{idx}]", "fix_money#{idx_item+1}",:value=>eval("m_fix_money.fix_money#{idx_item+1}"),:size=>7,:maxlength=>9,:class=>"money" %>
+							<% if eval("m_fix_money.m_fix_item_id#{idx_item+1}") %>
+							<%= hidden_field "m_fix_money[#{idx}]", "m_fix_item_id#{idx_item+1}",:value=>eval("m_fix_money.m_fix_item_id#{idx_item+1}") %>
+							<% else %>
+							<%= hidden_field "m_fix_money[#{idx}]", "m_fix_item_id#{idx_item+1}",:value=>m_fix_item.id %>
+							<% end %>
+						<% else %>
+							<% money_item_flg = 0 %>
+							<% for i in 1..13 %>
+								<% if eval("m_fix_money.m_fix_item_id#{i}") == m_fix_item.id %>
+									<%= text_field "m_fix_money[#{idx}]", "fix_money#{idx_item+1}",:value=>eval("m_fix_money.fix_money#{i}"),:size=>7,:maxlength=>9,:class=>"money" %>
+									<%= hidden_field "m_fix_money[#{idx}]", "m_fix_item_id#{idx_item+1}",:value=>m_fix_item.id %>
+									<% money_item_flg = 1 %>
+								<% end%>
+							<% end %>
+							
+							<% if money_item_flg == 0 %>
+								<%= text_field "m_fix_money[#{idx}]", "fix_money#{idx_item+1}",:size=>7,:maxlength=>9,:class=>"money" %>
+								<%= hidden_field "m_fix_money[#{idx}]", "m_fix_item_id#{idx_item+1}",:value=>m_fix_item.id %>
+							<% end %>
+							
+						<% end %>
+					</td>
+				<% end %>
+				<% end %>
+				
+				<td class="total_fix_money">
+					<%= text_field "m_fix_money[#{idx}]", 'total_fix_money',:value=>m_fix_money.total_fix_money,:size=>7,:maxlength=>9,:class=>"money",:onchange=>"totalMoney(#{idx});" %>
 				</td>
 				<td class="total_change_money">
-					<%= text_field "m_fix_money[#{idx}]", 'total_change_money',:value=>m_fix_money.total_change_money,:size=>7,:maxlength=>9,:class=>"money" %>
+					<%= text_field "m_fix_money[#{idx}]", 'total_change_money',:value=>m_fix_money.total_change_money,:size=>7,:maxlength=>9,:class=>"money",:onchange=>"totalMoney(#{idx});" %>
 				</td>
 				<td class="total_money">
-					<%= text_field "m_fix_money[#{idx}]", 'total_money',:value=>m_fix_money.total_money,:size=>7,:maxlength=>9,:class=>"money" %>
+					<%= text_field "m_fix_money[#{idx}]", 'total_money',:value=>m_fix_money.total_money,:size=>7,:maxlength=>9,:class=>"money", :readonly=>true %>
 				</td>
 				<td class="clear">
 					<input type="button" value="クリア" onClick="form_clear2(<%= idx %>);" />
@@ -176,12 +206,7 @@
 		</div>
 		  
 		<div id="third">
-		 
-		<div id="error_test"></div>          
-		  
-		<!--form method="GET" action="#">
-		  <input type="button" value="追加" onClick="AddTableRows();" />
-		</form-->   
+		   
 		<input type="button" value="追加" onClick="AddTableRows();" />
 		 
 		<table id='rounded-corner'>
@@ -271,12 +296,7 @@
 		</div>
 		  
 		<div id="fourth">
-		 
-		<div id="error_test3"></div>
-		 
-		<!--form method="GET" action="#">
-		  <input type="button" value="追加" onClick="AddTableRows3();" />
-		</form-->   
+		
 		<input type="button" value="追加" onClick="AddTableRows3();" />
 		
 		<table id='rounded-corner'>
@@ -344,7 +364,7 @@
 
 <script type="text/javascript">
 
-	 function test_val(){
+	 function m_shop_val(){
 	 	var error_msg_s = '<div id="error_explanation"><ul><h2>エラーが存在します。</h2>';
 	 	var error_msg_m = '';
 	 	var error_msg_e = '</ul></div>';
@@ -598,15 +618,9 @@
 	 	
 	 	
 	 	if (error_msg_m != ""){
-			document.getElementById("error_test").innerHTML = error_msg_s + error_msg_m + error_msg_e;
-	 		document.getElementById("error_test2").innerHTML = error_msg_s + error_msg_m + error_msg_e;
-	 		document.getElementById("error_test3").innerHTML = error_msg_s + error_msg_m + error_msg_e;
-	 		document.getElementById("error_test1").innerHTML = error_msg_s + error_msg_m + error_msg_e;
+	 		document.getElementById("error_msg").innerHTML = error_msg_s + error_msg_m + error_msg_e;
 	 	} else {
-	 		document.getElementById("error_test").innerHTML = "";
-	 		document.getElementById("error_test2").innerHTML = "";
-	 		document.getElementById("error_test3").innerHTML = "";
-	 		document.getElementById("error_test1").innerHTML = "";
+	 		document.getElementById("error_msg").innerHTML = "";
 	 		return true;
 	 	}
 	 	return false;
@@ -626,57 +640,51 @@
 		var row1 = table1.insertRow(table1.rows.length);
 		var cell1 = row1.insertCell(0);
 		var cell2 = row1.insertCell(1);
-		var cell3 = row1.insertCell(2);
-		var cell4 = row1.insertCell(3);
-		var cell5 = row1.insertCell(4);
-		var cell6 = row1.insertCell(5);
-		var cell7 = row1.insertCell(6);
-		var cell8 = row1.insertCell(7);
-		var cell9 = row1.insertCell(8);
-		var cell10 = row1.insertCell(9);
-		var cell11 = row1.insertCell(10);
+		
+		<% @m_fix_items = MFixItem.find(:all,:conditions=>"deleted_flg=0",:order=>"fix_item_cd")%>
+		<% if @m_fix_items %>
+		<% @m_fix_items.each_with_index do |m_fix_item,idx_item| %>
+			var cell<%= idx_item + 3 %> = row1.insertCell(<%= idx_item + 2 %>);
+		<% end %>
+		<% end %>
+		
+		var cell16 = row1.insertCell(<%= @m_fix_items.count + 2 %>);
+		var cell17 = row1.insertCell(<%= @m_fix_items.count + 3 %>);
+		var cell18 = row1.insertCell(<%= @m_fix_items.count + 4 %>);
+		var cell19 = row1.insertCell(<%= @m_fix_items.count + 5 %>);
 	
 		// class の付与は UserAgent によって
 		// 挙動が違うっぽいので念のため両方の方法で
 		cell1.setAttribute("class","start_month");
 		cell2.setAttribute("class","end_month");
-		cell3.setAttribute("class","cash_box");
-		cell4.setAttribute("class","pos_register");
-		cell5.setAttribute("class","part_time");
-		cell6.setAttribute("class","wash_money");
-		cell7.setAttribute("class","money_change");
-		cell8.setAttribute("class","total_cash_box");
-		cell9.setAttribute("class","total_change_money");
-		cell10.setAttribute("class","total_money");
-		cell11.setAttribute("class","clear");
+		
+		<% if @m_fix_items %>
+		<% @m_fix_items.each_with_index do |m_fix_item,idx_item| %>
+			cell<%= idx_item + 3 %>.setAttribute("class","fix_money<%= idx_item + 1 %>");
+		<% end %>
+		<% end %>
+		
+		cell16.setAttribute("class","total_fix_money");
+		cell17.setAttribute("class","total_change_money");
+		cell18.setAttribute("class","total_money");
+		cell19.setAttribute("class","clear");
+		
+		
 		cell1.className = 'start_month';
 		cell2.className = 'end_month';
-		cell3.className = 'cash_box';
-		cell4.className = 'pos_register';
-		cell5.className = 'part_time';
-		cell6.className = 'wash_money';
-		cell7.className = 'money_change';
-		cell8.className = 'total_cash_box';
-		cell9.className = 'total_change_money';
-		cell10.className = 'total_money';
-		cell11.className = 'clear';
 		
-		//var HTML1 = String(<%#= select("select-replace", "start_month",
-			  	 	12.times.map do |i|	
-					[(i + 1).to_s + "月", i + 1]
-			  	 	end,:include_blank => "") %>);
-	   	
-	   	//HTML1 = HTML1.replace(/select-replace_/g,"m_fix_money_" + (counter2) + "_");
-	   	//HTML1 = HTML1.replace(/select-replace/g,"m_fix_money[" + (counter2) + "]");
-	   	
-	   	//var HTML2 = String(<%#= select("select-replace", "end_month",
-		//	  	 	12.times.map do |i|	
-		//			[(i + 1).to_s + "月", i + 1]
-		//	  	 	end,:include_blank => "") %>);
-	   	
-	   	//HTML2 = HTML2.replace(/select-replace_/g,"m_fix_money_" + (counter2) + "_");
-	   	//HTML2 = HTML2.replace(/select-replace/g,"m_fix_money[" + (counter2) + "]");
-	   	
+		<% if @m_fix_items %>
+		<% @m_fix_items.each_with_index do |m_fix_item,idx_item| %>
+			cell<%= idx_item + 3 %>.className = 'fix_money<%= idx_item + 1 %>';
+		<% end %>
+		<% end %>
+		
+		cell16.className = 'total_fix_money';
+		cell17.className = 'total_change_money';
+		cell18.className = 'total_money';
+		cell19.className = 'clear';
+		
+		
 	   	var HTML1 = '<select id="m_fix_money_' + (counter2) + '_start_month" name="m_fix_money[' + (counter2) + '][start_month]">'
 	   	HTML1 = HTML1 + '<option value=""></option>'
 	   	<% 12.times.map do |i| %>
@@ -691,38 +699,43 @@
 	   	<% end %>
 	   	HTML2 = HTML2 + '</select>'
 	   	
-		var HTML3 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_cash_box" name="m_fix_money[' + (counter2) + '][cash_box]" size="7" maxlength="9" class="money"/>';
-		var HTML4 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_pos_register" name="m_fix_money[' + (counter2) + '][pos_register]" size="7" maxlength="9" class="money"/>';
-		var HTML5 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_part_time" name="m_fix_money[' + (counter2) + '][part_time]" size="7" maxlength="9" class="money"/>';
-		var HTML6 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_wash_money" name="m_fix_money[' + (counter2) + '][wash_money]" size="7" maxlength="9" class="money"/>';
-		var HTML7 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_money_change" name="m_fix_money[' + (counter2) + '][money_change]" size="7" maxlength="9" class="money"/>';
-		var HTML8 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_total_cash_box" name="m_fix_money[' + (counter2) + '][total_cash_box]" size="7" maxlength="9" class="money"/>';
-		var HTML9 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_total_change_money" name="m_fix_money[' + (counter2) + '][total_change_money]" size="7" maxlength="9" class="money"/>';
-		var HTML10 = '<input type="text" id="m_fix_money_' + (counter2) 
-					+ '_total_money" name="m_fix_money[' + (counter2) + '][total_money]" size="7" maxlength="9" class="money"/>';
+	   	
+	   	<% if @m_fix_items %>
+		<% @m_fix_items.each_with_index do |m_fix_item,idx_item| %>
+			var HTML<%= idx_item + 3 %> = '<input type="text" id="m_fix_money_' + (counter2) 
+					+ '_fix_money<%= idx_item + 1 %>" name="m_fix_money[' + (counter2) + '][fix_money<%= idx_item + 1 %>]" size="7" maxlength="9" class="money"/>'
+					
+					
+					+ '<input type="hidden" id="m_fix_money_' + (counter2) + '_m_fix_item_id<%= idx_item + 1 %>"'
+					+ ' name="m_fix_money[' + (counter2) + '][m_fix_item_id<%= idx_item + 1 %>]" value=<%= m_fix_item.id %> />';
+					
+		<% end %>
+		<% end %>
+	   	
+	   	var HTML16 = '<input type="text" id="m_fix_money_' + (counter2) 
+					+ '_total_fix_money" name="m_fix_money[' + (counter2) + '][total_fix_money]" size="7" maxlength="9" class="money" onChange="totalMoney(' + (counter2) + ')"/>';
+		var HTML17 = '<input type="text" id="m_fix_money_' + (counter2) 
+					+ '_total_change_money" name="m_fix_money[' + (counter2) + '][total_change_money]" size="7" maxlength="9" class="money" onChange="totalMoney(' + (counter2) + ')"/>';
+		var HTML18 = '<input type="text" id="m_fix_money_' + (counter2) 
+					+ '_total_money" name="m_fix_money[' + (counter2) + '][total_money]" size="7" maxlength="9" class="money" readonly=true />';
 		
-		var HTML11 = '<input type="button" name="clear" value="クリア" onClick="form_clear2(' + (counter2) + ');" />'
+		var HTML19 = '<input type="button" name="clear" value="クリア" onClick="form_clear2(' + (counter2) + ');" />'
 					+ '<input type="button" name="clear" value="削 除" onClick="DelTableRows2(this);" />';
-		
+	   	
 		
 		cell1.innerHTML = HTML1;
 		cell2.innerHTML = HTML2;
-		cell3.innerHTML = HTML3;
-		cell4.innerHTML = HTML4;
-		cell5.innerHTML = HTML5;
-		cell6.innerHTML = HTML6;
-		cell7.innerHTML = HTML7;
-		cell8.innerHTML = HTML8;
-		cell9.innerHTML = HTML9;
-		cell10.innerHTML = HTML10;
-		cell11.innerHTML = HTML11;
+		
+		<% if @m_fix_items %>
+		<% @m_fix_items.each_with_index do |m_fix_item,idx_item| %>
+			cell<%= idx_item + 3 %>.innerHTML = HTML<%= idx_item + 3 %>;
+		<% end %>
+		<% end %>
+		
+		cell16.innerHTML = HTML16;
+		cell17.innerHTML = HTML17;
+		cell18.innerHTML = HTML18;
+		cell19.innerHTML = HTML19;
 		
 		counter2++;
 	};
@@ -795,13 +808,6 @@
 		cell8.className = 'saturday';
 		cell9.className = 'clear';
 		
-		//var HTML1 = String(<%#= select("select-replace", "m_wash_id",
-	  	// 	 MWash.find(:all,:conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => "wash_cd").map do |u|
-	    //  	 [u.wash_ryaku,u.id]
-	   	//	 end, :include_blank => "選択して下さい") %>);
-	   	
-	   	//HTML1 = HTML1.replace(/select-replace_/g,"m_washsale_plan_" + (counter) + "_");
-	   	//HTML1 = HTML1.replace(/select-replace/g,"m_washsale_plan[" + (counter) + "]");
 	   	var HTML1 = '<select id="m_washsale_plan_' + (counter) + '_m_wash_id" name="m_washsale_plan[' + (counter) + '][m_wash_id]">'
 	   	HTML1 = HTML1 + '<option value="">選択して下さい</option>'
 	   	<% MWash.find(:all,:conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => "wash_cd").map.map do |u| %>
@@ -906,13 +912,6 @@
 		cell6.setAttribute("class","clear");
 		
 		
-		//var HTML1 = String(<%#= select("select-replace", "m_oil_id",
-		//				  	 	@m_oils.map do |u| [u.oil_name,u.id] 
-		//		    			end,:include_blank => "選択して下さい") %>);
-	   	
-	   	//HTML1 = HTML1.replace(/select-replace_/g,"m_tank_" + (counter3) + "_");
-	   	//HTML1 = HTML1.replace(/select-replace/g,"m_tank[" + (counter3) + "]");
-	   	
 	   	var HTML1 = '<select id="m_tank_' + (counter3) + '_m_oil_id" name="m_tank[' + (counter3) + '][m_oil_id]">'
 	   	HTML1 = HTML1 + '<option value="">選択して下さい</option>'
 	   	<% @m_oils.map do |u| %>
@@ -990,6 +989,25 @@
 		}
 		
 		document.getElementById('m_tank_' + idx + '_tank_name').value = "タンク" + html
+		
+	};
+	
+	function totalMoney(idx){
+		var v1 = document.getElementById('m_fix_money_' + idx + '_total_fix_money').value;
+		var v2 = document.getElementById('m_fix_money_' + idx + '_total_change_money').value;
+		
+		if (v1.match(/[^0-9]/g)) {
+			document.getElementById('m_fix_money_' + idx + '_total_fix_money').value = v1.replace(/[^0-9]/g,'');
+		}
+		
+		if (v2.match(/[^0-9]/g)) {
+			document.getElementById('m_fix_money_' + idx + '_total_change_money').value = v2.replace(/[^0-9]/g,'');
+		}
+		
+		var html1 = document.getElementById('m_fix_money_' + idx + '_total_fix_money').value;
+		var html2 = document.getElementById('m_fix_money_' + idx + '_total_change_money').value;
+		
+		document.getElementById('m_fix_money_' + idx + '_total_money').value = Number(html1) + Number(html2)
 		
 	};
         
