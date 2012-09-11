@@ -28,7 +28,6 @@ class MShopsController < ApplicationController
   # GET /m_shops/1
   # GET /m_shops/1.json
   def show
-    p "m_shop show---------------------"
     @m_shop = MShop.find(params[:id])
     @m_oils = MOil.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'oil_cd')
 
@@ -49,8 +48,6 @@ class MShopsController < ApplicationController
     #                      :order => 'm_shop_id,m_oil_id')
     @m_tanks = nil
 
-
-    
     @m_washsale_plans = nil
 
 
@@ -120,22 +117,47 @@ class MShopsController < ApplicationController
 
 
     #タンク情報　保存 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    tank1_all = 0
+    tank2_all = 0
+    tank3_all = 0
+    tank4_all = 0
+    
     if params[:m_tank]
       params[:m_tank].each do |key,value| 
         @m_tank = MTank.new(value)
         @m_tank.m_shop_id = @m_shop.id
         @m_tank.save
+        
+        if @m_tank.m_oil_id == @m_shop.m_oil_id1
+          tank1_all = tank1_all + @m_tank.volume
+        elsif @m_tank.m_oil_id == @m_shop.m_oil_id2
+          tank2_all = tank2_all + @m_tank.volume
+        elsif @m_tank.m_oil_id == @m_shop.m_oil_id3
+          tank3_all = tank3_all + @m_tank.volume
+        elsif @m_tank.m_oil_id == @m_shop.m_oil_id4
+          tank4_all = tank4_all + @m_tank.volume
+        else
+        end
+        
       end
     end
+    
+    @m_shop.tank1_all = tank1_all
+    @m_shop.tank2_all = tank2_all
+    @m_shop.tank3_all = tank3_all
+    @m_shop.tank4_all = tank4_all
+    @m_shop.save
     #タンク情報　保存 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-
 
     respond_to do |format|
       #if @m_shop.save
         #format.html { redirect_to @m_shop, notice: 'M shop was successfully created.' }
-        format.html { redirect_to @m_shop }
-        format.json { render json: @m_shop, status: :created, location: @m_shop }
+        #format.html { redirect_to @m_shop }
+        #format.json { render json: @m_shop, status: :created, location: @m_shop }
+        
+        format.html { redirect_to :controller => "m_shops", :action => "edit", :id=>@m_shop.id }
+        format.json { head :ok }
+        
       #else
       #  format.html { render action: "new" }
       #  format.json { render json: @m_shop.errors, status: :unprocessable_entity }
@@ -207,6 +229,10 @@ class MShopsController < ApplicationController
     
     
     #タンク情報　保存 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    tank1_all = 0
+    tank2_all = 0
+    tank3_all = 0
+    tank4_all = 0
     #初めにdelete insert の替わりに削除フラグを立てる
     @m_tanks = MTank.find(:all,:conditions=>["m_shop_id = ?",params[:id]])
     
@@ -230,19 +256,36 @@ class MShopsController < ApplicationController
           @m_tank.update_attributes(value)
         end
         
+        
+        if @m_tank.m_oil_id == @m_shop.m_oil_id1
+          tank1_all = tank1_all + @m_tank.volume
+        elsif @m_tank.m_oil_id == @m_shop.m_oil_id2
+          tank2_all = tank2_all + @m_tank.volume
+        elsif @m_tank.m_oil_id == @m_shop.m_oil_id3
+          tank3_all = tank3_all + @m_tank.volume
+        elsif @m_tank.m_oil_id == @m_shop.m_oil_id4
+          tank4_all = tank4_all + @m_tank.volume
+        else
+        end
+        
+        
       end
     end
+    
+    @m_shop.tank1_all = tank1_all
+    @m_shop.tank2_all = tank2_all
+    @m_shop.tank3_all = tank3_all
+    @m_shop.tank4_all = tank4_all
+    @m_shop.save
     #タンク情報　保存 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     
-    
-    
-
     respond_to do |format|
     #  if @m_shop.update_attributes(params[:m_shop])
         #format.html { redirect_to @m_shop, notice: 'M shop was successfully updated.' }
         #format.html { redirect_to @m_shop }
         format.html { redirect_to :controller => "m_shops", :action => "edit" }
         format.json { head :ok }
+        
     #  else
     #    format.html { render action: "edit" }
     #    format.json { render json: @m_shop.errors, status: :unprocessable_entity }
@@ -307,11 +350,6 @@ class MShopsController < ApplicationController
     select_sql << " left join (select * from m_codes where kbn='shop_kbn') b on a.shop_kbn = cast(b.code as integer) "
     
     condition_sql = " where deleted_flg = 0 "
-    
-    
-    
-    
-    #sql_where = "deleted_flg = 0"
     
     if params[:select][:shop_kbn] != ""
       #sql_where = sql_where + " and shop_kbn = " + params[:select][:shop_kbn]
