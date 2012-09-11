@@ -11,8 +11,10 @@ class DBusinessCountReportsController < ApplicationController
     end
     
     @ym = @input_ymd.delete("/")[0,6]
-    
+    @start_ymd = @ym + "01"
+    @end_ymd = @ym + '31'
     @shops = MShop.where(:deleted_flg => 0).order(:shop_cd).select('id,shop_name,shop_ryaku,shop_cd')
+    @m_oiletcs = MOiletc.where(:oiletc_cd => 11..15).order('oiletc_cd')
     @m_aims = MAim.where(:aim_code => 11..15).order('aim_code')
   end
 

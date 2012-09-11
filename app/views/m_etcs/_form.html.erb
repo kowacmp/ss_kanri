@@ -64,6 +64,19 @@
         end, {:include_blank => "選択して下さい"}) %>
   	  </td>  	  
   	</tr>
+  	<tr>
+  	  <th><%= f.label '他売上種別' %></th>
+  	  <td>
+  	  	<%= f.select(:etc_class, MCode.find(:all, :conditions => ["kbn = ?",'etc_class'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
+  	  </td>
+  	</tr>
+  	  <th><%= f.label '単価' %></th>
+  	  <td>
+  	  	<%= f.text_field :price, :class=>"money" %>
+  	  </td>
+  	</tr>
   </table>
   <div class="actions">
     <%= f.submit f.object.new_record? ? '追加' : '更新' %>

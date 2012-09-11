@@ -75,20 +75,21 @@ class DSaleEtcsController < ApplicationController
     DSaleEtcDetail.transaction do
       @d_sale_etc = get_d_sale_etc(params[:sale_date])
       @d_sale_etc_mae = get_d_sale_etc(params[:sale_date])
-      if (params[:sale_date] == nil) or (params[:sale_date] == "")
+      if (params[:sale_date] == nil) or (params[:sale_date] == "") or (@d_sale_etc.nil?)
         create_d_sale_etc(params[:sale_date])
       end
       @d_sale_etc = get_d_sale_etc(params[:sale_date]) 
-      
+
       @m_etcs = get_m_etcs
       #メーター更新
       @m_etcs.each do |etc| #each
+        @price = etc.price
+        
         sum_uriage = 0
         @d_sale_etc_mae = get_d_sale_etc(get_zenkai_date(params[:sale_date]))
 
         etc.max_num.times do |i| #times
           
-         p "@d_sale_etc.id = #{@d_sale_etc.id} etc.id = #{etc.id} i #{i}"
          @d_sale_etc_detail = get_d_sale_etc_detail(@d_sale_etc.id,etc.id,(i+1))
          unless @d_sale_etc_detail == nil #unless1
            #データあり
@@ -100,12 +101,30 @@ class DSaleEtcsController < ApplicationController
            create_d_sale_etc_detail(@d_sale_etc.id,etc.etc_cd,(i+1))
          end #unless1
 
-         unless @d_sale_etc_mae == nil
-           sum_uriage = sum_uriage + 
-             (@d_sale_etc_detail.meter - get_d_sale_etc_detail(@d_sale_etc_mae.id,etc.etc_cd,(i+1)).meter )
-         else
-           sum_uriage = sum_uriage + @d_sale_etc_detail.meter
+         #unless @d_sale_etc_mae == nil
+         #  sum_uriage = sum_uriage + 
+         #    (@d_sale_etc_detail.meter - get_d_sale_etc_detail(@d_sale_etc_mae.id,etc.etc_cd,(i+1)).meter )
+         #else
+         #  sum_uriage = sum_uriage + @d_sale_etc_detail.meter
+         #end
+         
+         v1 = @d_sale_etc_detail.meter
+         v2 = 0
+         if not(@d_sale_etc_mae.nil?) then
+           if etc.etc_class == 0 then
+              v2 = get_d_sale_etc_detail(@d_sale_etc_mae.id,etc.etc_cd,(i+1)).meter
+           else
+              v2 = 0
+           end 
          end
+         v1 = 0 if v1.nil?
+         v2 = 0 if v2.nil?
+         if v1 < v2 then
+           sum_uriage += v1 * @price
+         else
+           sum_uriage += (v1 - v2) * @price
+         end
+         
         end #times
         
         #誤差更新
@@ -115,13 +134,20 @@ class DSaleEtcsController < ApplicationController
            #データあり
            unless @d_sale_etc_detail.meter == params["meter_#{etc.etc_cd.to_s}_99"] #unless2
              
-             sum_meter = get_sum_meter(@d_sale_etc.id,etc.id)
-             if  @d_sale_etc_mae == nil
-               sum_meter_mae = 0
-             else
-             sum_meter_mae = get_sum_meter(@d_sale_etc_mae.id,etc.id) 
-             end
-             update_d_sale_etc_detail(etc.etc_cd,99,sum_meter,sum_meter_mae)
+             #sum_meter = get_sum_meter(@d_sale_etc.id,etc.id)
+             #if  @d_sale_etc_mae == nil
+             #  sum_meter_mae = 0
+             #else
+             #sum_meter_mae = get_sum_meter(@d_sale_etc_mae.id,etc.id) 
+             #end
+             #update_d_sale_etc_detail(etc.etc_cd,99,sum_meter,sum_meter_mae)
+           
+             @d_sale_etc_detail.meter = params["meter_#{etc.etc_cd.to_s}_99"]
+             @d_sale_etc_detail.error_money = sum_uriage - @d_sale_etc_detail.meter
+             @d_sale_etc_detail.price = @price
+             @d_sale_etc_detail.updated_user_id = current_user.id
+             @d_sale_etc_detail.save!
+           
            end #unless2
          else
            #データなし
@@ -164,6 +190,7 @@ private
     end
     @d_sale_etc_detail.created_user_id = current_user.id
     @d_sale_etc_detail.updated_user_id = current_user.id
+    @d_sale_etc_detail.price = @price
     @d_sale_etc_detail.save!
   end
   
@@ -173,6 +200,7 @@ private
       @d_sale_etc_detail.error_money =  (sum_meter - sum_meter_mae) - @d_sale_etc_detail.meter
     end
     @d_sale_etc_detail.updated_user_id = current_user.id
+    @d_sale_etc_detail.price = @price
     @d_sale_etc_detail.save!
   end
 end
