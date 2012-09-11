@@ -90,6 +90,29 @@ class DSaleEtcsController < ApplicationController
 
         etc.max_num.times do |i| #times
           
+          if params["meter_#{etc.etc_cd.to_s}_#{i+1}"].nil? then
+            v1 = 0
+          else
+            v1 = params["meter_#{etc.etc_cd.to_s}_#{i+1}"].to_i
+          end 
+          v2 = 0
+          if not(@d_sale_etc_mae.nil?) then
+            if etc.etc_class == 0 then
+               v2 = get_d_sale_etc_detail(@d_sale_etc_mae.id,etc.etc_cd,(i+1)).meter
+            else
+               v2 = 0
+            end 
+           end
+           v1 = 0 if v1.nil?
+           v2 = 0 if v2.nil?
+           if v1 < v2 then
+             @uriage = v1 * @price
+             sum_uriage += @uriage
+           else
+             @uriage = (v1 - v2) * @price
+             sum_uriage += @uriage 
+           end  
+          
          @d_sale_etc_detail = get_d_sale_etc_detail(@d_sale_etc.id,etc.id,(i+1))
          unless @d_sale_etc_detail == nil #unless1
            #データあり
@@ -107,24 +130,7 @@ class DSaleEtcsController < ApplicationController
          #else
          #  sum_uriage = sum_uriage + @d_sale_etc_detail.meter
          #end
-         
-         v1 = @d_sale_etc_detail.meter
-         v2 = 0
-         if not(@d_sale_etc_mae.nil?) then
-           if etc.etc_class == 0 then
-              v2 = get_d_sale_etc_detail(@d_sale_etc_mae.id,etc.etc_cd,(i+1)).meter
-           else
-              v2 = 0
-           end 
-         end
-         v1 = 0 if v1.nil?
-         v2 = 0 if v2.nil?
-         if v1 < v2 then
-           sum_uriage += v1 * @price
-         else
-           sum_uriage += (v1 - v2) * @price
-         end
-         
+                 
         end #times
         
         #誤差更新
@@ -144,7 +150,11 @@ class DSaleEtcsController < ApplicationController
            
              @d_sale_etc_detail.meter = params["meter_#{etc.etc_cd.to_s}_99"]
              @d_sale_etc_detail.error_money = sum_uriage - @d_sale_etc_detail.meter
-             @d_sale_etc_detail.price = @price
+             if @d_sale_etc_detail.etc_no == 99 then
+               @d_sale_etc_detail.uriage = 0
+             else
+               @d_sale_etc_detail.uriage = @uriage
+             end
              @d_sale_etc_detail.updated_user_id = current_user.id
              @d_sale_etc_detail.save!
            
@@ -190,7 +200,11 @@ private
     end
     @d_sale_etc_detail.created_user_id = current_user.id
     @d_sale_etc_detail.updated_user_id = current_user.id
-    @d_sale_etc_detail.price = @price
+    if @d_sale_etc_detail.etc_no == 99 then
+      @d_sale_etc_detail.uriage = 0
+    else
+      @d_sale_etc_detail.uriage = @uriage
+    end
     @d_sale_etc_detail.save!
   end
   
@@ -200,7 +214,11 @@ private
       @d_sale_etc_detail.error_money =  (sum_meter - sum_meter_mae) - @d_sale_etc_detail.meter
     end
     @d_sale_etc_detail.updated_user_id = current_user.id
-    @d_sale_etc_detail.price = @price
+    if @d_sale_etc_detail.etc_no == 99 then
+      @d_sale_etc_detail.uriage = 0
+    else
+      @d_sale_etc_detail.uriage = @uriage
+    end
     @d_sale_etc_detail.save!
   end
 end

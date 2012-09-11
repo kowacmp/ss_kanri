@@ -2,14 +2,18 @@ module DYumePointListsHelper
   
   def sum_rows_yume_points(result_date,shop_kbn)
     sql = <<-SQL
-      select sum(pos1_data) as pos1_data,sum(pos2_data) as pos2_data
-      from d_result_oiletcs c,
-      (select a.id from d_results a
-       left join m_shops b
-        on a.m_shop_id = b.id
-       where result_date = ?
-       and shop_kbn = ?) d
-       where c.d_result_id = d.id
+      select sum(pos1_data) as pos1_data,sum(pos2_data) as pos2_data 
+        from m_oiletcs f,
+       (select *
+        from d_result_oiletcs c,
+        (select a.id from d_results a
+         left join m_shops b
+         on a.m_shop_id = b.id
+         where result_date = ?
+           and shop_kbn = ?) d
+         where c.d_result_id = d.id) e
+         where e.m_oiletc_id = f.id
+            and oiletc_group = 2
     SQL
     
     sum_yume_points = DResult.find_by_sql([sql,result_date,shop_kbn]).first
