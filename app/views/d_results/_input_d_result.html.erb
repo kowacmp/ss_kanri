@@ -163,7 +163,10 @@
       
   <%= hidden_field :select, :result_date, :value => @result_date %>
   <%= hidden_field :select, :m_shop_id, :value => @m_shop.id %>
-  <div style="text-align:right; width: 570px;"><%= submit_tag '登録' %></div>
+  <div style="text-align:right; width: 800px;">
+  	<%= submit_tag '登録', {:confirm => "登録します。よろしいですか？"} %>
+  	<%#= submit_tag '保存', {:confirm => "保存します。よろしいですか？", :id => "submit_buttom"} %>
+  </div>
 <% end %>
 
 <%= javascript_include_tag "comma" %>

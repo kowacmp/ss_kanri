@@ -255,6 +255,23 @@ ActiveRecord::Schema.define(:version => 20120912075729) do
     t.datetime "updated_at"
   end
 
+  create_table "d_duties", :force => true do |t|
+    t.string   "duty_nengetu"
+    t.integer  "user_id"
+    t.integer  "m_shop_id"
+    t.integer  "day"
+    t.decimal  "day_work_time",    :precision => 2, :scale => 1, :default => 0.0
+    t.decimal  "night_work_time",  :precision => 3, :scale => 1, :default => 0.0
+    t.decimal  "all_work_time",    :precision => 3, :scale => 1, :default => 0.0
+    t.integer  "day_work_money"
+    t.integer  "night_work_money",                               :default => 0
+    t.integer  "all_money",                                      :default => 0
+    t.integer  "created_user_id"
+    t.integer  "updated_user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "d_events", :force => true do |t|
     t.string   "start_day",       :limit => 8,  :null => false
     t.string   "end_day",         :limit => 8,  :null => false
@@ -600,13 +617,13 @@ ActiveRecord::Schema.define(:version => 20120912075729) do
     t.integer  "d_result_id",                                                 :null => false
     t.integer  "m_tank_id",                                                   :null => false
     t.integer  "inspect_flg",      :limit => 2,                               :null => false
-    t.integer  "before_stock",     :limit => 8
-    t.integer  "receive",          :limit => 8
-    t.integer  "sale",             :limit => 8
-    t.integer  "compute_stock",    :limit => 8
-    t.integer  "after_stock",      :limit => 8
-    t.integer  "sale_total",       :limit => 8
-    t.integer  "decrease_total",   :limit => 8
+    t.integer  "before_stock"
+    t.integer  "receive"
+    t.integer  "sale"
+    t.integer  "compute_stock"
+    t.integer  "after_stock"
+    t.integer  "sale_total"
+    t.integer  "decrease_total"
     t.decimal  "total_percentage",              :precision => 6, :scale => 3
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -833,7 +850,11 @@ ActiveRecord::Schema.define(:version => 20120912075729) do
     t.datetime "updated_at"
     t.integer  "max_num",     :limit => 2
     t.integer  "kansa_flg",   :limit => 2
+<<<<<<< HEAD
     t.integer  "tax_flg",     :limit => 2,  :default => 0, :null => false
+=======
+    t.integer  "tax_flg",     :limit => 2,                 :null => false
+>>>>>>> 948b73f5a7467aa46f60bf1bea9da2a314186e5d
     t.integer  "etc_tani",    :limit => 2,                 :null => false
     t.integer  "etc_class",   :limit => 2
     t.integer  "price"
@@ -968,9 +989,9 @@ ActiveRecord::Schema.define(:version => 20120912075729) do
   end
 
   create_table "m_oils", :force => true do |t|
-    t.integer  "oil_cd"
-    t.string   "oil_name"
-    t.integer  "deleted_flg"
+    t.integer  "oil_cd",      :limit => 2,                 :null => false
+    t.string   "oil_name",    :limit => 40,                :null => false
+    t.integer  "deleted_flg", :limit => 2,  :default => 0
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"

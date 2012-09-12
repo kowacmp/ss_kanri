@@ -23,11 +23,15 @@
     </tbody>
   </table>
   <br/>
-  
-  <%= hidden_field :select, :d_result_id, :value => @d_result.id %>
-  <% if @d_result.kakutei_flg == 0 %>
-    <div style="text-align:right; width: 435px;"><%= submit_tag '登録' %></div>
+
+  <% if @d_result.kakutei_flg == 0 or @edit_flg.to_i == 1%>
+    <div style="text-align:right; width: 435px;">
+      <%= submit_tag '登録', {:confirm => "登録します。よろしいですか？", :id => "submit_buttom"} %>
+    </div>
   <% end %>
+  
+  <%= hidden_field :select, :edit_flg, :value => @edit_flg %>
+  <%= hidden_field :select, :d_result_id, :value => @d_result.id %>  
 <% end %>
 
 <%= javascript_include_tag "comma" %>

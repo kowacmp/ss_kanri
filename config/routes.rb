@@ -5,6 +5,8 @@ SsKanri::Application.routes.draw do
   get "d_price_check_etcs/edit"
   get "d_price_check_etcs/show"
 
+  resources :d_duties
+
   get "d_aim_lists/index"
   get "d_aim_lists/search"
 
@@ -29,7 +31,6 @@ SsKanri::Application.routes.draw do
   get "d_business_count_reports/search"
 
   get "d_business_count_reports/print"
-
   get "d_yume_point_lists/index"
   get "d_yume_point_lists/search"
   get "d_yume_point_lists/print"

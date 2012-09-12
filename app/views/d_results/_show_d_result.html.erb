@@ -39,7 +39,8 @@
     </tr>   
   </table>
   <br/>
-
+  
+  <% if @m_shop.shop_kbn == 1 %> <!-- 油外店のみ表示 -->
   <table id='rounded-corner'>
 	<tr>
 	  <th width="160">油外販売</th>
@@ -73,6 +74,7 @@
     </tr>  
   </table>	
   <br/>
+  <% end %>
   
   <table id='rounded-corner'>
 	<tr>

@@ -1,0 +1,91 @@
+<% loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[4,2].to_i, -1)).strftime("%d").to_i %>
+<div id="d_duty_table">
+<table id='rounded-corner'>
+	<thead>
+		<tr>
+			<th colspan="3" style="min-width: 200px">日付</th>
+			<% loopcnt.times { |i| %>
+			  <th style="min-width: 25px;"><%= i + 1 %></th>
+            <% } %>
+		</tr>
+		<tr>
+			<th colspan="3">曜日</th>
+			<% loopcnt.times { |i| %>
+		      <% select_day = Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[4,2].to_i, i + 1) %>		
+			  <% week_w = day_of_the_week(select_day.wday) %>	
+			  <% if week_w == "土" or week_w =="日" %>
+			  	<th style = "background-image:none; background-color: #FF98A7">
+			  <% else %>
+			   	<th style = "background:none ">
+			  <% end %>
+				<%= week_w %>
+			  </th>
+            <% } %>
+
+		</tr>
+		<!--社員-->
+		<tr>
+			<th>番号</th>
+			<th>氏名</th>
+			<th>日数</th>
+			<% loopcnt.times { |i| %>
+			  <th style="background:none ">
+				<%= button_tag "入力", :id=>"syain_inpbtn_#{i + 1}" %>
+			  </th>
+            <% } %>
+		</tr>
+		<!--社員繰り返し-->
+		<% users = User.find(:all, 
+		                     :conditions=>["m_shop_id=? and user_class = 0 and (deleted_flg = 0 or (deleted_flg = 1 and deleted_at>= '#{@head[:input_day].to_s[0,4]}/#{@head[:input_day].to_s[4,2]}/01'))", @m_shop_id],
+		                     :order => "account") %>
+		<% users.each_with_index{ |user, index| %>
+			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} "%>
+			<% nisu = DDuty.find_by_sql("select count(*) nisu from d_duties where #{select_where} and day_work_time <> 0 ")%>
+			<tr id="syain_#{index}">
+				<td style="text-align: center; min-width: 50px">
+					<%= hidden_field_tag "syain_user_id_#{index}", user.id %>
+					<%= user.account %></td>
+				<td style="min-width: 130px"><%= user.user_name %></td>
+				<td style="text-align: center;min-width: 50px"><label id=<%= "syain_nisu_#{index}" %>><%= nisu[0].nisu %></label></td>
+				
+				<%= set_syain_row(index, loopcnt, select_where).html_safe %>
+				
+				
+			</tr>
+		<% } %>
+		<!--社員計-->
+		<tr>
+			<td colspan="2">出金日数</td>
+			<td style="text-align: center;"><label id="syain_nisu_kei"></label></td>
+			<%= set_syain_nisu_kei(loopcnt).html_safe %>
+		
+		</tr>
+		<!--バイト-->
+		<tr>
+			<th>番号</th>
+			<th>氏名</th>
+			<th>時間</th>
+		</tr>
+		<!--バイト繰り返し-->
+		<tr>
+			<td>12345678</td>
+			<td>AAAAAAAA</td>
+			<td>99.9</td>
+		</tr>
+		<!--バイト計-->
+		<tr>
+			<th colspan="3">勤務時間合計</th>
+		</tr>				
+	</thead>
+	<tbody>
+		
+	</tbody>
+</table>
+</div>
+
+<script>
+$(function () {
+	$('#d_duty_table').tablefix({width: 925, height: 900, fixRows: 1, fixCols: 1});
+
+});	
+</script>

@@ -4,20 +4,20 @@
 <%= form_tag(url_for(:action => 'search'),:remote => true) do %>
 <table id='rounded-corner'>
 	<tr>
-	  <th>対象店舗</th>
-	  <td><%= @shop.shop_cd %> | <%= @shop.shop_name %></td>
-      <th>対象年月</th>
-      <td>
-      	<% if params[:mode] == 'list' %>
-      	<%= @d_washsale_report.sale_date[0,4].to_s + '/' + @d_washsale_report.sale_date[4,2].to_s %>
-      	<% else %>
-      	<%= select_year(@time_now,:start_year => @start_year, :end_year => @time_now.year) %><%= select_month(@time_now,:use_month_numbers => true) %>
-      	<% end %>
-      </td>
-      <% unless params[:mode] == 'list' %>
-	  <td><%= submit_tag "検索" %></td>
-	  <% end %>
-      </tr>
+		<th>対象店舗</th>
+		<td class="input_no" id="display"><%= @shop.shop_cd %>&nbsp;&nbsp;<%= @shop.shop_name %></td>
+		<th>対象年月</th>
+		<td>
+			<% if params[:mode] == 'list' %>
+			<%= @d_washsale_report.sale_date[0,4].to_s + '/' + @d_washsale_report.sale_date[4,2].to_s %>
+			<% else %>
+			<%= select_year(@time_now,:start_year => @start_year, :end_year => @time_now.year) %><%= select_month(@time_now,:use_month_numbers => true) %>
+			<% end %>
+		</td>
+		<% unless params[:mode] == 'list' %>
+		<td><%= submit_tag "検索" %></td>
+		<% end %>
+	</tr>
 </table>
 <% end %>
 
