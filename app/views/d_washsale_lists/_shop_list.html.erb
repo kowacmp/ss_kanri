@@ -28,8 +28,9 @@
       <td>
       	<% unless d_wash_sale == nil %>
       	  <%= User.find(d_wash_sale.created_user_id).user_name %><% end %>
-      </td align="center">
-      <td><%= if shop.shop_kbn == 0 then "直営" else "油外" end %></td>
+      </td>
+      <td align="center">
+		<%= if shop.shop_kbn == 0 then "直営" else "油外" end %></td>
       <td align="center">
       	<%= unless d_wash_sale == nil then "済" else "未" end %>
       </td>
