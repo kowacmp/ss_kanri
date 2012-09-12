@@ -1,5 +1,8 @@
 SsKanri::Application.routes.draw do
 
+  get "d_aim_lists/index"
+  get "d_aim_lists/search"
+
   resources :d_washpurika_reports
 
   resources :d_result_reports do
