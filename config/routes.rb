@@ -1,5 +1,7 @@
 SsKanri::Application.routes.draw do
 
+  resources :d_duties
+
   get "d_yume_point_lists/index"
   get "d_yume_point_lists/search"
   get "d_yume_point_lists/print"
