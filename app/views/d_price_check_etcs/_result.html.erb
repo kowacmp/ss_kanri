@@ -1,0 +1,18 @@
+<table class="rounded-corner">
+	<tr>
+		<th>入力日時</th>
+		<th>入力時間</th>
+		<th></th>
+		<th></th>
+	</tr>
+	<%  @d_price_check_etcs.each do |price_check| %>
+	<tr>
+		<td><%= price_check.research_day[0,4] + "/" + price_check.research_day[4,2] + "/" + price_check.research_day[6,2] %></td>
+		<td><%= price_check.research_time %>時</td>
+		<td><%= link_to '詳細',:action => 'show',:research_day => price_check.research_day,
+		:research_time => price_check.research_time %></td>
+		<td><%= link_to '編集',:action => 'edit',:research_day => price_check.research_day,
+		:research_time => price_check.research_time %></td>
+	</tr>
+	<% end %>
+</table>

@@ -1,5 +1,10 @@
 SsKanri::Application.routes.draw do
 
+  get "d_price_check_etcs/index"
+  get "d_price_check_etcs/search"
+  get "d_price_check_etcs/edit"
+  get "d_price_check_etcs/show"
+
   get "d_aim_lists/index"
   get "d_aim_lists/search"
 
