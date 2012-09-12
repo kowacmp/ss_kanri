@@ -1,6 +1,6 @@
 <%= form_tag(url_for(:action => 'update')) do %>
-<dir id="check">
-<table id="rounded-corner">
+<div id="check">
+<table id='rounded-corner'>
 	<tr>
 		<th>店舗</th>
 		<th>年月</th>
@@ -12,7 +12,7 @@
 	</tr>
 	<% @shops.each do |shop| %>
 	<tr>
-		<td><%= shop.shop_cd.to_s + " | " + shop.shop_name %></td>
+		<td><%= shop.shop_cd.to_s%>&nbsp;&nbsp;<%=shop.shop_name %></td>
 		<td>
 			<% washsale_report = DWashsaleReport.find(:all,:conditions => ['sale_date = ? and m_shop_id = ?',@this_month,shop.id]).first %>
 			<%= @this_month[0,4] + '/' + @this_month[4,2] %>
@@ -28,11 +28,11 @@
 		</td>
 		<td>
 			<% unless washsale_report == nil %>
-			<%= link_to '詳細',{:controller => 'd_washsale_reports',:action => 'index',:sale_date => @this_month,:m_shop_id => shop.id,:shop_kbn => @shop_kbn,:mode => 'list'}   %>
+			<%= link_to image_tag('icon/24_show.png') ,{:controller => 'd_washsale_reports',:action => 'index',:sale_date => @this_month,:m_shop_id => shop.id,:shop_kbn => @shop_kbn,:mode => 'list'}   %>
 			<% end %>
-			</td>
-		<td>
-		  <% unless washsale_report == nil %>
+		</td>
+		<td style="text-align: center">
+			 <% unless washsale_report == nil %>
       	    <% if washsale_report.kakutei_flg == 1  %>
       	      <%= check_box_tag("cbox[]",washsale_report.id,{:checked => true}) %>
       	    <% else %>
@@ -44,7 +44,7 @@
 	<% end %><!-- each -->
     <%= hidden_field_tag "sale_date",@this_month %>
     <%= hidden_field_tag "shop_kbn",@shop_kbn %>
-    <tr><td colspan="8"><%= submit_tag(" 更新 ",:disable_with => "更新中...",:confirm => '保存しても良いですか？') %>	 </td></tr>
+    <tr><td colspan="8"><%= submit_tag("  更  新  ",:disable_with => "更新中...",:confirm => '保存しても良いですか？') %>	 </td></tr>
 </table>
 <% end %>
 </dir>

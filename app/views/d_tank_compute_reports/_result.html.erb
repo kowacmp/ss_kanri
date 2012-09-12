@@ -5,7 +5,7 @@
 		<th>店舗</th>
 		<th>店舗種別</th>
 		<th>最終入力日</th>
-		<th></th>
+		<th>詳細</th>
 	</tr>
 	<% @results.each do |result|%>
 	<tr>
@@ -15,7 +15,7 @@
 		<td><%= result.shop_cd%> <%= result.shop_name %></td>
 		<td><%= if result.shop_kbn.to_i == 0 then '直営' else '油外' end %></td>
 		<td><%= result.result_date[0,4] + '/' + result.result_date[4,2] + '/' + result.result_date[6,2]  unless result.result_date == nil or result.result_date == ''%></td>
-		<td><%= link_to('参照',{:controller => 'd_tank_compute_report_details',:action => 'index',:result_date => result.result_date,:shop_id => result.m_shop_id,:shop_kbn => @shop_kbn,:mode => 'manager' }) unless result.result_date == nil or result.result_date == '' %></td>
+		<td><%= link_to image_tag('icon/24_show.png'),{:controller => 'd_tank_compute_report_details',:action => 'index',:result_date => result.result_date,:shop_id => result.m_shop_id,:shop_kbn => @shop_kbn,:mode => 'manager' } unless result.result_date == nil or result.result_date == '' %></td>
 	</tr>
 	<% end %>
 </table>
