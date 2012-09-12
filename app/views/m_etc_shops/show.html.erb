@@ -1,0 +1,63 @@
+  <table id="rounded-corner">
+    <tr>
+    	<th>ブランド名</th>
+    	<td><%= @m_etc_shop.brand %></td>
+    </tr>
+    <tr>
+    	<th>会社名</th>
+    	<td><%= @m_etc_shop.company %></td>
+    </tr>
+    <tr>
+    	<th>形態種別</th>
+    	<td><%= @m_etc_shop.shape %></td>
+    </tr>
+    <tr>
+    	<th>タンク量</th>
+    	<td><%= @m_etc_shop.tank %></td>
+    </tr>
+    <tr>
+    	<th>坪数</th>
+    	<td><%= @m_etc_shop.area %></td>
+    </tr>
+    <tr>
+    	<th>アクセスグループ</th>
+    	<td><%= @m_etc_shop.access_group %></td>
+    </tr>
+    <tr>
+    	<th>アクセス</th>
+    	<td><%= @m_etc_shop.access %></td>
+    </tr>
+    <tr>
+    	<th>位置</th>
+    	<td><%= @m_etc_shop.place %></td>
+    </tr>
+    <tr>
+    	<th>項目1</th>
+    	<td><%= @m_etc_shop.item1 %></td>
+    </tr>
+    <tr>
+    	<th>項目2</th>
+    	<td><%= @m_etc_shop.item2 %></td>
+    </tr>
+    <tr>
+    	<th>項目3</th>
+    	<td><%= @m_etc_shop.item3 %></td>
+    </tr>
+    <tr>
+    	<th>項目4</th>
+    	<td><%= @m_etc_shop.item4 %></td>
+    </tr>
+    <tr>
+    	<th>項目5</th>
+    	<td><%= @m_etc_shop.item5 %></td>
+    </tr>
+    <!--
+    <tr>
+    	<th>項目6</th>
+    	<td><%#= @m_etc_shop.item6 %></td>
+    </tr> -->
+  </table>
+
+
+<%= link_to '編集', edit_m_etc_shop_path(@m_etc_shop) %> |
+<%= link_to '戻る', m_etc_shops_path %>
