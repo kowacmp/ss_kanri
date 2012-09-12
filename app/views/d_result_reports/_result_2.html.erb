@@ -2,12 +2,12 @@
 
 <% @syaken_total = 0 %><% @kyuyu_purika_total = 0 %><% @sensya_purika_total = 0 %>
 <% @sp_total = 0 %><% @sc_total = 0 %><% @taiyaw_total = 0 %>
-<% @coating_total = 0 %><% @atf_total = 0 %><% @kousen_total = 0 %>
+<% @sp_plus_total = 0 %><% @atf_total = 0 %><% @kousen_total = 0 %>
 <% @bt_total = 0 %><% @bankin_total = 0 %><% @waiper_total = 0 %><% @mobil1_total = 0 %>
 
 <% @r_syaken_total = 0 %><% @r_kyuyu_purika_total = 0 %><% @r_sensya_purika_total = 0 %>
 <% @r_sp_total = 0 %><% @r_sc_total = 0 %><% @r_taiyaw_total = 0 %>
-<% @r_coating_total = 0 %><% @r_atf_total = 0 %><% @r_kousen_total = 0 %>
+<% @r_sp_plus_total = 0 %><% @r_atf_total = 0 %><% @r_kousen_total = 0 %>
 <% @r_bt_total = 0 %><% @r_bankin_total = 0 %><% @r_waiper_total = 0 %><% @r_mobil1_total = 0 %>
 
 
@@ -32,35 +32,35 @@
 	<thead>
 	<tr>
 		<th style="min-width: 200px">店舗</th>
-		<th style="min-width: 100px">調整</th>
+		<th style="min-width: 100px"><%= @chousei_label %></th>
 		<th style="min-width: 100px">油外目標</th>
 		<th style="min-width: 100px">油外ペ</th>
-		<th style="min-width: 100px">車検</th>
+		<th style="min-width: 100px"><%= @syaken_label %></th>
 		<th style="min-width: 100px">日計</th>
 		<th style="min-width: 100px">月計</th>
-		<th style="min-width: 100px">ガPPC</th>
+		<th style="min-width: 100px"><%= @kyuyu_purika_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">洗車PPC</th>
+		<th style="min-width: 100px"><%= @sensya_purika_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">SP</th>
+		<th style="min-width: 100px"><%= @sp_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">SC</th>
+		<th style="min-width: 100px"><%= @sc_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">タイヤW</th>
+		<th style="min-width: 100px"><%= @taiyaw_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">コーティング</th>
+		<th style="min-width: 100px"><%= @sp_plus_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">ATF</th>
+		<th style="min-width: 100px"><%= @atf_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">高洗</th>
+		<th style="min-width: 100px"><%= @kousen_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">BT</th>
+		<th style="min-width: 100px"><%= @bt_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">板金</th>
+		<th style="min-width: 100px"><%= @bankin_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">ワイパー</th>
+		<th style="min-width: 100px"><%= @waiper_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">M-1</th>
+		<th style="min-width: 100px"><%= @mobil1_label %></th>
 		<th style="min-width: 100px">累計</th>
 	</tr>
 	</thead>
@@ -85,8 +85,8 @@
 	  	<td class="input_no"><%= m_shop.r_sc %></td>
 	  	<td class="input_no"><%= m_shop.taiyaw %></td>			
 	  	<td class="input_no"><%= m_shop.r_taiyaw %></td>
-	  	<td class="input_no"><%= m_shop.coating %></td>			
-	  	<td class="input_no"><%= m_shop.r_coating %></td>
+	  	<td class="input_no"><%= m_shop.sp_plus %></td>			
+	  	<td class="input_no"><%= m_shop.r_sp_plus %></td>
 	  	<td class="input_no"><%= m_shop.atf %></td>				
 	  	<td class="input_no"><%= m_shop.r_atf %></td>
 	  	<td class="input_no"><%= m_shop.kousen %></td>			
@@ -109,7 +109,7 @@
 	  <% @sp_total = @sp_total + m_shop.sp.to_i %>
 	  <% @sc_total = @sc_total + m_shop.sc.to_i %>
 	  <% @taiyaw_total = @taiyaw_total + m_shop.taiyaw.to_i %>
-	  <% @coating_total = @coating_total + m_shop.coating.to_i %>
+	  <% @sp_plus_total = @sp_plus_total + m_shop.sp_plus.to_i %>
 	  <% @atf_total = @atf_total + m_shop.atf.to_f %>
 	  <% @kousen_total = @kousen_total + m_shop.kousen.to_i %>
 	  <% @bt_total = @bt_total + m_shop.bt.to_i %>
@@ -123,7 +123,7 @@
 	  <% @r_sp_total = @r_sp_total + m_shop.r_sp.to_i %>
 	  <% @r_sc_total = @r_sc_total + m_shop.r_sc.to_i %>
 	  <% @r_taiyaw_total = @r_taiyaw_total + m_shop.r_taiyaw.to_i %>
-	  <% @r_coating_total = @r_coating_total + m_shop.r_coating.to_i %>	
+	  <% @r_sp_plus_total = @r_sp_plus_total + m_shop.r_sp_plus.to_i %>	
 	  <% @r_atf_total = @r_atf_total + m_shop.r_atf.to_f %>
 	  <% @r_kousen_total = @r_kousen_total + m_shop.r_kousen.to_i %>
 	  <% @r_bt_total = @r_bt_total + m_shop.r_bt.to_i %>
@@ -151,7 +151,7 @@
 	  	<td class="input_no"></td>
 	  	<td class="input_no"><%= @taiyaw_total %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @coating_total %></td>
+	  	<td class="input_no"><%= @sp_plus_total %></td>
 	  	<td class="input_no"></td>
 	  	<td class="input_no"><%= @atf_total %></td>
 	  	<td class="input_no"></td>
@@ -186,7 +186,7 @@
 	  	<td class="input_no"></td>
 	  	<td class="input_no"><%= @r_taiyaw_total %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @r_coating_total %></td>
+	  	<td class="input_no"><%= @r_sp_plus_total %></td>
 	  	<td class="input_no"></td>
 	  	<td class="input_no"><%= @r_atf_total %></td>
 	  	<td class="input_no"></td>

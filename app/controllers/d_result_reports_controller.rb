@@ -60,6 +60,9 @@ class DResultReportsController < ApplicationController
     
     @kakutei_flg_count = DResult.find_by_sql("#{select_sql}").first
     
+    #ラベル取得
+    label_names_get(@select_kbn)
+    
     #対象データを取得
     @m_shops = result_datas_get(@input_ymd_s, @input_ymd_e, @select_kbn, @shop_info)
     
@@ -71,6 +74,9 @@ class DResultReportsController < ApplicationController
     @input_ymd_e = params[:input_ymd_e]
     @select_kbn = params[:select_kbn].to_i
     @shop_info = MShop.find(current_user.m_shop_id)
+    
+    #ラベル取得
+    label_names_get(@select_kbn)
     
     #対象データを取得
     datas = result_datas_get(@input_ymd_s, @input_ymd_e, @select_kbn, @shop_info)
@@ -154,7 +160,25 @@ class DResultReportsController < ApplicationController
       #e.page.item(:title).value("")
     end #evants.on
     
-    report.start_new_page
+    #report.start_new_page
+    report.start_new_page do |page|
+        page.item(:keiyu_label).value(@keiyu_label)
+        page.item(:r_keiyu_label).value("R" + @keiyu_label)
+        page.item(:touyu_label).value(@touyu_label)
+        page.item(:r_touyu_label).value("R" + @touyu_label)
+        page.item(:koua_label).value(@koua_label)
+        page.item(:r_koua_label).value("R" + @koua_label)
+        page.item(:buyou_label).value(@buyou_label)
+        page.item(:r_buyou_label).value("R" + @buyou_label)
+        page.item(:tokusei_label).value(@tokusei_label)
+        page.item(:r_tokusei_label).value("R" + @tokusei_label)
+        page.item(:sensya_label).value(@sensya_label)
+        page.item(:r_sensya_label).value("R" + @sensya_label)
+        page.item(:koutin_label).value(@koutin_label)
+        page.item(:r_koutin_label).value("R" + @koutin_label)
+        page.item(:taiya_label).value(@taiya_label)
+        page.item(:r_taiya_label).value("R" + @taiya_label)
+    end
 
 
     # 詳細作成
@@ -236,8 +260,8 @@ class DResultReportsController < ApplicationController
     r_sc_total = 0
     taiyaw_total = 0
     r_taiyaw_total = 0
-    coating_total = 0
-    r_coating_total = 0
+    sp_plus_total = 0
+    r_sp_plus_total = 0
     atf_total = 0
     r_atf_total = 0
     kousen_total = 0
@@ -270,8 +294,8 @@ class DResultReportsController < ApplicationController
         e.section.item(:r_sc_total).value(r_sc_total)
         e.section.item(:taiyaw_total).value(taiyaw_total)
         e.section.item(:r_taiyaw_total).value(r_taiyaw_total)
-        e.section.item(:coating_total).value(coating_total)
-        e.section.item(:r_coating_total).value(r_coating_total)
+        e.section.item(:sp_plus_total).value(sp_plus_total)
+        e.section.item(:r_sp_plus_total).value(r_sp_plus_total)
         e.section.item(:atf_total).value(atf_total)
         e.section.item(:r_atf_total).value(r_atf_total)
         e.section.item(:kousen_total).value(kousen_total)
@@ -298,7 +322,23 @@ class DResultReportsController < ApplicationController
       #e.page.item(:title).value("")
     end #evants.on
     
-    report.start_new_page
+    #report.start_new_page
+    report.start_new_page do |page|
+        page.item(:chousei_label).value(@chousei_label)
+        page.item(:syaken_label).value(@syaken_label)
+        page.item(:kyuyu_purika_label).value(@kyuyu_purika_label)
+        page.item(:sensya_purika_label).value(@sensya_purika_label)
+        page.item(:sp_label).value(@sp_label)
+        page.item(:sc_label).value(@sc_label)
+        page.item(:taiyaw_label).value(@taiyaw_label)
+        page.item(:sp_plus_label).value(@sp_plus_label)
+        page.item(:atf_label).value(@atf_label)
+        page.item(:kousen_label).value(@kousen_label)
+        page.item(:bt_label).value(@bt_label)
+        page.item(:bankin_label).value(@bankin_label)
+        page.item(:waiper_label).value(@waiper_label)
+        page.item(:mobil1_label).value(@mobil1_label)
+    end
 
 
     # 詳細作成
@@ -336,10 +376,10 @@ class DResultReportsController < ApplicationController
           taiyaw_total = taiyaw_total + data.taiyaw.to_i
         row.item(:r_taiyaw).value(data.r_taiyaw)
           r_taiyaw_total = r_taiyaw_total + data.r_taiyaw.to_i
-        row.item(:coating).value(data.coating)
-          coating_total = coating_total + data.coating.to_i
-        row.item(:r_coating).value(data.r_coating)
-          r_coating_total = r_coating_total + data.r_coating.to_i
+        row.item(:sp_plus).value(data.sp_plus)
+          sp_plus_total = sp_plus_total + data.sp_plus.to_i
+        row.item(:r_sp_plus).value(data.r_sp_plus)
+          r_sp_plus_total = r_sp_plus_total + data.r_sp_plus.to_i
         row.item(:atf).value(data.atf)
           atf_total = atf_total + data.atf.to_f
         row.item(:r_atf).value(data.r_atf)
@@ -395,7 +435,22 @@ class DResultReportsController < ApplicationController
       #e.page.item(:title).value("")
     end #evants.on
     
-    report.start_new_page
+    #report.start_new_page
+    report.start_new_page do |page|
+        page.item(:keiyu_label).value(@keiyu_label)
+        page.item(:r_keiyu_label).value("R" + @keiyu_label)
+        page.item(:keiyu_pace_label).value(@keiyu_label + "ペース")
+        page.item(:keiyu_aim_label).value(@keiyu_label + "目標")
+        page.item(:touyu_label).value(@touyu_label)
+        page.item(:r_touyu_label).value("R" + @touyu_label)
+        page.item(:touyu_pace_label).value(@touyu_label + "ペース")
+        page.item(:touyu_aim_label).value(@touyu_label + "目標")
+        
+        page.item(:kyuyu_purika_aim_label).value(@kyuyu_purika_label + "目標")
+        page.item(:kyuyu_purika_label).value(@kyuyu_purika_label)
+        page.item(:r_kyuyu_purika_label).value("R" + @kyuyu_purika_label)
+        page.item(:kyuyu_purika_pace_label).value(@kyuyu_purika_label + "ペース")
+    end
 
 
     # 詳細作成
@@ -450,7 +505,23 @@ class DResultReportsController < ApplicationController
       e.page.item(:taisyo_ymd).value(taisyo_ymd)
     end #evants.on
     
-    report.start_new_page
+    #report.start_new_page
+    report.start_new_page do |page|
+        page.item(:sensya_label).value(@sensya_label)
+        page.item(:sensya_purika_label).value(@sensya_purika_label)
+        page.item(:muton_label).value(@muton_label)
+        page.item(:sp_plus_label).value(@sp_plus_label)
+        page.item(:taiyaw_label).value(@taiyaw_label)
+        page.item(:sc_label).value(@sc_label)
+        page.item(:sp_label).value(@sp_label)
+        
+        page.item(:r_wash_item_label).value("R" + @wash_item_label)
+        page.item(:r_game_label).value("R" + @game_label)
+        page.item(:r_health_label).value("R" + @health_label)
+        page.item(:r_net_label).value("R" + @net_label)
+        page.item(:r_charge_label).value("R" + @charge_label)
+        page.item(:r_spare_label).value("R" + @spare_label)
+    end
 
     # 詳細作成
     datas.each do |data|
@@ -469,8 +540,8 @@ class DResultReportsController < ApplicationController
         
         row.item(:muton).value(data.muton)
         row.item(:r_muton).value(data.r_muton)
-        row.item(:coating).value(data.coating)
-        row.item(:r_coating).value(data.r_coating)
+        row.item(:sp_plus).value(data.sp_plus)
+        row.item(:r_sp_plus).value(data.r_sp_plus)
         row.item(:taiyaw).value(data.taiyaw)
         row.item(:r_taiyaw).value(data.r_taiyaw)
         row.item(:sc).value(data.sc)
@@ -500,6 +571,72 @@ class DResultReportsController < ApplicationController
                                :type        => 'application/pdf',
                                :disposition => 'attachment'    
   end
+  
+  #ラベル取得
+  def label_names_get(select_kbn)
+    
+    if select_kbn == 0
+      @keiyu_label = MOil.find_by_oil_cd(3) ? MOil.find_by_oil_cd(3).oil_name : "軽油"
+      @touyu_label = MOil.find_by_oil_cd(4) ? MOil.find_by_oil_cd(4).oil_name : "灯油"
+      
+      @koua_label = MOiletc.find_by_oiletc_cd(1) ? MOiletc.find_by_oiletc_cd(1).oiletc_ryaku : "高A"
+      @buyou_label = MOiletc.find_by_oiletc_cd(2) ? MOiletc.find_by_oiletc_cd(2).oiletc_ryaku : "部用"
+      @tokusei_label = MOiletc.find_by_oiletc_cd(3) ? MOiletc.find_by_oiletc_cd(3).oiletc_ryaku : "特製"
+      @sensya_label = MOiletc.find_by_oiletc_cd(4) ? MOiletc.find_by_oiletc_cd(4).oiletc_ryaku : "洗車"
+      @koutin_label = MOiletc.find_by_oiletc_cd(5) ? MOiletc.find_by_oiletc_cd(5).oiletc_ryaku : "工賃"
+      @taiya_label = MOiletc.find_by_oiletc_cd(6) ? MOiletc.find_by_oiletc_cd(6).oiletc_ryaku : "タイヤ"
+    elsif select_kbn == 1
+      @chousei_label = MOiletc.find_by_oiletc_cd(28) ? MOiletc.find_by_oiletc_cd(28).oiletc_ryaku : "調整"
+      @syaken_label = MOiletc.find_by_oiletc_cd(13) ? MOiletc.find_by_oiletc_cd(13).oiletc_ryaku : "車検"
+      @kyuyu_purika_label = MOiletc.find_by_oiletc_cd(8) ? MOiletc.find_by_oiletc_cd(8).oiletc_ryaku : "GP"
+      @sensya_purika_label = MOiletc.find_by_oiletc_cd(11) ? MOiletc.find_by_oiletc_cd(11).oiletc_ryaku : "洗車PPC"
+      @sp_label = MOiletc.find_by_oiletc_cd(9) ? MOiletc.find_by_oiletc_cd(9).oiletc_ryaku : "SP"
+      @sc_label = MOiletc.find_by_oiletc_cd(23) ? MOiletc.find_by_oiletc_cd(23).oiletc_ryaku : "SC"
+      @taiyaw_label = MOiletc.find_by_oiletc_cd(27) ? MOiletc.find_by_oiletc_cd(27).oiletc_ryaku : "タイヤW"
+      @sp_plus_label = MOiletc.find_by_oiletc_cd(26) ? MOiletc.find_by_oiletc_cd(26).oiletc_ryaku : "SPプラス"
+      @atf_label = MOiletc.find_by_oiletc_cd(14) ? MOiletc.find_by_oiletc_cd(14).oiletc_ryaku : "ATF"
+      @kousen_label = MOiletc.find_by_oiletc_cd(15) ? MOiletc.find_by_oiletc_cd(15).oiletc_ryaku : "高洗"
+      @bt_label = MOiletc.find_by_oiletc_cd(17) ? MOiletc.find_by_oiletc_cd(17).oiletc_ryaku : "BT"
+      @bankin_label = MOiletc.find_by_oiletc_cd(7) ? MOiletc.find_by_oiletc_cd(7).oiletc_ryaku : "板金"
+      @waiper_label = MOiletc.find_by_oiletc_cd(18) ? MOiletc.find_by_oiletc_cd(18).oiletc_ryaku : "ワイパー"
+      @mobil1_label = MOiletc.find_by_oiletc_cd(19) ? MOiletc.find_by_oiletc_cd(19).oiletc_ryaku : "M-1"
+      
+    elsif select_kbn == 2
+      @keiyu_label = MOil.find_by_oil_cd(3) ? MOil.find_by_oil_cd(3).oil_name : "軽油"
+      @touyu_label = MOil.find_by_oil_cd(4) ? MOil.find_by_oil_cd(4).oil_name : "灯油"
+      
+      @kyuyu_purika_label = MOiletc.find_by_oiletc_cd(8) ? MOiletc.find_by_oiletc_cd(8).oiletc_ryaku : "GP"
+    elsif select_kbn == 3
+      @sensya_label = MOiletc.find_by_oiletc_cd(4) ? MOiletc.find_by_oiletc_cd(4).oiletc_ryaku : "洗車"
+      @sensya_purika_label = MOiletc.find_by_oiletc_cd(11) ? MOiletc.find_by_oiletc_cd(11).oiletc_ryaku : "洗車PPC"
+      @muton_label = MOiletc.find_by_oiletc_cd(22) ? MOiletc.find_by_oiletc_cd(22).oiletc_ryaku : "ムートンパス"
+      @sp_plus_label = MOiletc.find_by_oiletc_cd(26) ? MOiletc.find_by_oiletc_cd(26).oiletc_ryaku : "SPプラス"
+      @taiyaw_label = MOiletc.find_by_oiletc_cd(27) ? MOiletc.find_by_oiletc_cd(27).oiletc_ryaku : "タイヤW"
+      @sc_label = MOiletc.find_by_oiletc_cd(23) ? MOiletc.find_by_oiletc_cd(23).oiletc_ryaku : "SC"
+      @sp_label = MOiletc.find_by_oiletc_cd(9) ? MOiletc.find_by_oiletc_cd(9).oiletc_ryaku : "SP"
+      
+      @wash_item_label = MEtc.find_by_etc_cd(10) ? MEtc.find_by_etc_cd(10).etc_ryaku : "洗車用品"
+      @game_label = MEtc.find_by_etc_cd(12) ? MEtc.find_by_etc_cd(12).etc_ryaku : "スロット"
+      @health_label = MEtc.find_by_etc_cd(11) ? MEtc.find_by_etc_cd(11).etc_ryaku : "ヘルス"
+      @net_label = MEtc.find_by_etc_cd(14) ? MEtc.find_by_etc_cd(14).etc_ryaku : "ネット"
+      @charge_label = MEtc.find_by_etc_cd(13) ? MEtc.find_by_etc_cd(13).etc_ryaku : "充電器"
+      @spare_label = "予備"
+      #@spare_label = MEtc.find_by_oiletc_cd(99) ? MEtc.find_by_oiletc_cd(99).etc_ryaku : "予備"
+    else
+      @keiyu_label = MOil.find_by_oil_cd(3) ? MOil.find_by_oil_cd(3).oil_name : "軽油"
+      @touyu_label = MOil.find_by_oil_cd(4) ? MOil.find_by_oil_cd(4).oil_name : "灯油"
+      
+      @koua_label = MOiletc.find_by_oiletc_cd(1) ? MOiletc.find_by_oiletc_cd(1).oiletc_ryaku : "高A"
+      @buyou_label = MOiletc.find_by_oiletc_cd(2) ? MOiletc.find_by_oiletc_cd(2).oiletc_ryaku : "部用"
+      @tokusei_label = MOiletc.find_by_oiletc_cd(3) ? MOiletc.find_by_oiletc_cd(3).oiletc_ryaku : "特製"
+      @sensya_label = MOiletc.find_by_oiletc_cd(4) ? MOiletc.find_by_oiletc_cd(4).oiletc_ryaku : "洗車"
+      @koutin_label = MOiletc.find_by_oiletc_cd(5) ? MOiletc.find_by_oiletc_cd(5).oiletc_ryaku : "工賃"
+      @taiya_label = MOiletc.find_by_oiletc_cd(6) ? MOiletc.find_by_oiletc_cd(6).oiletc_ryaku : "タイヤ"
+    end
+    
+    
+  end
+  
   
   #データ取得SQL実行
   def result_datas_get(input_ymd_s, input_ymd_e, select_kbn, shop_info)
@@ -546,14 +683,14 @@ class DResultReportsController < ApplicationController
       select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
       
       select_sql << " left join (select d_result_id,chousei,oiletc_pace,syaken,kyuyu_purika,sensya_purika,sp,sc, "
-      select_sql <<                   " taiyaw,coating,atf,kousen,bt,bankin,waiper,mobil1"
+      select_sql <<                   " taiyaw,sp_plus,atf,kousen,bt,bankin,waiper,mobil1"
       select_sql <<            " from d_result_reports) c on b.id = c.d_result_id"
       
       select_sql << " left join (select d1.m_shop_id,"
       select_sql <<       "sum(d2.syaken) as r_syaken, sum(d2.kyuyu_purika) as r_kyuyu_purika,"
       select_sql <<       "sum(d2.sensya_purika) as r_sensya_purika, sum(d2.sp) as r_sp,"
       select_sql <<       "sum(d2.sc) as r_sc, sum(d2.taiyaw) as r_taiyaw,"
-      select_sql <<       "sum(d2.coating) as r_coating, sum(d2.atf) as r_atf,"
+      select_sql <<       "sum(d2.sp_plus) as r_sp_plus, sum(d2.atf) as r_atf,"
       select_sql <<       "sum(d2.kousen) as r_kousen, sum(d2.bt) as r_bt,"
       select_sql <<       "sum(d2.bankin) as r_bankin, sum(d2.waiper) as r_waiper, sum(d2.mobil1) as r_mobil1"
       select_sql <<            " from d_results d1"
@@ -623,13 +760,13 @@ class DResultReportsController < ApplicationController
       select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
       
       select_sql << " left join (select d_result_id,sensya,sensya_purika,muton, "
-      select_sql <<                   " coating,taiyaw,sp,sc "
+      select_sql <<                   " sp_plus,taiyaw,sp,sc "
       select_sql <<            " from d_result_self_reports) c on b.id = c.d_result_id"
       
       select_sql << " left join (select d1.m_shop_id,"
       select_sql <<       "sum(d2.sensya) as r_sensya,"
       select_sql <<       "sum(d2.sensya_purika) as r_sensya_purika, sum(d2.muton) as r_muton,"
-      select_sql <<       "sum(d2.coating) as r_coating, sum(d2.taiyaw) as r_taiyaw,"
+      select_sql <<       "sum(d2.sp_plus) as r_sp_plus, sum(d2.taiyaw) as r_taiyaw,"
       select_sql <<       "sum(d2.sp) as r_sp, sum(d2.sc) as r_sc,"
       select_sql <<       "sum(d2.wash_item) as r_wash_item, sum(d2.game) as r_game,"
       select_sql <<       "sum(d2.health) as r_health, sum(d2.net) as r_net, "
