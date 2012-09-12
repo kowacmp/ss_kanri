@@ -1,7 +1,7 @@
-<table id='rounded-corner' class="tank_compute_view_table" width="880">
-	
+<table id='rounded-corner' class="tank_compute_view_table" style="min-width: 800px;">
+  <thead>	
   <tr>
-    <th>タンク</th>
+    <th style="min-width: 80px;">タンク</th>
     <th>油種</th>
     <th>点検</th>
 	<th>前日在庫</th>
@@ -13,8 +13,10 @@
 	<th>販売累計</th>
     <th>増減累計</th>
     <th>増減率</th>
-				  	  	  
+			  	  	  
   </tr>
+  </thead>
+  <tbody>
   <% @d_tank_compute_reports.each do |d_tank_compute_report| %>
     <tr>
       <th>タンク<%= d_tank_compute_report[:tank_no] %></th> 	
@@ -44,9 +46,10 @@
                            
     </tr>	
   <% end %>
+  </tbody>
 </table>
 <script>
 $(function () {
-	$('.tank_compute_view_table').tablefix({width: 880, height: 430, fixRows: 2, fixCols: 1});
+	$('.tank_compute_view_table').tablefix({width: 880, fixCols: 3});
 });	
 </script>

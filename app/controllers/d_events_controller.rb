@@ -5,9 +5,10 @@ class DEventsController < ApplicationController
     sql = "select substr(start_day, 1, 4) || '/' || substr(start_day, 5, 2) || '/' || substr(start_day, 7, 2) as start_day, "
     sql << "      substr(end_day, 1, 4) || '/' || substr(end_day, 5, 2) || '/' || substr(end_day, 7, 2) as end_day,"
     sql << "      substr(action_day, 1, 4) || '/' || substr(action_day, 5, 2) || '/' || substr(action_day, 7, 2) as action_day,"
-    sql << "      e.id, e.contents, m.display_name"
-    sql << " from d_events e, menus m where e.menu_id = m.id  and e.created_user_id = #{current_user.id}"
+    sql << "      e.id, e.contents, e.title"
+    sql << " from d_events e where e.created_user_id = #{current_user.id}"
     sql << " order by action_day desc"
+
     @d_events = DEvent.find_by_sql(sql)
 
     respond_to do |format|
