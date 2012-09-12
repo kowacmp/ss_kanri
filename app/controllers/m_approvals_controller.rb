@@ -5,18 +5,8 @@ class MApprovalsController < ApplicationController
     #@m_approvals = MApproval.all
     
     select_sql = "select a.*, b.display_name"
-    select_sql << " ,c.user_name as approval_name1 "
-    select_sql << " ,d.user_name as approval_name2 "
-    select_sql << " ,e.user_name as approval_name3 "
-    select_sql << " ,f.user_name as approval_name4 "
-    select_sql << " ,g.user_name as approval_name5 "
     select_sql << " from m_approvals a " 
     select_sql << " left join (select * from menus) b on a.menu_id = b.id "
-    select_sql << " left join (select * from users) c on a.approval_id1 = c.id "
-    select_sql << " left join (select * from users) d on a.approval_id2 = d.id "
-    select_sql << " left join (select * from users) e on a.approval_id3 = e.id "
-    select_sql << " left join (select * from users) f on a.approval_id4 = f.id "
-    select_sql << " left join (select * from users) g on a.approval_id5 = g.id "
     
     condition_sql = ""
 
@@ -34,18 +24,8 @@ class MApprovalsController < ApplicationController
     #@m_approval = MApproval.find(params[:id])
     
     select_sql = "select a.*, b.display_name"
-    select_sql << " ,c.user_name as approval_name1 "
-    select_sql << " ,d.user_name as approval_name2 "
-    select_sql << " ,e.user_name as approval_name3 "
-    select_sql << " ,f.user_name as approval_name4 "
-    select_sql << " ,g.user_name as approval_name5 "
     select_sql << " from m_approvals a " 
     select_sql << " left join (select * from menus) b on a.menu_id = b.id "
-    select_sql << " left join (select * from users) c on a.approval_id1 = c.id "
-    select_sql << " left join (select * from users) d on a.approval_id2 = d.id "
-    select_sql << " left join (select * from users) e on a.approval_id3 = e.id "
-    select_sql << " left join (select * from users) f on a.approval_id4 = f.id "
-    select_sql << " left join (select * from users) g on a.approval_id5 = g.id "
     
     condition_sql = " where a.id = " + params[:id]
     

@@ -1,8 +1,12 @@
-
+<div style="text-align:left">
 誤差内容入力：<%= @m_etc.etc_name %>
+</div>
 <%= form_tag({:action => 'update_error'},:remote => true) do %>
 <div id="text_area">
 	<%= render 'input_error' %>
 </div>
-<%= submit_tag(" 更新 ",:disable_with => "更新中...") %>
+<br />
+<div style="text-align:right">
+<%= submit_tag(" 登録 ",:disable_with => "登録中.....") %>
+</div>
 <% end %>

@@ -19,29 +19,29 @@
 	<thead>
 	<tr>
 		<th style="min-width: 200px">店舗</th>
-		<th style="min-width: 100px">洗車</th>
+		<th style="min-width: 100px"><%= @sensya_label %></th>
 		<th style="min-width: 100px">累計</th>
 		<th style="min-width: 100px">ペース</th>
 		<th style="min-width: 100px">洗車目標</th>
 		<th style="min-width: 100px">洗車PPC</th>
 		<th style="min-width: 100px">累計</th>
 		<th style="min-width: 100px">洗車P目標</th>
-		<th style="min-width: 100px">ムートンパス</th>
+		<th style="min-width: 100px"><%= @muton_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">コーティング</th>
+		<th style="min-width: 100px"><%= @sp_plus_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">タイヤW</th>
+		<th style="min-width: 100px"><%= @taiyaw_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">SC</th>
+		<th style="min-width: 100px"><%= @sc_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">SP</th>
+		<th style="min-width: 100px"><%= @sp_label %></th>
 		<th style="min-width: 100px">累計</th>
-		<th style="min-width: 100px">R洗車用品</th>
-		<th style="min-width: 100px">Rスロット</th>
-		<th style="min-width: 100px">Rヘルス</th>
-		<th style="min-width: 100px">Rネット</th>
-		<th style="min-width: 100px">R充電器</th>
-		<th style="min-width: 100px">R予備</th>
+		<th style="min-width: 100px"><%= "R" + @wash_item_label %></th>
+		<th style="min-width: 100px"><%= "R" + @game_label %></th>
+		<th style="min-width: 100px"><%= "R" + @health_label %></th>
+		<th style="min-width: 100px"><%= "R" + @net_label %></th>
+		<th style="min-width: 100px"><%= "R" + @charge_label %></th>
+		<th style="min-width: 100px"><%= "R" + @spare_label %></th>
 	</tr>
 	</thead>
 	
@@ -58,8 +58,8 @@
 	  	<td class="input_no"><%= m_shop.sensya_purika_aim %></td>
 	  	<td class="input_no"><%= m_shop.muton %></td>			
 	  	<td class="input_no"><%= m_shop.r_muton %></td>
-	  	<td class="input_no"><%= m_shop.coating %></td>			
-	  	<td class="input_no"><%= m_shop.r_coating %></td>
+	  	<td class="input_no"><%= m_shop.sp_plus %></td>			
+	  	<td class="input_no"><%= m_shop.r_sp_plus %></td>
 	  	<td class="input_no"><%= m_shop.taiyaw %></td>			
 	  	<td class="input_no"><%= m_shop.r_taiyaw %></td>
 	  	<td class="input_no"><%= m_shop.sc %></td>				

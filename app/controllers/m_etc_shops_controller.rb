@@ -3,7 +3,7 @@ class MEtcShopsController < ApplicationController
   # GET /m_etc_shops
   # GET /m_etc_shops.json
   def index
-    @m_etc_shops = MEtcShop.all
+    @m_etc_shops = MEtcShop.where(:m_shop_id => current_user.m_shop_id).order('access_group,id')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -17,7 +17,7 @@ class MEtcShopsController < ApplicationController
     @m_etc_shop = MEtcShop.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html {render :layout => 'modal'}
       format.json { render json: @m_etc_shop }
     end
   end
@@ -28,7 +28,7 @@ class MEtcShopsController < ApplicationController
     @m_etc_shop = MEtcShop.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html {render :layout => 'modal'}
       format.json { render json: @m_etc_shop }
     end
   end
@@ -36,6 +36,7 @@ class MEtcShopsController < ApplicationController
   # GET /m_etc_shops/1/edit
   def edit
     @m_etc_shop = MEtcShop.find(params[:id])
+    render :layout => 'modal'
   end
 
   # POST /m_etc_shops
@@ -46,7 +47,7 @@ class MEtcShopsController < ApplicationController
     
     respond_to do |format|
       if @m_etc_shop.save
-        format.html { redirect_to @m_etc_shop, notice: '他店舗マスタを作成しました' }
+        format.html { redirect_to :action => 'index' }
         format.json { render json: @m_etc_shop, status: :created, location: @m_etc_shop }
       else
         format.html { render action: "new" }
@@ -60,9 +61,11 @@ class MEtcShopsController < ApplicationController
   def update
     @m_etc_shop = MEtcShop.find(params[:id])
 
+    @m_etc_shop.update_attributes(params[:m_etc_shop])
+    #redirect_to :action => 'index'
     respond_to do |format|
       if @m_etc_shop.update_attributes(params[:m_etc_shop])
-        format.html { redirect_to @m_etc_shop, notice: '他店舗マスタを更新しました' }
+        format.html { redirect_to :action =>'index' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }

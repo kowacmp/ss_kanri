@@ -13,7 +13,6 @@ $(function () {
          	});
          	
     });
-      
 
     //カンマ編集して表示する
  	$("input.money").each(function(){

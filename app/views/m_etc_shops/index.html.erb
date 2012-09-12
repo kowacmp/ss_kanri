@@ -1,5 +1,6 @@
 <%= stylesheet_link_tag    "d_price_checks" %> 
 
+
      <div id="main-navigation">
         <ul class="wat-cf">
             <li>
@@ -12,7 +13,7 @@
         </ul>
       </div>
 <br />
-<%= link_to '新規登録', new_m_etc_shop_path %>      
+<%= link_to '新規登録', new_m_etc_shop_path,:class => 'modal' %>      
 <table class="rounded-corner">
   <tr>
     <th>ブランド名</th>
@@ -32,8 +33,8 @@
     <td><%= m_etc_shop.shape %></td>
     <td><%= m_etc_shop.tank %></td>
     <td><%= m_etc_shop.area %></td>
-    <td><%= link_to '詳細', m_etc_shop %></td>
-    <td><%= link_to '編集', edit_m_etc_shop_path(m_etc_shop) %></td>
+    <td><%= link_to '詳細', m_etc_shop,:class => 'modal' %></td>
+    <td><%= link_to '編集', edit_m_etc_shop_path(m_etc_shop),:class => 'modal' %></td>
     <td><%= link_to '削除', m_etc_shop, confirm: '本当に削除しますか？', method: :delete %></td>
   </tr>
 <% end %>

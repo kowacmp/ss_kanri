@@ -1,4 +1,3 @@
-# -*- coding:utf-8 -*-
 class MFixItemsController < ApplicationController
   # GET /m_fix_items
   # GET /m_fix_items.json
@@ -79,37 +78,14 @@ class MFixItemsController < ApplicationController
   def create
     @m_fix_item = MFixItem.new(params[:m_fix_item])
 
-    kinsyu_count = MFixItem.find(:all,:conditions=>"fix_item_class=0 and deleted_flg=0").count
-    ikkatu_count = MFixItem.find(:all,:conditions=>"fix_item_class=1 and deleted_flg=0").count
-    
-    unless params[:m_fix_item][:fix_item_class] == nil
-      if params[:m_fix_item][:fix_item_class].to_i == 0
-        if kinsyu_count >= 6
-          @m_fix_item.errors[:fix_item_class] = "固定内訳種別の金種別はこれ以上登録できません。"
-        end
-      elsif params[:m_fix_item][:fix_item_class].to_i == 1
-        if ikkatu_count >= 7
-          @m_fix_item.errors[:fix_item_class] = "固定内訳種別の一括はこれ以上登録できません。"
-        end
-      else
-      end
-    end
-
-
     respond_to do |format|
-      
-      if @m_fix_item.errors.count > 0
+      if @m_fix_item.save
+        #format.html { redirect_to @m_fix_item, notice: 'M fix item was successfully created.' }
+        format.html { redirect_to @m_fix_item }
+        format.json { render json: @m_fix_item, status: :created, location: @m_fix_item }
+      else
         format.html { render action: "new" }
         format.json { render json: @m_fix_item.errors, status: :unprocessable_entity }
-      else
-        if @m_fix_item.save
-          #format.html { redirect_to @m_fix_item, notice: 'M fix item was successfully created.' }
-          format.html { redirect_to @m_fix_item }
-          format.json { render json: @m_fix_item, status: :created, location: @m_fix_item }
-        else
-          format.html { render action: "new" }
-          format.json { render json: @m_fix_item.errors, status: :unprocessable_entity }
-        end
       end
     end
   end
@@ -119,41 +95,15 @@ class MFixItemsController < ApplicationController
   def update
     @m_fix_item = MFixItem.find(params[:id])
 
-    kinsyu_count = MFixItem.find(:all,:conditions=>"fix_item_class=0 and deleted_flg=0").count
-    ikkatu_count = MFixItem.find(:all,:conditions=>"fix_item_class=1 and deleted_flg=0").count
-    
-    
-    unless params[:m_fix_item][:fix_item_class] == nil
-      if @m_fix_item.fix_item_class.to_i != params[:m_fix_item][:fix_item_class].to_i
-        if params[:m_fix_item][:fix_item_class].to_i == 0
-          if kinsyu_count >= 6
-            @m_fix_item.errors[:fix_item_class] = "固定内訳種別の金種別はこれ以上登録できません。"
-          end
-        elsif params[:m_fix_item][:fix_item_class].to_i == 1
-          if ikkatu_count >= 7
-            @m_fix_item.errors[:fix_item_class] = "固定内訳種別の一括はこれ以上登録できません。"
-          end
-        else
-        end
-      end
-    end
-
-
     respond_to do |format|
-      
-      if @m_fix_item.errors.count > 0
-          format.html { render action: "edit" }
-          format.json { render json: @m_fix_item.errors, status: :unprocessable_entity }
+      if @m_fix_item.update_attributes(params[:m_fix_item])
+        input_check = params[:input][:check].to_i
+        format.html { redirect_to :controller => "m_fix_items", :action => "show",:id=>@m_fix_item.id,:input_check => input_check }
+        #format.html { redirect_to @m_fix_item, notice: 'M fix item was successfully updated.' }
+        format.json { head :ok }
       else
-        if @m_fix_item.update_attributes(params[:m_fix_item])
-          input_check = params[:input][:check].to_i
-          format.html { redirect_to :controller => "m_fix_items", :action => "show",:id=>@m_fix_item.id,:input_check => input_check }
-          #format.html { redirect_to @m_fix_item, notice: 'M fix item was successfully updated.' }
-          format.json { head :ok }
-        else
-          format.html { render action: "edit" }
-          format.json { render json: @m_fix_item.errors, status: :unprocessable_entity }
-        end
+        format.html { render action: "edit" }
+        format.json { render json: @m_fix_item.errors, status: :unprocessable_entity }
       end
     end
   end

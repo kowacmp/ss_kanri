@@ -71,7 +71,7 @@
 		  	  <% end %>
 		  	<% end %>
 
-		  <td align="right"><!-- 前回メーター-->
+		  <td align="right" class="input_no" id="display"><!-- 前回メーター-->
 		  	<span id="z<%=meter_id%>">
 		  	<% d_sale_etc_mae = get_d_sale_etc(@input_ymd_mae_s) %>
 		  	<% unless d_sale_etc_mae == nil  %>
@@ -91,7 +91,7 @@
 		  	<% end %>
 		  	</span>
 		  	</td>
-		  <td align="right"><!-- 計算上売上高 -->
+		  <td align="right" class="input_no" id="display"><!-- 計算上売上高 -->
 		  	<% display_keisan_uriage = keisan_uriage(d_sale_etc_detail,d_sale_etc_detail_mae) %>
 		  	<% 
 		  	   v1 = 0
@@ -138,7 +138,7 @@
 	  <tr>
 	   	<td colspan="2">&nbsp;</td>
 	   	<th><%= etc.etc_name + "計" %></th>
-	   	<td align="right">
+	   	<td align="right" class="input_no" id="display">
 	   		<span id=<%="kmeter_" + etc.etc_cd.to_s + '_'+ 99.to_s%>>
 	   		<%= number_with_delimiter(sum_keisan_uriage) %>
 	   		</span>
@@ -162,7 +162,7 @@
 	   		<% else %>
 	   		   <td><%= text_field_tag(meter_id,0 ,:class => "money", :style=>"width:100px;") %></td>
 	   		<% end %>
-		<td align="right">
+		<td align="right" class="input_no" id="display">
 			<% unless d_sale_etc_detail_99 == nil %>
 			  <% if sum_keisan_uriage -  d_sale_etc_detail_99.meter == d_sale_etc_detail_99.error_money %>
 			    <span id="gosa_<%=etc.etc_cd.to_s%>">
@@ -187,16 +187,19 @@
 	  <% end %>
 	  <tr><td colspan="2">&nbsp;</td>
 	  	  <th>売上合計</th>
-	  	  <td align="right"><span id="kmeter_k"><%= number_with_delimiter(sum_goukei_uriage) %></span></td>
-	  	  <td align="right"><span id="meter_k"><%= sum_genkin_uriage %></span></td>
-	  	  <td align="right"><span id="gosa_k"><%= sum_gosa %></span></td>
+	  	  <td align="right" class="input_no" id="display">
+	  	  	<span id="kmeter_k"><%= number_with_delimiter(sum_goukei_uriage) %></span></td>
+	  	  <td align="right" class="input_no" id="display">
+	  	  	<span id="meter_k"><%= sum_genkin_uriage %></span></td>
+	  	  <td align="right" class="input_no" id="display">
+	  	  	<span id="gosa_k"><%= sum_gosa %></span></td>
 	  </tr>
 	  <tr><td colspan="6">
 	  	<div class="field">
 	     <% if kakutei_flg == 1 %>
-	       <%= submit_tag(" 更新 ",:disabled => true) %>	 
+	       <%= submit_tag("  登  録  ",:disabled => true) %>	 
 	     <% else %>
-	       <%= submit_tag(" 更新 ",:disable_with => "更新中...",:confirm => '保存しても良いですか？') %>	  
+	       <%= submit_tag("  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？') %>	  
 	     <% end %>
 	   </div>
 	 </td></tr>
