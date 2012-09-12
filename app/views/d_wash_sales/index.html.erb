@@ -3,16 +3,16 @@
 <table id='rounded-corner'>
 	<tr>
 		<th>対象店舗</th>
-		<td><%= @shop.shop_cd %> | 
-<%= @shop.shop_name %></td> <th>
-入力日</th><td>
-	<% unless @mode == 'list' %>
-	  <%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 10%>
-	<% else %>
-	  <%= @input_ymd %>	
-	<% end %>
-	</td>
-</tr>
+		<td class="input_no" id="display"><%= @shop.shop_cd %>&nbsp;&nbsp;<%= @shop.shop_name %></td>
+		<th>入力日</th>
+		<td>
+			<% unless @mode == 'list' %>
+			  <%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 10%>
+			<% else %>
+			  <%= @input_ymd %>	
+			<% end %>
+		</td>
+	</tr>
 </table>
 
 <% if @mode == 'list' %>
