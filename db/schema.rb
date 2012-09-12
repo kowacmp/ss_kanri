@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120912023124) do
+ActiveRecord::Schema.define(:version => 20120912075729) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -303,6 +303,83 @@ ActiveRecord::Schema.define(:version => 20120912023124) do
     t.datetime "updated_at"
   end
 
+  create_table "d_price_check_etcs", :force => true do |t|
+    t.integer  "m_etc_shop_id",                                          :null => false
+    t.string   "research_day",    :limit => 8,   :default => "00000000", :null => false
+    t.integer  "research_time",   :limit => 2,   :default => 0,          :null => false
+    t.string   "item1",           :limit => 20
+    t.integer  "hg_price1",                      :default => 0
+    t.integer  "rg_price1",                      :default => 0
+    t.integer  "kg_price1",                      :default => 0
+    t.integer  "tg_price1",                      :default => 0
+    t.string   "item2",           :limit => 20
+    t.integer  "hg_price2",                      :default => 0
+    t.integer  "rg_price2",                      :default => 0
+    t.integer  "kg_price2",                      :default => 0
+    t.integer  "tg_price2",                      :default => 0
+    t.string   "item3",           :limit => 20
+    t.integer  "hg_price3",                      :default => 0
+    t.integer  "rg_price3",                      :default => 0
+    t.integer  "kg_price3",                      :default => 0
+    t.integer  "tg_price3",                      :default => 0
+    t.string   "item4",           :limit => 20
+    t.integer  "hg_price4",                      :default => 0
+    t.integer  "rg_price4",                      :default => 0
+    t.integer  "kg_price4",                      :default => 0
+    t.integer  "tg_price4",                      :default => 0
+    t.string   "item5",           :limit => 20
+    t.integer  "hg_price5",                      :default => 0
+    t.integer  "rg_price5",                      :default => 0
+    t.integer  "kg_price5",                      :default => 0
+    t.integer  "tg_price5",                      :default => 0
+    t.string   "item6",           :limit => 20
+    t.integer  "hg_price6",                      :default => 0
+    t.integer  "rg_price6",                      :default => 0
+    t.integer  "kg_price6",                      :default => 0
+    t.integer  "tg_price6",                      :default => 0
+    t.string   "note",            :limit => 100
+    t.integer  "created_user_id",                :default => 0
+    t.integer  "updated_user_id",                :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "d_price_checks", :force => true do |t|
+    t.integer  "m_shop_id",                                            :null => false
+    t.string   "research_day",    :limit => 8, :default => "00000000", :null => false
+    t.integer  "research_time",   :limit => 2, :default => 0,          :null => false
+    t.integer  "normal_dis",      :limit => 2, :default => 0
+    t.integer  "bargain_dis",     :limit => 2, :default => 0
+    t.integer  "hg_price1",                    :default => 0
+    t.integer  "rg_price1",                    :default => 0
+    t.integer  "kg_price1",                    :default => 0
+    t.integer  "tg_price1",                    :default => 0
+    t.integer  "hg_price2",                    :default => 0
+    t.integer  "rg_price2",                    :default => 0
+    t.integer  "kg_price2",                    :default => 0
+    t.integer  "tg_price2",                    :default => 0
+    t.integer  "hg_price3",                    :default => 0
+    t.integer  "rg_price3",                    :default => 0
+    t.integer  "kg_price3",                    :default => 0
+    t.integer  "tg_price3",                    :default => 0
+    t.integer  "hg_price4",                    :default => 0
+    t.integer  "rg_price4",                    :default => 0
+    t.integer  "kg_price4",                    :default => 0
+    t.integer  "tg_price4",                    :default => 0
+    t.integer  "hg_price5",                    :default => 0
+    t.integer  "rg_price5",                    :default => 0
+    t.integer  "kg_price5",                    :default => 0
+    t.integer  "tg_price5",                    :default => 0
+    t.integer  "hg_price6",                    :default => 0
+    t.integer  "rg_price6",                    :default => 0
+    t.integer  "kg_price6",                    :default => 0
+    t.integer  "tg_price6",                    :default => 0
+    t.integer  "created_user_id",              :default => 0
+    t.integer  "updated_user_id",              :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "d_result_collects", :force => true do |t|
     t.integer  "d_result_id",     :null => false
     t.integer  "m_oiletc_id",     :null => false
@@ -327,11 +404,15 @@ ActiveRecord::Schema.define(:version => 20120912023124) do
   end
 
   create_table "d_result_meters", :force => true do |t|
-    t.integer  "d_result_id",     :null => false
-    t.integer  "m_meter_id",      :null => false
+    t.integer  "d_result_id",                  :null => false
+    t.integer  "m_oil_id",                     :null => false
+    t.integer  "m_tank_id",                    :null => false
+    t.integer  "m_code_id",                    :null => false
+    t.integer  "number",          :limit => 2, :null => false
+    t.integer  "meter_no",        :limit => 2
     t.integer  "meter"
-    t.integer  "created_user_id", :null => false
-    t.integer  "updated_user_id", :null => false
+    t.integer  "created_user_id",              :null => false
+    t.integer  "updated_user_id",              :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -428,6 +509,7 @@ ActiveRecord::Schema.define(:version => 20120912023124) do
 
   create_table "d_result_tanks", :force => true do |t|
     t.integer  "d_result_id",     :null => false
+    t.integer  "m_oil_id",        :null => false
     t.integer  "m_tank_id",       :null => false
     t.integer  "receive"
     t.integer  "stock"
@@ -649,7 +731,7 @@ ActiveRecord::Schema.define(:version => 20120912023124) do
     t.integer  "updated_user_id",                               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "price"
+    t.integer  "uriage"
   end
 
   create_table "d_washsale_reports", :force => true do |t|
@@ -768,7 +850,11 @@ ActiveRecord::Schema.define(:version => 20120912023124) do
     t.datetime "updated_at"
     t.integer  "max_num",     :limit => 2
     t.integer  "kansa_flg",   :limit => 2
+<<<<<<< HEAD
+    t.integer  "tax_flg",     :limit => 2,  :default => 0, :null => false
+=======
     t.integer  "tax_flg",     :limit => 2,                 :null => false
+>>>>>>> 948b73f5a7467aa46f60bf1bea9da2a314186e5d
     t.integer  "etc_tani",    :limit => 2,                 :null => false
     t.integer  "etc_class",   :limit => 2
     t.integer  "price"

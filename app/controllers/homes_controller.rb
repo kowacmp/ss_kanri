@@ -34,7 +34,6 @@ class HomesController < ApplicationController
   def show_d_comment
     @d_comment = DComment.find(params[:id])
     @send_user = User.find(@d_comment.created_user_id)
-    @menu = Menu.find(@d_comment.menu_id)
     
     render :layout => 'modal'
   end

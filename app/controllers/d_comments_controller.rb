@@ -19,7 +19,6 @@ class DCommentsController < ApplicationController
   # GET /d_comments/1.json
   def show
     @d_comment = DComment.find(params[:id])
-    @display_name = Menu.find(@d_comment.menu_id).display_name
     @receive_user = User.find(@d_comment.receive_id)
      
     respond_to do |format|
