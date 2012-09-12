@@ -186,4 +186,8 @@ class UsersController < ApplicationController
 
   end
 
+  def change_m_shop
+    p "change_m_shop   change_m_shop   change_m_shop   change_m_shop"
+  end
+
 end

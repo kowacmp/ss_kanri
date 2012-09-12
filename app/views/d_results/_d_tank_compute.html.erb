@@ -1,7 +1,8 @@
-<table id='rounded-corner'>
+<table id='rounded-corner' class="tank_compute_view_table" width="880">
   <tr>
     <th>タンク</th>
     <th>油種</th>
+    <th>点検</th>
 	<th>前日在庫</th>
     <th>受入数量</th>
     <th>販売数量</th>
@@ -11,12 +12,19 @@
 	<th>販売累計</th>
     <th>増減累計</th>
     <th>増減率</th>
-	<th>点検</th>			  	  	  
+				  	  	  
   </tr>
   <% @d_tank_compute_reports.each do |d_tank_compute_report| %>
     <tr>
       <th>タンク<%= d_tank_compute_report[:tank_no] %></th> 	
       <th><%= d_tank_compute_report[:oil_name] %></th> 
+      <td align="center">
+      	<% if d_tank_compute_report[:inspect_flg] == 0 %>
+      	  <%= check_box :inspect_flg, "#{d_tank_compute_report[:tank_union_no]}", {:checked => false} %>
+      	<% elsif d_tank_compute_report[:inspect_flg] == 1 %>  
+      	  <%= check_box :inspect_flg, "#{d_tank_compute_report[:tank_union_no]}", {:checked => true} %>
+      	<% end %>
+      </td>        
       <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:before_stock]) %></td> 
       <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:receive]) %></td>
       <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:sale]) %></td>  	
@@ -32,13 +40,12 @@
       <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:sale_total]) %></td> 
       <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:decrease_total]) %></td> 
       <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:total_percentage], true) %></td> 
-      <td align="center">
-      	<% if d_tank_compute_report[:inspect_flg] == 0 %>
-      	  <%= check_box :inspect_flg, "#{d_tank_compute_report[:tank_union_no]}", {:checked => false} %>
-      	<% elsif d_tank_compute_report[:inspect_flg] == 1 %>  
-      	  <%= check_box :inspect_flg, "#{d_tank_compute_report[:tank_union_no]}", {:checked => true} %>
-      	<% end %>
-      </td>                             
+                           
     </tr>	
   <% end %>
 </table>
+<script>
+$(function () {
+	$('.tank_compute_view_table').tablefix({width: 880, height: 430, fixRows: 2, fixCols: 1});
+});	
+</script>

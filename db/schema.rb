@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120911115517) do
+ActiveRecord::Schema.define(:version => 20120912023124) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -714,6 +714,28 @@ ActiveRecord::Schema.define(:version => 20120911115517) do
     t.string   "code"
     t.string   "code_name"
     t.string   "code_name1"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "m_etc_shops", :force => true do |t|
+    t.integer  "m_shop_id",                                    :null => false
+    t.string   "brand",           :limit => 10
+    t.string   "company",         :limit => 20
+    t.string   "shape",           :limit => 10
+    t.integer  "tank",            :limit => 8,  :default => 0
+    t.integer  "area",            :limit => 8,  :default => 0
+    t.integer  "access_group",    :limit => 2,  :default => 0
+    t.string   "access",          :limit => 50
+    t.string   "place",           :limit => 50
+    t.string   "item1",           :limit => 20
+    t.string   "item2",           :limit => 20
+    t.string   "item3",           :limit => 20
+    t.string   "item4",           :limit => 20
+    t.string   "item5",           :limit => 20
+    t.string   "item6",           :limit => 20
+    t.integer  "created_user_id",               :default => 0
+    t.integer  "updated_user_id",               :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

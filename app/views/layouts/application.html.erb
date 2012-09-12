@@ -12,12 +12,13 @@
   <%= stylesheet_link_tag    params[:controller] %> <%# 呼出元のコントローラのCSSを読込 %>
   <%= javascript_include_tag "application" %>
   <%= javascript_include_tag params[:controller] %> <%# 呼出元のコントローラのJSを読込 %>
-  <%= javascript_include_tag "jquery.mini" %>
+  <%#= javascript_include_tag "jquery.mini" %>
   <%= stylesheet_link_tag    "table" %> 
   <%= stylesheet_link_tag    "icon" %>   
   <%= javascript_include_tag "modal" %>
-  <%= javascript_include_tag "jquery" %>
-
+  <%#= javascript_include_tag "jquery" %>
+  <%#= javascript_include_tag "rails" %>
+  
   <!--カレンダー用↓ --> 
   <%= stylesheet_link_tag 'jquery-ui-1.8.22.custom' %>    
   <%= javascript_include_tag "jquery-ui-1.8.22.custom.min" %>
@@ -58,8 +59,8 @@
     <br>
   	<%= render :partial => "/layouts/menus.html" %> 
    </div>   
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
+<!--    <p class="notice"><%#= notice %></p>
+      <p class="alert"><%#= alert %></p> -->
   
   <%= yield %>
   <%= render :partial => "/layouts/footer.html" %>

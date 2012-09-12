@@ -10,7 +10,6 @@ class DResultsController < ApplicationController
   end
   
   def index_select
-    p "index_select_date   index_select_date   index_select_date   index_select_date"
     select_date = params[:select_date].delete("/")
   
     sql = result_index_sql(select_date, params[:select_shop_kbn])
@@ -19,10 +18,6 @@ class DResultsController < ApplicationController
   
   #ロック／解除
   def lock
-    p "lock   lock   lock   lock   lock   lock"
-    p "params[:id]=#{params[:id]}"
-    p "params[:kakutei_flg]=#{params[:kakutei_flg]}"
-    
     d_result = DResult.find(params[:id])
     if params[:kakutei_flg] == "checked" 
       d_result.kakutei_flg = 1 #ロックする
@@ -37,10 +32,6 @@ class DResultsController < ApplicationController
   
   #すべてロック／解除
   def all_lock
-    p "params[:input_day]=#{params[:input_day]}"
-    p "params[:input_shop_kbn]=#{params[:input_shop_kbn]}"
-    p "params[:kakutei_flg]=#{params[:kakutei_flg]}"
-
     if params[:kakutei_flg] == "checked" 
       @all_kakutei_flg = 1
     else
@@ -79,23 +70,16 @@ class DResultsController < ApplicationController
       session[:m_oil_totals][m_oil.id] = Hash::new
       session[:m_oil_totals][m_oil.id][:total] = 0
     end  
-    
-    session[:d_result_params] = Hash::new
        
     if params[:d_result_id].blank?
       #直接実績データ入力に来た場合はログイン所属、今日の日付がデフォルト
       @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       current_user.m_shop_id, Time.now.strftime("%Y%m%d")])
-      session[:d_result_params][:d_result_id] = ""
-      session[:d_result_params][:d_result_id] = @d_result.id unless @d_result.blank?
-      session[:d_result_params][:m_shop_id] = current_user.m_shop_id
       @today = Time.now.strftime("%Y/%m/%d")
       @m_shop_id = current_user.m_shop_id
     else
       #実績データ入力状況確認から来た場合は値をセット
       @d_result = DResult.find(params[:d_result_id])
-      session[:d_result_params][:d_result_id] = params[:d_result_id]
-      session[:d_result_params][:m_shop_id] = @d_result.m_shop_id
       @today = @d_result.result_date[0,4] + "/" + @d_result.result_date[4,2] + "/" + @d_result.result_date[6,2]
       @m_shop_id = @d_result.m_shop_id
       @edit_flg = 1
@@ -128,7 +112,7 @@ class DResultsController < ApplicationController
       oil_sql << " and d.d_result_id = #{@d_result.id})"  
     end    
     oil_sql << " where m.deleted_flg = 0 order by m.oil_cd"
-p "oil_sql=#{oil_sql}"
+
     @pos1_gasorin, @pos2_gasorin, @pos3_gasorin, @total_gasorin = 0,0,0,0
     @pos1_mofuel, @pos2_mofuel, @pos3_mofuel, @total_mofuel = 0,0,0,0
     
@@ -277,8 +261,6 @@ p "oil_sql=#{oil_sql}"
   end
   
   def d_result_create
-    p "d_result_create   d_result_create   d_result_create   d_result_create"
-    p "m_shop_id=#{params[:select][:m_shop_id]}"
     m_shop = MShop.find(params[:select][:m_shop_id])
     d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       m_shop.id, params[:select][:result_date]])
@@ -418,14 +400,6 @@ p "oil_sql=#{oil_sql}"
         ActiveRecord::Base.connection.execute(up_sql)
       end 
     end
-      
-    #d_tank_compute_reports = DTankComputeReport.find(:all, :conditions => ["d_result_id = ?",d_result.id])
-    #unless params[:inspect_flg].blank?
-      #d_tank_compute_reports.each do |d_tank_compute_report|
-        #d_tank_compute_report.inspect_flg = params[:inspect_flg]["#{d_tank_compute_report.id}"]
-        #d_tank_compute_report.save    
-      #end
-    #end
     
     #消費税取得
     tax_rate = Establish.find(:first).tax_rate
@@ -520,9 +494,6 @@ p "oil_sql=#{oil_sql}"
   end
   
   def reserve_index
-    p "reserve_index   reserve_index   reserve_index   reserve_index   reserve_index"
-    p "params[:result_date]=#{params[:result_date]}"
-    p "params[:m_shop_id]=#{params[:m_shop_id]}"
     @result_date = params[:result_date]
     @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       params[:m_shop_id], @result_date])
@@ -584,7 +555,6 @@ p "oil_sql=#{oil_sql}"
   end
   
   def reserve_update
-    p "reserve_update   reserve_update   reserve_update   reserve_update"
     d_result_reserve = DResultReserve.find(params[:reserve][:id])
     d_result = DResult.find(d_result_reserve.d_result_id)
     get_date = params[:reserve][:get_date].delete("/")
@@ -619,9 +589,6 @@ p "oil_sql=#{oil_sql}"
   end
   
   def yume_index
-    p "yume_index   yume_index   yume_index   yume_index   yume_index"
-    p "params[:result_date]=#{params[:result_date]}"
-    p "params[:m_shop_id]=#{params[:m_shop_id]}"
     @result_date = params[:result_date]
     
     @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
@@ -700,10 +667,8 @@ p "oil_sql=#{oil_sql}"
   end
   
   def meter_index
-    p "meter_index   meter_index   meter_index   meter_index   meter_index"
-    p "params[:result_date]=#{params[:result_date]}"
-    p "params[:m_shop_id]=#{params[:m_shop_id]}"
     @result_date = params[:result_date]
+    @edit_flg = params[:edit_flg]
     
     @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       params[:m_shop_id], @result_date])
@@ -798,18 +763,16 @@ p "oil_sql=#{oil_sql}"
       end
     end
         
-    if @d_result.kakutei_flg == 1
-      @text = true
+    if @d_result.kakutei_flg == 0 or @edit_flg.to_i == 1
+      @text = false 
     else
-      @text = false  
-    end          
+      @text = true
+    end         
         
     render :layout => 'modal'
   end
   
   def d_result_meter_create
-    p "d_result_meter_create   d_result_meter_create   d_result_meter_create"
-    #d_result_id = params[:select][:d_result_id]
     d_result = DResult.find(params[:select][:d_result_id])
     
     #メーター登録
@@ -848,14 +811,14 @@ p "oil_sql=#{oil_sql}"
       tank_betu_total(d_result.id, d_result.m_shop_id)
     end
     
+    @edit_flg = params[:select][:edit_flg]
     @m_shop = MShop.find(d_result.m_shop_id) 
-    @result_date = d_result.result_date
-    p "end   end   end   end   end   end   end   end"    
+    @result_date = d_result.result_date  
   end
   
   def tank_index
     @result_date = params[:result_date]
-    
+    @edit_flg = params[:edit_flg]
     @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       params[:m_shop_id], @result_date])
     
@@ -878,19 +841,17 @@ p "oil_sql=#{oil_sql}"
     sql << " order by t.tank_no"
                                             
     @m_tanks = MTank.find_by_sql(sql)
-        
-    if @d_result.kakutei_flg == 1
-      @text = true
+
+    if @d_result.kakutei_flg == 0 or @edit_flg.to_i == 1
+      @text = false 
     else
-      @text = false  
+      @text = true
     end    
         
     render :layout => 'modal'
   end  
 
   def d_result_tank_create
-    p "d_result_tank_create   d_result_tank_create   d_result_tank_create"
-    #d_result_id = params[:select][:d_result_id]
     d_result = DResult.find(params[:select][:d_result_id])
     
     #タンク在庫登録
@@ -928,7 +889,7 @@ p "oil_sql=#{oil_sql}"
       tank_betu_total(d_result.id, d_result.m_shop_id)
     end
     
-    
+    @edit_flg = params[:select][:edit_flg]
     @result_date = d_result.result_date   
     @m_shop = MShop.find(d_result.m_shop_id) 
   end
