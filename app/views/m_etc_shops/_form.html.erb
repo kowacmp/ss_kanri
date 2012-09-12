@@ -1,0 +1,75 @@
+<%= form_for(@m_etc_shop) do |f| %>
+  <% if @m_etc_shop.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_etc_shop.errors.count, "error") %> prohibited this m_etc_shop from being saved:</h2>
+
+      <ul>
+      <% @m_etc_shop.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table id="rounded-corner">
+    <tr>
+    	<th>ブランド名</th>
+    	<td><%= f.text_field :brand %></td>
+    </tr>
+    <tr>
+    	<th>会社名</th>
+    	<td><%= f.text_field :company %></td>
+    </tr>
+    <tr>
+    	<th>形態種別</th>
+    	<td><%= f.text_field :shape %></td>
+    </tr>
+    <tr>
+    	<th>タンク量</th>
+    	<td><%= f.number_field :tank %></td>
+    </tr>
+    <tr>
+    	<th>坪数</th>
+    	<td><%= f.number_field :area %></td>
+    </tr>
+    <tr>
+    	<th>アクセスグループ</th>
+    	<td><%= f.number_field :access_group %></td>
+    </tr>
+    <tr>
+    	<th>アクセス</th>
+    	<td><%= f.text_field :access %></td>
+    </tr>
+    <tr>
+    	<th>位置</th>
+    	<td><%= f.text_field :place %></td>
+    </tr>
+    <tr>
+    	<th>項目1</th>
+    	<td><%= f.text_field :item1 %></td>
+    </tr>
+    <tr>
+    	<th>項目2</th>
+    	<td><%= f.text_field :item2 %></td>
+    </tr>
+    <tr>
+    	<th>項目3</th>
+    	<td><%= f.text_field :item3 %></td>
+    </tr>
+    <tr>
+    	<th>項目4</th>
+    	<td><%= f.text_field :item4 %></td>
+    </tr>
+    <tr>
+    	<th>項目5</th>
+    	<td><%= f.text_field :item5 %></td>
+    </tr>
+    <!-- <tr>
+    	<th>項目6</th>
+    	<td><%#= f.text_field :item6 %></td>
+    </tr> -->
+  </table>
+  <div class="actions">
+    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div>
+<% end %>

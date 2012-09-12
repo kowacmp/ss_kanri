@@ -1,0 +1,2 @@
+module DPriceChecksHelper
+end

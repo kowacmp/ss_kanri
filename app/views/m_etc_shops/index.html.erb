@@ -1,0 +1,44 @@
+<%= stylesheet_link_tag    "d_price_checks" %> 
+
+     <div id="main-navigation">
+        <ul class="wat-cf">
+            <li>
+            	<%= link_to '価格調査入力',:controller => 'd_price_checks',:action => 'index' %></li> 
+            <li>  
+              <%= link_to '他社価格調査入力',:controller => 'd_price_checks',:action => 'entry_etc_price' %></li> 
+            <li class="active"> 
+              他社マスタ入力
+            </li> 
+        </ul>
+      </div>
+<br />
+<%= link_to '新規登録', new_m_etc_shop_path %>      
+<table class="rounded-corner">
+  <tr>
+    <th>ブランド名</th>
+    <th>会社名</th>
+    <th>種別</th>
+    <th>タンク量（kl）</th>
+    <th>面積（坪）</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @m_etc_shops.each do |m_etc_shop| %>
+  <tr>
+    <td><%= m_etc_shop.brand %></td>
+    <td><%= m_etc_shop.company %></td>
+    <td><%= m_etc_shop.shape %></td>
+    <td><%= m_etc_shop.tank %></td>
+    <td><%= m_etc_shop.area %></td>
+    <td><%= link_to '詳細', m_etc_shop %></td>
+    <td><%= link_to '編集', edit_m_etc_shop_path(m_etc_shop) %></td>
+    <td><%= link_to '削除', m_etc_shop, confirm: '本当に削除しますか？', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+
