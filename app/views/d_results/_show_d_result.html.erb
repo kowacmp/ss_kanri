@@ -169,46 +169,49 @@
   </table>
   <br/>
 
-  <table id='rounded-corner'>
-    <tr>
-      <th>タンク</th>
-      <th>油種</th>
-	  <th>前日在庫</th>
-      <th>受入数量</th>
-      <th>販売数量</th>
-	  <th>計算在庫</th>
-      <th>当日在庫</th>
-      <th>増減</th>
-	  <th>販売累計</th>
-      <th>増減累計</th>
-      <th>増減率</th>
-	  <th>点検</th>			  	  	  
-    </tr>
-  <% @d_tank_compute_reports.each do |d_tank_compute_report| %>
-    <tr>
-      <th>タンク<%= d_tank_compute_report[:tank_no] %></th> 	
-      <th><%= d_tank_compute_report[:oil_name] %></th> 
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:before_stock]) %></td> 
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:receive]) %></td>
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:sale]) %></td>  	
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:compute_stock]) %></td> 
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:after_stock]) %></td> 
+  <table id='rounded-corner' class="tank_compute_view_table" style="min-width: 765px;">
+    <thead>
+      <tr>
+        <th style="min-width: 85px;">タンク</th>
+        <th style="min-width: 80px;">油種</th>
+        <th style="min-width: 35px;">点検</th>
+	    <th style="min-width: 65px;">前日在庫</th>
+        <th style="min-width: 65px;">受入数量</th>
+        <th style="min-width: 65px;">販売数量</th>
+	    <th style="min-width: 65px;">計算在庫</th>
+        <th style="min-width: 65px;">当日在庫</th>
+        <th style="min-width: 45px;">増減</th>
+	    <th style="min-width: 65px;">販売累計</th>
+        <th style="min-width: 65px;">増減累計</th>
+        <th style="min-width: 65px;">増減率</th>			  	  	  
+      </tr>
+    </thead>
+    
+    <tbody>
+    <% @d_tank_compute_reports.each do |d_tank_compute_report| %>
+      <tr>
+        <th>タンク<%= d_tank_compute_report[:tank_no] %></th> 	
+        <th><%= d_tank_compute_report[:oil_name] %></th> 
+        <td align="center" id="display" style="font-size: 30px;">
+      	  <% if d_tank_compute_report[:inspect_flg] == 1 %>○<% end %>
+        </td>       
+        <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:before_stock]) %></td> 
+        <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:receive]) %></td>
+        <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:sale]) %></td>  	
+        <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:compute_stock]) %></td> 
+        <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:after_stock]) %></td> 
       
-      <% if d_tank_compute_report[:decrease].blank? or ((d_tank_compute_report[:decrease]).abs < d_tank_compute_report[:oil_limit].to_i) %>
-        <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:decrease]) %></td> 
-      <% else %>
-        <td class="input_no" id="display" style="background: gold;"><%= num_fmt(d_tank_compute_report[:decrease]) %></td>
-      <% end %>	
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:sale_total]) %></td> 
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:decrease_total]) %></td> 
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:total_percentage], true) %></td> 
-      <td align="center" id="display" style="font-size: 30px;">
-      	<% if d_tank_compute_report[:inspect_flg] == 1 %>
-      	  ○
-      	<% end %>
-      </td>                             
-    </tr>	
-  <% end %>
+        <% if d_tank_compute_report[:decrease].blank? or ((d_tank_compute_report[:decrease]).abs < d_tank_compute_report[:oil_limit].to_i) %>
+          <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:decrease]) %></td> 
+        <% else %>
+          <td class="input_no" id="display" style="background: gold;"><%= num_fmt(d_tank_compute_report[:decrease]) %></td>
+        <% end %>	
+        <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:sale_total]) %></td> 
+        <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:decrease_total]) %></td> 
+        <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:total_percentage], true) %></td>                           
+      </tr>	
+    <% end %>
+    </tbody>
   </table>
   </div>
   
@@ -262,7 +265,13 @@
 </div>
 
 <script>
+$(function () {
+	$('.tank_compute_view_table').tablefix({width: 890, fixCols: 3});
+});	
+</script>
+<script>
   $(function () {
 	$('#tabs').tabs();
   });	
+	
 </script>

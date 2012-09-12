@@ -1,21 +1,21 @@
-<table id='rounded-corner' class="tank_compute_view_table" style="min-width: 800px;">
+<table id='rounded-corner' class="tank_compute_view_table" style="min-width: 765px;">
   <thead>	
-  <tr>
-    <th style="min-width: 80px;">タンク</th>
-    <th>油種</th>
-    <th>点検</th>
-	<th>前日在庫</th>
-    <th>受入数量</th>
-    <th>販売数量</th>
-	<th>計算在庫</th>
-    <th>当日在庫</th>
-    <th>増減</th>
-	<th>販売累計</th>
-    <th>増減累計</th>
-    <th>増減率</th>
-			  	  	  
-  </tr>
+    <tr>
+      <th style="min-width: 85px;">タンク</th>
+      <th style="min-width: 80px;">油種</th>
+      <th style="min-width: 35px;">点検</th>
+	  <th style="min-width: 65px;">前日在庫</th>
+      <th style="min-width: 65px;">受入数量</th>
+      <th style="min-width: 65px;">販売数量</th>
+	  <th style="min-width: 65px;">計算在庫</th>
+      <th style="min-width: 65px;">当日在庫</th>
+      <th style="min-width: 45px;">増減</th>
+	  <th style="min-width: 65px;">販売累計</th>
+      <th style="min-width: 65px;">増減累計</th>
+      <th style="min-width: 65px;">増減率</th>			  	  	  
+    </tr>
   </thead>
+  
   <tbody>
   <% @d_tank_compute_reports.each do |d_tank_compute_report| %>
     <tr>
@@ -42,14 +42,14 @@
       
       <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:sale_total]) %></td> 
       <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:decrease_total]) %></td> 
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:total_percentage], true) %></td> 
-                           
+      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:total_percentage], true) %></td>                         
     </tr>	
   <% end %>
   </tbody>
 </table>
+
 <script>
 $(function () {
-	$('.tank_compute_view_table').tablefix({width: 880, fixCols: 3});
+	$('.tank_compute_view_table').tablefix({width: 890, fixCols: 3});
 });	
 </script>
