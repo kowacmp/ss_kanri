@@ -1,9 +1,8 @@
 SsKanri::Application.routes.draw do
 
-<<<<<<< Updated upstream
   get "d_aim_lists/index"
   get "d_aim_lists/search"
-=======
+
   resources :m_etc_shops
 
   get "d_price_checks/index"
@@ -11,7 +10,6 @@ SsKanri::Application.routes.draw do
   get "d_price_checks/entry_price"
 
   get "d_price_checks/entry_etc_price"
->>>>>>> Stashed changes
 
   resources :d_washpurika_reports
 
