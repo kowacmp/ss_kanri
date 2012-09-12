@@ -1,24 +1,4 @@
-<script type="text/javascript">
-	
-	function numberCheck(obj) { 
-		var v = obj.value;
-		
-		if (v.match(/[^0-9]/g)) {
-			obj.value = v.replace(/[^0-9]/g,'');
-		}
-		
-		<% @m_aims.each_with_index do |m_aim,idx| %>
-			var goukei<%= idx %> = Number(0);
-			<% for i in 1..@month_last_day.to_i do %>
-				goukei<%= idx %> = goukei<%= idx %> + Number(document.getElementById('d_aim_<%= idx %>_aim_value<%= i %>').value);
-			<% end %>
-			
-			document.getElementById('goukei<%= idx %>').innerHTML = goukei<%= idx %>;
-		<% end %>
-		
-	}
-	
-</script>
+
 
 <%= form_for(@d_aim) do |f| %>
   <% if @d_aim.errors.any? %>
@@ -37,13 +17,15 @@
   <%= hidden_field "input",'year',:value=>@year%>
   <%= hidden_field "input",'month',:value=>@month%>
   <%= hidden_field "input",'aim',:value=>@search_aim%>
+  <%= hidden_field "input",'shop_id',:value=>@shop_id%>
+  <%= hidden_field "input",'mode',:value=>@mode%>
   
   <table id='rounded-corner'>
   	  
 	  <tr>
 	 	<th><%= @year + "年" + @month + "月" %></th>
 		<% for i in 1..8 do %>
-	  	  <th><%= i.to_s + "日" %></th>
+	  	  <th style="min-width: 80px"><%= i.to_s + "日" %></th>
 	  	<% end %>
 	  </tr>
 	  
@@ -70,9 +52,9 @@
 	  	  	<td>
 	  	  	<%- if @d_aim -%>
 	  	  		<%= hidden_field "d_aim[#{idx}]", 'id',:value=>@d_aim.id %>
-			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
 			<%- else -%>
-		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
 	  	  	<%- end -%>
 	  	  	</td>
 	  	  <% end %>
@@ -106,9 +88,9 @@
 	  	  <% for i in 9..16 do %>
 	  	  	<td>
 	  	  	<%- if @d_aim -%>
-			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
 			<%- else -%>
-		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
 	  	  	<%- end -%>
 	  	  	</td>
 	  	  <% end %>
@@ -141,9 +123,9 @@
 	  	  <% for i in 17..24 do %>
 	  	  	<td>
 	  	  	<%- if @d_aim -%>
-			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
 			<%- else -%>
-		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
 	  	  	<%- end -%>
 	  	  	</td>
 	  	  <% end %>
@@ -177,15 +159,15 @@
 	  	  <% for i in 25..@month_last_day.to_i do %>
 	  	  	<td>
 	  	  	<%- if @d_aim -%>
-			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})",:class=>"money" %>
 			<%- else -%>
-		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>3, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money2",:onkeyup=>"numberCheck(this)" %>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})",:class=>"money" %>
 	  	  	<%- end -%>
 	  	  	</td>
 	  	  <% end %>
 	  	  
 	  	  <% goukei = 0 %>
-	  	  <td id="goukei<%= idx %>">
+	  	  <td id="goukei<%= idx %>" style="text-align: right">
 	  	  	<% for i in 1..@month_last_day.to_i do %>
 		  	  	<%- if @d_aim -%>
 		  	  		<% goukei = goukei + eval("@d_aim.aim_value#{i}").to_i%>
@@ -193,16 +175,52 @@
 		  	  		<% goukei = goukei + 0 %>
 		  	  	<%- end -%>
 	  	  	<% end %>
-	  	  	<%= goukei %>
+	  	  	<%= number_with_delimiter(goukei) %>
+	  	  	
 	  	  </td>
-	  	  
+	  	  <%- if @d_aim -%>
+		  	<%= hidden_field "d_aim[#{idx}]", "aim_total",:value=>@d_aim.aim_total %>
+		  <%- else -%>
+	  	  	<%= hidden_field "d_aim[#{idx}]", "aim_total",:value=>goukei %>
+  	  	  <%- end -%>
 	  	</tr>
 	  <% end %>
 	  
   </table>
 
-  
-  <div class="actions" align="right">
-    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+  <% if @mode != 'list' %>
+  <div class="actions">
+    <%= f.submit f.object.new_record? ? '登録' : '登録' %>
   </div>
+  <% end %>
 <% end %>
+
+<%= javascript_include_tag "comma" %>
+<script type="text/javascript">
+	
+	function totalAim(idx) { 
+		
+		var goukei = 0;
+		var v = 0;
+		<% for i in 1..@month_last_day.to_i do %>
+			v = document.getElementById('d_aim_' + idx + '_aim_value<%= i %>').value;
+			
+			if (v.match(/[^0-9]/g)) {
+				document.getElementById('d_aim_' + idx + '_aim_value<%= i %>').value = v.replace(/[^0-9]/g,'');
+			}
+			
+			goukei = goukei + Number(document.getElementById('d_aim_' + idx + '_aim_value<%= i %>').value);
+		<% end %>
+		
+		//カンマ編集して表示する
+	 	var num = new String(goukei).replace(/,/g, "");
+	    while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
+		
+		document.getElementById('goukei'+ idx ).innerHTML = num;
+		document.getElementById('d_aim_' + idx + '_aim_total').value = goukei;
+		
+		
+		
+	}
+	
+</script>

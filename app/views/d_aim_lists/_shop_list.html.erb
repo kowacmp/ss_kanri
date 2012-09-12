@@ -1,0 +1,24 @@
+<table  id='rounded-corner'>
+	<tr>
+		<th>店舗</th>
+		<th>最終入力日</th>
+		<th>入力者</th>
+		<th>店舗種別</th>
+		<th>編集</th>
+	</tr>
+  <% @shops.each do |shop| %>
+    <tr>
+      <td><%= shop.shop_cd.to_s + '　' + shop.shop_name %></td>
+      <td><%= shop.last_update %></td>
+      <td><%= shop.last_user_name %></td>
+      <td><%= if shop.shop_kbn == 0 then "直営" else "油外" end %></td>
+      <td><%= link_to('編集' ,{:controller => 'd_aims',:action => 'index',
+            :input_year => @year,:input_month => @month,
+            :input_shop_id => shop.shop_id,:input_aim => 0,:mode => 'list'}) %></td>
+    </tr>
+  <% end %>
+  
+  <%#= hidden_field_tag "input_ymd",@input_ymd %>
+  <%= hidden_field_tag "shop_kbn",@shop_kbn %>
+</table>
+

@@ -1,0 +1,39 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  m_shop_id: 1
+  brand: MyString
+  company: MyString
+  shape: MyString
+  tank: 1
+  area: 1
+  access_group: 1
+  access: MyString
+  place: MyString
+  item1: MyString
+  item2: MyString
+  item3: MyString
+  item4: MyString
+  item5: MyString
+  item6: MyString
+  created_user_id: 1
+  updated_user_id: 1
+
+two:
+  m_shop_id: 1
+  brand: MyString
+  company: MyString
+  shape: MyString
+  tank: 1
+  area: 1
+  access_group: 1
+  access: MyString
+  place: MyString
+  item1: MyString
+  item2: MyString
+  item3: MyString
+  item4: MyString
+  item5: MyString
+  item6: MyString
+  created_user_id: 1
+  updated_user_id: 1

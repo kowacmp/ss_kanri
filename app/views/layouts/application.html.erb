@@ -3,18 +3,21 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Cache-Control" content="no-cache">
 
   <% @establish = Establish.find(:first)%>
   <title><%= @establish.system_name %></title>
   <%= stylesheet_link_tag    "application" %> 
-  <%= stylesheet_link_tag    params[:controller] %> <!-- 呼出元のコントローラのCSSを読込 -->
+  <%= stylesheet_link_tag    params[:controller] %> <%# 呼出元のコントローラのCSSを読込 %>
   <%= javascript_include_tag "application" %>
-  <%= javascript_include_tag params[:controller] %> <!-- 呼出元のコンtノローラのJSを読込 -->
-  <%= javascript_include_tag "jquery.mini" %>
+  <%= javascript_include_tag params[:controller] %> <%# 呼出元のコントローラのJSを読込 %>
+  <%#= javascript_include_tag "jquery.mini" %>
   <%= stylesheet_link_tag    "table" %> 
   <%= stylesheet_link_tag    "icon" %>   
   <%= javascript_include_tag "modal" %>
-  <%= javascript_include_tag "jquery" %>
+  <%#= javascript_include_tag "jquery" %>
+  <%#= javascript_include_tag "rails" %>
 
   <!--カレンダー用↓ --> 
   <%= stylesheet_link_tag 'jquery-ui-1.8.22.custom' %>    

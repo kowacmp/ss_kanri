@@ -10,7 +10,7 @@
 	<div class="title_alias">店舗種別</div>
 	<div class="input_alias">
 		<%= select :head, :input_shop_kbn, 
-        MCode.find(:all, :conditions=>["kbn='shop_kbn'"], :order=>"code").collect{|i| [ "#{i.code_name}", i.code ]}, {:include_blank => true} %>
+        MCode.find(:all, :conditions=>["kbn='shop_kbn' and code <> '9'"], :order=>"code").collect{|i| [ "#{i.code_name}", i.code ]}, {:include_blank => true} %>
     </div>
 </div>
 

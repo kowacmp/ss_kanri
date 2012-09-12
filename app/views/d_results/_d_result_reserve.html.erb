@@ -8,15 +8,15 @@
 	  <th>日計</th>
 	  <th>累計</th>
 	  <td rowspan="6">
-	  	<%= link_to '入力', {:controller => 'd_results', :action => 'reserve_index', :result_date => @result_date}, :class => "modal" %>
+	  	<%= link_to '入力', {:controller => 'd_results', :action => 'reserve_index', :result_date => @result_date, :m_shop_id => @m_shop.id}, :id => "add_icon", :class => "modal" %>
 	  </td>	  	  	  
 	</tr>
   <% unless @syukei_reserves.blank?%>	
   <% @syukei_reserves.each do |syukei_reserve| %>
     <tr>
-      <th class="input_no"><%= syukei_reserve[:month] %></th> 	
-      <td class="input_no"><%= syukei_reserve[:nikkei] %></td> 
-      <td class="input_no"><%= syukei_reserve[:ruikei] %></td>           
+      <th class="input_no" id="display"><%= syukei_reserve[:month] %></th> 	
+      <td class="input_no" id="display"><%= syukei_reserve[:nikkei] %></td> 
+      <td class="input_no" id="display"><%= syukei_reserve[:ruikei] %></td>           
     </tr>
   <% end %>	
   <% end %>

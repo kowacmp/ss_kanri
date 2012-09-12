@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 include DTankComputeReportDetailsHelper
-
+include DResultsHelper
 class DTankComputeReportDetailsController < ApplicationController
   def index
     search
@@ -55,6 +55,13 @@ class DTankComputeReportDetailsController < ApplicationController
   end
   
   def print
+    @mode = params[:mode]
+    if params[:mode] == 'manager'
+      @shop_id = params[:shop_id]
+    else
+      @shop_id = current_user.m_shop_id
+    end   
+    
       sum_receive = 0
       sum_compute_stock = 0
       sum_decrease = 0
@@ -86,43 +93,43 @@ class DTankComputeReportDetailsController < ApplicationController
         page.item(:year).value(params[:from_ymd][0,4])
         page.item(:month).value(params[:from_ymd][4,2].to_i)
         unless params[:oil_id] == nil or params[:oil_id] == ""
-          tanks = MTank.find(:all,:conditions => ['m_oil_id = ? and m_shop_id = ?',params[:oil_id],current_user.m_shop_id],:order => 'tank_no')
+          tanks = MTank.find(:all,:conditions => ['m_oil_id = ? and m_shop_id = ?',params[:oil_id],@shop_id],:order => 'tank_no')
           tanks.each do |tank|
             tank_no << tank.tank_no
             tank_volume = tank_volume + tank.volume
             page.item(:tank_no).value(tank_no.join(","))
           end
           else
-            tank = MTank.find(params[:tank_id])
-            tank_no = tank.tank_no
-            tank_volume = tank.volume
+            tank_no = get_tank_ids_tank(params[:tank_id],@shop_id,1)
+            tank_volume = get_tank_ids_tank(params[:tank_id],@shop_id,2)
             page.item(:tank_no).value(tank_no)
           end
         page.item(:tank_volume).value(tank_volume)
         page.item(:oil_name).value(MOil.find(@oil_id).oil_name) unless params[:oil_id] == nil or params[:oil_id] == ""
-        page.item(:oil_name).value(MOil.find(tank.m_oil_id).oil_name) unless params[:tank_id] == nil or params[:tank_id] == ""
-        
+        unless params[:tank_id] == nil or params[:tank_id] == ""
+          tank = MTank.find(params[:tank_id]) 
+          page.item(:oil_name).value(MOil.find(tank.m_oil_id).oil_name)
+        end
         page.item(:user_name).value(current_user.user_name)
       end
 
 
       @d_results = DResult.find(:all,
-      :conditions => ['result_date between ? and ? and m_shop_id = ?',@from_ymd,@to_ymd,current_user.m_shop_id])
+      :conditions => ['result_date between ? and ? and m_shop_id = ?',@from_ymd,@to_ymd,@shop_id])
 
       get_ymd = @from_ymd
       start_ymd = (@from_ymd[0,4].to_s + '/' + @from_ymd[4,2] + '/' + @from_ymd[6,2]).to_time
       start_day = start_ymd.end_of_month.day
       
     start_day.times do |i|
-      result = DResult.find(:all,:conditions => ['result_date = ? and m_shop_id = ?',get_ymd,current_user.m_shop_id]).first
+      result = DResult.find(:all,:conditions => ['result_date = ? and m_shop_id = ?',get_ymd,@shop_id]).first
       get_ymd = (get_ymd.to_i + 1).to_s
       unless params[:oil_id] == nil or params[:oil_id] == "" # 油種の場合
-        tank_compute = get_select_oil(result.id,@oil_id,current_user.m_shop_id) unless result == nil
+        tank_compute = get_select_oil(result.id,@oil_id,@shop_id) unless result == nil
         #p "***** tank_compute_oil = #{tank_compute}"
       end
       unless params[:tank_id] == nil or params[:tank_id] == "" #タンクの場合
-       tank_compute = DTankComputeReport.find(:all,:conditions => ['d_result_id = ? and m_tank_id = ?',
-         result.id,@tank_id]).first unless result == nil 
+       tank_compute = get_select_tank(result.id,@tank_id,@shop_id) unless result == nil 
          #p "***** tank_compute_tank = #{tank_compute}"
       end
       

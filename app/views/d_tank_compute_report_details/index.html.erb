@@ -39,7 +39,11 @@
 jQuery(function() {
     jQuery('input[name="rbtn"]').change(function(){
         var data = jQuery(this).val();
-        $.get("<%=url_for({:action => 'change_radio'}) %>?rbtn=" + data + "&shop_id=" + <%= @shop_id %> + "&mode=" + <%= @mode %> );
+        <% if @mode = 'manager' %>
+          $.get("<%=url_for({:action => 'change_radio'}) %>?rbtn=" + data + "&shop_id=" + <%= @shop_id %> );
+        <% else %>
+          $.get("<%=url_for({:action => 'change_radio'}) %>?rbtn=" + data + "&shop_id=" + <%= @shop_id %> );
+        <% end %>
     });
 });
 </script>

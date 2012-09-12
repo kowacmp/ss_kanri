@@ -179,6 +179,8 @@
       if (target) { form.attr('target', target); }
 
       form.hide().append(metadata_input).appendTo('body');
+
+ 	
       form.submit();
     },
 

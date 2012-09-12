@@ -1,0 +1,130 @@
+
+<%= form_tag({:action => 'print'}) do %>
+<table id="report_view_table" class="rounded-corner">
+  <tr>
+    <th scope="col">&nbsp;</th>
+    <% @m_oiletcs.each do |m_oiletc| %>
+    <th colspan="2" scope="col"><%= m_oiletc.oiletc_ryaku %></th>
+    <% end %>
+    <th colspan="2" scope="col">現金会員</th>
+    <th colspan="2" scope="col">車検書換</th>
+    <th colspan="5" scope="col">車検予約</th>
+  </tr>
+  <tr>
+    <th rowspan="2" scope="row"  style="min-width: 100px;">店舗</th>
+    <% @m_aims.each do |m_aim| %>
+    <th rowspan="2"   style="min-width: 40px;">目標</th>
+    <th style="min-width: 40px;">日計</th>
+    <% end %>
+    <th rowspan="2" style="min-width: 40px;">目標</th>
+    <th style="min-width: 40px;">日計</th>
+    <th rowspan="2" style="min-width: 40px;">目標</th>
+    <th style="min-width: 40px;">日計</th>
+    <th colspan="2">
+    	<% tmp_ymd1 = @input_ymd.to_time %>
+    	<%= tmp_ymd1.month %>月
+    </th>
+    <th>
+    	<% tmp_ymd2 = tmp_ymd1.next_month %>
+    	<%= tmp_ymd2.month %>月
+    </th>
+    <th>
+    	<% tmp_ymd3 = tmp_ymd2.next_month %>
+    	<%= tmp_ymd3.month %>月
+    </th>
+    <th>
+    	<% tmp_ymd4 = tmp_ymd3.next_month %>
+    	<%= tmp_ymd4.month %>月
+    </th>
+  </tr>
+  <tr>
+  	<% @m_aims.each do |m_aim| %>
+    <th>累計</th>
+    <% end %>
+    <th>累計</th>
+    <th>累計</th>
+    <th style="min-width: 40px;">日計</th>
+    <th style="min-width: 40px;">累計</th>
+    <th style="min-width: 40px;">累計</th>
+    <th style="min-width: 40px;">累計</th>
+    <th style="min-width: 40px;">累計</th>
+  </tr>
+
+  <% @shops.each do |shop|%>
+  <tr>
+    <th rowspan="2" scope="row"><%= shop.shop_cd %><br /><%= shop.shop_ryaku %></th>
+    <% @m_aims.each do |m_aim| %>
+    <td rowspan="2"><!-- 目標 -->
+    	<%= get_d_aim_total(@ym,shop.id,m_aim.id) %>
+    </td>
+    <td><!-- 日計 -->
+    	<% d_result = get_result(@input_ymd.delete("/"),shop.id) %>
+    	<% unless d_result == nil %>
+    	  <%= DResultCollect.where(:d_result_id => d_result.id,:m_oiletc_id => m_aim.id).first.get_num %>
+        <% else %>
+          0
+        <% end %>
+    </td>
+    <% end %>
+    <td rowspan="2"><!-- 現金会員 目標-->
+    	<%= get_d_aim_total(@ym,shop.id,9) %>
+    </td>
+    <td><!-- 現金会員 日計-->
+    	<% d_result = get_result(@input_ymd.delete("/"),shop.id) %>
+    	<%= get_d_result_oiletc_daily(d_result,9) %>
+    </td>
+    <td rowspan="2"><!-- 車検書換 目標-->
+    	<%= get_d_aim_total(@ym,shop.id,10) %>
+    </td>
+    <td><!-- 車検書換 日計-->
+    	<%= get_d_result_oiletc_daily(d_result,10) %>
+    </td>
+    <td rowspan="2"><%= get_count_d_result_reserve_day(tmp_ymd1.strftime("%Y%m%d"),shop.id) %></td>
+    <td rowspan="2">
+      <% from_ymd = get_from_and_to_ymd(tmp_ymd1,1) %>
+      <% to_ymd = get_from_and_to_ymd(tmp_ymd1,2) %>
+      <%= get_count_d_result_reserve_month(from_ymd,to_ymd,shop.id) %>
+    </td>
+    <td rowspan="2">
+      <% from_ymd = get_from_and_to_ymd(tmp_ymd2,1) %>
+      <% to_ymd = get_from_and_to_ymd(tmp_ymd2,2) %>
+      <%= get_count_d_result_reserve_month(from_ymd,to_ymd,shop.id) %>    
+    </td>
+    <td rowspan="2">
+      <% from_ymd = get_from_and_to_ymd(tmp_ymd3,1) %>
+      <% to_ymd = get_from_and_to_ymd(tmp_ymd3,2) %>
+      <%= get_count_d_result_reserve_month(from_ymd,to_ymd,shop.id) %>
+    </td>
+    <td rowspan="2">
+      <% from_ymd = get_from_and_to_ymd(tmp_ymd4,1) %>
+      <% to_ymd = get_from_and_to_ymd(tmp_ymd4,2) %>
+      <%= get_count_d_result_reserve_month(from_ymd,to_ymd,shop.id) %>    </td>
+  </tr>
+  <tr>
+    <% @m_aims.each do |m_aim| %>
+    <td><!-- 累計 -->
+    	<% d_results = get_results(@start_ymd,@end_ymd,shop.id) %>
+    	<%= get_d_result_collect(d_results,m_aim.id) unless d_results == nil %>
+    </td>
+    <% end %>
+    <td><!-- 現金会員 累計-->
+    	<% d_results = get_results(@start_ymd,@end_ymd,shop.id) %>
+    	<%= get_d_result_oiletc(d_results,9) unless d_results == nil %>
+    </td>
+    <td><!-- 車検書換 累計-->
+    	<%= get_d_result_oiletc(d_results,10) unless d_results == nil %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+<%= hidden_field_tag 'input_ymd', @input_ymd %>
+<%= submit_tag '印刷',format: 'pdf' %>
+<% end %>
+
+
+
+<script>
+	$(function () {
+		$('#report_view_table').tablefix({width:900,height: 600,fixRows:3, fixCols: 1});
+	});
+</script>

@@ -1,0 +1,32 @@
+<h1>実績表</h1>
+<%= form_tag({:action => 'search'},:remote => true ) do  %>
+<table id='rounded-corner'>
+	<tr>
+      <th>対象日</th>
+        <td>
+	        <%= text_field_tag  "input_ymd" , @input_ymd, :readonly => true ,:class => 'datepicker',:size => 10%>
+	    </td>
+	  <th>実績表種別</th>
+	  
+	    <td>
+	    	<% if @shop_info.shop_kbn == 0 %>
+	    	<%= select_tag "select_kbn",options_for_select({'SSセルフ実績表1' => 2,'SSセルフ実績表2' => 3}) %>
+	    	<% elsif @shop_info.shop_kbn == 1 %>
+	    	<%= select_tag "select_kbn",options_for_select({'SS実績表1' => 0,'SS実績表2' => 1}) %>
+	    	<% else %>
+	    	<%= select_tag "select_kbn",options_for_select({'SS実績表1' => 0,'SS実績表2' => 1,'SSセルフ実績表1' => 2,'SSセルフ実績表2' => 3}) %>
+	    	<% end %>
+	    </td>
+	    <td><%= submit_tag '表示'%></td>
+    </tr>
+</table>
+<% end %>
+<hr>
+
+<div id="result">
+	  <% if @shop_info.shop_kbn == 0 %>
+	  <%= render :partial => 'result_self_1'%>
+	  <% else %>
+	  <%= render :partial => 'result_1'%>
+	  <% end %>
+</div>

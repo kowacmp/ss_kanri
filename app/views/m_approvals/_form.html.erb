@@ -1,4 +1,3 @@
-<%= javascript_include_tag "m_approvals" %>
 
 <%= form_for(@m_approval) do |f| %>
   <% if @m_approval.errors.any? %>
@@ -17,7 +16,7 @@
   	<tr>
   	  <th><%= f.label 'メニュー名' %></th>
   	  <td>
-  	  	<%= f.select(:menu_id, Menu.find(:all, :order => 'id').map do |u|
+  	  	<%= f.select(:menu_id, Menu.find(:all,:conditions => "messege_send = 1", :order => 'id').map do |u|
       		[u.display_name,u.id]
         end, {:include_blank => "選択して下さい"}) %>
   	  </td>  	  
@@ -25,62 +24,42 @@
   	<tr>
   	  <th><%= f.label '承認者1' %></th>
   	  <td>
-  	  	<%= f.select(:approval_id1, User.find(:all, :conditions => "deleted_flg = 0", :order => 'id').map do |u|
+  	  	<%= f.select(:approval_id1, User.find(:all, :conditions => "user_class = 3 and deleted_flg = 0", :order => 'id').map do |u|
       		[u.user_name,u.id]
         end, {:include_blank => "選択して下さい"}) %>
 	  </td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '承認者名1' %></th>
-  	  <td><%= f.text_field :approval_name1,:maxlength=>10 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '承認者2' %></th>
   	  <td>
-  	  	<%= f.select(:approval_id2, User.find(:all, :conditions => "deleted_flg = 0", :order => 'id').map do |u|
+  	  	<%= f.select(:approval_id2, User.find(:all, :conditions => "user_class = 3 and deleted_flg = 0", :order => 'id').map do |u|
       		[u.user_name,u.id]
         end, {:include_blank => "選択して下さい"}) %>
 	  </td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '承認者名2' %></th>
-  	  <td><%= f.text_field :approval_name2,:maxlength=>10 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '承認者3' %></th>
   	  <td>
-  	  	<%= f.select(:approval_id3, User.find(:all, :conditions => "deleted_flg = 0", :order => 'id').map do |u|
+  	  	<%= f.select(:approval_id3, User.find(:all, :conditions => "user_class = 3 and deleted_flg = 0", :order => 'id').map do |u|
       		[u.user_name,u.id]
         end, {:include_blank => "選択して下さい"}) %>
 	  </td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '承認者名3' %></th>
-  	  <td><%= f.text_field :approval_name3,:maxlength=>10 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '承認者4' %></th>
   	  <td>
-  	  	<%= f.select(:approval_id4, User.find(:all, :conditions => "deleted_flg = 0", :order => 'id').map do |u|
+  	  	<%= f.select(:approval_id4, User.find(:all, :conditions => "user_class = 3 and deleted_flg = 0", :order => 'id').map do |u|
       		[u.user_name,u.id]
         end, {:include_blank => "選択して下さい"}) %>
 	  </td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '承認者名4' %></th>
-  	  <td><%= f.text_field :approval_name4,:maxlength=>10 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '承認者5' %></th>
   	  <td>
-  	  	<%= f.select(:approval_id5, User.find(:all, :conditions => "deleted_flg = 0", :order => 'id').map do |u|
+  	  	<%= f.select(:approval_id5, User.find(:all, :conditions => "user_class = 3 and deleted_flg = 0", :order => 'id').map do |u|
       		[u.user_name,u.id]
         end, {:include_blank => "選択して下さい"}) %>
 	  </td>  	  
-  	</tr>
-  	<tr>
-  	  <th><%= f.label '承認者名5' %></th>
-  	  <td><%= f.text_field :approval_name5,:maxlength=>10 %></td>  	  
   	</tr>
   </table>
   <div class="actions">

@@ -17,7 +17,7 @@ module DSaleEtcsHelper
   end
   
   def get_m_etcs
-   MEtc.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'etc_cd')    
+   MEtc.find(:all, :conditions => ["(deleted_flg is null or deleted_flg <> ?) and kansa_flg = 0",1], :order => 'etc_cd')    
   end
   
   def get_m_etc(etc_cd)

@@ -11,6 +11,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+ActiveRecord::Schema.define(:version => 20120912023124) do
+
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
     t.integer  "menu_id",        :limit => 2, :null => false
@@ -203,15 +205,16 @@
   end
 
   create_table "d_audit_wash_details", :force => true do |t|
-    t.integer  "d_audit_wash_id", :null => false
-    t.integer  "m_wash_id",       :null => false
-    t.integer  "wash_no",         :null => false
+    t.integer  "d_audit_wash_id",                :null => false
+    t.integer  "m_wash_id",                      :null => false
+    t.integer  "wash_no",                        :null => false
     t.integer  "meter"
     t.integer  "error_money"
-    t.integer  "created_user_id", :null => false
-    t.datetime "created_at",      :null => false
-    t.integer  "updated_user_id", :null => false
-    t.datetime "updated_at",      :null => false
+    t.integer  "created_user_id",                :null => false
+    t.datetime "created_at",                     :null => false
+    t.integer  "updated_user_id",                :null => false
+    t.datetime "updated_at",                     :null => false
+    t.integer  "uriage",          :default => 0
   end
 
   create_table "d_audit_washes", :force => true do |t|
@@ -244,10 +247,27 @@
 
   create_table "d_comments", :force => true do |t|
     t.datetime "send_day",                      :null => false
-    t.integer  "menu_id",                       :null => false
+    t.string   "title",           :limit => 20, :null => false
     t.string   "contents",        :limit => 40, :null => false
     t.integer  "receive_id",                    :null => false
     t.integer  "created_user_id",               :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "d_duties", :force => true do |t|
+    t.string   "duty_nengetu"
+    t.integer  "user_id"
+    t.integer  "m_shop_id"
+    t.integer  "day"
+    t.decimal  "day_work_time",    :precision => 2, :scale => 1, :default => 0.0
+    t.decimal  "night_work_time",  :precision => 3, :scale => 1, :default => 0.0
+    t.decimal  "all_work_time",    :precision => 3, :scale => 1, :default => 0.0
+    t.integer  "day_work_money"
+    t.integer  "night_work_money",                               :default => 0
+    t.integer  "all_money",                                      :default => 0
+    t.integer  "created_user_id"
+    t.integer  "updated_user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -256,7 +276,7 @@
     t.string   "start_day",       :limit => 8,  :null => false
     t.string   "end_day",         :limit => 8,  :null => false
     t.string   "action_day",      :limit => 8,  :null => false
-    t.integer  "menu_id"
+    t.string   "title",           :limit => 20
     t.string   "contents",        :limit => 40, :null => false
     t.integer  "created_user_id",               :null => false
     t.datetime "created_at"
@@ -359,7 +379,7 @@
     t.integer  "sp"
     t.integer  "sc"
     t.integer  "taiyaw"
-    t.integer  "coating"
+    t.integer  "sp_plus"
     t.decimal  "atf",           :precision => 11, :scale => 2
     t.integer  "kousen"
     t.integer  "bt"
@@ -391,7 +411,7 @@
     t.integer  "sensya"
     t.integer  "sensya_purika"
     t.integer  "muton"
-    t.integer  "coating"
+    t.integer  "sp_plus"
     t.integer  "taiyaw"
     t.integer  "sp"
     t.integer  "sc"
@@ -438,6 +458,7 @@
     t.integer  "updated_user_id",                               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "uriage"
   end
 
   create_table "d_sale_etcs", :force => true do |t|
@@ -451,11 +472,11 @@
   end
 
   create_table "d_sale_items", :force => true do |t|
-    t.integer  "d_sale_id",                     :null => false
-    t.integer  "item_class",      :limit => 2,  :null => false
+    t.integer  "d_sale_id",                                    :null => false
+    t.integer  "item_class",      :limit => 2,                 :null => false
     t.integer  "m_item_id"
     t.string   "item_name",       :limit => 30
-    t.integer  "item_money"
+    t.integer  "item_money",                    :default => 0
     t.integer  "m_shop_id"
     t.integer  "created_user_id"
     t.integer  "updated_user_id"
@@ -463,44 +484,64 @@
     t.datetime "updated_at"
   end
 
+  create_table "d_sale_reports", :force => true do |t|
+    t.string   "sale_date",     :limit => 6, :null => false
+    t.integer  "m_shop_id",                  :null => false
+    t.integer  "kakutei_flg",   :limit => 2, :null => false
+    t.integer  "confirm_id"
+    t.date     "confirm_date"
+    t.integer  "approve_id1"
+    t.date     "approve_date1"
+    t.integer  "approve_id2"
+    t.date     "approve_date2"
+    t.integer  "approve_id3"
+    t.date     "approve_date3"
+    t.integer  "approve_id4"
+    t.date     "approve_date4"
+    t.integer  "approve_id5"
+    t.date     "approve_date5"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "d_sales", :force => true do |t|
-    t.string   "sale_date",       :limit => 8, :null => false
-    t.integer  "m_shop_id",                    :null => false
-    t.integer  "kakutei_flg",     :limit => 2, :null => false
-    t.integer  "sale_money1"
-    t.integer  "sale_money2"
-    t.integer  "sale_money3"
-    t.integer  "sale_purika"
-    t.integer  "sale_today_out"
-    t.integer  "sale_change1"
-    t.integer  "sale_change2"
-    t.integer  "sale_change3"
-    t.integer  "sale_ass"
-    t.integer  "recive_money"
-    t.integer  "pay_money"
-    t.integer  "sale_cashbox"
-    t.integer  "sale_changebox"
+    t.string   "sale_date",       :limit => 8,                :null => false
+    t.integer  "m_shop_id",                                   :null => false
+    t.integer  "kakutei_flg",     :limit => 2,                :null => false
+    t.integer  "sale_money1",                  :default => 0
+    t.integer  "sale_money2",                  :default => 0
+    t.integer  "sale_money3",                  :default => 0
+    t.integer  "sale_purika",                  :default => 0
+    t.integer  "sale_today_out",               :default => 0
+    t.integer  "sale_change1",                 :default => 0
+    t.integer  "sale_change2",                 :default => 0
+    t.integer  "sale_change3",                 :default => 0
+    t.integer  "sale_ass",                     :default => 0
+    t.integer  "recive_money",                 :default => 0
+    t.integer  "pay_money",                    :default => 0
+    t.integer  "sale_cashbox",                 :default => 0
+    t.integer  "sale_changebox",               :default => 0
     t.integer  "created_user_id"
     t.integer  "updated_user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sale_am_out"
-    t.integer  "sale_pm_out"
-    t.integer  "exist_money"
-    t.integer  "over_short"
+    t.integer  "sale_am_out",                  :default => 0
+    t.integer  "sale_pm_out",                  :default => 0
+    t.integer  "exist_money",                  :default => 0
+    t.integer  "over_short",                   :default => 0
   end
 
   create_table "d_tank_compute_reports", :force => true do |t|
     t.integer  "d_result_id",                                                 :null => false
     t.integer  "m_tank_id",                                                   :null => false
     t.integer  "inspect_flg",      :limit => 2,                               :null => false
-    t.integer  "before_stock",     :limit => 8
-    t.integer  "receive",          :limit => 8
-    t.integer  "sale",             :limit => 8
-    t.integer  "compute_stock",    :limit => 8
-    t.integer  "after_stock",      :limit => 8
-    t.integer  "sale_total",       :limit => 8
-    t.integer  "decrease_total",   :limit => 8
+    t.integer  "before_stock"
+    t.integer  "receive"
+    t.integer  "sale"
+    t.integer  "compute_stock"
+    t.integer  "after_stock"
+    t.integer  "sale_total"
+    t.integer  "decrease_total"
     t.decimal  "total_percentage",              :precision => 6, :scale => 3
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -537,6 +578,54 @@
     t.datetime "updated_at"
   end
 
+  create_table "d_washpurika_reports", :force => true do |t|
+    t.string   "date",            :limit => 6,                :null => false
+    t.integer  "m_shop_id",                                   :null => false
+    t.integer  "total_rank",                                  :null => false
+    t.integer  "league",                                      :null => false
+    t.integer  "before_rank",                                 :null => false
+    t.integer  "total_point",                  :default => 0
+    t.integer  "result1",                      :default => 0
+    t.integer  "result2",                      :default => 0
+    t.integer  "result3",                      :default => 0
+    t.integer  "result4",                      :default => 0
+    t.integer  "result5",                      :default => 0
+    t.integer  "result6",                      :default => 0
+    t.integer  "result7",                      :default => 0
+    t.integer  "result8",                      :default => 0
+    t.integer  "result9",                      :default => 0
+    t.integer  "result10",                     :default => 0
+    t.integer  "result11",                     :default => 0
+    t.integer  "result12",                     :default => 0
+    t.integer  "result13",                     :default => 0
+    t.integer  "result14",                     :default => 0
+    t.integer  "result15",                     :default => 0
+    t.integer  "result16",                     :default => 0
+    t.integer  "result17",                     :default => 0
+    t.integer  "result18",                     :default => 0
+    t.integer  "result19",                     :default => 0
+    t.integer  "result20",                     :default => 0
+    t.integer  "result21",                     :default => 0
+    t.integer  "result22",                     :default => 0
+    t.integer  "result23",                     :default => 0
+    t.integer  "result24",                     :default => 0
+    t.integer  "result25",                     :default => 0
+    t.integer  "result26",                     :default => 0
+    t.integer  "result27",                     :default => 0
+    t.integer  "result28",                     :default => 0
+    t.integer  "result29",                     :default => 0
+    t.integer  "result30",                     :default => 0
+    t.integer  "result31",                     :default => 0
+    t.integer  "pace",                         :default => 0
+    t.integer  "wash_sale",                    :default => 0
+    t.integer  "same_day_pace",                :default => 0
+    t.integer  "same_day_result",              :default => 0
+    t.integer  "created_user_id"
+    t.integer  "updated_user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "d_washsale_detail_reports", :force => true do |t|
     t.integer  "d_washsale_report_id",              :default => 0, :null => false
     t.integer  "m_wash_id",                         :default => 0, :null => false
@@ -560,6 +649,7 @@
     t.integer  "updated_user_id",                               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "price"
   end
 
   create_table "d_washsale_reports", :force => true do |t|
@@ -598,17 +688,12 @@
   end
 
   create_table "m_approvals", :force => true do |t|
-    t.integer  "menu_id",                      :null => false
+    t.integer  "menu_id",      :null => false
     t.integer  "approval_id1"
-    t.string   "approval_name1", :limit => 10
     t.integer  "approval_id2"
-    t.string   "approval_name2", :limit => 10
     t.integer  "approval_id3"
-    t.string   "approval_name3", :limit => 10
     t.integer  "approval_id4"
-    t.string   "approval_name4", :limit => 10
     t.integer  "approval_id5"
-    t.string   "approval_name5", :limit => 10
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -650,6 +735,28 @@
     t.datetime "updated_at"
   end
 
+  create_table "m_etc_shops", :force => true do |t|
+    t.integer  "m_shop_id",                                    :null => false
+    t.string   "brand",           :limit => 10
+    t.string   "company",         :limit => 20
+    t.string   "shape",           :limit => 10
+    t.integer  "tank",            :limit => 8,  :default => 0
+    t.integer  "area",            :limit => 8,  :default => 0
+    t.integer  "access_group",    :limit => 2,  :default => 0
+    t.string   "access",          :limit => 50
+    t.string   "place",           :limit => 50
+    t.string   "item1",           :limit => 20
+    t.string   "item2",           :limit => 20
+    t.string   "item3",           :limit => 20
+    t.string   "item4",           :limit => 20
+    t.string   "item5",           :limit => 20
+    t.string   "item6",           :limit => 20
+    t.integer  "created_user_id",               :default => 0
+    t.integer  "updated_user_id",               :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "m_etcs", :force => true do |t|
     t.integer  "etc_cd",      :limit => 2,                 :null => false
     t.string   "etc_name",    :limit => 20,                :null => false
@@ -661,8 +768,10 @@
     t.datetime "updated_at"
     t.integer  "max_num",     :limit => 2
     t.integer  "kansa_flg",   :limit => 2
-    t.integer  "tax_flg",     :limit => 2
-    t.integer  "etc_tani",    :limit => 2
+    t.integer  "tax_flg",     :limit => 2,                 :null => false
+    t.integer  "etc_tani",    :limit => 2,                 :null => false
+    t.integer  "etc_class",   :limit => 2
+    t.integer  "price"
   end
 
   create_table "m_etcsales", :force => true do |t|
@@ -686,17 +795,39 @@
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "fix_item_ryaku", :limit => 10
   end
 
   create_table "m_fix_moneys", :force => true do |t|
     t.integer  "m_shop_id",                                      :null => false
     t.integer  "start_month",                                    :null => false
     t.integer  "end_month",                                      :null => false
-    t.integer  "cash_box"
-    t.integer  "pos_register"
-    t.integer  "part_time"
-    t.integer  "wash_money"
-    t.integer  "money_change"
+    t.integer  "m_fix_item_id1"
+    t.integer  "fix_money1"
+    t.integer  "m_fix_item_id2"
+    t.integer  "fix_money2"
+    t.integer  "m_fix_item_id3"
+    t.integer  "fix_money3"
+    t.integer  "m_fix_item_id4"
+    t.integer  "fix_money4"
+    t.integer  "m_fix_item_id5"
+    t.integer  "fix_money5"
+    t.integer  "m_fix_item_id6"
+    t.integer  "fix_money6"
+    t.integer  "m_fix_item_id7"
+    t.integer  "fix_money7"
+    t.integer  "m_fix_item_id8"
+    t.integer  "fix_money8"
+    t.integer  "m_fix_item_id9"
+    t.integer  "fix_money9"
+    t.integer  "m_fix_item_id10"
+    t.integer  "fix_money10"
+    t.integer  "m_fix_item_id11"
+    t.integer  "fix_money11"
+    t.integer  "m_fix_item_id12"
+    t.integer  "fix_money12"
+    t.integer  "m_fix_item_id13"
+    t.integer  "fix_money13"
     t.integer  "total_cash_box"
     t.integer  "total_change_money"
     t.integer  "total_money"
@@ -767,14 +898,14 @@
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "oiletc_trade", :limit => 2
-    t.integer  "tax_flg",      :limit => 2
-    t.integer  "oiletc_tani",  :limit => 2
+    t.integer  "tax_flg",      :limit => 2,                 :null => false
+    t.integer  "oiletc_tani",  :limit => 2,                 :null => false
   end
 
   create_table "m_oils", :force => true do |t|
-    t.integer  "oil_cd"
-    t.string   "oil_name"
-    t.integer  "deleted_flg"
+    t.integer  "oil_cd",      :limit => 2,                 :null => false
+    t.string   "oil_name",    :limit => 40,                :null => false
+    t.integer  "deleted_flg", :limit => 2,  :default => 0
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -790,80 +921,78 @@
   end
 
   create_table "m_shops", :force => true do |t|
-    t.integer  "shop_cd"
-    t.string   "shop_name"
-    t.string   "shop_kana"
-    t.string   "shop_ryaku"
-    t.string   "shop_zip_cd"
+    t.integer  "shop_cd",          :limit => 8,                 :null => false
+    t.string   "shop_name",        :limit => 50,                :null => false
+    t.string   "shop_kana",        :limit => 50,                :null => false
+    t.string   "shop_ryaku",       :limit => 20,                :null => false
+    t.string   "shop_zip_cd",      :limit => 8
     t.string   "shop_adress"
-    t.string   "shop_tel"
-    t.string   "shop_fax"
+    t.string   "shop_tel",         :limit => 12
+    t.string   "shop_fax",         :limit => 12
     t.string   "shop_mail_adress"
-    t.integer  "shop_kbn"
-    t.integer  "m_shop_group_id"
-    t.integer  "m_oil_id1"
-    t.integer  "tank1_all"
-    t.integer  "m_oil_id2"
-    t.integer  "tank2_all"
-    t.integer  "m_oil_id3"
-    t.integer  "tank3_all"
-    t.integer  "m_oil_id4"
-    t.integer  "tank4_all"
-    t.integer  "etc_oil_flg"
-    t.integer  "etc_flg"
-    t.integer  "wash_flg"
-    t.integer  "wash_sale_flg"
-    t.integer  "deleted_flg"
+    t.integer  "shop_kbn",         :limit => 2,  :default => 0
+    t.integer  "m_shop_group_id",                :default => 0
+    t.integer  "m_oil_id1",                      :default => 0
+    t.integer  "tank1_all",        :limit => 8,  :default => 0
+    t.integer  "m_oil_id2",                      :default => 0
+    t.integer  "tank2_all",        :limit => 8,  :default => 0
+    t.integer  "m_oil_id3",                      :default => 0
+    t.integer  "tank3_all",        :limit => 8,  :default => 0
+    t.integer  "m_oil_id4",                      :default => 0
+    t.integer  "tank4_all",        :limit => 8,  :default => 0
+    t.integer  "deleted_flg",      :limit => 2,  :default => 0
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "m_tanks", :force => true do |t|
-    t.integer  "m_shop_id"
-    t.integer  "m_oil_id"
-    t.integer  "deleted_flg"
+    t.integer  "m_shop_id",                   :default => 0, :null => false
+    t.integer  "m_oil_id",                    :default => 0, :null => false
+    t.integer  "tank_no",       :limit => 2,  :default => 0, :null => false
+    t.string   "tank_name",     :limit => 20,                :null => false
+    t.integer  "volume",                      :default => 0, :null => false
+    t.integer  "deleted_flg",   :limit => 2,  :default => 0, :null => false
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "tank_no",     :limit => 2
-    t.integer  "volume"
-    t.string   "tank_name",   :limit => 20
+    t.integer  "tank_union_no", :limit => 2,  :default => 0
   end
 
   create_table "m_washes", :force => true do |t|
-    t.integer  "wash_cd"
+    t.integer  "wash_cd",     :default => 0
     t.string   "wash_name"
     t.string   "wash_ryaku"
-    t.integer  "wash_group"
-    t.integer  "max_num"
-    t.integer  "deleted_flg"
+    t.integer  "wash_group",  :default => 0
+    t.integer  "max_num",     :default => 0
+    t.integer  "deleted_flg", :default => 0
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "price",       :default => 0
   end
 
   create_table "m_washsale_plans", :force => true do |t|
-    t.integer  "m_shop_id"
-    t.integer  "m_wash_id"
-    t.integer  "sunday"
-    t.integer  "monday"
-    t.integer  "tuesday"
-    t.integer  "wednesday"
-    t.integer  "thursday"
-    t.integer  "friday"
-    t.integer  "saturday"
-    t.integer  "created_user_id"
-    t.integer  "updated_user_id"
-    t.integer  "deleted_flg"
+    t.integer  "m_shop_id",                                   :null => false
+    t.integer  "m_wash_id",                                   :null => false
+    t.integer  "sunday",          :limit => 2, :default => 0
+    t.integer  "monday",          :limit => 2, :default => 0
+    t.integer  "tuesday",         :limit => 2, :default => 0
+    t.integer  "wednesday",       :limit => 2, :default => 0
+    t.integer  "thursday",        :limit => 2, :default => 0
+    t.integer  "friday",          :limit => 2, :default => 0
+    t.integer  "saturday",        :limit => 2, :default => 0
+    t.integer  "created_user_id",              :default => 0
+    t.integer  "updated_user_id",              :default => 0
+    t.integer  "deleted_flg",                  :default => 0
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "menus", :force => true do |t|
-    t.integer  "menu_cd1",     :limit => 2,   :null => false
-    t.integer  "menu_cd2",     :limit => 2,   :null => false
+    t.integer  "menu_cd1",     :limit => 2,                  :null => false
+    t.integer  "menu_cd2",     :limit => 2,   :default => 0, :null => false
     t.string   "display_name", :limit => 100
     t.string   "uri",          :limit => 100
     t.datetime "created_at"

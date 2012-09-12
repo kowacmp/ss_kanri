@@ -1,8 +1,8 @@
 <%= form_tag({:action => 'd_result_tank_create' }, { :remote => true }) do %>
-  <table id="tank_view_table" class="rounded-corner" width="420">
+  <table id="tank_view_table" class="rounded-corner" width="435">
   	<thead>
       <tr>
-  	    <th style="max-width: 50px;">タンク</th>
+  	    <th style="max-width: 65px;">タンク</th>
   	    <th style="max-width: 60px;">容量</th>
   	    <th style="max-width: 150px;">油種</th>
   	    <th style="max-width: 80px;">仕入</th>
@@ -16,8 +16,8 @@
           <td>タンク<%= m_tank.tank_no %></td>
           <td><%= m_tank.volume %>KL</td>
           <td><%= m_tank.oil_name %></td>
-          <td><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :readonly => @text, :class => "tank_input" %></td>
-          <td><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :readonly => @text, :class => "tank_input" %></td>                  
+          <td><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :readonly => @text, :class => "money" %></td>
+          <td><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :readonly => @text, :class => "money" %></td>                  
         </tr>
       <% end %>
     </tbody>
@@ -26,9 +26,11 @@
   
   <%= hidden_field :select, :d_result_id, :value => @d_result.id %>
   <% if @d_result.kakutei_flg == 0 %>
-    <div style="text-align:right; width: 420px;"><%= submit_tag '登録' %></div>
+    <div style="text-align:right; width: 435px;"><%= submit_tag '登録' %></div>
   <% end %>
 <% end %>
+
+<%= javascript_include_tag "comma" %>
 
 <style type="text/css">
  input.tank_input { 
@@ -39,6 +41,6 @@
 
 <script>
 $(function () {
-	$('#tank_view_table').tablefix({width: 420, height: 420, fixRows: 1});
+	$('#tank_view_table').tablefix({width: 435, height: 420, fixRows: 1});
 });	
 </script>

@@ -1,7 +1,32 @@
 SsKanri::Application.routes.draw do
 
+
   resources :d_duties
 
+  get "d_aim_lists/index"
+  get "d_aim_lists/search"
+
+  resources :m_etc_shops
+
+  get "d_price_checks/index"
+
+  get "d_price_checks/entry_price"
+
+  get "d_price_checks/entry_etc_price"
+
+  resources :d_washpurika_reports
+
+  resources :d_result_reports do
+   collection do
+     get :print
+   end
+  end
+
+  get "d_business_count_reports/index"
+
+  get "d_business_count_reports/search"
+
+  get "d_business_count_reports/print"
   get "d_yume_point_lists/index"
   get "d_yume_point_lists/search"
   get "d_yume_point_lists/print"
@@ -77,7 +102,8 @@ SsKanri::Application.routes.draw do
   get "d_results/index"
   get "d_results/select_date"
   get "d_results/result_edit"
-
+  get "d_results/index_select"
+  
   get "d_audit_changemachines/confirm_shop_id_select"
   get "d_audit_changemachines/confirm_user_id_select"
   get "d_audit_changemachines/show"

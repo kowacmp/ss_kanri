@@ -55,6 +55,11 @@ body
 {
 	text-align: right;
 }
+#rounded-corner td.display,#rounded-corner td#display
+{
+	background-color: #A5D7AA; 
+}
+
 td.input-num
 {
 	background: #fdf3b5;
@@ -63,7 +68,7 @@ td.input-num
 }
 td.no-input-num
 {
-	background: #66ffcc;
+	background: #A5D7AA;
 	text-align: right;
 }
 #rounded-corner tbody tr:hover td, .rounded-corner tbody tr:hover td

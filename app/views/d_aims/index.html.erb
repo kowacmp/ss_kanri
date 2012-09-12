@@ -1,22 +1,43 @@
 <h1>目標値入力</h1>
 
+<!--
 <div id="shop_info" >
 	<div class="title_alias">対象店舗</div>
-	<div class="info_alias"><%= @m_shop.shop_name %></div>
+	<div class="info_alias"><%#= @m_shop.shop_name %></div>
 </div>
+-->
 
 <%= form_tag({:action => 'search' }, { :remote => true }) do %>
-
+<!--
 	<div id="select_info" >
 		<div class="title_alias">対象年月</div>
 		<div class="select_alias">
-			<%= select_date(@month_first,{:date_separator=>'/',:use_month_numbers=>true,:discard_day=>true})%>
+			<%#= select_date(@month_first,{:date_separator=>'/',:use_month_numbers=>true,:discard_day=>true})%>
 		</div>
 	</div>
 	
 	<div id="select_info" >
 		<div class="title_alias">対象区分</div>
 		<div class="radio_alias">
+			<%# if @search_aim == 0 %>
+				日毎:<%#= radio_button 'search','aim',0,{:checked=>true} %>
+				月毎:<%#= radio_button 'search','aim',1,{} %>
+			<%# else %>
+				日毎:<%#= radio_button 'search','aim',0,{} %>
+				月毎:<%#= radio_button 'search','aim',1,{:checked=>true} %>
+			<%# end %>
+		</div>
+	</div>
+-->
+
+	<table id='rounded-corner'>
+		<tr>
+	      <th>対象店舗</th>
+	      <td><%= @m_shop.shop_cd.to_s + "　" + @m_shop.shop_name.to_s %></td>
+		  <th>対象年月</th>
+		  <td><%= select_date(@month_first,{:use_month_numbers=>true,:discard_day=>true})%></td> 
+		  <th>対象区分</th>
+	      <td>
 			<% if @search_aim == 0 %>
 				日毎:<%= radio_button 'search','aim',0,{:checked=>true} %>
 				月毎:<%= radio_button 'search','aim',1,{} %>
@@ -24,13 +45,19 @@
 				日毎:<%= radio_button 'search','aim',0,{} %>
 				月毎:<%= radio_button 'search','aim',1,{:checked=>true} %>
 			<% end %>
-		</div>
-	</div>
+		  </td>
+		  <td><%= submit_tag '検索' %></td>
+	    </tr>
+	</table>
+
+
+	<%= hidden_field "input",'shop_id',:value=>@shop_id%>
+	<%= hidden_field "input",'mode',:value=>@mode%>
 	
-	<%= submit_tag '検索' %>
+	<%#= submit_tag '検索' %>
 <% end %>
 
-</br>
+<hr>
 
 <div id="result">
 	<% if @search_aim == 0 %>

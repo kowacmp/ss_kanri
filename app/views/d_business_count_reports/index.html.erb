@@ -1,0 +1,22 @@
+<table class='rounded-corner'>
+	<tr>
+		<th>入力日</th>
+		<td>
+	      <%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 10%>
+	    </td>
+    </tr>
+</table>
+
+<p>
+	<div id="result">
+	    <%= render partial: 'result'%>
+	</div>
+</p>
+
+<!-- 読み込む位置が関係しているので、ここに書く -->
+<script type="text/javascript">
+$("#input_ymd").change(function(){
+    var input_ymd = $("#input_ymd").val();
+    $.get("<%=url_for({:action => 'search'}) %>?input_ymd=" + input_ymd);
+});
+</script>

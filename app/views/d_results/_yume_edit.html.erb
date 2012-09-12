@@ -2,15 +2,15 @@
   <table id='rounded-corner'>
     <tr>
       <th>件数</th>
-      <td><%= number_field :yume, :kensu, :value => @d_result_yume.pos1_data.to_i, :class => "yume_input", :size => 10 %></td>
+      <td><%= number_field :yume, :kensu, :value => @d_result_yume.pos1_data.to_i, :class => "money", :size => 10 %></td>
     </tr> 
     <tr>
       <th>ポイント</th>
-      <td><%= number_field :yume, :point, :value => @d_result_yume.pos2_data.to_i, :class => "yume_input", :size => 10 %></td>
+      <td><%= number_field :yume, :point, :value => @d_result_yume.pos2_data.to_i, :class => "money", :size => 10 %></td>
     </tr>     	
   	<tr>
   	  <th>金額</th>
-      <td><%= number_field :yume, :kingaku, :value => @d_result_yume.pos3_data.to_i, :class => "yume_input", :size => 10 %></td>
+      <td><%= number_field :yume, :kingaku, :value => @d_result_yume.pos3_data.to_i, :class => "money", :size => 10 %></td>
     </tr>
     <tr>
       <td colspan="2" align="right"><%= submit_tag '更新'%></td>
@@ -19,3 +19,5 @@
 
   <%= hidden_field :yume, :id, :value => @d_result_yume.id %>
 <% end %>
+
+<%= javascript_include_tag "comma" %>

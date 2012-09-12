@@ -9,11 +9,11 @@ module HomesHelper
   end
   
   def comment_sql(user_id)
-    sql = "select d.id, d.send_day, m.display_name, u.user_name"
-    sql << " from d_comments d, menus m, users u"
-    sql << " where d.menu_id = m.id and d.created_user_id = u.id"
+    sql = "select d.id, d.send_day, d.title, u.user_name"
+    sql << " from d_comments d, users u"
+    sql << " where d.created_user_id = u.id"
     sql << "   and d.receive_id = #{user_id} order by d.send_day desc"
-    
+
     return sql
   end  
 end
