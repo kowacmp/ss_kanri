@@ -7,7 +7,7 @@
 		<th>入力日</th>
 		<td>
 			<% unless @mode == 'list' %>
-			  <%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 10%>
+			  <%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 8 %>
 			<% else %>
 			  <%= @input_ymd %>	
 			<% end %>
