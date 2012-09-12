@@ -15,15 +15,15 @@
 		<td><%= shop.shop_cd.to_s%>&nbsp;&nbsp;<%=shop.shop_name %></td>
 		<td>
 			<% washsale_report = DWashsaleReport.find(:all,:conditions => ['sale_date = ? and m_shop_id = ?',@this_month,shop.id]).first %>
-			<%= @this_month[0,4] + '/' + @this_month[4,2] %>
+			<%= @this_month[0,4] + '年' + @this_month[4,2] + '月'%>
 		</td>
 		<td>
     	  <%= User.find(washsale_report.created_user_id).user_name unless washsale_report == nil %>
 		</td>
-		<td>
+		<td style="text-align: center">
 			<%= if shop.shop_kbn == 0 then '直営' else '油外' end%>
 		</td>
-		<td>
+		<td style="text-align: center">
 			<%= unless washsale_report == nil then "済" else "未" end%>
 		</td>
 		<td>
