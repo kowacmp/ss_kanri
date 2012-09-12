@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  m_etc_shop_id: 1
+  research_day: MyString
+  research_time: 1
+  item1: MyString
+  hg_price1: 1
+  rg_price1: 1
+  kg_price1: 1
+  tg_price1: 1
+  note: MyString
+  created_user_id: 1
+  updated_user_id: 1
+
+two:
+  m_etc_shop_id: 1
+  research_day: MyString
+  research_time: 1
+  item1: MyString
+  hg_price1: 1
+  rg_price1: 1
+  kg_price1: 1
+  tg_price1: 1
+  note: MyString
+  created_user_id: 1
+  updated_user_id: 1
