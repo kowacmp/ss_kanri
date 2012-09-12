@@ -17,7 +17,7 @@
 <% @result_datas.each_with_index do |data,i| %>
   <tr>
     <td><%= "#{data.shop_cd}"%>&nbsp;&nbsp;<%="#{data.shop_name}" %></td>
-    <td style="text-align: center"><%= "#{data.sale_date.to_s[0,4]}/#{data.sale_date.to_s[4,2]}" unless data.sale_date.blank? %></td>
+    <td style="text-align: center"><%= "#{data.sale_date.to_s[0,4]}" + "年" +"#{data.sale_date.to_s[4,2]}" + "月" unless data.sale_date.blank? %></td>
     <td style="text-align: center"><%= data.shop_kbn_name %></td>
     <td style="text-align: right"><%= num_fmt(data.exist_money) %></td>
     <td style="text-align: right"><%= num_fmt(data.over_short) %></td>
