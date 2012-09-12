@@ -1,11 +1,7 @@
 SsKanri::Application.routes.draw do
 
-<<<<<<< HEAD
-=======
-
   resources :d_duties
 
->>>>>>> 00c25a6853cb91efcc5b7e62e679b1d5b1e3750d
   get "d_aim_lists/index"
   get "d_aim_lists/search"
 
@@ -16,10 +12,6 @@ SsKanri::Application.routes.draw do
   get "d_price_checks/entry_price"
 
   get "d_price_checks/entry_etc_price"
-<<<<<<< HEAD
-
-=======
->>>>>>> 00c25a6853cb91efcc5b7e62e679b1d5b1e3750d
 
   resources :d_washpurika_reports
 
