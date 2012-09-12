@@ -154,3 +154,7 @@ h1 {
 	color: #039;
     font-weight:bold;
 }
+
+img{
+	border-style:none;
+}
