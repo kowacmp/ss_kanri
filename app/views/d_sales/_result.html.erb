@@ -5,14 +5,14 @@
     <th>作成者</th>
     <th>店舗種別</th>
     <th>入力状況</th>
-    <th>確認<br />
+    <th>ロック/解除<br />
     	<% if @all_kakutei_flg == 0 or @all_kakutei_flg == nil %>
     	  <%=  check_box_tag "all_lock", "0", false  %> 
     	<% else %>
     	  <%=  check_box_tag "all_lock", "1", true  %>
     	<% end %>
     </th>
-    <th></th>
+    <th>詳細</th>
   </tr>
 
 <% @result_datas.each_with_index do |data,i| %>

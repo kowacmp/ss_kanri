@@ -5,21 +5,21 @@
 	  <th>作成者</th>
 	  <th>店舗種別</th>
 	  <th>入力状況</th>
-      <th>確認<br />
+      <th>ロック/解除<br />
     	<% if @all_kakutei_flg == 0 or @all_kakutei_flg == nil %>
     	  <%=  check_box_tag "all_lock", "0", false  %> 
     	<% else %>
     	  <%=  check_box_tag "all_lock", "1", true  %>
     	<% end %>
       </th>
-	  <th></th> 	  	  	  	  	  	  
+	  <th>詳細</th> 	  	  	  	  	  	  
 	</tr>	
   <% @m_shops.each.each_with_index do |m_shop, i| %>
     <tr>
       <td><%= m_shop.shop_cd %>&nbsp;&nbsp;&nbsp;<%= m_shop.shop_name %></td>
       <td><%= m_shop.result_date %></td>
       <td><%= m_shop.account %>&nbsp;&nbsp;&nbsp;<%= m_shop.user_name %></td>
-      <td><%= m_shop.shop_kbn_name %></td>
+      <td style="text-align: center"><%= m_shop.shop_kbn_name %></td>
       <td style="text-align: center"><%= m_shop.flg %></td>
       <td style="text-align: center">
     	<% unless m_shop.result_date.blank? %>

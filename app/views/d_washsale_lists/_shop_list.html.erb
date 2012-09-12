@@ -12,7 +12,7 @@
 		<th>ロック／解除<br />
 			<input type="checkbox" id="all" />
 		</th>
-		<th>編集</th>
+		<th>詳細</th>
 		<th>参照</th>
 	</tr>
   <% @shops.each do |shop| %>
@@ -28,9 +28,9 @@
       <td>
       	<% unless d_wash_sale == nil %>
       	  <%= User.find(d_wash_sale.created_user_id).user_name %><% end %>
-      </td>
+      </td align="center">
       <td><%= if shop.shop_kbn == 0 then "直営" else "油外" end %></td>
-      <td>
+      <td align="center">
       	<%= unless d_wash_sale == nil then "済" else "未" end %>
       </td>
       <td align="center">
@@ -43,9 +43,9 @@
       	<% end %>
       </td>
 
-      <td><%= link_to('編集' ,{:controller => 'd_wash_sales',:action => 'index',
-            :input_ymd => @input_ymd,:m_shop_id => shop.id,:shop_kbn => @shop_kbn,:mode => 'list'}) %></td>
-      <td><%= link_to('参照' ,{:action => 'show',:m_shop_id => shop.id},:class => 'modal') %></td>
+      <td><%= link_to image_tag('icon/24_show.png'), {:controller => 'd_wash_sales',:action => 'index',
+            :input_ymd => @input_ymd,:m_shop_id => shop.id,:shop_kbn => @shop_kbn,:mode => 'list'} %></td>
+      <td><%= link_to('参照' ,{:action => 'show',:m_shop_id => shop.id}, :class => 'modal') %></td>
     </tr>
   <% end %>
   <%= hidden_field_tag "input_ymd",@input_ymd %>
