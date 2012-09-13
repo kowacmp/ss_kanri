@@ -23,13 +23,13 @@ class DPriceCheckEtcsController < ApplicationController
       @this_month = @year + @month
       @from_ymd = @this_month + '01'
       @to_ymd = @this_month + '31'
-      p "*** from_ymd = #{@from_ymd} to_ymd = #{@to_ymd} ***"
+      #p "*** from_ymd = #{@from_ymd} to_ymd = #{@to_ymd} ***"
       @d_price_check_etcs = DPriceCheckEtc.where(:research_day => @from_ymd..@to_ymd).group(
         'research_day,research_time').select(
           'research_day,research_time').order(
             'research_day,research_time')
       
-    
+    @research_day = Time.now.strftime("%Y/%m/%d")
 
   end
 

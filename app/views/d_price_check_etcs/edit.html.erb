@@ -6,7 +6,7 @@
 	<tr>
       <th>入力日時</th>
       <td><%= @research_day[0,4] + "/" + @research_day[4,2] + "/" + @research_day[6,2] %>　
-      	  <%= @research_time %>時</td>
+      	  <%= @research_time.to_i %>時</td>
       </tr>
 </table>
 </p>
