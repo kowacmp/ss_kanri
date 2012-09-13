@@ -26,12 +26,22 @@
 $("#select_date").change(function(){
     var select_date = $("#select_date").val();
     var select_shop_kbn = $("#select_shop_kbn").val();
-    $.get("d_results/index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
+    
+    <% if @flg.to_i == 1%>
+      $.get("index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
+    <% else %>
+      $.get("d_results/index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
+    <% end %>  
 });
 $("#select_shop_kbn").change(function(){
     var select_date = $("#select_date").val();
     var select_shop_kbn = $("#select_shop_kbn").val();
-    $.get("d_results/index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
+    
+    <% if @flg.to_i == 1%>
+      $.get("index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
+    <% else %>
+      $.get("d_results/index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
+    <% end %>
 });
 
 	//ロック／解除が変更された場合のイベント
