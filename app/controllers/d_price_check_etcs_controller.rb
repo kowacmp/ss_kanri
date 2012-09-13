@@ -35,8 +35,16 @@ class DPriceCheckEtcsController < ApplicationController
 
   def edit
     @etc_shops = MEtcShop.where(:m_shop_id => current_user.m_shop_id).order('access_group,id')
-    @research_day  = params[:research_day]
-    @research_time = params[:research_time]
+    unless  params[:research_day].length == 8
+      @research_day  = params[:research_day].delete("/")
+    else
+      @research_day  = params[:research_day]
+    end
+    if params[:date] == nil or params[:date] == ""
+      @research_time = params[:research_time]
+    else
+      @research_time = params[:date][:hour]
+    end
   end
 
   def update
