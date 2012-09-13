@@ -108,7 +108,10 @@
 		</tr>
 		<tr class="total">
 			<td class="title" colspan="2">出納帳残高</td>
-			<td class="money"><%= num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i)  %></td>
+			<td class="money">
+				<%#= num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i)  %>
+				<%= num_fmt(@balance_money)  %>
+		    </td>
 		</tr>
 		</tbody>
 	</table>
