@@ -3,10 +3,16 @@ class DResultsController < ApplicationController
   include DResultsHelper
 
   def index
-    @today = Time.now.strftime("%Y/%m/%d")
+    if params[:result_date].blank?
+      @today = Time.now.strftime("%Y/%m/%d")
+      sql = result_index_sql(Time.now.strftime("%Y%m%d"), '')   
+    else
+      @today = params[:result_date][0,4] + "/" + params[:result_date][4,2] + "/" + params[:result_date][6,2]
+      sql = result_index_sql(params[:result_date], '')
+      @flg = 1     
+    end
     
-    sql = result_index_sql(Time.now.strftime("%Y%m%d"), '')
-    @m_shops = MShop.find_by_sql(sql)    
+    @m_shops = MShop.find_by_sql(sql)
   end
   
   def index_select
@@ -54,7 +60,7 @@ class DResultsController < ApplicationController
     @m_shops = MShop.find_by_sql(sql)
     
     respond_to do |format|
-      format.html { render :partial => 'result'  }
+      format.html { render :partial => 'result'}
     end
   end  
 
@@ -88,12 +94,7 @@ class DResultsController < ApplicationController
     select_date
   end
   
-  def select_date
-    p "select_date   select_date   select_date   select_date"
-    p "params[:edit_flg]=#{params[:edit_flg]}"
-    p "params[:m_shop_id]=#{params[:m_shop_id]}" 
-    p "params[:select_date]=#{params[:select_date]}"
-    p "params=#{params}"   
+  def select_date 
     if params[:select_date].blank?
       #newから来た場合
       @result_date = @today.delete("/")
@@ -107,10 +108,7 @@ class DResultsController < ApplicationController
     
     @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       @m_shop.id, @result_date])
-    
 
-
-    p "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
     #出荷数量取得
     oil_sql = "select m.id, m.oil_name, d.pos1_data, d.pos2_data, d.pos3_data,"
     oil_sql << " COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0) as pos_total"
@@ -243,7 +241,7 @@ class DResultsController < ApplicationController
     if @d_result.blank? or (m_meters_count != d_result_meters_count) or (m_tanks_count != d_result_tanks_count)
       sql = tank_volume_sql(@m_shop.id)
       m_tanks = MTank.find_by_sql(sql)
-        p "m_tanks=#{m_tanks}"
+
       volumes = Array::new                 
       m_tanks.each do |m_tank|
         volumes[m_tank.m_oil_id.to_i] = Hash::new
@@ -418,12 +416,9 @@ class DResultsController < ApplicationController
                                                          d_result.m_shop_id, yesterday])
     #実績表
     if m_shop.shop_kbn == 0
-      p "000000000000000000000000000000000000000000"
-      p "session[:m_oil_totals][1][:total]=#{session[:m_oil_totals][1][:total]}"
-      p "session[:m_oil_totals][2][:total]=#{session[:m_oil_totals][2][:total]}"
       #セルフ実績表データ
       d_result_self_report = DResultSelfReport.find(:first, :conditions => ["d_result_id = ?", d_result.id])
-      p "d_result_self_report=#{d_result_self_report}"
+
       if d_result_self_report.blank?
         d_result_self_report = DResultSelfReport.new
         d_result_self_report.d_result_id = d_result.id        
@@ -753,7 +748,7 @@ class DResultsController < ApplicationController
         sql << " where m.pos_class = #{m_code.code} and o.id = #{m_oil.id} and t.m_shop_id = #{@d_result.m_shop_id}"
         sql << "  and m.deleted_flg = 0 and t.deleted_flg = 0 and o.deleted_flg = 0"
         sql << " order by m.number"
-                            
+p "meter_sql=#{sql}"                            
         meter["#{m_oil.id}_#{m_code.code}"] = MOil.find_by_sql(sql)
         max_no = meter["#{m_oil.id}_#{m_code.code}"].size if meter["#{m_oil.id}_#{m_code.code}"].size > max_no
       end

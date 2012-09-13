@@ -1,7 +1,7 @@
 <%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
 
 <div>
-  <% if @d_result.blank? or @edit_flg == 1 or @d_result.kakutei_flg == 0 %> 	
+  <% if @d_result.blank? or @edit_flg.to_i == 1 or @d_result.kakutei_flg == 0 %> 	
     <%= link_to 'メーター入力', {:controller => 'd_results', :action => 'meter_index', :result_date => @result_date, :m_shop_id => @m_shop.id, :edit_flg => @edit_flg}, :id => "meter_icon", :class => "modal" %>
     &nbsp;&nbsp;&nbsp;
     <%= link_to 'タンク入力', {:controller => 'd_results', :action => 'tank_index', :result_date => @result_date, :m_shop_id => @m_shop.id, :edit_flg => @edit_flg}, :id => "tank_icon", :class => "modal" %>	
