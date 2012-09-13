@@ -17,7 +17,7 @@
 		<th>店舗種別</th>
 		<th>現金有高(累計)</th>
 		<th>過不足(累計)</th>
-		<th>&nbsp;</th>
+		<th>詳細</th>
 		<th>
 			承認<br/> <%# 一括チェック用 %>
 			<input type="checkbox" onchange="return chk_flgs_all(this.checked);" 
@@ -46,7 +46,7 @@
 				<%=number_with_delimiter(approval.over_short)%>
 			</td>
 			<td align="center">
-				<%=link_to "詳細", :controller => "d_sales", :action => "report_view", :id => approval.id,  
+				<%=link_to image_tag('icon/24_show.png'), :controller => "d_sales", :action => "report_view", :id => approval.id,  
 					  :from_controller => "d_sale_approves",  
 					  :header => {
 							:ym       => params[:header][:ym],
