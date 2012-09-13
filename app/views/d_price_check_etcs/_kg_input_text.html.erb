@@ -1,0 +1,37 @@
+<% if num == 1 %>
+  <% unless price_check == nil %>
+    <%= text_field_tag("kg_price1_id_#{price_check.id}",price_check.kg_price1,:class => 'money' ,:style=>"width:50px;")  %>
+  <% else %>
+    <%= text_field_tag("kg_price1_new_#{etc_shop_id}",0,:class => 'money' ,:style=>"width:50px;")  %>
+  <% end %>
+<% elsif num == 2 %>
+  <% unless price_check == nil %>
+    <%= text_field_tag("kg_price2_id_#{price_check.id}",price_check.kg_price2,:class => 'money' ,:style=>"width:50px;")  %>
+  <% else %>
+    <%= text_field_tag("kg_price2_new_#{etc_shop_id}",0,:class => 'money' ,:style=>"width:50px;")  %>
+  <% end %>
+<% elsif num == 3 %>
+  <% unless price_check == nil %>
+    <%= text_field_tag("kg_price3_id_#{price_check.id}",price_check.kg_price3,:class => 'money' ,:style=>"width:50px;")  %>
+  <% else %>
+    <%= text_field_tag("kg_price3_new_#{etc_shop_id}",0,:class => 'money' ,:style=>"width:50px;")  %>
+  <% end %>
+<% elsif num == 4 %>
+  <% unless price_check == nil %>
+    <%= text_field_tag("kg_price4_id_#{price_check.id}",price_check.kg_price4,:class => 'money' ,:style=>"width:50px;")  %>
+  <% else %>
+    <%= text_field_tag("kg_price4_new_#{etc_shop_id}",0,:class => 'money' ,:style=>"width:50px;")  %>
+  <% end %>
+<% elsif num == 5 %>
+  <% unless price_check == nil %>
+    <%= text_field_tag("kg_price5_id_#{price_check.id}",price_check.kg_price5,:class => 'money' ,:style=>"width:50px;")  %>
+  <% else %>
+    <%= text_field_tag("kg_price5_new_#{etc_shop_id}",0,:class => 'money' ,:style=>"width:50px;")  %>
+  <% end %>
+<% elsif num == 6 %>
+  <% unless price_check == nil %>
+    <%= text_field_tag("kg_price6_id_#{price_check.id}",price_check.kg_price6,:class => 'money' ,:style=>"width:50px;")  %>
+  <% else %>
+    <%= text_field_tag("kg_price6_new_#{etc_shop_id}",0,:class => 'money' ,:style=>"width:50px;")  %>
+  <% end %>
+<% end %>

@@ -1,15 +1,6 @@
-<%= stylesheet_link_tag    "d_price_checks" %> 
-     <div id="main-navigation">
-        <ul class="wat-cf">
-            <li>
-            	<%= link_to '価格調査入力',:controller =>'d_price_checks',:action => 'index' %></li> 
-            <li class="active">  
-              他社価格調査入力</li> 
-            <li> 
-              <%= link_to '他社マスタ入力',:controller => 'm_etc_shops',:action => 'index' %>
-            </li> 
-        </ul>
-      </div>
+<p>
+   <%= render partial: 'header'%>
+</p>
 
 <%= form_tag(url_for(:action => 'search'),:remote => true) do %>
 <p>

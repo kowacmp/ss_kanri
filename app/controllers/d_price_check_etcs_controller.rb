@@ -39,6 +39,82 @@ class DPriceCheckEtcsController < ApplicationController
     @research_time = params[:research_time]
   end
 
+  def update
+    @etc_shops = MEtcShop.where(:m_shop_id => current_user.m_shop_id).order('access_group,id')
+    @research_day  = params[:research_day]
+    @research_time = params[:research_time].to_i
+
+    @etc_shops.each do |etc_shop|
+    #更新
+      price_check = DPriceCheckEtc.where(:research_day => @research_day,
+          :research_time => @research_time,:m_etc_shop_id => etc_shop.id).first
+      #p "price_check.id = #{price_check.id}"
+      #p "price_check.id = #{price_check.id}"
+      unless price_check == nil
+        #更新
+        price_check.rg_price1 = params["rg_price1_id_#{price_check.id}"]
+        price_check.hg_price1 = params["hg_price1_id_#{price_check.id}"]
+        price_check.kg_price1 = params["kg_price1_id_#{price_check.id}"]
+        price_check.tg_price1 = params["tg_price1_id_#{price_check.id}"]
+        price_check.rg_price2 = params["rg_price2_id_#{price_check.id}"]
+        price_check.hg_price2 = params["hg_price2_id_#{price_check.id}"]
+        price_check.kg_price2 = params["kg_price2_id_#{price_check.id}"]
+        price_check.tg_price2 = params["tg_price2_id_#{price_check.id}"]
+        price_check.rg_price3 = params["rg_price3_id_#{price_check.id}"]
+        price_check.hg_price3 = params["hg_price3_id_#{price_check.id}"]
+        price_check.kg_price3 = params["kg_price3_id_#{price_check.id}"]
+        price_check.tg_price3 = params["tg_price3_id_#{price_check.id}"]
+        price_check.rg_price4 = params["rg_price4_id_#{price_check.id}"]
+        price_check.hg_price4 = params["hg_price4_id_#{price_check.id}"]
+        price_check.kg_price4 = params["kg_price4_id_#{price_check.id}"]
+        price_check.tg_price4 = params["tg_price4_id_#{price_check.id}"]
+        price_check.rg_price5 = params["rg_price5_id_#{price_check.id}"]
+        price_check.hg_price5 = params["hg_price5_id_#{price_check.id}"]
+        price_check.kg_price5 = params["kg_price5_id_#{price_check.id}"]
+        price_check.tg_price5 = params["tg_price5_id_#{price_check.id}"]
+        price_check.note      = params["note_id_#{price_check.id}"]
+        price_check.updated_user_id = current_user.id
+        price_check.save!
+      else
+        #新規
+        price_check = DPriceCheckEtc.new
+        price_check.m_etc_shop_id = etc_shop.id
+        price_check.research_day  = @research_day
+        price_check.research_time = @research_time
+        price_check.rg_price1 = params["rg_price1_new_#{etc_shop.id}"]
+        price_check.hg_price1 = params["hg_price1_new_#{etc_shop.id}"]
+        price_check.kg_price1 = params["kg_price1_new_#{etc_shop.id}"]
+        price_check.tg_price1 = params["tg_price1_new_#{etc_shop.id}"]
+        price_check.rg_price2 = params["rg_price2_new_#{etc_shop.id}"]
+        price_check.hg_price2 = params["hg_price2_new_#{etc_shop.id}"]
+        price_check.kg_price2 = params["kg_price2_new_#{etc_shop.id}"]
+        price_check.tg_price2 = params["tg_price2_new_#{etc_shop.id}"]
+        price_check.rg_price3 = params["rg_price3_new_#{etc_shop.id}"]
+        price_check.hg_price3 = params["hg_price3_new_#{etc_shop.id}"]
+        price_check.kg_price3 = params["kg_price3_new_#{etc_shop.id}"]
+        price_check.tg_price3 = params["tg_price3_new_#{etc_shop.id}"]
+        price_check.rg_price4 = params["rg_price4_new_#{etc_shop.id}"]
+        price_check.hg_price4 = params["hg_price4_new_#{etc_shop.id}"]
+        price_check.kg_price4 = params["kg_price4_new_#{etc_shop.id}"]
+        price_check.tg_price4 = params["tg_price4_new_#{etc_shop.id}"]
+        price_check.rg_price5 = params["rg_price5_new_#{etc_shop.id}"]
+        price_check.hg_price5 = params["hg_price5_new_#{etc_shop.id}"]
+        price_check.kg_price5 = params["kg_price5_new_#{etc_shop.id}"]
+        price_check.tg_price5 = params["tg_price5_new_#{etc_shop.id}"]
+        price_check.note      = params["note_new_#{etc_shop.id}"]
+        price_check.created_user_id = current_user.id
+        price_check.updated_user_id = current_user.id
+        price_check.save!
+      end #unless
+
+    end #etc_shops
+
+    #edit
+    respond_to do |format|
+      format.html { render action: "edit" }
+    end
+  end
+  
   def show
     @etc_shops = MEtcShop.where(:m_shop_id => current_user.m_shop_id).order('access_group,id')
     @research_day  = params[:research_day]
