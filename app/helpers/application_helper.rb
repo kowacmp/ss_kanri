@@ -1,35 +1,32 @@
 # -*- coding:utf-8 -*-
 module ApplicationHelper
   def get_menus(m_authority_id)
-    sql = <<-SQL
-      select m.* from authority_menus a, menus m
-        where a.m_authority_id = #{m_authority_id} and a.menu_id = m.id and m.menu_cd2 = 0
-      order by menu_cd1      
-    SQL
-    $menu1 = AuthorityMenu.find_by_sql(sql)
+    sql1 = "select m.menu_cd1, m.display_name from authority_menus a, menus m"
+    sql1 << " where a.m_authority_id = #{m_authority_id} and a.menu_id = m.id and m.menu_cd2 = 0"
+    sql1 << " order by menu_cd1"
 
-    $menu2 = Array::new
-    $menu3 = Array::new
-    $menu1.each do |menu1|
-      sql2 = <<-SQL
-          select m.* from authority_menus a, menus m
-           where a.m_authority_id = #{m_authority_id} and a.menu_id = m.id and m.menu_cd2 <> 0
-             and m.menu_cd3 = 0 and menu_cd1 = #{menu1.menu_cd1} order by menu_cd2  
-      SQL
+    session[:menu1] = AuthorityMenu.find_by_sql(sql1)
+    session[:menu2] = Array::new
+    session[:menu3] = Array::new
+    
+    session[:menu1].each do |menu1|
+      #sql2 = "select m.* from authority_menus a, menus m"
+      sql2 = "select m.id, m.menu_cd2, m.uri, m.display_name"
+      sql2 << " from authority_menus a, menus m"
+      sql2 << " where a.m_authority_id = #{m_authority_id} and a.menu_id = m.id and m.menu_cd2 <> 0"
+      sql2 << " and m.menu_cd3 = 0 and menu_cd1 = #{menu1.menu_cd1} order by menu_cd2"
 
-      $menu2[menu1.menu_cd1.to_i] = Hash::new
-      $menu2[menu1.menu_cd1.to_i] = AuthorityMenu.find_by_sql(sql2)
+      session[:menu2][menu1.menu_cd1.to_i] = Hash::new
+      session[:menu2][menu1.menu_cd1.to_i] = AuthorityMenu.find_by_sql(sql2)
 
-      $menu2[menu1.menu_cd1.to_i].each do |menu2|
-        sql3 = <<-SQL
-            select m.* from authority_menus a, menus m
-             where a.m_authority_id = #{m_authority_id} and a.menu_id = m.id and m.menu_cd3 <> 0
-               and menu_cd1 = #{menu1.menu_cd1} and menu_cd2 = #{menu2.menu_cd2}
-             order by menu_cd3
-        SQL
-      
-        $menu3[menu1.menu_cd1.to_i] = Hash::new if $menu3[menu1.menu_cd1.to_i].blank?
-        $menu3[menu1.menu_cd1.to_i][menu2.menu_cd2.to_i] = AuthorityMenu.find_by_sql(sql3)   
+      session[:menu2][menu1.menu_cd1.to_i].each do |menu2|
+        sql3 = "select m.* from authority_menus a, menus m"
+        sql3 << " where a.m_authority_id = #{m_authority_id} and a.menu_id = m.id and m.menu_cd3 <> 0"
+        sql3 << " and menu_cd1 = #{menu1.menu_cd1} and menu_cd2 = #{menu2.menu_cd2}"
+        sql3 << " order by menu_cd3"
+        
+        session[:menu3][menu1.menu_cd1.to_i] = Hash::new if session[:menu3][menu1.menu_cd1.to_i].blank?
+        session[:menu3][menu1.menu_cd1.to_i][menu2.menu_cd2.to_i] = AuthorityMenu.find_by_sql(sql3)   
       end
     end  
   end

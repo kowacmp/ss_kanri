@@ -15,10 +15,12 @@
     </table>
   </td>
 </table>  
-<%= hidden_field_tag "m_shop_id", @m_shop.id %>
+<%#= hidden_field_tag "m_shop_id", @m_shop.id %>
+<%#= hidden_field_tag "edit_flg", @edit_flg %>
 <hr />
 
-
+<% p "view   view   view   view   view   view"%> 
+<% p "@edit_flg=#{@edit_flg}"%>
 <div id="result">
   <% if @d_result.blank? or @edit_flg == 1 or @d_result.kakutei_flg == 0 %> 	
 	<%= render 'input_d_result' %>
@@ -30,8 +32,11 @@
 <script type="text/javascript">
 $("#select_date").change(function(){
     var select_date = $("#select_date").val();
-    var m_shop_id = $("#m_shop_id").val();
-    $.get("select_date?select_date=" + select_date, "m_shop_id=" + m_shop_id);
+    //var m_shop_id = $("#m_shop_id").val();
+    //var edit_flg = $("#edit_flg").val();
+    //$.get("select_date?select_date=" + select_date, "m_shop_id=" + m_shop_id);
+
+    $.get("<%=url_for({:action => 'select_date', :m_shop_id => @m_shop.id, :edit_flg => @edit_flg}) %>","select_date=" + select_date);
 });
 </script>
 
@@ -60,7 +65,7 @@ $(function () {
   		total = num1 + num2 + num3;
   		
   		$("#oil_total_<%= m_oil.id %>").text(format_kanma(total.toFixed(2)));
-  		$.get("d_results/oil_total_set?oil_total=" + total.toFixed(2), "oil=" + <%= m_oil.id %>);
+  		$.get("/d_results/oil_total_set?oil_total=" + total.toFixed(2), "oil=" + <%= m_oil.id %>);
     };
   <% end %> 
       

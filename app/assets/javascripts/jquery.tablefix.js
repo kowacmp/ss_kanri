@@ -79,6 +79,7 @@
 				marginRight: (withWidth ? 20 : 0) + (withHeight ? 20 : 0) + 'px'
 			});
 			colDiv
+			    .addClass('colDiv')
 				.width(offsetX)
 				.height(bodyHeight + (withWidth ? 20 : 0) + (withHeight ? 20 : 0))
 				.css({top: offsetY + 'px'});

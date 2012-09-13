@@ -1,12 +1,9 @@
 <%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
-<% if @d_result_yumes.blank? 
-     row = 1
-   else
-   	 row = @d_result_yumes.size + 1
-   end
-   
-   m_oiletc = MOiletc.find(:first, :conditions => ["oiletc_group = 2"])	   
-%>
+<% m_oiletc = MOiletc.find(:first, :conditions => ["oiletc_group = 2"])	%>
+
+<% unless m_oiletc.blank? %> 	
+  <%= link_to '入力', {:controller => 'd_results', :action => 'yume_index', :result_date => @result_date, :m_shop_id => @m_shop.id}, :id => "add_icon", :class => "modal" %>
+<% end %>
 
 <table id='rounded-corner'>
   <tr>
@@ -15,12 +12,7 @@
   <tr>
   	<th>件数</th>
     <th>ポイント</th>
-	<th>金額</th>
-	<td rowspan="<%= row %>">
-	  <% unless m_oiletc.blank? %> 	
-	    <%= link_to '入力', {:controller => 'd_results', :action => 'yume_index', :result_date => @result_date, :m_shop_id => @m_shop.id}, :id => "add_icon", :class => "modal" %>
-	  <% end %>
-	</td>	  	  	  
+	<th>金額</th>  	  	  
   </tr>
   <% unless @d_result_yumes.blank? %>
     <% @d_result_yumes.each do |d_result_yume| %>
