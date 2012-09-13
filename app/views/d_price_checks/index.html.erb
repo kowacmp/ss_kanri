@@ -1,13 +1,36 @@
 <p>
-     <div id="main-navigation">
-        <ul class="wat-cf">
-            <li class="active">
-            	価格調査入力</li> 
-            <li>  
-              <%= link_to '他社価格調査入力',:controller => 'd_price_check_etcs',:action => 'index' %></li> 
-            <li> 
-              <%= link_to '他社マスタ入力',:controller => 'm_etc_shops',:action => 'index' %>
-            </li> 
-        </ul>
-      </div>
+   <%= render partial: 'header'%>
+</p>
+
+<p>
+<%= form_tag(url_for(:action => 'edit')) do %>
+<table class="rounded-corner">
+	<tr>
+      <th>調査日</th>
+      <td><%= text_field_tag  "research_day" , @research_day ,:class => 'datepicker',:size => 10%></td>
+		<th>調査時刻</th>
+		<td><%= select_hour Time.now %></td>
+		<td><%= submit_tag "新規登録" %></td>
+	</tr>
+</table>
+<% end %>
+</p>
+
+<%= form_tag(url_for(:action => 'search'),:remote => true) do %>
+<p>
+<table id='rounded-corner'>
+	<tr>
+      <th>対象年月</th>
+      <td><%= select_year(@time_now,:start_year => @start_year, :end_year => @time_now.year) %>
+      	  <%= select_month(@time_now,:use_month_numbers => true) %></td>
+	  <td><%= submit_tag "検索" %></td>
+      </tr>
+</table>
+</p>
+<% end %>
+
+<p>
+	<div id="result">
+	    <%= render partial: 'result'%>
+	</div>
 </p>

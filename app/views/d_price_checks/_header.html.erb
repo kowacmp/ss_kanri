@@ -1,0 +1,14 @@
+<%= stylesheet_link_tag    "d_price_checks" %> 
+<p>
+     <div id="main-navigation">
+        <ul class="wat-cf">
+            <li class="active">
+            	価格調査入力</li> 
+            <li>  
+              <%= link_to '他社価格調査入力',:controller => 'd_price_check_etcs',:action => 'index' %></li> 
+            <li> 
+              <%= link_to '他社マスタ入力',:controller => 'm_etc_shops',:action => 'index' %>
+            </li> 
+        </ul>
+      </div>
+</p>
