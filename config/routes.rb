@@ -3,6 +3,7 @@ SsKanri::Application.routes.draw do
   get "d_price_check_etcs/index"
   get "d_price_check_etcs/search"
   get "d_price_check_etcs/edit"
+  get "d_price_check_etcs/update"  
   get "d_price_check_etcs/show"
 
   resources :d_duties

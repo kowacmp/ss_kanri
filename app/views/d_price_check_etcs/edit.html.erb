@@ -1,4 +1,19 @@
+<p>
+   <%= render partial: 'header'%>
+</p>
+<p>
+<table id='rounded-corner'>
+	<tr>
+      <th>入力日時</th>
+      <td><%= @research_day[0,4] + "/" + @research_day[4,2] + "/" + @research_day[6,2] %>　
+      	  <%= @research_time %>時</td>
+      </tr>
+</table>
+</p>
+
 <%= form_tag({:action => 'update'}) do %>
+<%= hidden_field_tag 'research_day',@research_day %>
+<%= hidden_field_tag 'research_time',@research_time %>
 <table class="rounded-corner">
   <tr>
     <th colspan="3" scope="col">店舗情報</th>
@@ -14,50 +29,57 @@
   :research_time => @research_time,:m_etc_shop_id => etc_shop.id).first %>
   <tr>
     <td colspan="8"><%= etc_shop.access %></td>
-    <td rowspan="6"><%= price_check.note unless price_check == nil %></td>
+    <td rowspan="6">
+    <% unless price_check == nil %>
+      <%= text_area_tag("note_id_#{price_check.id}",price_check.note,:style=>"width:200px;height:190px;")  %>
+    <% else %>
+      <%= text_area_tag("note_new_#{etc_shop.id}","",:style=>"width:200px;height:190px;")  %>
+    <% end %>
+    </td>
   </tr>
   <tr>
     <td rowspan="2"><%= etc_shop.brand %></td>
     <td colspan="2" rowspan="2"><%= etc_shop.company %></td>
     <td>&nbsp;</td>
-    <td><%= text_field_tag("rg_price1_#{i}",price_check.rg_price1,:class => 'money' ,:style=>"width:100px;") unless price_check == nil %></td>
-    <td><%= price_check.hg_price1 unless price_check == nil %></td>
-    <td><%= price_check.kg_price1 unless price_check == nil %></td>
-    <td><%= price_check.tg_price1 unless price_check == nil %></td>
+    <td><%= render 'rg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 1 %></td>
+    <td><%= render 'hg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 1 %></td>
+    <td><%= render 'kg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 1 %></td>
+    <td><%= render 'tg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 1 %></td>
   </tr>
   <tr>
   	<td>&nbsp;</td>
-    <td><%= price_check.rg_price2 unless price_check == nil %></td>
-    <td><%= price_check.hg_price2 unless price_check == nil %></td>
-    <td><%= price_check.kg_price2 unless price_check == nil %></td>
-    <td><%= price_check.tg_price2 unless price_check == nil %></td>
+    <td><%= render 'rg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 2 %></td>
+    <td><%= render 'hg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 2 %></td>
+    <td><%= render 'kg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 2 %></td>
+    <td><%= render 'tg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 2 %></td>
   </tr>
   <tr>
     <td rowspan="2"><%= etc_shop.shape %></td>
     <td rowspan="2"><%= etc_shop.area %>坪</td>
     <td rowspan="2"><%= etc_shop.tank %>k</td>
     <td>&nbsp;</td>
-    <td><%= price_check.rg_price3 unless price_check == nil %></td>
-    <td><%= price_check.hg_price3 unless price_check == nil %></td>
-    <td><%= price_check.kg_price3 unless price_check == nil %></td>
-    <td><%= price_check.tg_price3 unless price_check == nil %></td>
+    <td><%= render 'rg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 3 %></td>
+    <td><%= render 'hg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 3 %></td>
+    <td><%= render 'kg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 3 %></td>
+    <td><%= render 'tg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 3 %></td>
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td><%= price_check.rg_price4 unless price_check == nil %></td>
-    <td><%= price_check.hg_price4 unless price_check == nil %></td>
-    <td><%= price_check.kg_price4 unless price_check == nil %></td>
-    <td><%= price_check.tg_price4 unless price_check == nil %></td>
+    <td><%= render 'rg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 4 %></td>
+    <td><%= render 'hg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 4 %></td>
+    <td><%= render 'kg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 4 %></td>
+    <td><%= render 'tg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 4 %></td>
   </tr>
   <tr>
     <td colspan="3"><%= etc_shop.place %></td>
     <td>&nbsp;</td>
-    <td><%= price_check.rg_price5 unless price_check == nil %></td>
-    <td><%= price_check.hg_price5 unless price_check == nil %></td>
-    <td><%= price_check.kg_price5 unless price_check == nil %></td>
-    <td><%= price_check.tg_price5 unless price_check == nil %></td>
+    <td><%= render 'rg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 5 %></td>
+    <td><%= render 'hg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 5 %></td>
+    <td><%= render 'kg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 5 %></td>
+    <td><%= render 'tg_input_text',:price_check => price_check,:etc_shop_id => etc_shop.id,:num => 5 %></td>
   </tr>
   <% end %>
 </table>
 <%= submit_tag '更新' %>
 <% end %>
+<%= link_to '戻る',:action => 'index'%>

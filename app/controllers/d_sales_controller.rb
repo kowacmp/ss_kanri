@@ -635,7 +635,8 @@ p params
     #フッターにセットする値をセット
     footer[:cash_money] = num_fmt(d_sale_total[:sale_money].to_i - @etc_item_total.item_money.to_i)
     footer[:coin_tesuryo] = num_fmt(@etc_item_total.item_money.to_i)
-    footer[:suito_zan] = num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i)
+    #footer[:suito_zan] = num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i)
+    footer[:suito_zan] = num_fmt(@balance_money)
     
     #PDF出力
     #タイトルセット

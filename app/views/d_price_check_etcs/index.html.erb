@@ -1,15 +1,20 @@
-<%= stylesheet_link_tag    "d_price_checks" %> 
-     <div id="main-navigation">
-        <ul class="wat-cf">
-            <li>
-            	<%= link_to '価格調査入力',:controller =>'d_price_checks',:action => 'index' %></li> 
-            <li class="active">  
-              他社価格調査入力</li> 
-            <li> 
-              <%= link_to '他社マスタ入力',:controller => 'm_etc_shops',:action => 'index' %>
-            </li> 
-        </ul>
-      </div>
+<p>
+   <%= render partial: 'header'%>
+</p>
+
+<p>
+<%= form_tag(url_for(:action => 'edit')) do %>
+<table class="rounded-corner">
+	<tr>
+      <th>調査日</th>
+      <td><%= text_field_tag  "research_day" , @research_day ,:class => 'datepicker',:size => 10%></td>
+		<th>調査時刻</th>
+		<td><%= select_hour Time.now %></td>
+		<td><%= submit_tag "新規登録" %></td>
+	</tr>
+</table>
+<% end %>
+</p>
 
 <%= form_tag(url_for(:action => 'search'),:remote => true) do %>
 <p>
@@ -24,9 +29,6 @@
 </p>
 <% end %>
 
-<p>
-新規入力
-</p>
 <p>
 	<div id="result">
 	    <%= render partial: 'result'%>

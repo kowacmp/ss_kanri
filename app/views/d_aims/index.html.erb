@@ -33,9 +33,12 @@
 	<table id='rounded-corner'>
 		<tr>
 	      <th>対象店舗</th>
-	      <td><%= @m_shop.shop_cd.to_s + "　" + @m_shop.shop_name.to_s %></td>
+	      <td><%= @m_shop.shop_cd %>&nbsp;&nbsp;<%= @m_shop.shop_name %></td>
 		  <th>対象年月</th>
-		  <td><%= select_date(@month_first,{:use_month_numbers=>true,:discard_day=>true})%></td> 
+		  <td><%#= select_date(@month_first,{:use_month_numbers=>true,:discard_day=>true})%>
+		  	<%= select_year(@month_first,:end_year => @month_first.year) %>年
+      		<%= select_month(@month_first,:use_month_numbers=>true) %>月
+		  </td> 
 		  <th>対象区分</th>
 	      <td>
 			<% if @search_aim == 0 %>

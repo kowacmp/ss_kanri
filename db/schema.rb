@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120913075035) do
+ActiveRecord::Schema.define(:version => 20120912075729) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -404,11 +404,15 @@ ActiveRecord::Schema.define(:version => 20120913075035) do
   end
 
   create_table "d_result_meters", :force => true do |t|
-    t.integer  "d_result_id",     :null => false
-    t.integer  "m_meter_id",      :null => false
+    t.integer  "d_result_id",                  :null => false
+    t.integer  "m_oil_id",                     :null => false
+    t.integer  "m_tank_id",                    :null => false
+    t.integer  "m_code_id",                    :null => false
+    t.integer  "number",          :limit => 2, :null => false
+    t.integer  "meter_no",        :limit => 2
     t.integer  "meter"
-    t.integer  "created_user_id", :null => false
-    t.integer  "updated_user_id", :null => false
+    t.integer  "created_user_id",              :null => false
+    t.integer  "updated_user_id",              :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -505,6 +509,7 @@ ActiveRecord::Schema.define(:version => 20120913075035) do
 
   create_table "d_result_tanks", :force => true do |t|
     t.integer  "d_result_id",     :null => false
+    t.integer  "m_oil_id",        :null => false
     t.integer  "m_tank_id",       :null => false
     t.integer  "receive"
     t.integer  "stock"
@@ -726,7 +731,7 @@ ActiveRecord::Schema.define(:version => 20120913075035) do
     t.integer  "updated_user_id",                               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "price"
+    t.integer  "uriage"
   end
 
   create_table "d_washsale_reports", :force => true do |t|
@@ -845,7 +850,7 @@ ActiveRecord::Schema.define(:version => 20120913075035) do
     t.datetime "updated_at"
     t.integer  "max_num",     :limit => 2
     t.integer  "kansa_flg",   :limit => 2
-    t.integer  "tax_flg",     :limit => 2,                 :null => false
+    t.integer  "tax_flg",     :limit => 2,  :default => 0, :null => false
     t.integer  "etc_tani",    :limit => 2,                 :null => false
     t.integer  "etc_class",   :limit => 2
     t.integer  "price"
@@ -1077,16 +1082,6 @@ ActiveRecord::Schema.define(:version => 20120913075035) do
     t.integer  "messege_send", :limit => 2
     t.integer  "menu_cd3",     :limit => 2
   end
-
-  create_table "sessions", :force => true do |t|
-    t.string   "session_id", :null => false
-    t.text     "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
-  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "users", :force => true do |t|
     t.string   "account",                :limit => 10

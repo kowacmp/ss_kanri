@@ -269,6 +269,14 @@
       </div>
      </div>
 </div>
+<% matujitu = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, -1)).strftime("%d").to_i %>
+<% if matujitu == @head.input_day.to_s[8,2].to_i  %>
+<div id="balance_money_info"  style="float:left; padding-left: 500px;">
+	<br />
+	<div class="title_alias">出納残高</div>
+	<div class="input_alias"><%= f.text_field :balance_money, :size=>4, :class=>"money" %></div>
+</div>
+<% end %>
 	  <div id="total_alias">
       <div class="title_alias">売上</div>
       <div class="info_alias"><label id="sale_money_total2"><%= num_fmt(@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i) %></label></div>

@@ -20,6 +20,7 @@ module DSalesHelper
     select_sql << " , a.sale_changebox "
     select_sql << " , a.exist_money "
     select_sql << " , a.over_short "
+    select_sql << " , a.balance_money "
     
     select_sql << " from d_sales a "
     select_sql << " left join(select d_sale_id, sum(item_money) item_money from d_sale_items where m_shop_id = #{@head[:m_shop_id]} and item_class = 3 group by d_sale_id) b on a.id = b.d_sale_id "
@@ -53,6 +54,7 @@ module DSalesHelper
        #@d_sale_calc_aridaka = @zenjitu_d_sale_cash_arigaka.to_i + @d_sale_syokei.to_i + @d_sale.sale_ass.to_i + @d_sale_ass.to_i
        @d_sale_cash_aridaka = d_sale.exist_money
        @calc_exist_money = ((d_sale.exist_money.to_i * -1) + d_sale.over_short.to_i) * -1
+       @balance_money = d_sale.balance_money.to_i
     end
     
     return d_sale, zenjitu_d_sale 
