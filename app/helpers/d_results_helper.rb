@@ -80,7 +80,7 @@ module DResultsHelper
     sql << " where d.m_meter_id = m.id and m.m_tank_id = t.id"
     sql << "   and t.m_shop_id = #{m_shop_id} and d.d_result_id = #{d_result_id}"
     sql << "   and m.deleted_flg = 0 and t.deleted_flg = 0 group by t.m_oil_id order by t.m_oil_id"
-p "oil_betu_meter_sql=#{sql}" 
+
     return sql
   end
   
@@ -96,7 +96,7 @@ p "oil_betu_meter_sql=#{sql}"
   def tank_volume_sql(m_shop_id)
     sql = "select m_oil_id, SUM(volume) from m_tanks"
     sql << " where deleted_flg = 0 and m_shop_id = #{m_shop_id} group by m_oil_id order by m_oil_id"    
-p "tank_volume_sql=#{sql}"
+
     return sql
   end
   
@@ -123,16 +123,6 @@ p "tank_volume_sql=#{sql}"
       old_d_result_id = old_d_result.id
     end
     
-    #メーター進み
-    #m_sql = oil_betu_meter_sql(d_result.m_shop_id, d_result.id)
-    #d_result_meters = DResultMeter.find_by_sql(m_sql)
-    #unless old_d_result.blank?
-      #old_m_sql = oil_betu_meter_sql(d_result.m_shop_id, old_d_result.id)                           
-      #old_d_result_meters = DResultMeter.find_by_sql(old_m_sql)
-    #end
-    
-
-   
     
     result_meter = DResultMeter.find(:first, :conditions => ["d_result_id = ?", d_result.id])
     if result_meter.blank?
@@ -184,26 +174,6 @@ p "tank_volume_sql=#{sql}"
           result_meters[d_result_meter.m_oil_id.to_i][:old_meter] += d_result_meter.old_meter.to_i        
         end
       end
-      
-    
-    
-    
-#      if old_d_result.blank?
-#        d_result_meters.each do |d_result_meter|
-#          result_meters[d_result_meter.m_oil_id.to_i] = Hash::new
-#          result_meters[d_result_meter.m_oil_id.to_i][:meter] = d_result_meter.sum
-#          result_meters[d_result_meter.m_oil_id.to_i][:old_meter] = 0
-#        end            
-#      else
-#        d_result_meters.each do |d_result_meter| 
-#          result_meters[d_result_meter.m_oil_id.to_i] = Hash::new
-#          result_meters[d_result_meter.m_oil_id.to_i][:meter] = d_result_meter.sum
-#        end         
-#        old_d_result_meters.each do |old_d_result_meter|
-#          result_meters[old_d_result_meter.m_oil_id.to_i][:old_meter] = old_d_result_meter.sum
-#        end
-#      end
-          
           
       #地下タンク過不足、仕入、在庫
       dt_sql = oil_betu_result_tank_sql(d_result.id)      
@@ -261,7 +231,7 @@ p "tank_volume_sql=#{sql}"
     cr_sql << " left join d_tank_compute_reports cr on (cr.m_tank_id = t.id and cr.d_result_id = #{d_result_id})"
     cr_sql << " where t.m_oil_id = o.id and t.deleted_flg = 0 and o.deleted_flg = 0"
     cr_sql << "   and t.m_shop_id = #{m_shop_id} order by t.tank_union_no, t.tank_no"
-p "cr_sql=#{cr_sql}"
+
     d_tank_compute_reports = DTankComputeReport.find_by_sql(cr_sql)
     idx, union_no = 0,0
     @d_tank_compute_reports = Array::new
@@ -339,7 +309,6 @@ p "cr_sql=#{cr_sql}"
         
       end  
     end  #d_tank_compute_reports.each_with_index
-    p "@d_tank_compute_reports=#{@d_tank_compute_reports}"
   end
   
   def m_meters_count_sql(m_shop_id)
@@ -351,7 +320,6 @@ p "cr_sql=#{cr_sql}"
   end
   
   def tika_data_create(d_result_id)
-    p "tika_data_create   tika_data_create   tika_data_create   tika_data_create"
     d_result = DResult.find(d_result_id)
     day, yesterday = old_result_date(d_result.result_date)
     old_d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
@@ -390,7 +358,7 @@ p "cr_sql=#{cr_sql}"
       tanks[d_result_tank.m_tank_id][:stock] = d_result_tank.stock.to_i
     end
     
-    m_tanks = MTank.find(:all, :conditions => ["m_shop_id = ? and deleted_flg = 0",current_user.m_shop_id])
+    m_tanks = MTank.find(:all, :conditions => ["m_shop_id = ? and deleted_flg = 0",d_result.m_shop_id])
     m_tanks.each do |m_tank|
       d_tank_compute_report = DTankComputeReport.find(:first, :conditions => ["d_result_id = ? and m_tank_id = ?", d_result_id, m_tank.id])
       old_d_tank_compute_report = DTankComputeReport.find(:first, :conditions => ["d_result_id = ? and m_tank_id = ?", old_d_result_id, m_tank.id])

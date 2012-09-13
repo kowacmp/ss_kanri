@@ -131,85 +131,8 @@
   </div>
 
   <div id="second">
-  <table id='rounded-corner'>
-	<tr>
-	  <th>油種</th>
-	  <th>タンク容量(KL)</th>
-	  <th>メーター進み</th>
-	  <th>メーター過不足</th>
-	  <th>地下タンク過不足</th>
-	  <th>仕入(L)</th>
-	  <th>在庫(L)</th>	
-	  <td rowspan="<%= @meters.size + 1 %>">
-	  	<%= link_to 'メーター詳細', {:controller => 'd_results', :action => 'meter_index', :result_date => @result_date, :m_shop_id => @m_shop.id}, :id => "meter_icon", :class => "modal" %>
-	    <br/><br/><br/>
-	    <%= link_to 'タンク詳細', {:controller => 'd_results', :action => 'tank_index', :result_date => @result_date, :m_shop_id => @m_shop.id}, :id => "tank_icon", :class => "modal" %>
-	  </td>	 	    	  	  	  	  	  
-	</tr>	
-  <% @meters.each do |meter| %>
-    <tr>
-      <th><%= meter[:oil_name] %></th>
-      <th><%= meter[:volume] %></th>
-      <td class="input_no" id="display"><%= meter[:meter_susumi] %></td>
-      <% if meter[:meter_kabusoku].to_i < 0 %>
-        <td class="input_no" id="display" style="color: red;"><%= meter[:meter_kabusoku] %></td>
-      <% else %>  
-        <td class="input_no" id="display"><%= meter[:meter_kabusoku] %></td>
-      <% end %>   
-      
-      <% if meter[:tank_kabusoku].to_i < 0 %>
-        <td class="input_no" id="display" style="color: red;"><%= meter[:tank_kabusoku] %></td>
-      <% else %>
-        <td class="input_no" id="display"><%= meter[:tank_kabusoku] %></td>
-      <% end %>
-      <td class="input_no" id="display"><%= meter[:receive] %></td>
-      <td class="input_no" id="display"><%= meter[:stock] %></td>                                            
-    </tr>
-  <% end %>	
-  </table>
-  <br/>
-
-  <table id='rounded-corner'>
-    <tr>
-      <th>タンク</th>
-      <th>油種</th>
-	  <th>前日在庫</th>
-      <th>受入数量</th>
-      <th>販売数量</th>
-	  <th>計算在庫</th>
-      <th>当日在庫</th>
-      <th>増減</th>
-	  <th>販売累計</th>
-      <th>増減累計</th>
-      <th>増減率</th>
-	  <th>点検</th>			  	  	  
-    </tr>
-  <% @d_tank_compute_reports.each do |d_tank_compute_report| %>
-    <tr>
-      <th>タンク<%= d_tank_compute_report[:tank_no] %></th> 	
-      <th><%= d_tank_compute_report[:oil_name] %></th> 
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:before_stock]) %></td> 
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:receive]) %></td>
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:sale]) %></td>  	
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:compute_stock]) %></td> 
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:after_stock]) %></td> 
-      
-      <% if d_tank_compute_report[:decrease].blank? or ((d_tank_compute_report[:decrease]).abs < d_tank_compute_report[:oil_limit].to_i) %>
-        <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:decrease]) %></td> 
-      <% else %>
-        <td class="input_no" id="display" style="background: gold;"><%= num_fmt(d_tank_compute_report[:decrease]) %></td>
-      <% end %>	
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:sale_total]) %></td> 
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:decrease_total]) %></td> 
-      <td class="input_no" id="display"><%= num_fmt(d_tank_compute_report[:total_percentage], true) %></td> 
-      <td align="center" id="display" style="font-size: 30px;">
-      	<% if d_tank_compute_report[:inspect_flg] == 1 %>
-      	  ○
-      	<% end %>
-      </td>                             
-    </tr>	
-  <% end %>
-  </table>
+    <%= render 'd_result_meter' %><br/>
+    <%= render 'd_tank_compute' %>
   </div>
   
   <div id="third">
@@ -265,4 +188,5 @@
   $(function () {
 	$('#tabs').tabs();
   });	
+	
 </script>

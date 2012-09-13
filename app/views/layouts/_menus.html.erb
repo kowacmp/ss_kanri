@@ -1,22 +1,22 @@
-<% get_menus(current_user.m_authority_id) if $menu1.blank? %>
+<% get_menus(current_user.m_authority_id) if session[:menu1].blank? %>
 <div id="smoothmenu1" class="ddsmoothmenu">
 <ul>
 	<li><a href="/homes">home</a></li>
-	<% $menu1.each do |menu1| %>
+	<% session[:menu1].each do |menu1| %>
 	  <li>
 	  	<a href="#"><%= menu1.display_name %></a>
 
 		<ul>
-		  <% $menu2[menu1.menu_cd1.to_i].each do |menu2| %>
+		  <% session[:menu2][menu1.menu_cd1.to_i].each do |menu2| %>
 			<li>
 			  <% if (menu2.uri).to_s.include?("=") %>
 			    <a href="/<%= "#{menu2.uri}&menu_id=#{menu2.id}" %>"><%= menu2.display_name %></a>
 			  <% else %>
 			    <a href="/<%= "#{menu2.uri}?menu_id=#{menu2.id}" %>"><%= menu2.display_name %></a>
 			  <% end %>
-			  <% unless $menu3[menu1.menu_cd1.to_i][menu2.menu_cd2.to_i].blank? %>
+			  <% unless session[:menu3][menu1.menu_cd1.to_i][menu2.menu_cd2.to_i].blank? %>
 			    <ul>
-			      <% $menu3[menu1.menu_cd1.to_i][menu2.menu_cd2.to_i].each do |menu3| %>
+			      <% session[:menu3][menu1.menu_cd1.to_i][menu2.menu_cd2.to_i].each do |menu3| %>
                     <li>
                     	<% if (menu3.uri).to_s.include?("=") %>
                     	  <a href="/<%= "#{menu3.uri}&menu_id=#{menu3.id}" %>"><%= menu3.display_name %></a>

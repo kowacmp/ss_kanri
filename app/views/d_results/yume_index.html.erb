@@ -4,8 +4,7 @@
 </table>	
 <br/>
 
-
-<%= link_to '新規登録', {:action => 'yume_new', :d_result_id => @d_result.id}, { :remote => true ,:class => 'add_icon'} %>
+<div align="left"><%= link_to '新規登録', {:action => 'yume_new', :d_result_id => @d_result.id}, { :remote => true ,:class => 'add_icon'} %></div>
 <table>
   <td>
     <div id="yume_result"><%= render 'yume_result' %></div>

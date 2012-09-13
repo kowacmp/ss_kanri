@@ -1,4 +1,26 @@
 module DTankComputeReportDetailsHelper
+  def get_select_options(shop_id)
+    options = Array.new
+    tank_union_nos = MTank.where(:m_shop_id => shop_id).group('m_shop_id,tank_union_no').select('m_shop_id,tank_union_no').order('tank_union_no')
+      tank_union_nos.each do |union_no|
+         tank_options = MTank.where(:m_shop_id => union_no.m_shop_id, :tank_union_no => union_no.tank_union_no).order('id')
+         tank_name = ""
+         tank_id = 0
+         i = 0
+         tank_options.each do |tank_option|
+           if i == 0
+             tank_name = tank_option.tank_name
+           else
+             tank_name = tank_name + ",#{tank_option.tank_name}"
+           end
+           
+           tank_id = tank_option.id
+           i = i + 1
+         end
+         options << [tank_name,tank_id]
+       end
+    return options
+  end
   
   def get_tank_ids_tank(tank_id,shop_id,mode) #tank選択時のタンクNo表示
     sql = <<-SQL
@@ -27,14 +49,16 @@ module DTankComputeReportDetailsHelper
   end
 
   def get_select_oil(result_id,oil_id,m_shop_id)
+#    p "*** get_select_oil = #{result_id},#{oil_id},#{m_shop_id}***"
     tank_id = Array.new
 
     tanks = MTank.find(:all,:conditions => ['m_oil_id = ? and m_shop_id = ?',oil_id,m_shop_id])
     tanks.each do |tank|
-      tank_id << tank.tank_no
+      #tank_id << tank.tank_no
+      tank_id << tank.id
     end
     tank_ids = tank_id.join(",")
-    #p "***** tank_ids = #{tank_ids} *****"
+#    p "***** tank_ids = #{tank_ids} *****"
 
 
     sql = "select sum(inspect_flg) inspect_flg,sum(before_stock) before_stock,"
@@ -46,7 +70,7 @@ module DTankComputeReportDetailsHelper
     sql = sql + " and m_tank_id in (#{tank_ids})"
     sql = sql + " group by d_result_id"
     
-
+    p "*** sql = #{sql} ***"
     DTankComputeReport.find_by_sql([sql]).first
   end
   
