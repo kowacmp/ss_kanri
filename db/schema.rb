@@ -850,11 +850,7 @@ ActiveRecord::Schema.define(:version => 20120912075729) do
     t.datetime "updated_at"
     t.integer  "max_num",     :limit => 2
     t.integer  "kansa_flg",   :limit => 2
-<<<<<<< HEAD
     t.integer  "tax_flg",     :limit => 2,  :default => 0, :null => false
-=======
-    t.integer  "tax_flg",     :limit => 2,                 :null => false
->>>>>>> 948b73f5a7467aa46f60bf1bea9da2a314186e5d
     t.integer  "etc_tani",    :limit => 2,                 :null => false
     t.integer  "etc_class",   :limit => 2
     t.integer  "price"
