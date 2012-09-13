@@ -3,10 +3,39 @@
 
 	<%= form_tag({:action => 'search' }, { :remote => true }) do %>
 
+<table id='rounded-corner'>
+	<tr>
+      <th>店舗種別</th>
+      <td>
+      	<%= select("select",'shop_kbn' ,
+	  	 	MCode.find(:all,:conditions => ["kbn = 'shop_kbn'"], :order => 'code').map do |u|
+	      	[u.code_name1,u.code]
+	   		end, :include_blank => "") %>
+      </td>
+	  <th>対象店舗(From)</th>
+	  <td>
+	  	<%= select("select",'shop_from' ,
+	  	 	MShop.find(:all,:conditions => "deleted_flg = 0", :order => 'shop_cd').map do |u|
+	      	[u.shop_ryaku,u.shop_cd]
+	   		end, :include_blank => "") %>
+	  </td>
+	  <td style="border: none">～</td>
+	  <th>対象店舗(To)</th>
+	  <td>
+	  	<%= select("select",'shop_to' ,
+	  	 	MShop.find(:all,:conditions => "deleted_flg = 0", :order => 'shop_cd').map do |u|
+	      	[u.shop_ryaku,u.shop_cd]
+	   		end, :include_blank => "") %>
+	  </td>
+	  <td><%= submit_tag '検索' %></td>
+      </tr>
+</table>
+
+<!--
 	<div id="search_shop_kbn" align="top">
 		<div class="title_alias">店舗種別</div>
 		<div class="select_alias">
-	  	<%= select("select",'shop_kbn' ,
+	  	<%#= select("select",'shop_kbn' ,
 	  	 	MCode.find(:all,:conditions => ["kbn = 'shop_kbn'"], :order => 'code').map do |u|
 	      	[u.code_name1,u.code]
 	   		end, :include_blank => "") %>
@@ -16,7 +45,7 @@
 	<div id="search_shop">
 		<div class="title_alias_from">対象店舗(From)</div>
 		<div class="select_alias">
-	   	<%= select("select",'shop_from' ,
+	   	<%#= select("select",'shop_from' ,
 	  	 	MShop.find(:all,:conditions => "deleted_flg = 0", :order => 'shop_cd').map do |u|
 	      	[u.shop_ryaku,u.shop_cd]
 	   		end, :include_blank => "") %>
@@ -24,14 +53,14 @@
 	   	～
 		<div class="title_alias_to">対象店舗(To)</div>
 		<div class="select_alias">
-	   	<%= select("select",'shop_to' ,
+	   	<%#= select("select",'shop_to' ,
 	  	 	MShop.find(:all,:conditions => "deleted_flg = 0", :order => 'shop_cd').map do |u|
 	      	[u.shop_ryaku,u.shop_cd]
 	   		end, :include_blank => "") %>
 	   	</div>
 	</div>
-  		<%= submit_tag '検索' %>
-  	
+  		<%#= submit_tag '検索' %>
+  	-->
 	<% end %>
 
 <hr>
