@@ -91,7 +91,12 @@ module DTankComputeReportDetailsHelper
        where a.id = b.m_tank_id
        and b.d_result_id = ?
      SQL
-     
-     DTankComputeReport.find_by_sql([sql,m_tank_id,shop_id,d_result_id]).first
+    
+     d_tank_compute = DTankComputeReport.find_by_sql([sql,m_tank_id,shop_id,d_result_id]).first
+     #p "*** d_tank_compute.inspect_flg = #{d_tank_compute.inspect_flg.class} #{d_tank_compute.inspect_flg}***"
+     if d_tank_compute.inspect_flg == nil
+       d_tank_compute = nil
+     end
+     return d_tank_compute
   end
 end

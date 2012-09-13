@@ -9,7 +9,7 @@
                        :id, :shop_name), :include_blank => "") %><br />
     
         <%= f.select(:account, 
-            User.find(:all, :order => 'id').map do |u|
+            User.find(:all, :conditions => ["deleted_flg = 0"], :order => 'id').map do |u|
               [u.user_name,u.account]
             end, :prompt => "選択して下さい") %>
 
