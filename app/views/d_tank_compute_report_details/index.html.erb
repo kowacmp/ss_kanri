@@ -1,26 +1,27 @@
 <h1>地下タンク計算表</h1>
-<table id="rounded-corner">
-	<tr><th>店舗名</th>
-		<td><%= MShop.find(@shop_id).shop_name %>
-	    </td>
-	</tr>
-</table>
-<%= radio_button_tag("rbtn",1,:checked => true) %>油種　
-<%= radio_button_tag("rbtn",2) %>タンク
 <%= form_tag(url_for(:action => 'search'),:remote => true) do %>
 <%= hidden_field_tag 'mode',@mode %>
 <%= hidden_field_tag 'shop_id',@shop_id %>
 <table id='rounded-corner'>
+	<tr><th>店舗名</th>
+		<td><%= MShop.find(@shop_id).shop_name %>
+	    </td>
+	</tr>
 	<tr>
-      <th>対象年月</th>
-      <td><%= select_year(@time_now,:start_year => @start_year, :end_year => @time_now.year) %><%= select_month(@time_now,:use_month_numbers => true) %></td>
-	  <th><div id="select_text">油種</div></th>
-	  <td>
-	  <div id="select_box">
-	  	<%= render partial: 'select_oil'%>
-	  </div>
-	  </td>
-	  <td><%= submit_tag "検索" %></td>
+		<th>対象年月</th>
+		<td><%= select_year(@time_now,:start_year => @start_year, :end_year => @time_now.year) %>年<%= select_month(@time_now,:use_month_numbers => true) %>月</td>
+		<th>出力種別</th>
+		<td>
+		<%= radio_button_tag("rbtn",1,:checked => true) %>油種　
+		<%= radio_button_tag("rbtn",2) %>タンク
+		</td>
+		<th><div id="select_text">油種</div></th>
+		<td>
+		<div id="select_box">
+			<%= render partial: 'select_oil'%>
+		</div>
+		</td>
+		<td><%= submit_tag "表示" %></td>
       </tr>
 </table>
 <% end %>

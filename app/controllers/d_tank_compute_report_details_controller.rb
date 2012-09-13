@@ -39,9 +39,11 @@ class DTankComputeReportDetailsController < ApplicationController
       
       @tank_id = params[:select_tank].to_i unless params[:select_tank] == nil
       @oil_id = params[:select_oil].to_i unless params[:select_oil] == nil
-
+#      p "*** oil_id = #{@oil_id} ***"
         @d_results = DResult.find(:all,
           :conditions => ['result_date between ? and ? and m_shop_id = ?',@from_ymd,@to_ymd,@shop_id])
+          
+
   end
 
   def change_radio

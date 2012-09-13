@@ -21,7 +21,7 @@
       <% @shops.each do |shop| %>
         <% result = get_d_result(shop.id,@input_ymd_s) %>
         <% unless result == nil %>
-          <% @print = DTankDecreaseReport.find(result.id) %>
+          <% @print = DTankDecreaseReport.where(:d_result_id => result.id) %>
         <% else %>
           <% @print = nil %>
         <% end %>
