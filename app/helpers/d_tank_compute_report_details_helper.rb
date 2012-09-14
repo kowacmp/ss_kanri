@@ -3,20 +3,26 @@ module DTankComputeReportDetailsHelper
     options = Array.new
     tank_union_nos = MTank.where(:m_shop_id => shop_id).group('m_shop_id,tank_union_no').select('m_shop_id,tank_union_no').order('tank_union_no')
       tank_union_nos.each do |union_no|
-         tank_options = MTank.where(:m_shop_id => union_no.m_shop_id, :tank_union_no => union_no.tank_union_no).order('id')
+         sql = "select t.*, o.oil_name from m_tanks t, m_oils o"
+         sql << " where t.m_oil_id = o.id and tank_union_no = #{union_no.tank_union_no}"
+         sql << "   and m_shop_id = #{union_no.m_shop_id} order by tank_no" 
+
+         tank_options = MTank.find_by_sql(sql)
          tank_name = ""
          tank_id = 0
-         i = 0
-         tank_options.each do |tank_option|
+         tank_options_end = tank_options.size - 1
+         
+         tank_options.each_with_index do |tank_option, i|
            if i == 0
              tank_name = tank_option.tank_name
            else
-             tank_name = tank_name + ",#{tank_option.tank_name}"
+             tank_name = tank_name + " - #{tank_option.tank_no}"
            end
            
-           tank_id = tank_option.id
-           i = i + 1
-         end
+           tank_name = tank_name + " : #{tank_option.oil_name}" if tank_options_end == i
+           tank_id = tank_option.id   
+         end         
+         
          options << [tank_name,tank_id]
        end
     return options

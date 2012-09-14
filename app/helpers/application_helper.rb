@@ -10,7 +10,6 @@ module ApplicationHelper
     session[:menu3] = Array::new
     
     session[:menu1].each do |menu1|
-      #sql2 = "select m.* from authority_menus a, menus m"
       sql2 = "select m.id, m.menu_cd2, m.uri, m.display_name"
       sql2 << " from authority_menus a, menus m"
       sql2 << " where a.m_authority_id = #{m_authority_id} and a.menu_id = m.id and m.menu_cd2 <> 0"

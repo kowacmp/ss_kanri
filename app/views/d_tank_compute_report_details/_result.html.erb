@@ -15,7 +15,7 @@
 
 <table id="rounded-corner">
 <tr>
-	<th colspan="2" rowspan="3"><%= @from_ymd[0,4]%>年<br /><%= @from_ymd[4,2].to_i %>月</th>
+	<th colspan="2"><%= @from_ymd[0,4]%>年<br /><%= @from_ymd[4,2].to_i %>月</th>
 	<th>検査官<br />点検</th>
 	<th>前日営業<br />終了後の<br />実在庫量</th>
     <th>ローリー<br />からの<br />受入数量</th>
@@ -28,7 +28,7 @@
     <th>累計<br />増減率</th>
 </tr>
 <tr>
-	<th rowspan="2">（注）</th>
+	<th rowspan="2" colspan="3">（注）</th>
     <th>A</th>
     <th>B</th>
     <th>C</th>
