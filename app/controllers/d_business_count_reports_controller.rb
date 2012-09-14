@@ -19,13 +19,15 @@ class DBusinessCountReportsController < ApplicationController
     
     #油外のみ
     @shops = MShop.where(:deleted_flg => 0,:shop_kbn => 1).order(:shop_cd).select('id,shop_name,shop_ryaku,shop_cd')
-    @m_oiletcs = MOiletc.where(:oiletc_cd => 11..15).order('oiletc_cd')
+    #@m_oiletcs = MOiletc.find(:all,:conditions => ['oiletc_cd in (1,4,6,7,13)'],:order => 'oiletc_cd')
     @m_aims = MAim.where(:aim_code => 11..15).order('aim_code')
   end
 
   def print
     @input_ymd = params[:input_ymd].delete("/")
-    m_oiletcs = MOiletc.where(:oiletc_cd => 11..15).order('oiletc_cd')
+#    m_oiletcs = MOiletc.where(:oiletc_cd => 11..15).order('oiletc_cd')
+#    m_oiletcs = MOiletc.find(:all,:conditions => ['oiletc_cd in (1,4,6,7,13)'],:order => 'oiletc_cd')
+    @m_aims = MAim.where(:aim_code => 11..15).order('aim_code')
     ym = @input_ymd[0,6]
     #油外のみ
     shops = MShop.where(:deleted_flg => 0,:shop_kbn => 1).order(:shop_cd).select('id,shop_name,shop_ryaku,shop_cd')
@@ -43,10 +45,14 @@ class DBusinessCountReportsController < ApplicationController
     report.start_new_page
  
     report.page.list(:list).header do |h|
-      i = 0
-      m_oiletcs.each do |m_oiletc|
-        i = i + 1
-        h.item("oiletc_#{i}").value(m_oiletc.oiletc_name)
+      #i = 0
+      #m_oiletcs.each do |m_oiletc|
+        #i = i + 1
+        h.item(:oiletc_1).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 1']).first.oiletc_ryaku)
+        h.item(:oiletc_2).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 4']).first.oiletc_ryaku)
+        h.item(:oiletc_3).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 6']).first.oiletc_ryaku)
+        h.item(:oiletc_4).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 13']).first.oiletc_ryaku)
+        h.item(:oiletc_5).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 7']).first.oiletc_ryaku)
         tmp_ymd = @input_ymd.to_time
         h.item(:month_1).value(tmp_ymd.month)
         tmp_ymd = tmp_ymd.next_month
@@ -55,14 +61,14 @@ class DBusinessCountReportsController < ApplicationController
         h.item(:month_3).value(tmp_ymd.month)
         tmp_ymd = tmp_ymd.next_month
         h.item(:month_4).value(tmp_ymd.month)
-      end
+      #end
     end
     
     # 詳細作成
     shops.each do |shop|
       report.page.list(:list).add_row do |row|
         #油外ここから
-        row.item(:shop_name).value(shop.shop_ryaku)
+        row.item(:shop_name).value(shop.shop_name)
         row.item(:aim_1).value(get_d_aim_total(ym,shop.id,11)) 
         row.item(:aim_2).value(get_d_aim_total(ym,shop.id,12)) 
         row.item(:aim_3).value(get_d_aim_total(ym,shop.id,13)) 

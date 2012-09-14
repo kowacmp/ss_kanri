@@ -1,15 +1,25 @@
 <h1>分類チェックマスタメンテ</h1>
 
 <%= form_tag({:action => 'search' }, { :remote => true }) do %>
-  <% if @check_del_flg == 0%>
-  	<%= check_box(:check,:deleted_flg,{},true,false) %>
-  <% else %>
-  	<%= check_box(:check,:deleted_flg,{:checked => true},true,false) %>
-  <% end %>
   
-  削除項目も表示する。
-  <%= submit_tag '表示' %>
+<table id='rounded-corner'>
+	<tr>
+		<th>表示対象</th>
+		<td>
+			<% if @check_del_flg == 0%>
+			  	<%= check_box(:check,:deleted_flg,{},true,false) %>
+			<% else %>
+			  	<%= check_box(:check,:deleted_flg,{:checked => true},true,false) %>
+			<% end %>
+			削除項目も表示する。
+		</td>
+		<td style="border: none"><%= submit_tag '検索' %></td>
+	</tr>
+</table>
+
 <% end %>
+
+<hr>
 
 <%= link_to '新規登録', new_m_class_check_path, :class => 'add_icon' %>
 <br />

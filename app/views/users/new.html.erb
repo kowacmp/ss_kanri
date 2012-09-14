@@ -58,11 +58,25 @@
 	  	  <th><%= f.label "生年月日" %></th>
 	  	  <td><%= f.date_select :birthday,:use_month_numbers=>true,:start_year=>Date.today.year - 100 %></td>	  
 	  	</tr>
+	  	
+	  	<tr>
+	  		<td align="left" style="border: none">
+	  			<%= link_to '戻る', users_path, :class => 'return_icon' %>
+			</td>
+		  	<td align="right" style="border: none">
+		  		<% if f.object.new_record? %>
+				<%= f.submit "  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？' %>
+				<% else %>
+				<%= f.submit "  更  新  ",:disable_with => "更新中.....",:confirm => '更新しても良いですか？' %>
+				<% end %>
+			</td>
+		</tr>
+	  	
 	</table>	
 	  
-  <div class="actions">
-    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
-  </div>
+  <!--div class="actions">
+    <%#= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div-->
 <% end %>
 
-<%= link_to '戻る', users_path, :class => 'return_icon' %>
+<%#= link_to '戻る', users_path, :class => 'return_icon' %>

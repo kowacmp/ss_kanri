@@ -350,13 +350,12 @@
 	 
 	<div class="actions">
 		<%= link_to '戻る', m_shops_path, :class => 'return_icon' %>
-		<%= f.submit f.object.new_record? ? '  登  録  ' : '  更  新  '%>
-		<%# if f.object.new_record? %>
-		<%#= f.submit "  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？',:id=>'filter_submit' %>
-		<%# else %>
-		<%#= f.submit "  更  新  ",:disable_with => "更新中.....",:confirm => '更新しても良いですか？',:id=>'filter_submit' %>
-		<%# end %>
-		</div>
+		<%#= f.submit f.object.new_record? ? '  登  録  ' : '  更  新  ' ,:id=>'filter_submit' %>
+		<% if f.object.new_record? %>
+		<%= f.submit "  登  録  ",:confirm => '登録しても良いですか？',:id=>'filter_submit' %>
+		<% else %>
+		<%= f.submit "  更  新  ",:confirm => '更新しても良いですか？',:id=>'filter_submit' %>
+		<% end %>
 	</div>
 	
 <% end %>
@@ -368,6 +367,10 @@
 <script type="text/javascript">
 
 	 function m_shop_val(){
+	 	var submit_name = document.getElementById('filter_submit').value;
+	 	//document.getElementById('filter_submit').value = $.trim(submit_name) + "中.....";
+	 	document.getElementById('filter_submit').value = submit_name.replace(/ /g,'') + "中.....";
+	 	document.getElementById('filter_submit').disabled = true;
 	 	
 	 	var error_msg_s = '<div id="error_explanation"><ul><h2>エラーが存在します。</h2>';
 	 	var error_msg_m = '';
@@ -627,6 +630,8 @@
 	 		document.getElementById("error_msg").innerHTML = "";
 	 		return true;
 	 	}
+	 	document.getElementById('filter_submit').disabled = false;
+	 	document.getElementById('filter_submit').value = submit_name
 	 	return false;
 	 };
      

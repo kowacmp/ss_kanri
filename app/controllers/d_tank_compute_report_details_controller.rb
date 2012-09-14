@@ -35,8 +35,10 @@ class DTankComputeReportDetailsController < ApplicationController
       @this_month = @year + @month
       @from_ymd = @this_month + '01'
       @to_ymd = @this_month + '31'
+      @last_month_last_day = (@from_ymd[0,4] + "/" + @from_ymd[4,2] + "/" + @from_ymd[6,2]).to_time.yesterday
+      @dr_lastday = DResult.find(:all,
+          :conditions => ['result_date = ? and m_shop_id = ?',@last_month_last_day.strftime("%Y%m%d"),@shop_id]).first
 
-      
       @tank_id = params[:select_tank].to_i unless params[:select_tank] == nil
       @oil_id = params[:select_oil].to_i unless params[:select_oil] == nil
 #      p "*** oil_id = #{@oil_id} ***"
@@ -64,17 +66,29 @@ class DTankComputeReportDetailsController < ApplicationController
       @shop_id = current_user.m_shop_id
     end   
     
-      sum_receive = 0
-      sum_compute_stock = 0
-      sum_decrease = 0
-      last_sale_total = 0
+      sum_receive        = 0
+      sum_compute_stock  = 0
+      sum_decrease       = 0
+      last_sale_total    = 0
       sum_decrease_total = 0
-      tank_no = Array.new
+      tank_no            = Array.new
       tank_volume = 0
       @tank_id = params[:tank_id].to_i unless params[:tank_id] == nil
       @oil_id = params[:oil_id].to_i unless params[:oil_id] == nil
       @from_ymd = params[:from_ymd]
+      @to_ymd = params[:to_ymd]
       
+      last_month_last_day = (@from_ymd[0,4] + "/" + @from_ymd[4,2] + "/" + @from_ymd[6,2]).to_time.yesterday
+      dr_lastday = DResult.find(:all,
+          :conditions => ['result_date = ? and m_shop_id = ?',last_month_last_day.strftime("%Y%m%d"),@shop_id]).first
+
+      unless params[:oil_id] == nil or params[:oil_id] == "" # 油種の場合
+        tank_compute_last = get_select_oil(dr_lastday.id,@oil_id,@shop_id) unless dr_lastday == nil
+      end
+      unless params[:tank_id] == nil or params[:tank_id] == "" #タンクの場合
+       tank_compute_last = get_select_tank(dr_lastday.id,@tank_id,@shop_id) unless dr_lastday == nil 
+      end
+
       report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_tank_compute_report.tlf')
 
 
@@ -113,6 +127,11 @@ class DTankComputeReportDetailsController < ApplicationController
           page.item(:oil_name).value(MOil.find(tank.m_oil_id).oil_name)
         end
         page.item(:user_name).value(current_user.user_name)
+        
+        
+        page.item(:receive_last).value(tank_compute_last.receive)
+        page.item(:sale_last).value(tank_compute_last.sale)
+        page.item(:after_stock_last).value(tank_compute_last.after_stock)
       end
 
 
