@@ -118,6 +118,19 @@ class DPriceChecksController < ApplicationController
         price_check.created_user_id = current_user.id
         price_check.updated_user_id = current_user.id
         price_check.save!
+        
+        @etc_shops = MEtcShop.where(:m_shop_id => current_user.m_shop_id).order('access_group,id')
+        @etc_shops.each do |etc_shop|
+          price_check_etc = DPriceCheckEtc.new
+          price_check_etc.m_etc_shop_id = etc_shop.id
+          price_check_etc.research_day  = @research_day
+          price_check_etc.research_time = @research_time
+          price_check_etc.created_user_id = current_user.id
+          price_check_etc.updated_user_id = current_user.id
+          price_check_etc.save!
+        end
+    
+        
       end #unless
 
     @price_check = DPriceCheck.where(:research_day => @research_day,:research_time => @research_time,
