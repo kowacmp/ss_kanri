@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 class User < ActiveRecord::Base
+  belongs_to :m_shop
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable

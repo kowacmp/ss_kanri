@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 class DPriceChecksController < ApplicationController
   def index
     search
@@ -149,4 +150,100 @@ class DPriceChecksController < ApplicationController
       :m_shop_id => current_user.m_shop_id).first
   end
 
+  def print
+    @research_day  = params[:research_day]
+    @research_time = params[:research_time]
+    price_check = DPriceCheck.where(:research_day => @research_day,:research_time => @research_time,
+      :m_shop_id => current_user.m_shop_id).first
+  
+    etc_shops = MEtcShop.where(:m_shop_id => current_user.m_shop_id).order('access_group,id')
+    
+    
+    report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_price_check_report.tlf')
+
+     #ページ、作成日、タイトル設定
+    report.events.on :page_create do |e|
+      e.page.item(:page).value(e.page.no)
+      e.page.item(:sakusei_ymd).value(Time.now.strftime("%Y-%m-%d"))
+      e.page.item(:year).value(@research_day[0,4].to_i)
+      e.page.item(:month).value(@research_day[4,2].to_i)
+      e.page.item(:day).value(@research_day[6,2].to_i)
+      e.page.item(:hour).value(@research_time.to_i)
+      e.page.item(:shop_name).value(current_user.m_shop.shop_ryaku)
+      e.page.item(:rg_price1).value(price_check.rg_price1)
+      e.page.item(:rg_price2).value(price_check.rg_price2)
+      e.page.item(:rg_price3).value(price_check.rg_price3)
+      e.page.item(:rg_price4).value(price_check.rg_price4)
+      e.page.item(:rg_price5).value(price_check.rg_price5)
+      e.page.item(:rg_price6).value(price_check.rg_price6)      
+      e.page.item(:hg_price1).value(price_check.hg_price1)
+      e.page.item(:hg_price2).value(price_check.hg_price2)
+      e.page.item(:hg_price3).value(price_check.hg_price3)
+      e.page.item(:hg_price4).value(price_check.hg_price4)
+      e.page.item(:hg_price5).value(price_check.hg_price5)
+      e.page.item(:hg_price6).value(price_check.hg_price6)
+      e.page.item(:kg_price1).value(price_check.kg_price1)
+      e.page.item(:kg_price2).value(price_check.kg_price2)
+      e.page.item(:kg_price3).value(price_check.kg_price3)
+      e.page.item(:kg_price4).value(price_check.kg_price4)
+      e.page.item(:kg_price5).value(price_check.kg_price5)
+      e.page.item(:kg_price6).value(price_check.kg_price6)
+      e.page.item(:tg_price1).value(price_check.tg_price1)
+      e.page.item(:tg_price2).value(price_check.tg_price2)
+      e.page.item(:tg_price3).value(price_check.tg_price3)
+      e.page.item(:tg_price4).value(price_check.tg_price4)
+      e.page.item(:tg_price5).value(price_check.tg_price5)
+      e.page.item(:tg_price6).value(price_check.tg_price6)      
+      #e.page.item(:note1).value(price_check.note1)
+      #e.page.item(:note2).value(price_check.note2)
+      #e.page.item(:note3).value(price_check.note3)
+      #e.page.item(:note4).value(price_check.note4)
+      #e.page.item(:note5).value(price_check.note5)
+      #e.page.item(:note6).value(price_check.note6)
+    end #evants.on
+ 
+    report.start_new_page
+ 
+    # 詳細作成
+    etc_shops.each do |etc_shop|
+      price_check_etc = DPriceCheckEtc.where(:research_day => @research_day,
+          :research_time => @research_time,:m_etc_shop_id => etc_shop.id).first
+     unless price_check_etc == nil
+      report.page.list(:list).add_row do |row|
+        #油外ここから
+        row.item(:rg_price1).value(price_check_etc.rg_price1)
+        row.item(:rg_price2).value(price_check_etc.rg_price2)
+        row.item(:rg_price3).value(price_check_etc.rg_price3)
+        row.item(:rg_price4).value(price_check_etc.rg_price4)
+        row.item(:rg_price5).value(price_check_etc.rg_price5)
+        row.item(:hg_price1).value(price_check_etc.hg_price1)
+        row.item(:hg_price2).value(price_check_etc.hg_price2)
+        row.item(:hg_price3).value(price_check_etc.hg_price3)
+        row.item(:hg_price4).value(price_check_etc.hg_price4)
+        row.item(:hg_price5).value(price_check_etc.hg_price5)
+        row.item(:kg_price1).value(price_check_etc.kg_price1)
+        row.item(:kg_price2).value(price_check_etc.kg_price2)
+        row.item(:kg_price3).value(price_check_etc.kg_price3)
+        row.item(:kg_price4).value(price_check_etc.kg_price4)
+        row.item(:kg_price5).value(price_check_etc.kg_price5)
+        row.item(:tg_price1).value(price_check_etc.tg_price1)
+        row.item(:tg_price2).value(price_check_etc.tg_price2)
+        row.item(:tg_price3).value(price_check_etc.tg_price3)
+        row.item(:tg_price4).value(price_check_etc.tg_price4)
+        row.item(:tg_price5).value(price_check_etc.tg_price5)
+        row.item(:note).value(price_check_etc.note)
+      end #add_row
+     end # unless
+    end # times
+
+    #ファイル名セット     
+    pdf_title = "価格調査表.pdf"
+    ua = request.env["HTTP_USER_AGENT"]
+    pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
+      
+    #pdfを作成
+    send_data report.generate, :filename    => pdf_title ,#URI.encode(pdf_title), #KOWA IEでファイルをダウンロードすると文字化けするため
+                               :type        => 'application/pdf',
+                               :disposition => 'attachment'
+  end
 end
