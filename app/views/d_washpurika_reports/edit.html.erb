@@ -1,6 +1,10 @@
-<h1>Editing d_washpurika_report</h1>
+<%= render :partial => 'header', :locals => {:ym_y => params[:header][:y],
+	                                         :ym_m => params[:header][:m] } %>
 
-<%= render 'form' %>
+<hr/>
 
-<%= link_to 'Show', @d_washpurika_report %> |
-<%= link_to 'Back', d_washpurika_reports_path %>
+<%if @d_washpurika_reports.length > 0 then%>
+	<%= render :partial => 'form' %>
+<%else %>
+	<%= render :partial => 'form0'%>
+<%end %>
