@@ -131,6 +131,9 @@
   </div>
 
   <div id="second">
+    <%= link_to 'メーター詳細', {:controller => 'd_results', :action => 'meter_index', :result_date => @result_date, :m_shop_id => @m_shop.id, :edit_flg => @edit_flg}, :id => "meter_icon", :class => "modal" %>
+	&nbsp;&nbsp;&nbsp;
+    <%= link_to 'タンク詳細', {:controller => 'd_results', :action => 'tank_index', :result_date => @result_date, :m_shop_id => @m_shop.id, :edit_flg => @edit_flg}, :id => "tank_icon", :class => "modal" %>  	
     <%= render 'd_result_meter' %><br/>
     <%= render 'd_tank_compute' %>
   </div>
@@ -184,9 +187,4 @@
   </div>
 </div>
 
-<script>
-  $(function () {
-	$('#tabs').tabs();
-  });	
-	
-</script>
+<%= javascript_include_tag "tabs" %>

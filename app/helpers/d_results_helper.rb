@@ -281,7 +281,7 @@ module DResultsHelper
         
         inspect_sql = "select sum(cr.inspect_flg) from d_tank_compute_reports cr, m_tanks t" + joken
         inspect = DTankComputeReport.find_by_sql(inspect_sql)
-        
+
         if inspect[0].sum.blank?
           @d_tank_compute_reports[idx][:inspect_flg] = ""
         elsif count.to_i == inspect[0].sum.to_i
@@ -333,20 +333,39 @@ module DResultsHelper
     
   #地下タンク計算データ-------------------------
     
-    #販売数量SQL
-    meter_sql = "select t.id m_tank_id, SUM(COALESCE(dm.meter, 0)) meter_sum, SUM(COALESCE(old_dm.meter, 0)) old_meter_sum"                                                     
+    #販売数量SQL                                                   
+    meter_sql = "select t.id m_tank_id, dm.meter, old_dm.meter old_meter"                                                     
     meter_sql << " from m_tanks t, m_meters m"
     meter_sql << " left join d_result_meters dm on (dm.m_meter_id = m.id and dm.d_result_id = #{d_result.id})"
     meter_sql << " left join d_result_meters old_dm on (old_dm.m_meter_id = m.id and old_dm.d_result_id = #{old_d_result_id})"
     meter_sql << " where t.deleted_flg = 0 and m.deleted_flg = 0 and t.id = m.m_tank_id"
-    meter_sql << "   and t.m_shop_id = #{d_result.m_shop_id} group by t.id"                                                     
-
-    meter_sales = MMeter.find_by_sql(meter_sql)          
+    meter_sql << "   and t.m_shop_id = #{d_result.m_shop_id} order by t.id" 
+    p "meter_sql=#{meter_sql}"
+    meter_sales = MMeter.find_by_sql(meter_sql)
+           
     sales = Array::new
+    tank_id = ""
     
-    meter_sales.each do |meter_sale|
-      sales[meter_sale.m_tank_id] = Hash::new
-      sales[meter_sale.m_tank_id][:sale] = meter_sale.meter_sum.to_i - meter_sale.old_meter_sum.to_i
+    #販売数量算出
+    meter_sales.each_with_index do |meter_sale, idx|
+      if tank_id != meter_sale.m_tank_id
+        tank_id = meter_sale.m_tank_id
+        sales[meter_sale.m_tank_id] = Hash::new
+        
+        if meter_sale.meter.to_i < meter_sale.old_meter.to_i
+          sales[meter_sale.m_tank_id][:sale] = meter_sale.meter.to_i
+        else
+          sales[meter_sale.m_tank_id][:sale] = meter_sale.meter.to_i - meter_sale.old_meter.to_i  
+        end 
+      else  
+        tank_id = meter_sale.m_tank_id
+        
+        if meter_sale.meter.to_i < meter_sale.old_meter.to_i
+          sales[meter_sale.m_tank_id][:sale] += meter_sale.meter.to_i
+        else
+          sales[meter_sale.m_tank_id][:sale] += meter_sale.meter.to_i - meter_sale.old_meter.to_i  
+        end        
+      end
     end                                                       
     
     #地下タンク仕入量、在庫量抽出

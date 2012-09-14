@@ -1,7 +1,7 @@
 #coding: utf-8
 module DSaleEtcsHelper
   
-  def get_zenkai_date(sale_date)
+  def get_zenkai_date1(sale_date)
     if sale_date.length == 10
       sale_date = sale_date.delete("/")
     end

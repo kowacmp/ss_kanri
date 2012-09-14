@@ -8,7 +8,7 @@ class DSaleEtcsController < ApplicationController
     @shop = MShop.find(current_user.m_shop_id)
     @input_ymd = Time.now.strftime("%Y/%m/%d")
     @input_ymd_s = Time.now.strftime("%Y%m%d")
-    @input_ymd_mae_s = get_zenkai_date(@input_ymd_s)
+    @input_ymd_mae_s = get_zenkai_date1(@input_ymd_s)
     @d_sale_etc_today     = get_d_sale_etc(@input_ymd_s)
     unless @d_sale_etc_today == nil
       @d_sale_etc_details_today =get_d_sale_etc_details(@d_sale_etc_today.id)
@@ -65,7 +65,7 @@ class DSaleEtcsController < ApplicationController
     @input_ymd = params[:input_ymd]
     @m_etcs = get_m_etcs
     @input_ymd_s = params[:input_ymd].delete("/")
-    @input_ymd_mae_s = get_zenkai_date(params[:input_ymd])
+    @input_ymd_mae_s = get_zenkai_date1(params[:input_ymd])
     @d_sale_etc_today     = get_d_sale_etc(@input_ymd_s)
     @d_sale_etc_mae = get_d_sale_etc(@input_ymd_mae_s)
   end
@@ -86,7 +86,7 @@ class DSaleEtcsController < ApplicationController
         @price = etc.price
         
         sum_uriage = 0
-        @d_sale_etc_mae = get_d_sale_etc(get_zenkai_date(params[:sale_date]))
+        @d_sale_etc_mae = get_d_sale_etc(get_zenkai_date1(params[:sale_date]))
 
         etc.max_num.times do |i| #times
           
@@ -135,7 +135,7 @@ class DSaleEtcsController < ApplicationController
         
         #誤差更新
         @d_sale_etc_detail = get_d_sale_etc_detail(@d_sale_etc.id,etc.id,99)
-        @d_sale_etc_mae = get_d_sale_etc(get_zenkai_date(params[:sale_date]))
+        @d_sale_etc_mae = get_d_sale_etc(get_zenkai_date1(params[:sale_date]))
          unless @d_sale_etc_detail == nil #unless1
            #データあり
            unless @d_sale_etc_detail.meter == params["meter_#{etc.etc_cd.to_s}_99"] #unless2
@@ -171,7 +171,7 @@ class DSaleEtcsController < ApplicationController
       @shop = MShop.find(current_user.m_shop_id)
       @input_ymd = params[:sale_date].to_time.strftime("%Y/%m/%d")
       @input_ymd_s = params[:sale_date]
-      @input_ymd_mae_s = get_zenkai_date(@input_ymd_s)
+      @input_ymd_mae_s = get_zenkai_date1(@input_ymd_s)
       @d_sale_etc_today     = get_d_sale_etc(@input_ymd_s)
       @d_sale_etc_mae = get_d_sale_etc(@input_ymd_mae_s)
       format.html { render action: "index", notice: 'D sale etc was successfully updated.' }
