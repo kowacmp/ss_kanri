@@ -60,11 +60,11 @@
 	  	</tr>
 	  	<tr>
 	  	  <th><%= f.label "入社日" %></th>
-	  	  <td><%= f.date_select :nyusya_date,:use_month_numbers=>true,:start_year=>Date.today.year - 100 %></td>  	  
+	  	  <td><%= f.date_select :nyusya_date,:use_month_numbers=>true,:start_year=>Date.today.year - 100, :use_month_numbers => true %></td>  	  
 	  	</tr>
 	  	<tr>
 	  	  <th><%= f.label "生年月日" %></th>
-	  	  <td><%= f.date_select :birthday,:use_month_numbers=>true,:start_year=>Date.today.year - 100 %></td>  	  
+	  	  <td><%= f.date_select :birthday,:use_month_numbers=>true,:start_year=>Date.today.year - 100, :use_month_numbers => true %></td>  	  
 	  	</tr>
 		<% end %>
 	

@@ -23,20 +23,28 @@ class DPriceCheckEtcsController < ApplicationController
       @this_month = @year + @month
       @from_ymd = @this_month + '01'
       @to_ymd = @this_month + '31'
-      p "*** from_ymd = #{@from_ymd} to_ymd = #{@to_ymd} ***"
+      #p "*** from_ymd = #{@from_ymd} to_ymd = #{@to_ymd} ***"
       @d_price_check_etcs = DPriceCheckEtc.where(:research_day => @from_ymd..@to_ymd).group(
         'research_day,research_time').select(
           'research_day,research_time').order(
             'research_day,research_time')
       
-    
+    @research_day = Time.now.strftime("%Y/%m/%d")
 
   end
 
   def edit
     @etc_shops = MEtcShop.where(:m_shop_id => current_user.m_shop_id).order('access_group,id')
-    @research_day  = params[:research_day]
-    @research_time = params[:research_time]
+    unless  params[:research_day].length == 8
+      @research_day  = params[:research_day].delete("/")
+    else
+      @research_day  = params[:research_day]
+    end
+    if params[:date] == nil or params[:date] == ""
+      @research_time = params[:research_time]
+    else
+      @research_time = params[:date][:hour]
+    end
   end
 
   def update

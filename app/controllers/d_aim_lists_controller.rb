@@ -6,7 +6,7 @@ class DAimListsController < ApplicationController
   end
 
   def search
-    
+
     if params[:date] == nil
       date = DateTime.now
       year = date.strftime("%Y")
@@ -18,7 +18,7 @@ class DAimListsController < ApplicationController
     
     @month_first = Date.new(year.to_i,month.to_i,1)
     @input_ymd = Date.new(year.to_i,month.to_i,1).strftime("%Y/%m/%d")
-
+    
     if params[:shop_kbn] == nil
       @shop_kbn = 0
     else
@@ -45,8 +45,8 @@ class DAimListsController < ApplicationController
     select_sql << " ) b on a.id = b.m_shop_id "
     
     select_sql << " left join (select id,updated_user_id as last_user_id, "
-    select_sql << "         to_char(updated_at,'YYYY/MM/DD') as last_update from d_aims) c on b.max_id = c.id "
-    select_sql << " left join (select id,user_name as last_user_name from users) d on c.last_user_id = d.id "
+    select_sql << "         to_char(updated_at,'YYYYMMDD') as last_update_at from d_aims) c on b.max_id = c.id "
+    select_sql << " left join (select id,account as last_account,user_name as last_user_name from users) d on c.last_user_id = d.id "
    
    
     condition_sql = " where a.deleted_flg = 0 and a.shop_kbn = #{@shop_kbn}"

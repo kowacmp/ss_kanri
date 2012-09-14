@@ -60,7 +60,12 @@
     <td><!-- 日計 -->
     	<% d_result = get_result(@input_ymd.delete("/"),shop.id) %>
     	<% unless d_result == nil %>
-    	  <%= DResultCollect.where(:d_result_id => d_result.id,:m_oiletc_id => m_aim.id).first.get_num %>
+    	  <% dr_collect = DResultCollect.where(:d_result_id => d_result.id,:m_oiletc_id => m_aim.id).first %>
+    	  <% unless dr_collect == nil %>
+    	    <%= dr_collect.get_num %>
+    	  <% else %>
+    	    0
+    	  <% end %>
         <% else %>
           0
         <% end %>

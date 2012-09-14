@@ -452,7 +452,7 @@ module DResultsHelper
         elsif oil_percent.nan?  
           oil_percent = 0        
         end             
-       # oil_percent = 999.99  if oil_percent >= 1000
+
         d_tank_decrease_report.oil_percent = oil_percent.round(2)
         
         oil_percent_total = d_tank_decrease_report.oil2_num_total.to_f / d_tank_compute_report.sale_total_sum.to_f * 100        
@@ -464,7 +464,7 @@ module DResultsHelper
         elsif oil_percent_total.nan?  
           oil_percent_total = 0        
         end        
-        #oil_percent_total = 999.99  if oil_percent_total >= 1000        
+     
         d_tank_decrease_report.oil_percent_total = oil_percent_total.round(2)        
       end
     end

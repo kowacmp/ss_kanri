@@ -2,18 +2,21 @@
 <h1>計量機マスタメンテ</h1>
 
 <%= form_tag({:action => 'search' }, { :remote => true }) do %>
-	<%= select( "m_oil", 'm_oil_id',@m_oils.map do |u| [u.oil_name,u.id] end ) %>
-	
-  <%= hidden_field "m_shop" ,'m_shop_id', :value => @m_shop_id %>
-  <%= submit_tag '検索' %>
+	<table id='rounded-corner'>
+		<tr>
+	      <th>油種</th>
+	      <td><%= select( "m_oil", 'm_oil_id',@m_oils.map do |u| [u.oil_name,u.id] end ) %></td>
+		  <td><%= submit_tag '検索' %></td>
+	    </tr>
+	</table>
+	<%= hidden_field "m_shop" ,'m_shop_id', :value => @m_shop_id %>
 <% end %>
 
+<hr>
 
 <div id="result">
 	<%= render :partial => 'form' %>
 </div>
 
 <%#= link_to '戻る', m_meters_path, :class => 'return_icon' %>
-<%= link_to '戻る', {:controller=>"m_shops", :action=>"index"}, :class => 'return_icon' %>
-
-</div>
+<%#= link_to '戻る', {:controller=>"m_shops", :action=>"index"}, :class => 'return_icon' %>

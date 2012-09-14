@@ -171,6 +171,11 @@
 
 <%= javascript_include_tag "comma" %>
 
+<% if @edit_flg.to_i == 1 %>
+  <%= link_to "戻る", {:controller => "d_results", :action => "index", :result_date => @result_date}, 
+      :confirm => "一覧表に戻ります。よろしいですか？", :method => :get, :class => 'return_icon' %>
+<% end %>
+
 <script>
 $(function () {
 	$('#tabs').tabs();

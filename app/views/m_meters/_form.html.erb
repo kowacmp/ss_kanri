@@ -1,33 +1,3 @@
-<script type="text/javascript">
-	function form_clear1(idx){
-		for (i=1; i<=10; i++){
-			document.getElementById('m_meter_' + idx + '_' + i + '_meter_no').value = "";
-			document.getElementById('m_meter_' + idx + '_' + i + '_m_tank_id').selectedIndex = 0;
-		}
-	}
-	
-	function form_clear2(idx){
-		for (i=11; i<=20; i++){
-			document.getElementById('m_meter_' + idx + '_' + i + '_meter_no').value = "";
-			document.getElementById('m_meter_' + idx + '_' + i + '_m_tank_id').selectedIndex = 0;
-		}
-	}
-	
-	function numberCheck(obj) { 
-		var v = obj.value;
-		
-		if (v.match(/[^0-9]/g)) {
-			obj.value = v.replace(/[^0-9]/g,'');
-		}
-		//inputString = String.fromCharCode(event.keyCode); 
-		//if ("0123456789\b\r\t".indexOf(inputString,0) < 0) return false; 
-		//return true;
-	}
-	
-</script>
-
-
-
 
 <%= form_for(@m_meter) do |f| %>
   <% if @m_meter.errors.any? %>
@@ -42,9 +12,6 @@
     </div>
   <% end %>
 
-<%#= select( "m_oil", 'm_oil_id',@m_oils.map do |u| [u.oil_name,u.id] end ,:onChange => 'test_alert()') %>
-<%#= select "m_oil", 'm_oil_id',@m_oils.map {|u| [u.oil_name,u.id]},{:include_blank => "選択して下さい"},:onChange => "test_alert();" %>
-<%#= select "m_oil", 'm_oil_id',@m_oils.map {|u| [u.oil_name,u.id]},{:include_blank => "選択して下さい"},:onChange => {url_for :controller => 'm_meters', :action => 'index'}%>
 <%= hidden_field "m_shop" ,'m_shop_id', :value => @m_shop_id %>
 
 	<table id='rounded-corner'>
@@ -84,7 +51,7 @@
 	  	  <%= hidden_field "m_meter[#{idx}][#{i}]", 'number',:value=>i  %>
 	  	  <% end %>
 	  	  <td rowspan="2">
-				<input type="button" value="クリア" onClick="form_clear1(<%= idx %>);" />
+				<input type="button" class="clear_button" value="クリア" onClick="form_clear1(<%= idx %>);" />
 	  	  </td>
 	  	</tr>
 	  	
@@ -95,16 +62,10 @@
 	  	  
 	  	  <td>
 	  	  	<%- if @m_meter -%>
-	  	  		<%#= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
-		  	 	#MTank.find(:all,:conditions => ["m_oil_id = 1 and deleted_flg <> ?",1], :order => 'tank_no').map do |u|
-		      	#[u.tank_name,u.id] end, :selected => @m_meter.m_tank_id,:include_blank => "") %>
 		      	<%= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
 		  	 	@m_tanks.map do |u|
 		      	[u.tank_name,u.id] end, :selected => @m_meter.m_tank_id,:include_blank => "") %>
 	  	  	<%- else -%>
-	  	  		<%#= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
-		  	 	#MTank.find(:all,:conditions => ["m_oil_id = 1 and deleted_flg <> ?",1], :order => 'tank_no').map do |u|
-		      	#[u.tank_name,u.id] end, :include_blank => "") %>
 		      	<%= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
 		  	 	@m_tanks.map do |u|
 		      	[u.tank_name,u.id] end, :include_blank => "") %>
@@ -138,7 +99,7 @@
 	  	  <%= hidden_field "m_meter[#{idx}][#{i}]", 'number',:value=>i  %>
 	  	  <% end %>
 	  	  <td rowspan="2">
-				<input type="button" value="クリア" onClick="form_clear2(<%= idx %>);" />
+				<input type="button" class="clear_button" value="クリア" onClick="form_clear2(<%= idx %>);" />
 	  	  </td>
 	  	</tr>
 	  	
@@ -149,16 +110,10 @@
 	  	  
 	  	  <td>
 			<%- if @m_meter -%>
-	  	  		<%#= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
-		  	 	#MTank.find(:all,:conditions => ["m_oil_id = 1 and deleted_flg <> ?",1], :order => 'tank_no').map do |u|
-		      	#[u.tank_name,u.id] end, :selected => @m_meter.m_tank_id,:include_blank => "") %>
 		      	<%= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
 		  	 	@m_tanks.map do |u|
 		      	[u.tank_name,u.id] end, :selected => @m_meter.m_tank_id,:include_blank => "") %>
 	  	  	<%- else -%>
-	  	  		<%#= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
-		  	 	#MTank.find(:all,:conditions => ["m_oil_id = 1 and deleted_flg <> ?",1], :order => 'tank_no').map do |u|
-		      	#[u.tank_name,u.id] end, :include_blank => "") %>
 		      	<%= select("m_meter[#{idx}][#{i}]", 'm_tank_id',
 		  	 	@m_tanks.map do |u|
 		      	[u.tank_name,u.id] end, :include_blank => "") %>
@@ -171,6 +126,48 @@
 	</table>
 
   <div class="actions">
-	    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
+	<%= link_to '戻る', {:controller=>"m_shops", :action=>"index"}, :class => 'return_icon' %>
+    <%#= f.submit f.object.new_record? ? '追加' : '更新' %>
+
+    <%= f.submit "  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？'  %>
+
   </div>
 <% end %>
+
+
+<script type="text/javascript">
+	function form_clear1(idx){
+		for (i=1; i<=10; i++){
+			document.getElementById('m_meter_' + idx + '_' + i + '_meter_no').value = "";
+			document.getElementById('m_meter_' + idx + '_' + i + '_m_tank_id').selectedIndex = 0;
+		}
+	}
+	
+	function form_clear2(idx){
+		for (i=11; i<=20; i++){
+			document.getElementById('m_meter_' + idx + '_' + i + '_meter_no').value = "";
+			document.getElementById('m_meter_' + idx + '_' + i + '_m_tank_id').selectedIndex = 0;
+		}
+	}
+	
+	function numberCheck(obj) { 
+		var v = obj.value;
+		
+		if (v.match(/[^0-9]/g)) {
+			obj.value = v.replace(/[^0-9]/g,'');
+		}
+	}
+	
+</script>
+
+<style type="text/css">
+	div#result select {
+		font-size: 12px;
+		width: 75px;
+	}
+	
+	.clear_button {
+		font-size: 13px;
+		width: 60px;
+	}
+</style>

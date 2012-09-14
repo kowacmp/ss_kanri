@@ -20,8 +20,15 @@ module DBusinessCountReportsHelper
   
   def get_d_result_collect(results,m_aim_id)
     sum_get_num = 0
+    get_num = 0
     results.each do |result|
-      sum_get_num = sum_get_num + DResultCollect.where(:d_result_id => result.id,:m_oiletc_id => m_aim_id).first.get_num
+      dr_collect = DResultCollect.where(:d_result_id => result.id,:m_oiletc_id => m_aim_id).first
+      if dr_collect == nil
+        get_num = 0
+      else
+        get_num = dr_collect.get_num
+      end
+      sum_get_num = sum_get_num + get_num
     end
     return sum_get_num
   end
@@ -39,13 +46,31 @@ module DBusinessCountReportsHelper
   
   def get_d_result_oiletc_daily(d_result,m_oiletc_id)
     sum_oiletc = 0
+    pos1 = 0
+    pos2 = 0
+    pos3 = 0
     unless d_result == nil
       d_resutl_oiletc = DResultOiletc.where(:d_result_id => d_result.id,:m_oiletc_id => m_oiletc_id).first
     else
       d_resutl_oiletc = nil
     end
     unless d_resutl_oiletc == nil
-     sum_oiletc = d_resutl_oiletc.pos1_data + d_resutl_oiletc.pos2_data + d_resutl_oiletc.pos3_data
+      if d_resutl_oiletc.pos1_data == nil
+        pos1 = 0
+      else
+        pos1 = d_resutl_oiletc.pos1_data
+      end
+      if d_resutl_oiletc.pos2_data == nil
+        pos2 = 0
+      else
+        pos2 = d_resutl_oiletc.pos2_data
+      end
+      if d_resutl_oiletc.pos3_data == nil
+        pos3 = 0
+      else
+        pos3 = d_resutl_oiletc.pos3_data
+      end
+     sum_oiletc = pos1 + pos2 + pos3
     else
       sum_oiletc = 0
     end 

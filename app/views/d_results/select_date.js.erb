@@ -1,8 +1,7 @@
 <%# if @d_result.blank? or @d_result.kakutei_flg == 0 %>
-<% if @d_result.blank? or @edit_flg == 1 or @d_result.kakutei_flg == 0 %>
+<% if @d_result.blank? or @edit_flg.to_i == 1 or @d_result.kakutei_flg == 0 %>
   $('#result').html("<%= j(render :partial => 'input_d_result')%>");
 <% else %>
   $('#result').html("<%= j(render :partial => 'show_d_result')%>");
 <% end %>
-<% p "--------------------------------------"%>
-<% p "@edit_flg=#{@edit_flg}"%>
+
