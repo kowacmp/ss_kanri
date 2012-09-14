@@ -80,7 +80,8 @@ class MAuditChecksController < ApplicationController
     respond_to do |format|
       if @m_audit_check.save
         #format.html { redirect_to @m_audit_check, notice: 'M audit check was successfully created.' }
-        format.html { redirect_to @m_audit_check }
+        format.html { redirect_to :controller => "m_audit_checks", :action => "index" }
+        #format.html { redirect_to @m_audit_check }
         format.json { render json: @m_audit_check, status: :created, location: @m_audit_check }
       else
         format.html { render action: "new" }
@@ -97,7 +98,8 @@ class MAuditChecksController < ApplicationController
     respond_to do |format|
       if @m_audit_check.update_attributes(params[:m_audit_check])
         input_check = params[:input][:check].to_i
-        format.html { redirect_to :controller => "m_audit_checks", :action => "show",:id=>@m_audit_check.id,:input_check => input_check }
+        format.html { redirect_to :controller => "m_audit_checks", :action => "index",:input_check => input_check }
+        #format.html { redirect_to :controller => "m_audit_checks", :action => "show",:id=>@m_audit_check.id,:input_check => input_check }
         #format.html { redirect_to @m_audit_check, notice: 'M audit check was successfully updated.' }
         format.json { head :ok }
       else

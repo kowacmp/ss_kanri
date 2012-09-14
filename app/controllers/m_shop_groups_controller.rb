@@ -62,7 +62,8 @@ class MShopGroupsController < ApplicationController
     respond_to do |format|
       if @m_shop_group.save
         #format.html { redirect_to @m_shop_group, notice: 'M shop group was successfully created.' }
-        format.html { redirect_to @m_shop_group }
+        format.html { redirect_to :controller => "m_shop_groups", :action => "index" }
+        #format.html { redirect_to @m_shop_group }
         format.json { render json: @m_shop_group, status: :created, location: @m_shop_group }
       else
         format.html { render action: "new" }
@@ -79,7 +80,8 @@ class MShopGroupsController < ApplicationController
     respond_to do |format|
       if @m_shop_group.update_attributes(params[:m_shop_group])
         input_check = params[:input][:check].to_i
-        format.html { redirect_to :controller => "m_shop_groups", :action => "show",:id=>@m_shop_group.id,:input_check => input_check }
+        format.html { redirect_to :controller => "m_shop_groups", :action => "index",:input_check => input_check }
+        #format.html { redirect_to :controller => "m_shop_groups", :action => "show",:id=>@m_shop_group.id,:input_check => input_check }
         #format.html { redirect_to @m_shop_group, notice: 'M shop group was successfully updated.' }
         format.json { head :ok }
       else

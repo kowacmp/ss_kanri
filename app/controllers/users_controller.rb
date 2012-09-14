@@ -20,14 +20,14 @@ class UsersController < ApplicationController
     if params[:input_check] == nil
         @check_del_flg = 0
         condition_sql = " where a.deleted_flg = 0 "
-        @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
+        @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
     else
         @check_del_flg = params[:input_check].to_i
         if @check_del_flg == 0
           condition_sql = " where a.deleted_flg = 0 "
-          @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
+          @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
         else
-          @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
+          @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
         end
     end
     
@@ -171,7 +171,7 @@ class UsersController < ApplicationController
     
     if params[:check][:deleted_flg] == "true"
       @check_del_flg = 1
-      @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
+      @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
     else
       @check_del_flg = 0
       if condition_sql == ""
@@ -179,7 +179,7 @@ class UsersController < ApplicationController
       else
         condition_sql = condition_sql + " and a.deleted_flg = 0 "
       end
-      @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
+      @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
     end
     
     #@users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")

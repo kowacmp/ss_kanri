@@ -82,7 +82,8 @@ class MApprovalsController < ApplicationController
 
     respond_to do |format|
       if @m_approval.save
-        format.html { redirect_to @m_approval }
+        format.html { redirect_to :controller => "m_approvals", :action => "index" }
+        #format.html { redirect_to @m_approval }
         format.json { render json: @m_approval, status: :created, location: @m_approval }
       else
         format.html { render action: "new" }
@@ -98,7 +99,8 @@ class MApprovalsController < ApplicationController
 
     respond_to do |format|
       if @m_approval.update_attributes(params[:m_approval])
-        format.html { redirect_to @m_approval }
+        format.html { redirect_to :controller => "m_approvals", :action => "index" }
+        #format.html { redirect_to @m_approval }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
