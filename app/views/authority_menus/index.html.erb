@@ -3,17 +3,31 @@
 <%#= link_to '新規登録', new_authority_menu_path, :class => 'add_icon' %>
 
 <%= form_tag({:action => 'authority_select' }, { :remote => true }) do %>
-   <div id="search_authority">
+
+<table id='rounded-corner'>
+	<tr>
+      <th>権限種別</th>
+      <td>
+      	<%= select(:select, :m_authority_id, 
+			   MAuthority.find(:all, :order => 'authority_cd').map do |u|
+			      [u.authority_name,u.id]
+			   end, :include_blank => "選択して下さい") %>
+      </td>
+      <td style="border: none"><%= submit_tag '選択' %></td>
+    </tr>
+</table>
+
+   <!--div id="search_authority">
 		<div class="title_alias">権限種別</div>
 		<div class="select_alias">
-			<%= select(:select, :m_authority_id, 
+			<%#= select(:select, :m_authority_id, 
 			   MAuthority.find(:all, :order => 'authority_cd').map do |u|
 			      [u.authority_name,u.id]
 			   end, :include_blank => "選択して下さい") %>
 	   	</div>
-	</div>    
+	</div-->    
    
-  <%= submit_tag '選択' %>
+  <%#= submit_tag '選択' %>
 <% end %>
 
 <hr>

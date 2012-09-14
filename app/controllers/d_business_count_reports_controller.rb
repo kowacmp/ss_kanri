@@ -26,7 +26,7 @@ class DBusinessCountReportsController < ApplicationController
   def print
     @input_ymd = params[:input_ymd].delete("/")
 #    m_oiletcs = MOiletc.where(:oiletc_cd => 11..15).order('oiletc_cd')
-    m_oiletcs = MOiletc.find(:all,:conditions => ['oiletc_cd in (1,4,6,7,13)'],:order => 'oiletc_cd')
+#    m_oiletcs = MOiletc.find(:all,:conditions => ['oiletc_cd in (1,4,6,7,13)'],:order => 'oiletc_cd')
     @m_aims = MAim.where(:aim_code => 11..15).order('aim_code')
     ym = @input_ymd[0,6]
     #油外のみ

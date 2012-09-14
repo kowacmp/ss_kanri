@@ -64,7 +64,8 @@ class MOilsController < ApplicationController
     respond_to do |format|
       if @m_oil.save
         #format.html { redirect_to @m_oil, notice: '登録されました。' }
-        format.html { redirect_to @m_oil }
+        format.html { redirect_to :controller => "m_oils", :action => "index" }
+        #format.html { redirect_to @m_oil }
         format.json { render json: @m_oil, status: :created, location: @m_oil }
       else
         format.html { render action: "new" }
@@ -81,7 +82,8 @@ class MOilsController < ApplicationController
     respond_to do |format|
       if @m_oil.update_attributes(params[:m_oil])
         input_check = params[:input][:check].to_i
-        format.html { redirect_to :controller => "m_oils", :action => "show",:id=>@m_oil.id,:input_check => input_check }
+        format.html { redirect_to :controller => "m_oils", :action => "index",:input_check => input_check }
+        #format.html { redirect_to :controller => "m_oils", :action => "show",:id=>@m_oil.id,:input_check => input_check }
         #format.html { redirect_to @m_oil, notice: '更新されました。' }
         format.json { head :ok }
       else

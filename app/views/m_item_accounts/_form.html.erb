@@ -15,6 +15,14 @@
 
   <table id='rounded-corner'>
   	<tr>
+  	  <th><%= f.label '勘定種別' %></th>
+  	  <td>
+  	  	<%= f.select(:item_account_class, MCode.find(:all, :conditions => ["kbn = ?",'item_account_class'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "選択して下さい"}) %>
+  	  </td>  	  
+  	</tr>
+  	<tr>
   	  <th><%= f.label '勘定科目コード' %></th>
   	  <td><%= f.number_field :item_account_code, :style=>"ime-mode:disabled" ,:maxlength=>4 %></td>  	  
   	</tr>
@@ -26,9 +34,23 @@
   	  <th><%= f.label '摘要' %></th>
   	  <td><%= f.text_field :outline,:maxlength=>40 %></td>  	  
   	</tr>
+  	
+  	<tr>
+  		<td align="left" style="border: none">
+  			<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>
+		</td>
+	  	<td align="right" style="border: none">
+	  		<% if f.object.new_record? %>
+			<%= f.submit "  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？' %>
+			<% else %>
+			<%= f.submit "  更  新  ",:disable_with => "更新中.....",:confirm => '更新しても良いですか？' %>
+			<% end %>
+		</td>
+	</tr>
+  	
   </table>
-  <div class="actions">
-    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
-  </div>
+  <!--div class="actions">
+    <%#= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div-->
 
 <% end %>

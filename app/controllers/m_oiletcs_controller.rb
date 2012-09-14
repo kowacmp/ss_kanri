@@ -91,7 +91,8 @@ class MOiletcsController < ApplicationController
     respond_to do |format|
       if @m_oiletc.save
         #format.html { redirect_to @m_oiletc, notice: 'M oiletc was successfully created.' }
-        format.html { redirect_to @m_oiletc }
+        format.html { redirect_to :controller => "m_oiletcs", :action => "index" }
+        #format.html { redirect_to @m_oiletc }
         format.json { render json: @m_oiletc, status: :created, location: @m_oiletc }
       else
         format.html { render action: "new" }
@@ -108,7 +109,8 @@ class MOiletcsController < ApplicationController
     respond_to do |format|
       if @m_oiletc.update_attributes(params[:m_oiletc])
         input_check = params[:input][:check].to_i
-        format.html { redirect_to :controller => "m_oiletcs", :action => "show",:id=>@m_oiletc.id,:input_check => input_check }
+        format.html { redirect_to :controller => "m_oiletcs", :action => "index",:input_check => input_check }
+        #format.html { redirect_to :controller => "m_oiletcs", :action => "show",:id=>@m_oiletc.id,:input_check => input_check }
         #format.html { redirect_to @m_oiletc, notice: 'M oiletc was successfully updated.' }
         format.json { head :ok }
       else
