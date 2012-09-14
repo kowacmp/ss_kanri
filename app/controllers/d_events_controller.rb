@@ -22,8 +22,6 @@ class DEventsController < ApplicationController
   def show
     @d_event = DEvent.find(params[:id])
 
-    @menu = Menu.find(@d_event.menu_id)
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @d_event }

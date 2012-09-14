@@ -6,14 +6,14 @@
 <center>
   <div style="border-style:double; width: 450px; height: 150px; padding: 2%;">
     <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-	  <%#= f.select(:account, 
+	  <%= f.select(:account, 
 		 User.find(:all, :conditions => ["deleted_flg = 0"], :order => 'id').map do |u|
 		   [u.user_name,u.account]
 		 end, :prompt => "選択して下さい") %>
 		 
 	  <div>
 		<%= f.label 'アカウント' %><br/>
-		<%= f.text_field :account, :size =>"10"%>
+		<%#= f.text_field :account, :size =>"10"%>
 	  </div>
 	  <div>
 		<%= f.label 'パスワード' %><br />
