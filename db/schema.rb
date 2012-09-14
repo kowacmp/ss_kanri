@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120913075035) do
+ActiveRecord::Schema.define(:version => 20120914004113) do
 
   create_table "authority_menus", :force => true do |t|
     t.integer  "m_authority_id", :limit => 2, :null => false
@@ -933,13 +933,14 @@ ActiveRecord::Schema.define(:version => 20120913075035) do
   end
 
   create_table "m_item_accounts", :force => true do |t|
-    t.integer  "item_account_code",                               :null => false
-    t.string   "item_account_name", :limit => 20,                 :null => false
-    t.string   "outline",           :limit => 100
+    t.integer  "item_account_code",                                :null => false
+    t.string   "item_account_name",  :limit => 20,                 :null => false
+    t.string   "outline",            :limit => 100
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "deleted_flg",       :limit => 2,   :default => 0
+    t.integer  "deleted_flg",        :limit => 2,   :default => 0
     t.datetime "deleted_at"
+    t.integer  "item_account_class"
   end
 
   create_table "m_items", :force => true do |t|
