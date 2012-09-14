@@ -51,13 +51,19 @@
     <th>(H/G)%</th>
   </tr>
   <tr>
+  	<% unless @oil_id == nil %><!-- 油種の場合-->
+      <% tank_compute_last = get_select_oil(@dr_lastday.id,@oil_id,@shop_id) unless @dr_lastday == nil %>
+    <% end %>
+    <% unless @tank_id == nil %><!-- タンクの場合-->
+      <% tank_compute_last = get_select_tank(@dr_lastday.id,@tank_id,@shop_id) unless @dr_lastday == nil %>
+  	<% end %>
     <th colspan="2">前月末</th>
     <td></td>
     <td>&nbsp;</td>
+    <td><%= tank_compute_last.receive unless tank_compute_last == nil %></td>
+    <td><%= tank_compute_last.sale unless tank_compute_last == nil %></td>
     <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
+    <td><%= tank_compute_last.after_stock unless tank_compute_last == nil %></td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
