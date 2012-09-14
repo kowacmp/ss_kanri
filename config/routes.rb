@@ -6,7 +6,11 @@ SsKanri::Application.routes.draw do
   get "d_price_check_etcs/update"  
   get "d_price_check_etcs/show"
 
-  resources :d_duties
+  resources :d_duties do
+   collection do
+     get :syain_input
+   end
+  end
 
   get "d_aim_lists/index"
   get "d_aim_lists/search"
