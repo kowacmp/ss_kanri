@@ -212,7 +212,7 @@ module DResultsHelper
         @meters[idx][:receive] = result_tanks[m_oil.id][:tank_receive]
         @meters[idx][:stock] = result_tanks[m_oil.id][:tank_stock]
         @meters[idx][:tank_kabusoku] = result_tanks[m_oil.id][:old_tank_stock].to_i + @meters[idx][:receive].to_i - @meters[idx][:stock].to_i - @meters[idx][:meter_susumi].to_i  
-        @meters[idx][:meter_kabusoku] = @meters[idx][:meter_susumi].to_i - session[:m_oil_totals][m_oil.id][:total].to_i
+        @meters[idx][:meter_kabusoku] = @meters[idx][:meter_susumi].to_i - session[:m_oil_totals][m_oil.id][:total].to_f
       end
     end #d_result_meters.blank?   
   end
