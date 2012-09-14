@@ -1,4 +1,8 @@
 class DDutiesController < ApplicationController
+  
+  include ApplicationHelper
+  include DDutiesHelper
+  
   # GET /d_duties
   # GET /d_duties.json
   def index
@@ -35,6 +39,16 @@ class DDutiesController < ApplicationController
     end
   end
 
+  #社員の出勤入力ポップアップ
+  def syain_input
+    @input_day = params[:input_day]
+    @m_shop_id = params[:m_shop_id]
+    
+    @syain_users = get_user_dutry(0, @m_shop_id, @input_day.to_s[0,4], @input_day.to_s[4,2], @input_day.to_s[6,2], @input_day.to_s[6,2])
+
+    render :layout => 'modal'
+  end
+  
   # GET /d_duties/1
   # GET /d_duties/1.json
   def show

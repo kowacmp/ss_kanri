@@ -18,11 +18,12 @@ function setModal() {
 	});
  
 	//リンクがクリックされた時にAjaxでコンテンツを読み込む
-	$("a.modal").click(function() {
+	$("a.modal").live('click', function(){
 		//$("div#modal div.container").load($(this).attr("href"), data="html", onComplete);
        $.ajax({url: $(this).attr("href"),
 	    cache: false,
 	    success: function(html) {
+	    $("div#modal div.container").css("overflow", "hidden");
 		$("div#modal div.container").html(html);
 		onComplete();
 	    }

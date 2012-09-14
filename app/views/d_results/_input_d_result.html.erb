@@ -176,8 +176,4 @@
       :confirm => "一覧表に戻ります。よろしいですか？", :method => :get, :class => 'return_icon' %>
 <% end %>
 
-<script>
-$(function () {
-	$('#tabs').tabs();
-});	
-</script>
+<%= javascript_include_tag "tabs" %>
