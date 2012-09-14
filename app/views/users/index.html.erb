@@ -18,25 +18,49 @@
 <h1>ユーザーマスタメンテ</h1>  
 
 	<%= form_tag({:action => 'search' }, { :remote => true }) do %>
-		<div id="search_shop">
+		
+		
+		<table id='rounded-corner'>
+			<tr>
+		      <th>対象店舗</th>
+		      <td>
+		      	<%= select("select",'shop_id' ,
+		  	 	MShop.find(:all,:conditions => "deleted_flg = 0", :order => 'shop_cd').map do |u|
+		      	[u.shop_ryaku,u.id]
+		   		end, :include_blank => "") %>
+		      </td>
+		      <th>表示対象</th>
+		      <td>
+		      	<% if @check_del_flg == 0%>
+				  	<%= check_box(:check,:deleted_flg,{},true,false) %>
+				<% else %>
+				  	<%= check_box(:check,:deleted_flg,{:checked => true},true,false) %>
+				<% end %>
+				削除項目も表示する。
+		      </td>
+		      <td style="border: none"><%= submit_tag '検索' %></td>
+		    </tr>
+		</table>
+		
+		<!--div id="search_shop">
 			<div class="title_alias">対象店舗</div>
 			<div class="select_alias">
-		   	<%= select("select",'shop_id' ,
+		   	<%#= select("select",'shop_id' ,
 		  	 	MShop.find(:all,:conditions => "deleted_flg = 0", :order => 'shop_cd').map do |u|
 		      	[u.shop_ryaku,u.id]
 		   		end, :include_blank => "") %>
 		   	</div>
 		   	
-		   	<% if @check_del_flg == 0%>
-			  	<%= check_box(:check,:deleted_flg,{},true,false) %>
-			<% else %>
-			  	<%= check_box(:check,:deleted_flg,{:checked => true},true,false) %>
-			<% end %>
+		   	<%# if @check_del_flg == 0%>
+			  	<%#= check_box(:check,:deleted_flg,{},true,false) %>
+			<%# else %>
+			  	<%#= check_box(:check,:deleted_flg,{:checked => true},true,false) %>
+			<%# end %>
 		  
 		    削除項目も表示する。
 		   	
-		</div>
-  		<%= submit_tag '検索' %>
+		</div-->
+  		<%#= submit_tag '検索' %>
 	<% end %>
 
 <hr>

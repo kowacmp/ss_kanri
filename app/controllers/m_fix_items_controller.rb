@@ -104,7 +104,8 @@ class MFixItemsController < ApplicationController
       else
         if @m_fix_item.save
           #format.html { redirect_to @m_fix_item, notice: 'M fix item was successfully created.' }
-          format.html { redirect_to @m_fix_item }
+          format.html { redirect_to :controller => "m_fix_items", :action => "index" }
+          #format.html { redirect_to @m_fix_item }
           format.json { render json: @m_fix_item, status: :created, location: @m_fix_item }
         else
           format.html { render action: "new" }
@@ -147,7 +148,8 @@ class MFixItemsController < ApplicationController
       else
         if @m_fix_item.update_attributes(params[:m_fix_item])
           input_check = params[:input][:check].to_i
-          format.html { redirect_to :controller => "m_fix_items", :action => "show",:id=>@m_fix_item.id,:input_check => input_check }
+          format.html { redirect_to :controller => "m_fix_items", :action => "index",:input_check => input_check }
+          #format.html { redirect_to :controller => "m_fix_items", :action => "show",:id=>@m_fix_item.id,:input_check => input_check }
           #format.html { redirect_to @m_fix_item, notice: 'M fix item was successfully updated.' }
           format.json { head :ok }
         else

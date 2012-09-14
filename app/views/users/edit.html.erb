@@ -95,13 +95,29 @@
 	  	  <td><%= f.password_field :password_confirmation %></td>  	  
 	  	</tr>
 	    <% end %>
+	    
+	    <tr>
+	  		<td align="left" style="border: none">
+	  			<% if @return_flg == 1 %>
+				<%= link_to '戻る', users_path, :class => 'return_icon' %>
+				<% end %>
+			</td>
+		  	<td align="right" style="border: none">
+		  		<% if f.object.new_record? %>
+				<%= f.submit "  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？' %>
+				<% else %>
+				<%= f.submit "  更  新  ",:disable_with => "更新中.....",:confirm => '更新しても良いですか？' %>
+				<% end %>
+			</td>
+		</tr>
+	    
     </table>
     
-  <div class="actions">
-    <%= f.submit f.object.new_record? ? '追加' : '更新' %>
-  </div>
+  <!--div class="actions">
+    <%#= f.submit f.object.new_record? ? '追加' : '更新' %>
+  </div-->
 <% end %>
-<% if @return_flg == 1 %>
-<%= link_to '戻る', users_path, :class => 'return_icon' %>
-<% end %>
+<%# if @return_flg == 1 %>
+<%#= link_to '戻る', users_path, :class => 'return_icon' %>
+<%# end %>
 

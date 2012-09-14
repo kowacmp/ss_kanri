@@ -84,7 +84,8 @@ class MAimsController < ApplicationController
     respond_to do |format|
       if @m_aim.save
         #format.html { redirect_to @m_aim, notice: 'M aim was successfully created.' }
-        format.html { redirect_to @m_aim }
+        format.html { redirect_to :controller => "m_aims", :action => "index" }
+        #format.html { redirect_to @m_aim }
         format.json { render json: @m_aim, status: :created, location: @m_aim }
       else
         format.html { render action: "new" }
@@ -101,7 +102,8 @@ class MAimsController < ApplicationController
     respond_to do |format|
       if @m_aim.update_attributes(params[:m_aim])
         input_check = params[:input][:check].to_i
-        format.html { redirect_to :controller => "m_aims", :action => "show",:id=>@m_aim.id,:input_check => input_check }
+        format.html { redirect_to :controller => "m_aims", :action => "index",:input_check => input_check }
+        #format.html { redirect_to :controller => "m_aims", :action => "show",:id=>@m_aim.id,:input_check => input_check }
         #format.html { redirect_to @m_aim, notice: 'M aim was successfully updated.' }
         format.json { head :ok }
       else

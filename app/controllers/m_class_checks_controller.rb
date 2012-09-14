@@ -61,7 +61,8 @@ class MClassChecksController < ApplicationController
     respond_to do |format|
       if @m_class_check.save
         #format.html { redirect_to @m_class_check, notice: 'M class check was successfully created.' }
-        format.html { redirect_to @m_class_check }
+        format.html { redirect_to :controller => "m_class_checks", :action => "index" }
+        #format.html { redirect_to @m_class_check }
         format.json { render json: @m_class_check, status: :created, location: @m_class_check }
       else
         format.html { render action: "new" }
@@ -78,7 +79,8 @@ class MClassChecksController < ApplicationController
     respond_to do |format|
       if @m_class_check.update_attributes(params[:m_class_check])
         input_check = params[:input][:check].to_i
-        format.html { redirect_to :controller => "m_class_checks", :action => "show",:id=>@m_class_check.id,:input_check => input_check }
+        format.html { redirect_to :controller => "m_class_checks", :action => "index",:input_check => input_check }
+        #format.html { redirect_to :controller => "m_class_checks", :action => "show",:id=>@m_class_check.id,:input_check => input_check }
         #format.html { redirect_to @m_class_check, notice: 'M class check was successfully updated.' }
         format.json { head :ok }
       else

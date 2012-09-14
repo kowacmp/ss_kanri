@@ -60,7 +60,8 @@ class MAuthoritiesController < ApplicationController
 
     respond_to do |format|
       if @m_authority.save
-        format.html { redirect_to @m_authority }
+        format.html { redirect_to :controller => "m_authorities", :action => "index" }
+        #format.html { redirect_to @m_authority }
         format.json { render json: @m_authority, status: :created, location: @m_authority }
       else
         format.html { render action: "new" }
@@ -76,8 +77,11 @@ class MAuthoritiesController < ApplicationController
 
     respond_to do |format|
       if @m_authority.update_attributes(params[:m_authority])
+        p "--------------------"
+        p params[:input]
         input_check = params[:input][:check].to_i
-        format.html { redirect_to :controller => "m_authorities", :action => "show",:id=>@m_authority.id,:input_check => input_check }
+        format.html { redirect_to :controller => "m_authorities", :action => "index",:input_check => input_check }
+        #format.html { redirect_to :controller => "m_authorities", :action => "show",:id=>@m_authority.id,:input_check => input_check }
         #format.html { redirect_to @m_authority, notice: 'M authority was successfully updated.' }
         format.json { head :ok }
       else

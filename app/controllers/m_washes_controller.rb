@@ -82,7 +82,8 @@ class MWashesController < ApplicationController
     respond_to do |format|
       if @m_wash.save
         #format.html { redirect_to @m_wash, notice: 'M wash was successfully created.' }
-        format.html { redirect_to @m_wash }
+        format.html { redirect_to :controller => "m_washes", :action => "index" }
+        #format.html { redirect_to @m_wash }
         format.json { render json: @m_wash, status: :created, location: @m_wash }
       else
         format.html { render action: "new" }
@@ -99,7 +100,8 @@ class MWashesController < ApplicationController
     respond_to do |format|
       if @m_wash.update_attributes(params[:m_wash])
         input_check = params[:input][:check].to_i
-        format.html { redirect_to :controller => "m_washes", :action => "show",:id=>@m_wash.id,:input_check => input_check }
+        format.html { redirect_to :controller => "m_washes", :action => "index",:input_check => input_check }
+        #format.html { redirect_to :controller => "m_washes", :action => "show",:id=>@m_wash.id,:input_check => input_check }
         #format.html { redirect_to @m_wash, notice: 'M wash was successfully updated.' }
         format.json { head :ok }
       else

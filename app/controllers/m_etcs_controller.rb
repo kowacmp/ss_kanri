@@ -93,7 +93,8 @@ class MEtcsController < ApplicationController
     respond_to do |format|
       if @m_etc.save
         #format.html { redirect_to @m_etc, notice: 'M etc was successfully created.' }
-        format.html { redirect_to @m_etc}
+        format.html { redirect_to :controller => "m_etcs", :action => "index" }
+        #format.html { redirect_to @m_etc}
         format.json { render json: @m_etc, status: :created, location: @m_etc }
       else
         format.html { render action: "new" }
@@ -110,7 +111,8 @@ class MEtcsController < ApplicationController
     respond_to do |format|
       if @m_etc.update_attributes(params[:m_etc])
         input_check = params[:input][:check].to_i
-        format.html { redirect_to :controller => "m_etcs", :action => "show",:id=>@m_etc.id,:input_check => input_check }
+        format.html { redirect_to :controller => "m_etcs", :action => "index",:input_check => input_check }
+        #format.html { redirect_to :controller => "m_etcs", :action => "show",:id=>@m_etc.id,:input_check => input_check }
         #format.html { redirect_to @m_etc, notice: 'M etc was successfully updated.' }
         format.json { head :ok }
       else

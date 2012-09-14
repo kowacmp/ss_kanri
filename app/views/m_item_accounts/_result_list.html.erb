@@ -1,5 +1,6 @@
 <table id='rounded-corner'>
   <tr>
+    <th>勘定種別</th>
     <th>勘定科目コード</th>
     <th>勘定科目名称</th>
     <th>摘要</th>
@@ -15,6 +16,7 @@
   <% end %>
 
   <tr>
+    <td class="<%= "#{del_flg}" %>"><%= m_item_account.item_account_class_name %></td>
     <td class="<%= "#{del_flg}" %>"><%= m_item_account.item_account_code %></td>
     <td class="<%= "#{del_flg}" %>"><%= m_item_account.item_account_name %></td>
     <td class="<%= "#{del_flg}" %>"><%= m_item_account.outline %></td>
