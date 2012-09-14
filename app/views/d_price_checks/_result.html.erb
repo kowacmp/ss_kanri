@@ -13,6 +13,8 @@
 		:research_time => price_check.research_time %></td>
 		<td><%= link_to '編集',:action => 'edit',:research_day => price_check.research_day,
 		:research_time => price_check.research_time %></td>
+		<td><%= link_to '印刷',:action => 'print',:research_day => price_check.research_day,
+		:research_time => price_check.research_time %></td>
 	</tr>
 	<% end %>
 </table>
