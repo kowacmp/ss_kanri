@@ -1,11 +1,11 @@
 <% loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[4,2].to_i, -1)).strftime("%d").to_i %>
-<div id="d_duty_table">
-<table id='rounded-corner'>
-	<thead>
+
+<table id="d_duty_table" class="rounded-corner">
+	 <thead>
 		<tr>
 			<th colspan="3" style="min-width: 200px">日付</th>
 			<% loopcnt.times { |i| %>
-			  <th style="min-width: 25px;"><%= i + 1 %></th>
+			  <th style="min-width: 25px; <%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>"><%= i + 1 %></th>
             <% } %>
 		</tr>
 		<tr>
@@ -29,19 +29,20 @@
 			<th>氏名</th>
 			<th>日数</th>
 			<% loopcnt.times { |i| %>
-			  <th style="background:none ">
-				<%= button_tag "入力", :id=>"syain_inpbtn_#{i + 1}" %>
+			  <th style="background:none; <%= "background-color: #F7DC67" if Time.now.day == (i+1) %>">
+			     <%= link_to image_tag('icon/24_edit.png'), {:controller => "d_duties", :action => "syain_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s + format("%02d", (i+1).to_i)}, :class => "modal" %>
+			     
 			  </th>
             <% } %>
 		</tr>
+		</thead>
+		<tbody>
 		<!--社員繰り返し-->
-		<% users = User.find(:all, 
-		                     :conditions=>["m_shop_id=? and user_class = 0 and (deleted_flg = 0 or (deleted_flg = 1 and deleted_at>= '#{@head[:input_day].to_s[0,4]}/#{@head[:input_day].to_s[4,2]}/01'))", @m_shop_id],
-		                     :order => "account") %>
+		<% users = get_user_dutry(0, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
 		<% users.each_with_index{ |user, index| %>
 			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} "%>
 			<% nisu = DDuty.find_by_sql("select count(*) nisu from d_duties where #{select_where} and day_work_time <> 0 ")%>
-			<tr id="syain_#{index}">
+			<tr id="syain_<%= "#{index}" %>">
 				<td style="text-align: center; min-width: 50px">
 					<%= hidden_field_tag "syain_user_id_#{index}", user.id %>
 					<%= user.account %></td>
@@ -65,27 +66,51 @@
 			<th>番号</th>
 			<th>氏名</th>
 			<th>時間</th>
+			<% loopcnt.times { |i| %>
+			  <th style="background:none; <%= "background-color: #F7DC67" if Time.now.day == (i+1) %> ">
+				<%= button_tag "入力", :id=>"baito_inpbtn_#{i + 1}" %>
+			  </th>
+            <% } %>
 		</tr>
 		<!--バイト繰り返し-->
-		<tr>
-			<td>12345678</td>
-			<td>AAAAAAAA</td>
-			<td>99.9</td>
-		</tr>
+		<% users = get_user_dutry(1, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
+		<% users.each_with_index{ |user, index| %>
+			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} "%>
+			<% jikan = DDuty.find_by_sql("select sum(all_work_time) jikan from d_duties where #{select_where} ")%>
+			<tr id="baito_<%= "#{index}" %>">
+				<td style="text-align: center; min-width: 50px">
+					<%= hidden_field_tag "baito_user_id_#{index}", user.id %>
+					<%= user.account %></td>
+				<td style="min-width: 130px"><%= user.user_name %></td>
+				<td style="text-align: center;min-width: 50px"><label id=<%= "baito_jikan_#{index}" %>><%= jikan[0].jikan %></label></td>
+				
+				<%= set_banto_row(index, loopcnt, select_where).html_safe %>
+				
+				
+			</tr>
+		<% } %>
 		<!--バイト計-->
 		<tr>
-			<th colspan="3">勤務時間合計</th>
-		</tr>				
-	</thead>
-	<tbody>
-		
-	</tbody>
+			<td colspan="2">勤務時間合計</td>
+			<td style="text-align: center;"><label id="baito_jikan_kei"></label></td>
+			<%= set_baito_jikan_kei(loopcnt).html_safe %>
+		</tr>
+		</tbody>				
 </table>
-</div>
+
 
 <script>
 $(function () {
 	$('#d_duty_table').tablefix({width: 925, height: 900, fixRows: 1, fixCols: 1});
-
+	
+    $('div.bodyDiv').scrollLeft(50 * (<%= Time.now.day %> - 2));
+    
+    //$('div.tablefixDiv div.crossDiv a').attr("href", "#");
+    //$('div.tablefixDiv div.rowDiv a').attr("href", "#");
+    //$('div.tablefixDiv div.colDiv a').attr("href", "#");
+    //$('div.tablefixDiv div.crossDiv a').empty();
+    //$('div.tablefixDiv div.rowDiv a').empty();
+    //$('div.tablefixDiv div.colDiv a').empty();
+    //$('div.tablefixDiv div.bodyDiv a').empty();
 });	
 </script>

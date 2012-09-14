@@ -37,6 +37,8 @@
 			baseTable.wrap("<div></div>");
 			var div = baseTable.parent();
 			div.css({position: "relative"});
+			div.addClass('tablefixDiv');
+			
 			// スクロール部オフセットの取得
 			var fixRows = (options.fixRows > 0) ? options.fixRows : 0;
 			var fixCols = (options.fixCols > 0) ? options.fixCols : 0;
@@ -69,8 +71,11 @@
 			// クリップ領域の設定
 			var bodyWidth = options.width - offsetX;
 			var bodyHeight = options.height - offsetY;
-			crossDiv.width(offsetX).height(offsetY);
+			crossDiv
+			    .addClass('crossDiv')
+			    .width(offsetX).height(offsetY);
 			rowDiv
+			    .addClass('rowDiv')
 				.width(bodyWidth + (withWidth ? 20 : 0) + (withHeight ? 20 : 0))
 				.height(offsetY)
 				.css({left: offsetX + 'px'});
@@ -101,6 +106,7 @@
 			if (withHeight) {
 				rowTable.width(bodyTable.width());
 			}
+			
 			// スクロール連動
 			bodyDiv.scroll(function() {
 				rowDiv.scrollLeft(bodyDiv.scrollLeft());
@@ -111,5 +117,6 @@
 				.width(options.width + (withWidth ? 20 : 0) + (withHeight ? 20 : 0))
 				.height(options.height + (withWidth ? 20 : 0) + (withHeight ? 20 : 0));
 		});
+		
 	}
 })(jQuery);
