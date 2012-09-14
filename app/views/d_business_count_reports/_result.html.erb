@@ -3,9 +3,11 @@
 <table id="report_view_table" class="rounded-corner">
   <tr>
     <th scope="col">&nbsp;</th>
-    <% @m_oiletcs.each do |m_oiletc| %>
-    <th colspan="2" scope="col"><%= m_oiletc.oiletc_ryaku %></th>
-    <% end %>
+    <th colspan="2" scope="col"><%= MOiletc.find(:all,:conditions => ['oiletc_cd = 1']).first.oiletc_ryaku %></th>
+    <th colspan="2" scope="col"><%= MOiletc.find(:all,:conditions => ['oiletc_cd = 4']).first.oiletc_ryaku %></th>
+    <th colspan="2" scope="col"><%= MOiletc.find(:all,:conditions => ['oiletc_cd = 6']).first.oiletc_ryaku %></th>
+    <th colspan="2" scope="col"><%= MOiletc.find(:all,:conditions => ['oiletc_cd = 13']).first.oiletc_ryaku %></th>
+    <th colspan="2" scope="col"><%= MOiletc.find(:all,:conditions => ['oiletc_cd = 7']).first.oiletc_ryaku %></th>
     <th colspan="2" scope="col">現金会員</th>
     <th colspan="2" scope="col">車検書換</th>
     <th colspan="5" scope="col">車検予約</th>
