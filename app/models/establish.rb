@@ -4,6 +4,7 @@ class Establish < ActiveRecord::Base
   validates :tax_rate, :presence => {:message => '消費税率は必須です。'}
   validates :light_oil, :presence => {:message => '軽油税は必須です。'}
   validates :limit, :presence => {:message => '制限範囲は必須です。'}
+  validates :yumepoint_cost, :presence => {:message => '夢ポイント原価は必須です。'}
   
   validates :tax_rate, :numericality => {:greater_than_or_equal_to => 0,
                                           :less_than => 10,
@@ -14,5 +15,8 @@ class Establish < ActiveRecord::Base
   validates :limit, :numericality => {:greater_than_or_equal_to => 0,
                                           :less_than => 1000,
                                           :message => '制限範囲は1,000未満で入力してください。'}
+  validates :yumepoint_cost, :numericality => {:greater_than_or_equal_to => 0,
+                                          :less_than => 1000,
+                                          :message => '夢ポイント原価は1,000未満で入力してください。'}
   
 end
