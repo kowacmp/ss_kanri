@@ -1,0 +1,27 @@
+<h1>付与ポイントマスタ</h1>
+
+<%= link_to '新規登録', new_m_get_point_path, :class => 'add_icon' %>
+
+<table id='rounded-corner'>
+  <tr>
+    <th>順位</th>
+    <th>リーグ順位</th>
+    <th>獲得ポイント</th>
+    <th>編集</th>
+    <th>削除</th>
+  </tr>
+
+<% @m_get_points.each do |m_get_point| %>
+  <tr>
+    <td><%= m_get_point.rank_name %></td>
+    <td><%= m_get_point.league_rank %></td>
+    <td><%= m_get_point.pt %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_get_point_path(m_get_point) %></td>
+    <td class="icon">
+    	<%= link_to image_tag('icon/24_delete.png'), m_get_point, :confirm => '削除します。よろしいですか？', :method => :delete %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
