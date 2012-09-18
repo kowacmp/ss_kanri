@@ -53,7 +53,9 @@
 
 <% tmp_league = "" %>
 <% for rec in @d_washpurika_reports %>
-<tr>
+<% if tmp_league != rec["z_league"] then %>
+<tr class="sikiri">
+<% end %>	
 	<!-- リーグ -->
 	<% if tmp_league != rec["z_league"] then %>
 	<th rowspan="<%=get_league_count(@d_washpurika_reports, rec["z_league"]) * 3 %>">
@@ -151,9 +153,6 @@
 <% end %><!-- for rec in @d_washpurika_reports -->
 </table>
 
-<br/>
-<br/>
-
 <%=form_tag({:action => "update"}) do %>
 	<!-- begin 検索パラメータ -->
 	<%= hidden_field :hheader, :mode, :value => "" %>
@@ -192,13 +191,29 @@
 		<%=hidden_field "data#{cnt}", :same_uriage_total_max, :value => rec["same_uriage_total_max"] %>
 	<% end %>
 	<!-- end データ部分 -->
-
-	<%= submit_tag("  保　存  ",:disable_with => "保存中.....",:confirm => '保存しても良いですか？') %>	  
+	<br/>
+	<br/>
+	<%if session[:washpurika_mode].to_s == "edit" then %>
+	<div style="width: 900px;" >
+		<%= submit_tag("  保　存  ", 
+		               :disable_with => "保存中.....", 
+		               :confirm => '保存しても良いですか？', 
+		               :style => "float:right;") %>	  
+	</div>
+	<%end%> <!-- if session[:washpurika_mode].to_s == "edit" then -->
+	
 <% end %>
+<br/>
 <script language="JavaScript">
 $(function(){
 
+	// リーグの先頭行の仕切りをつける
+	$("tr.sikiri>td,tr.sikiri>th").css("border-top-width","3px");
+
+	// スクロール
 	$("#tablefix").tablefix({width: 900, height: 500, fixRows: 3, fixCols: 3});
 	
 });
 </script>
+
+
