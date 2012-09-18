@@ -78,6 +78,10 @@ class AddrecordUsers < ActiveRecord::Migration
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (50, 'kansa_flg', '1', '実績', '実績', '2012-10-01', '2012-10-01');"
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (51, 'shop_kbn', '9', 'その他', 'その他', '2012-10-01', '2012-10-01');"
            execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (52, 'user_class', '3', '役職', '役職', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (53, 'item_account_class', '0', '出金', '出金', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (54, 'item_account_class', '1', '入金', '入金', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (55, 'yumepoint_class', '0', 'ガソリン', 'ガソリン', '2012-10-01', '2012-10-01');"
+           execute "INSERT INTO m_codes (id, kbn, code, code_name, code_name1, created_at, updated_at) VALUES (56, 'yumepoint_class', '1', '車検', '車検', '2012-10-01', '2012-10-01');"
            execute "select setval('m_codes_id_seq',(select max(id) from m_codes));"
            
            execute "TRUNCATE TABLE m_shops;"
