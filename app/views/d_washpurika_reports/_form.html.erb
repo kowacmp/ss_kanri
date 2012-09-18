@@ -1,17 +1,219 @@
-<%= form_for(@d_washpurika_report) do |f| %>
-  <% if @d_washpurika_report.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@d_washpurika_report.errors.count, "error") %> prohibited this d_washpurika_report from being saved:</h2>
+<table class='rounded-corner' id="tablefix" >
+<!-- begin ヘッダ -->
+<tr>
+	<th rowspan="3" >
+		&nbsp;
+	</th>
+	<th rowspan="3" style="white-space: nowrap" >
+		店舗<br/>
+		前月順位<br/>
+		累積pt<br/>
+	</th>
+	<th rowspan="3" style="white-space: nowrap" >
+		&nbsp;
+	</th>
+	<% for i in 1..@days %>
+	<th rowspan="3" style="white-space: nowrap" >
+		<%=i%>日
+	</th>
+	<% end %>
+	<th rowspan="3" style="white-space: nowrap" >
+		累積
+	</th>
+	<th rowspan="3" style="white-space: nowrap" >
+		枚数差
+	</th>
+	<th rowspan="2" style="white-space: nowrap" >
+		ペース
+	</th>
+	<th rowspan="1" style="white-space: nowrap" >
+		前年同日迄のペース
+	</th>
+	<th rowspan="2" style="white-space: nowrap" >
+		同月過去最高実績
+	</th>
+</tr>
+<tr>
+	<th rowspan="1" style="white-space: nowrap" >
+		前年同日迄の実績
+	</th>
+</tr>
+<tr>
+	<th rowspan="1" style="white-space: nowrap" >
+		洗車売上金額
+	</th>
+	<th rowspan="1" style="white-space: nowrap" >
+		前年同月末実績
+	</th>
+	<th rowspan="1" style="white-space: nowrap" >
+		本年ペースー過去最高
+	</th>
+</tr>
+<!-- END ヘッダ -->
 
-      <ul>
-      <% @d_washpurika_report.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<% tmp_league = "" %>
+<% for rec in @d_washpurika_reports %>
+<% if tmp_league != rec["z_league"] then %>
+<tr class="sikiri">
+<% end %>	
+	<!-- リーグ -->
+	<% if tmp_league != rec["z_league"] then %>
+	<th rowspan="<%=get_league_count(@d_washpurika_reports, rec["z_league"]) * 3 %>">
+		<%=['A','B','C','D','E','F'][(rec["z_league"] - 1)]%>リーグ
+		<% tmp_league = rec["z_league"] %>
+	</th>
+	<% end %><!-- if rec["z_before_rank"] == 1 then -->
+	
+	<!-- 店舗,前月順位,累積pt -->
+	<% m_shop = MShop.find(rec["m_shop_id"]) %>
+	
+	<td rowspan="3" align="center" style="white-space: nowrap">
+		<%= m_shop.shop_cd %>&nbsp;<%= m_shop.shop_ryaku %><br/>
+		<%=['A','B','C','D','E','F'][(rec["z_league"] - 1)]%><%=rec["z_before_rank"]%><br/>
+		<%= number_with_delimiter(rec["z_total_point"]) %>
+	</td>
+	
+	<th rowspan="1">
+		目標
+	</th>
+	
+	<!-- 目標1～31 -->
+	<% d_aim = DAim.find(:first, :conditions => ["date=? and m_shop_id=? and m_aim_id=1", rec["date"], rec["m_shop_id"]]) %>
+	<% for i in 1..@days %>
+	<td align="right">
+		<%= number_with_delimiter(d_aim["aim_value#{ i }"]) unless d_aim.nil? %>
+	</td>
+	<% end %>
+	
+	<!-- 目標トータル　-->
+	<td align="right">
+		<%= number_with_delimiter(d_aim.aim_total) unless d_aim.nil? %>
+	</td>
+	
+	<!-- 枚数差 -->
+	<td rowspan="3" align="right">
+		<%= number_with_delimiter(d_aim.aim_total - rec["result_total"]) unless d_aim.nil? %>
+	</td>
+	
+	<!-- ペース -->
+	<td rowspan="2" align="right">
+		<%= number_with_delimiter(rec["pace"]) %>
+	</td>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+	<!-- 前年同日迄のペース -->
+	<td rowspan="1" align="right">
+		<%= number_with_delimiter(rec["same_pace"]) %>
+	</td>
+
+	<!-- 同月過去最高実績 -->
+	<td rowspan="2" align="right">
+		<%= number_with_delimiter(rec["same_uriage_total_max"]) %>
+	</td>
+
+</tr>
+<tr>
+	<th rowspan="2">
+		実績
+	</th>
+
+	<!--　実績枚数1～31 -->
+	<% for i in 1..@days %>
+	<td rowspan="2" align="right">
+		<%= number_with_delimiter(rec["result#{ i }"]) %>
+	</td>
+	<% end %>
+
+	<!-- 実績枚数トータル -->
+	<td rowspan="2" align="right">
+		<%= number_with_delimiter(rec["result_total"]) %>
+	</td>
+
+	<!-- 前年同日迄の実績 -->
+	<td rowspan="1" align="right">
+		<%= number_with_delimiter(rec["same_uriage"]) %>
+	</td>
+
+</tr>
+<tr>
+	<!-- 洗車売上金額 -->
+	<td align="right">
+		<%= number_with_delimiter(rec["uriage_total"]) %> 
+	</td>
+	
+	<!-- 前年同月末実績 -->
+	<td align="right">
+		<%= number_with_delimiter(rec["same_uriage_total"]) %>
+	</td>
+	
+	<!-- 本年ペース - 過去最高 -->
+	<td align="right">
+		<%= number_with_delimiter(rec["pace"] - rec["same_uriage_total_max"]) %>
+	</td>
+</tr>
+<% end %><!-- for rec in @d_washpurika_reports -->
+</table>
+
+<%=form_tag({:action => "update"}) do %>
+	<!-- begin 検索パラメータ -->
+	<%= hidden_field :hheader, :mode, :value => "" %>
+	<%= hidden_field :hheader, :y,    :value => params[:header][:y] %>
+	<%= hidden_field :hheader, :m,    :value => params[:header][:m] %>
+	<!-- end 検索パラメータ -->
+
+	<!-- begin データ部分 -->
+	<% cnt = 0 %>
+	<% for rec in @d_washpurika_reports %>
+		<% cnt += 1 %>
+		
+		<%=hidden_field "data#{cnt}", :date     ,   :value => rec["date"] %>
+		<%=hidden_field "data#{cnt}", :m_shop_id,   :value => rec["m_shop_id"] %>
+		<%=hidden_field "data#{cnt}", :total_rank,  :value => rec["total_rank"] %>
+		<%=hidden_field "data#{cnt}", :league,      :value => rec["league"] %>
+		<%=hidden_field "data#{cnt}", :before_rank, :value => rec["before_rank"] %>
+		<%=hidden_field "data#{cnt}", :total_point, :value => rec["total_point"] %>
+		
+		<% for i in 1..31 %>
+		<%=hidden_field "data#{cnt}", "result#{i}",     :value => rec["result#{i}"] %>
+		<% end %>
+		
+		<%=hidden_field "data#{cnt}", :result_total, :value => rec["result_total"] %>
+
+		<% for i in 1..31 %>
+		<%=hidden_field "data#{cnt}", "uriage#{i}",     :value => rec["uriage#{i}"] %>
+		<% end %>
+		
+		<%=hidden_field "data#{cnt}", :uriage_total, :value => rec["uriage_total"] %>
+
+		<%=hidden_field "data#{cnt}", :pace,                  :value => rec["pace"] %>
+		<%=hidden_field "data#{cnt}", :same_pace,             :value => rec["same_pace"]%>
+		<%=hidden_field "data#{cnt}", :same_uriage,           :value => rec["same_uriage"]%>
+		<%=hidden_field "data#{cnt}", :same_uriage_total,     :value => rec["same_uriage_total"] %>
+		<%=hidden_field "data#{cnt}", :same_uriage_total_max, :value => rec["same_uriage_total_max"] %>
+	<% end %>
+	<!-- end データ部分 -->
+	<br/>
+	<br/>
+	<%if session[:washpurika_mode].to_s == "edit" then %>
+	<div style="width: 900px;" >
+		<%= submit_tag("  保　存  ", 
+		               :disable_with => "保存中.....", 
+		               :confirm => '保存しても良いですか？', 
+		               :style => "float:right;") %>	  
+	</div>
+	<%end%> <!-- if session[:washpurika_mode].to_s == "edit" then -->
+	
 <% end %>
+<br/>
+<script language="JavaScript">
+$(function(){
+
+	// リーグの先頭行の仕切りをつける
+	$("tr.sikiri>td,tr.sikiri>th").css("border-top-width","3px");
+
+	// スクロール
+	$("#tablefix").tablefix({width: 900, height: 500, fixRows: 3, fixCols: 3});
+	
+});
+</script>
+
+

@@ -23,7 +23,9 @@ module DYumePointListsHelper
     d_result = DResult.where('result_date = ? and m_shop_id = ?',result_date,shop_id).first
     
     sql = <<-SQL
-      select * from d_result_oiletcs a
+      select COALESCE(sum(pos1_data),0) pos1_data,COALESCE(sum(pos2_data),0) pos2_data,
+       COALESCE(sum(pos3_data),0) pos3_data 
+      from d_result_oiletcs a
         left join m_oiletcs b
         on a.m_oiletc_id = b.id
       where d_result_id = ?

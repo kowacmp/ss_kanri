@@ -748,7 +748,7 @@ class DResultsController < ApplicationController
         sql << " where m.pos_class = #{m_code.code} and o.id = #{m_oil.id} and t.m_shop_id = #{@d_result.m_shop_id}"
         sql << "  and m.deleted_flg = 0 and t.deleted_flg = 0 and o.deleted_flg = 0"
         sql << " order by m.number"
-p "meter_sql=#{sql}"                            
+                            
         meter["#{m_oil.id}_#{m_code.code}"] = MOil.find_by_sql(sql)
         max_no = meter["#{m_oil.id}_#{m_code.code}"].size if meter["#{m_oil.id}_#{m_code.code}"].size > max_no
       end
@@ -902,8 +902,6 @@ p "meter_sql=#{sql}"
   end
   
   def oil_total_set
-    p "oil_total_set   oil_total_set   oil_total_set   oil_total_set"
-    p "params[:oil_total]=#{params[:oil_total]}"
     session[:m_oil_totals][params[:oil].to_i][:total] = params[:oil_total]  
 
     head :ok

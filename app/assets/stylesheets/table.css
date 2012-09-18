@@ -27,6 +27,7 @@ body
     font-weight:bold;
 	background: url('th_001.gif');
     background-repeat:repeat-x;
+    background-color:#D0D8F8;
     border: 1px solid #7D808A;
 }
 #rounded-corner td, .rounded-corner td
