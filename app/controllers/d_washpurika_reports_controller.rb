@@ -354,6 +354,20 @@ private
      
      ret[i]["before_rank"] = before_rank
    end
+   
+   #合計ポイントの加算
+   for i in 0..(ret.length - 1)
+      ret[i]["total_point"] = ret[i]["z_total_point"]
+      
+      m_get_point = MGetPoint.find(:first, :conditions=>["rank=? and league_rank=?",
+                                                            ret[i]["league"],
+                                                            ret[i]["before_rank"]])
+                                                            
+      if not(m_get_point.nil?) then
+          ret[i]["total_point"] += m_get_point.pt.to_i
+      end
+      
+   end
 
    # 旧リーグ、今月売上トータルでソート
    ret = ret.sort{|a,b| sort_func(a, b, "z_league, uriage_total desc, z_before_rank")}
