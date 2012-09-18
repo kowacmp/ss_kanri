@@ -23,7 +23,10 @@ SsKanri::Application.routes.draw do
   get "d_price_checks/update"  
   get "d_price_checks/show"
 
-  resources :d_washpurika_reports
+
+  get "d_washpurika_reports/index"
+  get "d_washpurika_reports/edit"
+  get "d_washpurika_reports/show"
 
   resources :d_result_reports do
    collection do

@@ -1,5 +1,10 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => 'header', :locals => {:ym_y => params[:header][:y],
+	                                         :ym_m => params[:header][:m] } %>
 
+<hr/>
 
-<%= link_to 'Edit', edit_d_washpurika_report_path(@d_washpurika_report) %> |
-<%= link_to 'Back', d_washpurika_reports_path %>
+<%if @d_washpurika_reports.length > 0 then%>
+	<%= render :partial => 'form' %>
+<%else %>
+	<%= render :partial => 'form0'%>
+<%end %>

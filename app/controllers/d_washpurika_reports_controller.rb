@@ -3,18 +3,25 @@ class DWashpurikaReportsController < ApplicationController
 
   def index
 
-    #なにもしない
+    # 引数より入力、照会を取得
+    if params[:mode] == "edit" then
+      session[:washpurika_mode] = "edit"     
+    else
+      session[:washpurika_mode] = "show"   
+    end
     
   end
 
   def show
+
+    @d_washpurika_reports = read_d_washpurika_reports(params[:header][:y] + params[:header][:m])
+    @days = Time.days_in_month(params[:header][:m].to_i, params[:header][:y].to_i)
 
   end
 
   def edit
 
     @d_washpurika_reports = create_d_washpurika_reports(params[:header][:y] + params[:header][:m])
-    
     @days = Time.days_in_month(params[:header][:m].to_i, params[:header][:y].to_i)
 
   end
@@ -55,7 +62,11 @@ class DWashpurikaReportsController < ApplicationController
   
 private
 
-  def create_d_washpurika_reports(ym)
+  # 洗車プリカ販売
+  def read_d_washpurika_reports(ym)
+    
+    # 戻り値の配列設定
+    ret = Array.new()
     
     # 前月を取得
     if ym[4..5] == "01" then
@@ -63,16 +74,77 @@ private
     else
       zym = ym[0..3] + sprintf("%02d", (ym[4..5].to_i - 1)) 
     end
-    p zym
+
+    # 今月のデータがなければ中断
+    if DWashpurikaReport.count(:conditions => ["date=?", ym]).to_i == 0 then
+      return ret
+    end
     
     # 前月のデータを取得
     washpurika_reports = DWashpurikaReport.find(:all, 
                                                 :conditions => ["date=?", zym],
                                                 :order => "league, before_rank")
+                                                
+    for rec in washpurika_reports
+    
+      # 今月データを読込
+      washpurika_report = DWashpurikaReport.find(:first,
+                                                 :conditions => ["date=? and m_shop_id=?",
+                                                   ym, rec.m_shop_id])
+    
+    
+      ret_rec = Hash.new()
+    
+      ret_rec["date"] = ym
+      ret_rec["m_shop_id"] = rec.m_shop_id
+      ret_rec["z_total_rank"] = rec.total_rank
+      ret_rec["total_rank"] = washpurika_report.total_rank
+      ret_rec["z_league"] = rec.league
+      ret_rec["league"] = washpurika_report.league
+      ret_rec["z_before_rank"] = rec.before_rank
+      ret_rec["before_rank"] = washpurika_report.before_rank
+      ret_rec["z_total_point"] = rec.total_point
+      ret_rec["total_point"] = washpurika_report.total_point
+    
+      for d in 1..31
+        ret_rec["result#{ d }"] = washpurika_report["result#{ d }"]
+        ret_rec["uriage#{ d }"] = washpurika_report["uriage#{ d }"]
+      end
+      
+      ret_rec["result_total"] = washpurika_report.result_total
+      ret_rec["uriage_total"] = washpurika_report.uriage_total
+      ret_rec["pace"] = washpurika_report.pace
+      ret_rec["same_pace"] = washpurika_report.same_pace
+      ret_rec["same_uriage"] = washpurika_report.same_uriage
+      ret_rec["same_uriage_total"] = washpurika_report.same_uriage_total
+      ret_rec["same_uriage_total_max"] = washpurika_report.same_uriage_total_max
+      
+      ret.push ret_rec
+
+    end 
+ 
+    return ret
+ 
+  end
+    
+  # 洗車プリカ販売目標データ作成
+  def create_d_washpurika_reports(ym)
     
     # 戻り値の配列設定
     ret = Array.new()
+
+    # 前月を取得
+    if ym[4..5] == "01" then
+      zym = (ym[0..3].to_i - 1).to_s + "12"
+    else
+      zym = ym[0..3] + sprintf("%02d", (ym[4..5].to_i - 1)) 
+    end
     
+    # 前月のデータを取得
+    washpurika_reports = DWashpurikaReport.find(:all, 
+                                                :conditions => ["date=?", zym],
+                                                :order => "league, before_rank")
+        
     for rec in washpurika_reports
     
       ret_rec = Hash.new()
