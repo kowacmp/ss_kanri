@@ -128,10 +128,11 @@ class DTankComputeReportDetailsController < ApplicationController
         end
         page.item(:user_name).value(current_user.user_name)
         
-        
-        page.item(:receive_last).value(tank_compute_last.receive)
-        page.item(:sale_last).value(tank_compute_last.sale)
-        page.item(:after_stock_last).value(tank_compute_last.after_stock)
+        unless tank_compute_last == nil
+          page.item(:receive_last).value(tank_compute_last.receive)
+          page.item(:sale_last).value(tank_compute_last.sale)
+          page.item(:after_stock_last).value(tank_compute_last.after_stock)
+        end
       end
 
 

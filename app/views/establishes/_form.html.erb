@@ -15,7 +15,7 @@
   <table id='rounded-corner'>
   	<tr>
   	  <th><%= f.label "会社名" %></th>
-  	  <td><%= f.text_field :name %></td>  	  
+  	  <td><%= f.text_field :name,:maxlength=>50 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label "郵便番号" %></th>
@@ -23,7 +23,7 @@
   	</tr>
   	<tr>
   	  <th><%= f.label "住所" %></th>
-  	  <td><%= f.text_area :address, :size=>"50x2" %></td>  	  
+  	  <td><%= f.text_field :address,:maxlength=>50 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label "システム名" %></th>
@@ -31,15 +31,19 @@
   	</tr>
   	<tr>
   	  <th><%= f.label "消費税率" %></th>
-  	  <td><%= f.number_field :tax_rate, :style=>"ime-mode:disabled" ,:maxlength=>6 %></td>  	  
+  	  <td><%= f.number_field :tax_rate, :style=>"ime-mode:disabled" ,:maxlength=>6,:class=>"number" %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label "軽油税" %></th>
-  	  <td><%= f.number_field :light_oil, :style=>"ime-mode:disabled" ,:maxlength=>6 %></td>  	  
+  	  <td><%= f.number_field :light_oil, :style=>"ime-mode:disabled" ,:maxlength=>6,:class=>"number" %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label "制限範囲" %></th>
-  	  <td><%= f.number_field :limit, :style=>"ime-mode:disabled" ,:maxlength=>3 %></td>  	  
+  	  <td><%= f.number_field :limit, :style=>"ime-mode:disabled" ,:maxlength=>6,:class=>"number" %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label "夢ポイント原価" %></th>
+  	  <td><%= f.number_field :yumepoint_cost, :style=>"ime-mode:disabled" ,:maxlength=>6,:class=>"number" %></td>  	  
   	</tr>
   	
   	<tr>
@@ -58,3 +62,5 @@
     <%#= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div-->
 <% end %>
+
+<%= javascript_include_tag "comma" %>

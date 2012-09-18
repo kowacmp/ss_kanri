@@ -463,10 +463,11 @@ class DResultReportsController < ApplicationController
         row.item(:mo_gas).value(data.mo_gas)
         row.item(:r_mo_gas).value(data.r_mo_gas)
         #row.item(:mo_gas_pace).value(data.mo_gas_pace)
-        if data.hg_aim != nil or data.rg_aim != nil
-          mo_gas_aim = data.hg_aim.to_i + data.hg_aim.to_i
-        end
-        row.item(:mo_gas_aim).value(mo_gas_aim)
+        #if data.hg_aim != nil or data.rg_aim != nil
+        #  mo_gas_aim = data.hg_aim.to_i + data.hg_aim.to_i
+        #end
+        #row.item(:mo_gas_aim).value(mo_gas_aim)
+        row.item(:mo_gas_aim).value(data.mo_gas_aim)
         
         row.item(:keiyu).value(data.keiyu)
         row.item(:r_keiyu).value(data.r_keiyu)
@@ -476,6 +477,9 @@ class DResultReportsController < ApplicationController
         row.item(:r_touyu).value(data.r_touyu)
         #row.item(:touyu_pace).value(data.touyu_pace)
         row.item(:touyu_aim).value(data.touyu_aim)
+        
+        row.item(:kyuyu_purika_aim).value(data.kyuyu_purika_aim)
+        row.item(:r_kyuyu_purika).value(data.r_kyuyu_purika)
         
       end #add_row
     end # datas.each
@@ -538,15 +542,20 @@ class DResultReportsController < ApplicationController
         row.item(:r_sensya_purika).value(data.r_sensya_purika)
         row.item(:sensya_purika_aim).value(data.sensya_purika_aim)
         
-        row.item(:muton).value(data.muton)
+        #row.item(:muton).value(data.muton)
+        row.item(:muton).value(data.muton_aim)
         row.item(:r_muton).value(data.r_muton)
-        row.item(:sp_plus).value(data.sp_plus)
+        #row.item(:sp_plus).value(data.sp_plus)
+        row.item(:sp_plus).value(data.sp_plus_aim)
         row.item(:r_sp_plus).value(data.r_sp_plus)
-        row.item(:taiyaw).value(data.taiyaw)
+        #row.item(:taiyaw).value(data.taiyaw)
+        row.item(:taiyaw).value(data.taiyaw_aim)
         row.item(:r_taiyaw).value(data.r_taiyaw)
-        row.item(:sc).value(data.sc)
+        #row.item(:sc).value(data.sc)
+        row.item(:sc).value(data.sc_aim)
         row.item(:r_sc).value(data.r_sc)
-        row.item(:sp).value(data.sp)
+        #row.item(:sp).value(data.sp)
+        row.item(:sp).value(data.sp_aim)
         row.item(:r_sp).value(data.r_sp)
         
         row.item(:r_wash_item).value(data.r_wash_item)
@@ -576,6 +585,8 @@ class DResultReportsController < ApplicationController
   def label_names_get(select_kbn)
     
     if select_kbn == 0
+      #@mo_gas_label = MAim.find_by_aim_code(17) ? MAim.find_by_aim_code(17).aim_name : "モーガス"
+      
       @keiyu_label = MOil.find_by_oil_cd(3) ? MOil.find_by_oil_cd(3).oil_name : "軽油"
       @touyu_label = MOil.find_by_oil_cd(4) ? MOil.find_by_oil_cd(4).oil_name : "灯油"
       
@@ -673,6 +684,13 @@ class DResultReportsController < ApplicationController
       select_sql <<            " where d1.result_date >= '#{input_ymd_s}' and d1.result_date <= '#{input_ymd_e}' "
       select_sql <<      " group by d1.m_shop_id"
       select_sql <<      " ) d on a.id = d.m_shop_id "
+      
+      #モーガス
+      #select_sql << " left join (select e1.m_shop_id,e1.aim_total as mo_gas_aim from d_aims e1"
+      #select_sql << " left join (select e1.m_shop_id,e1.aim_value#{input_day} as mo_gas_aim from d_aims e1"
+      #select_sql <<            " left join m_aims e2 on e1.m_aim_id = e2.id"
+      #select_sql << " where e1.date = '#{input_month}' and e2.aim_code = 17 ) e on a.id = e.m_shop_id "
+      
     elsif select_kbn == 1
       
       select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*"
@@ -710,7 +728,8 @@ class DResultReportsController < ApplicationController
       
     elsif select_kbn == 2
       
-      select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*, g.*, h.*, i.*"
+      #select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*, g.*, h.*, i.*"
+      select_sql = "select a.*, b.*, c.*, d.*, e.*, g.*, h.*, i.*"
 
       select_sql << " from (select id, shop_cd, shop_name,shop_ryaku from m_shops where deleted_flg = 0 and shop_kbn = 0) a"  
       
@@ -729,14 +748,19 @@ class DResultReportsController < ApplicationController
       select_sql <<      " group by d1.m_shop_id"
       select_sql <<      " ) d on a.id = d.m_shop_id "
       
-      #ハイオク
-      select_sql << " left join (select e1.m_shop_id,e1.aim_total as hg_aim from d_aims e1"
+      
+      #モーガス
+      select_sql << " left join (select e1.m_shop_id,e1.aim_total as mo_gas_aim from d_aims e1"
       select_sql <<            " left join m_aims e2 on e1.m_aim_id = e2.id"
-      select_sql << " where e1.date = '#{input_month}' and e2.aim_code = 3 ) e on a.id = e.m_shop_id "
+      select_sql << " where e1.date = '#{input_month}' and e2.aim_code = 16 ) e on a.id = e.m_shop_id "
+      #ハイオク
+      #select_sql << " left join (select e1.m_shop_id,e1.aim_total as hg_aim from d_aims e1"
+      #select_sql <<            " left join m_aims e2 on e1.m_aim_id = e2.id"
+      #select_sql << " where e1.date = '#{input_month}' and e2.aim_code = 3 ) e on a.id = e.m_shop_id "
       #レギュラー
-      select_sql << " left join (select f1.m_shop_id,f1.aim_total as rg_aim from d_aims f1"
-      select_sql <<            " left join m_aims f2 on f1.m_aim_id = f2.id"
-      select_sql << " where f1.date = '#{input_month}' and f2.aim_code = 4 ) f on a.id = f.m_shop_id "
+      #select_sql << " left join (select f1.m_shop_id,f1.aim_total as rg_aim from d_aims f1"
+      #select_sql <<            " left join m_aims f2 on f1.m_aim_id = f2.id"
+      #select_sql << " where f1.date = '#{input_month}' and f2.aim_code = 4 ) f on a.id = f.m_shop_id "
       #軽油
       select_sql << " left join (select g1.m_shop_id,g1.aim_total as keiyu_aim from d_aims g1"
       select_sql <<            " left join m_aims g2 on g1.m_aim_id = g2.id"
@@ -752,7 +776,8 @@ class DResultReportsController < ApplicationController
       
     elsif select_kbn == 3
       
-      select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*"
+      #select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*"
+      select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*, g.*, h.*, i.*, j.*, k.*"
     
       select_sql << " from (select id, shop_cd, shop_name,shop_ryaku from m_shops where deleted_flg = 0 and shop_kbn = 0) a"  
       
@@ -785,6 +810,27 @@ class DResultReportsController < ApplicationController
       select_sql << " left join (select f1.m_shop_id,f1.aim_total as sensya_purika_aim from d_aims f1"
       select_sql <<            " left join m_aims f2 on f1.m_aim_id = f2.id"
       select_sql << " where f1.date = '#{input_month}' and f2.aim_code = 8 ) f on a.id = f.m_shop_id "
+      
+      #ムートンパス
+      select_sql << " left join (select g1.m_shop_id,g1.aim_total as muton_aim from d_aims g1"
+      select_sql <<            " left join m_aims g2 on g1.m_aim_id = g2.id"
+      select_sql << " where g1.date = '#{input_month}' and g2.aim_code = 17 ) g on a.id = g.m_shop_id "
+      #スピードパスプラス
+      select_sql << " left join (select h1.m_shop_id,h1.aim_total as sp_plus_aim from d_aims h1"
+      select_sql <<            " left join m_aims h2 on h1.m_aim_id = h2.id"
+      select_sql << " where h1.date = '#{input_month}' and h2.aim_code = 18 ) h on a.id = h.m_shop_id "
+      #タイヤW
+      select_sql << " left join (select i1.m_shop_id,i1.aim_total as taiyaw_aim from d_aims i1"
+      select_sql <<            " left join m_aims i2 on i1.m_aim_id = i2.id"
+      select_sql << " where i1.date = '#{input_month}' and i2.aim_code = 19 ) i on a.id = i.m_shop_id "
+      #SC
+      select_sql << " left join (select j1.m_shop_id,j1.aim_total as sc_aim from d_aims j1"
+      select_sql <<            " left join m_aims j2 on j1.m_aim_id = j2.id"
+      select_sql << " where j1.date = '#{input_month}' and j2.aim_code = 20 ) j on a.id = j.m_shop_id "
+      #SP
+      select_sql << " left join (select k1.m_shop_id,k1.aim_total as sp_aim from d_aims k1"
+      select_sql <<            " left join m_aims k2 on k1.m_aim_id = k2.id"
+      select_sql << " where k1.date = '#{input_month}' and k2.aim_code = 21 ) k on a.id = k.m_shop_id "
       
     else
       

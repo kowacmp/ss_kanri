@@ -16,7 +16,7 @@
   <table id='rounded-corner'>
   	<tr>
   	  <th><%= f.label '油外コード' %></th>
-  	  <td><%= f.number_field :oiletc_cd, :style=>"ime-mode:disabled" ,:maxlength=>2 %></td>  	  
+  	  <td><%= f.number_field :oiletc_cd, :style=>"ime-mode:disabled" ,:maxlength=>3 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '油外名' %></th>
@@ -58,6 +58,10 @@
         end, {:include_blank => "選択して下さい"}) %>
   	  </td>  	  
   	</tr>
+  	<tr>
+  	  <th><%= f.label '粗利' %></th>
+  	  <td><%= f.number_field :oiletc_arari, :style=>"ime-mode:disabled" ,:maxlength=>8,:class=>"money" %></td>  	  
+  	</tr>
   	
   	<tr>
   		<td align="left" style="border: none">
@@ -77,3 +81,5 @@
     <%#= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div-->
 <% end %>
+
+<%= javascript_include_tag "comma" %>

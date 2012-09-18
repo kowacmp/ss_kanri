@@ -34,7 +34,8 @@ class DAimsController < ApplicationController
     
     @m_shop = MShop.find(@shop_id)
 
-    @m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=?",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
+    @m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=? and deleted_flg=0",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
+    #@m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=?",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -187,7 +188,8 @@ class DAimsController < ApplicationController
     #@m_shop = MShop.find(current_user.m_shop_id)
     @m_shop = MShop.find(@shop_id)
     
-    @m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=?",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
+    @m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=? and deleted_flg=0",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
+    #@m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=?",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
 
   end
   

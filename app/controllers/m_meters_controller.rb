@@ -26,6 +26,7 @@ class MMetersController < ApplicationController
   # GET /m_meters/new.json
   def new
     @m_shop_id = params[:id]
+    @m_shop = MShop.find(@m_shop_id)
     
     @m_oil_first = MOil.find(:first, :conditions => "deleted_flg = 0", :order => 'oil_cd')
 
@@ -137,6 +138,8 @@ class MMetersController < ApplicationController
     p params[:m_shop][:m_shop_id]
     
     @m_shop_id = params[:m_shop][:m_shop_id]
+    @m_shop = MShop.find(@m_shop_id)
+    
     @m_oil_id = params[:m_oil][:m_oil_id]
     
     @m_oil_first = MOil.find(@m_oil_id)
