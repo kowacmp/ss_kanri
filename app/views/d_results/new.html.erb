@@ -60,8 +60,49 @@ $(function () {
   		$("#oil_total_<%= m_oil.id %>").text(format_kanma(total.toFixed(2)));
   		$.get("/d_results/oil_total_set?oil_total=" + total.toFixed(2), "oil=" + <%= m_oil.id %>);
     };
-  <% end %> 
-      
+    
+    
+    <% if m_oil.id == 1 or m_oil.id == 2 %>
+      <% for i in 1..3 %>
+        //モーガスPOS合計
+	    $(":input[id^=oil_pos<%= i %>]").live('change', function(){ oil_pos<%= i %>_total(); });
+	
+	    function oil_pos<%= i %>_total() {
+	    	var total;
+	    	total = 0
+	    	<% for r in 1..2 %>
+	    	  var num<%= r %> = Number(format_kanma($("#oil_pos<%= i %>_<%= r %>").val(), 2));
+	    	
+	    	  if (isNaN(num<%= r %>)) {num<%= r %> = 0};
+	    	  total = total + num<%= r %>;
+	    	<% end %>
+	    	$("#oil_pos<%= i %>_total").text(format_kanma(total.toFixed(2)));
+	    	
+	    	oil_pos_total();//小計計算
+	    };
+	  <% end %> 
+	  
+	    //モーガストータル
+	    function oil_pos_total() {
+	    	var num = new Array(3);
+	    	var total=0;
+	    	
+	    	num[0]=Number(format_kanma($("#oil_pos1_total").text(), 2));
+	    	num[1]=Number(format_kanma($("#oil_pos2_total").text(), 2));
+	    	num[2]=Number(format_kanma($("#oil_pos3_total").text(), 2));
+	    	
+			var i=0;
+	      	while(i<3){
+	        	if (isNaN(num[i])) {num[i] = 0};
+	        	i=i+1;
+	     	};
+	     	
+			total = num[0] + num[1] + num[2];
+			
+			$("#oil_pos_total").text(format_kanma(total.toFixed(2)));  	
+	    };
+    <% end %> 
+  <% end %>       
       
   //油外販売
   <% if @m_shop.shop_kbn == 1 %>

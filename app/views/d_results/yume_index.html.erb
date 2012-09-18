@@ -1,14 +1,17 @@
 <table id='rounded-corner'>
   <th>獲得日</th>
-  <td><%= Time.parse(@d_result.result_date).strftime("%Y/%m/%d") %></td>
+  <td><%= @result_date[0,4] + "/" + @result_date[4,2] + "/" + @result_date[6,2] %></td>
 </table>	
 <br/>
 
-<div align="left"><%= link_to '新規登録', {:action => 'yume_new', :d_result_id => @d_result.id}, { :remote => true ,:class => 'add_icon'} %></div>
+<div align="left"><%#= link_to '新規登録', {:action => 'yume_new', :d_result_id => @d_result.id}, { :remote => true ,:class => 'add_icon'} %>
+  <%= link_to '新規登録', {:action => 'yume_new', :result_date => @result_date, :m_shop_id => @m_shop_id}, { :remote => true ,:class => 'add_icon'} %>
+</div>
 <table>
-  <td>
+  <td valign="top">
     <div id="yume_result"><%= render 'yume_result' %></div>
   </td>
+  <td width="40"></td>
   <td valign="top">
     <div id="new"></div>
   </td>

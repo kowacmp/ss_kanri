@@ -221,10 +221,9 @@ class DResultsController < ApplicationController
     
     #夢ポイント
     if @d_result.blank?
-      @d_result_yumes = ""
+      @d_result_yumepoints = ""
     else
-      sql = yume_sql(@d_result.id)
-      @d_result_yumes = DResultOiletc.find_by_sql(sql)
+      @d_result_yumepoints = DResultOiletc.find_by_sql(yume_sql(@d_result.id))
     end
         
     #タンク、メーターとレコードが登録されていない場合は集計を行わない
@@ -366,8 +365,27 @@ class DResultsController < ApplicationController
       end   
     end
     
-    #営業POS伝回収報告データ作成  油外店舗のみ作成
+    #車検予約、営業POS伝回収報告作成  油外店舗のみ作成
     if m_shop.shop_kbn == 1
+      ymd = Time.parse(d_result.result_date)
+      for i in 0..4
+        ym = (ymd + i.months).strftime("%Y%m")
+        mon = (ymd + i.months).strftime("%m")
+
+        d_result_reserve = DResultReserve.find(:first, :conditions => ["d_result_id = ? and reserve_nengetu = ?",
+                                                                        d_result.id, ym])
+        if d_result_reserve.blank?
+          d_result_reserve = DResultReserve.new
+          d_result_reserve.d_result_id = d_result.id
+          d_result_reserve.reserve_nengetu = ym    
+          d_result_reserve.created_user_id = current_user.id  
+        end 
+              
+        d_result_reserve.reserve_num = params[:reserve_num][mon].to_i
+        d_result_reserve.updated_user_id = current_user.id                                                        
+        d_result_reserve.save
+      end
+      
       m_oiletcs = MOiletc.find(:all, :conditions => ["oiletc_trade = 1 and deleted_flg = 0"])
 
       m_oiletcs.each do |m_oiletc|
@@ -597,99 +615,87 @@ class DResultsController < ApplicationController
   
   def yume_index
     @result_date = params[:result_date]
-    
-    @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
+    @m_shop_id = params[:m_shop_id]
+    d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       params[:m_shop_id], @result_date])
-    
-    #実績データ作成 
-    if @d_result.blank?
-      @d_result = DResult.new
-      @d_result.result_date = @result_date
-      @d_result.m_shop_id = params[:m_shop_id]
-      @d_result.kakutei_flg = 0
-      @d_result.created_user_id = current_user.id
-      @d_result.updated_user_id = current_user.id
-      @d_result.save
+
+    if d_result.blank?
+      @d_result_yumepoints = ""
+    else     
+      @d_result_yumepoints = DResultYumepoint.find_by_sql(yume_sql(d_result.id))        
     end
-    
-    sql = yume_sql(@d_result.id)
-    @d_result_yumes = DResultOiletc.find_by_sql(sql)
-    
-    render :layout => 'modal'    
+      
+    render :layout => 'modal'
   end
   
   def yume_new
-    @d_result_id = params[:d_result_id]
-    #render :layout => 'modal'
+    @result_date = params[:result_date]
+    @m_shop_id = params[:m_shop_id]
   end
   
   def yume_create
-    d_result = DResult.find(params[:yume][:d_result_id]) 
-    m_oiletc = MOiletc.find(:first, :conditions => ["oiletc_group = 2"])
+    d_result_check(params[:result_date], params[:m_shop_id])
 
-    d_result_yume = DResultOiletc.new
-    d_result_yume.d_result_id = d_result.id
-    d_result_yume.m_oiletc_id = m_oiletc.id
-    d_result_yume.pos1_data = params[:yume][:kensu]
-    d_result_yume.pos2_data = params[:yume][:point]
-    d_result_yume.pos3_data = params[:yume][:kingaku] 
-    d_result_yume.created_user_id = current_user.id
-    d_result_yume.updated_user_id = current_user.id
-    d_result_yume.save
-   
-    sql = yume_sql(d_result.id)
-    @d_result_yumes = DResultOiletc.find_by_sql(sql)
-    @result_date = d_result.result_date
-    @m_shop = MShop.find(d_result.m_shop_id) 
+    d_result_yumepoint = DResultYumepoint.new
+    d_result_yumepoint.d_result_id = @d_result.id
+    d_result_yumepoint.yumepoint_class = params[:yume][:yumepoint_class] 
+    d_result_yumepoint.yumepoint_num = params[:yume][:yumepoint_num] 
+    d_result_yumepoint.yumepoint = params[:yume][:yumepoint] 
+    d_result_yumepoint.yumepoint_money = params[:yume][:yumepoint_money] 
+    d_result_yumepoint.created_user_id = current_user.id
+    d_result_yumepoint.updated_user_id = current_user.id
+    d_result_yumepoint.save
+    
+    yume_data_set(@d_result)
   end
 
   def yume_edit
-    @d_result_yume = DResultOiletc.find(params[:id])
+    @d_result_yumepoint = DResultYumepoint.find(params[:id])
   end
   
   def yume_update
-    d_result_yume = DResultOiletc.find(params[:yume][:id])
-    d_result_yume.pos1_data = params[:yume][:kensu]
-    d_result_yume.pos2_data = params[:yume][:point]
-    d_result_yume.pos3_data = params[:yume][:kingaku]
-    d_result_yume.updated_user_id = current_user.id   
-    d_result_yume.save
+    d_result_yumepoint = DResultYumepoint.find(params[:id])
+    d_result_yumepoint.yumepoint_class = params[:yume][:yumepoint_class] 
+    d_result_yumepoint.yumepoint_num = params[:yume][:yumepoint_num] 
+    d_result_yumepoint.yumepoint = params[:yume][:yumepoint] 
+    d_result_yumepoint.yumepoint_money = params[:yume][:yumepoint_money] 
+    d_result_yumepoint.updated_user_id = current_user.id
+    d_result_yumepoint.save
 
-    d_result = DResult.find(d_result_yume.d_result_id)    
-    sql = yume_sql(d_result.id)
-    @d_result_yumes = DResultOiletc.find_by_sql(sql)
-    @result_date = d_result.result_date  
-    @m_shop = MShop.find(d_result.m_shop_id)      
+    d_result = DResult.find(d_result_yumepoint.d_result_id)
+    yume_data_set(d_result) 
   end
   
   def yume_delete
-    d_result_yume = DResultOiletc.find(params[:id])
-    d_result = DResult.find(d_result_yume.d_result_id)  
-    d_result_yume.destroy
-    
-    sql = yume_sql(d_result.id)
-    @d_result_yumes = DResultOiletc.find_by_sql(sql)
-    @result_date = d_result.result_date    
-    @m_shop = MShop.find(d_result.m_shop_id) 
+    d_result_yumepoint = DResultYumepoint.find(params[:id])
+    d_result = DResult.find(d_result_yumepoint.d_result_id)  
+    d_result_yumepoint.destroy
+
+    yume_data_set(d_result)
   end
   
   def meter_index
     @result_date = params[:result_date]
     @edit_flg = params[:edit_flg]
+    @m_shop_id = params[:m_shop_id]
     
     @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
-                                                      params[:m_shop_id], @result_date])
-    
-    #実績データ作成 
+                                                      @m_shop_id, @result_date])
     if @d_result.blank?
-      @d_result = DResult.new
-      @d_result.result_date = @result_date
-      @d_result.m_shop_id = params[:m_shop_id]
-      @d_result.kakutei_flg = 0
-      @d_result.created_user_id = current_user.id
-      @d_result.updated_user_id = current_user.id
-      @d_result.save
+      d_result_id = 0
+    else
+      d_result_id = @d_result.id  
     end
+    #実績データ作成 
+#    if @d_result.blank?
+#      @d_result = DResult.new
+#      @d_result.result_date = @result_date
+#      @d_result.m_shop_id = params[:m_shop_id]
+#      @d_result.kakutei_flg = 0
+#      @d_result.created_user_id = current_user.id
+#      @d_result.updated_user_id = current_user.id
+#      @d_result.save
+#    end
     
     @m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"], :order => 'oil_cd')
     @m_codes = MCode.find(:all, :conditions => ["kbn = 'pos_class'", :order => 'code'])
@@ -697,7 +703,7 @@ class DResultsController < ApplicationController
     #開始時メーター
     day, yesterday = old_result_date(@result_date)
     old_d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
-                                                         @d_result.m_shop_id, yesterday])
+                                                         @m_shop_id, yesterday])
     old_max_no = 0
     old_meter = Hash::new
     @old_meters = Array::new
@@ -709,7 +715,7 @@ class DResultsController < ApplicationController
           sql << " left join d_result_meters d on (m.id = d.m_meter_id and d.d_result_id = #{old_d_result.id})"
           sql << " left join m_tanks t on (m.m_tank_id = t.id)"
           sql << " left join m_oils o on (t.m_oil_id = o.id)"
-          sql << " where m.pos_class = #{m_code.code} and o.id = #{m_oil.id} and t.m_shop_id = #{@d_result.m_shop_id}"
+          sql << " where m.pos_class = #{m_code.code} and o.id = #{m_oil.id} and t.m_shop_id = #{@m_shop_id}"
           sql << "  and m.deleted_flg = 0 and t.deleted_flg = 0 and o.deleted_flg = 0"
           sql << " order by m.number"
                               
@@ -742,13 +748,13 @@ class DResultsController < ApplicationController
     @m_oils.each do |m_oil|
       @m_codes.each do |m_code|
         sql = "select m.id m_meter_id, m.meter_no, d.meter from m_meters m"
-        sql << " left join d_result_meters d on (m.id = d.m_meter_id and d.d_result_id = #{@d_result.id})"
+        sql << " left join d_result_meters d on (m.id = d.m_meter_id and d.d_result_id = #{d_result_id})"
         sql << " left join m_tanks t on (m.m_tank_id = t.id)"
         sql << " left join m_oils o on (t.m_oil_id = o.id)"
-        sql << " where m.pos_class = #{m_code.code} and o.id = #{m_oil.id} and t.m_shop_id = #{@d_result.m_shop_id}"
+        sql << " where m.pos_class = #{m_code.code} and o.id = #{m_oil.id} and t.m_shop_id = #{@m_shop_id}"
         sql << "  and m.deleted_flg = 0 and t.deleted_flg = 0 and o.deleted_flg = 0"
         sql << " order by m.number"
-                            
+                          
         meter["#{m_oil.id}_#{m_code.code}"] = MOil.find_by_sql(sql)
         max_no = meter["#{m_oil.id}_#{m_code.code}"].size if meter["#{m_oil.id}_#{m_code.code}"].size > max_no
       end
@@ -770,7 +776,7 @@ class DResultsController < ApplicationController
       end
     end
         
-    if @d_result.kakutei_flg == 0 or @edit_flg.to_i == 1
+    if @d_result.blank? or @edit_flg.to_i == 1 or @d_result.kakutei_flg == 0
       @text = false 
     else
       @text = true
@@ -780,19 +786,24 @@ class DResultsController < ApplicationController
   end
   
   def d_result_meter_create
-    d_result = DResult.find(params[:select][:d_result_id])
+    p "d_result_meter_create   d_result_meter_create   d_result_meter_create"
+    p "result_date=#{params[:result_date]}"
+    p "edit_flg=#{params[:edit_flg]}"
+    p "m_shop_id=#{params[:m_shop_id]}"
+    d_result_check(params[:result_date], params[:m_shop_id])
+   # d_result = DResult.find(params[:select][:d_result_id])
     
     #メーター登録
     sql = "select m.* from m_meters m, m_tanks t"
-    sql << " where m.m_tank_id = t.id and t.m_shop_id = #{d_result.m_shop_id}"
+    sql << " where m.m_tank_id = t.id and t.m_shop_id = #{@d_result.m_shop_id}"
 
     m_meters = MMeter.find_by_sql(sql)
     m_meters.each do |m_meter|
-      d_result_meter = DResultMeter.find(:first, :conditions => ["d_result_id = ? and m_meter_id = ?", d_result.id, m_meter.id])
+      d_result_meter = DResultMeter.find(:first, :conditions => ["d_result_id = ? and m_meter_id = ?", @d_result.id, m_meter.id])
       
       if d_result_meter.blank?
         d_result_meter = DResultMeter.new
-        d_result_meter.d_result_id = d_result.id
+        d_result_meter.d_result_id = @d_result.id
         d_result_meter.m_meter_id = m_meter.id
         d_result_meter.created_user_id = current_user.id
         d_result_meter.updated_user_id = current_user.id        
@@ -803,53 +814,60 @@ class DResultsController < ApplicationController
       d_result_meter.save
     end
 
-    @m_tanks_count = MTank.count(:all, :conditions => ["m_shop_id = ? and deleted_flg = 0",d_result.m_shop_id])
-    @d_result_tanks_count = DResultTank.count(:all, :conditions => ["d_result_id = ?",d_result.id])
+    @m_tanks_count = MTank.count(:all, :conditions => ["m_shop_id = ? and deleted_flg = 0",@d_result.m_shop_id])
+    @d_result_tanks_count = DResultTank.count(:all, :conditions => ["d_result_id = ?",@d_result.id])
   
     #レコード数が等しいなら集計、帳票データ作成を行う。
     if @m_tanks_count == @d_result_tanks_count
       #地下タンク過不足、計算データ作成
-      tika_data_create(d_result.id)
+      tika_data_create(@d_result.id)
     
       #油種別集計
-      meter_total(d_result.id)
+      meter_total(@d_result.id)
     
       #タンク別集計
-      tank_betu_total(d_result.id, d_result.m_shop_id)
+      tank_betu_total(@d_result.id, @d_result.m_shop_id)
     end
     
-    @edit_flg = params[:select][:edit_flg]
-    @m_shop = MShop.find(d_result.m_shop_id) 
-    @result_date = d_result.result_date  
+    @edit_flg = params[:edit_flg]
+    @m_shop = MShop.find(@d_result.m_shop_id) 
+    @result_date = @d_result.result_date  
   end
   
   def tank_index
     @result_date = params[:result_date]
     @edit_flg = params[:edit_flg]
-    @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
-                                                      params[:m_shop_id], @result_date])
+    @m_shop_id = params[:m_shop_id]
     
-    #実績データ作成 
+    @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
+                                                      @m_shop_id, @result_date])
+                                                      
     if @d_result.blank?
-      @d_result = DResult.new
-      @d_result.result_date = @result_date
-      @d_result.m_shop_id = params[:m_shop_id]
-      @d_result.kakutei_flg = 0
-      @d_result.created_user_id = current_user.id
-      @d_result.updated_user_id = current_user.id
-      @d_result.save
-    end
+      d_result_id = 0
+    else
+      d_result_id = @d_result.id  
+    end    
+    #実績データ作成 
+#    if @d_result.blank?
+#      @d_result = DResult.new
+#      @d_result.result_date = @result_date
+#      @d_result.m_shop_id = params[:m_shop_id]
+#      @d_result.kakutei_flg = 0
+#      @d_result.created_user_id = current_user.id
+#      @d_result.updated_user_id = current_user.id
+#      @d_result.save
+#    end
         
     #仕入、在庫データ取得    
     sql = "select t.id m_tank_id, t.tank_no, t.volume, o.oil_name, d.receive, d.stock from m_tanks t"
-    sql << " left join d_result_tanks d on (t.id = d.m_tank_id and d.d_result_id = #{@d_result.id})"
+    sql << " left join d_result_tanks d on (t.id = d.m_tank_id and d.d_result_id = #{d_result_id})"
     sql << " left join m_oils o on (t.m_oil_id = o.id)"
-    sql << " where t.m_shop_id = #{@d_result.m_shop_id} and t.deleted_flg = 0 and o.deleted_flg = 0 "
+    sql << " where t.m_shop_id = #{@m_shop_id} and t.deleted_flg = 0 and o.deleted_flg = 0 "
     sql << " order by t.tank_no"
-                                            
+                                    
     @m_tanks = MTank.find_by_sql(sql)
 
-    if @d_result.kakutei_flg == 0 or @edit_flg.to_i == 1
+    if @d_result.blank? or @edit_flg.to_i == 1 or @d_result.kakutei_flg == 0
       @text = false 
     else
       @text = true
@@ -859,16 +877,21 @@ class DResultsController < ApplicationController
   end  
 
   def d_result_tank_create
-    d_result = DResult.find(params[:select][:d_result_id])
+    p "d_result_tank_create   d_result_tank_create   d_result_tank_create"
+    p "result_date=#{params[:result_date]}"
+    p "edit_flg=#{params[:edit_flg]}"
+    p "m_shop_id=#{params[:m_shop_id]}"    
+    #d_result = DResult.find(params[:select][:d_result_id])
+    d_result_check(params[:result_date], params[:m_shop_id])
     
     #タンク在庫登録
-    m_tanks = MTank.find(:all, :conditions => ["m_shop_id = ? and deleted_flg = 0",d_result.m_shop_id])
+    m_tanks = MTank.find(:all, :conditions => ["m_shop_id = ? and deleted_flg = 0",@d_result.m_shop_id])
     m_tanks.each do |m_tank|
-      d_result_tank = DResultTank.find(:first, :conditions => ["d_result_id = ? and m_tank_id = ?", d_result.id, m_tank.id])
+      d_result_tank = DResultTank.find(:first, :conditions => ["d_result_id = ? and m_tank_id = ?", @d_result.id, m_tank.id])
       
       if d_result_tank.blank?
         d_result_tank = DResultTank.new
-        d_result_tank.d_result_id = d_result.id
+        d_result_tank.d_result_id = @d_result.id
         d_result_tank.m_tank_id = m_tank.id
         d_result_tank.created_user_id = current_user.id
         d_result_tank.updated_user_id = current_user.id           
@@ -880,25 +903,25 @@ class DResultsController < ApplicationController
       d_result_tank.save      
     end  
     
-    sql = m_meters_count_sql(d_result.m_shop_id)
+    sql = m_meters_count_sql(@d_result.m_shop_id)
     @m_meters_count = MMeter.count_by_sql(sql)
-    @d_result_meters_count = DResultMeter.count(:all, :conditions => ["d_result_id = ?", d_result.id]) 
+    @d_result_meters_count = DResultMeter.count(:all, :conditions => ["d_result_id = ?", @d_result.id]) 
     
     #レコード数が等しいなら集計、帳票データ作成を行う。
     if @m_meters_count == @d_result_meters_count
       #地下タンク過不足、計算データ作成
-      tika_data_create(d_result.id)
+      tika_data_create(@d_result.id)
     
       #油種別集計
-      meter_total(d_result.id)
+      meter_total(@d_result.id)
     
       #タンク別集計
-      tank_betu_total(d_result.id, d_result.m_shop_id)
+      tank_betu_total(@d_result.id, @d_result.m_shop_id)
     end
     
-    @edit_flg = params[:select][:edit_flg]
-    @result_date = d_result.result_date   
-    @m_shop = MShop.find(d_result.m_shop_id) 
+    @edit_flg = params[:edit_flg]
+    @result_date = @d_result.result_date   
+    @m_shop = MShop.find(@d_result.m_shop_id) 
   end
   
   def oil_total_set

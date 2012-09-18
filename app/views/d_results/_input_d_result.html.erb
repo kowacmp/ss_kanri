@@ -2,11 +2,12 @@
 
 <%= form_tag({:action => 'd_result_create' }, { :remote => true }) do %>
  <div id="tabs">
- <ul>
+  <ul>
      <li><a href="#first">商品入力</a></li>
      <li><a href="#second">メータ入力</a></li>
      <li><a href="#third">その他入力</a></li>
- </ul>
+  </ul>
+  
   <div id="first">
   <table id='rounded-corner'>
 	<tr>
@@ -24,7 +25,14 @@
       <td><%= number_field :oil_pos3, "#{m_oil.id}", :value => m_oil.pos3_data, :class => "money", :size => 4 %>&nbsp;L</td>  
       <td class="input_no" id="display"><label id="oil_total_<%= m_oil.id %>"><%= num_fmt(session[:m_oil_totals][m_oil.id][:total], true) %></label>&nbsp;L</td>              
     </tr>  
-  <% end %>    
+  <% end %>   
+    <tr>
+      <th>モーガス合計</th>
+      <td class="input_no" id="display"><label id="oil_pos1_total"><%= num_fmt(@pos1_gasorin, true) %></label>&nbsp;L</td>
+      <td class="input_no" id="display"><label id="oil_pos2_total"><%= num_fmt(@pos2_gasorin, true) %></label>&nbsp;L</td>
+      <td class="input_no" id="display"><label id="oil_pos3_total"><%= num_fmt(@pos3_gasorin, true) %></label>&nbsp;L</td>
+      <td class="input_no" id="display"><label id="oil_pos_total"><%= num_fmt(@total_gasorin, true) %></label>&nbsp;L</td>
+    </tr>   
   </table>
   <br/>
   
@@ -51,7 +59,7 @@
     </tr>
   <% end %>	
     <tr>
-      <th>油外合計</th>
+      <th>粗利合計</th>
       <td class="input_no" id="display"><label id="etc0_pos1_total"><%= num_fmt(@etc0_pos1_total) %></label>&nbsp;円</td>
       <td class="input_no" id="display"><label id="etc0_pos2_total"><%= num_fmt(@etc0_pos2_total) %></label>&nbsp;円</td>
       <td class="input_no" id="display"><label id="etc0_pos3_total"><%= num_fmt(@etc0_pos3_total) %></label>&nbsp;円</td>
@@ -135,9 +143,37 @@
   
   <div id="third">
   <table width="99%">  
-    <td valign="top" width="33%"><div id="d_result_yume"><%= render 'd_result_yume' %></div></td>
+    <td valign="top" width="33%">
+      <%= link_to '入力', {:controller => 'd_results', :action => 'yume_index', :result_date => @result_date, :m_shop_id => @m_shop.id}, :id => "add_icon", :class => "modal" %>
+      <div id="d_result_yume"><%= render 'd_result_yume' %></div>
+    </td>
     <% if @m_shop.shop_kbn == 1 %> <!-- 油外店のみ表示 -->
-      <td valign="top" width="33%"><div id="d_result_reserve"><%= render 'd_result_reserve' %></div></td>
+      <td valign="top" width="33%">
+      	<!-- <div id="d_result_reserve"><%#= render 'd_result_reserve' %></div> -->
+		<table id='rounded-corner'>
+		  <tr>
+			<th colspan="4">車検予約カード獲得</th>
+		  </tr>
+		  <tr>
+			<th>月</th>
+			<th>日計</th>
+			<th>月計</th>
+			<th>累計</th>  	  	  
+		  </tr>
+		  <% unless @syukei_reserves.blank?%>	
+		  <% @syukei_reserves.each do |syukei_reserve| %>
+		    <tr>
+		      <th><%= syukei_reserve[:month] %></th> 	
+		      <td class="input_no"><%#= syukei_reserve[:nikkei] %>
+		      	<%= number_field :reserve_num, "#{syukei_reserve[:month]}", :value => syukei_reserve[:nikkei], :class => "money", :size => 4 %>
+		      </td>	      	
+		      <td class="input_no" id="display"><%= syukei_reserve[:gekkei] %></td> 
+		      <td class="input_no" id="display"><%= syukei_reserve[:ruikei] %></td>           
+		    </tr>
+		  <% end %>	
+		  <% end %>
+		</table>
+      </td>
       <td valign="top" width="33%">
         <table id='rounded-corner'>
 	      <tr>
@@ -168,7 +204,6 @@
   <%= hidden_field :select, :m_shop_id, :value => @m_shop.id %>
   <div style="text-align:right; width: 800px;">
   	<%= submit_tag '登録', {:confirm => "登録します。よろしいですか？"} %>
-  	<%#= submit_tag '保存', {:confirm => "保存します。よろしいですか？", :id => "submit_buttom"} %>
   </div>
 <% end %>
 

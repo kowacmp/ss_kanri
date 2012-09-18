@@ -1,23 +1,31 @@
 <%= form_tag({:action => 'yume_create' }, { :remote => true }) do %>
   <table id='rounded-corner'>
     <tr>
+      <th>種別</th>
+      <td>
+        <%= select :yume, :yumepoint_class, MCode.find(:all, :conditions=>["kbn = 'yumepoint_class'"],
+           :order=>"code").collect{|i| [ "#{i.code_name}", i.code ]}, {:include_blank => true} %>
+      </td>
+    </tr>  	
+    <tr>
       <th>件数</th>
-      <td><%= number_field :yume, :kensu, :class => "money", :size => 10 %></td>
+      <td><%= number_field :yume, :yumepoint_num, :class => "money", :size => 10 %></td>
     </tr>  	
     <tr>
       <th>ポイント</th>
-      <td><%= number_field :yume, :point, :class => "money", :size => 10 %></td>
+      <td><%= number_field :yume, :yumepoint, :class => "money", :size => 10 %></td>
     </tr>    
   	<tr>
   	  <th>金額</th>
-      <td><%= number_field :yume, :kingaku, :class => "money", :size => 10 %></td>
+      <td><%= number_field :yume, :yumepoint_money, :class => "money", :size => 10 %></td>
     </tr>
     <tr>
       <td colspan="2" align="right"><%= submit_tag '登録' %></td>
     </tr>
   </table>    
 
-  <%= hidden_field :yume, :d_result_id, :value => @d_result_id %>
+  <%= hidden_field_tag :result_date, @result_date %>
+  <%= hidden_field_tag :m_shop_id, @m_shop_id %>
 <% end %>
 
 <%= javascript_include_tag "comma" %>
