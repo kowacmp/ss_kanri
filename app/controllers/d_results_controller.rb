@@ -95,10 +95,6 @@ class DResultsController < ApplicationController
   end
   
   def select_date 
-    p "select_date   select_date   select_date   select_date"
-    p "params[:select_date]=#{params[:select_date]}"
-    p "params[:m_shop_id]=#{params[:m_shop_id]}"
-    p "params[:edit_flg]=#{params[:edit_flg]}"
     if params[:select_date].blank?
       #newから来た場合
       @result_date = @today.delete("/")
