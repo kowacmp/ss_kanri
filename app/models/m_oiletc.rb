@@ -12,7 +12,7 @@ class MOiletc < ActiveRecord::Base
   validates :oiletc_cd, :uniqueness => {:message => '油外コードが重複しています。'}
   
   validates :oiletc_cd, :numericality => {:greater_than_or_equal_to => 0,
-                                          :less_than_or_equal_to => 99,
+                                          :less_than_or_equal_to => 999,
                                           :message => '油外コードは数値で入力してください。'}
   
 end

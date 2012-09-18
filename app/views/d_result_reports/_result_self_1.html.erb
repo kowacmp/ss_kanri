@@ -47,9 +47,10 @@
 	  	<td class="input_no"><%= m_shop.r_mo_gas %></td>
 	  	<td class="input_no"><%#= m_shop.mo_gas_pace %></td>
 	  	<td class="input_no">
-	  		<% if m_shop.hg_aim != nil or m_shop.rg_aim != nil %>
-	  		<%= m_shop.hg_aim.to_i + m_shop.rg_aim.to_i %><%#= m_shop.mo_gas_aim %>
-	  		<% end %>
+	  		<%# if m_shop.hg_aim != nil or m_shop.rg_aim != nil %>
+	  		<%#= m_shop.hg_aim.to_i + m_shop.rg_aim.to_i %>
+	  		<%# end %>
+	  		<%= m_shop.mo_gas_aim %>
 	  	</td>
 	  	<td class="input_no"><%= m_shop.keiyu %></td>
 	  	<td class="input_no"><%= m_shop.r_keiyu %></td>

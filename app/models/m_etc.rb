@@ -13,7 +13,7 @@ class MEtc < ActiveRecord::Base
   validates :etc_cd, :uniqueness => {:message => '他売上コードが重複しています。'}
   
   validates :etc_cd, :numericality => {:greater_than_or_equal_to => 0,
-                                       :less_than_or_equal_to => 99,
+                                       :less_than_or_equal_to => 999,
                                        :message => '他売上コードは数値で入力してください。'}
                                        
   validates :max_num, :numericality => {:greater_than_or_equal_to => 0,
