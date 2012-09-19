@@ -98,23 +98,23 @@ class DBusinessCountReportsController < ApplicationController
         row.item(:sum_7).value(get_d_result_oiletc(d_results,10))
         #油外ここまで
         #車検予約   
-        row.item(:day_8).value(get_count_d_result_reserve_day(@input_ymd,shop.id))
+        row.item(:day_8).value(get_count_d_result_reserve_day(@input_ymd,@input_ymd[0,6],shop.id))
         tmp_ymd = @input_ymd.to_time     
         from_ymd = get_from_and_to_ymd(tmp_ymd,1) 
         to_ymd = get_from_and_to_ymd(tmp_ymd,2) 
-        row.item(:sum_8).value(get_count_d_result_reserve_month(from_ymd,to_ymd,shop.id)) 
+        row.item(:sum_8).value(get_count_d_result_reserve_month(from_ymd[0,6],shop.id)) 
         tmp_ymd = tmp_ymd.next_month
         from_ymd = get_from_and_to_ymd(tmp_ymd,1) 
         to_ymd = get_from_and_to_ymd(tmp_ymd,2) 
-        row.item(:sum_9).value(get_count_d_result_reserve_month(from_ymd,to_ymd,shop.id)) 
+        row.item(:sum_9).value(get_count_d_result_reserve_month(from_ymd[0,6],shop.id)) 
         tmp_ymd = tmp_ymd.next_month
         from_ymd = get_from_and_to_ymd(tmp_ymd,1) 
         to_ymd = get_from_and_to_ymd(tmp_ymd,2) 
-        row.item(:sum_10).value(get_count_d_result_reserve_month(from_ymd,to_ymd,shop.id)) 
+        row.item(:sum_10).value(get_count_d_result_reserve_month(from_ymd[0,6],shop.id)) 
         tmp_ymd = tmp_ymd.next_month
         from_ymd = get_from_and_to_ymd(tmp_ymd,1) 
         to_ymd = get_from_and_to_ymd(tmp_ymd,2) 
-        row.item(:sum_11).value(get_count_d_result_reserve_month(from_ymd,to_ymd,shop.id)) 
+        row.item(:sum_11).value(get_count_d_result_reserve_month(from_ymd[0,6],shop.id)) 
 
         
       end #add_row

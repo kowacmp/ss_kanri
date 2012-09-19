@@ -153,26 +153,26 @@
     <td><!-- 車検書換 日計-->
     	<%= get_d_result_oiletc_daily(d_result,10) %>
     </td>
-    <td rowspan="2"><%= get_count_d_result_reserve_day(tmp_ymd1.strftime("%Y%m%d"),shop.id) %></td>
+    <td rowspan="2"><%= get_count_d_result_reserve_day(tmp_ymd1.strftime("%Y%m%d"),tmp_ymd1.strftime("%Y%m"),shop.id) %></td>
     <td rowspan="2">
       <% from_ymd = get_from_and_to_ymd(tmp_ymd1,1) %>
       <% to_ymd = get_from_and_to_ymd(tmp_ymd1,2) %>
-      <%= get_count_d_result_reserve_month(from_ymd,to_ymd,shop.id) %>
+      <%= get_count_d_result_reserve_month(tmp_ymd1.strftime("%Y%m"),shop.id) %>
     </td>
     <td rowspan="2">
       <% from_ymd = get_from_and_to_ymd(tmp_ymd2,1) %>
       <% to_ymd = get_from_and_to_ymd(tmp_ymd2,2) %>
-      <%= get_count_d_result_reserve_month(from_ymd,to_ymd,shop.id) %>    
+      <%= get_count_d_result_reserve_month(tmp_ymd2.strftime("%Y%m"),shop.id) %>    
     </td>
     <td rowspan="2">
       <% from_ymd = get_from_and_to_ymd(tmp_ymd3,1) %>
       <% to_ymd = get_from_and_to_ymd(tmp_ymd3,2) %>
-      <%= get_count_d_result_reserve_month(from_ymd,to_ymd,shop.id) %>
+      <%= get_count_d_result_reserve_month(tmp_ymd3.strftime("%Y%m"),shop.id) %>
     </td>
     <td rowspan="2">
       <% from_ymd = get_from_and_to_ymd(tmp_ymd4,1) %>
       <% to_ymd = get_from_and_to_ymd(tmp_ymd4,2) %>
-      <%= get_count_d_result_reserve_month(from_ymd,to_ymd,shop.id) %>    </td>
+      <%= get_count_d_result_reserve_month(tmp_ymd4.strftime("%Y%m"),shop.id) %>    </td>
   </tr>
   <tr>
     <td><!-- 累計 オイル-->
