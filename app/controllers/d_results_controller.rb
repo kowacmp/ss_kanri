@@ -123,6 +123,7 @@ class DResultsController < ApplicationController
     @pos1_gasorin, @pos2_gasorin, @pos3_gasorin, @total_gasorin = 0,0,0,0
     @pos1_mofuel, @pos2_mofuel, @pos3_mofuel, @total_mofuel = 0,0,0,0
     
+    @oil_ruikeis = Array.new
     @m_oil_totals = MOil.find_by_sql(oil_sql)
     @m_oil_totals.each do |m_oil| 
       session[:m_oil_totals][m_oil.id][:total] = m_oil.pos_total
@@ -139,7 +140,10 @@ class DResultsController < ApplicationController
         @pos2_mofuel += m_oil.pos2_data.to_f
         @pos3_mofuel += m_oil.pos3_data.to_f
         @total_mofuel += m_oil.pos_total.to_f
-      end          
+      end  
+      
+      @oil_ruikeis[m_oil.id] = Hash::new
+      @oil_ruikeis[m_oil.id][:oil_ruikei] = 0              
     end
    
     @pos1_gasorin = @pos1_gasorin.round(2)
@@ -157,13 +161,11 @@ class DResultsController < ApplicationController
     oil_total_sql << " from d_results r, d_result_oils d"
     oil_total_sql << " where result_date >= '#{@result_date[0,6] + "01"}' and result_date <= '#{@result_date}'"
     oil_total_sql << "  and m_shop_id = #{@m_shop.id} and r.id = d.d_result_id group by d.m_oil_id"
-p "oil_total_sql=#{oil_total_sql}"    
+   
     @ruikei_gasorin = 0
     @ruikei_mofuel = 0
-    @oil_ruikeis = Array.new
     oil_ruikeis = MOil.find_by_sql(oil_total_sql)
     oil_ruikeis.each do |oil_ruikei|
-      @oil_ruikeis[oil_ruikei.m_oil_id.to_i] = Hash::new
       @oil_ruikeis[oil_ruikei.m_oil_id.to_i][:oil_ruikei] = oil_ruikei.oil_ruikei
       @ruikei_gasorin += oil_ruikei.oil_ruikei.to_f if oil_ruikei.m_oil_id.to_i == 1 or oil_ruikei.m_oil_id.to_i == 2
       @ruikei_mofuel += oil_ruikei.oil_ruikei.to_f if oil_ruikei.m_oil_id.to_i != 4
@@ -178,12 +180,16 @@ p "oil_total_sql=#{oil_total_sql}"
       @oiletc0s = MOiletc.find_by_sql(oiletc0_sql)
       
       #油外販売累計
+      @oiletc0_ruikeis = Array.new
+      @oiletc0s.each do |oiletc0|
+        @oiletc0_ruikeis[oiletc0.id] = Hash::new
+        @oiletc0_ruikeis[oiletc0.id][:etc_ruikei] = 0
+      end
+      
       oiletc0_ruikei_sql = m_oiletc_ruikei_sql(@m_shop.id, @result_date, 0)
       oiletc0_ruikeis = MOiletc.find_by_sql(oiletc0_ruikei_sql)
-      
-      @oiletc0_ruikeis = Array.new
+           
       oiletc0_ruikeis.each do |oiletc0_ruikei|
-        @oiletc0_ruikeis[oiletc0_ruikei.id] = Hash::new
         @oiletc0_ruikeis[oiletc0_ruikei.id][:etc_ruikei] = oiletc0_ruikei.etc_ruikei
       end
 #      @etc0_pos1_total, @etc0_pos2_total, @etc0_pos3_total, @etc0_pos_total = 0,0,0,0  
@@ -203,12 +209,16 @@ p "oil_total_sql=#{oil_total_sql}"
     @oiletc1s = MOiletc.find_by_sql(oiletc1_sql)
     
     #その他商品累計
+    @oiletc1_ruikeis = Array.new
+    @oiletc1s.each do |oiletc1|
+      @oiletc1_ruikeis[oiletc1.id] = Hash::new
+      @oiletc1_ruikeis[oiletc1.id][:etc_ruikei] = 0
+    end    
+    
     oiletc1_ruikei_sql = m_oiletc_ruikei_sql(@m_shop.id, @result_date, 1)
     oiletc1_ruikeis = MOiletc.find_by_sql(oiletc1_ruikei_sql)
-      
-    @oiletc1_ruikeis = Array.new
+       
     oiletc1_ruikeis.each do |oiletc1_ruikei|
-      @oiletc1_ruikeis[oiletc1_ruikei.id] = Hash::new
       @oiletc1_ruikeis[oiletc1_ruikei.id][:etc_ruikei] = oiletc1_ruikei.etc_ruikei
     end
     
@@ -227,7 +237,24 @@ p "oil_total_sql=#{oil_total_sql}"
     etc_sql << " where m.deleted_flg = 0 and m.kansa_flg = 1 order by m.etc_cd, d.no"
     @m_etcs = MEtc.find_by_sql(etc_sql)
 
- 
+    #その他売上累計
+    @etc_ruikeis = Array.new
+    @m_etcs.each do |etc|
+      @etc_ruikeis[etc.id] = Hash::new
+      @etc_ruikeis[etc.id][:etc_ruikei] = 0
+    end      
+    
+    etc_total_sql = "select d.m_etc_id, COALESCE(sum(d.pos1_data), 0) + COALESCE(sum(d.pos2_data), 0) + "
+    etc_total_sql << "      COALESCE(sum(d.pos3_data), 0) as etc_ruikei"
+    etc_total_sql << " from d_results r, d_result_etcs d"
+    etc_total_sql << " where result_date >= '#{@result_date[0,6] + "01"}' and result_date <= '#{@result_date}'"
+    etc_total_sql << "   and m_shop_id = #{@m_shop.id} and r.id = d.d_result_id group by d.m_etc_id"
+    
+    etc_ruikeis = MOil.find_by_sql(etc_total_sql)
+    etc_ruikeis.each do |etc_ruikei|
+      @etc_ruikeis[etc_ruikei.m_etc_id.to_i][:etc_ruikei] = etc_ruikei.etc_ruikei
+    end    
+    
     #営業POS伝回収報告
     m_oil_etc_sql = "select m.id, m.oiletc_name, d.get_num"
     m_oil_etc_sql << " from m_oiletcs m left join d_result_collects d"
@@ -673,19 +700,24 @@ p "oil_total_sql=#{oil_total_sql}"
   end
   
   def yume_create
-    d_result_check(params[:result_date], params[:m_shop_id])
+    yume_check(params[:yume])
+    if @message.blank?
+      d_result_check(params[:result_date], params[:m_shop_id])
+      establish = Establish.find(:first)
 
-    d_result_yumepoint = DResultYumepoint.new
-    d_result_yumepoint.d_result_id = @d_result.id
-    d_result_yumepoint.yumepoint_class = params[:yume][:yumepoint_class] 
-    d_result_yumepoint.yumepoint_num = params[:yume][:yumepoint_num] 
-    d_result_yumepoint.yumepoint = params[:yume][:yumepoint] 
-    d_result_yumepoint.yumepoint_money = params[:yume][:yumepoint_money] 
-    d_result_yumepoint.created_user_id = current_user.id
-    d_result_yumepoint.updated_user_id = current_user.id
-    d_result_yumepoint.save
+      d_result_yumepoint = DResultYumepoint.new
+      d_result_yumepoint.d_result_id = @d_result.id
+      d_result_yumepoint.yumepoint_class = params[:yume][:yumepoint_class] 
+      d_result_yumepoint.yumepoint_num = params[:yume][:yumepoint_num] 
+      d_result_yumepoint.yumepoint = params[:yume][:yumepoint] 
+      d_result_yumepoint.yumepoint_money = params[:yume][:yumepoint_money]
+      d_result_yumepoint.pay_money = (params[:yume][:yumepoint_num].to_f * establish.yumepoint_cost).truncate
+      d_result_yumepoint.created_user_id = current_user.id
+      d_result_yumepoint.updated_user_id = current_user.id
+      d_result_yumepoint.save
     
-    yume_data_set(@d_result)
+      yume_data_set(@d_result)
+    end
   end
 
   def yume_edit
@@ -693,16 +725,23 @@ p "oil_total_sql=#{oil_total_sql}"
   end
   
   def yume_update
-    d_result_yumepoint = DResultYumepoint.find(params[:id])
-    d_result_yumepoint.yumepoint_class = params[:yume][:yumepoint_class] 
-    d_result_yumepoint.yumepoint_num = params[:yume][:yumepoint_num] 
-    d_result_yumepoint.yumepoint = params[:yume][:yumepoint] 
-    d_result_yumepoint.yumepoint_money = params[:yume][:yumepoint_money] 
-    d_result_yumepoint.updated_user_id = current_user.id
-    d_result_yumepoint.save
+    p "yume_update   yume_update   yume_update   yume_update"
+    yume_check(params[:yume])
+    if @message.blank?
+      establish = Establish.find(:first)  
+      d_result_yumepoint = DResultYumepoint.find(params[:id])
+    
+      d_result_yumepoint.yumepoint_class = params[:yume][:yumepoint_class] 
+      d_result_yumepoint.yumepoint_num = params[:yume][:yumepoint_num] 
+      d_result_yumepoint.yumepoint = params[:yume][:yumepoint] 
+      d_result_yumepoint.yumepoint_money = params[:yume][:yumepoint_money] 
+      d_result_yumepoint.pay_money = (params[:yume][:yumepoint_num].to_f * establish.yumepoint_cost).truncate
+      d_result_yumepoint.updated_user_id = current_user.id
+      d_result_yumepoint.save
 
-    d_result = DResult.find(d_result_yumepoint.d_result_id)
-    yume_data_set(d_result) 
+      d_result = DResult.find(d_result_yumepoint.d_result_id)
+      yume_data_set(d_result)
+    end
   end
   
   def yume_delete

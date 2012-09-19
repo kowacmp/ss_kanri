@@ -24,7 +24,7 @@
       <td class="input_no" id="display"><%= num_fmt(m_oil.pos_total, true) %>&nbsp;L</td>
       <td class="input_no" id="display"><%= num_fmt(@oil_ruikeis[m_oil.id][:oil_ruikei], true) %>&nbsp;L</td>                 
     </tr>
-  <% end %>
+    <% if m_oil.id.to_i == 2 %>
     <tr>
       <th>モーガス合計</th>
       <td class="input_no" id="display"><%= num_fmt(@pos1_gasorin, true) %>&nbsp;L</td>
@@ -32,7 +32,9 @@
       <td class="input_no" id="display"><%= num_fmt(@pos3_gasorin, true) %>&nbsp;L</td>
       <td class="input_no" id="display"><%= num_fmt(@total_gasorin, true) %>&nbsp;L</td>
       <td class="input_no" id="display"><%= num_fmt(@ruikei_gasorin, true) %>&nbsp;L</td> 
-    </tr>
+    </tr>    
+    <% end %>
+  <% end %>
     <tr>
       <th>MOFUEL計</th>
       <td class="input_no" id="display"><%= num_fmt(@pos1_mofuel, true) %>&nbsp;L</td>

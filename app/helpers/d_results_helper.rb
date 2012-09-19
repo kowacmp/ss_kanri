@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 module DResultsHelper
   def old_result_date(result_date)
     today = Time.parse(result_date)
@@ -601,5 +602,37 @@ module DResultsHelper
     @d_result_yumepoints = DResultYumepoint.find_by_sql(yume_sql(d_result.id))
     @result_date = d_result.result_date    
     @m_shop = MShop.find(d_result.m_shop_id) 
+  end 
+  
+  def tani_check(tani)
+    if tani.to_i == 6
+      flg = true
+    else
+      flg = false     
+    end 
+    
+    return flg
   end  
+  
+  def yume_check(yume)
+    p "yume_check   yume_check   yume_check   yume_check   yume_check"
+    
+    p "yume[:yumepoint_class]=#{yume[:yumepoint_class]}"
+    p "yume[:yumepoint_num]=#{yume[:yumepoint_num]}" 
+    p "yume[:yumepoint]=#{yume[:yumepoint]}" 
+    p "yume[:yumepoint_money]=#{yume[:yumepoint_money]}"
+    @message = ""
+    if yume[:yumepoint_class].blank?
+      @message << "種別は入力必須です。 "
+    end
+    if yume[:yumepoint_num].blank?
+      @message << "件数は入力必須です。 "
+    end
+    if yume[:yumepoint].blank?
+      @message << "ポイントは入力必須です。 "
+    end
+    if yume[:yumepoint_money].blank?
+      @message << "金額は入力必須です。 "
+    end            
+  end 
 end
