@@ -96,7 +96,7 @@ module DBusinessCountReportsHelper
   
   def get_count_d_result_reserve_month(ym,shop_id)
     sql = <<-SQL
-    SELECT sum(reserve_num) as cnt FROM d_results a ,d_result_reserves b
+    SELECT COALESCE(sum(reserve_num),0) as cnt FROM d_results a ,d_result_reserves b
        where a.id = b.d_result_id
          and a.m_shop_id = ?
          and reserve_nengetu = ?
