@@ -32,7 +32,7 @@
     <td class="<%= "#{del_flg}" %>"><%= m_etc.kansa_flg_name %></td>
     <td class="<%= "#{del_flg}" %>"><%= m_etc.tax_flg_name %></td>
     <td class="<%= "#{del_flg}" %>"><%= m_etc.etc_class_name %></td>
-    <td class="<%= "#{del_flg}" %>"><%= m_etc.price %></td>
+    <td class="<%= "#{del_flg}" %>" align="right"><%= number_with_delimiter(m_etc.price) %></td>
     <!--<td class="icon">
     	<%#= link_to image_tag('icon/24_show.png'), m_etc %>
     	<%#= link_to image_tag('icon/24_show.png'), {:action=>"show",:id=>m_etc.id,:input_check=>@check_del_flg} %>
