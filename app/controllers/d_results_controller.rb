@@ -157,7 +157,7 @@ class DResultsController < ApplicationController
     oil_total_sql << " from d_results r, d_result_oils d"
     oil_total_sql << " where result_date >= '#{@result_date[0,6] + "01"}' and result_date <= '#{@result_date}'"
     oil_total_sql << "  and m_shop_id = #{@m_shop.id} and r.id = d.d_result_id group by d.m_oil_id"
-    
+p "oil_total_sql=#{oil_total_sql}"    
     @ruikei_gasorin = 0
     @ruikei_mofuel = 0
     @oil_ruikeis = Array.new
@@ -226,7 +226,7 @@ class DResultsController < ApplicationController
     etc_sql << " left join m_codes c on (to_number(c.code, '999999999') = m.etc_tani and c.kbn = 'tani')"
     etc_sql << " where m.deleted_flg = 0 and m.kansa_flg = 1 order by m.etc_cd, d.no"
     @m_etcs = MEtc.find_by_sql(etc_sql)
-p "etc_sql=#{etc_sql}"
+
  
     #営業POS伝回収報告
     m_oil_etc_sql = "select m.id, m.oiletc_name, d.get_num"

@@ -25,7 +25,13 @@
       <td><%= number_field :oil_pos2, "#{m_oil.id}", :value => m_oil.pos2_data, :class => "money", :size => 4 %>&nbsp;L</td>
       <td><%= number_field :oil_pos3, "#{m_oil.id}", :value => m_oil.pos3_data, :class => "money", :size => 4 %>&nbsp;L</td>  
       <td class="input_no" id="display"><label id="oil_total_<%= m_oil.id %>"><%= num_fmt(session[:m_oil_totals][m_oil.id][:total], true) %></label>&nbsp;L</td>
-      <td class="input_no" id="display"><%= num_fmt(@oil_ruikeis[m_oil.id][:oil_ruikei], true) %>&nbsp;L</td>             
+      <td class="input_no" id="display">
+      	<% if @oil_ruikeis[m_oil.id].blank? %>
+      	   0
+      	<% else %>
+      	  <%= num_fmt(@oil_ruikeis[m_oil.id][:oil_ruikei], true) %>
+      	<% end %>  
+      &nbsp;L</td>             
     </tr>  
   <% end %>   
     <tr>
@@ -57,10 +63,24 @@
       <td><%= number_field :etc0_pos3, "#{oiletc0.id}", :value => oiletc0.pos3_data, :class => "money", :size => 4 %>&nbsp;<%= oiletc0.code_name %></td>
       <% if oiletc0.oiletc_tani == 6 %>  
         <td class="input_no" id="display"><label id="etc0_total_<%= oiletc0.id %>"><%= num_fmt(oiletc0.pos_total, true) %></label>&nbsp;<%= oiletc0.code_name %></td> 
-        <td class="input_no" id="display"><%= num_fmt(@oiletc0_ruikeis[oiletc0.id][:etc_ruikei], true) %>&nbsp;<%= oiletc0.code_name %></td>             
+        <td class="input_no" id="display">
+          <% if @oiletc0_ruikeis[oiletc0.id].blank? %>
+            0
+          <% else %>
+        	<%= num_fmt(@oiletc0_ruikeis[oiletc0.id][:etc_ruikei], true) %>
+          <% end %>	
+          &nbsp;<%= oiletc0.code_name %>
+        </td>             
       <% else %>  
         <td class="input_no" id="display"><label id="etc0_total_<%= oiletc0.id %>"><%= num_fmt(oiletc0.pos_total) %></label>&nbsp;<%= oiletc0.code_name %></td>   
-        <td class="input_no" id="display"><%= num_fmt(@oiletc0_ruikeis[oiletc0.id][:etc_ruikei]) %>&nbsp;<%= oiletc0.code_name %></td>      
+        <td class="input_no" id="display">
+          <% if @oiletc0_ruikeis[oiletc0.id].blank? %>
+            0
+          <% else %>        	
+        	<%= num_fmt(@oiletc0_ruikeis[oiletc0.id][:etc_ruikei]) %>
+          <% end %>	
+          &nbsp;<%= oiletc0.code_name %>      	
+        </td>      
       <% end %> 
       
     </tr>
@@ -91,10 +111,23 @@
       <td><%= number_field :etc1_pos3, "#{oiletc1.id}", :value => oiletc1.pos3_data, :class => "money", :size => 4 %>&nbsp;<%= oiletc1.code_name %></td>       
       <% if oiletc1.oiletc_tani == 6 %> 
         <td class="input_no" id="display"><label id="etc1_total_<%= oiletc1.id %>"><%= num_fmt(oiletc1.pos_total, true) %></label>&nbsp;<%= oiletc1.code_name %></td> 
-        <td class="input_no" id="display"><%= num_fmt(@oiletc1_ruikeis[oiletc1.id][:etc_ruikei], true) %>&nbsp;<%= oiletc1.code_name %></td>             
+        <td class="input_no" id="display">
+          <% if @oiletc1_ruikeis[oiletc1.id].blank? %> 
+            0
+          <% else %>  
+        	<%= num_fmt(@oiletc1_ruikeis[oiletc1.id][:etc_ruikei], true) %>
+          <% end %>
+        	&nbsp;<%= oiletc1.code_name %></td>             
       <% else %> 
         <td class="input_no" id="display"><label id="etc1_total_<%= oiletc1.id %>"><%= num_fmt(oiletc1.pos_total) %></label>&nbsp;<%= oiletc1.code_name %></td>  
-        <td class="input_no" id="display"><%= num_fmt(@oiletc1_ruikeis[oiletc1.id][:etc_ruikei]) %>&nbsp;<%= oiletc1.code_name %></td>         
+        <td class="input_no" id="display">
+          <% if @oiletc1_ruikeis[oiletc1.id].blank? %> 
+            0
+          <% else %>         	
+        	<%= num_fmt(@oiletc1_ruikeis[oiletc1.id][:etc_ruikei]) %>
+          <% end %> 	
+        	&nbsp;<%= oiletc1.code_name %>
+        </td>         
       <% end %>
     </tr>
   <% end %>	
