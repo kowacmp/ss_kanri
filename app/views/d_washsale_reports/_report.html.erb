@@ -17,14 +17,16 @@
 <table class='rounded-corner' >
 	<!-- 共通ヘッダ -->
 	<tr>
-		<th>機種名</th>
-		<th>月末メーター</th>
-		<th>月初メーター</th>
-		<th>月間メーター売上</th>
-		<th>POS売上</th>
-		<th>誤差</th>
+		<th style="width:24%">機種名</th>
+		<th style="width:15%">月末メーター</th>
+		<th style="width:15%">月初メーター</th>
+		<th style="width:15%">月間メーター売上</th>
+		<th style="width:15%">POS売上</th>
+		<th style="width:15%">誤差</th>
+		<!-- 2012/09/19 d nishimura
 		<th>前月差</th>
 		<th>前月売上</th>
+		-->
 	</tr>  	
 
 
@@ -108,19 +110,25 @@
               	</td>
               
               <!-- 前月差 -->
-              <td rowspan="<%= wash.max_num %>"></td>
+              <!-- 2012/09/19 d nishimura
+              <td rowspan="<%#= wash.max_num %>"></td>
+              -->
             <% end %>
             
             <!-- 前月売上 -->
+            <!-- 2012/09/19 d nishimura
             <td  class="no-input-num">
+            -->
             	<% unless d_washsale_detail_report == nil %>
             	  <% sale_meter = d_washsale_detail_report.sale_meter %>
             	<% else %>
             	  <% sale_meter = 0 %>
             	<% end %>
             	<% k_sale_meter = k_sale_meter + sale_meter %>
-            	<%= number_with_delimiter(sale_meter) %>
+            	<%#= number_with_delimiter(sale_meter) %><!-- 2012/09/19 d nishimura -->
+            <!-- 2012/09/19 d nishimura
             </td>
+            -->
 		</tr>
       <% end %><!-- times -->
         <tr>
@@ -139,13 +147,19 @@
           	<%= number_with_delimiter(sum_d_washsale_item_gosa(@d_wash_sales,wash.id)) %>
           	<% g_sum_gosa = g_sum_gosa + sum_d_washsale_item_gosa(@d_wash_sales,wash.id) %>	
           </td><!-- 誤差-->
+          
+          <!-- 2012/09/19 d nishimura
           <td class="no-input-num">
-          	<%= number_with_delimiter(sum_meter_pos - k_sale_meter) %>
+          	<%#= number_with_delimiter(sum_meter_pos - k_sale_meter) %>
+          -->
           	<% g_sum_zengetu_sa = g_sum_zengetu_sa - (sum_meter_pos - k_sale_meter) %>
-          	</td><!--前月差 -->
-          <td class="no-input-num"><%= number_with_delimiter(k_sale_meter) %>
+          	<!-- 2012/09/19 d nishimura</td>--><!--前月差 -->
+          
+          <!-- 2012/09/19 d nishimura	
+          <td class="no-input-num"><%#= number_with_delimiter(k_sale_meter) %>
+          -->
           	<% g_sale_meter = g_sale_meter + k_sale_meter %>
-          	<% k_sale_meter = 0 %></td><!-- 前月売上 -->
+          	<% k_sale_meter = 0 %><!-- 2012/09/19 d nishimura</td>--><!-- 前月売上 -->
         </tr>
 	<% end %><!-- each -->
 	<tr>
@@ -154,11 +168,13 @@
 		<td class="no-input-num"><%= number_with_delimiter(g_sale_sum) %></td>
 		<td class="no-input-num"><%= number_with_delimiter(g_sum_meter_pos) %></td>
 		<td class="no-input-num"><%= number_with_delimiter(g_sum_gosa) %></td>
-		<td class="no-input-num"><%= number_with_delimiter(g_sum_zengetu_sa) %></td>
-		<td class="no-input-num"><%= number_with_delimiter(g_sale_meter) %></td>
+		<!-- 2012/09/19 d nishimura
+		<td class="no-input-num"><%#= number_with_delimiter(g_sum_zengetu_sa) %></td>
+		<td class="no-input-num"><%#= number_with_delimiter(g_sale_meter) %></td>
+		-->
 	</tr>
 	<tr>
-		<td colspan="8">
+		<td colspan="6"><!-- 2012/09/19 u nishimura colspan="8" => "6"  -->
 			<%= submit_tag("  登  録  ",:disable_with => "登録中...",:confirm => '登録しても良いですか？') %>	
 		</td>
 		
