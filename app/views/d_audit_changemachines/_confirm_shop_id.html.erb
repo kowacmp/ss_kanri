@@ -1,23 +1,26 @@
 <!-- d_audit系で共通 -->
 <% 
-		if session[:audit_class] == "0" then
-			#自主監査は全店舗可
-			user = MShop.find(:all, :conditions => "deleted_flg=0", :order => "shop_cd")
-		else
-			#本監査は監査人のいる店舗のみ可
-			user = MShop.find_by_sql("
-				select 
-					m_shops.* 
-				from
-					m_shops inner join users
-				on 
-					m_shops.id = users.m_shop_id
-				where
-					users.user_class = 2
-				order by
-					m_shops.shop_cd
-			")
-		end
+		#if session[:audit_class] == "0" then
+		#	#自主監査は全店舗可
+		#	user = MShop.find(:all, :conditions => "deleted_flg=0", :order => "shop_cd")
+		#else
+		#	#本監査は監査人のいる店舗のみ可
+		#	user = MShop.find_by_sql("
+		#		select 
+		#			m_shops.* 
+		#		from
+		#			m_shops inner join users
+		#		on 
+		#			m_shops.id = users.m_shop_id
+		#		where
+		#			users.user_class = 2
+		#		order by
+		#			m_shops.shop_cd
+		#	")
+		#end
+		
+		# 一律でどの店舗も可
+		user = MShop.find(:all, :conditions => "deleted_flg=0", :order => "shop_cd")
 %>
 
 <%=select :confirm, :shop_id, user.collect{|i| [i.shop_name ,i.id]},
@@ -29,7 +32,7 @@
   		  		
   			$.ajax({
   				type: "GET",
-  				url:  "../../d_audit_changemachines/confirm_shop_id_select?shop_id=" + this.value,
+  				url:  "<%=url_for(:controller => "d_audit_changemachines", :action => "confirm_shop_id_select")%>?shop_id=" + this.value,
  				async: false,
  				timeout: 5000
   			});
