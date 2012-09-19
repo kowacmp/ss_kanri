@@ -171,6 +171,7 @@
 		<%=hidden_field "data#{cnt}", :league,      :value => rec["league"] %>
 		<%=hidden_field "data#{cnt}", :before_rank, :value => rec["before_rank"] %>
 		<%=hidden_field "data#{cnt}", :total_point, :value => rec["total_point"] %>
+		<%=hidden_field "data_#{cnt}", :up_point,    :value => rec["up_point"] %>
 		
 		<% for i in 1..31 %>
 		<%=hidden_field "data#{cnt}", "result#{i}",     :value => rec["result#{i}"] %>
@@ -194,11 +195,14 @@
 	<br/>
 	<br/>
 	<%if session[:washpurika_mode].to_s == "edit" then %>
-	<div style="width: 900px;" >
+	<div style="width: 900px; text-align: right" >
+		<!-- 累積ポイント0フラグ -->
+		<%=check_box :update, :rezero, {:checked => false}, true, false %>
+		<label for="update_rezero">更新時に累積ptを0にする</label>
+		&nbsp;&nbsp;
 		<%= submit_tag("  保　存  ", 
 		               :disable_with => "保存中.....", 
-		               :confirm => '保存しても良いですか？', 
-		               :style => "float:right;") %>	  
+		               :confirm => '保存しても良いですか？') %>	  
 	</div>
 	<%end%> <!-- if session[:washpurika_mode].to_s == "edit" then -->
 	
