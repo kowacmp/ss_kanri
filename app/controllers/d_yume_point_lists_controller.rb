@@ -100,10 +100,10 @@ class DYumePointListsController < ApplicationController
           result_date = (result_date.to_i + 1).to_s
           row.item(:shop_name).value(shop.shop_ryaku) 
           unless yume_points == nil
-            row.item("p1_#{i+1}").value(yume_points.pos1_data.to_i)
-            p1_sum_col = p1_sum_col + yume_points.pos1_data.to_i
-            row.item("p2_#{i+1}").value(yume_points.pos2_data.to_i)
-            p2_sum_col = p2_sum_col + yume_points.pos2_data.to_i
+            row.item("p1_#{i+1}").value(yume_points.yumepoint_num.to_i)
+            p1_sum_col = p1_sum_col + yume_points.yumepoint_num.to_i
+            row.item("p2_#{i+1}").value(yume_points.yumepoint.to_i)
+            p2_sum_col = p2_sum_col + yume_points.yumepoint.to_i
           end
         end #start_day.times
         row.item(:p1_sum).value(p1_sum_col)
@@ -116,10 +116,10 @@ class DYumePointListsController < ApplicationController
     start_day.times do |i|
       sum_point = sum_rows_yume_points(result_date,@shop_kbn)
       result_date = (result_date.to_i + 1).to_s
-      sp1[i+1] = sum_point.pos1_data.to_i
-      sp2[i+1] = sum_point.pos2_data.to_i
-      sum_sp1 = sum_sp1 + sum_point.pos1_data.to_i unless sum_point == nil
-      sum_sp2 = sum_sp2 + sum_point.pos2_data.to_i unless sum_point == nil 
+      sp1[i+1] = sum_point.yumepoint_num.to_i
+      sp2[i+1] = sum_point.pay_money.to_i
+      sum_sp1 = sum_sp1 + sum_point.yumepoint_num.to_i unless sum_point == nil
+      sum_sp2 = sum_sp2 + sum_point.pay_money.to_i unless sum_point == nil 
     end
 
     #ファイル名セット     
