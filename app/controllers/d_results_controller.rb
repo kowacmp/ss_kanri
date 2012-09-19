@@ -151,27 +151,66 @@ class DResultsController < ApplicationController
     @pos3_mofuel = @pos3_mofuel.round(2)
     @total_mofuel = @total_mofuel.round(2)
     
+    #出荷数量累計
+    oil_total_sql = "select d.m_oil_id, COALESCE(sum(d.pos1_data), 0) + COALESCE(sum(d.pos2_data), 0) +"
+    oil_total_sql << "      COALESCE(sum(d.pos3_data), 0) as oil_ruikei"
+    oil_total_sql << " from d_results r, d_result_oils d"
+    oil_total_sql << " where result_date >= '#{@result_date[0,6] + "01"}' and result_date <= '#{@result_date}'"
+    oil_total_sql << "  and m_shop_id = #{@m_shop.id} and r.id = d.d_result_id group by d.m_oil_id"
+    
+    @ruikei_gasorin = 0
+    @ruikei_mofuel = 0
+    @oil_ruikeis = Array.new
+    oil_ruikeis = MOil.find_by_sql(oil_total_sql)
+    oil_ruikeis.each do |oil_ruikei|
+      @oil_ruikeis[oil_ruikei.m_oil_id.to_i] = Hash::new
+      @oil_ruikeis[oil_ruikei.m_oil_id.to_i][:oil_ruikei] = oil_ruikei.oil_ruikei
+      @ruikei_gasorin += oil_ruikei.oil_ruikei.to_f if oil_ruikei.m_oil_id.to_i == 1 or oil_ruikei.m_oil_id.to_i == 2
+      @ruikei_mofuel += oil_ruikei.oil_ruikei.to_f if oil_ruikei.m_oil_id.to_i != 4
+    end
+    @ruikei_gasorin = @ruikei_gasorin.round(2)
+    @ruikei_mofuel = @ruikei_mofuel.round(2)
+    
+    
     #油外販売取得  油外店のみ取得
     if @m_shop.shop_kbn == 1
       oiletc0_sql = m_oiletc_sql(@d_result, 0)
       @oiletc0s = MOiletc.find_by_sql(oiletc0_sql)
-
-      @etc0_pos1_total, @etc0_pos2_total, @etc0_pos3_total, @etc0_pos_total = 0,0,0,0  
-      @oiletc0s.each do |oiletc0|
-        #単位が円のものだけ合計する
-        if oiletc0.oiletc_tani == 0 
-          @etc0_pos1_total += oiletc0.pos1_data.to_f
-          @etc0_pos2_total += oiletc0.pos2_data.to_f 
-          @etc0_pos3_total += oiletc0.pos3_data.to_f
-          @etc0_pos_total += oiletc0.pos_total.to_f
-        end   
+      
+      #油外販売累計
+      oiletc0_ruikei_sql = m_oiletc_ruikei_sql(@m_shop.id, @result_date, 0)
+      oiletc0_ruikeis = MOiletc.find_by_sql(oiletc0_ruikei_sql)
+      
+      @oiletc0_ruikeis = Array.new
+      oiletc0_ruikeis.each do |oiletc0_ruikei|
+        @oiletc0_ruikeis[oiletc0_ruikei.id] = Hash::new
+        @oiletc0_ruikeis[oiletc0_ruikei.id][:etc_ruikei] = oiletc0_ruikei.etc_ruikei
       end
+#      @etc0_pos1_total, @etc0_pos2_total, @etc0_pos3_total, @etc0_pos_total = 0,0,0,0  
+#      @oiletc0s.each do |oiletc0|
+        #単位が円のものだけ合計する
+#        if oiletc0.oiletc_tani == 0 
+#          @etc0_pos1_total += oiletc0.pos1_data.to_f
+#          @etc0_pos2_total += oiletc0.pos2_data.to_f 
+#          @etc0_pos3_total += oiletc0.pos3_data.to_f
+#          @etc0_pos_total += oiletc0.pos_total.to_f
+#        end   
+#      end
     end
  
     #その他商品取得
     oiletc1_sql = m_oiletc_sql(@d_result, 1)
     @oiletc1s = MOiletc.find_by_sql(oiletc1_sql)
     
+    #その他商品累計
+    oiletc1_ruikei_sql = m_oiletc_ruikei_sql(@m_shop.id, @result_date, 1)
+    oiletc1_ruikeis = MOiletc.find_by_sql(oiletc1_ruikei_sql)
+      
+    @oiletc1_ruikeis = Array.new
+    oiletc1_ruikeis.each do |oiletc1_ruikei|
+      @oiletc1_ruikeis[oiletc1_ruikei.id] = Hash::new
+      @oiletc1_ruikeis[oiletc1_ruikei.id][:etc_ruikei] = oiletc1_ruikei.etc_ruikei
+    end
     
     #その他売上取得
     etc_sql = "select m.id, m.etc_name, m.etc_tani, c.code_name, m.max_num,m.etc_cd, d.id d_result_etc_id, d.no,"
@@ -187,7 +226,7 @@ class DResultsController < ApplicationController
     etc_sql << " left join m_codes c on (to_number(c.code, '999999999') = m.etc_tani and c.kbn = 'tani')"
     etc_sql << " where m.deleted_flg = 0 and m.kansa_flg = 1 order by m.etc_cd, d.no"
     @m_etcs = MEtc.find_by_sql(etc_sql)
-
+p "etc_sql=#{etc_sql}"
  
     #営業POS伝回収報告
     m_oil_etc_sql = "select m.id, m.oiletc_name, d.get_num"

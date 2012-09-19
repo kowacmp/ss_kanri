@@ -36,6 +36,19 @@ module DResultsHelper
     return sql  
   end
   
+  def m_oiletc_ruikei_sql(m_shop_id, result_date, oiletc_group)
+    sql = "select m.id, m.oiletc_tani, "
+    sql << "      CASE m.oiletc_tani WHEN 6 THEN sum(COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0))"
+    sql << "                         ELSE sum(trunc(COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0), 0))"
+    sql << "      END etc_ruikei"
+    sql << " from d_results r, d_result_oiletcs d, m_oiletcs m"
+    sql << " where r.result_date >= '#{result_date[0,6] + "01"}' and r.result_date <= '#{result_date}'"
+    sql << "   and m_shop_id = #{m_shop_id} and r.id = d.d_result_id and d.m_oiletc_id = m.id"
+    sql << " and oiletc_group = #{oiletc_group} group by m.id"
+    
+    return sql
+  end
+  
   def syukei_data(d_result, select_date, m_shop_id)
     if d_result.blank?
       now = Time.parse(select_date)
