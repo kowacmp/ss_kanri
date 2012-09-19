@@ -14,9 +14,26 @@
   	<tr>
   		<th>対象店舗</th>
   		<td style="background-color: #A5D7AA;">
-			<% m_shop = MShop.find(m_shop_id) %>
-  			<%=m_shop.shop_cd%>&nbsp<%=m_shop.shop_name%>
-  			<%=hidden_field :header, :m_shop_id, :value => m_shop_id %>
+  			<%if session[:audit_class] == "1" then%>
+  				<!-- 本監査 -->
+				<%=select :input, :m_shop_id, 
+				          MShop.find(:all, :conditions=> "deleted_flg=0", :order => "shop_cd").collect{|i| ["#{i.shop_cd} #{i.shop_name}",i.id]},
+					      :selected => m_shop_id, :include_blank => "選択してください" %>
+  				<%=hidden_field :header, :m_shop_id, :value => m_shop_id %>
+  				
+  				<script language="JavaScript">
+				$(function () {
+					$("#input_m_shop_id").change(function () {
+						window.location.href = "<%=url_for(:action=>"index")%>?audit_class=1&header_m_shop_id=" + $("#input_m_shop_id").val();
+					});
+				});
+  				</script>
+  			<%else%>
+  				<!-- 自主監査 -->
+				<% m_shop = MShop.find(m_shop_id) %>
+  				<%=m_shop.shop_cd%>&nbsp<%=m_shop.shop_name%>
+  				<%=hidden_field :header, :m_shop_id, :value => m_shop_id %>
+  			<%end%>
   		</td>
   	</tr>
   	<tr>
@@ -51,10 +68,8 @@
   			<% 
   			  if audit_date_to.nil? then
   				audit_date_to = Time.now.strftime('%Y/%m/%d')
-  				to_disabled = false
-  			  else
-  			  	to_disabled = true
-  			  end
+			  end
+  			  to_disabled = (@from[0][0].to_s == audit_date_from)
   			%>			
   			<%=text_field :header, :audit_date_to, :value => audit_date_to, :disabled => to_disabled, :style => "width:90px;" %>
   			<input type='hidden' id='h_to' value="<%=@to.join(',')%>">
@@ -95,6 +110,11 @@
   function kansa_from_to_chk() {
   	var from = $("#header_audit_date_from")[0];
   	var to   = $("#header_audit_date_to")[0];
+  	
+  	if ($("#header_m_shop_id").val() == "") {
+  		alert('対象店舗を選択してください。');
+  		return false;
+  	}
   	
   	if (!ckDate(to.value)) {
   		alert('監査日(To)を正しく入力してください。');
