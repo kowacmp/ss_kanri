@@ -17,6 +17,6 @@ class MOiletc < ActiveRecord::Base
   
   validates :oiletc_arari, :numericality => {:greater_than_or_equal_to => 0,
                                           :less_than => 100000,
-                                          :message => '粗利は100,000未満で入力してください。'}
+                                          :message => '粗利指数は100,000未満で入力してください。'}
   
 end
