@@ -1,2 +1,6 @@
-$('#d_result_yume').html("<%= j(render :partial => 'd_result_yume')%>");
-$('#yume_result').html("<%= j(render :partial => 'yume_result')%>");
+<% if @message.blank? %>
+  $('#d_result_yume').html("<%= j(render :partial => 'd_result_yume')%>");
+  $('#yume_result').html("<%= j(render :partial => 'yume_result')%>");
+<% else %>
+  $(alert("<%= @message %>"));
+<% end %> 

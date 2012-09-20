@@ -20,7 +20,7 @@
 		</tr>
 		<tr>
 		  <th><%= f.label '店舗名' %></th>
-		  <td><%= f.text_field :shop_name %></td>  	  
+		  <td><%= f.text_field :shop_name,:maxlength=>50 %></td>  	  
 		</tr>
 		</table>
 		</div>
@@ -50,11 +50,11 @@
 		</tr-->
 		<tr>
 		  <th style="min-width: 100px"><%= f.label '店舗カナ' %></th>
-		  <td><%= f.text_field :shop_kana %></td>  	  
+		  <td><%= f.text_field :shop_kana,:maxlength=>50 %></td>  	  
 		</tr>
 		<tr>
 		  <th><%= f.label '店舗略称' %></th>
-		  <td><%= f.text_field :shop_ryaku %></td>  	  
+		  <td><%= f.text_field :shop_ryaku,:maxlength=>20 %></td>  	  
 		</tr>
 		<tr>
 		  <th><%= f.label '郵便番号' %></th>
@@ -62,7 +62,7 @@
 		</tr>
 		<tr>
 		  <th><%= f.label '住所' %></th>
-		  <td><%= f.text_field :shop_adress %></td>  	  
+		  <td><%= f.text_field :shop_adress,:maxlength=>50 %></td>  	  
 		</tr>
 		<tr>
 		  <th><%= f.label 'TEL' %></th>
@@ -305,7 +305,7 @@
 			<th>油種</th>
 			<th>タンクNo</th>
 			<th>タンク名</th>
-			<th>タンク容量</th>
+			<th>タンク容量(KL)</th>
 			<th>結合No</th>
 			<th></th>
 		</tr>

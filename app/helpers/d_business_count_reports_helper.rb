@@ -77,24 +77,37 @@ module DBusinessCountReportsHelper
     return sum_oiletc.to_i
   end
   
-  def get_count_d_result_reserve_day(get_date,shop_id)
+  def get_count_d_result_reserve_day(result_date,reserve_nengetu,shop_id)
     sql = <<-SQL
-      SELECT count(*) as cnt FROM d_results a ,d_result_reserves b
+       SELECT reserve_num as cnt,reserve_nengetu FROM d_results a ,d_result_reserves b
        where a.id = b.d_result_id
          and a.m_shop_id = ?
-         and b.get_date = ?
+         and a.result_date = ?
+         and reserve_nengetu = ?
     SQL
-    DResultReserve.find_by_sql([sql,shop_id,get_date]).first.cnt
+    reserve = DResultReserve.find_by_sql([sql,shop_id,result_date,reserve_nengetu]).first
+    if reserve == nil
+      cnt = 0
+    else
+      cnt = reserve.cnt
+    end
+    return cnt
   end
   
-  def get_count_d_result_reserve_month(from_ymd,to_ymd,shop_id)
+  def get_count_d_result_reserve_month(ym,shop_id)
     sql = <<-SQL
-      SELECT count(*) as cnt FROM d_results a ,d_result_reserves b
+    SELECT COALESCE(sum(reserve_num),0) as cnt FROM d_results a ,d_result_reserves b
        where a.id = b.d_result_id
          and a.m_shop_id = ?
-         and b.get_date between ? and ?
+         and reserve_nengetu = ?
     SQL
-    DResultReserve.find_by_sql([sql,shop_id,from_ymd,to_ymd]).first.cnt
+    reserve = DResultReserve.find_by_sql([sql,shop_id,ym]).first
+    if reserve == nil
+      cnt = 0
+    else
+      cnt = reserve.cnt
+    end
+    return cnt
   end
   
   def get_from_and_to_ymd(tmp_ymd,mode)
@@ -107,7 +120,12 @@ module DBusinessCountReportsHelper
   
   def get_d_result_collect_get_num(d_result,m_aim_id)
     unless d_result == nil
-      DResultCollect.where(:d_result_id => d_result.id,:m_oiletc_id => m_aim_id).first.get_num
+      d_result_collect = DResultCollect.where(:d_result_id => d_result.id,:m_oiletc_id => m_aim_id).first
+      if d_result_collect == nil
+        0
+      else
+        d_result_collect.get_num
+      end
     else
       0
     end

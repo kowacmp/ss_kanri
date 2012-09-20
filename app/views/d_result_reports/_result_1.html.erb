@@ -57,7 +57,7 @@
 	<% @m_shops.each do |m_shop| %>
 	  <tr>
 	  	<td><%= m_shop.shop_cd.to_s + ' ' +  m_shop.shop_ryaku %></td>
-	  	<td class="input_no"><%= m_shop.mo_gas %></td>
+	  	<td class="input_no"><%= m_shop.mo_gas %><%#= m_shop.mo_gas_aim %></td>
 	  	<td class="input_no"><%= m_shop.r_mo_gas %></td>
 	  	<td class="input_no"><%= m_shop.keiyu %></td>
 	  	<td class="input_no"><%= m_shop.r_keiyu %></td>

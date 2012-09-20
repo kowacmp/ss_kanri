@@ -1,23 +1,30 @@
 <%= form_tag({:action => 'yume_update' }, { :remote => true }) do %>
   <table id='rounded-corner'>
     <tr>
+      <th>種別</th>
+      <td>
+        <%= select :yume, :yumepoint_class, MCode.find(:all, :conditions=>["kbn = 'yumepoint_class'"],
+           :order=>"code").collect{|i| [ "#{i.code_name}", i.code ]}, {:include_blank => true, :selected => @d_result_yumepoint.yumepoint_class} %>
+      </td>
+    </tr>   	
+    <tr>
       <th>件数</th>
-      <td><%= number_field :yume, :kensu, :value => @d_result_yume.pos1_data.to_i, :class => "money", :size => 10 %></td>
+      <td><%= number_field :yume, :yumepoint_num, :value => @d_result_yumepoint.yumepoint_num, :class => "money", :size => 10 %></td>
     </tr> 
     <tr>
       <th>ポイント</th>
-      <td><%= number_field :yume, :point, :value => @d_result_yume.pos2_data.to_i, :class => "money", :size => 10 %></td>
+      <td><%= number_field :yume, :yumepoint, :value => @d_result_yumepoint.yumepoint, :class => "money", :size => 10 %></td>
     </tr>     	
   	<tr>
   	  <th>金額</th>
-      <td><%= number_field :yume, :kingaku, :value => @d_result_yume.pos3_data.to_i, :class => "money", :size => 10 %></td>
+      <td><%= number_field :yume, :yumepoint_money, :value => @d_result_yumepoint.yumepoint_money, :class => "money", :size => 10 %></td>
     </tr>
     <tr>
       <td colspan="2" align="right"><%= submit_tag '更新' %></td>
     </tr>
   </table>
 
-  <%= hidden_field :yume, :id, :value => @d_result_yume.id %>
+  <%= hidden_field_tag :id, @d_result_yumepoint.id %>
 <% end %>
 
 <%= javascript_include_tag "comma" %>

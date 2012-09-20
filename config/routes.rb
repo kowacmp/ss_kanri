@@ -1,5 +1,7 @@
 SsKanri::Application.routes.draw do
 
+  resources :m_get_points
+
   get "d_price_check_etcs/index"
   get "d_price_check_etcs/search"
   get "d_price_check_etcs/edit"

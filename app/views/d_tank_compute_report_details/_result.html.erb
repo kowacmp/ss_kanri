@@ -61,10 +61,10 @@
       <th colspan="2">前月末</th>
       <td></td>
       <td>&nbsp;</td>
-      <td><%= tank_compute_last.receive unless tank_compute_last == nil %></td>
-      <td><%= tank_compute_last.sale unless tank_compute_last == nil %></td>
+      <td class="input_no"><%= tank_compute_last.receive unless tank_compute_last == nil %></td>
+      <td class="input_no"><%= tank_compute_last.sale unless tank_compute_last == nil %></td>
       <td>&nbsp;</td>
-      <td><%= tank_compute_last.after_stock unless tank_compute_last == nil %></td>
+      <td class="input_no"><%= tank_compute_last.after_stock unless tank_compute_last == nil %></td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
@@ -160,6 +160,6 @@
 
 <script>
   $(function () {
-	  $('.tank_compute_view_table').tablefix({width: 900, height: 500, fixRows: 3});
+	  $('.tank_compute_view_table').tablefix({height: 500, fixRows: 3});
   });	
 </script>

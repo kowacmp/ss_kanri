@@ -7,6 +7,8 @@
     <th>グループ種類</th>
     <th>課税フラグ</th>
     <th>営業項目</th>
+    <th>粗利指数</th>
+    <th>店舗種別</th>
     <th>編集</th>
     <th>削除</th>
   </tr>
@@ -25,6 +27,8 @@
     <td class="<%= "#{del_flg}" %>"><%= m_oiletc.oiletc_group_name %></td>
     <td class="<%= "#{del_flg}" %>"><%= m_oiletc.tax_flg_name %></td>
     <td class="<%= "#{del_flg}" %>"><%= m_oiletc.oiletc_trade_name %></td>
+    <td class="<%= "#{del_flg}" %>" align="right"><%= number_with_delimiter(m_oiletc.oiletc_arari) %></td>
+    <td class="<%= "#{del_flg}" %>"><%= m_oiletc.shop_kbn_name %></td>
     <td class="icon">
     	<%- if m_oiletc.deleted_flg == 0 -%>
     	<%= link_to image_tag('icon/24_edit.png'), {:action=>"edit",:id=>m_oiletc.id,:input_check=>@check_del_flg} %></td>

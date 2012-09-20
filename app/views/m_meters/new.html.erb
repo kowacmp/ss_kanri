@@ -4,6 +4,8 @@
 <%= form_tag({:action => 'search' }, { :remote => true }) do %>
 	<table id='rounded-corner'>
 		<tr>
+		  <th>対象店舗</th>
+	      <td><%= @m_shop.shop_cd %>&nbsp;&nbsp;<%= @m_shop.shop_ryaku %></td>
 	      <th>油種</th>
 	      <td><%= select( "m_oil", 'm_oil_id',@m_oils.map do |u| [u.oil_name,u.id] end ) %></td>
 		  <td><%= submit_tag '検索' %></td>

@@ -47,6 +47,9 @@ class DWashpurikaReportsController < ApplicationController
                                                      
       d_washpurika_report.attributes = rec
       d_washpurika_report.updated_user_id = current_user.id
+      if params[:update][:rezero].to_s == "true" then
+        d_washpurika_report.total_point = params["data_#{cnt}"][:up_point]   
+      end
       
       d_washpurika_report.save!
       
@@ -353,6 +356,27 @@ private
      before_rank += 1
      
      ret[i]["before_rank"] = before_rank
+   end
+   
+   #合計ポイントの加算
+   for i in 0..(ret.length - 1)
+      ret[i]["up_point"] = 0
+      if ym[4..5] == "01" then
+        ret[i]["total_point"] = 0 #1月で累積ポイントはリセット
+      else
+        ret[i]["total_point"] = ret[i]["z_total_point"]
+      end 
+      
+      
+      m_get_point = MGetPoint.find(:first, :conditions=>["rank=? and league_rank=?",
+                                                            ret[i]["league"],
+                                                            ret[i]["before_rank"]])
+                                                            
+      if not(m_get_point.nil?) then
+          ret[i]["up_point"] = m_get_point.pt.to_i
+          ret[i]["total_point"] += m_get_point.pt.to_i
+      end
+      
    end
 
    # 旧リーグ、今月売上トータルでソート

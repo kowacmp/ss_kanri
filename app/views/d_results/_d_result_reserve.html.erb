@@ -1,4 +1,5 @@
 <%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
+
 <%= link_to '入力', {:controller => 'd_results', :action => 'reserve_index', :result_date => @result_date, :m_shop_id => @m_shop.id}, :id => "add_icon", :class => "modal" %>
 <table id='rounded-corner'>
 	<tr>

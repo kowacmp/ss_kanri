@@ -1,13 +1,13 @@
 <table id='rounded-corner'>
   <tr>
-    <th>他売上コード</th>
+    <th>他売上<br />コード</th>
     <th>他売上名</th>
     <th>他売上略称</th>
     <th>単位</th>
-    <th>グループ種類</th>
+    <th>グループ<br />種類</th>
     <th>最大数</th>    
-    <th>監査フラグ</th>
-    <th>課税フラグ</th>
+    <th>監査<br />フラグ</th>
+    <th>課税<br />フラグ</th>
     <!--<th>詳細</th>-->
     <th>他売上種別</th>
     <th>単価</th>
@@ -32,7 +32,7 @@
     <td class="<%= "#{del_flg}" %>"><%= m_etc.kansa_flg_name %></td>
     <td class="<%= "#{del_flg}" %>"><%= m_etc.tax_flg_name %></td>
     <td class="<%= "#{del_flg}" %>"><%= m_etc.etc_class_name %></td>
-    <td class="<%= "#{del_flg}" %>"><%= m_etc.price %></td>
+    <td class="<%= "#{del_flg}" %>" align="right"><%= number_with_delimiter(m_etc.price) %></td>
     <!--<td class="icon">
     	<%#= link_to image_tag('icon/24_show.png'), m_etc %>
     	<%#= link_to image_tag('icon/24_show.png'), {:action=>"show",:id=>m_etc.id,:input_check=>@check_del_flg} %>

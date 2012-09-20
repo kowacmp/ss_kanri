@@ -1,4 +1,4 @@
-<%= javascript_include_tag "m_etcs" %>
+<%#= javascript_include_tag "m_etcs" %>
 
 <%= form_for(@m_etc) do |f| %>
   <% if @m_etc.errors.any? %>
@@ -18,7 +18,7 @@
   <table id='rounded-corner'>
   	<tr>
   	  <th><%= f.label '他売上コード' %></th>
-  	  <td><%= f.number_field :etc_cd, :style=>"ime-mode:disabled" ,:maxlength=>2 %></td>  	  
+  	  <td><%= f.number_field :etc_cd, :style=>"ime-mode:disabled" ,:maxlength=>3 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '他売上名' %></th>
@@ -75,7 +75,7 @@
   	<tr>
   	  <th><%= f.label '単価' %></th>
   	  <td>
-  	  	<%= f.text_field :price, :class=>"money" %>
+  	  	<%= f.text_field :price, :maxlength=>9, :class=>"money" %>
   	  </td>
   	</tr>
   	
@@ -97,3 +97,5 @@
     <%#= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div-->
 <% end %>
+
+<%= javascript_include_tag "comma" %>

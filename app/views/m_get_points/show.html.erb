@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Rank:</b>
+  <%= @m_get_point.rank %>
+</p>
+
+<p>
+  <b>League rank:</b>
+  <%= @m_get_point.league_rank %>
+</p>
+
+<p>
+  <b>Pt:</b>
+  <%= @m_get_point.pt %>
+</p>
+
+
+<%= link_to 'Edit', edit_m_get_point_path(@m_get_point) %> |
+<%= link_to 'Back', m_get_points_path %>

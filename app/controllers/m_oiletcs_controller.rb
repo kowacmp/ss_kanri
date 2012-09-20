@@ -8,12 +8,14 @@ class MOiletcsController < ApplicationController
     #@m_oiletcs = MOiletc.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ?",1], :order => 'oiletc_cd')
 
     select_sql = "select a.*, b.code_name as oiletc_tani_name,c.code_name as oiletc_group_name,"
-    select_sql << "           d.code_name as tax_flg_name, e.code_name as oiletc_trade_name " 
+    select_sql << "           d.code_name as tax_flg_name, e.code_name as oiletc_trade_name, " 
+    select_sql << "           coalesce(f.code_name,'両方') as shop_kbn_name "
     select_sql << " from m_oiletcs a "
     select_sql << " left join (select * from m_codes where kbn='tani') b on a.oiletc_tani = cast(b.code as integer) " 
     select_sql << " left join (select * from m_codes where kbn='oiletc_group') c on a.oiletc_group = cast(c.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='tax_flg') d on a.tax_flg = cast(d.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='umu_flg') e on a.oiletc_trade = cast(e.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='shop_kbn') f on a.shop_kbn = cast(f.code as integer) "
     
     condition_sql = ""
     
@@ -44,12 +46,14 @@ class MOiletcsController < ApplicationController
     #@m_oiletc = MOiletc.find(params[:id])
 
     select_sql = "select a.*, b.code_name as oiletc_tani_name,c.code_name as oiletc_group_name,"
-    select_sql << "           d.code_name as tax_flg_name, e.code_name as oiletc_trade_name " 
+    select_sql << "           d.code_name as tax_flg_name, e.code_name as oiletc_trade_name, " 
+    select_sql << "           coalesce(f.code_name,'両方') as shop_kbn_name "
     select_sql << " from m_oiletcs a "
     select_sql << " left join (select * from m_codes where kbn='tani') b on a.oiletc_tani = cast(b.code as integer) " 
     select_sql << " left join (select * from m_codes where kbn='oiletc_group') c on a.oiletc_group = cast(c.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='tax_flg') d on a.tax_flg = cast(d.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='umu_flg') e on a.oiletc_trade = cast(e.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='shop_kbn') f on a.shop_kbn = cast(f.code as integer) "
     
     condition_sql = " where a.id = " + params[:id]
     
@@ -141,12 +145,14 @@ class MOiletcsController < ApplicationController
   
   def search
     select_sql = "select a.*, b.code_name as oiletc_tani_name,c.code_name as oiletc_group_name,"
-    select_sql << "           d.code_name as tax_flg_name, e.code_name as oiletc_trade_name " 
+    select_sql << "           d.code_name as tax_flg_name, e.code_name as oiletc_trade_name, " 
+    select_sql << "           coalesce(f.code_name,'両方') as shop_kbn_name "
     select_sql << " from m_oiletcs a "
     select_sql << " left join (select * from m_codes where kbn='tani') b on a.oiletc_tani = cast(b.code as integer) " 
     select_sql << " left join (select * from m_codes where kbn='oiletc_group') c on a.oiletc_group = cast(c.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='tax_flg') d on a.tax_flg = cast(d.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='umu_flg') e on a.oiletc_trade = cast(e.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='shop_kbn') f on a.shop_kbn = cast(f.code as integer) "
     
     condition_sql = ""
     

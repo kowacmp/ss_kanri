@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 module DResultsHelper
   def old_result_date(result_date)
     today = Time.parse(result_date)
@@ -36,6 +37,19 @@ module DResultsHelper
     return sql  
   end
   
+  def m_oiletc_ruikei_sql(m_shop_id, result_date, oiletc_group)
+    sql = "select m.id, m.oiletc_tani, "
+    sql << "      CASE m.oiletc_tani WHEN 6 THEN sum(COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0))"
+    sql << "                         ELSE sum(trunc(COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0), 0))"
+    sql << "      END etc_ruikei"
+    sql << " from d_results r, d_result_oiletcs d, m_oiletcs m"
+    sql << " where r.result_date >= '#{result_date[0,6] + "01"}' and r.result_date <= '#{result_date}'"
+    sql << "   and m_shop_id = #{m_shop_id} and r.id = d.d_result_id and d.m_oiletc_id = m.id"
+    sql << " and oiletc_group = #{oiletc_group} group by m.id"
+    
+    return sql
+  end
+  
   def syukei_data(d_result, select_date, m_shop_id)
     if d_result.blank?
       now = Time.parse(select_date)
@@ -45,32 +59,37 @@ module DResultsHelper
       result_date = d_result.result_date
     end
     
+    result_gessyo = result_date[0,6] + "01"
+    p "result_gessyo=#{result_gessyo}"
     @syukei_reserves = Array.new
     
     for i in 0..4
       ymd = now + i.months
-      start_ymd = ymd.strftime("%Y%m") + "01"
-      end_ymd = ymd.strftime("%Y%m") + "31"
+      reserve_nengetu = ymd.strftime("%Y%m")
       
-      if d_result.blank?
-        nikkei_count = 0
-      else  
-        #日計
-        nikkei_count = DResultReserve.count(:conditions => ["d_result_id = ? and get_date between ? and ?",
-                                                            d_result.id, start_ymd, end_ymd])
+      #日計
+      nikkei = ""
+      unless d_result.blank?
+        d_result_reserve = DResultReserve.find(:first, :conditions => ["d_result_id = ? and reserve_nengetu = ?",
+                                                                        d_result.id, reserve_nengetu]) 
+        nikkei = d_result_reserve.reserve_num  unless d_result_reserve.blank?                                                                                                                         
       end
              
       #累計                                                        
-      sql = "select count(*) from d_result_reserves r, d_results d"
+      sql = "select sum(reserve_num) from d_result_reserves r, d_results d"
       sql << " where r.d_result_id = d.id and d.m_shop_id = #{m_shop_id}"
       sql << " and d.result_date <= '#{result_date}'"
-      sql << " and r.get_date between '#{start_ymd}' and '#{end_ymd}'"
-    
+      sql << " and r.reserve_nengetu = '#{reserve_nengetu}'"
       ruikei = DResultReserve.count_by_sql(sql) 
 
+      #月計
+      sql << " and d.result_date >= '#{result_gessyo}'"
+      gekkei = DResultReserve.count_by_sql(sql) 
+      
       @syukei_reserves[i] = Hash::new
       @syukei_reserves[i][:month] = ymd.strftime("%m")
-      @syukei_reserves[i][:nikkei] = nikkei_count
+      @syukei_reserves[i][:nikkei] = nikkei
+      @syukei_reserves[i][:gekkei] = gekkei
       @syukei_reserves[i][:ruikei] = ruikei
     end    
   end
@@ -218,10 +237,11 @@ module DResultsHelper
   end
 
   def yume_sql(d_result_id)
-    sql = "select d.* from d_result_oiletcs d, m_oiletcs m"
-    sql << " where d.m_oiletc_id = m.id and m.deleted_flg = 0" 
-    sql << "   and oiletc_group = 2 and d.d_result_id = #{d_result_id} order by pos1_data" 
-
+    sql = "select y.*, c.code_name from d_result_yumepoints y, m_codes c"
+    sql << " where to_number(c.code, '999999999') = y.yumepoint_class"
+    sql << "   and c.kbn = 'yumepoint_class' and y.d_result_id = #{d_result_id}"
+    sql << " order by y.yumepoint_class, y.yumepoint_money"
+    
     return sql    
   end
   
@@ -561,4 +581,58 @@ module DResultsHelper
 
     return sql
   end  
+  
+  def d_result_check(result_date, m_shop_id)
+    @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
+                                                      m_shop_id, result_date])
+    
+    #実績データ作成 
+    if @d_result.blank?
+      @d_result = DResult.new
+      @d_result.result_date = result_date
+      @d_result.m_shop_id = m_shop_id
+      @d_result.kakutei_flg = 0
+      @d_result.created_user_id = current_user.id
+      @d_result.updated_user_id = current_user.id
+      @d_result.save
+    end  
+  end
+  
+  def yume_data_set(d_result)
+    @d_result_yumepoints = DResultYumepoint.find_by_sql(yume_sql(d_result.id))
+    @result_date = d_result.result_date    
+    @m_shop = MShop.find(d_result.m_shop_id) 
+  end 
+  
+  def tani_check(tani)
+    if tani.to_i == 6
+      flg = true
+    else
+      flg = false     
+    end 
+    
+    return flg
+  end  
+  
+  def yume_check(yume)
+    p "yume_check   yume_check   yume_check   yume_check   yume_check"
+    
+    p "yume[:yumepoint_class]=#{yume[:yumepoint_class]}"
+    p "yume[:yumepoint_num]=#{yume[:yumepoint_num]}" 
+    p "yume[:yumepoint]=#{yume[:yumepoint]}" 
+    p "yume[:yumepoint_money]=#{yume[:yumepoint_money]}"
+    @message = ""
+    if yume[:yumepoint_class].blank?
+      @message << "種別は入力必須です。 "
+    end
+    if yume[:yumepoint_num].blank?
+      @message << "件数は入力必須です。 "
+    end
+    if yume[:yumepoint].blank?
+      @message << "ポイントは入力必須です。 "
+    end
+    if yume[:yumepoint_money].blank?
+      @message << "金額は入力必須です。 "
+    end            
+  end 
 end

@@ -1,29 +1,37 @@
-<table id='rounded-corner' width="430">
-  <tr>
-  	<th width="24%">件数</th>
-    <th width="25%">ポイント</th>
-    <th width="25%">金額</th>
-    <th width="13%">編集</th>
-    <th width="13%">削除</th>
-  </tr>
+<table id='rounded-corner' class="yumepoint_view_table" width="380">
+  <thead>	
+    <tr>
+      <th style="min-width: 70px;">種別</th>
+  	  <th style="min-width: 50px;">件数</th>
+      <th style="min-width: 90px;">ポイント</th>
+      <th style="min-width: 90px;">金額</th>
+      <th style="min-width: 40px;">編集</th>
+      <th style="min-width: 40px;">削除</th>
+    </tr>
+  </thead>
+
+  <tbody>
+	<% unless @d_result_yumepoints.blank? %>	
+	  <% @d_result_yumepoints.each do |d_result_yumepoint| %>
+	    <tr>
+	      <td style="padding-left: 10px;"><%= d_result_yumepoint.code_name %></td>
+	      <td class="input_no"><%= num_fmt(d_result_yumepoint.yumepoint_num) %></td>
+	      <td class="input_no"><%= num_fmt(d_result_yumepoint.yumepoint) %></td>
+	      <td class="input_no"><%= num_fmt(d_result_yumepoint.yumepoint_money) %></td>
+	      <td align="center">
+	        <%= link_to image_tag('icon/edit.png'), {:action => 'yume_edit', :id => d_result_yumepoint.id}, {:remote => true } %>
+	      </td>
+	      <td align="center">
+	        <%= link_to image_tag('icon/delete.png'), {:action => 'yume_delete', :id => d_result_yumepoint.id}, {:remote => true, :confirm => '削除します。よろしいですか？' } %>
+	      </td>
+	    </tr>
+	  <% end %>
+	<% end %>
+  </tbody>
 </table>
 
-<div style="height:380px;width:455px;overflow-y:auto;overflow-x:hidden;">
-<table id='rounded-corner'style="margin-top:-1px; width:430px;">
-<% @d_result_yumes.each do |d_result_yume| %>
-  <tr>
-    <td width="24%" class="input_no"><%= num_fmt(d_result_yume.pos1_data) %></td>
-    <td width="25%" class="input_no"><%= num_fmt(d_result_yume.pos2_data) %></td>
-    <td width="25%" class="input_no"><%= num_fmt(d_result_yume.pos3_data) %></td>
-    <td  width="13%" align="center">
-      <%= link_to image_tag('icon/edit.png'), {:action => 'yume_edit', :id => d_result_yume.id}, {:remote => true } %>
-    </td>
-    <td  width="13%" align="center">
-      <%= link_to image_tag('icon/delete.png'), {:action => 'yume_delete', :id => d_result_yume.id}, {:remote => true, :confirm => '削除します。よろしいですか？' } %>
-    </td>
-  </tr>
-<% end %>
-</table>
-</div>
-<br/>
-
+<script>
+  $(function () {
+	  $('.yumepoint_view_table').tablefix({height: 400, fixRows: 1});
+  });	
+</script>

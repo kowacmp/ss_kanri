@@ -1,25 +1,22 @@
 <%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
-<% m_oiletc = MOiletc.find(:first, :conditions => ["oiletc_group = 2"])	%>
-
-<% unless m_oiletc.blank? %> 	
-  <%= link_to '入力', {:controller => 'd_results', :action => 'yume_index', :result_date => @result_date, :m_shop_id => @m_shop.id}, :id => "add_icon", :class => "modal" %>
-<% end %>
 
 <table id='rounded-corner'>
   <tr>
     <th colspan="4">夢ポイント報告</th>
   </tr>
   <tr>
+  	<th>種別</th>
   	<th>件数</th>
     <th>ポイント</th>
 	<th>金額</th>  	  	  
   </tr>
-  <% unless @d_result_yumes.blank? %>
-    <% @d_result_yumes.each do |d_result_yume| %>
+  <% unless @d_result_yumepoints.blank? %>
+    <% @d_result_yumepoints.each do |d_result_yumepoint| %>
       <tr>
-        <td class="input_no" id="display"><%= num_fmt(d_result_yume.pos1_data) %></td> 	
-        <td class="input_no" id="display"><%= num_fmt(d_result_yume.pos2_data) %></td> 
-        <td class="input_no" id="display"><%= num_fmt(d_result_yume.pos3_data) %></td>           
+      	<td id="display"><%= d_result_yumepoint.code_name %></td>
+        <td class="input_no" id="display"><%= num_fmt(d_result_yumepoint.yumepoint_num) %></td> 	
+        <td class="input_no" id="display"><%= num_fmt(d_result_yumepoint.yumepoint) %></td> 
+        <td class="input_no" id="display"><%= num_fmt(d_result_yumepoint.yumepoint_money) %></td>           
       </tr>	
     <% end %>
   <% end %>

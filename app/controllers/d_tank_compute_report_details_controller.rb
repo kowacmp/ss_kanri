@@ -39,8 +39,12 @@ class DTankComputeReportDetailsController < ApplicationController
       @dr_lastday = DResult.find(:all,
           :conditions => ['result_date = ? and m_shop_id = ?',@last_month_last_day.strftime("%Y%m%d"),@shop_id]).first
 
+      
       @tank_id = params[:select_tank].to_i unless params[:select_tank] == nil
       @oil_id = params[:select_oil].to_i unless params[:select_oil] == nil
+     if  params[:select_tank] == nil && params[:select_oil] == nil
+       @oil_id = 1
+     end
 #      p "*** oil_id = #{@oil_id} ***"
         @d_results = DResult.find(:all,
           :conditions => ['result_date between ? and ? and m_shop_id = ?',@from_ymd,@to_ymd,@shop_id])
@@ -115,11 +119,11 @@ class DTankComputeReportDetailsController < ApplicationController
             tank_volume = tank_volume + tank.volume
             page.item(:tank_no).value(tank_no.join(","))
           end
-          else
-            tank_no = get_tank_ids_tank(params[:tank_id],@shop_id,1)
-            tank_volume = get_tank_ids_tank(params[:tank_id],@shop_id,2)
-            page.item(:tank_no).value(tank_no)
-          end
+        else
+          tank_no = get_tank_ids_tank(params[:tank_id],@shop_id,1)
+          tank_volume = get_tank_ids_tank(params[:tank_id],@shop_id,2)
+          page.item(:tank_no).value(tank_no)
+        end
         page.item(:tank_volume).value(tank_volume)
         page.item(:oil_name).value(MOil.find(@oil_id).oil_name) unless params[:oil_id] == nil or params[:oil_id] == ""
         unless params[:tank_id] == nil or params[:tank_id] == ""

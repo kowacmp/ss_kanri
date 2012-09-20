@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  rank: 1
+  league_rank: 1
+  pt: 1
+
+two:
+  rank: 1
+  league_rank: 1
+  pt: 1

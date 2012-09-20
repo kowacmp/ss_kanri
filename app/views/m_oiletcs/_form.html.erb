@@ -16,7 +16,7 @@
   <table id='rounded-corner'>
   	<tr>
   	  <th><%= f.label '油外コード' %></th>
-  	  <td><%= f.number_field :oiletc_cd, :style=>"ime-mode:disabled" ,:maxlength=>2 %></td>  	  
+  	  <td><%= f.number_field :oiletc_cd, :style=>"ime-mode:disabled" ,:maxlength=>3 %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '油外名' %></th>
@@ -56,7 +56,19 @@
   	  	<%= f.select(:oiletc_trade, MCode.find(:all, :conditions => ["kbn = ?",'umu_flg'], :order => 'code').map do |u|
       		[u.code_name,u.code]
         end, {:include_blank => "選択して下さい"}) %>
-  	  </td>  	  
+  	  </td>
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '粗利指数' %></th>
+  	  <td><%= f.number_field :oiletc_arari, :style=>"ime-mode:disabled" ,:maxlength=>8,:class=>"money" %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label '店舗種別' %></th>
+  	  <td>
+  	  	<%= f.select(:shop_kbn, MCode.find(:all, :conditions => ["(code='0' or code='1') and kbn = ?",'shop_kbn'], :order => 'code').map do |u|
+      		[u.code_name,u.code]
+        end, {:include_blank => "両方"}) %>
+  	  </td>
   	</tr>
   	
   	<tr>
@@ -77,3 +89,5 @@
     <%#= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div-->
 <% end %>
+
+<%= javascript_include_tag "comma" %>
