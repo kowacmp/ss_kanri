@@ -585,64 +585,61 @@ class DResultReportsController < ApplicationController
   def label_names_get(select_kbn)
     
     if select_kbn == 0
-      #@mo_gas_label = MAim.find_by_aim_code(17) ? MAim.find_by_aim_code(17).aim_name : "モーガス"
+      @keiyu_label = MOil.find(3) ? MOil.find(3).oil_name : "軽油"
+      @touyu_label = MOil.find(4) ? MOil.find(4).oil_name : "灯油"
       
-      @keiyu_label = MOil.find_by_oil_cd(3) ? MOil.find_by_oil_cd(3).oil_name : "軽油"
-      @touyu_label = MOil.find_by_oil_cd(4) ? MOil.find_by_oil_cd(4).oil_name : "灯油"
-      
-      @koua_label = MOiletc.find_by_oiletc_cd(1) ? MOiletc.find_by_oiletc_cd(1).oiletc_ryaku : "高A"
-      @buyou_label = MOiletc.find_by_oiletc_cd(2) ? MOiletc.find_by_oiletc_cd(2).oiletc_ryaku : "部用"
-      @tokusei_label = MOiletc.find_by_oiletc_cd(3) ? MOiletc.find_by_oiletc_cd(3).oiletc_ryaku : "特製"
-      @sensya_label = MOiletc.find_by_oiletc_cd(4) ? MOiletc.find_by_oiletc_cd(4).oiletc_ryaku : "洗車"
-      @koutin_label = MOiletc.find_by_oiletc_cd(5) ? MOiletc.find_by_oiletc_cd(5).oiletc_ryaku : "工賃"
-      @taiya_label = MOiletc.find_by_oiletc_cd(6) ? MOiletc.find_by_oiletc_cd(6).oiletc_ryaku : "タイヤ"
+      @koua_label = MOiletc.find(1) ? MOiletc.find(1).oiletc_ryaku : "高A"
+      @buyou_label = MOiletc.find(2) ? MOiletc.find(2).oiletc_ryaku : "部用"
+      @tokusei_label = MOiletc.find(3) ? MOiletc.find(3).oiletc_ryaku : "特製"
+      @sensya_label = MOiletc.find(4) ? MOiletc.find(4).oiletc_ryaku : "洗車"
+      @koutin_label = MOiletc.find(5) ? MOiletc.find(5).oiletc_ryaku : "工賃"
+      @taiya_label = MOiletc.find(6) ? MOiletc.find(6).oiletc_ryaku : "タイヤ"
     elsif select_kbn == 1
-      @chousei_label = MOiletc.find_by_oiletc_cd(28) ? MOiletc.find_by_oiletc_cd(28).oiletc_ryaku : "調整"
-      @syaken_label = MOiletc.find_by_oiletc_cd(13) ? MOiletc.find_by_oiletc_cd(13).oiletc_ryaku : "車検"
-      @kyuyu_purika_label = MOiletc.find_by_oiletc_cd(8) ? MOiletc.find_by_oiletc_cd(8).oiletc_ryaku : "GP"
-      @sensya_purika_label = MOiletc.find_by_oiletc_cd(11) ? MOiletc.find_by_oiletc_cd(11).oiletc_ryaku : "洗車PPC"
-      @sp_label = MOiletc.find_by_oiletc_cd(9) ? MOiletc.find_by_oiletc_cd(9).oiletc_ryaku : "SP"
-      @sc_label = MOiletc.find_by_oiletc_cd(23) ? MOiletc.find_by_oiletc_cd(23).oiletc_ryaku : "SC"
-      @taiyaw_label = MOiletc.find_by_oiletc_cd(27) ? MOiletc.find_by_oiletc_cd(27).oiletc_ryaku : "タイヤW"
-      @sp_plus_label = MOiletc.find_by_oiletc_cd(26) ? MOiletc.find_by_oiletc_cd(26).oiletc_ryaku : "SPプラス"
-      @atf_label = MOiletc.find_by_oiletc_cd(14) ? MOiletc.find_by_oiletc_cd(14).oiletc_ryaku : "ATF"
-      @kousen_label = MOiletc.find_by_oiletc_cd(15) ? MOiletc.find_by_oiletc_cd(15).oiletc_ryaku : "高洗"
-      @bt_label = MOiletc.find_by_oiletc_cd(17) ? MOiletc.find_by_oiletc_cd(17).oiletc_ryaku : "BT"
-      @bankin_label = MOiletc.find_by_oiletc_cd(7) ? MOiletc.find_by_oiletc_cd(7).oiletc_ryaku : "板金"
-      @waiper_label = MOiletc.find_by_oiletc_cd(18) ? MOiletc.find_by_oiletc_cd(18).oiletc_ryaku : "ワイパー"
-      @mobil1_label = MOiletc.find_by_oiletc_cd(19) ? MOiletc.find_by_oiletc_cd(19).oiletc_ryaku : "M-1"
-      
+      @chousei_label = MOiletc.find(28) ? MOiletc.find(28).oiletc_ryaku : "調整"
+      @syaken_label = MOiletc.find(13) ? MOiletc.find(13).oiletc_ryaku : "車検"
+      @kyuyu_purika_label = MOiletc.find(8) ? MOiletc.find(8).oiletc_ryaku : "GP"
+      @sensya_purika_label = MOiletc.find(11) ? MOiletc.find(11).oiletc_ryaku : "洗車PPC"
+      @sp_label = MOiletc.find(9) ? MOiletc.find(9).oiletc_ryaku : "SP"
+      @sc_label = MOiletc.find(23) ? MOiletc.find(23).oiletc_ryaku : "SC"
+      @taiyaw_label = MOiletc.find(27) ? MOiletc.find(27).oiletc_ryaku : "タイヤW"
+      @sp_plus_label = MOiletc.find(26) ? MOiletc.find(26).oiletc_ryaku : "SPプラス"
+      @atf_label = MOiletc.find(14) ? MOiletc.find(14).oiletc_ryaku : "ATF"
+      @kousen_label = MOiletc.find(15) ? MOiletc.find(15).oiletc_ryaku : "高洗"
+      @bt_label = MOiletc.find(17) ? MOiletc.find(17).oiletc_ryaku : "BT"
+      @bankin_label = MOiletc.find(7) ? MOiletc.find(7).oiletc_ryaku : "板金"
+      @waiper_label = MOiletc.find(18) ? MOiletc.find(18).oiletc_ryaku : "ワイパー"
+      @mobil1_label = MOiletc.find(19) ? MOiletc.find(19).oiletc_ryaku : "M-1"
     elsif select_kbn == 2
-      @keiyu_label = MOil.find_by_oil_cd(3) ? MOil.find_by_oil_cd(3).oil_name : "軽油"
-      @touyu_label = MOil.find_by_oil_cd(4) ? MOil.find_by_oil_cd(4).oil_name : "灯油"
+      @keiyu_label = MOil.find(3) ? MOil.find(3).oil_name : "軽油"
+      @touyu_label = MOil.find(4) ? MOil.find(4).oil_name : "灯油"
       
-      @kyuyu_purika_label = MOiletc.find_by_oiletc_cd(8) ? MOiletc.find_by_oiletc_cd(8).oiletc_ryaku : "GP"
+      @kyuyu_purika_label = MOiletc.find(8) ? MOiletc.find(8).oiletc_ryaku : "GP"
     elsif select_kbn == 3
-      @sensya_label = MOiletc.find_by_oiletc_cd(4) ? MOiletc.find_by_oiletc_cd(4).oiletc_ryaku : "洗車"
-      @sensya_purika_label = MOiletc.find_by_oiletc_cd(11) ? MOiletc.find_by_oiletc_cd(11).oiletc_ryaku : "洗車PPC"
-      @muton_label = MOiletc.find_by_oiletc_cd(22) ? MOiletc.find_by_oiletc_cd(22).oiletc_ryaku : "ムートンパス"
-      @sp_plus_label = MOiletc.find_by_oiletc_cd(26) ? MOiletc.find_by_oiletc_cd(26).oiletc_ryaku : "SPプラス"
-      @taiyaw_label = MOiletc.find_by_oiletc_cd(27) ? MOiletc.find_by_oiletc_cd(27).oiletc_ryaku : "タイヤW"
-      @sc_label = MOiletc.find_by_oiletc_cd(23) ? MOiletc.find_by_oiletc_cd(23).oiletc_ryaku : "SC"
-      @sp_label = MOiletc.find_by_oiletc_cd(9) ? MOiletc.find_by_oiletc_cd(9).oiletc_ryaku : "SP"
+      @sensya_label = MOiletc.find(4) ? MOiletc.find(4).oiletc_ryaku : "洗車"
+      @sensya_purika_label = MOiletc.find(11) ? MOiletc.find(11).oiletc_ryaku : "洗車PPC"
+      @muton_label = MOiletc.find(22) ? MOiletc.find(22).oiletc_ryaku : "ムートンパス"
+      @sp_plus_label = MOiletc.find(26) ? MOiletc.find(26).oiletc_ryaku : "SPプラス"
+      @taiyaw_label = MOiletc.find(27) ? MOiletc.find(27).oiletc_ryaku : "タイヤW"
+      @sc_label = MOiletc.find(23) ? MOiletc.find(23).oiletc_ryaku : "SC"
+      @sp_label = MOiletc.find(9) ? MOiletc.find(9).oiletc_ryaku : "SP"
       
-      @wash_item_label = MEtc.find_by_etc_cd(10) ? MEtc.find_by_etc_cd(10).etc_ryaku : "洗車用品"
-      @game_label = MEtc.find_by_etc_cd(12) ? MEtc.find_by_etc_cd(12).etc_ryaku : "スロット"
-      @health_label = MEtc.find_by_etc_cd(11) ? MEtc.find_by_etc_cd(11).etc_ryaku : "ヘルス"
-      @net_label = MEtc.find_by_etc_cd(14) ? MEtc.find_by_etc_cd(14).etc_ryaku : "ネット"
-      @charge_label = MEtc.find_by_etc_cd(13) ? MEtc.find_by_etc_cd(13).etc_ryaku : "充電器"
+      @wash_item_label = MEtc.find(10) ? MEtc.find(10).etc_ryaku : "洗車用品"
+      @game_label = MEtc.find(12) ? MEtc.find(12).etc_ryaku : "スロット"
+      @health_label = MEtc.find(11) ? MEtc.find(11).etc_ryaku : "ヘルス"
+      @net_label = MEtc.find(14) ? MEtc.find(14).etc_ryaku : "ネット"
+      @charge_label = MEtc.find(13) ? MEtc.find(13).etc_ryaku : "充電器"
       @spare_label = "予備"
       #@spare_label = MEtc.find_by_oiletc_cd(99) ? MEtc.find_by_oiletc_cd(99).etc_ryaku : "予備"
     else
-      @keiyu_label = MOil.find_by_oil_cd(3) ? MOil.find_by_oil_cd(3).oil_name : "軽油"
-      @touyu_label = MOil.find_by_oil_cd(4) ? MOil.find_by_oil_cd(4).oil_name : "灯油"
+      @keiyu_label = MOil.find(3) ? MOil.find(3).oil_name : "軽油"
+      @touyu_label = MOil.find(4) ? MOil.find(4).oil_name : "灯油"
       
-      @koua_label = MOiletc.find_by_oiletc_cd(1) ? MOiletc.find_by_oiletc_cd(1).oiletc_ryaku : "高A"
-      @buyou_label = MOiletc.find_by_oiletc_cd(2) ? MOiletc.find_by_oiletc_cd(2).oiletc_ryaku : "部用"
-      @tokusei_label = MOiletc.find_by_oiletc_cd(3) ? MOiletc.find_by_oiletc_cd(3).oiletc_ryaku : "特製"
-      @sensya_label = MOiletc.find_by_oiletc_cd(4) ? MOiletc.find_by_oiletc_cd(4).oiletc_ryaku : "洗車"
-      @koutin_label = MOiletc.find_by_oiletc_cd(5) ? MOiletc.find_by_oiletc_cd(5).oiletc_ryaku : "工賃"
-      @taiya_label = MOiletc.find_by_oiletc_cd(6) ? MOiletc.find_by_oiletc_cd(6).oiletc_ryaku : "タイヤ"
+      @koua_label = MOiletc.find(1) ? MOiletc.find(1).oiletc_ryaku : "高A"
+      @buyou_label = MOiletc.find(2) ? MOiletc.find(2).oiletc_ryaku : "部用"
+      @tokusei_label = MOiletc.find(3) ? MOiletc.find(3).oiletc_ryaku : "特製"
+      @sensya_label = MOiletc.find(4) ? MOiletc.find(4).oiletc_ryaku : "洗車"
+      @koutin_label = MOiletc.find(5) ? MOiletc.find(5).oiletc_ryaku : "工賃"
+      @taiya_label = MOiletc.find(6) ? MOiletc.find(6).oiletc_ryaku : "タイヤ"
     end
     
     
@@ -685,12 +682,6 @@ class DResultReportsController < ApplicationController
       select_sql <<      " group by d1.m_shop_id"
       select_sql <<      " ) d on a.id = d.m_shop_id "
       
-      #モーガス
-      #select_sql << " left join (select e1.m_shop_id,e1.aim_total as mo_gas_aim from d_aims e1"
-      #select_sql << " left join (select e1.m_shop_id,e1.aim_value#{input_day} as mo_gas_aim from d_aims e1"
-      #select_sql <<            " left join m_aims e2 on e1.m_aim_id = e2.id"
-      #select_sql << " where e1.date = '#{input_month}' and e2.aim_code = 17 ) e on a.id = e.m_shop_id "
-      
     elsif select_kbn == 1
       
       select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*"
@@ -720,11 +711,11 @@ class DResultReportsController < ApplicationController
       #油外売上
       select_sql << " left join (select e1.m_shop_id,e1.aim_value#{input_day} as oiletc_aim from d_aims e1"
       select_sql <<            " left join m_aims e2 on e1.m_aim_id = e2.id"
-      select_sql << " where e1.date = '#{input_month}' and e2.aim_code = 1 ) e on a.id = e.m_shop_id "
+      select_sql << " where e1.date = '#{input_month}' and e2.id = 1 ) e on a.id = e.m_shop_id "
       #車検
       select_sql << " left join (select f1.m_shop_id,f1.aim_total as syaken_aim from d_aims f1"
       select_sql <<            " left join m_aims f2 on f1.m_aim_id = f2.id"
-      select_sql << " where f1.date = '#{input_month}' and f2.aim_code = 14 ) f on a.id = f.m_shop_id "
+      select_sql << " where f1.date = '#{input_month}' and f2.id = 14 ) f on a.id = f.m_shop_id "
       
     elsif select_kbn == 2
       
@@ -752,7 +743,7 @@ class DResultReportsController < ApplicationController
       #モーガス
       select_sql << " left join (select e1.m_shop_id,e1.aim_total as mo_gas_aim from d_aims e1"
       select_sql <<            " left join m_aims e2 on e1.m_aim_id = e2.id"
-      select_sql << " where e1.date = '#{input_month}' and e2.aim_code = 16 ) e on a.id = e.m_shop_id "
+      select_sql << " where e1.date = '#{input_month}' and e2.id = 16 ) e on a.id = e.m_shop_id "
       #ハイオク
       #select_sql << " left join (select e1.m_shop_id,e1.aim_total as hg_aim from d_aims e1"
       #select_sql <<            " left join m_aims e2 on e1.m_aim_id = e2.id"
@@ -764,15 +755,15 @@ class DResultReportsController < ApplicationController
       #軽油
       select_sql << " left join (select g1.m_shop_id,g1.aim_total as keiyu_aim from d_aims g1"
       select_sql <<            " left join m_aims g2 on g1.m_aim_id = g2.id"
-      select_sql << " where g1.date = '#{input_month}' and g2.aim_code = 5 ) g on a.id = g.m_shop_id "
+      select_sql << " where g1.date = '#{input_month}' and g2.id = 5 ) g on a.id = g.m_shop_id "
       #灯油
       select_sql << " left join (select h1.m_shop_id,h1.aim_total as touyu_aim from d_aims h1"
       select_sql <<            " left join m_aims h2 on h1.m_aim_id = h2.id"
-      select_sql << " where h1.date = '#{input_month}' and h2.aim_code = 6 ) h on a.id = h.m_shop_id "
+      select_sql << " where h1.date = '#{input_month}' and h2.id = 6 ) h on a.id = h.m_shop_id "
       #ガソリンプリカ
       select_sql << " left join (select i1.m_shop_id,i1.aim_total as kyuyu_purika_aim from d_aims i1"
       select_sql <<            " left join m_aims i2 on i1.m_aim_id = i2.id"
-      select_sql << " where i1.date = '#{input_month}' and i2.aim_code = 7 ) i on a.id = i.m_shop_id "
+      select_sql << " where i1.date = '#{input_month}' and i2.id = 7 ) i on a.id = i.m_shop_id "
       
     elsif select_kbn == 3
       
@@ -805,32 +796,32 @@ class DResultReportsController < ApplicationController
       #洗車売上
       select_sql << " left join (select e1.m_shop_id,e1.aim_value#{input_day} as sensya_aim from d_aims e1"
       select_sql <<            " left join m_aims e2 on e1.m_aim_id = e2.id"
-      select_sql << " where e1.date = '#{input_month}' and e2.aim_code = 2 ) e on a.id = e.m_shop_id "
+      select_sql << " where e1.date = '#{input_month}' and e2.id = 2 ) e on a.id = e.m_shop_id "
       #洗車プリカ
       select_sql << " left join (select f1.m_shop_id,f1.aim_total as sensya_purika_aim from d_aims f1"
       select_sql <<            " left join m_aims f2 on f1.m_aim_id = f2.id"
-      select_sql << " where f1.date = '#{input_month}' and f2.aim_code = 8 ) f on a.id = f.m_shop_id "
+      select_sql << " where f1.date = '#{input_month}' and f2.id = 8 ) f on a.id = f.m_shop_id "
       
       #ムートンパス
       select_sql << " left join (select g1.m_shop_id,g1.aim_total as muton_aim from d_aims g1"
       select_sql <<            " left join m_aims g2 on g1.m_aim_id = g2.id"
-      select_sql << " where g1.date = '#{input_month}' and g2.aim_code = 17 ) g on a.id = g.m_shop_id "
+      select_sql << " where g1.date = '#{input_month}' and g2.id = 17 ) g on a.id = g.m_shop_id "
       #スピードパスプラス
       select_sql << " left join (select h1.m_shop_id,h1.aim_total as sp_plus_aim from d_aims h1"
       select_sql <<            " left join m_aims h2 on h1.m_aim_id = h2.id"
-      select_sql << " where h1.date = '#{input_month}' and h2.aim_code = 18 ) h on a.id = h.m_shop_id "
+      select_sql << " where h1.date = '#{input_month}' and h2.id = 18 ) h on a.id = h.m_shop_id "
       #タイヤW
       select_sql << " left join (select i1.m_shop_id,i1.aim_total as taiyaw_aim from d_aims i1"
       select_sql <<            " left join m_aims i2 on i1.m_aim_id = i2.id"
-      select_sql << " where i1.date = '#{input_month}' and i2.aim_code = 19 ) i on a.id = i.m_shop_id "
+      select_sql << " where i1.date = '#{input_month}' and i2.id = 19 ) i on a.id = i.m_shop_id "
       #SC
       select_sql << " left join (select j1.m_shop_id,j1.aim_total as sc_aim from d_aims j1"
       select_sql <<            " left join m_aims j2 on j1.m_aim_id = j2.id"
-      select_sql << " where j1.date = '#{input_month}' and j2.aim_code = 20 ) j on a.id = j.m_shop_id "
+      select_sql << " where j1.date = '#{input_month}' and j2.id = 20 ) j on a.id = j.m_shop_id "
       #SP
       select_sql << " left join (select k1.m_shop_id,k1.aim_total as sp_aim from d_aims k1"
       select_sql <<            " left join m_aims k2 on k1.m_aim_id = k2.id"
-      select_sql << " where k1.date = '#{input_month}' and k2.aim_code = 21 ) k on a.id = k.m_shop_id "
+      select_sql << " where k1.date = '#{input_month}' and k2.id = 21 ) k on a.id = k.m_shop_id "
       
     else
       
