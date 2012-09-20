@@ -9,7 +9,7 @@ class CreateDDuties < ActiveRecord::Migration
       t.decimal :day_work_time, :precision=>2, :scale=>1, :default => 0
       t.decimal :night_work_time, :precision=>3, :scale=>1, :default => 0
       t.decimal :all_work_time, :precision=>3, :scale=>1, :default => 0
-      t.integer :day_work_money,:dufault => 0
+      t.integer :day_work_money,:default => 0
       t.integer :night_work_money, :default => 0
       t.integer :all_money, :default => 0
       t.integer :created_user_id

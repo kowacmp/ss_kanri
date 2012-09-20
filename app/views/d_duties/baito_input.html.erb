@@ -1,0 +1,108 @@
+<h1><%= "#{@input_day.to_s[0,4]}年#{@input_day.to_s[4,2]}月#{@input_day.to_s[6,2]}日" %></h1>
+<%= form_tag({:action => 'baito_input_add' }, { :remote => true }) do %>
+<%= hidden_field_tag 'input_day', @input_day %>
+<%= hidden_field_tag 'm_shop_id', @m_shop_id %>
+<table id="baito_input_table" class="rounded-corner">
+	<thead>
+		<tr>
+		<th style="min-width: 70px">番号</th>
+		<th style="max-width: 160px; min-width: 160px">氏名</th>
+		<th style="min-width: 80px">日勤</th>
+		<th style="min-width: 80px">夜勤</th>
+		<th style="min-width: 80px">合計</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @baito_users.each_with_index{ |user, index| %>
+	      <%= hidden_field_tag "datas[#{index}][user_id]", user.id %>
+		  <% d_dutry = DDuty.find(:first, 
+		  :conditions=>["duty_nengetu = '#{@input_day.to_s[0,6]}' and day = #{@input_day.to_s[6,2]} and user_id = #{user.id}"]) %>
+		  <tr>
+		  <td style="text-align: center;"><%= user.account %></td>
+		  <td><label id='<%= "datas_#{index}_user_name" %>'><%= user.user_name %></label></td>
+		  
+			<% if d_dutry.blank? %>
+			    <td style="text-align: center;">
+					<%= text_field_tag "datas[#{index}][day_work_time]", "",  {:size=>4, :class=>"money"} %>
+				</td>
+			    <td style="text-align: center;">
+					<%= text_field_tag "datas[#{index}][night_work_time]", "",  {:size=>4, :class=>"money"} %>
+				</td>
+				<td style="text-align: center;">
+					<label id='<%= "datas_#{index}_all_work_time" %>'></label>
+			    </td>
+			<% else %>
+				<td style="text-align: center;">
+		  			<%= text_field_tag "datas[#{index}][day_work_time]", d_dutry.day_work_time,  {:size=>4, :class=>"money"} %>
+		  		</td>
+				<td style="text-align: center;">
+		  			<%= text_field_tag "datas[#{index}][night_work_time]", d_dutry.night_work_time,  {:size=>4, :class=>"money"} %>
+		  		</td>
+				<td style="text-align: center;">
+					<label id='<%= "datas_#{index}_all_work_time" %>'><%= d_dutry.all_work_time %></label>
+			    </td>
+		  	<% end %>
+		  
+		  </tr>
+		<% } %>
+	</tbody>
+</table>
+<br />
+<%= submit_tag '保存', {:confirm => "保存します。よろしいですか？", :method => :post} %>
+<% end %>
+
+<%= javascript_include_tag "comma" %>
+
+<script>
+$(function () {
+	$('div#modal div.container').css("height", "600px");
+	$('div#modal div.container').css("width", "640px");
+	$('#baito_input_table').tablefix({width: 600, height: 450, fixRows: 1, fixCols: 0});
+	
+	//入力チェック
+	//保存の時
+    $("form").submit(function() {
+    	var Div_id='';
+    	var num;
+    	var get_index;
+    	var errmsg='';
+    	
+	    if ($("div#modal div.bodyDiv").size() > 0) {
+	    	Div_id = 'div.bodyDiv ';
+	    };
+	    
+	    //日勤
+	    $("div#modal " + Div_id + "[id*=_day_work_time]").each(function(i){
+		   	get_index = $(this).attr('id').replace("datas_", "");
+		    get_index = get_index.replace("_day_work_time", "");
+
+	        num = Number($(this).val());
+	        if (isNaN(num)) {num = 0};
+	        if (String(Math.floor(num)).length > 2 || String(num).split(".")[1].length > 1 ) {
+	        	if (errmsg != "") { errmsg = errmsg + ", "; };
+	        	errmsg = errmsg + $("div#modal " + Div_id + "#datas_" + get_index + "_user_name").text() + "さん";
+	        };
+	        
+	    });  
+	    
+	    //夜勤
+	    $("div#modal " + Div_id + "[id*=_night_work_time]").each(function(i){
+		   	get_index = $(this).attr('id').replace("datas_", "");
+		    get_index = get_index.replace("_night_work_time", "");
+
+	        num = Number($(this).val());
+	        if (isNaN(num)) {num = 0};
+	        if (String(Math.floor(num)).length > 2) {
+	        	if (errmsg != "") { errmsg = errmsg + ", "; };
+	        	errmsg = errmsg + $("div#modal " + Div_id + "#datas_" + get_index + "_user_name").text() + "さん";
+	        };
+	    }); 
+	    	     
+        if (errmsg != "") {
+			alert("勤務時間を正しく入力してください。(整数２桁、少数１桁)\n（" + errmsg + "）");
+ 			return false;
+ 	    };	
+    });
+	
+});	
+</script>
