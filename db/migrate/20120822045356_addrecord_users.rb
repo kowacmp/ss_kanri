@@ -429,7 +429,7 @@ class AddrecordUsers < ActiveRecord::Migration
            execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (68,8,0, 'システムメンテ', '#', NULL, NULL,0, 0);"
            execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (69,8,1, 'コードマスタメンテ', 'm_codes', NULL, NULL,0, 0);"
            execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (70,8,1, '分類チェックマスタメンテ', 'm_class_checks', NULL, NULL,0, 0);"
-           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (71,8,1, '釣銭固定額内訳マスタ', m_fix_items', NULL, NULL,0, 0);"
+           execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (71,8,1, '釣銭固定額内訳マスタ','m_fix_items', NULL, NULL,0, 0);"
            execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (72,8,1, '目標値マスタメンテ', 'm_aims', NULL, NULL,0, 0);"
            execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (73,8,1, '油種マスタメンテ', 'm_oils', NULL, NULL,0, 0);"
            execute "INSERT INTO menus (id, menu_cd1, menu_cd2, display_name, uri, created_at, updated_at, messege_send, menu_cd3) VALUES (74,8,1, 'ログイン履歴', '#', NULL, NULL,0, 0);"

@@ -17,7 +17,7 @@
 </table>
 <hr />
 
-<div id="result">
+<div id="result" style="font-size: 13px;">
   <% if @d_result.blank? or @edit_flg.to_i == 1 or @d_result.kakutei_flg == 0 %> 	
 	<%= render 'input_d_result' %>
   <% else %>
@@ -78,7 +78,7 @@ $(function () {
 	    	<% end %>
 	    	$("#oil_pos<%= i %>_total").text(format_kanma(total.toFixed(2)));
 	    	
-	    	oil_pos_total();//小計計算
+	    	oil_pos_total();//モーガストータル
 	    };
 	  <% end %> 
 	  
@@ -104,62 +104,64 @@ $(function () {
     <% end %> 
   <% end %>       
       
+    
   //油外販売
-  <% if @m_shop.shop_kbn == 1 %>
-	  <% @m_oiletc0s.each do |m_oiletc| %>
-	    $(":input[id^=etc0_pos1_<%= m_oiletc.id %>]").live('change', function(){ etc0_total_calc_<%= m_oiletc.id %>(); });
-	    $(":input[id^=etc0_pos2_<%= m_oiletc.id %>]").live('change', function(){ etc0_total_calc_<%= m_oiletc.id %>(); });
-	    $(":input[id^=etc0_pos3_<%= m_oiletc.id %>]").live('change', function(){ etc0_total_calc_<%= m_oiletc.id %>(); });       
-	    
-	    //油外販売日計
-	    function etc0_total_calc_<%= m_oiletc.id %>(){
-		 	var num1 = Number(format_kanma($("#etc0_pos1_<%= m_oiletc.id %>").val(), 2));
-	  		var num2 = Number(format_kanma($("#etc0_pos2_<%= m_oiletc.id %>").val(), 2));
-	  		var num3 = Number(format_kanma($("#etc0_pos3_<%= m_oiletc.id %>").val(), 2));
-	  		var total;
-	  		  		
-	  		if (isNaN(num1)) {num1 = 0};
-	  		if (isNaN(num2)) {num2 = 0};
-	  		if (isNaN(num3)) {num3 = 0};
-	  		
-	  		total = num1 + num2 + num3;
-	        if ( total == parseInt(total)){
-	  	      $("#etc0_total_<%= m_oiletc.id %>").text(format_kanma(total));
-	        } else if ( total == parseFloat(total)){
-	          $("#etc0_total_<%= m_oiletc.id %>").text(format_kanma(total.toFixed(2)));	
-	        }	
-	    };
-	  <% end %> 
-  <% end %>
+  <% @m_oiletcs.each do |m_oiletc| %>
+    $(":input[id^=oiletc_pos1_<%= m_oiletc.id %>]").live('change', function(){ oiletc_total_calc_<%= m_oiletc.id %>(); });
+    $(":input[id^=oiletc_pos2_<%= m_oiletc.id %>]").live('change', function(){ oiletc_total_calc_<%= m_oiletc.id %>(); });
+    $(":input[id^=oiletc_pos3_<%= m_oiletc.id %>]").live('change', function(){ oiletc_total_calc_<%= m_oiletc.id %>(); });       
     
-  //その他商品   
-  <% @m_oiletc1s.each do |m_oiletc| %>
-    $(":input[id^=etc1_pos1_<%= m_oiletc.id %>]").live('change', function(){ etc1_total_calc_<%= m_oiletc.id %>(); });
-    $(":input[id^=etc1_pos2_<%= m_oiletc.id %>]").live('change', function(){ etc1_total_calc_<%= m_oiletc.id %>(); });
-    $(":input[id^=etc1_pos3_<%= m_oiletc.id %>]").live('change', function(){ etc1_total_calc_<%= m_oiletc.id %>(); });       
-    
-    //その他商品日計
-    function etc1_total_calc_<%= m_oiletc.id %>(){
-	 	var num1 = Number(format_kanma($("#etc1_pos1_<%= m_oiletc.id %>").val(), 2));
-  		var num2 = Number(format_kanma($("#etc1_pos2_<%= m_oiletc.id %>").val(), 2));
-  		var num3 = Number(format_kanma($("#etc1_pos3_<%= m_oiletc.id %>").val(), 2));
+    //油外販売日計
+    function oiletc_total_calc_<%= m_oiletc.id %>(){
+	 	var num1 = Number(format_kanma($("#oiletc_pos1_<%= m_oiletc.id %>").val(), 2));
+  		var num2 = Number(format_kanma($("#oiletc_pos2_<%= m_oiletc.id %>").val(), 2));
+  		var num3 = Number(format_kanma($("#oiletc_pos3_<%= m_oiletc.id %>").val(), 2));
   		var total;
   		  		
   		if (isNaN(num1)) {num1 = 0};
   		if (isNaN(num2)) {num2 = 0};
   		if (isNaN(num3)) {num3 = 0};
   		
-  		total = num1 + num2 + num3;
+  		//total = num1 + num2 + num3;
+  		//arari = Math.floor(total * <%#= m_oiletc.oiletc_arari %>)
   		
+  		total = (num1 * 100) + (num2 * 100) + (num3 *100);
+  		arari = Math.floor(total * <%= m_oiletc.oiletc_arari %> / 100)
+  		total = total / 100
+  			
         if ( total == parseInt(total)){
-  	      $("#etc1_total_<%= m_oiletc.id %>").text(format_kanma(total));
+  	      $("#oiletc_total_<%= m_oiletc.id %>").text(format_kanma(total));
         } else if ( total == parseFloat(total)){
-          $("#etc1_total_<%= m_oiletc.id %>").text(format_kanma(total.toFixed(2)));
-        }	  		 		
+          $("#oiletc_total_<%= m_oiletc.id %>").text(format_kanma(total.toFixed(2)));
+        }
+        $("#oiletc_arari_<%= m_oiletc.id %>").text(format_kanma(arari));	 
+        
+        arari_nikkei_total(); 		 		
     };
-  <% end %>      
-     
-     
+  <% end %>     
+   
+	    //粗利日計トータル
+	    function arari_nikkei_total() {
+	    	var num = new Array(<%= @m_oiletcs.size %>);
+	    	var total=0;
+	    	
+	    	<% @m_oiletcs.each_with_index do |m_oiletc, idx| %>
+	    	  num[<%= idx %>]=Number(format_kanma($("#oiletc_arari_<%= m_oiletc.id %>").text(), 2));
+	    	<% end %>
+	    	
+			var i=0;
+	      	while(i<<%= @m_oiletcs.size %>){
+	        	if (isNaN(num[i])) {num[i] = 0};
+	        	i=i+1;
+	     	};
+	     	   	
+	     	<% @m_oiletcs.each_with_index do |m_oiletc, idx| %>
+	     	  total = total + num[<%= idx %>];
+	     	<% end %>
+			
+			$("#arari_nikkei_total").text(format_kanma(total));  	
+	    };
+	    
   //その他売上
   <% @etcs.each do |etc| %>
     <% for no in 1..etc.max_num %>
@@ -183,31 +185,15 @@ $(function () {
   		$("#m_etc_total_<%= etc.id %>_no<%= no %>").text(format_kanma(total));
     };
     <% end %>   
-  <% end %>
-     
-    //カンマ編集
-    //set…1:カンマ編集する（デフォルト）
-    //     以外:カンマを消す
-    function format_kanma(para_num, para_set) {
-    
-    	if (para_set == undefined) para_set = 1;
-
-    	if (para_set == 1) {
-			var num = new String(para_num).replace(/,/g, "");
-            while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
-            return num; 
-    	} else {
-        	var num = new String(para_num).replace(/,/g, "");
-            return num;
-    	}
-    	
-    };
-      
+  <% end %>    
 });
 </script>
 
 <style type="text/css">
  input { 
- 	 width: 90px;
-                   }　
+ 	 width: 75px;
+                   } 
+body, p, ol, ul, td, input, select, textarea{
+ 	font-size: 13px;
+ }                                    　
 </style>   

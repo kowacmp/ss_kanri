@@ -9,15 +9,15 @@
     </tr>   	
     <tr>
       <th>件数</th>
-      <td><%= number_field :yume, :yumepoint_num, :value => @d_result_yumepoint.yumepoint_num, :class => "money", :size => 10 %></td>
+      <td><%= number_field :yume, :yumepoint_num, :value => @d_result_yumepoint.yumepoint_num, :maxlength => 3, :class => "money", :size => 10 %></td>
     </tr> 
     <tr>
       <th>ポイント</th>
-      <td><%= number_field :yume, :yumepoint, :value => @d_result_yumepoint.yumepoint, :class => "money", :size => 10 %></td>
+      <td><%= number_field :yume, :yumepoint, :value => @d_result_yumepoint.yumepoint, :maxlength => 9, :class => "money", :size => 10 %></td>
     </tr>     	
   	<tr>
   	  <th>金額</th>
-      <td><%= number_field :yume, :yumepoint_money, :value => @d_result_yumepoint.yumepoint_money, :class => "money", :size => 10 %></td>
+      <td><%= number_field :yume, :yumepoint_money, :value => @d_result_yumepoint.yumepoint_money, :maxlength => 9, :class => "money", :size => 10 %></td>
     </tr>
     <tr>
       <td colspan="2" align="right"><%= submit_tag '更新' %></td>

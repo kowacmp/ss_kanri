@@ -65,9 +65,9 @@ class DResultsController < ApplicationController
   end  
 
   def new
+    p "new   new   new   new   new   new   new   new"
     @m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"])
-    @m_oiletc0s = MOiletc.find(:all, :conditions => ["oiletc_group = 0 and deleted_flg = 0"])  
-    @m_oiletc1s = MOiletc.find(:all, :conditions => ["oiletc_group = 1 and deleted_flg = 0"])
+    #@m_oiletcs = MOiletc.find(:all, :conditions => ["oiletc_group = 0 and deleted_flg = 0"])
     @etcs = MEtc.find(:all, :conditions => ["deleted_flg = 0 and kansa_flg = 1"])
     @m_oiletc0_pos_totals = MOiletc.find_by_sql(m_oiletc0_en_pos_total_sql)
     
@@ -91,6 +91,9 @@ class DResultsController < ApplicationController
       @edit_flg = 1
     end
     
+    m_shop = MShop.find(@m_shop_id)
+    @m_oiletcs = MOiletc.find(:all, :conditions => ["(shop_kbn is null or shop_kbn = ?) and oiletc_group <> 0 and deleted_flg = 0",
+                                                      m_shop.shop_kbn])
     select_date
   end
   
@@ -173,54 +176,66 @@ class DResultsController < ApplicationController
     @ruikei_gasorin = @ruikei_gasorin.round(2)
     @ruikei_mofuel = @ruikei_mofuel.round(2)
     
-    
+ 
     #油外販売取得  油外店のみ取得
-    if @m_shop.shop_kbn == 1
-      oiletc0_sql = m_oiletc_sql(@d_result, 0)
-      @oiletc0s = MOiletc.find_by_sql(oiletc0_sql)
+#    if @m_shop.shop_kbn == 1
+#      oiletc0_sql = m_oiletc_sql(@d_result, 0)
+#      @oiletc0s = MOiletc.find_by_sql(oiletc0_sql)
       
       #油外販売累計
-      @oiletc0_ruikeis = Array.new
-      @oiletc0s.each do |oiletc0|
-        @oiletc0_ruikeis[oiletc0.id] = Hash::new
-        @oiletc0_ruikeis[oiletc0.id][:etc_ruikei] = 0
-      end
-      
-      oiletc0_ruikei_sql = m_oiletc_ruikei_sql(@m_shop.id, @result_date, 0)
-      oiletc0_ruikeis = MOiletc.find_by_sql(oiletc0_ruikei_sql)
-           
-      oiletc0_ruikeis.each do |oiletc0_ruikei|
-        @oiletc0_ruikeis[oiletc0_ruikei.id][:etc_ruikei] = oiletc0_ruikei.etc_ruikei
-      end
-#      @etc0_pos1_total, @etc0_pos2_total, @etc0_pos3_total, @etc0_pos_total = 0,0,0,0  
+#      @oiletc0_ruikeis = Array.new
 #      @oiletc0s.each do |oiletc0|
-        #単位が円のものだけ合計する
-#        if oiletc0.oiletc_tani == 0 
-#          @etc0_pos1_total += oiletc0.pos1_data.to_f
-#          @etc0_pos2_total += oiletc0.pos2_data.to_f 
-#          @etc0_pos3_total += oiletc0.pos3_data.to_f
-#          @etc0_pos_total += oiletc0.pos_total.to_f
-#        end   
+#        @oiletc0_ruikeis[oiletc0.id] = Hash::new
+#        @oiletc0_ruikeis[oiletc0.id][:etc_ruikei] = 0
 #      end
-    end
+      
+#      oiletc0_ruikei_sql = m_oiletc_ruikei_sql(@m_shop.id, @result_date, 0)
+#      oiletc0_ruikeis = MOiletc.find_by_sql(oiletc0_ruikei_sql)
+           
+#      oiletc0_ruikeis.each do |oiletc0_ruikei|
+#        @oiletc0_ruikeis[oiletc0_ruikei.id][:etc_ruikei] = oiletc0_ruikei.etc_ruikei
+#      end
+#    end
  
     #その他商品取得
-    oiletc1_sql = m_oiletc_sql(@d_result, 1)
-    @oiletc1s = MOiletc.find_by_sql(oiletc1_sql)
+#    oiletc1_sql = m_oiletc_sql(@d_result, 1)
+#    @oiletc1s = MOiletc.find_by_sql(oiletc1_sql)
     
     #その他商品累計
-    @oiletc1_ruikeis = Array.new
-    @oiletc1s.each do |oiletc1|
-      @oiletc1_ruikeis[oiletc1.id] = Hash::new
-      @oiletc1_ruikeis[oiletc1.id][:etc_ruikei] = 0
-    end    
+#    @oiletc1_ruikeis = Array.new
+#    @oiletc1s.each do |oiletc1|
+#      @oiletc1_ruikeis[oiletc1.id] = Hash::new
+#      @oiletc1_ruikeis[oiletc1.id][:etc_ruikei] = 0
+#    end    
     
-    oiletc1_ruikei_sql = m_oiletc_ruikei_sql(@m_shop.id, @result_date, 1)
-    oiletc1_ruikeis = MOiletc.find_by_sql(oiletc1_ruikei_sql)
+#    oiletc1_ruikei_sql = m_oiletc_ruikei_sql(@m_shop.id, @result_date, 1)
+#    oiletc1_ruikeis = MOiletc.find_by_sql(oiletc1_ruikei_sql)
        
-    oiletc1_ruikeis.each do |oiletc1_ruikei|
-      @oiletc1_ruikeis[oiletc1_ruikei.id][:etc_ruikei] = oiletc1_ruikei.etc_ruikei
-    end
+#    oiletc1_ruikeis.each do |oiletc1_ruikei|
+#      @oiletc1_ruikeis[oiletc1_ruikei.id][:etc_ruikei] = oiletc1_ruikei.etc_ruikei
+#    end
+    
+    #油外商品取得
+    @oiletcs = MOiletc.find_by_sql(m_oiletc_sql(@d_result, @m_shop.shop_kbn))
+    
+    #油外商品累計
+    @arari_nikkei = 0
+    @oiletc_ruikeis = Array.new
+    @oiletcs.each do |oiletc|
+      @oiletc_ruikeis[oiletc.id] = Hash::new
+      @oiletc_ruikeis[oiletc.id][:oiletc_ruikei] = 0
+      @oiletc_ruikeis[oiletc.id][:arari_ruikei] = 0
+      @arari_nikkei += oiletc.oiletc_arari.to_i
+    end    
+
+    oiletc_ruikeis = MOiletc.find_by_sql(m_oiletc_ruikei_sql(@m_shop.id, @result_date, @m_shop.shop_kbn))
+    
+    @arari_ruikei = 0   
+    oiletc_ruikeis.each do |oiletc_ruikei|
+      @oiletc_ruikeis[oiletc_ruikei.id][:oiletc_ruikei] = oiletc_ruikei.oiletc_ruikei
+      @oiletc_ruikeis[oiletc_ruikei.id][:arari_ruikei] = oiletc_ruikei.arari_ruikei
+      @arari_ruikei += oiletc_ruikei.arari_ruikei.to_i
+    end  
     
     #その他売上取得
     etc_sql = "select m.id, m.etc_name, m.etc_tani, c.code_name, m.max_num,m.etc_cd, d.id d_result_etc_id, d.no,"
@@ -367,47 +382,73 @@ class DResultsController < ApplicationController
     end
 
     #油外販売データ作成  油外店のみ作成
-    if m_shop.shop_kbn == 1
-      m_oiletc0s = MOiletc.find(:all, :conditions => ["oiletc_group = 0 and deleted_flg = 0"])
+#    if m_shop.shop_kbn == 1
+#      m_oiletc0s = MOiletc.find(:all, :conditions => ["oiletc_group = 0 and deleted_flg = 0"])
 
-      m_oiletc0s.each do |m_oiletc0|
-        d_result_oiletc0 = DResultOiletc.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc0.id])
+#      m_oiletc0s.each do |m_oiletc0|
+#        d_result_oiletc0 = DResultOiletc.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc0.id])
      
-        if d_result_oiletc0.blank?
-          d_result_oiletc0 = DResultOiletc.new
-          d_result_oiletc0.d_result_id = d_result.id
-          d_result_oiletc0.m_oiletc_id = m_oiletc0.id
-          d_result_oiletc0.created_user_id = current_user.id       
-        end
+#        if d_result_oiletc0.blank?
+#          d_result_oiletc0 = DResultOiletc.new
+#          d_result_oiletc0.d_result_id = d_result.id
+#          d_result_oiletc0.m_oiletc_id = m_oiletc0.id
+#          d_result_oiletc0.created_user_id = current_user.id       
+#        end
            
-        d_result_oiletc0.pos1_data = params[:etc0_pos1]["#{m_oiletc0.id}"]
-        d_result_oiletc0.pos2_data = params[:etc0_pos2]["#{m_oiletc0.id}"]
-        d_result_oiletc0.pos3_data = params[:etc0_pos3]["#{m_oiletc0.id}"]
-        d_result_oiletc0.updated_user_id = current_user.id
-        d_result_oiletc0.save
-      end    
-    end
+#        d_result_oiletc0.pos1_data = params[:etc0_pos1]["#{m_oiletc0.id}"]
+#        d_result_oiletc0.pos2_data = params[:etc0_pos2]["#{m_oiletc0.id}"]
+#        d_result_oiletc0.pos3_data = params[:etc0_pos3]["#{m_oiletc0.id}"]
+#        d_result_oiletc0.updated_user_id = current_user.id
+#        d_result_oiletc0.save
+#      end    
+#    end
     
     #他売上データ作成
-    m_oiletc1s = MOiletc.find(:all, :conditions => ["oiletc_group = 1 and deleted_flg = 0"])
+#    m_oiletc1s = MOiletc.find(:all, :conditions => ["oiletc_group = 1 and deleted_flg = 0"])
 
-    m_oiletc1s.each do |m_oiletc1|
-      d_result_oiletc1 = DResultOiletc.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc1.id])
+#    m_oiletc1s.each do |m_oiletc1|
+#      d_result_oiletc1 = DResultOiletc.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc1.id])
      
-      if d_result_oiletc1.blank?
-        d_result_oiletc1 = DResultOiletc.new
-        d_result_oiletc1.d_result_id = d_result.id
-        d_result_oiletc1.m_oiletc_id = m_oiletc1.id
-        d_result_oiletc1.created_user_id = current_user.id       
+#      if d_result_oiletc1.blank?
+#        d_result_oiletc1 = DResultOiletc.new
+#        d_result_oiletc1.d_result_id = d_result.id
+#        d_result_oiletc1.m_oiletc_id = m_oiletc1.id
+#        d_result_oiletc1.created_user_id = current_user.id       
+#      end
+           
+#      d_result_oiletc1.pos1_data = params[:etc1_pos1]["#{m_oiletc1.id}"]
+#      d_result_oiletc1.pos2_data = params[:etc1_pos2]["#{m_oiletc1.id}"]
+#      d_result_oiletc1.pos3_data = params[:etc1_pos3]["#{m_oiletc1.id}"]
+#      d_result_oiletc1.updated_user_id = current_user.id
+#      d_result_oiletc1.save
+#    end
+    
+    #油外商品データ作成
+    m_oiletcs = MOiletc.find(:all, :conditions => ["(shop_kbn is null or shop_kbn = ?) and oiletc_group <> 0 and deleted_flg = 0",
+                                                      m_shop.shop_kbn])
+
+    m_oiletcs.each do |m_oiletc|
+      d_result_oiletc = DResultOiletc.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc.id])
+     
+      if d_result_oiletc.blank?
+        d_result_oiletc = DResultOiletc.new
+        d_result_oiletc.d_result_id = d_result.id
+        d_result_oiletc.m_oiletc_id = m_oiletc.id
+        d_result_oiletc.created_user_id = current_user.id       
       end
            
-      d_result_oiletc1.pos1_data = params[:etc1_pos1]["#{m_oiletc1.id}"]
-      d_result_oiletc1.pos2_data = params[:etc1_pos2]["#{m_oiletc1.id}"]
-      d_result_oiletc1.pos3_data = params[:etc1_pos3]["#{m_oiletc1.id}"]
-      d_result_oiletc1.updated_user_id = current_user.id
-      d_result_oiletc1.save
+      d_result_oiletc.pos1_data = params[:oiletc_pos1]["#{m_oiletc.id}"]
+      d_result_oiletc.pos2_data = params[:oiletc_pos2]["#{m_oiletc.id}"]
+      d_result_oiletc.pos3_data = params[:oiletc_pos3]["#{m_oiletc.id}"]
+#      total = d_result_oiletc.pos1_data.to_f + d_result_oiletc.pos2_data.to_f + d_result_oiletc.pos3_data.to_f
+#      d_result_oiletc.oiletc_arari = total.round(2) * m_oiletc.oiletc_arari
+      total = (d_result_oiletc.pos1_data.to_f * 100) + (d_result_oiletc.pos2_data.to_f * 100) + (d_result_oiletc.pos3_data.to_f * 100)
+      d_result_oiletc.oiletc_arari = total * m_oiletc.oiletc_arari / 100
+      d_result_oiletc.updated_user_id = current_user.id
+      d_result_oiletc.save
     end
     
+          
     #その他売上データ作成
     m_etcs = MEtc.find(:all, :conditions => ["deleted_flg = 0 and kansa_flg = 1"])     
     m_etcs.each do |m_etc|
@@ -513,9 +554,9 @@ class DResultsController < ApplicationController
       d_result_self_report.touyu = (session[:m_oil_totals][4][:total].to_f).round(1)   
       #油外
       d_result_self_report.kyuyu_purika = m_oiletc_pos_total(d_result.id, 8, tax_rate)
-      d_result_self_report.sensya = m_oiletc_pos_total(d_result.id, 12, tax_rate)
+      d_result_self_report.sensya = m_oiletc_pos_total(d_result.id, 33, tax_rate)
       d_result_self_report.sensya_purika = m_oiletc_pos_total(d_result.id, 11, tax_rate)
-      d_result_self_report.sensya_purika_sale = m_oiletc_pos_total(d_result.id, 10, tax_rate)
+      d_result_self_report.sensya_purika_sale = m_oiletc_pos_total(d_result.id, 34, tax_rate)
       d_result_self_report.muton = m_oiletc_pos_total(d_result.id, 22, tax_rate)
       d_result_self_report.sp_plus = m_oiletc_pos_total(d_result.id, 26, tax_rate)
       d_result_self_report.taiyaw = m_oiletc_pos_total(d_result.id, 27, tax_rate)
@@ -547,14 +588,18 @@ class DResultsController < ApplicationController
       d_result_report.keiyu = (session[:m_oil_totals][3][:total].to_f).round(1)
       d_result_report.touyu = (session[:m_oil_totals][4][:total].to_f).round(1)
       #油外
+      sensya_genkin = m_oiletc_pos_total(d_result.id, 12, tax_rate)
+      sensya_purika_goukei = m_oiletc_pos_total(d_result.id, 10, tax_rate)
+      arari = d_result_report_arari_get(d_result.id)
+      
       d_result_report.koua = m_oiletc_pos_total(d_result.id, 1, tax_rate)
       d_result_report.buyou = m_oiletc_pos_total(d_result.id, 2, tax_rate)
-      d_result_report.tokusei = m_oiletc_pos_total(d_result.id, 3, tax_rate)
-      d_result_report.sensya = m_oiletc_pos_total(d_result.id, 4, tax_rate)
+      d_result_report.tokusei = m_oiletc_pos_total(d_result.id, 3, tax_rate)    
+      d_result_report.sensya = sensya_genkin.to_i + sensya_purika_goukei.to_i
       d_result_report.koutin = m_oiletc_pos_total(d_result.id, 5, tax_rate)
       d_result_report.taiya = m_oiletc_pos_total(d_result.id, 6, tax_rate)
-      d_result_report.chousei = m_oiletc_pos_total(d_result.id, 28, tax_rate) 
-      d_result_report.arari = (d_result_report.koua * 500) + (d_result_report.buyou * 0.3) + (d_result_report.tokusei * 0.7) + (d_result_report.sensya * 0.95) + (d_result_report.koutin * 0.95) + (d_result_report.taiya * 1500) + d_result_report.chousei      
+      d_result_report.chousei = m_oiletc_pos_total(d_result.id, 28, tax_rate)      
+      d_result_report.arari = arari.to_i + d_result_report.chousei      
       d_result_report.syaken = m_oiletc_pos_total(d_result.id, 13, tax_rate)
       d_result_report.kyuyu_purika = m_oiletc_pos_total(d_result.id, 8, tax_rate)
       d_result_report.sensya_purika = m_oiletc_pos_total(d_result.id, 11, tax_rate)
@@ -607,7 +652,6 @@ class DResultsController < ApplicationController
   
   def reserve_new
     @d_result_id = params[:d_result_id]
-    #render :layout => 'modal'
   end
   
   def reserve_create
@@ -642,7 +686,6 @@ class DResultsController < ApplicationController
   
   def reserve_edit
     @d_result_reserve = DResultReserve.find(params[:id])
-    #render :layout => 'modal'
   end
   
   def reserve_update
@@ -725,7 +768,6 @@ class DResultsController < ApplicationController
   end
   
   def yume_update
-    p "yume_update   yume_update   yume_update   yume_update"
     yume_check(params[:yume])
     if @message.blank?
       establish = Establish.find(:first)  
@@ -764,16 +806,6 @@ class DResultsController < ApplicationController
     else
       d_result_id = @d_result.id  
     end
-    #実績データ作成 
-#    if @d_result.blank?
-#      @d_result = DResult.new
-#      @d_result.result_date = @result_date
-#      @d_result.m_shop_id = params[:m_shop_id]
-#      @d_result.kakutei_flg = 0
-#      @d_result.created_user_id = current_user.id
-#      @d_result.updated_user_id = current_user.id
-#      @d_result.save
-#    end
     
     @m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"], :order => 'oil_cd')
     @m_codes = MCode.find(:all, :conditions => ["kbn = 'pos_class'", :order => 'code'])
@@ -864,12 +896,7 @@ class DResultsController < ApplicationController
   end
   
   def d_result_meter_create
-    p "d_result_meter_create   d_result_meter_create   d_result_meter_create"
-    p "result_date=#{params[:result_date]}"
-    p "edit_flg=#{params[:edit_flg]}"
-    p "m_shop_id=#{params[:m_shop_id]}"
     d_result_check(params[:result_date], params[:m_shop_id])
-   # d_result = DResult.find(params[:select][:d_result_id])
     
     #メーター登録
     sql = "select m.* from m_meters m, m_tanks t"
@@ -924,17 +951,7 @@ class DResultsController < ApplicationController
       d_result_id = 0
     else
       d_result_id = @d_result.id  
-    end    
-    #実績データ作成 
-#    if @d_result.blank?
-#      @d_result = DResult.new
-#      @d_result.result_date = @result_date
-#      @d_result.m_shop_id = params[:m_shop_id]
-#      @d_result.kakutei_flg = 0
-#      @d_result.created_user_id = current_user.id
-#      @d_result.updated_user_id = current_user.id
-#      @d_result.save
-#    end
+    end
         
     #仕入、在庫データ取得    
     sql = "select t.id m_tank_id, t.tank_no, t.volume, o.oil_name, d.receive, d.stock from m_tanks t"
@@ -955,11 +972,6 @@ class DResultsController < ApplicationController
   end  
 
   def d_result_tank_create
-    p "d_result_tank_create   d_result_tank_create   d_result_tank_create"
-    p "result_date=#{params[:result_date]}"
-    p "edit_flg=#{params[:edit_flg]}"
-    p "m_shop_id=#{params[:m_shop_id]}"    
-    #d_result = DResult.find(params[:select][:d_result_id])
     d_result_check(params[:result_date], params[:m_shop_id])
     
     #タンク在庫登録
