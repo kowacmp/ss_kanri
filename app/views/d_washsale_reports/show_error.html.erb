@@ -2,8 +2,18 @@
 誤差内容入力：<%= @m_washe.wash_name %><br />
 
 <table id="rounded-corner">
-<% @sale_date.each do |sale_date| %>
-	<tr><td><%= sale_date %></td></tr>
+	<tr>
+		<th>No</th>
+		<th>発生日</th>
+	</tr>
+<%# @sale_date.each do |sale_date| %>
+<% @sale_date.each_with_index do |sale_date,idx| %>
+	<tr>
+		<td><%= idx + 1 %></td>
+		<td><%#= sale_date %>
+			<%= sale_date[0,4].to_s + '年' + sale_date[4,2].to_s + '月' + sale_date[6,2].to_s + '日' %>
+		</td>
+	</tr>
 <% end %>
 </table>
 
