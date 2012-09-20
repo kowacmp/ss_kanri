@@ -225,9 +225,9 @@ class DResultReportsController < ApplicationController
         row.item(:r_taiya).value(data.r_taiya)
           r_taiya_total = r_taiya_total + data.r_taiya.to_i
         row.item(:arari).value(data.arari)
-          arari_total = arari_total + data.arari.to_f
+          arari_total = arari_total + data.arari.to_i
         row.item(:r_arari).value(data.r_arari)
-          r_arari_total = r_arari_total + data.r_arari.to_f
+          r_arari_total = r_arari_total + data.r_arari.to_i
       end #add_row
     end # datas.each
   
@@ -667,7 +667,8 @@ class DResultReportsController < ApplicationController
       select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
       
       select_sql << " left join (select d_result_id,mo_gas,keiyu,touyu,koua,buyou,tokusei, "
-      select_sql <<                   " sensya,koutin,taiya,arari"
+      #select_sql <<                   " sensya,koutin,taiya,arari"
+      select_sql <<                   " sensya,koutin,taiya,trunc(arari,0) as arari"
       select_sql <<            " from d_result_reports) c on b.id = c.d_result_id"
       
       select_sql << " left join (select d1.m_shop_id,"
@@ -675,7 +676,8 @@ class DResultReportsController < ApplicationController
       select_sql <<       "sum(d2.touyu)  as r_touyu,  sum(d2.koua)    as r_koua,"
       select_sql <<       "sum(d2.buyou)  as r_buyou,  sum(d2.tokusei) as r_tokusei,"
       select_sql <<       "sum(d2.sensya) as r_sensya, sum(d2.koutin)  as r_koutin,"
-      select_sql <<       "sum(d2.taiya)  as r_taiya,  sum(d2.arari)   as r_arari"
+      #select_sql <<       "sum(d2.taiya)  as r_taiya,  sum(d2.arari)   as r_arari"
+      select_sql <<       "sum(d2.taiya)  as r_taiya,  sum(trunc(d2.arari,0))   as r_arari"
       select_sql <<            " from d_results d1"
       select_sql <<            " left join (select * from d_result_reports) d2 on d1.id = d2.d_result_id"
       select_sql <<            " where d1.result_date >= '#{input_ymd_s}' and d1.result_date <= '#{input_ymd_e}' "
@@ -826,12 +828,15 @@ class DResultReportsController < ApplicationController
     else
       
       select_sql = "select a.*, b.*, c.*, d.*"
+    
       select_sql << " from (select id, shop_cd, shop_name,shop_ryaku from m_shops where deleted_flg = 0 and shop_kbn = 1) a "
+
       select_sql << " left join (select id ,m_shop_id"
       select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
       
       select_sql << " left join (select d_result_id,mo_gas,keiyu,touyu,koua,buyou,tokusei, "
-      select_sql <<                   " sensya,koutin,taiya,arari"
+      #select_sql <<                   " sensya,koutin,taiya,arari"
+      select_sql <<                   " sensya,koutin,taiya,trunc(arari,0) as arari,arari_total as r_arari"
       select_sql <<            " from d_result_reports) c on b.id = c.d_result_id"
       
       select_sql << " left join (select d1.m_shop_id,"
@@ -839,7 +844,8 @@ class DResultReportsController < ApplicationController
       select_sql <<       "sum(d2.touyu)  as r_touyu,  sum(d2.koua)    as r_koua,"
       select_sql <<       "sum(d2.buyou)  as r_buyou,  sum(d2.tokusei) as r_tokusei,"
       select_sql <<       "sum(d2.sensya) as r_sensya, sum(d2.koutin)  as r_koutin,"
-      select_sql <<       "sum(d2.taiya)  as r_taiya,  sum(d2.arari)   as r_arari"
+      #select_sql <<       "sum(d2.taiya)  as r_taiya,  sum(d2.arari)   as r_arari"
+      select_sql <<       "sum(d2.taiya)  as r_taiya"
       select_sql <<            " from d_results d1"
       select_sql <<            " left join (select * from d_result_reports) d2 on d1.id = d2.d_result_id"
       select_sql <<            " where d1.result_date >= '#{input_ymd_s}' and d1.result_date <= '#{input_ymd_e}' "
