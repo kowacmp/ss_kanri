@@ -120,7 +120,12 @@ module DBusinessCountReportsHelper
   
   def get_d_result_collect_get_num(d_result,m_aim_id)
     unless d_result == nil
-      DResultCollect.where(:d_result_id => d_result.id,:m_oiletc_id => m_aim_id).first.get_num
+      d_result_collect = DResultCollect.where(:d_result_id => d_result.id,:m_oiletc_id => m_aim_id).first
+      if d_result_collect == nil
+        0
+      else
+        d_result_collect.get_num
+      end
     else
       0
     end

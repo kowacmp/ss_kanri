@@ -1,8 +1,5 @@
 <h1>洗車売上報告</h1>
 
-<% if params[:mode] == 'list' %>
-<%= link_to('洗車売上報告書に戻る',{:controller => 'd_washsale_report_lists',:action => 'index',:sale_date => params[:sale_date],:shop_kbn => params[:shop_kbn],:mode => params[:mode]}) %><br />
-<% end %>
 <%= form_tag(url_for(:action => 'search'),:remote => true) do %>
 <table id='rounded-corner'>
 	<tr>
@@ -11,9 +8,9 @@
 		<th>対象年月</th>
 		<td>
 			<% if params[:mode] == 'list' %>
-			<%= @d_washsale_report.sale_date[0,4].to_s + '/' + @d_washsale_report.sale_date[4,2].to_s %>
+			<%= @d_washsale_report.sale_date[0,4].to_s + '年' + @d_washsale_report.sale_date[4,2].to_s + '月'%>
 			<% else %>
-			<%= select_year(@time_now,:start_year => @start_year, :end_year => @time_now.year) %><%= select_month(@time_now,:use_month_numbers => true) %>
+			<%= select_year(@time_now,:start_year => @start_year, :end_year => @time_now.year) %>年<%= select_month(@time_now,:use_month_numbers => true) %>月
 			<% end %>
 		</td>
 		<% unless params[:mode] == 'list' %>
@@ -22,7 +19,9 @@
 	</tr>
 </table>
 <% end %>
-
+<% if params[:mode] == 'list' %>
+<%= link_to('洗車売上報告書に戻る',{:controller => 'd_washsale_report_lists',:action => 'index',:sale_date => params[:sale_date],:shop_kbn => params[:shop_kbn],:mode => params[:mode]}) %><br />
+<% end %>
 <p>
 	<div id="report">
 	    <%= render partial: 'report'%>

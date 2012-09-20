@@ -49,6 +49,75 @@ class DDutiesController < ApplicationController
     render :layout => 'modal'
   end
   
+  #社員の出勤データ更新
+  def syain_input_add
+    @input_day = params[:input_day]
+    @m_shop_id = params[:m_shop_id]
+    
+    p params[:datas]
+    params[:datas].each{|key, data|
+      d_dutie = DDuty.find(:first,:conditions=>["duty_nengetu = ? and user_id = ? and day = ?", @input_day[0,6].to_s, data[:user_id], @input_day[6,2]])
+      if d_dutie.blank?
+        d_dutie = DDuty.new
+        d_dutie.duty_nengetu = @input_day[0,6].to_s
+        d_dutie.user_id = data[:user_id]
+        d_dutie.day =  @input_day[6,2]
+        d_dutie.created_user_id = current_user.id
+      end
+      
+      d_dutie.m_shop_id = @m_shop_id
+      d_dutie.day_work_time = data[:syukin] if data[:syukin]
+      d_dutie.updated_user_id = current_user.id
+      d_dutie.save
+    }
+    @d_duties = params[:datas]
+    
+    respond_to do |format|
+      format.js { render :layout => false }
+    end    
+  end
+
+  #バイトの出勤入力ポップアップ
+  def baito_input
+    @input_day = params[:input_day]
+    @m_shop_id = params[:m_shop_id]
+    
+    @baito_users = get_user_dutry(1, @m_shop_id, @input_day.to_s[0,4], @input_day.to_s[4,2], @input_day.to_s[6,2], @input_day.to_s[6,2])
+
+    render :layout => 'modal'
+  end
+
+  #バイトの出勤データ更新
+  def baito_input_add
+    @input_day = params[:input_day]
+    @m_shop_id = params[:m_shop_id]
+    
+    p params[:datas]
+    params[:datas].each{|key, data|
+      d_dutie = DDuty.find(:first,:conditions=>["duty_nengetu = ? and user_id = ? and day = ?", @input_day[0,6].to_s, data[:user_id], @input_day[6,2]])
+      if d_dutie.blank?
+        d_dutie = DDuty.new
+        d_dutie.duty_nengetu = @input_day[0,6].to_s
+        d_dutie.user_id = data[:user_id]
+        d_dutie.day =  @input_day[6,2]
+        d_dutie.created_user_id = current_user.id
+      end
+      
+      d_dutie.m_shop_id = @m_shop_id
+      d_dutie.day_work_time = data[:day_work_time] if data[:day_work_time]
+      d_dutie.night_work_time = data[:night_work_time] if data[:night_work_time]      
+      d_dutie.all_work_time = data[:day_work_time].to_f + data[:night_work_time].to_f  
+      
+      d_dutie.updated_user_id = current_user.id
+      d_dutie.save
+    }
+    @d_duties = params[:datas]
+    
+    respond_to do |format|
+      format.js { render :layout => false }
+    end    
+  end
+    
   # GET /d_duties/1
   # GET /d_duties/1.json
   def show

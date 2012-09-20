@@ -11,6 +11,9 @@ SsKanri::Application.routes.draw do
   resources :d_duties do
    collection do
      get :syain_input
+     post :syain_input_add
+     get :baito_input
+     post :baito_input_add
    end
   end
 

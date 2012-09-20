@@ -48,11 +48,17 @@ class DBusinessCountReportsController < ApplicationController
       #i = 0
       #m_oiletcs.each do |m_oiletc|
         #i = i + 1
-        h.item(:oiletc_1).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 1']).first.oiletc_ryaku)
-        h.item(:oiletc_2).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 4']).first.oiletc_ryaku)
-        h.item(:oiletc_3).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 6']).first.oiletc_ryaku)
-        h.item(:oiletc_4).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 13']).first.oiletc_ryaku)
-        h.item(:oiletc_5).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 7']).first.oiletc_ryaku)
+        #h.item(:oiletc_1).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 1']).first.oiletc_ryaku)
+        #h.item(:oiletc_2).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 4']).first.oiletc_ryaku)
+        #h.item(:oiletc_3).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 6']).first.oiletc_ryaku)
+        #h.item(:oiletc_4).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 13']).first.oiletc_ryaku)
+        #h.item(:oiletc_5).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 7']).first.oiletc_ryaku)
+
+        h.item(:oiletc_1).value(MOiletc.find(:all,:conditions => ['id = 1']).first.oiletc_ryaku)
+        h.item(:oiletc_2).value(MOiletc.find(:all,:conditions => ['id = 3']).first.oiletc_ryaku)
+        h.item(:oiletc_3).value(MOiletc.find(:all,:conditions => ['id = 4']).first.oiletc_ryaku)
+        h.item(:oiletc_4).value(MOiletc.find(:all,:conditions => ['id = 13']).first.oiletc_ryaku)
+        h.item(:oiletc_5).value(MOiletc.find(:all,:conditions => ['id = 7']).first.oiletc_ryaku)
         tmp_ymd = @input_ymd.to_time
         h.item(:month_1).value(tmp_ymd.month)
         tmp_ymd = tmp_ymd.next_month
@@ -78,24 +84,24 @@ class DBusinessCountReportsController < ApplicationController
         row.item(:aim_7).value(get_d_aim_total(ym,shop.id,10)) 
          #日計
         d_result = get_result(@input_ymd,shop.id)
-        row.item(:day_1).value(get_d_result_collect_get_num(d_result,11))
-        row.item(:day_2).value(get_d_result_collect_get_num(d_result,12))
-        row.item(:day_3).value(get_d_result_collect_get_num(d_result,13))
-        row.item(:day_4).value(get_d_result_collect_get_num(d_result,14))
-        row.item(:day_5).value(get_d_result_collect_get_num(d_result,15))
-        row.item(:day_6).value(get_d_result_oiletc_daily(d_result,9))
-        row.item(:day_7).value(get_d_result_oiletc_daily(d_result,10))        
+        row.item(:day_1).value(get_d_result_collect_get_num(d_result,1))
+        row.item(:day_2).value(get_d_result_collect_get_num(d_result,3))
+        row.item(:day_3).value(get_d_result_collect_get_num(d_result,4))
+        row.item(:day_4).value(get_d_result_collect_get_num(d_result,13))
+        row.item(:day_5).value(get_d_result_collect_get_num(d_result,7))
+        row.item(:day_6).value(get_d_result_oiletc_daily(d_result,20))
+        row.item(:day_7).value(get_d_result_oiletc_daily(d_result,21))        
         #累計
         start_ymd = get_from_and_to_ymd(@input_ymd.to_time,1)
         end_ymd   = get_from_and_to_ymd(@input_ymd.to_time,2)
         d_results = get_results(start_ymd,end_ymd,shop.id)
-        row.item(:sum_1).value(get_d_result_collect(d_results,11))
-        row.item(:sum_2).value(get_d_result_collect(d_results,12))
-        row.item(:sum_3).value(get_d_result_collect(d_results,13))
-        row.item(:sum_4).value(get_d_result_collect(d_results,14))
-        row.item(:sum_5).value(get_d_result_collect(d_results,15))
-        row.item(:sum_6).value(get_d_result_oiletc(d_results,9))
-        row.item(:sum_7).value(get_d_result_oiletc(d_results,10))
+        row.item(:sum_1).value(get_d_result_collect(d_results,1))
+        row.item(:sum_2).value(get_d_result_collect(d_results,3))
+        row.item(:sum_3).value(get_d_result_collect(d_results,4))
+        row.item(:sum_4).value(get_d_result_collect(d_results,13))
+        row.item(:sum_5).value(get_d_result_collect(d_results,7))
+        row.item(:sum_6).value(get_d_result_oiletc(d_results,20))
+        row.item(:sum_7).value(get_d_result_oiletc(d_results,21))
         #油外ここまで
         #車検予約   
         tmp_ymd = @input_ymd.to_time     

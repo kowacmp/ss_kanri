@@ -9,9 +9,16 @@ class DAuditWashesController < ApplicationController
       redirect_to :controller => "homes", :action => "index"
       return
     end 
-
+    
+    # 自主監査はログイン者の店舗固定、本監査は自由に設定可
+    if session[:audit_class].to_s == "0" then
+      @m_shop_id = current_user.m_shop_id
+    else
+      @m_shop_id = params[:header_m_shop_id]
+    end
+    
     # from ～ to の読込
-    load_from_to(session[:audit_class], current_user.m_shop_id)
+    load_from_to(session[:audit_class], @m_shop_id)
 
   end
 
@@ -119,10 +126,12 @@ class DAuditWashesController < ApplicationController
         if dt_rec[:wash_no].to_i != 99 then
           #通常明細
           d_audit_wash_detail.meter = dt_rec[:t_meter]
+          d_audit_wash_detail.uriage = dt_rec[:k_uri]
           d_audit_wash_detail.error_money = 0
         else
           #合計明細
           d_audit_wash_detail.meter = dt_rec[:g_uri]
+          d_audit_wash_detail.uriage = 0
           d_audit_wash_detail.error_money = dt_rec[:gosa]
         end
         d_audit_wash_detail.created_user_id   = current_user.id
@@ -298,10 +307,22 @@ private
         end
         
         #計算上売上高(当日メータ - 前回メータ)
-        if dt_rec[:t_meter] < dt_rec[:z_meter] then
-          dt_rec[:k_uri] = dt_rec[:t_meter] #故障の場合は0から再カウント
+        #if dt_rec[:t_meter] < dt_rec[:z_meter] then
+        #  dt_rec[:k_uri] = dt_rec[:t_meter] #故障の場合は0から再カウント
+        #else
+        #  dt_rec[:k_uri] = dt_rec[:t_meter] - dt_rec[:z_meter]
+        #end
+        
+        #計算上売上高(優先順位：登録済の詳細、(今回メータ - 前回メータ)*単価)
+        if not(d_audit_wash_detail.nil?) then
+          dt_rec[:k_uri] = d_audit_wash_detail.uriage
         else
-          dt_rec[:k_uri] = dt_rec[:t_meter] - dt_rec[:z_meter]
+          if dt_rec[:t_meter] < dt_rec[:z_meter] then
+            dt_rec[:k_uri] = dt_rec[:t_meter] #故障の場合は0から再カウント
+          else
+            dt_rec[:k_uri] = dt_rec[:t_meter] - dt_rec[:z_meter]
+          end
+          dt_rec[:k_uri] *= m_wash_rec.price
         end
         
         #売上集計

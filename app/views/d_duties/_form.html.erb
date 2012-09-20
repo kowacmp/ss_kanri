@@ -1,3 +1,5 @@
+<%= javascript_include_tag "modal" %><!-- モーダルでスクロール付きのテーブルを表示する場合にはここに記述しないとうごk -->
+
 <% loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[4,2].to_i, -1)).strftime("%d").to_i %>
 
 <table id="d_duty_table" class="rounded-corner">
@@ -41,15 +43,15 @@
 		<% users = get_user_dutry(0, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
 		<% users.each_with_index{ |user, index| %>
 			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} "%>
-			<% nisu = DDuty.find_by_sql("select count(*) nisu from d_duties where #{select_where} and day_work_time <> 0 ")%>
+			<% nisu = d_duty_syain_nisu(select_where) %>
 			<tr id="syain_<%= "#{index}" %>">
 				<td style="text-align: center; min-width: 50px">
-					<%= hidden_field_tag "syain_user_id_#{index}", user.id %>
+					<%#= hidden_field_tag "syain_user_id_#{index}", user.id %>
 					<%= user.account %></td>
 				<td style="min-width: 130px"><%= user.user_name %></td>
-				<td style="text-align: center;min-width: 50px"><label id=<%= "syain_nisu_#{index}" %>><%= nisu[0].nisu %></label></td>
+				<td style="text-align: center;min-width: 50px"><label id=<%= "syain_nisu_#{user.id}" %>><%= nisu[0].nisu %></label></td>
 				
-				<%= set_syain_row(index, loopcnt, select_where).html_safe %>
+				<%= set_syain_row(user.id, loopcnt, select_where).html_safe %>
 				
 				
 			</tr>
@@ -57,7 +59,7 @@
 		<!--社員計-->
 		<tr>
 			<td colspan="2">出金日数</td>
-			<td style="text-align: center;"><label id="syain_nisu_kei"></label></td>
+			<td style="text-align: center;"><label id="col_syain_nisu_kei"></label></td>
 			<%= set_syain_nisu_kei(loopcnt).html_safe %>
 		
 		</tr>
@@ -67,24 +69,25 @@
 			<th>氏名</th>
 			<th>時間</th>
 			<% loopcnt.times { |i| %>
-			  <th style="background:none; <%= "background-color: #F7DC67" if Time.now.day == (i+1) %> ">
-				<%= button_tag "入力", :id=>"baito_inpbtn_#{i + 1}" %>
+			  <th style="background:none; <%= "background-color: #F7DC67" if Time.now.day == (i+1) %>">
+			     <%= link_to image_tag('icon/24_edit.png'), {:controller => "d_duties", :action => "baito_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s + format("%02d", (i+1).to_i)}, :class => "modal" %>
+			     
 			  </th>
-            <% } %>
+            <% } %>            
 		</tr>
 		<!--バイト繰り返し-->
 		<% users = get_user_dutry(1, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
 		<% users.each_with_index{ |user, index| %>
 			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} "%>
-			<% jikan = DDuty.find_by_sql("select sum(all_work_time) jikan from d_duties where #{select_where} ")%>
+			<% jikan = d_duty_baito_jikan(select_where) %>
 			<tr id="baito_<%= "#{index}" %>">
 				<td style="text-align: center; min-width: 50px">
-					<%= hidden_field_tag "baito_user_id_#{index}", user.id %>
+					<%#= hidden_field_tag "baito_user_id_#{index}", user.id %>
 					<%= user.account %></td>
 				<td style="min-width: 130px"><%= user.user_name %></td>
-				<td style="text-align: center;min-width: 50px"><label id=<%= "baito_jikan_#{index}" %>><%= jikan[0].jikan %></label></td>
+				<td style="text-align: center;min-width: 50px"><label id=<%= "baito_jikan_#{user.id}" %>><%= jikan[0].jikan %></label></td>
 				
-				<%= set_banto_row(index, loopcnt, select_where).html_safe %>
+				<%= set_banto_row(user.id, loopcnt, select_where).html_safe %>
 				
 				
 			</tr>

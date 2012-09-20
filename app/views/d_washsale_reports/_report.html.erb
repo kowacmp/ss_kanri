@@ -38,6 +38,22 @@
 			
 			<%# @d_wash_sales = get_d_wash_sales_month(@this_month ,@m_shop_id) %>
 			<%# sum_meter = sum_d_washsale_item_meter(@d_wash_sales,wash.id,(i+1)) %>
+			
+            
+            <% if @d_washsale_report_last == nil %>
+              <% d_washsale_detail_report = nil %>
+			<% else %>
+  			  <% d_washsale_detail_report = get_d_washsale_detail_report(@d_washsale_report_last.id,wash.id,(i+1)) %>
+			<% end%>
+			<% if d_washsale_detail_report == nil %>
+			  <% sum_meter_last = 0 %>
+			<% else %>
+			  <% sum_meter_last = d_washsale_detail_report.meter %>
+			<% end %>
+			
+			<!-- 月初メータ -->
+			<td class="no-input-num"><%= number_with_delimiter(sum_meter_last) %></td>					
+			
             <%
 			   @d_wash_sales = DWashSale.find(:all, :conditions => ["sale_date between ? and ? and m_shop_id = ?",
                                                                     @this_month + "01",
@@ -59,20 +75,7 @@
 			
 			<!-- 月末メータ -->
 			<td class="no-input-num"><%= number_with_delimiter(sum_meter) %><%= hidden_field_tag meter_id, sum_meter %></td>
-            
-            <% if @d_washsale_report_last == nil %>
-              <% d_washsale_detail_report = nil %>
-			<% else %>
-  			  <% d_washsale_detail_report = get_d_washsale_detail_report(@d_washsale_report_last.id,wash.id,(i+1)) %>
-			<% end%>
-			<% if d_washsale_detail_report == nil %>
-			  <% sum_meter_last = 0 %>
-			<% else %>
-			  <% sum_meter_last = d_washsale_detail_report.meter %>
-			<% end %>
-			
-			<!-- 月初メータ -->
-			<td class="no-input-num"><%= number_with_delimiter(sum_meter_last) %></td>
+
 			
 			<% last_meter_id = "sale_meter_" + wash.id.to_s + '_'+ (i+1).to_s %>
 			<%
@@ -173,12 +176,17 @@
 		<td class="no-input-num"><%#= number_with_delimiter(g_sale_meter) %></td>
 		-->
 	</tr>
+	
+	<!-- 2012/09/20 a nishimura 登録条件追加-->
+	<% if params[:mode] == 'list' %>
+	<% else %>
 	<tr>
 		<td colspan="6"><!-- 2012/09/19 u nishimura colspan="8" => "6"  -->
 			<%= submit_tag("  登  録  ",:disable_with => "登録中...",:confirm => '登録しても良いですか？') %>	
 		</td>
-		
 	</tr>
+	<% end %>
+	
 </table>
 <%= hidden_field_tag 'sale_date',@this_month %>
 <%= hidden_field_tag 'm_shop_id',@m_shop_id %>
