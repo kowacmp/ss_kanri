@@ -1,0 +1,74 @@
+<% loopcnt = (Date.new(@input_day.to_s[0,4].to_i, @input_day.to_s[4,2].to_i, -1)).strftime("%d").to_i %>
+
+<h1>
+	<%= "#{@input_day.to_s[0,4]}年#{@input_day.to_s[4,2]}月" %><br />
+	<%= "#{@user.user_name}" %>
+</h1>
+<%= form_tag({:action => 'syain_row_input_add' }, { :remote => true }) do %>
+<%= hidden_field_tag 'input_day', @input_day %>
+<%= hidden_field_tag 'user_id', @user.id %>
+<%= hidden_field_tag 'm_shop_id', @m_shop_id %>
+<table id="syain_row_input_table" class="rounded-corner">
+	<thead>
+		<tr>
+		<th style="min-width: 40px">日</th>
+		<th style="max-width: 40px">曜</th>
+		<th style="min-width: 100px">勤怠</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% loopcnt.times { |i| %>
+			<tr>
+			<td style="text-align: center; <%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>"><%= i + 1 %></td>
+		      <% select_day = Date.new(@input_day.to_s[0,4].to_i, @input_day.to_s[4,2].to_i, i + 1) %>		
+			  <% week_w = day_of_the_week(select_day.wday) %>	
+			  <% if week_w == "土" or week_w =="日" %>
+			  	<% if Time.now.day == (i+1) %>
+			  		<td style='background:none; background-color: #F7DC67' >
+			  	<% else %>
+			  		<td style = "background-image:none; background-color: #FF98A7">
+			  	<% end %> 
+			  <% else %>
+			    <% if Time.now.day == (i+1) %>
+			   		<td style='background:none; background-color: #F7DC67' >
+			    <% else %>
+			    	<td>
+			    <% end %> 
+			  <% end %>
+				<%= week_w %>
+			  </td>
+			  <td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
+			  	<% d_dutry = DDuty.find(:first, 
+		              :conditions=>["duty_nengetu = '#{@input_day.to_s[0,6]}' and day = #{ i + 1} and user_id = #{@user.id}"]) %>
+			  	<% if d_dutry.blank? %>
+				  	<%= radio_button_tag("datas[#{i + 1}][syukin]",1) %>出
+					<%= radio_button_tag("datas[#{i + 1}][syukin]",0) %>休
+			  	<% else %>
+			  		<% if d_dutry.day_work_time.to_i == 0 %>
+			  			<%= radio_button_tag("datas[#{i + 1}][syukin]",1) %>出
+						<%= radio_button_tag("datas[#{i + 1}][syukin]",0, :checked => true) %>休
+			  		<% else %>
+			  			<%= radio_button_tag("datas[#{i + 1}][syukin]",1, :checked => true) %>出
+						<%= radio_button_tag("datas[#{i + 1}][syukin]",0) %>休
+			  		<% end %>
+			  	<% end %>
+			  	
+			  </td>
+
+			</tr>
+		<% } %>
+	</tbody>
+</table>
+<br />
+<%= submit_tag '保存', {:confirm => "保存します。よろしいですか？", :method => :post} %>
+<% end %>
+
+<script>
+$(function () {
+	$('div#modal div.container').css("height", "800px");
+	$('div#modal div.container').css("width", "280px");
+	$("div#modal").fadeIn();
+	$('div#modal #syain_row_input_table').tablefix({width: 210, height: 600, fixRows: 1, fixCols: 0});
+	$('div#modal div.bodyDiv').scrollTop(25 * (<%= Time.now.day %> - 2));
+});	
+</script>

@@ -14,6 +14,10 @@ SsKanri::Application.routes.draw do
      post :syain_input_add
      get :baito_input
      post :baito_input_add
+     get :syain_row_input
+     post :syain_row_input_add
+     get :baito_row_input
+     post :baito_row_input_add
    end
   end
 

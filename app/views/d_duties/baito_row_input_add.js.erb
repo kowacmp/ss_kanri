@@ -1,0 +1,21 @@
+<% params[:datas].each{|day, data| %>
+	<% label_id = "div.bodyDiv #baito_#{day}_#{@user_id}" %> 
+
+	<% if data[:all_work_time].to_f > 0 %>
+		$("<%= label_id %>").text("<%= data[:all_work_time] %>");
+	<% else %>
+		$("<%= label_id %>").text("");
+	<% end %>
+	
+<% } %>
+
+<% select_where = " duty_nengetu = '#{@input_day}' and user_id = #{@user_id} "%>
+<% jikan = d_duty_baito_jikan(select_where) %>
+
+<% label_id = "div.colDiv #baito_jikan_#{@user_id}" %> 
+
+$("<%= label_id %>").text("<%= jikan[0].jikan %>");
+
+//合計を計算
+$("div.colDiv #col_baito_jikan_kei").trigger("click");
+$("div#modal div.background").trigger("click");
