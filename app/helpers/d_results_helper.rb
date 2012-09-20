@@ -40,6 +40,8 @@ module DResultsHelper
   end
   
   def m_oiletc_ruikei_sql(m_shop_id, result_date, shop_kbn)
+    #day, yesterday = old_result_date(result_date)
+
     sql = "select m.id, m.oiletc_tani, sum(d.oiletc_arari) as arari_ruikei,"
     sql << "      CASE m.oiletc_tani WHEN 6 THEN sum(COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0))"
     sql << "                         ELSE sum(trunc(COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0), 0))"
@@ -638,7 +640,7 @@ module DResultsHelper
     elsif size - 1 == idx
       border = "solid 1px #8B8E99"
     elsif oiletc[idx].oiletc_group != oiletc[idx + 1].oiletc_group
-      border = "solid 1px #000"
+      border = "solid 2px #000"
     else
       border = "solid 1px #8B8E99"     
     end

@@ -65,9 +65,7 @@ class DResultsController < ApplicationController
   end  
 
   def new
-    p "new   new   new   new   new   new   new   new"
     @m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"])
-    #@m_oiletcs = MOiletc.find(:all, :conditions => ["oiletc_group = 0 and deleted_flg = 0"])
     @etcs = MEtc.find(:all, :conditions => ["deleted_flg = 0 and kansa_flg = 1"])
     @m_oiletc0_pos_totals = MOiletc.find_by_sql(m_oiletc0_en_pos_total_sql)
     
@@ -97,7 +95,11 @@ class DResultsController < ApplicationController
     select_date
   end
   
-  def select_date 
+  def select_date
+    p "select_date   select_date   select_date   select_date"
+    p "params[:select_date]=#{params[:select_date]}"
+    p "params[:m_shop_id]=#{params[:m_shop_id]}"
+    p "params[:edit_flg]=#{params[:edit_flg]}"
     if params[:select_date].blank?
       #newから来た場合
       @result_date = @today.delete("/")
@@ -175,45 +177,6 @@ class DResultsController < ApplicationController
     end
     @ruikei_gasorin = @ruikei_gasorin.round(2)
     @ruikei_mofuel = @ruikei_mofuel.round(2)
-    
- 
-    #油外販売取得  油外店のみ取得
-#    if @m_shop.shop_kbn == 1
-#      oiletc0_sql = m_oiletc_sql(@d_result, 0)
-#      @oiletc0s = MOiletc.find_by_sql(oiletc0_sql)
-      
-      #油外販売累計
-#      @oiletc0_ruikeis = Array.new
-#      @oiletc0s.each do |oiletc0|
-#        @oiletc0_ruikeis[oiletc0.id] = Hash::new
-#        @oiletc0_ruikeis[oiletc0.id][:etc_ruikei] = 0
-#      end
-      
-#      oiletc0_ruikei_sql = m_oiletc_ruikei_sql(@m_shop.id, @result_date, 0)
-#      oiletc0_ruikeis = MOiletc.find_by_sql(oiletc0_ruikei_sql)
-           
-#      oiletc0_ruikeis.each do |oiletc0_ruikei|
-#        @oiletc0_ruikeis[oiletc0_ruikei.id][:etc_ruikei] = oiletc0_ruikei.etc_ruikei
-#      end
-#    end
- 
-    #その他商品取得
-#    oiletc1_sql = m_oiletc_sql(@d_result, 1)
-#    @oiletc1s = MOiletc.find_by_sql(oiletc1_sql)
-    
-    #その他商品累計
-#    @oiletc1_ruikeis = Array.new
-#    @oiletc1s.each do |oiletc1|
-#      @oiletc1_ruikeis[oiletc1.id] = Hash::new
-#      @oiletc1_ruikeis[oiletc1.id][:etc_ruikei] = 0
-#    end    
-    
-#    oiletc1_ruikei_sql = m_oiletc_ruikei_sql(@m_shop.id, @result_date, 1)
-#    oiletc1_ruikeis = MOiletc.find_by_sql(oiletc1_ruikei_sql)
-       
-#    oiletc1_ruikeis.each do |oiletc1_ruikei|
-#      @oiletc1_ruikeis[oiletc1_ruikei.id][:etc_ruikei] = oiletc1_ruikei.etc_ruikei
-#    end
     
     #油外商品取得
     @oiletcs = MOiletc.find_by_sql(m_oiletc_sql(@d_result, @m_shop.shop_kbn))
@@ -380,48 +343,6 @@ class DResultsController < ApplicationController
       d_result_oil.updated_user_id = current_user.id
       d_result_oil.save
     end
-
-    #油外販売データ作成  油外店のみ作成
-#    if m_shop.shop_kbn == 1
-#      m_oiletc0s = MOiletc.find(:all, :conditions => ["oiletc_group = 0 and deleted_flg = 0"])
-
-#      m_oiletc0s.each do |m_oiletc0|
-#        d_result_oiletc0 = DResultOiletc.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc0.id])
-     
-#        if d_result_oiletc0.blank?
-#          d_result_oiletc0 = DResultOiletc.new
-#          d_result_oiletc0.d_result_id = d_result.id
-#          d_result_oiletc0.m_oiletc_id = m_oiletc0.id
-#          d_result_oiletc0.created_user_id = current_user.id       
-#        end
-           
-#        d_result_oiletc0.pos1_data = params[:etc0_pos1]["#{m_oiletc0.id}"]
-#        d_result_oiletc0.pos2_data = params[:etc0_pos2]["#{m_oiletc0.id}"]
-#        d_result_oiletc0.pos3_data = params[:etc0_pos3]["#{m_oiletc0.id}"]
-#        d_result_oiletc0.updated_user_id = current_user.id
-#        d_result_oiletc0.save
-#      end    
-#    end
-    
-    #他売上データ作成
-#    m_oiletc1s = MOiletc.find(:all, :conditions => ["oiletc_group = 1 and deleted_flg = 0"])
-
-#    m_oiletc1s.each do |m_oiletc1|
-#      d_result_oiletc1 = DResultOiletc.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc1.id])
-     
-#      if d_result_oiletc1.blank?
-#        d_result_oiletc1 = DResultOiletc.new
-#        d_result_oiletc1.d_result_id = d_result.id
-#        d_result_oiletc1.m_oiletc_id = m_oiletc1.id
-#        d_result_oiletc1.created_user_id = current_user.id       
-#      end
-           
-#      d_result_oiletc1.pos1_data = params[:etc1_pos1]["#{m_oiletc1.id}"]
-#      d_result_oiletc1.pos2_data = params[:etc1_pos2]["#{m_oiletc1.id}"]
-#      d_result_oiletc1.pos3_data = params[:etc1_pos3]["#{m_oiletc1.id}"]
-#      d_result_oiletc1.updated_user_id = current_user.id
-#      d_result_oiletc1.save
-#    end
     
     #油外商品データ作成
     m_oiletcs = MOiletc.find(:all, :conditions => ["(shop_kbn is null or shop_kbn = ?) and oiletc_group <> 0 and deleted_flg = 0",
@@ -627,99 +548,11 @@ class DResultsController < ApplicationController
               
       d_result_report.save
     end
-  end
-  
-  def reserve_index
-    @result_date = params[:result_date]
-    @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
-                                                      params[:m_shop_id], @result_date])
     
-    #実績データ作成 
-    if @d_result.blank?
-      @d_result = DResult.new
-      @d_result.result_date = @result_date
-      @d_result.m_shop_id = params[:m_shop_id]
-      @d_result.kakutei_flg = 0
-      @d_result.created_user_id = current_user.id
-      @d_result.updated_user_id = current_user.id
-      @d_result.save
-    end
-    
-    @d_result_reserves = DResultReserve.find(:all, :conditions => ["d_result_id = ?", @d_result.id], :order => 'get_date, id')
-    
-    render :layout => 'modal'
-  end
-  
-  def reserve_new
-    @d_result_id = params[:d_result_id]
-  end
-  
-  def reserve_create
-    d_result = DResult.find(params[:reserve][:d_result_id])
-    
-    if params[:reserve][:get_date].blank?
-      get_date = ""
-    else
-      get_date = params[:reserve][:get_date].delete("/")     
-    end
-
-    if get_date.blank?
-      @message = "車検予約日は入力必須です。"
-    elsif d_result.result_date > get_date
-      @message = "車検予約日が獲得日より前になっています。"
-    else     
-      d_result_reserve = DResultReserve.new
-      d_result_reserve.d_result_id = d_result.id
-      d_result_reserve.get_date = get_date
-      d_result_reserve.reserve_name = params[:reserve][:reserve_name] 
-      d_result_reserve.created_user_id = current_user.id
-      d_result_reserve.updated_user_id = current_user.id
-      d_result_reserve.save
-      @d_result_reserves = DResultReserve.find(:all, :conditions => ["d_result_id = ?", d_result.id], :order => 'get_date, id')
-    
-      @result_date = d_result.result_date
-      @m_shop = MShop.find(d_result.m_shop_id) 
-      #現在月から４ヶ月先までの車検予約実績データ集計
-      syukei_data(d_result, '', d_result.m_shop_id)
-    end
-  end
-  
-  def reserve_edit
-    @d_result_reserve = DResultReserve.find(params[:id])
-  end
-  
-  def reserve_update
-    d_result_reserve = DResultReserve.find(params[:reserve][:id])
-    d_result = DResult.find(d_result_reserve.d_result_id)
-    get_date = params[:reserve][:get_date].delete("/")
-    
-    if d_result.result_date > get_date
-      @message = "車検予約日が獲得日より前になっています。"
-    else    
-      d_result_reserve.get_date = get_date
-      d_result_reserve.reserve_name = params[:reserve][:reserve_name]
-      d_result_reserve.updated_user_id = current_user.id
-      d_result_reserve.save
-    
-      @d_result_reserves = DResultReserve.find(:all, :conditions => ["d_result_id = ?", d_result.id], :order => 'get_date, id')
-  
-      @result_date = d_result.result_date
-      @m_shop = MShop.find(d_result.m_shop_id) 
-      #現在月から４ヶ月先までの車検予約実績データ集計
-      syukei_data(d_result, '', d_result.m_shop_id)  
-    end
-  end
-  
-  def reserve_delete
-    d_result_reserve = DResultReserve.find(params[:id])
-    d_result = DResult.find(d_result_reserve.d_result_id)
-    
-    d_result_reserve.destroy
-    @d_result_reserves = DResultReserve.find(:all, :conditions => ["d_result_id = ?", d_result.id], :order => 'get_date, id')
-    @result_date = d_result.result_date
-    @m_shop = MShop.find(d_result.m_shop_id) 
-    #現在月から４ヶ月先までの車検予約実績データ集計
-    syukei_data(d_result, '', d_result.m_shop_id)  
+    params[:select_date] = params[:select][:result_date]
+    params[:m_shop_id] = params[:select][:m_shop_id]
+    params[:edit_flg] = params[:select][:edit_flg]
+    select_date
   end
   
   def yume_index
