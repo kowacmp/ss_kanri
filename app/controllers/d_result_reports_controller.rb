@@ -836,7 +836,7 @@ class DResultReportsController < ApplicationController
       
       select_sql << " left join (select d_result_id,mo_gas,keiyu,touyu,koua,buyou,tokusei, "
       #select_sql <<                   " sensya,koutin,taiya,arari"
-      select_sql <<                   " sensya,koutin,taiya,trunc(arari,0) as arari,arari_total as r_arari"
+      select_sql <<                   " sensya,koutin,taiya,trunc(arari,0) as arari"
       select_sql <<            " from d_result_reports) c on b.id = c.d_result_id"
       
       select_sql << " left join (select d1.m_shop_id,"
@@ -845,7 +845,7 @@ class DResultReportsController < ApplicationController
       select_sql <<       "sum(d2.buyou)  as r_buyou,  sum(d2.tokusei) as r_tokusei,"
       select_sql <<       "sum(d2.sensya) as r_sensya, sum(d2.koutin)  as r_koutin,"
       #select_sql <<       "sum(d2.taiya)  as r_taiya,  sum(d2.arari)   as r_arari"
-      select_sql <<       "sum(d2.taiya)  as r_taiya"
+      select_sql <<       "sum(d2.taiya)  as r_taiya,  sum(trunc(d2.arari,0))   as r_arari"
       select_sql <<            " from d_results d1"
       select_sql <<            " left join (select * from d_result_reports) d2 on d1.id = d2.d_result_id"
       select_sql <<            " where d1.result_date >= '#{input_ymd_s}' and d1.result_date <= '#{input_ymd_e}' "
