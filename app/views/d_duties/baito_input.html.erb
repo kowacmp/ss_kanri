@@ -66,6 +66,7 @@ $(function () {
     	var num;
     	var get_index;
     	var errmsg='';
+    	var suchi;
     	
 	    if ($("div#modal div.bodyDiv").size() > 0) {
 	    	Div_id = 'div.bodyDiv ';
@@ -77,8 +78,13 @@ $(function () {
 		    get_index = get_index.replace("_day_work_time", "");
 
 	        num = Number($(this).val());
-	        if (isNaN(num)) {num = 0};
-	        if (String(Math.floor(num)).length > 2 || String(num).split(".")[1].length > 1 ) {
+	        if (isNaN(num)) {num = 0.0};
+	        if (Math.floor(num) == Math.ceil(num)) {
+	        	
+	        };
+	        suchi = String(num).split(".")
+	        
+	        if (suchi[0].length > 2 || String(num).split(".")[1].length > 1 ) {
 	        	if (errmsg != "") { errmsg = errmsg + ", "; };
 	        	errmsg = errmsg + $("div#modal " + Div_id + "#datas_" + get_index + "_user_name").text() + "さん";
 	        };
