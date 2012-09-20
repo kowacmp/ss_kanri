@@ -8,8 +8,8 @@ module DResultsHelper
     return day, yesterday
   end
   
-  def m_oiletc_sql(d_result, oiletc_group)
-    sql = "select m.id, m.oiletc_name, m.oiletc_tani, c.code_name,"
+  def m_oiletc_sql(d_result, shop_kbn)
+    sql = "select m.id, m.oiletc_name, m.oiletc_group, m.oiletc_tani, c.code_name, d.oiletc_arari,"
     sql << "      CASE m.oiletc_tani WHEN 6 THEN d.pos1_data"
     sql << "                         ELSE trunc(d.pos1_data, 0)"
     sql << "      END pos1_data,"
@@ -32,21 +32,23 @@ module DResultsHelper
     end
     
     sql << " left join m_codes c on (to_number(c.code, '999999999') = m.oiletc_tani and c.kbn = 'tani')"
-    sql << " where m.oiletc_group = #{oiletc_group} and m.deleted_flg = 0 order by m.oiletc_cd" 
+    sql << " where oiletc_group <> 0 and m.deleted_flg = 0 and (m.shop_kbn is null or m.shop_kbn = #{shop_kbn})"
+    sql << " order by m.oiletc_group, m.oiletc_cd"
+    #sql << " where m.oiletc_group = #{oiletc_group} and m.deleted_flg = 0 order by m.oiletc_cd" 
 
     return sql  
   end
   
-  def m_oiletc_ruikei_sql(m_shop_id, result_date, oiletc_group)
-    sql = "select m.id, m.oiletc_tani, "
+  def m_oiletc_ruikei_sql(m_shop_id, result_date, shop_kbn)
+    sql = "select m.id, m.oiletc_tani, sum(d.oiletc_arari) as arari_ruikei,"
     sql << "      CASE m.oiletc_tani WHEN 6 THEN sum(COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0))"
     sql << "                         ELSE sum(trunc(COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0), 0))"
-    sql << "      END etc_ruikei"
+    sql << "      END oiletc_ruikei"
     sql << " from d_results r, d_result_oiletcs d, m_oiletcs m"
     sql << " where r.result_date >= '#{result_date[0,6] + "01"}' and r.result_date <= '#{result_date}'"
     sql << "   and m_shop_id = #{m_shop_id} and r.id = d.d_result_id and d.m_oiletc_id = m.id"
-    sql << " and oiletc_group = #{oiletc_group} group by m.id"
-    
+    sql << " and oiletc_group <> 0  and m.deleted_flg = 0 and (m.shop_kbn is null or m.shop_kbn = #{shop_kbn}) group by m.id"
+
     return sql
   end
   
@@ -60,7 +62,7 @@ module DResultsHelper
     end
     
     result_gessyo = result_date[0,6] + "01"
-    p "result_gessyo=#{result_gessyo}"
+
     @syukei_reserves = Array.new
     
     for i in 0..4
@@ -360,7 +362,7 @@ module DResultsHelper
     meter_sql << " left join d_result_meters old_dm on (old_dm.m_meter_id = m.id and old_dm.d_result_id = #{old_d_result_id})"
     meter_sql << " where t.deleted_flg = 0 and m.deleted_flg = 0 and t.id = m.m_tank_id"
     meter_sql << "   and t.m_shop_id = #{d_result.m_shop_id} order by t.id" 
-    p "meter_sql=#{meter_sql}"
+ 
     meter_sales = MMeter.find_by_sql(meter_sql)
            
     sales = Array::new
@@ -511,12 +513,12 @@ module DResultsHelper
     d_tank_decrease_report.save    
   end
   
-  def m_oiletc_pos_total(d_result_id, m_oiletc_cd, tax_rate)
+  def m_oiletc_pos_total(d_result_id, m_oiletc_id, tax_rate)
     sql = "select COALESCE(r.pos1_data, 0) + COALESCE(r.pos2_data, 0) + COALESCE(r.pos3_data, 0) as pos_total, m.tax_flg"
     sql << " from d_result_oiletcs r, m_oiletcs m"
-    sql << " where r.m_oiletc_id = m.id and m.oiletc_cd = #{m_oiletc_cd}"
+    sql << " where r.m_oiletc_id = m.id and m.id = #{m_oiletc_id}"
     sql << "   and r.d_result_id = #{d_result_id}"
-    
+
     d_result_oiletc = DResultOiletc.find_by_sql(sql)
     
     if d_result_oiletc.blank?
@@ -536,9 +538,9 @@ module DResultsHelper
   def m_etc_pos_total(d_result_id, m_etc_cd, tax_rate)
     sql = "select COALESCE(r.pos1_data, 0) + COALESCE(r.pos2_data, 0) + COALESCE(r.pos3_data, 0) as pos_total, m.tax_flg"
     sql << " from d_result_etcs r, m_etcs m"
-    sql << " where r.m_etc_id = m.id and m.etc_cd = #{m_etc_cd}"
+    sql << " where r.m_etc_id = m.id and m.id = #{m_etc_cd}"
     sql << " and r.d_result_id = #{d_result_id}"
-    
+
     d_result_etc = DResultEtc.find_by_sql(sql)
     
     if d_result_etc.blank?
@@ -615,12 +617,6 @@ module DResultsHelper
   end  
   
   def yume_check(yume)
-    p "yume_check   yume_check   yume_check   yume_check   yume_check"
-    
-    p "yume[:yumepoint_class]=#{yume[:yumepoint_class]}"
-    p "yume[:yumepoint_num]=#{yume[:yumepoint_num]}" 
-    p "yume[:yumepoint]=#{yume[:yumepoint]}" 
-    p "yume[:yumepoint_money]=#{yume[:yumepoint_money]}"
     @message = ""
     if yume[:yumepoint_class].blank?
       @message << "種別は入力必須です。 "
@@ -634,5 +630,35 @@ module DResultsHelper
     if yume[:yumepoint_money].blank?
       @message << "金額は入力必須です。 "
     end            
+  end
+
+  def boder_check(size, oiletc, idx)  
+    if idx == 0
+      border = "solid 1px #8B8E99"
+    elsif size - 1 == idx
+      border = "solid 1px #8B8E99"
+    elsif oiletc[idx].oiletc_group != oiletc[idx + 1].oiletc_group
+      border = "solid 1px #000"
+    else
+      border = "solid 1px #8B8E99"     
+    end
+
+    return border
+  end 
+  
+  def d_result_report_arari_get(d_result_id)
+    sql = "select sum(r.oiletc_arari) as arari_total"
+    sql << " from d_result_oiletcs r, m_oiletcs m"
+    sql << " where r.m_oiletc_id = m.id and r.d_result_id = #{d_result_id}"
+    sql << "   and m.id in(1, 2, 3, 5, 6, 10, 12)"
+    
+    arari = MOiletc.find_by_sql(sql)
+    if arari.blank?
+      arari_total = 0
+    else
+      arari_total = arari[0].arari_total  
+    end
+    
+    return arari_total
   end 
 end

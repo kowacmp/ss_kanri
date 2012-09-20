@@ -16,8 +16,8 @@
           <td>タンク<%= m_tank.tank_no %></td>
           <td><%= m_tank.volume %>KL</td>
           <td><%= m_tank.oil_name %></td>
-          <td><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :readonly => @text, :class => "money" %></td>
-          <td><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :readonly => @text, :class => "money" %></td>                  
+          <td><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :maxlength => 9, :readonly => @text, :class => "money" %></td>
+          <td><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :maxlength => 9, :readonly => @text, :class => "money" %></td>                  
         </tr>
       <% end %>
     </tbody>
@@ -30,8 +30,6 @@
     </div>
   <% end %>
   
-  <%#= hidden_field :select, :edit_flg, :value => @edit_flg %>
-  <%#= hidden_field :select, :d_result_id, :value => @d_result.id %>  
   <%= hidden_field_tag :result_date, @result_date %>
   <%= hidden_field_tag :edit_flg, @edit_flg %>
   <%= hidden_field_tag :m_shop_id, @m_shop_id %>
