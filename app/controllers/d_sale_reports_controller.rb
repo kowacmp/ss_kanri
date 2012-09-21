@@ -127,7 +127,7 @@ private
       return ""
     else
       if params["#{day}(2i)"].blank?
-        return params["#{search_day}(1i)"] + "0101"
+        return params["#{day}(1i)"] + "0101"
       else
         if params["#{day}(3i)"].blank?
           return params["#{day}(1i)"] + 

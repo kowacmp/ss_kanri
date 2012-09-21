@@ -74,6 +74,19 @@ class MInfoCostsController < ApplicationController
     @check_del_flg = params[:input_check].to_i
   end
 
+  #ポップアップ用
+  def popup_edit
+    
+    @user = User.find(params[:user_id])
+    @m_info_cost = MInfoCost.find(:first, :conditions=>["user_id=?", params[:user_id]])
+    if @m_info_cost.blank?
+      @m_info_cost = MInfoCost.new
+      @m_info_cost.user_id = params[:user_id]
+    end
+    
+    render :layout => 'modal'
+  end
+    
   # POST /m_info_costs
   # POST /m_info_costs.json
   def create
@@ -109,6 +122,30 @@ class MInfoCostsController < ApplicationController
     end
   end
 
+  #ポップアップ用
+  def popup_update
+    
+    inp_data = params[:m_info_cost]
+    p inp_data
+    m_info_cost = MInfoCost.find(:first, :conditions=>["user_id=?", inp_data[:user_id]])
+    if m_info_cost.blank?
+      @m_info_cost = MInfoCost.new
+      @m_info_cost.user_id = inp_data[:user_id]     
+    end
+    @m_info_cost.base_pay = inp_data[:base_pay]
+    @m_info_cost.night_pay = inp_data[:night_pay]
+    @m_info_cost.welfare_pay = inp_data[:welfare_pay] if inp_data[:welfare_pay]
+    @m_info_cost.etc_pay1 = inp_data[:etc_pay1]
+    @m_info_cost.etc_pay2 = inp_data[:etc_pay2]
+    @m_info_cost.etc_pay3 = inp_data[:etc_pay3]
+    @m_info_cost.etc_pay4 = inp_data[:etc_pay4]
+    @m_info_cost.save
+    
+    respond_to do |format|
+      format.js { render :layout => false }
+    end      
+  end
+  
   # DELETE /m_info_costs/1
   # DELETE /m_info_costs/1.json
   def destroy

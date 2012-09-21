@@ -6,10 +6,9 @@ class DDutiesController < ApplicationController
   # GET /d_duties
   # GET /d_duties.json
   def index
-    @head = DSale.new
+    @head = DDuty.new
 
     params[:input_day] = input_day_set("input_day") if params[:input_day] == nil
-    params[:input_shop_kbn] = params[:head][:input_shop_kbn] if params[:input_shop_kbn] == nil and params[:head] != nil
       
     if params[:input_day].blank?
       @head[:input_day] = Time.now.localtime.strftime("%Y%m")
@@ -24,18 +23,16 @@ class DDutiesController < ApplicationController
       @m_shop_id = params[:m_shop_id]
     end
     
-    @start_year = DSaleReport.minimum("sale_date").to_s
-    if @start_year.blank?
-      @start_year = @head[:input_day].to_s[0,4].to_i
-    else
-      @start_year = @start_year.to_s[0,4].to_i
-    end
+    #selectboxの選択年度を設定
 
-    @d_duties = DDuty.all
-
+    @start_year = Time.now.localtime.strftime("%Y").to_i - 1
+   
     respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @d_duties }
+      if params[:remote]
+        format.html { render :partial => 'form'  }
+      else
+        format.html 
+      end
     end
   end
 
@@ -54,7 +51,6 @@ class DDutiesController < ApplicationController
     @input_day = params[:input_day]
     @m_shop_id = params[:m_shop_id]
     
-    p params[:datas]
     params[:datas].each{|key, data|
       d_dutie = DDuty.find(:first,:conditions=>["duty_nengetu = ? and user_id = ? and day = ?", @input_day[0,6].to_s, data[:user_id], @input_day[6,2]])
       if d_dutie.blank?
@@ -77,6 +73,46 @@ class DDutiesController < ApplicationController
     end    
   end
 
+  #社員の出勤データ入力（個人毎）
+  def syain_row_input
+    
+    @input_day = params[:input_day]
+    @m_shop_id = params[:m_shop_id]
+    
+    @user = User.find(params[:user_id])
+
+    render :layout => 'modal'
+    
+  end
+
+  #社員の出勤データ更新（個人毎）
+  def syain_row_input_add
+    @input_day = params[:input_day]
+    @m_shop_id = params[:m_shop_id]
+    @user_id = params[:user_id]
+    
+    params[:datas].each{|day, data|
+      d_dutie = DDuty.find(:first,:conditions=>["duty_nengetu = ? and user_id = ? and day = ?", @input_day[0,6].to_s, @user_id, day])
+      if d_dutie.blank?
+        d_dutie = DDuty.new
+        d_dutie.duty_nengetu = @input_day[0,6].to_s
+        d_dutie.user_id = @user_id
+        d_dutie.day =  day
+        d_dutie.created_user_id = current_user.id
+      end
+      
+      d_dutie.m_shop_id = @m_shop_id
+      d_dutie.day_work_time = data[:syukin] if data[:syukin]
+      d_dutie.updated_user_id = current_user.id
+      d_dutie.save
+    }
+    @d_duties = params[:datas]
+    
+    respond_to do |format|
+      format.js { render :layout => false }
+    end    
+  end
+    
   #バイトの出勤入力ポップアップ
   def baito_input
     @input_day = params[:input_day]
@@ -92,7 +128,6 @@ class DDutiesController < ApplicationController
     @input_day = params[:input_day]
     @m_shop_id = params[:m_shop_id]
     
-    p params[:datas]
     params[:datas].each{|key, data|
       d_dutie = DDuty.find(:first,:conditions=>["duty_nengetu = ? and user_id = ? and day = ?", @input_day[0,6].to_s, data[:user_id], @input_day[6,2]])
       if d_dutie.blank?
@@ -106,8 +141,50 @@ class DDutiesController < ApplicationController
       d_dutie.m_shop_id = @m_shop_id
       d_dutie.day_work_time = data[:day_work_time] if data[:day_work_time]
       d_dutie.night_work_time = data[:night_work_time] if data[:night_work_time]      
-      d_dutie.all_work_time = data[:day_work_time].to_f + data[:night_work_time].to_f  
+      d_dutie.all_work_time = data[:all_work_time] if data[:all_work_time]
       
+      d_dutie.updated_user_id = current_user.id
+      d_dutie.save
+    }
+    
+    @d_duties = params[:datas]
+    
+    respond_to do |format|
+      format.js { render :layout => false }
+    end    
+  end
+  
+  #バイトの出勤入力ポップアップ(個人毎)
+  def baito_row_input
+    @input_day = params[:input_day]
+    @m_shop_id = params[:m_shop_id]
+    
+    @user = User.find(params[:user_id])
+
+    render :layout => 'modal'
+
+  end
+  
+  #バイトの出勤データ更新(個人毎)
+  def baito_row_input_add
+    @input_day = params[:input_day]
+    @m_shop_id = params[:m_shop_id]
+    @user_id = params[:user_id]
+    
+    params[:datas].each{|day, data|
+      d_dutie = DDuty.find(:first,:conditions=>["duty_nengetu = ? and user_id = ? and day = ?", @input_day[0,6].to_s, @user_id, day])
+      if d_dutie.blank?
+        d_dutie = DDuty.new
+        d_dutie.duty_nengetu = @input_day[0,6].to_s
+        d_dutie.user_id = @user_id
+        d_dutie.day =  day
+        d_dutie.created_user_id = current_user.id
+      end
+      
+      d_dutie.m_shop_id = @m_shop_id
+      d_dutie.day_work_time = data[:day_work_time] if data[:day_work_time]
+      d_dutie.night_work_time = data[:night_work_time] if data[:night_work_time]      
+      d_dutie.all_work_time = data[:all_work_time] if data[:all_work_time]     
       d_dutie.updated_user_id = current_user.id
       d_dutie.save
     }
@@ -115,9 +192,10 @@ class DDutiesController < ApplicationController
     
     respond_to do |format|
       format.js { render :layout => false }
-    end    
+    end  
   end
-    
+  
+  
   # GET /d_duties/1
   # GET /d_duties/1.json
   def show

@@ -1,0 +1,43 @@
+<h1><%= @user.user_name %></h1>
+<%#= form_tag({:action => 'syain_input_add' }, { :remote => true }) do %>
+<%= form_for :m_info_cost, :url => { :action => "popup_update" },:remote => true do |f| %>
+<%= f.hidden_field :user_id %>
+<table class="rounded-corner">
+	<thead>
+		<tr>
+			<th style="min-width: 80px">基本給</th>
+			<th style="min-width: 80px">福利費</th>
+			<% if @user.user_class == 1 %>
+				<th style="min-width: 80px">能力給</th>
+			<% end %>
+			<th style="min-width: 80px">手当１</th>
+			<th style="min-width: 80px">手当２</th>
+			<th style="min-width: 80px">手当３</th>
+			<th style="min-width: 80px">手当４</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><%= f.number_field :base_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+			<td><%= f.number_field :night_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+			<% if @user.user_class == 1 %>
+				<td><%= f.number_field :welfare_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+			<% end %>
+			<td><%= f.number_field :etc_pay1, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+			<td><%= f.number_field :etc_pay2, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+			<td><%= f.number_field :etc_pay3, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+			<td><%= f.number_field :etc_pay4, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+		</tr>
+	</tbody>
+</table>
+<%= submit_tag '保存', {:confirm => "保存します。よろしいですか？", :method => :post} %>
+<% end %>
+
+<%= javascript_include_tag "comma" %>
+
+<script>
+$(function () {
+	$('div#modal div.container').css("height", "200px");
+	$('div#modal div.container').css("width", "740px");
+});	
+</script>
