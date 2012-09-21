@@ -36,6 +36,8 @@
 		<th style="min-width: 100px"><%= @kyuyu_purika_label %></th>
 		<th style="min-width: 100px"><%= "R" + @kyuyu_purika_label %></th>
 		<th style="min-width: 100px"><%= @kyuyu_purika_label + "ペース" %></th>
+		<th style="min-width: 100px"><%= @cb_label %></th>
+		<th style="min-width: 100px"><%= "R" + @cb_label %></th>
 	</tr>
 	</thead>
 	
@@ -43,27 +45,29 @@
 	<% @m_shops.each do |m_shop| %>
 	  <tr>
 	  	<td><%= m_shop.shop_cd.to_s + ' ' +  m_shop.shop_ryaku %></td>
-	  	<td class="input_no"><%= m_shop.mo_gas %></td>
-	  	<td class="input_no"><%= m_shop.r_mo_gas %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.mo_gas) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_mo_gas) %></td>
 	  	<td class="input_no"><%#= m_shop.mo_gas_pace %></td>
 	  	<td class="input_no">
 	  		<%# if m_shop.hg_aim != nil or m_shop.rg_aim != nil %>
 	  		<%#= m_shop.hg_aim.to_i + m_shop.rg_aim.to_i %>
 	  		<%# end %>
-	  		<%= m_shop.mo_gas_aim %>
+	  		<%= number_with_delimiter(m_shop.mo_gas_aim) %>
 	  	</td>
-	  	<td class="input_no"><%= m_shop.keiyu %></td>
-	  	<td class="input_no"><%= m_shop.r_keiyu %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.keiyu) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_keiyu) %></td>
 	  	<td class="input_no"><%#= m_shop.keiyu_pace %></td>
-	  	<td class="input_no"><%= m_shop.keiyu_aim %></td>
-	  	<td class="input_no"><%= m_shop.touyu %></td>
-	  	<td class="input_no"><%= m_shop.r_touyu %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.keiyu_aim) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.touyu) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_touyu) %></td>
 	  	<td class="input_no"><%#= m_shop.touyu_pace %></td>
-	  	<td class="input_no"><%= m_shop.touyu_aim %></td>
-	  	<td class="input_no"><%= m_shop.kyuyu_purika_aim %></td>
-	  	<td class="input_no"><%= m_shop.kyuyu_purika %></td>
-	  	<td class="input_no"><%= m_shop.r_kyuyu_purika %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.touyu_aim) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.kyuyu_purika_aim) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.kyuyu_purika) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_kyuyu_purika) %></td>
 	  	<td class="input_no"><%#= m_shop.kyuyu_purika_pace %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.cb) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_cb) %></td>
 	  </tr>
 	  
     <% end %>
@@ -77,6 +81,6 @@
 
 <script>
 $(function () {
-	$("#report_view_table").tablefix({width:900,fixCols:1 });
+	$("#report_view_table").tablefix({width:900,height:500,fixCols:1,fixRows:1});
 });
 </script>
