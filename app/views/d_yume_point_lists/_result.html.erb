@@ -30,48 +30,51 @@
 		<th  rowspan="2" ><%= shop.shop_cd %><br /><%= shop.shop_ryaku %></th>
 		<% result_date = @from_ymd %>
         <% start_day.times do |i| %>
-  		  <td>
+  		  <td style="text-align: right">
     		   <% yume_point_data = get_yume_point(result_date,shop.id) %>
     		   <% result_date = (result_date.to_i + 1).to_s %>
     		   <%= yume_point_data.yumepoint_num.to_i unless yume_point_data == nil %>
     		   <% sum_cols_pos1 = sum_cols_pos1 + yume_point_data.yumepoint_num.to_i unless yume_point_data == nil %>
   		   </td>
 		<% end %>
-		<td><%= sum_cols_pos1.to_i %></td>
+		<td style="text-align: right"><%= sum_cols_pos1.to_i %></td>
 	</tr>
 	<tr>
-		 <% result_date = @from_ymd %>
-    	 <% start_day.times do |i| %>
-  		  <td> <% yume_point_data = get_yume_point(result_date,shop.id) %>
-    		   <% result_date = (result_date.to_i + 1).to_s %>
-    		   <%= yume_point_data.yumepoint.to_i unless yume_point_data == nil %>
-    		   <% sum_cols_pos2 = sum_cols_pos2 + yume_point_data.yumepoint.to_i unless yume_point_data == nil %>
+		<% result_date = @from_ymd %>
+		<% start_day.times do |i| %>
+		<td style="text-align: right">
+			<% yume_point_data = get_yume_point(result_date,shop.id) %>
+			<% result_date = (result_date.to_i + 1).to_s %>
+			<%= yume_point_data.yumepoint.to_i unless yume_point_data == nil %>
+			<% sum_cols_pos2 = sum_cols_pos2 + yume_point_data.yumepoint.to_i unless yume_point_data == nil %>
     	  </td>
 		<% end %>
-		<td><%= sum_cols_pos2.to_i %></td>
+		<td style="text-align: right"><%= sum_cols_pos2.to_i %></td>
 	</tr>
 	<% end %><!-- shop.each -->
 	<tr>
 		<th rowspan="2">合計</th>
 		 <% result_date = @from_ymd %>
 		 <% start_day.times do |i| %>
-	 	  <td><% sum_yume_points = sum_rows_yume_points(result_date,@shop_kbn) %>
-	 	  	  <% result_date = (result_date.to_i + 1).to_s %>
-	 	  	  <%= sum_yume_points.yumepoint_num.to_i unless sum_yume_points == nil %>
-	 	  	  <% gsum_pos1_data = gsum_pos1_data + sum_yume_points.yumepoint_num.to_i unless sum_yume_points == nil %>
+	 	  <td style="text-align: right">
+	 	  	<% sum_yume_points = sum_rows_yume_points(result_date,@shop_kbn) %>
+			<% result_date = (result_date.to_i + 1).to_s %>
+			<%= sum_yume_points.yumepoint_num.to_i unless sum_yume_points == nil %>
+			<% gsum_pos1_data = gsum_pos1_data + sum_yume_points.yumepoint_num.to_i unless sum_yume_points == nil %>
 	 	  </td>
 		<% end %>
-		<td><%= gsum_pos1_data.to_i %></td>
+		<td style="text-align: right"><%= gsum_pos1_data.to_i %></td>
 	</tr>
 	<tr><% result_date = @from_ymd %>
 		 <% start_day.times do |i| %>
-	 	  <td><% sum_yume_points = sum_rows_yume_points(result_date,@shop_kbn) %>
-	 	  	  <% result_date = (result_date.to_i + 1).to_s %>
-	 	  	  <%= sum_yume_points.pay_money.to_i unless sum_yume_points == nil %>
-	 	  	  <% gsum_pos2_data = gsum_pos2_data + sum_yume_points.pay_money.to_i unless sum_yume_points == nil %>
+	 	  <td style="text-align: right">
+	 	  	<% sum_yume_points = sum_rows_yume_points(result_date,@shop_kbn) %>
+			<% result_date = (result_date.to_i + 1).to_s %>
+			<%= sum_yume_points.pay_money.to_i unless sum_yume_points == nil %>
+			<% gsum_pos2_data = gsum_pos2_data + sum_yume_points.pay_money.to_i unless sum_yume_points == nil %>
 	 	  </td>
 		<% end %>
-		<td><%= gsum_pos2_data.to_i %></td>
+		<td style="text-align: right"><%= gsum_pos2_data.to_i %></td>
 	</tr>
 </tbody>  	
 
