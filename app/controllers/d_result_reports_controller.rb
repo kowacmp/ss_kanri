@@ -450,6 +450,9 @@ class DResultReportsController < ApplicationController
         page.item(:kyuyu_purika_label).value(@kyuyu_purika_label)
         page.item(:r_kyuyu_purika_label).value("R" + @kyuyu_purika_label)
         page.item(:kyuyu_purika_pace_label).value(@kyuyu_purika_label + "ペース")
+        
+        page.item(:cb_label).value(@cb_label)
+        page.item(:r_cb_label).value("R" + @cb_label)
     end
 
 
@@ -479,7 +482,11 @@ class DResultReportsController < ApplicationController
         row.item(:touyu_aim).value(data.touyu_aim)
         
         row.item(:kyuyu_purika_aim).value(data.kyuyu_purika_aim)
+        row.item(:kyuyu_purika).value(data.kyuyu_purika)
         row.item(:r_kyuyu_purika).value(data.r_kyuyu_purika)
+        
+        row.item(:cb).value(data.cb)
+        row.item(:r_cb).value(data.r_cb)
         
       end #add_row
     end # datas.each
@@ -524,7 +531,7 @@ class DResultReportsController < ApplicationController
         page.item(:r_health_label).value("R" + @health_label)
         page.item(:r_net_label).value("R" + @net_label)
         page.item(:r_charge_label).value("R" + @charge_label)
-        page.item(:r_spare_label).value("R" + @spare_label)
+        page.item(:r_ozone_label).value("R" + @ozone_label)
     end
 
     # 詳細作成
@@ -563,7 +570,7 @@ class DResultReportsController < ApplicationController
         row.item(:r_health).value(data.r_health)
         row.item(:r_net).value(data.r_net)
         row.item(:r_charge).value(data.r_charge)
-        row.item(:r_spare).value(data.r_spare)
+        row.item(:r_ozone).value(data.r_ozone)
         
       end #add_row
     end # datas.each
@@ -614,6 +621,7 @@ class DResultReportsController < ApplicationController
       @touyu_label = MOil.find(4) ? MOil.find(4).oil_name : "灯油"
       
       @kyuyu_purika_label = MOiletc.find(8) ? MOiletc.find(8).oiletc_ryaku : "GP"
+      @cb_label = MOiletc.find(24) ? MOiletc.find(24).oiletc_ryaku : "CB"
     elsif select_kbn == 3
       @sensya_label = MOiletc.find(4) ? MOiletc.find(4).oiletc_ryaku : "洗車"
       @sensya_purika_label = MOiletc.find(11) ? MOiletc.find(11).oiletc_ryaku : "洗車PPC"
@@ -628,8 +636,8 @@ class DResultReportsController < ApplicationController
       @health_label = MEtc.find(11) ? MEtc.find(11).etc_ryaku : "ヘルス"
       @net_label = MEtc.find(14) ? MEtc.find(14).etc_ryaku : "ネット"
       @charge_label = MEtc.find(13) ? MEtc.find(13).etc_ryaku : "充電器"
-      @spare_label = "予備"
-      #@spare_label = MEtc.find_by_oiletc_cd(99) ? MEtc.find_by_oiletc_cd(99).etc_ryaku : "予備"
+      #@spare_label = "予備"
+      @ozone_label = MEtc.find(15) ? MEtc.find(15).etc_ryaku : "脱臭機"
     else
       @keiyu_label = MOil.find(3) ? MOil.find(3).oil_name : "軽油"
       @touyu_label = MOil.find(4) ? MOil.find(4).oil_name : "灯油"
@@ -729,12 +737,13 @@ class DResultReportsController < ApplicationController
       select_sql << " left join (select id ,m_shop_id"
       select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
       
-      select_sql << " left join (select d_result_id,mo_gas,keiyu,touyu,kyuyu_purika "
+      select_sql << " left join (select d_result_id,mo_gas,keiyu,touyu,kyuyu_purika,cb "
       select_sql <<            " from d_result_self_reports) c on b.id = c.d_result_id"
       
       select_sql << " left join (select d1.m_shop_id,"
       select_sql <<       "sum(d2.mo_gas) as r_mo_gas, sum(d2.keiyu) as r_keiyu,"
-      select_sql <<       "sum(d2.touyu) as r_touyu, sum(d2.kyuyu_purika) as r_kyuyu_purika"
+      select_sql <<       "sum(d2.touyu) as r_touyu, sum(d2.kyuyu_purika) as r_kyuyu_purika, "
+      select_sql <<       "sum(d2.cb) as r_cb"
       select_sql <<            " from d_results d1"
       select_sql <<            " left join (select * from d_result_self_reports) d2 on d1.id = d2.d_result_id"
       select_sql <<            " where d1.result_date >= '#{input_ymd_s}' and d1.result_date <= '#{input_ymd_e}' "
@@ -788,7 +797,7 @@ class DResultReportsController < ApplicationController
       select_sql <<       "sum(d2.sp) as r_sp, sum(d2.sc) as r_sc,"
       select_sql <<       "sum(d2.wash_item) as r_wash_item, sum(d2.game) as r_game,"
       select_sql <<       "sum(d2.health) as r_health, sum(d2.net) as r_net, "
-      select_sql <<       "sum(d2.charge) as r_charge, sum(d2.spare) as r_spare"
+      select_sql <<       "sum(d2.charge) as r_charge, sum(d2.ozone) as r_ozone"
       select_sql <<            " from d_results d1"
       select_sql <<            " left join (select * from d_result_self_reports) d2 on d1.id = d2.d_result_id"
       select_sql <<            " where d1.result_date >= '#{input_ymd_s}' and d1.result_date <= '#{input_ymd_e}' "

@@ -55,17 +55,19 @@
   <% @oiletcs.each_with_index do |oiletc, idx| %>
     <% flg = tani_check(oiletc.oiletc_tani) 
        boder_style = boder_check(@oiletcs.size, @oiletcs, idx)
+       ruikei = view_pos_ruikei(@oiletc_ruikeis[oiletc.id][:oiletc_ruikei], oiletc.pos_total, oiletc.oiletc_tani)
     %>
+    <%= hidden_field :w_arari_ruikei, "#{oiletc.id}", :value => @oiletc_ruikeis[oiletc.id][:arari_ruikei] %>
+    <%= hidden_field :w_pos_ruikei, "#{oiletc.id}", :value => @oiletc_ruikeis[oiletc.id][:oiletc_ruikei] %>  
     <tr>
       <th style="border-bottom:<%= boder_style %>;"><%= oiletc.oiletc_name %></th>
       <td style="border-bottom:<%= boder_style %>;"><%= number_field :oiletc_pos1, "#{oiletc.id}", :value => oiletc.pos1_data, :maxlength => 9, :class => "money" %>&nbsp;<%= oiletc.code_name %></td>
       <td style="border-bottom:<%= boder_style %>;"><%= number_field :oiletc_pos2, "#{oiletc.id}", :value => oiletc.pos2_data, :maxlength => 9, :class => "money" %>&nbsp;<%= oiletc.code_name %></td>
       <td style="border-bottom:<%= boder_style %>;"><%= number_field :oiletc_pos3, "#{oiletc.id}", :value => oiletc.pos3_data, :maxlength => 9, :class => "money" %>&nbsp;<%= oiletc.code_name %></td>       
-      <td style="border-bottom:<%= boder_style %>;" class="input_no" id="display"><label id="oiletc_total_<%= oiletc.id %>"><%= num_fmt(oiletc.pos_total, flg) %></label>&nbsp;<%= oiletc.code_name %></td> 
-      <td style="border-bottom:<%= boder_style %>;" class="input_no" id="display"><%= num_fmt(@oiletc_ruikeis[oiletc.id][:oiletc_ruikei], flg) %>&nbsp;<%= oiletc.code_name %></td>
+      <td style="border-bottom:<%= boder_style %>;" class="input_no" id="display"><label id="oiletc_total_<%= oiletc.id %>"><%= num_fmt(oiletc.pos_total, flg) %></label>&nbsp;<%= oiletc.code_name %></td>
+      <td style="border-bottom:<%= boder_style %>;" class="input_no" id="display"><label id="oiletc_pos_ruikei_<%= oiletc.id %>"><%= num_fmt(ruikei, flg) %></label>&nbsp;<%= oiletc.code_name %></td>
       <td style="border-bottom:<%= boder_style %>;" class="input_no" id="display"><label id="oiletc_arari_<%= oiletc.id %>"><%= num_fmt(oiletc.oiletc_arari) %></label>&nbsp;円</td>
-      <td style="border-bottom:<%= boder_style %>;" class="input_no" id="display"><label id="oiletc_arari_ruikei_<%= oiletc.id %>"><%= num_fmt(@oiletc_ruikeis[oiletc.id][:arari_ruikei]) %></label>&nbsp;円</td>  
-      <%= hidden_field :w_arari_ruikei, "#{oiletc.id}", :value => @oiletc_ruikeis[oiletc.id][:arari_ruikei] %>         
+      <td style="border-bottom:<%= boder_style %>;" class="input_no" id="display"><label id="oiletc_arari_ruikei_<%= oiletc.id %>"><%= num_fmt(@oiletc_ruikeis[oiletc.id][:arari_ruikei].to_i + oiletc.oiletc_arari.to_i) %></label>&nbsp;円</td>       
     </tr>
   <% end %>
     <tr>
@@ -183,7 +185,7 @@
       
   <%= hidden_field :select, :result_date, :value => @result_date %>
   <%= hidden_field :select, :m_shop_id, :value => @m_shop.id %>
-  <%= hidden_field :select, :edit_flg, :value => @edit_flg %>
+  <%#= hidden_field :select, :edit_flg, :value => @edit_flg %>
   <div style="text-align:right; width: 800px;">
   	<%= submit_tag '登録', {:confirm => "登録します。よろしいですか？"} %>
   </div>

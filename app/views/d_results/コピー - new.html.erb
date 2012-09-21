@@ -116,8 +116,7 @@ $(function () {
 	 	var num1 = Number(format_kanma($("#oiletc_pos1_<%= m_oiletc.id %>").val(), 2));
   		var num2 = Number(format_kanma($("#oiletc_pos2_<%= m_oiletc.id %>").val(), 2));
   		var num3 = Number(format_kanma($("#oiletc_pos3_<%= m_oiletc.id %>").val(), 2));
-  		var arari_ruikei = Number(format_kanma($("#w_arari_ruikei_<%= m_oiletc.id %>").val(), 2));
-  		var pos_ruikei = Number(format_kanma($("#w_pos_ruikei_<%= m_oiletc.id %>").val(), 2));
+  		var ruikei = Number(format_kanma($("#w_arari_ruikei_<%= m_oiletc.id %>").val(), 2));
   		var total;
   		  		
   		if (isNaN(num1)) {num1 = 0};
@@ -125,9 +124,9 @@ $(function () {
   		if (isNaN(num3)) {num3 = 0};
   		
   		total = num1 + num2 + num3;
-  		total = (num1 * 100) + (num2 * 100) + (num3 * 100);
-  		pos_ruikei = ((pos_ruikei * 100) + total) / 100
+  		arari = Math.floor(total * <%= m_oiletc.oiletc_arari %>)
   		
+  		total = (num1 * 100) + (num2 * 100) + (num3 *100);
   		arari = Math.floor(total * <%= m_oiletc.oiletc_arari %> / 100)
   		total = total / 100
   			
@@ -136,22 +135,16 @@ $(function () {
         } else if ( total == parseFloat(total)){
           $("#oiletc_total_<%= m_oiletc.id %>").text(format_kanma(total.toFixed(2)));
         }
-
-        if ( pos_ruikei == parseInt(pos_ruikei)){
-  	      $("#oiletc_pos_ruikei_<%= m_oiletc.id %>").text(format_kanma(pos_ruikei));
-        } else if ( pos_ruikei == parseFloat(pos_ruikei)){
-          $("#oiletc_pos_ruikei_<%= m_oiletc.id %>").text(format_kanma(pos_ruikei.toFixed(2)));
-        }
         
-        arari_ruikei = arari_ruikei + arari
+        ruikei = ruikei + arari
         $("#oiletc_arari_<%= m_oiletc.id %>").text(format_kanma(arari));	 
-        $("#oiletc_arari_ruikei_<%= m_oiletc.id %>").text(format_kanma(arari_ruikei));
-        arari_total(); 		 		
+        $("#oiletc_arari_ruikei_<%= m_oiletc.id %>").text(format_kanma(ruikei));
+        arari_nikkei_total(); 		 		
     };
   <% end %>     
    
 	    //粗利トータル
-	    function arari_total() {
+	    function arari_nikkei_total() {
 	    	var num = new Array(<%= @m_oiletcs.size %>);
 	    	var ruikei = new Array(<%= @m_oiletcs.size %>);
 	    	var total=0;

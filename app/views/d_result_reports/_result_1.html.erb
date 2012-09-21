@@ -57,26 +57,26 @@
 	<% @m_shops.each do |m_shop| %>
 	  <tr>
 	  	<td><%= m_shop.shop_cd.to_s + ' ' +  m_shop.shop_ryaku %></td>
-	  	<td class="input_no"><%= m_shop.mo_gas %><%#= m_shop.mo_gas_aim %></td>
-	  	<td class="input_no"><%= m_shop.r_mo_gas %></td>
-	  	<td class="input_no"><%= m_shop.keiyu %></td>
-	  	<td class="input_no"><%= m_shop.r_keiyu %></td>
-	  	<td class="input_no"><%= m_shop.touyu %></td>
-	  	<td class="input_no"><%= m_shop.r_touyu %></td>
-	  	<td class="input_no"><%= m_shop.koua %></td>
-	  	<td class="input_no"><%= m_shop.r_koua %></td>
-	  	<td class="input_no"><%= m_shop.buyou %></td>
-	  	<td class="input_no"><%= m_shop.r_buyou %></td>
-	  	<td class="input_no"><%= m_shop.tokusei %></td>
-	  	<td class="input_no"><%= m_shop.r_tokusei %></td>
-	  	<td class="input_no"><%= m_shop.sensya %></td>
-	  	<td class="input_no"><%= m_shop.r_sensya %></td>
-	  	<td class="input_no"><%= m_shop.koutin %></td>
-	  	<td class="input_no"><%= m_shop.r_koutin %></td>
-	  	<td class="input_no"><%= m_shop.taiya %></td>
-	  	<td class="input_no"><%= m_shop.r_taiya %></td>
-	  	<td class="input_no"><%= m_shop.arari %></td>
-	  	<td class="input_no"><%= m_shop.r_arari %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.mo_gas) %><%#= m_shop.mo_gas_aim %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_mo_gas) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.keiyu) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_keiyu) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.touyu) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_touyu) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.koua) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_koua) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.buyou) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_buyou) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.tokusei) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_tokusei) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.sensya) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_sensya) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.koutin) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_koutin) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.taiya) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_taiya) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.arari) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_arari) %></td>
 	  </tr>
 	  
 	  <% @mo_gas_total = @mo_gas_total + m_shop.mo_gas.to_f %>
@@ -105,50 +105,50 @@
     
     <tr>
 		<th>日計</th>
-		<td class="input_no"><%= @mo_gas_total %></td>
+		<td class="input_no"><%= number_with_delimiter(@mo_gas_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @keiyu_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@keiyu_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @touyu_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@touyu_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @koua_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@koua_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @buyou_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@buyou_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @tokusei_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@tokusei_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @sensya_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@sensya_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @koutin_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@koutin_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @taiya_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@taiya_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @arari_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@arari_total) %></td>
 	  	<td class="input_no"></td>
 	</tr>
 	
 	<tr>
 		<th>累計</th>
 		<td class="input_no"></td>
-		<td class="input_no"><%= @r_mo_gas_total %></td>
+		<td class="input_no"><%= number_with_delimiter(@r_mo_gas_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @r_keiyu_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@r_keiyu_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @r_touyu_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@r_touyu_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @r_koua_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@r_koua_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @r_buyou_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@r_buyou_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @r_tokusei_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@r_tokusei_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @r_sensya_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@r_sensya_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @r_koutin_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@r_koutin_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @r_taiya_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@r_taiya_total) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= @r_arari_total %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@r_arari_total) %></td>
 	</tr>
     </tbody>
     <%= hidden_field_tag 'select_kbn',@select_kbn %>
@@ -160,6 +160,6 @@
 
 <script>
 $(function () {
-	$("#report_view_table").tablefix({width:900,fixCols:1 });
+	$("#report_view_table").tablefix({width:900,height:500,fixCols:1,fixRows:1});
 });
 </script>
