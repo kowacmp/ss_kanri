@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
   
   #権限チェック
-  before_filter :permission_check
+  #before_filter :permission_check
   
   include ApplicationHelper
   
