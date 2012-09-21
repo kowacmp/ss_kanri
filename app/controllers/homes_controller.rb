@@ -2,7 +2,10 @@ class HomesController < ApplicationController
   
   include HomesHelper
   
+  skip_before_filter :permission_check
+  
   def index
+    p current_user
     @today = Time.now
     @end_day = @today + 6.days
     today = Time.now.strftime("%Y%m%d")

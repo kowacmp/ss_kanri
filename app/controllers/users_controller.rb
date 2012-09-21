@@ -2,6 +2,9 @@
 class UsersController < ApplicationController
   # GET /users
   # GET /users.json
+  
+  skip_before_filter :permission_check, :only => ['edit', 'update']
+  
   def index
     #@users = User.all
     #@users = User.find(:all,:order=>"id")
