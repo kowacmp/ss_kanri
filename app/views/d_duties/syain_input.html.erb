@@ -1,3 +1,4 @@
+<%#= javascript_include_tag "modal" %>
 <h1><%= "#{@input_day.to_s[0,4]}年#{@input_day.to_s[4,2]}月#{@input_day.to_s[6,2]}日" %></h1>
 <%= form_tag({:action => 'syain_input_add' }, { :remote => true }) do %>
 <%= hidden_field_tag 'input_day', @input_day %>
@@ -45,6 +46,7 @@
 $(function () {
 	$('div#modal div.container').css("height", "600px");
 	$('div#modal div.container').css("width", "450px");
-	$('#syain_input_table').tablefix({width: 385, height: 450, fixRows: 1, fixCols: 0});
+	$("div#modal").fadeIn();
+	$('div#modal #syain_input_table').tablefix({width: 385, height: 450, fixRows: 1, fixCols: 0});
 });	
 </script>

@@ -30,6 +30,7 @@
 				</td>
 				<td style="text-align: center;">
 					<label id='<%= "datas_#{index}_all_work_time" %>'></label>
+					<%= hidden_field_tag "datas[#{index}][all_work_time]", "" %>
 			    </td>
 			<% else %>
 				<td style="text-align: center;">
@@ -40,6 +41,7 @@
 		  		</td>
 				<td style="text-align: center;">
 					<label id='<%= "datas_#{index}_all_work_time" %>'><%= d_dutry.all_work_time %></label>
+					<%= hidden_field_tag "datas[#{index}][all_work_time]", d_dutry.all_work_time %>
 			    </td>
 		  	<% end %>
 		  
@@ -63,10 +65,11 @@ $(function () {
 	//保存の時
     $("form").submit(function() {
     	var Div_id='';
-    	var num;
+    	
     	var get_index;
+    	var user_name=';'
     	var errmsg='';
-    	var suchi;
+    	
     	
 	    if ($("div#modal div.bodyDiv").size() > 0) {
 	    	Div_id = 'div.bodyDiv ';
@@ -76,34 +79,45 @@ $(function () {
 	    $("div#modal " + Div_id + "[id*=_day_work_time]").each(function(i){
 		   	get_index = $(this).attr('id').replace("datas_", "");
 		    get_index = get_index.replace("_day_work_time", "");
-
-	        num = Number($(this).val());
-	        if (isNaN(num)) {num = 0.0};
-	        if (Math.floor(num) == Math.ceil(num)) {
-	        	
-	        };
-	        suchi = String(num).split(".")
-	        
-	        if (suchi[0].length > 2 || String(num).split(".")[1].length > 1 ) {
-	        	if (errmsg != "") { errmsg = errmsg + ", "; };
-	        	errmsg = errmsg + $("div#modal " + Div_id + "#datas_" + get_index + "_user_name").text() + "さん";
-	        };
-	        
+			user_name = $("div#modal " + Div_id + "#datas_" + get_index + "_user_name").text() + "さん";
+			
+			if (d_duty_validation($(this).val()) == false) {
+				if (errmsg != "") { errmsg = errmsg + ", "; };
+				errmsg = errmsg + user_name;
+			};
+ 
 	    });  
 	    
 	    //夜勤
 	    $("div#modal " + Div_id + "[id*=_night_work_time]").each(function(i){
 		   	get_index = $(this).attr('id').replace("datas_", "");
 		    get_index = get_index.replace("_night_work_time", "");
-
-	        num = Number($(this).val());
-	        if (isNaN(num)) {num = 0};
-	        if (String(Math.floor(num)).length > 2) {
-	        	if (errmsg != "") { errmsg = errmsg + ", "; };
-	        	errmsg = errmsg + $("div#modal " + Div_id + "#datas_" + get_index + "_user_name").text() + "さん";
-	        };
-	    }); 
-	    	     
+			user_name = $("div#modal " + Div_id + "#datas_" + get_index + "_user_name").text() + "さん";
+			
+			if (d_duty_validation($(this).val()) == false) {
+				if (errmsg != "") { errmsg = errmsg + ", "; };
+				errmsg = errmsg + user_name;
+			};
+	        
+	    });  
+        if (errmsg != "") {
+			alert("勤務時間を正しく入力してください。(整数２桁、少数１桁)\n（" + errmsg + "）");
+ 			return false;
+ 	    };	
+ 	    	    	    
+	    //合計
+	    $("div#modal " + Div_id + "[id*=_all_work_time]").each(function(i){
+		   	get_index = $(this).attr('id').replace("datas_", "");
+		    get_index = get_index.replace("_all_work_time", "");
+			user_name = $("div#modal " + Div_id + "#datas_" + get_index + "_user_name").text() + "さん";
+			
+			if (d_duty_validation($(this).val()) == false) {
+				if (errmsg != "") { errmsg = errmsg + ", "; };
+				errmsg = errmsg + user_name;
+			};
+	        
+	    });  
+	     
         if (errmsg != "") {
 			alert("勤務時間を正しく入力してください。(整数２桁、少数１桁)\n（" + errmsg + "）");
  			return false;

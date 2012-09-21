@@ -113,7 +113,7 @@ module DDutiesHelper
 
           if d_duties[n].day == (i + 1)
             if d_duties[n].all_work_time.to_f > 0
-              rtn_html << "<label id='baito_#{i+1}_#{user_id}'>#{d_duties[n].all_work_time.to_f}</label>"
+              rtn_html << "<label id='baito_#{i+1}_#{user_id}'>#{d_duties[n].all_work_time}</label>"
             else
               rtn_html << "<label id='baito_#{i+1}_#{user_id}'></label>"
             end
@@ -150,18 +150,22 @@ module DDutiesHelper
   
   #バイト時間の計
   def set_baito_jikan_kei(loopcnt)
+
     rtn_html = ""
     
     loopcnt.times { |i|
-      if Time.now.day == (i+1)
-        rtn_html << "<td style='text-align: center; background-color: #F7DC67'>"
+      if Time.now.day.to_i == (i+1).to_i
+        today_color = "background-color: #F7DC67;"
       else
-        rtn_html << "<td style='text-align: center;'>"
-      end if
-      rtn_html << "<label id='baito_jikan_kei_#{i}'></label>"
+        today_color =""
+      end 
+  
+      rtn_html << "<td style='text-align: center; #{today_color}'>"
+      rtn_html << "<label id='col_baito_jikan_kei_#{i+1}'></label>"
       rtn_html << "</td>"
      }   
-     rtn_html << ""    
+     rtn_html << ""
+           
   end
 
     

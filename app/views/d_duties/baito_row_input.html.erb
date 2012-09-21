@@ -1,0 +1,147 @@
+<% loopcnt = (Date.new(@input_day.to_s[0,4].to_i, @input_day.to_s[4,2].to_i, -1)).strftime("%d").to_i %>
+
+<h1>
+	<%= "#{@input_day.to_s[0,4]}年#{@input_day.to_s[4,2]}月" %><br />
+	<%= "#{@user.user_name}" %>
+</h1>
+<%= form_tag({:action => 'baito_row_input_add' }, { :remote => true }) do %>
+<%= hidden_field_tag 'input_day', @input_day %>
+<%= hidden_field_tag 'user_id', @user.id %>
+<%= hidden_field_tag 'm_shop_id', @m_shop_id %>
+<table id="baito_row_input_table" class="rounded-corner">
+	<thead>
+		<tr>
+		<th style="min-width: 40px">日</th>
+		<th style="max-width: 40px">曜</th>
+		<th style="min-width: 80px">日勤</th>
+		<th style="min-width: 80px">夜勤</th>
+		<th style="min-width: 80px">合計</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% loopcnt.times { |i| %>
+			<tr>
+			<td style="text-align: center; <%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>"><%= i + 1 %></td>
+		      <% select_day = Date.new(@input_day.to_s[0,4].to_i, @input_day.to_s[4,2].to_i, i + 1) %>		
+			  <% week_w = day_of_the_week(select_day.wday) %>	
+			  <% if week_w == "土" or week_w =="日" %>
+			  	<% if Time.now.day == (i+1) %>
+			  		<td style='background:none; background-color: #F7DC67' >
+			  	<% else %>
+			  		<td style = "background-image:none; background-color: #FF98A7">
+			  	<% end %> 
+			  <% else %>
+			    <% if Time.now.day == (i+1) %>
+			   		<td style='background:none; background-color: #F7DC67' >
+			    <% else %>
+			    	<td>
+			    <% end %> 
+			  <% end %>
+				<%= week_w %>
+			  </td>
+			  	<% d_dutry = DDuty.find(:first, 
+		              :conditions=>["duty_nengetu = '#{@input_day.to_s[0,6]}' and day = #{ i + 1} and user_id = #{@user.id}"]) %>
+				<% if d_dutry.blank? %>
+				    <td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
+						<%= text_field_tag "datas[#{i + 1}][day_work_time]", "",  {:size=>4, :class=>"money"} %>
+					</td>
+				    <td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
+						<%= text_field_tag "datas[#{i + 1}][night_work_time]", "",  {:size=>4, :class=>"money"} %>
+					</td>
+					<td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
+						<label id='<%= "datas_#{i + 1}_all_work_time" %>'></label>
+						<%= hidden_field_tag "datas[#{i + 1}][all_work_time]", "" %>
+				    </td>
+				<% else %>
+					<td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
+			  			<%= text_field_tag "datas[#{i + 1}][day_work_time]", d_dutry.day_work_time,  {:size=>4, :class=>"money"} %>
+			  		</td>
+					<td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
+			  			<%= text_field_tag "datas[#{i + 1}][night_work_time]", d_dutry.night_work_time,  {:size=>4, :class=>"money"} %>
+			  		</td>
+					<td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
+						<label id='<%= "datas_#{i + 1}_all_work_time" %>'><%= d_dutry.all_work_time %></label>
+						<%= hidden_field_tag "datas[#{i + 1}][all_work_time]", d_dutry.all_work_time %>
+				    </td>
+			  	<% end %>
+
+
+			</tr>
+		<% } %>
+	</tbody>
+</table>
+<br />
+<%= submit_tag '保存', {:confirm => "保存します。よろしいですか？", :method => :post} %>
+<% end %>
+
+<%= javascript_include_tag "comma" %>
+
+<script>
+$(function () {
+	$('div#modal div.container').css("height", "800px");
+	$('div#modal div.container').css("width", "450px");
+	$("div#modal").fadeIn();
+	$('div#modal #baito_row_input_table').tablefix({width: 400, height: 600, fixRows: 1, fixCols: 0});
+	$('div#modal div.bodyDiv').scrollTop(25 * (<%= Time.now.day %> - 2));
+	
+	//入力チェック
+	//保存の時
+    $("form").submit(function() {
+    	var Div_id='';
+    	
+    	var get_index;
+    	var user_name=';'
+    	var errmsg='';
+    	
+    	
+	    if ($("div#modal div.bodyDiv").size() > 0) {
+	    	Div_id = 'div.bodyDiv ';
+	    };
+	    
+	    //日勤
+	    $("div#modal " + Div_id + "[id*=_day_work_time]").each(function(i){
+		   	get_index = $(this).attr('id').replace("datas_", "");
+		    get_index = get_index.replace("_day_work_time", "");
+			
+			if (d_duty_validation($(this).val()) == false) {
+				if (errmsg != "") { errmsg = errmsg + ", "; };
+				errmsg = errmsg + get_index;
+			};
+ 
+	    });  
+	    
+	    //夜勤
+	    $("div#modal " + Div_id + "[id*=_night_work_time]").each(function(i){
+		   	get_index = $(this).attr('id').replace("datas_", "");
+		    get_index = get_index.replace("_night_work_time", "");
+			
+			if (d_duty_validation($(this).val()) == false) {
+				if (errmsg != "") { errmsg = errmsg + ", "; };
+				errmsg = errmsg + get_index;
+			};
+	        
+	    });  
+        if (errmsg != "") {
+			alert("勤務時間を正しく入力してください。(整数２桁、少数１桁)\n（" + errmsg + "日）");
+ 			return false;
+ 	    };	
+ 	    	    	    
+	    //合計
+	    $("div#modal " + Div_id + "[id*=_all_work_time]").each(function(i){
+		   	get_index = $(this).attr('id').replace("datas_", "");
+		    get_index = get_index.replace("_all_work_time", "");
+			
+			if (d_duty_validation($(this).val()) == false) {
+				if (errmsg != "") { errmsg = errmsg + ", "; };
+				errmsg = errmsg + get_index;
+			};
+	        
+	    });  
+	     
+        if (errmsg != "") {
+			alert("勤務時間を正しく入力してください。(整数２桁、少数１桁)\n（" + errmsg + "日）");
+ 			return false;
+ 	    };	
+    });	
+});	
+</script>

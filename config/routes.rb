@@ -14,6 +14,10 @@ SsKanri::Application.routes.draw do
      post :syain_input_add
      get :baito_input
      post :baito_input_add
+     get :syain_row_input
+     post :syain_row_input_add
+     get :baito_row_input
+     post :baito_row_input_add
    end
   end
 
@@ -150,8 +154,13 @@ SsKanri::Application.routes.draw do
 
   resources :m_codes
 
-  resources :m_info_costs
-
+  resources :m_info_costs do
+   collection do
+     get :popup_edit
+     post :popup_update
+   end
+  end
+  
   resources :m_etcsales
 
   resources :m_washes
