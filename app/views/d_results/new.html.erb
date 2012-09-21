@@ -116,6 +116,7 @@ $(function () {
 	 	var num1 = Number(format_kanma($("#oiletc_pos1_<%= m_oiletc.id %>").val(), 2));
   		var num2 = Number(format_kanma($("#oiletc_pos2_<%= m_oiletc.id %>").val(), 2));
   		var num3 = Number(format_kanma($("#oiletc_pos3_<%= m_oiletc.id %>").val(), 2));
+  		//var ruikei = Number(format_kanma($("#w_arari_ruikei_<%#= m_oiletc.id %>").val(), 2));
   		var total;
   		  		
   		if (isNaN(num1)) {num1 = 0};
@@ -134,32 +135,40 @@ $(function () {
         } else if ( total == parseFloat(total)){
           $("#oiletc_total_<%= m_oiletc.id %>").text(format_kanma(total.toFixed(2)));
         }
-        $("#oiletc_arari_<%= m_oiletc.id %>").text(format_kanma(arari));	 
         
+        //ruikei = ruikei + arari
+        $("#oiletc_arari_<%= m_oiletc.id %>").text(format_kanma(arari));	 
+        //$("#oiletc_arari_ruikei_<%#= m_oiletc.id %>").text(format_kanma(ruikei));
         arari_nikkei_total(); 		 		
     };
   <% end %>     
    
-	    //粗利日計トータル
+	    //粗利トータル
 	    function arari_nikkei_total() {
 	    	var num = new Array(<%= @m_oiletcs.size %>);
+	    	var ruikei = new Array(<%= @m_oiletcs.size %>);
 	    	var total=0;
+	    	var ruikei_total = 0
 	    	
 	    	<% @m_oiletcs.each_with_index do |m_oiletc, idx| %>
 	    	  num[<%= idx %>]=Number(format_kanma($("#oiletc_arari_<%= m_oiletc.id %>").text(), 2));
+	    	  ruikei[<%= idx %>]=Number(format_kanma($("#oiletc_arari_ruikei_<%= m_oiletc.id %>").text(), 2));
 	    	<% end %>
 	    	
 			var i=0;
 	      	while(i<<%= @m_oiletcs.size %>){
 	        	if (isNaN(num[i])) {num[i] = 0};
+	        	if (isNaN(ruikei[i])) {ruikei[i] = 0};
 	        	i=i+1;
 	     	};
 	     	   	
 	     	<% @m_oiletcs.each_with_index do |m_oiletc, idx| %>
 	     	  total = total + num[<%= idx %>];
+	     	  ruikei_total = ruikei_total + ruikei[<%= idx %>];
 	     	<% end %>
 			
-			$("#arari_nikkei_total").text(format_kanma(total));  	
+			$("#arari_nikkei_total").text(format_kanma(total)); 
+			$("#arari_ruikei_total").text(format_kanma(ruikei_total));  	
 	    };
 	    
   //その他売上

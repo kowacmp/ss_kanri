@@ -64,14 +64,15 @@
       <td style="border-bottom:<%= boder_style %>;" class="input_no" id="display"><label id="oiletc_total_<%= oiletc.id %>"><%= num_fmt(oiletc.pos_total, flg) %></label>&nbsp;<%= oiletc.code_name %></td> 
       <td style="border-bottom:<%= boder_style %>;" class="input_no" id="display"><%= num_fmt(@oiletc_ruikeis[oiletc.id][:oiletc_ruikei], flg) %>&nbsp;<%= oiletc.code_name %></td>
       <td style="border-bottom:<%= boder_style %>;" class="input_no" id="display"><label id="oiletc_arari_<%= oiletc.id %>"><%= num_fmt(oiletc.oiletc_arari) %></label>&nbsp;円</td>
-      <td style="border-bottom:<%= boder_style %>;" class="input_no" id="display"><%= num_fmt(@oiletc_ruikeis[oiletc.id][:arari_ruikei]) %>&nbsp;円</td>             
+      <td style="border-bottom:<%= boder_style %>;" class="input_no" id="display"><label id="oiletc_arari_ruikei_<%= oiletc.id %>"><%= num_fmt(@oiletc_ruikeis[oiletc.id][:arari_ruikei]) %></label>&nbsp;円</td>  
+      <%= hidden_field :w_arari_ruikei, "#{oiletc.id}", :value => @oiletc_ruikeis[oiletc.id][:arari_ruikei] %>         
     </tr>
   <% end %>
     <tr>
       <th>粗利合計</th>
       <td colspan="5"></td>
       <td class="input_no" id="display"><label id="arari_nikkei_total"><%= num_fmt(@arari_nikkei) %></label>&nbsp;円</td>
-      <td class="input_no" id="display"><%= num_fmt(@arari_ruikei) %>&nbsp;円</td>
+      <td class="input_no" id="display"><label id="arari_ruikei_total"><%= num_fmt(@arari_ruikei) %></label>&nbsp;円</td>
     </tr>
   </table>
   <br/>
@@ -143,7 +144,7 @@
 		  <% @syukei_reserves.each do |syukei_reserve| %>
 		    <tr>
 		      <th><%= syukei_reserve[:month] %></th> 	
-		      <td class="input_no"><%#= syukei_reserve[:nikkei] %>
+		      <td class="input_no">
 		      	<%= number_field :reserve_num, "#{syukei_reserve[:month]}", :value => syukei_reserve[:nikkei], :maxlength => 9, :class => "money" %>
 		      </td>	      	
 		      <td class="input_no" id="display"><%= syukei_reserve[:gekkei] %></td> 
@@ -182,6 +183,7 @@
       
   <%= hidden_field :select, :result_date, :value => @result_date %>
   <%= hidden_field :select, :m_shop_id, :value => @m_shop.id %>
+  <%= hidden_field :select, :edit_flg, :value => @edit_flg %>
   <div style="text-align:right; width: 800px;">
   	<%= submit_tag '登録', {:confirm => "登録します。よろしいですか？"} %>
   </div>
