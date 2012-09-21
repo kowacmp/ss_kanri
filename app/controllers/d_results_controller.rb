@@ -96,10 +96,6 @@ class DResultsController < ApplicationController
   end
   
   def select_date
-    p "select_date   select_date   select_date   select_date"
-    p "params[:select_date]=#{params[:select_date]}"
-    p "params[:m_shop_id]=#{params[:m_shop_id]}"
-    p "params[:edit_flg]=#{params[:edit_flg]}"
     if params[:select_date].blank?
       #newから来た場合
       @result_date = @today.delete("/")
@@ -124,7 +120,7 @@ class DResultsController < ApplicationController
       oil_sql << " and d.d_result_id = #{@d_result.id})"  
     end    
     oil_sql << " where m.deleted_flg = 0 order by m.oil_cd"
-
+p "oil_sql=#{oil_sql}"
     @pos1_gasorin, @pos2_gasorin, @pos3_gasorin, @total_gasorin = 0,0,0,0
     @pos1_mofuel, @pos2_mofuel, @pos3_mofuel, @total_mofuel = 0,0,0,0
     
@@ -199,6 +195,8 @@ class DResultsController < ApplicationController
       @oiletc_ruikeis[oiletc_ruikei.id][:arari_ruikei] = oiletc_ruikei.arari_ruikei
       @arari_ruikei += oiletc_ruikei.arari_ruikei.to_i
     end  
+    #粗利累計は選択日付前日の累計を取得する為(javascriptの都合上)、日計を加算する
+    @arari_ruikei += @arari_nikkei
     
     #その他売上取得
     etc_sql = "select m.id, m.etc_name, m.etc_tani, c.code_name, m.max_num,m.etc_cd, d.id d_result_etc_id, d.no,"
@@ -483,12 +481,14 @@ class DResultsController < ApplicationController
       d_result_self_report.taiyaw = m_oiletc_pos_total(d_result.id, 27, tax_rate)
       d_result_self_report.sp = m_oiletc_pos_total(d_result.id, 9, tax_rate)
       d_result_self_report.sc = m_oiletc_pos_total(d_result.id, 23, tax_rate)
+      d_result_self_report.cb = m_oiletc_pos_total(d_result.id, 24, tax_rate)
       #他売上
       d_result_self_report.wash_item = m_etc_pos_total(d_result.id, 10, tax_rate)
       d_result_self_report.game = m_etc_pos_total(d_result.id, 12, tax_rate)
       d_result_self_report.health = m_etc_pos_total(d_result.id, 11, tax_rate)
       d_result_self_report.net = m_etc_pos_total(d_result.id, 14, tax_rate)
       d_result_self_report.charge = m_etc_pos_total(d_result.id, 13, tax_rate)
+      d_result_self_report.ozone = m_etc_pos_total(d_result.id, 15, tax_rate)
       d_result_self_report.spare = 0
       d_result_self_report.save
     else
@@ -549,10 +549,10 @@ class DResultsController < ApplicationController
       d_result_report.save
     end
     
-    params[:select_date] = params[:select][:result_date]
-    params[:m_shop_id] = params[:select][:m_shop_id]
-    params[:edit_flg] = params[:select][:edit_flg]
-    select_date
+#    params[:select_date] = params[:select][:result_date]
+#    params[:m_shop_id] = params[:select][:m_shop_id]
+#    params[:edit_flg] = params[:select][:edit_flg]
+#    select_date
   end
   
   def yume_index

@@ -40,14 +40,18 @@ module DResultsHelper
   end
   
   def m_oiletc_ruikei_sql(m_shop_id, result_date, shop_kbn)
-    #day, yesterday = old_result_date(result_date)
+    day, yesterday = old_result_date(result_date)
+
+    if day == "01"
+      yesterday = "99999999"
+    end
 
     sql = "select m.id, m.oiletc_tani, sum(d.oiletc_arari) as arari_ruikei,"
     sql << "      CASE m.oiletc_tani WHEN 6 THEN sum(COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0))"
     sql << "                         ELSE sum(trunc(COALESCE(d.pos1_data, 0) + COALESCE(d.pos2_data, 0) + COALESCE(d.pos3_data, 0), 0))"
     sql << "      END oiletc_ruikei"
     sql << " from d_results r, d_result_oiletcs d, m_oiletcs m"
-    sql << " where r.result_date >= '#{result_date[0,6] + "01"}' and r.result_date <= '#{result_date}'"
+    sql << " where r.result_date >= '#{yesterday[0,6] + "01"}' and r.result_date <= '#{yesterday}'"
     sql << "   and m_shop_id = #{m_shop_id} and r.id = d.d_result_id and d.m_oiletc_id = m.id"
     sql << " and oiletc_group <> 0  and m.deleted_flg = 0 and (m.shop_kbn is null or m.shop_kbn = #{shop_kbn}) group by m.id"
 
@@ -663,4 +667,14 @@ module DResultsHelper
     
     return arari_total
   end 
+  
+  def view_pos_ruikei(oiletc_ruikei, oiletc_nikkei, oiletc_tani)
+    if oiletc_tani == 6
+      goukei = ((oiletc_ruikei.to_f * 100) + (oiletc_nikkei.to_f * 100)) / 100
+    else
+      goukei = oiletc_ruikei.to_i + oiletc_nikkei.to_i
+    end
+    
+    return goukei
+  end
 end
