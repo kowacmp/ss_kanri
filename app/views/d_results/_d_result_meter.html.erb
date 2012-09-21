@@ -18,7 +18,7 @@
       <% if meter[:meter_kabusoku].to_i < 0 %>
         <td class="input_no" id="display" style="color: red;"><%= num_fmt(meter[:meter_kabusoku]) %></td>
       <% else %>
-        <td class="input_no" id="display"><%= num_fmt(meter[:meter_kabusoku]) %></td>
+        <td class="input_no" id="display"><%= meter[:meter_kabusoku].round(2) %></td>
       <% end %>
       
       <% if meter[:tank_kabusoku].to_i < 0 %>
