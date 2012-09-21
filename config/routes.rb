@@ -1,5 +1,7 @@
 SsKanri::Application.routes.draw do
 
+  resources :d_audit_cashboxes
+
   resources :m_get_points
 
   get "d_price_check_etcs/index"
