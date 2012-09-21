@@ -154,8 +154,13 @@ SsKanri::Application.routes.draw do
 
   resources :m_codes
 
-  resources :m_info_costs
-
+  resources :m_info_costs do
+   collection do
+     get :popup_edit
+     post :popup_update
+   end
+  end
+  
   resources :m_etcsales
 
   resources :m_washes

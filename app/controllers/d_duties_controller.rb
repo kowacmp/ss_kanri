@@ -6,10 +6,9 @@ class DDutiesController < ApplicationController
   # GET /d_duties
   # GET /d_duties.json
   def index
-    @head = DSale.new
+    @head = DDuty.new
 
     params[:input_day] = input_day_set("input_day") if params[:input_day] == nil
-    params[:input_shop_kbn] = params[:head][:input_shop_kbn] if params[:input_shop_kbn] == nil and params[:head] != nil
       
     if params[:input_day].blank?
       @head[:input_day] = Time.now.localtime.strftime("%Y%m")
@@ -24,18 +23,16 @@ class DDutiesController < ApplicationController
       @m_shop_id = params[:m_shop_id]
     end
     
-    @start_year = DSaleReport.minimum("sale_date").to_s
-    if @start_year.blank?
-      @start_year = @head[:input_day].to_s[0,4].to_i
-    else
-      @start_year = @start_year.to_s[0,4].to_i
-    end
+    #selectboxの選択年度を設定
 
-    @d_duties = DDuty.all
-
+    @start_year = Time.now.localtime.strftime("%Y").to_i - 1
+   
     respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @d_duties }
+      if params[:remote]
+        format.html { render :partial => 'form'  }
+      else
+        format.html 
+      end
     end
   end
 

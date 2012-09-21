@@ -1,5 +1,20 @@
 $(function () {
-	
+
+    //入力日が変更された場合のイベント
+    $("#_input_day_1i, #_input_day_2i")
+      .change(function() { 
+           	  //Index
+           	   $.get(
+				    '/d_duties',                 // 送信先
+				    { input_day: String($("#_input_day_1i").val()) + ('00' + $("#_input_day_2i").val()).slice(-2) , m_shop_id: $("#head_input_m_shop_id").val(), remote: true},
+				    function(data, status) {        // 通信成功時にデータを表示
+				       $('#form').empty();
+		               $('#form').append(data);
+		             },
+				    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
+		            );
+    });
+           	
 	//バいトの日勤が変更されたら
 	$("div#modal :input[id*=_day_work_time], div#modal :input[id*=_night_work_time]")
     .live('change', function(){

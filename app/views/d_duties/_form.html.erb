@@ -56,6 +56,7 @@
 					<%= user.account %></td>
 				<td style="min-width: 130px">
 					<%= link_to user.user_name , {:controller => "d_duties", :action => "syain_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal" %>
+					<%= link_to image_tag('icon/user_edit.png'), {:controller => "m_info_costs", :action => "popup_edit", :user_id => user.id }, :class => "modal" %>
 				</td>
 				<td style="text-align: center;min-width: 50px"><label id=<%= "syain_nisu_#{user.id}" %>><%= nisu[0].nisu %></label></td>
 				
@@ -94,6 +95,7 @@
 					<%= user.account %></td>
 				<td style="min-width: 130px">
 					<%= link_to user.user_name, {:controller => "d_duties", :action => "baito_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal" %>
+					<%= link_to image_tag('icon/user_edit.png'), {:controller => "m_info_costs", :action => "popup_edit", :user_id => user.id }, :class => "modal" %>
 				</td>
 				<td style="text-align: center;min-width: 50px"><label id=<%= "baito_jikan_#{user.id}" %>><%= jikan[0].jikan %></label></td>
 				
@@ -114,7 +116,7 @@
 
 <script>
 $(function () {
-	$('#d_duty_table').tablefix({width: 925, height: 900, fixRows: 1, fixCols: 1});
+	$('#d_duty_table').tablefix({width: 925, height: 800, fixRows: 1, fixCols: 1});
 	
     $('div.bodyDiv').scrollLeft(50 * (<%= Time.now.day %> - 2));
     
