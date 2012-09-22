@@ -4,7 +4,7 @@
 	<tr>
 		<th>対象店舗</th>
 		<td class="input_no" id="display"><%= @shop.shop_cd %>&nbsp;&nbsp;<%= @shop.shop_name %></td>
-		<th>入力日</th>
+		<th>売上日</th>
 		<td>
 			<% unless @mode == 'list' %>
 			  <%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 8 %>
