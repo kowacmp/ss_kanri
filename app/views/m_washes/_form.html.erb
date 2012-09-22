@@ -31,7 +31,7 @@
   	  <td>
   	  	<%= f.select(:wash_group, MCode.find(:all, :conditions => ["kbn = ?",'wash_group'], :order => 'code').map do |u|
       		[u.code_name,u.code]
-        end, {:include_blank => "選択して下さい"}) %>
+        end, {:include_blank => ""}) %>
   	  </td>  	  
   	</tr>
   	<tr>
