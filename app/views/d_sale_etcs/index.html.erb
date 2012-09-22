@@ -1,10 +1,10 @@
-<h1>他売上入力</h1>
+<h1>他商品売上入力</h1>
 
 <table id='rounded-corner'>
 	<tr>
 		<th>対象店舗</th>
 		<td class="input_no" id="display"><%= @shop.shop_cd %>&nbsp;&nbsp;<%= @shop.shop_name %></td>
-		<th>入力日</th>
+		<th>売上日</th>
 		<td><%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 8 %></td>
 	</tr>
 </table>

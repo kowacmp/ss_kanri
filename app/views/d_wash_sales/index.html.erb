@@ -1,4 +1,4 @@
-<h1>洗車売上入力</h1>
+<h1>洗車メーター売上入力</h1>
 
 <table id='rounded-corner'>
 	<tr>
@@ -16,7 +16,7 @@
 </table>
 
 <% if @mode == 'list' %>
-  <%= link_to '洗車売上入力状況一覧へ戻る',{:controller => 'd_washsale_lists',:action => 'index',
+  <%= link_to '洗車メーター売上入力状況へ戻る',{:controller => 'd_washsale_lists',:action => 'index',
   	:input_ymd => @input_ymd,:shop_kbn => @shop_kbn} %>
 <% end %>
 <p>
@@ -26,7 +26,7 @@
 </p>
 
 <% if @mode == "list" %>
-  <%= link_to '洗車売上入力状況一覧へ戻る',{:controller => 'd_washsale_lists',:action => 'index',
+  <%= link_to '洗車メーター売上入力状況へ戻る',{:controller => 'd_washsale_lists',:action => 'index',
   	:input_ymd => @input_ymd,:shop_kbn => @shop_kbn} %>
 <% end %>
 <!-- 読み込む位置が関係しているので、ここに書く -->

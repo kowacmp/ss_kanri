@@ -334,9 +334,9 @@
   	<% end %>
   	
   	<% if @d_sale.kakutei_flg == 1 and params[:from_view] != "index" %>
-  	   <%= f.submit '保存', :confirm => "保存します。よろしいですか？", :method => :post, :disabled=>"disabled" %>
+  	   <%= f.submit '  登  録  ', :disable_with => "登録中.....",:confirm => "登録します。よろしいですか？", :method => :post, :disabled=>"disabled" %>
   	<% else%>
-  	   <%= f.submit '保存', :confirm => "保存します。よろしいですか？", :method => :post %>
+  	   <%= f.submit '  登  録  ', :disable_with => "登録中.....",:confirm => "登録します。よろしいですか？", :method => :post %>
   	<% end %>
   	
   </div>
