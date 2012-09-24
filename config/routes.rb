@@ -1,5 +1,9 @@
 SsKanri::Application.routes.draw do
 
+  get "d_result_tank_lists/index"
+
+  get "d_result_tank_lists/csv"
+
   resources :d_audit_cashboxes
 
   resources :m_get_points
