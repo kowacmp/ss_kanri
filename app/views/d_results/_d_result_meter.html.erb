@@ -15,8 +15,14 @@
       <th><%= meter[:oil_name] %></th>
       <th><%= meter[:volume] %></th>
       <td class="input_no" id="display"><%= meter[:meter_susumi] %></td>
-      <% if meter[:meter_kabusoku].to_i < 0 %>
-        <td class="input_no" id="display" style="color: red;"><%= num_fmt(meter[:meter_kabusoku]) %></td>
+      <% if meter[:meter_kabusoku].to_f < 0 %>
+        <td class="input_no" id="display" style="color: red;"><%#= num_fmt(meter[:meter_kabusoku]) %>
+        	<% if meter[:meter_kabusoku] == nil %>
+        		<%= meter[:meter_kabusoku] %>
+        	<% else %>
+        		<%= meter[:meter_kabusoku].round(2) %>
+        	<% end %>
+        </td>
       <% else %>
         <td class="input_no" id="display">
         	<% if meter[:meter_kabusoku] == nil %>
