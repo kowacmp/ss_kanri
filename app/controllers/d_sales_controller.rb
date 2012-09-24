@@ -167,6 +167,10 @@ p params
     if @d_sale.sale_pm_out == nil
       @d_sale.sale_pm_out=0
     end
+    #翌日出後
+    if @zenjitu_d_sale.sale_pm_out == nil
+      @zenjitu_d_sale.sale_pm_out=0
+    end
     # 2012/09/24 add end oda 算出項目がnilの場合、算出不可
     @syo_total=@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i + @d_sale.sale_purika.to_i + @d_sale.recive_money.to_i - @d_sale.pay_money.to_i 
     @total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + @zenjitu_d_sale.sale_changebox.to_i + @d_sale.sale_ass.to_i 
