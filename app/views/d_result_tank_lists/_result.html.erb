@@ -1,0 +1,40 @@
+<% shop_name_key = "" %>
+
+<% if @from_ymd_s.to_i  > @to_ymd_s.to_i %>
+<font color="red"><b><%= "対象日(From)を対象日(To)より大きくしてください"  %></b></font>
+<% else %>
+<%= form_tag(url_for(:action => 'csv')) do %>
+<%= hidden_field_tag 'from_ymd',@from_ymd %>
+<%= hidden_field_tag 'to_ymd',@to_ymd %>
+<%= hidden_field_tag 'shop_kbn',@shop_kbn %>
+<table class="rounded-corner">
+  <tr>
+    <th rowspan="2" scope="col">店舗</th>
+    <th rowspan="2" scope="col">日付</th>
+    <th colspan="4" scope="col">在庫量(L)</th>
+  </tr>
+  <tr>
+  	<% @m_oils.each do |oil| %>
+    <th  style="width:15%"><%= oil.oil_name %></th>
+    <% end %>
+  </tr>
+ <% @m_shops.each do |shop| %>
+ <% for i in @from_ymd_s.to_i..@to_ymd_s.to_i %>
+  <tr>
+    <td>
+    	<% unless shop.shop_name == shop_name_key %>
+    	  <%= shop.shop_cd %> <%= shop.shop_name %>
+    	<% end %>
+    	<% shop_name_key = shop.shop_name %>
+    </td>
+    <td><%= i.to_s[0,4] + '/' + i.to_s[4,2] + '/' + i.to_s[6,2] %></td>
+    <% @m_oils.each do |oil| %>
+    <td><%= get_sum_stock(i.to_s,i.to_s,shop.id,oil.id) %></td>
+    <% end %>
+  </tr>
+  <% end %><!-- for -->
+  <% end %><!-- shop -->
+</table>
+<%= submit_tag "ＣＳＶ作成" %>
+<% end %><!-- form -->
+<% end %><!-- 最初のif -->
