@@ -197,7 +197,9 @@ module DResultsHelper
 
       d_result_meters.each do |d_result_meter| 
         result_meters[d_result_meter.m_oil_id.to_i][:meter] += d_result_meter.meter.to_i
-        if d_result_meter.meter.to_i > d_result_meter.old_meter.to_i
+        #2012/09/24 nishimura 条件修正
+        #if d_result_meter.meter.to_i > d_result_meter.old_meter.to_i
+        if d_result_meter.meter.to_i >= d_result_meter.old_meter.to_i
           result_meters[d_result_meter.m_oil_id.to_i][:old_meter] += d_result_meter.old_meter.to_i        
         end
       end
@@ -238,10 +240,18 @@ module DResultsHelper
         @meters[idx][:meter_susumi] = result_meters[m_oil.id][:meter].to_i - result_meters[m_oil.id][:old_meter].to_i
         @meters[idx][:receive] = result_tanks[m_oil.id][:tank_receive]
         @meters[idx][:stock] = result_tanks[m_oil.id][:tank_stock]
-        #@meters[idx][:tank_kabusoku] = result_tanks[m_oil.id][:old_tank_stock].to_i + @meters[idx][:receive].to_i - @meters[idx][:stock].to_i - @meters[idx][:meter_susumi].to_i  
         #2012/09/21 nishimura 計算式修正
+        #@meters[idx][:tank_kabusoku] = result_tanks[m_oil.id][:old_tank_stock].to_i + @meters[idx][:receive].to_i - @meters[idx][:stock].to_i - @meters[idx][:meter_susumi].to_i  
         @meters[idx][:tank_kabusoku] = @meters[idx][:stock].to_i - (result_tanks[m_oil.id][:old_tank_stock].to_i + @meters[idx][:receive].to_i - @meters[idx][:meter_susumi].to_i)
-        @meters[idx][:meter_kabusoku] = @meters[idx][:meter_susumi].to_i - session[:m_oil_totals][m_oil.id][:total].to_f
+        #2012/09/24 nishimura 計算式修正
+        #@meters[idx][:meter_kabusoku] = @meters[idx][:meter_susumi].to_i - session[:m_oil_totals][m_oil.id][:total].to_f
+        @meters[idx][:meter_kabusoku] = session[:m_oil_totals][m_oil.id][:total].to_f - @meters[idx][:meter_susumi].to_i
+        p "========================"
+        p "session[:m_oil_totals][m_oil.id][:total].to_f=#{session[:m_oil_totals][m_oil.id][:total].to_f}"
+        p "@meters[idx][:meter_susumi].to_i=#{@meters[idx][:meter_susumi].to_i}"
+        p "@meters[idx][:meter_kabusoku]=#{@meters[idx][:meter_kabusoku]}"
+        p "========================"
+        
       end
     end #d_result_meters.blank?   
   end
