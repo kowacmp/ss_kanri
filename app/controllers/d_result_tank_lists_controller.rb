@@ -40,26 +40,30 @@ class DResultTankListsController < ApplicationController
     @shop_kbn = params[:shop_kbn]
     @from_ymd_s = @from_ymd.delete("/")
     @to_ymd_s   = @to_ymd.delete("/")
-
+    str = "店舗".tosjis + ",日付".tosjis
+    
     @m_shops = MShop.where('shop_cd <> 999999 and shop_kbn = ?',@shop_kbn).order('shop_cd')
     @m_oils = MOil.where('deleted_flg = 0').order('oil_cd')
 
     CSV.generate(output = "") do |csv|
-      csv << ["店舗".tosjis,"日付".tosjis,"ハイオク".tosjis,"ガソリン".tosjis,"軽油".tosjis,"灯油".tosjis]
+      
+      #ヘッダ処理
+      @m_oils.each do |oil|
+        str = str + "," + oil.oil_name.tosjis
+      end
+      csv << str.split(/,/)
+      
+      #データ処理
       @m_shops.each do |shop|
         for i in @from_ymd_s.to_i..@to_ymd_s.to_i
-          #@m_oils.each do |oil|
-            
-           csv << [shop.shop_name.tosjis, "#{i.to_s[0,4]}/#{i.to_s[4,2]}/#{i.to_s[6,2]}", 
-                   get_sum_stock(i.to_s,i.to_s,shop.id,1),
-                   get_sum_stock(i.to_s,i.to_s,shop.id,2),
-                   get_sum_stock(i.to_s,i.to_s,shop.id,3),
-                   get_sum_stock(i.to_s,i.to_s,shop.id,4)
-                   ]               
-          #end
-        end
-       end
-    end
+            str = shop.shop_name.tosjis + "," + "#{i.to_s[0,4]}/#{i.to_s[4,2]}/#{i.to_s[6,2]}"
+             @m_oils.each do |oil|
+               str = str + "," + get_sum_stock(i.to_s,i.to_s,shop.id,oil.id).to_s
+             end
+           csv << str.split(/,/)        
+        end #for
+       end #@m_shops.each
+    end # CSV
     
 
     file_name = "燃料油在庫データ_#{@from_ymd_s}_#{@to_ymd_s}.csv"
