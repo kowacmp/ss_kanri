@@ -18,13 +18,10 @@ class DResultTankListsController < ApplicationController
     else
       @to_ymd   = params[:to_ymd]     
     end
-    if params[:shop_kbn] == nil or params[:shop_kbn] == ""
-      @shop_kbn = 0
-    else
-      @shop_kbn = params[:shop_kbn]
-    end
+    @shop_kbn = params[:shop_kbn]
+    
+    @m_shops = get_shops(@shop_kbn)
 
-    @m_shops = MShop.where('shop_cd <> 999999 and shop_kbn = ?',@shop_kbn).order('shop_cd')
     @m_oils = MOil.where('deleted_flg = 0').order('oil_cd')
     
     @from_ymd_s = @from_ymd.delete("/")
@@ -40,9 +37,9 @@ class DResultTankListsController < ApplicationController
     @shop_kbn = params[:shop_kbn]
     @from_ymd_s = @from_ymd.delete("/")
     @to_ymd_s   = @to_ymd.delete("/")
-    str = "店舗".tosjis + ",日付".tosjis
+    str = "店舗コード".tosjis + ",店舗".tosjis + ",日付".tosjis
     
-    @m_shops = MShop.where('shop_cd <> 999999 and shop_kbn = ?',@shop_kbn).order('shop_cd')
+    @m_shops = get_shops(@shop_kbn)
     @m_oils = MOil.where('deleted_flg = 0').order('oil_cd')
 
     CSV.generate(output = "") do |csv|
@@ -56,7 +53,7 @@ class DResultTankListsController < ApplicationController
       #データ処理
       @m_shops.each do |shop|
         for i in @from_ymd_s.to_i..@to_ymd_s.to_i
-            str = shop.shop_name.tosjis + "," + "#{i.to_s[0,4]}/#{i.to_s[4,2]}/#{i.to_s[6,2]}"
+            str = shop.shop_cd.to_s + "," + shop.shop_name.tosjis + "," + "#{i.to_s[0,4]}/#{i.to_s[4,2]}/#{i.to_s[6,2]}"
              @m_oils.each do |oil|
                str = str + "," + get_sum_stock(i.to_s,i.to_s,shop.id,oil.id).to_s
              end

@@ -12,4 +12,13 @@ module DResultTankListsHelper
     
     DResultTank.find_by_sql([sql,from_ymd,to_ymd,shop_id,oil_id]).first.stock
   end
+  
+  def get_shops(shop_kbn)
+    if shop_kbn == nil or shop_kbn == ""
+      m_shops = MShop.where('shop_cd <> 999999').order('shop_cd')
+    else
+      m_shops = MShop.where('shop_cd <> 999999 and shop_kbn = ?',shop_kbn).order('shop_cd')
+    end
+    return m_shops
+  end  
 end
