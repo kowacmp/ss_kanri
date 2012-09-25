@@ -64,11 +64,11 @@ class MItemsController < ApplicationController
   def new
     @m_item = MItem.new
     
-    select_sql = "select a.*, b.code_name as item_account_class_name"
-    select_sql << " from m_item_accounts a " 
-    select_sql << " left join (select * from m_codes where kbn='item_account_class') b on a.item_account_class = cast(b.code as integer) "
+    #select_sql = "select a.*, b.code_name as item_account_class_name"
+    #select_sql << " from m_item_accounts a " 
+    #select_sql << " left join (select * from m_codes where kbn='item_account_class') b on a.item_account_class = cast(b.code as integer) "
     
-    @m_item_accounts = MItemAccount.find_by_sql("#{select_sql} order by a.item_account_class,a.item_account_code")
+    #@m_item_accounts = MItemAccount.find_by_sql("#{select_sql} order by a.item_account_class,a.item_account_code")
 
     respond_to do |format|
       format.html # new.html.erb
@@ -80,11 +80,11 @@ class MItemsController < ApplicationController
   def edit
     @m_item = MItem.find(params[:id])
     
-    select_sql = "select a.*, b.code_name as item_account_class_name"
-    select_sql << " from m_item_accounts a " 
-    select_sql << " left join (select * from m_codes where kbn='item_account_class') b on a.item_account_class = cast(b.code as integer) "
+    #select_sql = "select a.*, b.code_name as item_account_class_name"
+    #select_sql << " from m_item_accounts a " 
+    #select_sql << " left join (select * from m_codes where kbn='item_account_class') b on a.item_account_class = cast(b.code as integer) "
     
-    @m_item_accounts = MItemAccount.find_by_sql("#{select_sql} order by a.item_account_class,a.item_account_code")
+    #@m_item_accounts = MItemAccount.find_by_sql("#{select_sql} order by a.item_account_class,a.item_account_code")
     
     @check_del_flg = params[:input_check].to_i
   end

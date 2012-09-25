@@ -122,7 +122,56 @@ p params
     if @m_fix_money == nil
       @m_fix_money = MFixMoney.new  
     end
-    
+    # 2012/09/24 add start oda 算出項目がnilの場合、算出不可
+    #売上1
+    if @d_sale.sale_money1 == nil
+      @d_sale.sale_money1=0
+    end
+    #売上2
+    if @d_sale.sale_money2 == nil
+      @d_sale.sale_money2=0
+    end
+    #売上3
+    if @d_sale.sale_money3 == nil
+      @d_sale.sale_money3=0
+    end
+    #ﾌﾟﾘｶ
+    if @d_sale.sale_purika == nil
+      @d_sale.sale_purika=0
+    end
+    #ass
+    if @d_sale.sale_ass == nil
+      @d_sale.sale_ass=0
+    end
+    #釣銭機1
+    if @d_sale.sale_change1 == nil
+      @d_sale.sale_change1=0
+    end
+    #釣銭機2
+    if @d_sale.sale_change2 == nil
+      @d_sale.sale_change2=0
+    end
+    #釣銭機3
+    if @d_sale.sale_change3 == nil
+      @d_sale.sale_change3=0
+    end
+    #翌日出前
+    if @d_sale.sale_am_out == nil
+      @d_sale.sale_am_out=0
+    end
+    #当日出
+    if @d_sale.sale_today_out == nil
+      @d_sale.sale_today_out=0
+    end
+    #翌日出後
+    if @d_sale.sale_pm_out == nil
+      @d_sale.sale_pm_out=0
+    end
+    #翌日出後
+    if @zenjitu_d_sale.sale_pm_out == nil
+      @zenjitu_d_sale.sale_pm_out=0
+    end
+    # 2012/09/24 add end oda 算出項目がnilの場合、算出不可
     @syo_total=@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i + @d_sale.sale_purika.to_i + @d_sale.recive_money.to_i - @d_sale.pay_money.to_i 
     @total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + @zenjitu_d_sale.sale_changebox.to_i + @d_sale.sale_ass.to_i 
     @sale_change_total = @d_sale.sale_change1.to_i + @d_sale.sale_change2.to_i + @d_sale.sale_change3.to_i 

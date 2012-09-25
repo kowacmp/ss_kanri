@@ -33,13 +33,15 @@
   	<tr>
   	  <th><%= f.label '内訳科目' %></th>
   	  <td><%#= f.number_field :m_item_account_id, :style=>"ime-mode:disabled" ,:maxlength=>4 %>
-  	  	<%#= f.select(:m_item_account_id, MItemAccount.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'item_account_code').map do |u|
-      		[u.item_account_code.to_s + " " + u.item_account_name.to_s,u.id]
-        end, {:include_blank => "選択して下さい"}) %>
+  	  	<% select_sql = "select a.*, b.code_name as item_account_class_name" %>
+    	<% select_sql << " from m_item_accounts a "  %>
+    	<% select_sql << " left join (select * from m_codes where kbn='item_account_class') b on a.item_account_class = cast(b.code as integer) " %>
+    
+    	<% @m_item_accounts = MItemAccount.find_by_sql("#{select_sql} order by a.item_account_class,a.item_account_code") %>
+    	
         <%= f.select(:m_item_account_id, @m_item_accounts.map do |u|
       		[u.item_account_class_name.to_s + " " + u.item_account_code.to_s + " " + u.item_account_name.to_s,u.id]
-        end, {:include_blank => "選択して下さい"}) %>
-        
+        end, {:include_blank => ""}) %>
         
   	  </td>  	  
   	</tr>
