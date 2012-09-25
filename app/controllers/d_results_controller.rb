@@ -809,23 +809,24 @@ p "oil_sql=#{oil_sql}"
     
     #タンク在庫登録
     m_tanks = MTank.find(:all, :conditions => ["m_shop_id = ? and deleted_flg = 0",@d_result.m_shop_id])
-    m_tanks.each do |m_tank|
-      d_result_tank = DResultTank.find(:first, :conditions => ["d_result_id = ? and m_tank_id = ?", @d_result.id, m_tank.id])
+    ActiveRecord::Base.transaction do
+      m_tanks.each do |m_tank|
+        d_result_tank = DResultTank.find(:first, :conditions => ["d_result_id = ? and m_tank_id = ?", @d_result.id, m_tank.id])
       
-      if d_result_tank.blank?
-        d_result_tank = DResultTank.new
-        d_result_tank.d_result_id = @d_result.id
-        d_result_tank.m_tank_id = m_tank.id
-        d_result_tank.created_user_id = current_user.id
-        d_result_tank.updated_user_id = current_user.id           
-      end
+        if d_result_tank.blank?
+          d_result_tank = DResultTank.new
+          d_result_tank.d_result_id = @d_result.id
+          d_result_tank.m_tank_id = m_tank.id
+          d_result_tank.created_user_id = current_user.id
+          d_result_tank.updated_user_id = current_user.id           
+        end
       
-      d_result_tank.receive = params[:receive]["#{m_tank.id}"]
-      d_result_tank.stock = params[:stock]["#{m_tank.id}"]     
-      d_result_tank.updated_user_id = current_user.id 
-      d_result_tank.save      
-    end  
-    
+        d_result_tank.receive = params[:receive]["#{m_tank.id}"]
+        d_result_tank.stock = params[:stock]["#{m_tank.id}"]     
+        d_result_tank.updated_user_id = current_user.id 
+        d_result_tank.save      
+      end  
+  end#transuction
     sql = m_meters_count_sql(@d_result.m_shop_id)
     @m_meters_count = MMeter.count_by_sql(sql)
     @d_result_meters_count = DResultMeter.count(:all, :conditions => ["d_result_id = ?", @d_result.id]) 
