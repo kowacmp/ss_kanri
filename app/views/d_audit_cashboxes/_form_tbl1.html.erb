@@ -1,0 +1,359 @@
+<style type="text/css">
+	/* 緑色 td */
+	td.green {
+		background-color: #A5D7AA;
+	}
+	/* 灰色 td */
+	td.gray {
+		background-color: #C3C3C3;
+	}
+	/* オレンジ td */
+	td.orange {
+		background-color:#FDF3B5	
+	}
+</style>
+
+<table class='rounded-corner' id="tbl1" style="white-space: nowrap">
+
+	<!-- begin ヘッダ -->
+	<tr>
+		<th rowspan="2" colspan="3"> 
+			&nbsp;
+		</th>
+
+		<% for i in 1..6 %>
+			<th colspan="2"><%= link_to("金庫#{ i }" ,{:action => "edit_kinko", :id => i }, :class => 'modal') %></th>
+			<td rowspan="2" class="orange" align="right" style="min-width: 80px;">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }"]) %> 
+			</td>
+		<% end %>
+	</tr>	
+
+	<tr>
+		<!-- th rowspan="2" colspan="3" -->
+
+		<% for i in 1..6 %>
+			<th colspan="2">指定額</th>
+			<!-- td rowspan="2" -->
+		<% end %>
+	</tr>
+	
+	<tr>
+		<th colspan="3">&nbsp;</th>
+		
+		<% for i in 1..6 %>
+		
+			<th>本数</th>
+			<th>枚数</th>
+			<th>金額</th>
+		
+		<% end %>
+		
+	</tr>
+	<!-- end ヘッダ -->
+	
+	<tr>
+		
+		<th rowspan="12" style="white-space: normal">金額</th>		
+		
+		<th colspan="2">10,000円札</th>
+
+		<% for i in 1..6 %>		
+			<td class="gray">&nbsp;</td>
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_10000paper"]) %> 
+			</td>
+			<td class="green" align="right">
+				<%= number_with_delimiter(get_kingaku_10000paper(i)) %>
+			</td>
+		<% end %> <!--  for i in 1..6  -->
+		
+	</tr>
+	
+	<tr>
+		
+		<!-- <th rowspan="12">金額</th> -->	
+	
+		<th colspan="2">5,000円札</th>
+		
+		<% for i in 1..6 %>		
+			<td class="gray">&nbsp;</td>
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_5000paper"]) %> 
+			</td>
+			<td class="green" align="right">
+				<%= number_with_delimiter(get_kingaku_5000paper(i)) %>
+			</td>
+		<% end %> <!--  for i in 1..6  -->
+		
+	</tr>
+	
+	<tr>
+		
+		<!-- <th rowspan="12">金額</th> -->	
+	
+		<th colspan="2">2,000円札</th>
+		
+		<% for i in 1..6 %>		
+			<td class="gray">&nbsp;</td>
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_2000paper"]) %>
+			</td>
+			<td class="green" align="right">
+				<%= number_with_delimiter(get_kingaku_2000paper(i)) %>
+			</td>
+		<% end %> <!--  for i in 1..6  -->
+		
+	</tr>
+	
+	<tr>
+		
+		<!-- <th rowspan="12">金額</th> -->	
+	
+		<th colspan="2">1,000円札</th>
+		
+		<% for i in 1..6 %>		
+			<td class="gray">&nbsp;</td>
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_1000paper"]) %>
+			</td>
+			<td class="green" align="right">
+				<%= number_with_delimiter(get_kingaku_1000paper(i)) %>
+			</td>
+		<% end %> <!--  for i in 1..6  -->
+		
+	</tr>
+	
+	<tr>
+		
+		<!-- <th rowspan="12">金額</th> -->	
+	
+		<th >500円玉</th>
+		<th >20</th>
+		
+		<% for i in 1..6 %>		
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_500coin_20"]) %>	
+			</td>
+			<td rowspan="2"  class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_500coin_mai"]) %>
+			</td>
+			<td rowspan="2"  class="green" align="right">
+				<%= number_with_delimiter(get_kingaku_500coin(i)) %>
+			</td>
+		<% end %> <!--  for i in 1..6  -->
+		
+	</tr>
+	
+	<tr>
+		
+		<!-- <th rowspan="12">金額</th> -->	
+	
+		<th >500円玉</th>
+		<th >50</th>
+		
+		<% for i in 1..6 %>		
+			<td  class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_500coin_50"]) %>
+			</td>
+			<!-- td rowspan="2"></td> -->
+			<!-- td rowspan="2"></td> -->
+		
+		<% end %> <!--  for i in 1..6  -->
+		
+	</tr>
+	
+	<tr>
+		
+		<!-- <th rowspan="12">金額</th> -->	
+	
+		<th colspan="2">100円玉</th>
+		
+		<% for i in 1..6 %>		
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_100coin_hon"]) %>	
+			</td>
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_100coin_mai"]) %>
+			</td>
+			<td class="green" align="right">
+				<%= number_with_delimiter(get_kingaku_100coin(i)) %>
+			</td>
+		<% end %> <!--  for i in 1..6  -->
+		
+	</tr>
+	
+	<tr>
+		
+		<!-- <th rowspan="12">金額</th> -->	
+	
+		<th colspan="2">50円玉</th>
+		
+		<% for i in 1..6 %>		
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_50coin_hon"]) %>
+			</td>
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_50coin_mai"]) %>
+			</td>
+			<td class="green" align="right">
+				<%= number_with_delimiter(get_kingaku_50coin(i)) %>
+			</td>
+		<% end %> <!--  for i in 1..6  -->
+		
+	</tr>
+	
+	<tr>
+		
+		<!-- <th rowspan="12">金額</th> -->	
+	
+		<th colspan="2">10円玉</th>
+		
+		<% for i in 1..6 %>		
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_10coin_hon"]) %>	
+			</td>
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_10coin_mai"]) %>
+			</td>
+			<td class="green" align="right">
+				<%= number_with_delimiter(get_kingaku_10coin(i)) %>
+			</td>
+		<% end %> <!--  for i in 1..6  -->
+		
+	</tr>
+	
+	<tr>
+		
+		<!-- <th rowspan="12">金額</th> -->	
+	
+		<th colspan="2">5円玉</th>
+		
+		<% for i in 1..6 %>		
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_5coin_hon"]) %>
+			</td>
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_5coin_mai"]) %>
+			</td>
+			<td  class="green" align="right">
+				<%= number_with_delimiter(get_kingaku_5coin(i)) %>
+			</td>
+		<% end %> <!--  for i in 1..6  -->
+		
+	</tr>
+	
+	<tr>
+		
+		<!-- <th rowspan="12">金額</th> -->	
+	
+		<th colspan="2">1円玉</th>
+		
+		<% for i in 1..6 %>		
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_1coin_hon"]) %>	
+			</td>
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_1coin_mai"]) %>
+			</td>
+			<td class="green" align="right">
+				<%= number_with_delimiter(get_kingaku_1coin(i)) %>
+			</td>
+		<% end %> <!--  for i in 1..6  -->
+		
+	</tr>
+	
+	<tr>
+		
+		<!-- <th rowspan="12">金額</th> -->	
+	
+		<th colspan="2">予備</th>
+		
+		<% for i in 1..6 %>		
+			<td colspan="2" class="gray">&nbsp;</td>
+			<td class="orange" align="right">
+				<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_yobi"]) %>
+			</td>
+		<% end %> <!--  for i in 1..6  -->
+		
+	</tr>
+	
+	<tr>
+		
+		<th colspan="3">合計金額</th>
+		
+		<% for i in 1..6 %>
+			<td class="green" colspan="3" align="right">
+				<%= number_with_delimiter(get_kingaku(i)) %>
+			</td>
+		<% end %> <!-- for i in 1..6 -->
+		
+	</tr>
+	
+	<tr>
+		
+		<th colspan="3">過不足額</th>
+		
+		<% for i in 1..6 %>
+			<td class="green" colspan="3" align="right">
+				<%= number_with_delimiter(get_kabusoku(i)) %>
+			</td>
+		<% end %> <!-- for i in 1..6 -->
+		
+	</tr>
+		
+	<tr>
+		
+		<th colspan="3">立替未処理</th>
+		
+		<% for i in 1..6 %>
+			<td class="green" colspan="3">
+				&nbsp;
+			</td>
+		<% end %> <!-- for i in 1..6 -->
+		
+	</tr>		
+		
+	<tr>
+		
+		<th colspan="3">実過不足金</th>
+		
+		<% for i in 1..6 %>
+			<td class="green" colspan="3">
+				&nbsp;
+			</td>
+		<% end %> <!-- for i in 1..6 -->
+		
+	</tr>		
+		
+	<tr>
+		
+		<th colspan="3">立替未処理合計</th>
+		
+		<% for i in 1..6 %>
+			<td class="green" colspan="3">
+				&nbsp;
+			</td>
+		<% end %> <!-- for i in 1..6 -->
+		
+	</tr>	
+		
+	<tr>
+		
+		<th colspan="3">立替未処理内訳</th>
+		
+		<% for i in 1..6 %>
+			<td colspan="3" align="center">
+				<a href="#">内訳</a>
+			</td>
+		<% end %>
+	</tr>
+		
+</table>
+
+<script language="JavaScript">
+$(function(){
+	// スクロール
+	$("#tbl1").tablefix({width: 900, height: 500, fixRows: 3, fixCols: 2});
+});
+</script>

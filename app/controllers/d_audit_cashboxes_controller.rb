@@ -13,15 +13,24 @@ class DAuditCashboxesController < ApplicationController
     
   end
 
+  def edit_kinko
+    
+    render :layout => "modal"
+    
+  end
+
+  def update_kinko
+    
+    @d_audit_cashbox = params[:d_audit_cashbox]
+    
+  end
+
   # GET /d_audit_chashboxes/1
   # GET /d_audit_chashboxes/1.json
   def show
-    @d_audit_chashbox = DAuditChashbox.find(params[:id])
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @d_audit_chashbox }
-    end
+    render :layout => "modal"
+
   end
 
   # GET /d_audit_chashboxes/new
