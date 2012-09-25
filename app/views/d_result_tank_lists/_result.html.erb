@@ -29,7 +29,7 @@
     </td>
     <td><%= i.to_s[0,4] + '/' + i.to_s[4,2] + '/' + i.to_s[6,2] %></td>
     <% @m_oils.each do |oil| %>
-    <td><%= get_sum_stock(i.to_s,i.to_s,shop.id,oil.id) %></td>
+    <td align="right"><%= get_sum_stock(i.to_s,i.to_s,shop.id,oil.id) %></td>
     <% end %>
   </tr>
   <% end %><!-- for -->

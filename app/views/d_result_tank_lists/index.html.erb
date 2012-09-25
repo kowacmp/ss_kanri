@@ -9,11 +9,15 @@
 	  <th>店舗種別</th>
 	  <td><% if @shop_kbn == 0 %>
 	  	<%= select_tag "shop_kbn",
-	        raw('<option value="0" selected>直営</option><option value="1">油外</option>')
+	        raw('<option value=""></option><option value="0" selected>直営</option><option value="1">油外</option>')
 	        %>
-	      <% else %>  
+	      <% elsif @shop_kbn == 1 %>  
 	        <%= select_tag "shop_kbn",
-	        raw('<option value="0">直営</option><option value="1" selected>油外</option>')
+	        raw('<option value=""></option><option value="0">直営</option><option value="1" selected>油外</option>')
+	        %>
+	      <% else %>
+	        <%= select_tag "shop_kbn",
+	        raw('<option value="" selected></option><option value="0">直営</option><option value="1">油外</option>')
 	        %>
 	      <% end %>
 	        </td> 
