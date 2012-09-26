@@ -246,11 +246,6 @@ module DResultsHelper
         #2012/09/24 nishimura 計算式修正
         #@meters[idx][:meter_kabusoku] = @meters[idx][:meter_susumi].to_i - session[:m_oil_totals][m_oil.id][:total].to_f
         @meters[idx][:meter_kabusoku] = session[:m_oil_totals][m_oil.id][:total].to_f - @meters[idx][:meter_susumi].to_i
-        p "========================"
-        p "session[:m_oil_totals][m_oil.id][:total].to_f=#{session[:m_oil_totals][m_oil.id][:total].to_f}"
-        p "@meters[idx][:meter_susumi].to_i=#{@meters[idx][:meter_susumi].to_i}"
-        p "@meters[idx][:meter_kabusoku]=#{@meters[idx][:meter_kabusoku]}"
-        p "========================"
         
       end
     end #d_result_meters.blank?   
@@ -418,51 +413,52 @@ module DResultsHelper
     end
     
     m_tanks = MTank.find(:all, :conditions => ["m_shop_id = ? and deleted_flg = 0",d_result.m_shop_id])
-    m_tanks.each do |m_tank|
-      d_tank_compute_report = DTankComputeReport.find(:first, :conditions => ["d_result_id = ? and m_tank_id = ?", d_result_id, m_tank.id])
-      old_d_tank_compute_report = DTankComputeReport.find(:first, :conditions => ["d_result_id = ? and m_tank_id = ?", old_d_result_id, m_tank.id])
+    ActiveRecord::Base.transaction do
+      m_tanks.each do |m_tank|
+        d_tank_compute_report = DTankComputeReport.find(:first, :conditions => ["d_result_id = ? and m_tank_id = ?", d_result_id, m_tank.id])
+        old_d_tank_compute_report = DTankComputeReport.find(:first, :conditions => ["d_result_id = ? and m_tank_id = ?", old_d_result_id, m_tank.id])
+        
+        if d_tank_compute_report.blank?
+          d_tank_compute_report = DTankComputeReport.new
+          d_tank_compute_report.d_result_id = d_result_id
+          d_tank_compute_report.m_tank_id = m_tank.id
+          d_tank_compute_report.inspect_flg = 0             
+        end
+        
+        if old_d_tank_compute_report.blank?
+          d_tank_compute_report.before_stock = 0
+        else
+          d_tank_compute_report.before_stock = old_d_tank_compute_report.after_stock     
+        end
+  
+        d_tank_compute_report.receive = tanks[m_tank.id][:receive]
+        d_tank_compute_report.sale = sales[m_tank.id][:sale] #--
+        d_tank_compute_report.compute_stock = d_tank_compute_report.before_stock + d_tank_compute_report.receive - d_tank_compute_report.sale
+        d_tank_compute_report.after_stock = tanks[m_tank.id][:stock]
+        d_tank_compute_report.decrease = d_tank_compute_report.after_stock - d_tank_compute_report.compute_stock
+        
+        if old_d_tank_compute_report.blank? or day == "01"#前回レコードがない、または月初だと今回の値を代入
+          d_tank_compute_report.sale_total = sales[m_tank.id][:sale]
+          d_tank_compute_report.decrease_total = d_tank_compute_report.decrease 
+        else
+          d_tank_compute_report.decrease_total = old_d_tank_compute_report.decrease_total + d_tank_compute_report.decrease
+          d_tank_compute_report.sale_total = old_d_tank_compute_report.sale_total + sales[m_tank.id][:sale] 
+        end
+        total_percentage = d_tank_compute_report.decrease_total.to_f / d_tank_compute_report.sale_total.to_f * 100      
+  
+        #桁オーバーフロー対策
+        if total_percentage >= 1000
+          total_percentage = 999.999 
+        elsif total_percentage <= -1000  
+          total_percentage = -999.999
+        elsif total_percentage.nan?  
+          total_percentage = 0        
+        end
       
-      if d_tank_compute_report.blank?
-        d_tank_compute_report = DTankComputeReport.new
-        d_tank_compute_report.d_result_id = d_result_id
-        d_tank_compute_report.m_tank_id = m_tank.id
-        d_tank_compute_report.inspect_flg = 0             
+        d_tank_compute_report.total_percentage = total_percentage.round(3)
+        d_tank_compute_report.save      
       end
-      
-      if old_d_tank_compute_report.blank?
-        d_tank_compute_report.before_stock = 0
-      else
-        d_tank_compute_report.before_stock = old_d_tank_compute_report.after_stock     
-      end
-
-      d_tank_compute_report.receive = tanks[m_tank.id][:receive]
-      d_tank_compute_report.sale = sales[m_tank.id][:sale] #--
-      d_tank_compute_report.compute_stock = d_tank_compute_report.before_stock + d_tank_compute_report.receive - d_tank_compute_report.sale
-      d_tank_compute_report.after_stock = tanks[m_tank.id][:stock]
-      d_tank_compute_report.decrease = d_tank_compute_report.after_stock - d_tank_compute_report.compute_stock
-      
-      if old_d_tank_compute_report.blank? or day == "01"#前回レコードがない、または月初だと今回の値を代入
-        d_tank_compute_report.sale_total = sales[m_tank.id][:sale]
-        d_tank_compute_report.decrease_total = d_tank_compute_report.decrease 
-      else
-        d_tank_compute_report.decrease_total = old_d_tank_compute_report.decrease_total + d_tank_compute_report.decrease
-        d_tank_compute_report.sale_total = old_d_tank_compute_report.sale_total + sales[m_tank.id][:sale] 
-      end
-      total_percentage = d_tank_compute_report.decrease_total.to_f / d_tank_compute_report.sale_total.to_f * 100      
-
-      #桁オーバーフロー対策
-      if total_percentage >= 1000
-        total_percentage = 999.999 
-      elsif total_percentage <= -1000  
-        total_percentage = -999.999
-      elsif total_percentage.nan?  
-        total_percentage = 0        
-      end
-    
-      d_tank_compute_report.total_percentage = total_percentage.round(3)
-      d_tank_compute_report.save      
-    end
-    
+    end#transuction
     
   #地下タンク過不足データ--------------------------
     compute_sql = "select o.id m_oil_id, SUM(cr.decrease) decrease_sum, SUM(cr.sale) sale_sum, SUM(cr.sale_total) sale_total_sum"

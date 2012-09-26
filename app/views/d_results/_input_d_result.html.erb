@@ -79,6 +79,7 @@
   </table>
   <br/>
   
+  <!-- 2012/09/24 nisimura マスタ統合による修正
   <table id='rounded-corner'>
 	<tr>
 	  <th width="135">その他売上</th>
@@ -88,31 +89,32 @@
 	  <th width="85">POS日計</th>
 	  <th width="85">POS累計</th>	
 	</tr>
-  <% @m_etcs.each do |m_etc| %>
-    <% flg = tani_check(m_etc.etc_tani) %>
-    <% if m_etc.d_result_etc_id.blank? %>
-      <% for i in 1..m_etc.max_num %>
+  <%# @m_etcs.each do |m_etc| %>
+    <%# flg = tani_check(m_etc.etc_tani) %>
+    <%# if m_etc.d_result_etc_id.blank? %>
+      <%# for i in 1..m_etc.max_num %>
       <tr>
-        <th><%= m_etc.etc_name %></th>
-        <td><%= number_field :m_etc_pos1, "#{m_etc.id}_no#{i}", :value => m_etc.pos1_data, :maxlength => 9, :class => "money" %>&nbsp;<%= m_etc.code_name %></td>
-        <td><%= number_field :m_etc_pos2, "#{m_etc.id}_no#{i}", :value => m_etc.pos2_data, :maxlength => 9, :class => "money" %>&nbsp;<%= m_etc.code_name %></td>
-        <td><%= number_field :m_etc_pos3, "#{m_etc.id}_no#{i}", :value => m_etc.pos3_data, :maxlength => 9, :class => "money" %>&nbsp;<%= m_etc.code_name %></td>         
-        <td class="input_no" id="display"><label id="m_etc_total_<%= m_etc.id %>_no<%= i %>"><%= num_fmt(m_etc.pos_total, flg) %></label>&nbsp;<%= m_etc.code_name %></td>
-        <td class="input_no" id="display"><%= num_fmt(@etc_ruikeis[m_etc.id.to_i][:etc_ruikei], flg) %>&nbsp;<%= m_etc.code_name %></td>               
+        <th><%#= m_etc.etc_name %></th>
+        <td><%#= number_field :m_etc_pos1, "#{m_etc.id}_no#{i}", :value => m_etc.pos1_data, :maxlength => 9, :class => "money" %>&nbsp;<%#= m_etc.code_name %></td>
+        <td><%#= number_field :m_etc_pos2, "#{m_etc.id}_no#{i}", :value => m_etc.pos2_data, :maxlength => 9, :class => "money" %>&nbsp;<%#= m_etc.code_name %></td>
+        <td><%#= number_field :m_etc_pos3, "#{m_etc.id}_no#{i}", :value => m_etc.pos3_data, :maxlength => 9, :class => "money" %>&nbsp;<%#= m_etc.code_name %></td>         
+        <td class="input_no" id="display"><label id="m_etc_total_<%#= m_etc.id %>_no<%#= i %>"><%#= num_fmt(m_etc.pos_total, flg) %></label>&nbsp;<%#= m_etc.code_name %></td>
+        <td class="input_no" id="display"><%#= num_fmt(@etc_ruikeis[m_etc.id.to_i][:etc_ruikei], flg) %>&nbsp;<%#= m_etc.code_name %></td>               
       </tr>
-      <% end %>
-    <% else %>
+      <%# end %>
+    <%# else %>
       <tr>
-        <th><%= m_etc.etc_name %></th> 
-        <td><%= number_field :m_etc_pos1, "#{m_etc.id}_no#{m_etc.no}", :value => m_etc.pos1_data, :maxlength => 9, :class => "money" %>&nbsp;<%= m_etc.code_name %></td>
-        <td><%= number_field :m_etc_pos2, "#{m_etc.id}_no#{m_etc.no}", :value => m_etc.pos2_data, :maxlength => 9, :class => "money" %>&nbsp;<%= m_etc.code_name %></td>
-        <td><%= number_field :m_etc_pos3, "#{m_etc.id}_no#{m_etc.no}", :value => m_etc.pos3_data, :maxlength => 9, :class => "money" %>&nbsp;<%= m_etc.code_name %></td>          
-        <td class="input_no" id="display"><label id="m_etc_total_<%= m_etc.id %>_no<%= m_etc.no %>"><%= num_fmt(m_etc.pos_total, flg) %></label>&nbsp;<%= m_etc.code_name %></td>
-        <td class="input_no" id="display"><%= num_fmt(@etc_ruikeis[m_etc.id.to_i][:etc_ruikei], flg) %>&nbsp;<%= m_etc.code_name %></td>             
+        <th><%#= m_etc.etc_name %></th> 
+        <td><%#= number_field :m_etc_pos1, "#{m_etc.id}_no#{m_etc.no}", :value => m_etc.pos1_data, :maxlength => 9, :class => "money" %>&nbsp;<%#= m_etc.code_name %></td>
+        <td><%#= number_field :m_etc_pos2, "#{m_etc.id}_no#{m_etc.no}", :value => m_etc.pos2_data, :maxlength => 9, :class => "money" %>&nbsp;<%#= m_etc.code_name %></td>
+        <td><%#= number_field :m_etc_pos3, "#{m_etc.id}_no#{m_etc.no}", :value => m_etc.pos3_data, :maxlength => 9, :class => "money" %>&nbsp;<%#= m_etc.code_name %></td>          
+        <td class="input_no" id="display"><label id="m_etc_total_<%#= m_etc.id %>_no<%#= m_etc.no %>"><%#= num_fmt(m_etc.pos_total, flg) %></label>&nbsp;<%#= m_etc.code_name %></td>
+        <td class="input_no" id="display"><%#= num_fmt(@etc_ruikeis[m_etc.id.to_i][:etc_ruikei], flg) %>&nbsp;<%#= m_etc.code_name %></td>             
       </tr>      
-    <% end %>
-  <% end %>	
+    <%# end %>
+  <%# end %>	
   </table>	
+  -->
   </div>
   
   <div id="second">

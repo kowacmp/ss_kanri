@@ -1,0 +1,111 @@
+<%= form_tag({:action => 'd_result_meter_create' }, { :remote => true }) do %>
+
+<table id="meter_view_table" class="rounded-corner">
+  <thead>	
+    <tr>
+	  <th style="min-width: 35px;">油種</th>	
+  	  <% @m_oils.each do |m_oil| %>
+  	    <th colspan="9"><%= m_oil.oil_name %></th>
+  	  <% end %>	  		
+	</tr>	
+    <tr>
+      <th>No</th>
+  	  <% @m_oils.each do |m_oil| %>
+  	    <% @m_codes.each do |m_code| %>
+  	      <th style="min-width: 35px;">計量</th>
+  	      <th colspan="2"><%= m_code.code_name %></th>
+  	    <% end %> 	
+  	  <% end %>    	
+    </tr>	
+  </thead>
+  
+  <% meter_old_totals = Hash::new %>
+  <% meter_totals = Hash::new %>
+  
+  <tbody>
+  	<% @meters.each_with_index do |meter, idx| %>
+  	<tr>
+  	  <th><%= idx + 1 %></th>
+  	  <% @m_oils.each do |m_oil| %>
+  	    <% @m_codes.each do |m_code| %>
+  	      <% if meter["#{m_oil.id}_#{m_code.code}_m_meter_id"].blank? %>  
+            <td></td>
+            <td style="min-width: 70px;"></td>
+            <td style="min-width: 90px;"></td>
+  	      <% else %>  	      	
+  	        <td align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %></td>
+  	        <td style="min-width: 70px; text-align: right;">
+  	          <%= number_with_delimiter(@old_meters[idx]["#{m_oil.id}_#{m_code.code}_meter"]) unless @old_meters[idx].blank? %>&nbsp;
+  	          
+  	          <% meter_old_totals["#{m_oil.id}_#{m_code.code}_m_meter_id"] = 
+  	          			meter_old_totals["#{m_oil.id}_#{m_code.code}_m_meter_id"].to_i + @old_meters[idx]["#{m_oil.id}_#{m_code.code}_meter"].to_i unless @old_meters[idx].blank? %>
+  	          
+  	        </td>
+  	        <!--td style="min-width: 90px;" align="center"-->
+  	        <td style="min-width: 90px;" align="center">
+  	          <%#= number_field :meter, meter["#{m_oil.id}_#{m_code.code}_m_meter_id"], :value => meter["#{m_oil.id}_#{m_code.code}_meter"], :maxlength => 9, :readonly => @text, :class=> "meter_input" %>
+  	          <%= number_field :meter, meter["#{m_oil.id}_#{m_code.code}_m_meter_id"], :value => meter["#{m_oil.id}_#{m_code.code}_meter"], :maxlength => 9, :readonly => @text, :class=> "money" %>
+  	          
+  	          <% meter_totals["#{m_oil.id}_#{m_code.code}_m_meter_id"] = 
+  	          			meter_totals["#{m_oil.id}_#{m_code.code}_m_meter_id"].to_i + meter["#{m_oil.id}_#{m_code.code}_meter"].to_i %>
+  	          
+  	        </td>
+          <% end %> 	        
+  	    <% end %>
+  	  <% end %>  	  	
+  	</tr>
+  	<% end %>
+  	
+  	<tr>
+  	  <th>合計</th>
+  	  <% @m_oils.each do |m_oil| %>
+  	    <% @m_codes.each do |m_code| %>
+  	    	<td></td>
+  	    	<td id="<%= "#{m_oil.id}_#{m_code.code}_old_total" %>" style="text-align: right;">
+  	    		<%= number_with_delimiter(meter_old_totals["#{m_oil.id}_#{m_code.code}_m_meter_id"]) %>
+  	    	</td>
+  	    	<td id="<%= "#{m_oil.id}_#{m_code.code}_total" %>" style="text-align: right;">
+  	    		<%= number_with_delimiter(meter_totals["#{m_oil.id}_#{m_code.code}_m_meter_id"]) %>
+  	    	</td>
+  	    <% end %>
+  	  <% end %>
+  	</tr>
+  	
+  	
+  </tbody>	
+</table>	
+<br/>
+
+  <% if @text == false %>
+    <div style="text-align:right; width: 755px;">
+      <%= submit_tag '登録', :confirm => "登録します。よろしいですか？" %>
+    </div>
+  <% end %>
+  
+  <%= hidden_field_tag :result_date, @result_date %>
+  <%= hidden_field_tag :edit_flg, @edit_flg %>
+  <%= hidden_field_tag :m_shop_id, @m_shop_id %>
+<% end %>
+
+<%= javascript_include_tag "comma" %>
+
+<script>
+$(function () {
+	$('#meter_view_table').tablefix({width: 755, height: 430, fixRows: 2, fixCols: 1});
+});	
+</script>
+
+
+<style type="text/css">
+ /*
+ input.meter_input { 
+ 	 width: 80px;
+     text-align:right;
+                   }　
+ */
+ input.money { 
+ 	 width: 80px;
+                   }　                  
+</style>
+
+

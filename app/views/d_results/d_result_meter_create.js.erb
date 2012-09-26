@@ -2,4 +2,10 @@
   $('#d_result_meter').html("<%= j(render :partial => 'd_result_meter')%>");
   $('#d_tank_compute').html("<%= j(render :partial => 'd_tank_compute')%>");  
 <% end %>
+
+$.get('<%=url_for(:action => "d_resit_meter_reload")%>' + 
+                 '?result_date=<%=params[:result_date]%>' + 
+                 '&m_shop_id=<%=params[:m_shop_id]%>' +
+                 '&edit_flg=<%=params[:edit_flg]%>');
+
 $(alert("登録しました。"));

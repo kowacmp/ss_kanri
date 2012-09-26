@@ -197,7 +197,8 @@ p "oil_sql=#{oil_sql}"
     end  
     #粗利累計は選択日付前日の累計を取得する為(javascriptの都合上)、日計を加算する
     @arari_ruikei += @arari_nikkei
-    
+
+=begin 2012/09/24 nishimura マスタ統合による修正      
     #その他売上取得
     etc_sql = "select m.id, m.etc_name, m.etc_tani, c.code_name, m.max_num,m.etc_cd, d.id d_result_etc_id, d.no,"
     etc_sql << "      d.pos1_data, d.pos2_data, d.pos3_data,"
@@ -230,6 +231,7 @@ p "oil_sql=#{oil_sql}"
     etc_ruikeis.each do |etc_ruikei|
       @etc_ruikeis[etc_ruikei.m_etc_id.to_i][:etc_ruikei] = etc_ruikei.etc_ruikei
     end    
+=end
     
     #営業POS伝回収報告
     m_oil_etc_sql = "select m.id, m.oiletc_name, d.get_num"
@@ -325,71 +327,76 @@ p "oil_sql=#{oil_sql}"
     
     #油種実績データ作成
     m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"])
+    ActiveRecord::Base.transaction do    
+      m_oils.each do |m_oil|
+        d_result_oil = DResultOil.find(:first, :conditions => ["d_result_id = ? and m_oil_id = ?", d_result.id, m_oil.id])
+        if d_result_oil.blank?
+          d_result_oil = DResultOil.new
+          d_result_oil.d_result_id = d_result.id
+          d_result_oil.m_oil_id = m_oil.id
+          d_result_oil.created_user_id = current_user.id       
+        end
         
-    m_oils.each do |m_oil|
-      d_result_oil = DResultOil.find(:first, :conditions => ["d_result_id = ? and m_oil_id = ?", d_result.id, m_oil.id])
-      if d_result_oil.blank?
-        d_result_oil = DResultOil.new
-        d_result_oil.d_result_id = d_result.id
-        d_result_oil.m_oil_id = m_oil.id
-        d_result_oil.created_user_id = current_user.id       
+        d_result_oil.pos1_data = params[:oil_pos1]["#{m_oil.id}"]
+        d_result_oil.pos2_data = params[:oil_pos2]["#{m_oil.id}"]
+        d_result_oil.pos3_data = params[:oil_pos3]["#{m_oil.id}"]
+        d_result_oil.updated_user_id = current_user.id
+        d_result_oil.save
       end
-      
-      d_result_oil.pos1_data = params[:oil_pos1]["#{m_oil.id}"]
-      d_result_oil.pos2_data = params[:oil_pos2]["#{m_oil.id}"]
-      d_result_oil.pos3_data = params[:oil_pos3]["#{m_oil.id}"]
-      d_result_oil.updated_user_id = current_user.id
-      d_result_oil.save
-    end
+    end#transuction
     
     #油外商品データ作成
     m_oiletcs = MOiletc.find(:all, :conditions => ["(shop_kbn is null or shop_kbn = ?) and oiletc_group <> 0 and deleted_flg = 0",
                                                       m_shop.shop_kbn])
-
-    m_oiletcs.each do |m_oiletc|
-      d_result_oiletc = DResultOiletc.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc.id])
-     
-      if d_result_oiletc.blank?
-        d_result_oiletc = DResultOiletc.new
-        d_result_oiletc.d_result_id = d_result.id
-        d_result_oiletc.m_oiletc_id = m_oiletc.id
-        d_result_oiletc.created_user_id = current_user.id       
+    ActiveRecord::Base.transaction do
+      m_oiletcs.each do |m_oiletc|
+        d_result_oiletc = DResultOiletc.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc.id])
+       
+        if d_result_oiletc.blank?
+          d_result_oiletc = DResultOiletc.new
+          d_result_oiletc.d_result_id = d_result.id
+          d_result_oiletc.m_oiletc_id = m_oiletc.id
+          d_result_oiletc.created_user_id = current_user.id       
+        end
+             
+        d_result_oiletc.pos1_data = params[:oiletc_pos1]["#{m_oiletc.id}"]
+        d_result_oiletc.pos2_data = params[:oiletc_pos2]["#{m_oiletc.id}"]
+        d_result_oiletc.pos3_data = params[:oiletc_pos3]["#{m_oiletc.id}"]
+  #      total = d_result_oiletc.pos1_data.to_f + d_result_oiletc.pos2_data.to_f + d_result_oiletc.pos3_data.to_f
+  #      d_result_oiletc.oiletc_arari = total.round(2) * m_oiletc.oiletc_arari
+        total = (d_result_oiletc.pos1_data.to_f * 100) + (d_result_oiletc.pos2_data.to_f * 100) + (d_result_oiletc.pos3_data.to_f * 100)
+        d_result_oiletc.oiletc_arari = total * m_oiletc.oiletc_arari / 100
+        d_result_oiletc.updated_user_id = current_user.id
+        d_result_oiletc.save
       end
-           
-      d_result_oiletc.pos1_data = params[:oiletc_pos1]["#{m_oiletc.id}"]
-      d_result_oiletc.pos2_data = params[:oiletc_pos2]["#{m_oiletc.id}"]
-      d_result_oiletc.pos3_data = params[:oiletc_pos3]["#{m_oiletc.id}"]
-#      total = d_result_oiletc.pos1_data.to_f + d_result_oiletc.pos2_data.to_f + d_result_oiletc.pos3_data.to_f
-#      d_result_oiletc.oiletc_arari = total.round(2) * m_oiletc.oiletc_arari
-      total = (d_result_oiletc.pos1_data.to_f * 100) + (d_result_oiletc.pos2_data.to_f * 100) + (d_result_oiletc.pos3_data.to_f * 100)
-      d_result_oiletc.oiletc_arari = total * m_oiletc.oiletc_arari / 100
-      d_result_oiletc.updated_user_id = current_user.id
-      d_result_oiletc.save
-    end
-    
-          
+    end#transuction
+
+=begin 2012/09/24 nishimura マスタ統合による修正          
     #その他売上データ作成
     m_etcs = MEtc.find(:all, :conditions => ["deleted_flg = 0 and kansa_flg = 1"])     
-    m_etcs.each do |m_etc|
-      for i in 1..m_etc.max_num
-        d_result_etc = DResultEtc.find(:first, :conditions => ["d_result_id = ? and m_etc_id = ? and no = ?",
-                                                                d_result.id, m_etc.id, i])
-        
-        if d_result_etc.blank?
-          d_result_etc = DResultEtc.new
-          d_result_etc.d_result_id = d_result.id
-          d_result_etc.m_etc_id = m_etc.id
-          d_result_etc.no = i
-          d_result_etc.created_user_id = current_user.id  
-        end
-        
-        d_result_etc.pos1_data = params[:m_etc_pos1]["#{m_etc.id}_no#{i}"]
-        d_result_etc.pos2_data = params[:m_etc_pos2]["#{m_etc.id}_no#{i}"]
-        d_result_etc.pos3_data = params[:m_etc_pos3]["#{m_etc.id}_no#{i}"]
-        d_result_etc.updated_user_id = current_user.id
-        d_result_etc.save                                                                
-      end   
-    end
+    ActiveRecord::Base.transaction do
+      m_etcs.each do |m_etc|
+        for i in 1..m_etc.max_num
+          d_result_etc = DResultEtc.find(:first, :conditions => ["d_result_id = ? and m_etc_id = ? and no = ?",
+                                                                  d_result.id, m_etc.id, i])
+          
+          if d_result_etc.blank?
+            d_result_etc = DResultEtc.new
+            d_result_etc.d_result_id = d_result.id
+            d_result_etc.m_etc_id = m_etc.id
+            d_result_etc.no = i
+            d_result_etc.created_user_id = current_user.id  
+          end
+          
+          d_result_etc.pos1_data = params[:m_etc_pos1]["#{m_etc.id}_no#{i}"]
+          d_result_etc.pos2_data = params[:m_etc_pos2]["#{m_etc.id}_no#{i}"]
+          d_result_etc.pos3_data = params[:m_etc_pos3]["#{m_etc.id}_no#{i}"]
+          d_result_etc.updated_user_id = current_user.id
+          d_result_etc.save                                                                
+        end   
+      end
+    end#transuction
+=end
     
     #車検予約、営業POS伝回収報告作成  油外店舗のみ作成
     if m_shop.shop_kbn == 1
@@ -413,28 +420,29 @@ p "oil_sql=#{oil_sql}"
       end
       
       m_oiletcs = MOiletc.find(:all, :conditions => ["oiletc_trade = 1 and deleted_flg = 0"])
-
-      m_oiletcs.each do |m_oiletc|
-        d_result_collect = DResultCollect.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc.id])
-     
-        if d_result_collect.blank?
-          d_result_collect = DResultCollect.new
-          d_result_collect.d_result_id = d_result.id
-          d_result_collect.m_oiletc_id = m_oiletc.id
-          d_result_collect.created_user_id = current_user.id       
-        end
-         
-        #獲得件数が空白の場合０をセット         
-        if params[:get_num]["#{m_oiletc.id}"].blank?
-          get_num = 0
-        else
-          get_num  = params[:get_num]["#{m_oiletc.id}"]  
-        end
+      ActiveRecord::Base.transaction do
+        m_oiletcs.each do |m_oiletc|
+          d_result_collect = DResultCollect.find(:first, :conditions => ["d_result_id = ? and m_oiletc_id = ?", d_result.id, m_oiletc.id])
+       
+          if d_result_collect.blank?
+            d_result_collect = DResultCollect.new
+            d_result_collect.d_result_id = d_result.id
+            d_result_collect.m_oiletc_id = m_oiletc.id
+            d_result_collect.created_user_id = current_user.id       
+          end
            
-        d_result_collect.get_num = get_num
-        d_result_collect.updated_user_id = current_user.id
-        d_result_collect.save
-      end
+          #獲得件数が空白の場合０をセット         
+          if params[:get_num]["#{m_oiletc.id}"].blank?
+            get_num = 0
+          else
+            get_num  = params[:get_num]["#{m_oiletc.id}"]  
+          end
+             
+          d_result_collect.get_num = get_num
+          d_result_collect.updated_user_id = current_user.id
+          d_result_collect.save
+        end
+      end#transuction
     end
 
     #タンク点検フラグ更新
@@ -483,13 +491,22 @@ p "oil_sql=#{oil_sql}"
       d_result_self_report.sc = m_oiletc_pos_total(d_result.id, 23, tax_rate)
       d_result_self_report.cb = m_oiletc_pos_total(d_result.id, 24, tax_rate)
       #他売上
-      d_result_self_report.wash_item = m_etc_pos_total(d_result.id, 10, tax_rate)
-      d_result_self_report.game = m_etc_pos_total(d_result.id, 12, tax_rate)
-      d_result_self_report.health = m_etc_pos_total(d_result.id, 11, tax_rate)
-      d_result_self_report.net = m_etc_pos_total(d_result.id, 14, tax_rate)
-      d_result_self_report.charge = m_etc_pos_total(d_result.id, 13, tax_rate)
-      d_result_self_report.ozone = m_etc_pos_total(d_result.id, 15, tax_rate)
+      #2012/09/24 nishimura マスタ統合による修正 <<<
+      #d_result_self_report.wash_item = m_etc_pos_total(d_result.id, 10, tax_rate)
+      #d_result_self_report.game = m_etc_pos_total(d_result.id, 12, tax_rate)
+      #d_result_self_report.health = m_etc_pos_total(d_result.id, 11, tax_rate)
+      #d_result_self_report.net = m_etc_pos_total(d_result.id, 14, tax_rate)
+      #d_result_self_report.charge = m_etc_pos_total(d_result.id, 13, tax_rate)
+      #d_result_self_report.ozone = m_etc_pos_total(d_result.id, 15, tax_rate)
+      #d_result_self_report.spare = 0
+      d_result_self_report.wash_item = m_oiletc_pos_total(d_result.id, 35, tax_rate)
+      d_result_self_report.game = m_oiletc_pos_total(d_result.id, 36, tax_rate)
+      d_result_self_report.health = m_oiletc_pos_total(d_result.id, 37, tax_rate)
+      d_result_self_report.net = m_oiletc_pos_total(d_result.id, 38, tax_rate)
+      d_result_self_report.charge = m_oiletc_pos_total(d_result.id, 39, tax_rate)
+      d_result_self_report.ozone = m_oiletc_pos_total(d_result.id, 40, tax_rate)
       d_result_self_report.spare = 0
+      #2012/09/24 nishimura マスタ統合による修正 >>>
       d_result_self_report.save
     else
       #実績表データ
@@ -736,21 +753,23 @@ p "oil_sql=#{oil_sql}"
     sql << " where m.m_tank_id = t.id and t.m_shop_id = #{@d_result.m_shop_id}"
 
     m_meters = MMeter.find_by_sql(sql)
-    m_meters.each do |m_meter|
-      d_result_meter = DResultMeter.find(:first, :conditions => ["d_result_id = ? and m_meter_id = ?", @d_result.id, m_meter.id])
-      
-      if d_result_meter.blank?
-        d_result_meter = DResultMeter.new
-        d_result_meter.d_result_id = @d_result.id
-        d_result_meter.m_meter_id = m_meter.id
-        d_result_meter.created_user_id = current_user.id
-        d_result_meter.updated_user_id = current_user.id        
+    ActiveRecord::Base.transaction do
+      m_meters.each do |m_meter|
+        d_result_meter = DResultMeter.find(:first, :conditions => ["d_result_id = ? and m_meter_id = ?", @d_result.id, m_meter.id])
+        
+        if d_result_meter.blank?
+          d_result_meter = DResultMeter.new
+          d_result_meter.d_result_id = @d_result.id
+          d_result_meter.m_meter_id = m_meter.id
+          d_result_meter.created_user_id = current_user.id
+          d_result_meter.updated_user_id = current_user.id        
+        end
+        
+        d_result_meter.meter = params[:meter]["#{m_meter.id}"]
+        d_result_meter.updated_user_id = current_user.id 
+        d_result_meter.save
       end
-      
-      d_result_meter.meter = params[:meter]["#{m_meter.id}"]
-      d_result_meter.updated_user_id = current_user.id 
-      d_result_meter.save
-    end
+    end#transuction
 
     @m_tanks_count = MTank.count(:all, :conditions => ["m_shop_id = ? and deleted_flg = 0",@d_result.m_shop_id])
     @d_result_tanks_count = DResultTank.count(:all, :conditions => ["d_result_id = ?",@d_result.id])
@@ -770,6 +789,7 @@ p "oil_sql=#{oil_sql}"
     @edit_flg = params[:edit_flg]
     @m_shop = MShop.find(@d_result.m_shop_id) 
     @result_date = @d_result.result_date  
+    
   end
   
   def tank_index
@@ -853,4 +873,10 @@ p "oil_sql=#{oil_sql}"
 
     head :ok
   end
+  
+  #2012/09/25 nisimura メーター入力再表示
+  def d_resit_meter_reload
+    meter_index
+  end
+  
 end

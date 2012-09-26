@@ -134,6 +134,7 @@ SsKanri::Application.routes.draw do
   get "d_results/select_date"
   get "d_results/result_edit"
   get "d_results/index_select"
+  get "d_results/d_resit_meter_reload"
   
   get "d_audit_changemachines/confirm_shop_id_select"
   get "d_audit_changemachines/confirm_user_id_select"
