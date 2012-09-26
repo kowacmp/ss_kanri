@@ -32,7 +32,7 @@ class DAimListsController < ApplicationController
     @input_ym = @input_ymd_s[0,4] + @input_ymd_s[4,2]
     
     
-    select_sql = "select a.id as shop_id,a.*,b.*,c.*,d.* "
+    select_sql = "select a.id as shop_id,a.*,b.*,c.*,d.*,e.code_name shop_kbn_name "
     select_sql << " from m_shops a " 
     
     select_sql << " left join ("
@@ -47,7 +47,7 @@ class DAimListsController < ApplicationController
     select_sql << " left join (select id,updated_user_id as last_user_id, "
     select_sql << "         to_char(updated_at,'YYYYMMDD') as last_update_at from d_aims) c on b.max_id = c.id "
     select_sql << " left join (select id,account as last_account,user_name as last_user_name from users) d on c.last_user_id = d.id "
-   
+    select_sql << " left join (select * from m_codes where kbn='shop_kbn') e on a.shop_kbn = cast(e.code as integer) "
    
     condition_sql = " where a.deleted_flg = 0 and a.shop_kbn = #{@shop_kbn}"
     

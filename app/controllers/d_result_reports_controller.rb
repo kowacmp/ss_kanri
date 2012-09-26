@@ -234,7 +234,7 @@ class DResultReportsController < ApplicationController
   
     #タイトルセット
     #  pdf_title = "SS別地下タンク過不足表（日計）_#{@input_ymd_s}.pdf"
-    pdf_title = "SS油外型実績表1.pdf"
+    pdf_title = "油外型実績表1.pdf"
     
     ua = request.env["HTTP_USER_AGENT"]
     pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
@@ -410,7 +410,7 @@ class DResultReportsController < ApplicationController
   
     #タイトルセット
     #  pdf_title = "SS別地下タンク過不足表（日計）_#{@input_ymd_s}.pdf"
-    pdf_title = "SS油外型実績表2.pdf"
+    pdf_title = "油外型実績表2.pdf"
     
     ua = request.env["HTTP_USER_AGENT"]
     pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
@@ -493,7 +493,7 @@ class DResultReportsController < ApplicationController
   
   
     #タイトルセット
-    pdf_title = "SS洗車型実績表1.pdf"
+    pdf_title = "洗車型実績表1.pdf"
     
     ua = request.env["HTTP_USER_AGENT"]
     pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
@@ -577,7 +577,7 @@ class DResultReportsController < ApplicationController
   
   
     #タイトルセット
-    pdf_title = "SS洗車型実績表2.pdf"
+    pdf_title = "洗車型実績表2.pdf"
     
     ua = request.env["HTTP_USER_AGENT"]
     pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
