@@ -45,7 +45,7 @@
       	<% end %>
       </td>
 
-      <td><%= link_to image_tag('icon/24_show.png'), {:controller => 'd_wash_sales',:action => 'index',
+      <td><%= link_to image_tag('icon/24_edit.png'), {:controller => 'd_wash_sales',:action => 'index',
             :input_ymd => @input_ymd,:m_shop_id => shop.id,:shop_kbn => @shop_kbn,:mode => 'list'} %></td>
       <td><%= link_to('参照' ,{:action => 'show',:m_shop_id => shop.id}, :class => 'modal') %></td>
     </tr>

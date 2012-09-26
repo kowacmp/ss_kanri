@@ -7,10 +7,17 @@ class DWashsaleReportsController < ApplicationController
   end
 
   def search
-    @shop = MShop.find(current_user.m_shop_id)  
-    @time_now = Time.now
-    #select_yearの開始年
-    @m_shop_id = current_user.m_shop_id
+    @mode = params[:mode]
+
+    unless @mode == 'list'
+      @shop = MShop.find(current_user.m_shop_id)  
+      @time_now = Time.now
+      #select_yearの開始年
+      @m_shop_id = current_user.m_shop_id
+    else
+      @m_shop_id=params[:m_shop_id]
+      @shop = MShop.find(@m_shop_id) 
+    end
     @start_year = DWashSale.minimum("sale_date",:conditions => ['m_shop_id = ?',@m_shop_id])[0,4].to_i
     @mode = params[:mode]
     
