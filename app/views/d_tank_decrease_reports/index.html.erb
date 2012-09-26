@@ -7,7 +7,7 @@
 	        <%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 10%>
 	    </td>
 	    <td>
-	    	<%= radio_button_tag("rbtn",1) %>日計
+	    	<%= radio_button_tag("rbtn",1,:checked => true) %>日計
 	    	<%= radio_button_tag("rbtn",2) %>累計
 	    </td>
 	    <td><%= submit_tag '表示'%></td>

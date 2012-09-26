@@ -8,12 +8,14 @@
 <%= form_tag({:action => 'print',:input_ymd_s => @input_ymd_s ,:rbtn => @rbtn}) do %>
 <table id="rounded-corner">
 	<tr>
+		<!--
 		<th>所属会社</th>
-		<th>店舗</th>
-		<th style="min-width: 75px;"><%= get_title(1) %></th>
-		<th style="min-width: 75px;"><%= get_title(2) %></th>
-		<th style="min-width: 75px;"><%= get_title(3) %></th>
-		<th style="min-width: 75px;"><%= get_title(4) %></th>
+		-->
+		<th style="min-width: 300px;">店舗</th>
+		<th style="min-width: 90px;"><%= get_title(1) %></th>
+		<th style="min-width: 90px;"><%= get_title(2) %></th>
+		<th style="min-width: 90px;"><%= get_title(3) %></th>
+		<th style="min-width: 90px;"><%= get_title(4) %></th>
 		<th>MG欠減率(%)</th>
 	</tr>
 	<% @groups.each do |group| %>
@@ -26,9 +28,12 @@
           <% @print = nil %>
         <% end %>
 	  <tr>
-	  	<td><%= group.group_name unless old_group_name == group.group_name %>
-	  		<% old_group_name = group.group_name %>
+	  	<!--
+	  	<td>
+	  		<%#= group.group_name unless old_group_name == group.group_name %>
+	  		<% #old_group_name = group.group_name %>
 	  	</td>
+	  	-->
 	  	<td>
 	  		<%= shop.shop_cd.to_s + ' ' + shop.shop_name %>
 	    </td>
@@ -47,10 +52,10 @@
 	<% end %>
 	<tr>
 		<th colspan="2">合計</th>
-		<td align="right"><%= @sum_oil1 %></td>
-		<td align="right"><%= @sum_oil2 %></td>
-		<td align="right"><%= @sum_oil3 %></td>
-		<td align="right"><%= @sum_oil4 %></td>
+		<td align="right"><%= num_fmt(@sum_oil1) %></td>
+		<td align="right"><%= num_fmt(@sum_oil2) %></td>
+		<td align="right"><%= num_fmt(@sum_oil3) %></td>
+		<td align="right"><%= num_fmt(@sum_oil4) %></td>
 		<td></td>
 	</tr>
 	<%= hidden_field_tag 'rbtn',@rbtn %>
