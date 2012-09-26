@@ -17,7 +17,7 @@
 		<th>MG欠減率(%)</th>
 	</tr>
 	<% @groups.each do |group| %>
-	  <% @shops = get_shops1(group.id) %>
+	  <% @shops = get_shops(group.id) %>
       <% @shops.each do |shop| %>
         <% result = get_d_result(shop.id,@input_ymd_s) %>
         <% unless result == nil %>
