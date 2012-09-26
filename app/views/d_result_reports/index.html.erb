@@ -10,11 +10,11 @@
 	  
 	    <td>
 	    	<% if @shop_info.shop_kbn == 0 %>
-	    	<%= select_tag "select_kbn",options_for_select({'SSセルフ実績表1' => 2,'SSセルフ実績表2' => 3}) %>
+	    	<%= select_tag "select_kbn",options_for_select({'SS洗車型実績表1' => 2,'SS洗車型実績表2' => 3}) %>
 	    	<% elsif @shop_info.shop_kbn == 1 %>
-	    	<%= select_tag "select_kbn",options_for_select({'SS実績表1' => 0,'SS実績表2' => 1}) %>
+	    	<%= select_tag "select_kbn",options_for_select({'SS油外型実績表1' => 0,'SS油外型実績表2' => 1}) %>
 	    	<% else %>
-	    	<%= select_tag "select_kbn",options_for_select({'SS実績表1' => 0,'SS実績表2' => 1,'SSセルフ実績表1' => 2,'SSセルフ実績表2' => 3}) %>
+	    	<%= select_tag "select_kbn",options_for_select({'SS油外型実績表1' => 0,'SS油外型実績表2' => 1,'SS洗車型実績表1' => 2,'SS洗車型実績表2' => 3}) %>
 	    	<% end %>
 	    </td>
 	    <td><%= submit_tag '表示'%></td>
