@@ -7,10 +7,13 @@
 		<th>店舗</th>
 		<th>年月</th>
 		<th>店舗種別</th>
+		<!--
 		<th>現金有高</th>
 		<th>過不足</th>
+		-->
 		<th>詳細</th>
 		<th>確認<br />全て<input type="checkbox" id="all" /></th>
+		<th>確認者</th>
 		<th>印刷</th>
 		<th>承認状況</th>
 	</tr>
@@ -19,8 +22,10 @@
     <td><%= "#{data.shop_cd}"%>&nbsp;&nbsp;<%="#{data.shop_name}" %></td>
     <td style="text-align: center"><%= "#{data.sale_date.to_s[0,4]}" + "年" +"#{data.sale_date.to_s[4,2]}" + "月" unless data.sale_date.blank? %></td>
     <td style="text-align: center"><%= data.shop_kbn_name %></td>
-    <td style="text-align: right"><%= num_fmt(data.exist_money) %></td>
-    <td style="text-align: right"><%= num_fmt(data.over_short) %></td>
+    <!--
+    <td style="text-align: right"><%#= num_fmt(data.exist_money) %></td>
+    <td style="text-align: right"><%#= num_fmt(data.over_short) %></td>
+    -->
     <td style="text-align: center">
     	<% unless data.sale_date.blank? %>
     		<%= link_to image_tag('icon/24_show.png'), {:controller => "d_sales", :action => "report_view", :id => data.d_sale_id, :input_shop_kbn=>@head[:input_shop_kbn], :from_controller=>"d_sale_reports"} %>
@@ -38,6 +43,10 @@
     	<%= hidden_field_tag "data_sale_date_#{i}", data.sale_date.to_s[0,6] %>
      	<%= hidden_field_tag "data_m_shop_id_#{i}", data.m_shop_id %>
     </td>
+    <td>
+    	<% user=User.find(:first, :conditions=>["id=?", data.confirm_id]) %>
+    	<%= user.user_name unless user==nil %>
+   </td>
 	<td style="text-align: center">
     	<% unless data.sale_date.blank? %>
     		<%= link_to image_tag('icon/pdf.png'), {:controller => "d_sales", :action => "report_view", :id => data.d_sale_id, :input_shop_kbn=>@head[:input_shop_kbn], :from_controller=>"d_sale_reports", :output=>"print"} %>

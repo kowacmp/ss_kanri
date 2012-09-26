@@ -55,11 +55,14 @@ class DSaleReportsController < ApplicationController
         
         if params["data_kakutei_flg_#{i}"].blank?
           d_sale_report.kakutei_flg = 0
+          d_sale_report.confirm_id = nil
+          d_sale_report.confirm_date = nil
         else
           d_sale_report.kakutei_flg = params["data_kakutei_flg_#{i}"]
+          d_sale_report.confirm_id = current_user.id
+          d_sale_report.confirm_date = Time.now
         end
-        d_sale_report.confirm_id = current_user.id
-        d_sale_report.confirm_date = Time.now
+
         d_sale_report.save
       end
     }
@@ -99,7 +102,7 @@ private
   def result_datas_get(input_day, input_shop_kbn)
     select_sql = "select b.id m_shop_id, b.shop_cd, b.shop_name, b.shop_kbn "
     select_sql << " , a.d_sale_id, a.sale_date, a.exist_money, a.over_short "
-    select_sql << " , e.id, e.kakutei_flg " 
+    select_sql << " , e.id, e.confirm_id, e.kakutei_flg " 
     select_sql << " , d.code_name shop_kbn_name " 
     select_sql << " from m_shops b "
     select_sql << " left join ( "
