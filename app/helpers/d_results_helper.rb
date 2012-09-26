@@ -656,7 +656,7 @@ module DResultsHelper
     elsif size - 1 == idx
       border = "solid 1px #8B8E99"
     elsif oiletc[idx].oiletc_group != oiletc[idx + 1].oiletc_group
-      border = "solid 2px #000"
+      border = "solid 2px #0000CD"
     else
       border = "solid 1px #8B8E99"     
     end

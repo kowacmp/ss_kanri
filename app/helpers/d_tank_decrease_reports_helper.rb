@@ -3,7 +3,7 @@ module DTankDecreaseReportsHelper
     MOil.find(:all,:conditions => ['deleted_flg = 0 and id = ?',id]).first.oil_name
   end
   
-  def get_shops(group_id)
+  def get_shops1(group_id)
     MShop.find(:all,:conditions => ['m_shop_group_id = ? and shop_kbn <> 9 ',group_id],:order => 'shop_cd')
   end
   
