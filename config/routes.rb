@@ -7,9 +7,14 @@ SsKanri::Application.routes.draw do
   resources :d_audit_cashboxes
 
   get "d_audit_cashboxes/index"
-  get "d_audit_cashboxes/edit_kinko"
-  get "d_audit_cashboxes/update_kinko"
-  
+  get "d_audit_cashboxes/edit"
+  get "d_audit_cashboxes/update"
+  get "d_audit_cashboxes/edit_tbl1"
+  get "d_audit_cashboxes/edit_tbl2"
+  get "d_audit_cashboxes/update_tbl1"
+  get "d_audit_cashboxes/update_tbl2"
+  get "d_audit_cashboxes/edit_comment"
+
   resources :m_get_points
 
   get "d_price_check_etcs/index"

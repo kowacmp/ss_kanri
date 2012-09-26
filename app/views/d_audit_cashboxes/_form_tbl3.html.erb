@@ -1,0 +1,26 @@
+<table class='rounded-corner' id="tbl3" style="white-space: nowrap">
+<tr>
+	<th>
+		金庫合計指定(固定額)
+	</th>		
+	<td class="green" align="right">
+		<%= number_with_delimiter( get_kinko_gokei3() ) %>
+	</td>
+</tr>
+<tr>
+	<th>
+		実有高
+	</th>
+	<td class="green" align="right">
+		<%= number_with_delimiter( get_jitu_aridaka_gokei3() ) %>
+	</td>
+</tr>
+<tr>
+	<th>
+		過不足
+	</th>
+	<td class="green" align="right">
+		<%= number_with_delimiter( get_kabusoku_gokei3() ) %>
+	</td>	
+</tr>
+</table>

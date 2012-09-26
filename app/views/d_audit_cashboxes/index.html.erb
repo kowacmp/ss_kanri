@@ -1,1 +1,11 @@
-<%= render 'form' %>
+<%
+# 自主監査はログイン者の店舗固定、本監査は自由に設定可
+if session[:audit_class].to_s == "0" then
+	m_shop_id = current_user.m_shop_id
+else
+	m_shop_id = nil
+end 
+%>
+<%=render :partial => 'header' , :locals => {:m_shop_id => m_shop_id,
+	                                         :created_user_id => current_user.id,
+	                                         :audit_date => Time.now.strftime('%Y/%m/%d') } %>

@@ -219,5 +219,150 @@ module DAuditCashboxesHelper
     return gokei
     
   end
+  
+  # 立替未処理計
+  def get_tatekae_kei(i)
+ 
+    gokei = 0
+    
+    for j in 1..5
+      if @d_audit_cashbox["cashbox#{ i }_still#{ j }"].nil? or @d_audit_cashbox["cashbox#{ i }_still#{ j }"].blank? then
+        gokei += 0
+      else
+        gokei += @d_audit_cashbox["cashbox#{ i }_still#{ j }"].to_i
+      end
+    end 
+    
+    return gokei
+ 
+  end
+ 
+  # 実過不足金
+  def get_jitu_kabusoku(i)
+    
+    return get_kabusoku(i) - get_tatekae_kei(i)
+
+  end
+
+  # 過不足金2
+  def get_kabusoku2(i)
+    
+    gokei = 0
+    
+    if @d_audit_cashbox["sum#{ i }_cashbox"].nil? or @d_audit_cashbox["sum#{ i }_cashbox"].blank? then
+      gokei += 0
+    else
+      gokei += @d_audit_cashbox["sum#{ i }_cashbox"].to_i
+    end
+    
+    if @d_audit_cashbox["sum#{ i }_money"].nil? or @d_audit_cashbox["sum#{ i }_money"].blank? then
+      gokei -= 0  
+    else
+      gokei -= @d_audit_cashbox["sum#{ i }_money"].to_i
+    end 
+   
+    return gokei    
+     
+  end
+
+  # 立替金計2
+  def get_tatekae_kei2(i)
+ 
+    gokei = 0
+    
+    for j in 1..5
+      if @d_audit_cashbox["sum#{ i }_still#{ j }"].nil? or @d_audit_cashbox["sum#{ i }_still#{ j }"].blank? then
+        gokei += 0
+      else
+        gokei += @d_audit_cashbox["sum#{ i }_still#{ j }"].to_i
+      end
+    end 
+    
+    return gokei
+ 
+  end
+
+  # 実過不足2
+  def get_jitu_kabusoku2(i)
+    
+    return get_kabusoku2(i) - get_tatekae_kei2(i)
+
+  end
+
+  # 金庫合計指定(固定)額 
+  def get_kinko_gokei3()
+
+    gokei = 0
+    
+    for i in 1..6
+      gokei += nvl(@d_audit_cashbox["cashbox#{ i }"], 0).to_i
+    end
+
+    for i in 1..7
+      gokei += nvl(@d_audit_cashbox["sum#{ i }_cashbox"], 0).to_i
+    end
+
+    return gokei
+
+  end
+
+  # 実有高
+  def get_jitu_aridaka_gokei3
+
+    gokei = 0
+    
+    for i in 1..6
+      gokei += get_kingaku(i)
+    end 
+
+    for i in 1..7 
+      gokei += nvl(@d_audit_cashbox["sum#{ i }_money"], 0).to_i
+    end
+
+    return gokei
+
+  end
+  
+  # 過不足
+  def get_kabusoku_gokei3
+    
+    return get_jitu_aridaka_gokei3 - get_kinko_gokei3 
+    
+  end
+
+  # 釣銭固定額読込
+  def get_m_fix(m_shop_id, cd, month)
+    
+    m_fix_item = MFixItem.find(:first, :conditions => ["fix_item_cd=?", cd])
+    if m_fix_item.nil? then
+      return nil
+    end
+    
+    m_fix_money = MFixMoney.find(:first, :conditions => ["m_shop_id=? and start_month <= ? and end_month >= ?", m_shop_id, month, month])
+    if m_fix_money.nil? then
+      return nil
+    end
+
+    for i in 1..13 
+      if m_fix_money["m_fix_item_id#{i}"] == m_fix_item.id then
+        if nvl(m_fix_money["fix_money#{i}"], 0) > 0 then
+          return [m_fix_item.fix_item_ryaku, m_fix_money["fix_money#{i}"]]
+        else
+          return nil
+        end
+      end
+    end
+    
+    return nil
+    
+  end
+ 
+  def nvl(value, zero)
+    if value.to_s == "" then
+      return zero
+    else
+      return value
+    end
+  end
  
 end

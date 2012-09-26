@@ -1,0 +1,61 @@
+<div style="width:300px; height:400px; overflow-y: scroll;">
+<table class='rounded-corner' >
+
+	<tr>
+		<th>金額</th>
+		<td>
+			<input type="text" id="_money" class="money" style="width:100px;"  />
+		</td>
+	</tr>
+		
+	<% for i in 1..5 %>
+	<tr>
+		<th>未立替金額<%= i %></th>
+		<td>
+			<input type="text" id="_still<%= i %>" class="money" style="width:100px;"  />
+		</td>
+	</tr>
+	<% end %>
+
+</table>
+</div>
+
+<input type="button" onclick="return func_update();" value="　更　新　">
+
+<script language="JavaScript">
+
+	$(function(){
+		// load (呼出元のhiddenより値を設定)
+		$("#_money" ).val( $("#d_audit_cashbox_sum<%=params[:id]%>_money" ).val() );
+		<% for i in 1..5 %>
+		$("#_still<%=i%>").val( $("#d_audit_cashbox_sum<%=params[:id]%>_still<%=i%>").val() );
+		<% end %>
+	});
+
+	function func_update() {
+		// save (呼出元のhiddenへ値を設定)
+		$("#d_audit_cashbox_sum<%=params[:id]%>_money" ).val( $("#_money" ).val().replace(/,/g, "") );
+		<% for i in 1..5 %>
+		$("#d_audit_cashbox_sum<%=params[:id]%>_still<%=i%>").val( $("#_still<%=i%>").val().replace(/,/g, "") );		
+		<% end %>
+
+		// AJAX.POST (hiddenをテーブルへ反映)	
+		var postData = {}
+		$('form').find(':input').each(function(){
+			postData[$(this).attr('name')] = $(this).val();
+		});
+
+		$.ajax({
+			type : "POST",
+			url : "<%= url_for(:action => "update_tbl2") %>",
+			data : postData,
+			success : function (){
+				;
+			}
+		});
+
+	}
+
+</script>
+
+<%= javascript_include_tag "comma" %>

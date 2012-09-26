@@ -1,12 +1,6 @@
 <div style="width:300px; height:400px; overflow-y: scroll;">
 <table class='rounded-corner' >
-	<tr>
-		<th>指定額</th>
-		<td>
-			<input type="text" id="_cashbox" class="money" style="width:100px;" />
-		</td>
-	</tr>		
-		
+
 	<tr>
 		<th>10,000円札(枚)</th>
 		<td>
@@ -133,6 +127,15 @@
 		</td>
 	</tr>
 
+	<% for i in 1..5 %>
+	<tr>
+		<th>立替未処理<%=i%>(金額)</th>
+		<td>
+			<input type="text" id="_still<%=i%>" class="money" style="width:100px;" />
+		</td>
+	</tr>
+	<% end %>
+
 </table>
 </div>
 
@@ -142,9 +145,9 @@
 
 	$(function(){
 		// load (呼出元のhiddenより値を設定)
-		$("#_cashbox"    ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>"            ).val() );
 		$("#_10000paper" ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_10000paper" ).val() );
 		$("#_5000paper"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_5000paper"  ).val() );
+		$("#_2000paper"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_2000paper"  ).val() );
 		$("#_1000paper"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_1000paper"  ).val() );
 		$("#_500coin_20" ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_20" ).val() );
 		$("#_500coin_50" ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_50" ).val() );
@@ -160,28 +163,34 @@
 		$("#_1coin_hon"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_1coin_hon"  ).val() );
 		$("#_1coin_mai"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_1coin_mai"  ).val() );
 		$("#_yobi"       ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_yobi"       ).val() );
+		<% for i in 1..5 %>
+		$("#_still<%=i%>").val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_still<%=i%>").val() );
+		<% end %>
 	});
 
 	function func_update() {
 		// save (呼出元のhiddenへ値を設定)
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>"                   ).val( $("#_cashbox"    ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_10000paper" ).val( $("#_10000paper" ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_5000paper"  ).val( $("#_5000paper"  ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_1000paper"  ).val( $("#_1000paper"  ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_20" ).val( $("#_500coin_20" ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_50" ).val( $("#_500coin_50" ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_mai").val( $("#_500coin_mai").val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_100coin_hon").val( $("#_100coin_hon").val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_100coin_mai").val( $("#_100coin_mai").val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_50coin_hon" ).val( $("#_50coin_hon" ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_50coin_mai" ).val( $("#_50coin_mai" ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_10coin_hon" ).val( $("#_10coin_hon" ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_10coin_mai" ).val( $("#_10coin_mai" ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_5coin_hon"  ).val( $("#_5coin_hon"  ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_5coin_mai"  ).val( $("#_5coin_mai"  ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_1coin_hon"  ).val( $("#_1coin_hon"  ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_1coin_mai"  ).val( $("#_1coin_mai"  ).val() );
-		$("#d_audit_cashbox_cashbox<%=params[:id]%>_yobi"       ).val( $("#_yobi"       ).val() );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_10000paper" ).val( $("#_10000paper" ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_5000paper"  ).val( $("#_5000paper"  ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_2000paper"  ).val( $("#_2000paper"  ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_1000paper"  ).val( $("#_1000paper"  ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_20" ).val( $("#_500coin_20" ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_50" ).val( $("#_500coin_50" ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_mai").val( $("#_500coin_mai").val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_100coin_hon").val( $("#_100coin_hon").val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_100coin_mai").val( $("#_100coin_mai").val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_50coin_hon" ).val( $("#_50coin_hon" ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_50coin_mai" ).val( $("#_50coin_mai" ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_10coin_hon" ).val( $("#_10coin_hon" ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_10coin_mai" ).val( $("#_10coin_mai" ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_5coin_hon"  ).val( $("#_5coin_hon"  ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_5coin_mai"  ).val( $("#_5coin_mai"  ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_1coin_hon"  ).val( $("#_1coin_hon"  ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_1coin_mai"  ).val( $("#_1coin_mai"  ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_yobi"       ).val( $("#_yobi"       ).val().replace(/,/g, "") );
+		<% for i in 1..5 %>
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_still<%=i%>").val( $("#_still<%=i%>").val().replace(/,/g, "") );		
+		<% end %>
 
 		// AJAX.POST (hiddenをテーブルへ反映)	
 		var postData = {}
@@ -191,7 +200,7 @@
 
 		$.ajax({
 			type : "POST",
-			url : "<%= url_for(:action => "update_kinko") %>",
+			url : "<%= url_for(:action => "update_tbl1") %>",
 			data : postData,
 			success : function (){
 				;

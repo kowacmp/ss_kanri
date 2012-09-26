@@ -1,0 +1,42 @@
+<table class='rounded-corner' id="tbl4" style="white-space: nowrap">
+<tr>
+	<th>
+		&nbsp;
+	</th>
+	<th>
+		判定
+	</th>
+	<th>
+		理由
+	</th>
+</tr>
+
+<% 
+	names = ["自販機・ゲーム機用",
+		     "レジ金用", 
+		     "現金預り(捨得用)",
+		     "Ｇプリ・洗車プリ捨得用",
+		     "クレジットカード捨得用"] 
+%>
+
+<% for i in 1..5 %>
+<tr>
+	<th>
+		<%= names[(i - 1)] %>
+	</th>
+	<td>
+		<%= radio_button :d_audit_cashbox, "ledger#{ i }", "1", {:checked => (@d_audit_cashbox["ledger#{ i }"].to_s == "1") } %>
+		<label for="d_audit_cashbox_ledger<%= i %>_1">良</label>
+		
+		&nbsp;&nbsp;&nbsp;
+		
+		<%= radio_button :d_audit_cashbox, "ledger#{ i }", "2", {:checked => (@d_audit_cashbox["ledger#{ i }"].to_s == "2") } %>
+		<label for="d_audit_cashbox_ledger<%= i %>_2">否</label>
+	</td>
+	<td class="orange" align="left">
+		<%= text_field :d_aduit_cashbox, "ledger#{ i }_reason", :value => @d_audit_cashbox["ledger#{ i }_reason"].to_s, :style => "width:300px;" ,:maxlength => 20 %>
+	</td>
+</tr>
+<% end %>
+
+</table>

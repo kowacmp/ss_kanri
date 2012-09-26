@@ -1,12 +1,23 @@
-<h1>金庫釣銭監査</h1>
+<%= form_tag({:action => 'update' }, :id => "form_update") do %>
+	<!-- 検索ヘッダ -->
+	<%= hidden_field :hheader, "m_shop_id",       :value => @m_shop_id %>
+	<%= hidden_field :hheader, "created_user_id", :value => @created_user_id %>
+	<%= hidden_field :hheader, "audit_date",      :value => @audit_date %>
 
-<%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
+	<!-- KEY部分データ -->
+	<%= hidden_field :key,             "id",         :value => @d_audit_cashbox["id"] %>
+	
+	<!-- 更新データ -->
+	<%= hidden_field :d_audit_cashbox, "audit_date", :value => @d_audit_cashbox["audit_date"] %>
+	<%= hidden_field :d_audit_cashbox, "m_shop_id",  :value => @d_audit_cashbox["m_shop_id"] %>
 
-<form>
+	<%= hidden_field :d_audit_cashbox, "comment",    :value => @d_audit_cashbox["comment"] %>
+
 <% for i in 1..6 %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }"           ,   :value => @d_audit_cashbox["cashbox#{ i }"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_10000paper",   :value => @d_audit_cashbox["cashbox#{ i }_10000paper"] %>
-	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_5000paper" ,   :value => @d_audit_cashbox["cashbox#{ i }_5000paper"] %>
+	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_5000paper",    :value => @d_audit_cashbox["cashbox#{ i }_5000paper"] %>
+	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_2000paper",    :value => @d_audit_cashbox["cashbox#{ i }_2000paper"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_1000paper" ,   :value => @d_audit_cashbox["cashbox#{ i }_1000paper"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_500coin_50" ,  :value => @d_audit_cashbox["cashbox#{ i }_500coin_50"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_500coin_20" ,  :value => @d_audit_cashbox["cashbox#{ i }_500coin_20"] %>
@@ -28,13 +39,114 @@
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_still4",       :value => @d_audit_cashbox["cashbox#{ i }_still4"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_still5",       :value => @d_audit_cashbox["cashbox#{ i }_still5"] %>
 <% end %>
+
+<% for i in 1..7 %>
+	<%= hidden_field :d_audit_cashbox, "sum#{ i }_cashbox", :value => @d_audit_cashbox["sum#{ i }_cashbox"] %>
+	<%= hidden_field :d_audit_cashbox, "sum#{ i }_money",   :value => @d_audit_cashbox["sum#{ i }_money"] %>
+	<%= hidden_field :d_audit_cashbox, "sum#{ i }_still1",  :value => @d_audit_cashbox["sum#{ i }_still1"] %>
+	<%= hidden_field :d_audit_cashbox, "sum#{ i }_still2",  :value => @d_audit_cashbox["sum#{ i }_still2"] %>	
+	<%= hidden_field :d_audit_cashbox, "sum#{ i }_still3",  :value => @d_audit_cashbox["sum#{ i }_still3"] %>
+	<%= hidden_field :d_audit_cashbox, "sum#{ i }_still4",  :value => @d_audit_cashbox["sum#{ i }_still4"] %>
+	<%= hidden_field :d_audit_cashbox, "sum#{ i }_still5",  :value => @d_audit_cashbox["sum#{ i }_still5"] %>
+<% end %>
+
 </form>
 
-<script language="JavaScript">
+<table>
+<tr>
+	<td colspan="2">
+		<div id="div_top" style="margin-bottom: 30px;">
+			<%= render 'form_tbl1' %>
+		</div>		
+	</td>
+</tr>
+<tr>
+	<td>
+		<div id="div_middle_left" >
+			<%= render 'form_tbl2' %>
+		</div>		
+	</td>
+	<td>
+		<div id="div_middle_right" >
+			<%= render 'form_tbl3' %>
+		</div>		
+	</td>
+</tr>
+<tr>
+	<td>
+		<div id="div_bottom_left" >
+			<%= render 'form_tbl4'%>
+		</div>	
+	</td>
+	<td>
+		<!-- 立会人 -->
+		<table class='rounded-corner' >
+		<tr>
+			<th rowspan="2">立会人</th>
+			<td>
+				<%=render :partial => 'd_audit_changemachines/confirm_shop_id', :locals => {:c_shop_id => @d_audit_cashbox[:confirm_shop_id], 
+					                                                                        :c_user_id => @d_audit_cashbox[:confirm_user_id]} %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="confirm_user_id_div">
+					<%=render :partial => 'd_audit_changemachines/confirm_user_id', :locals => {:c_shop_id => @d_audit_cashbox[:confirm_shop_id], 
+					                                                                            :c_user_id => @d_audit_cashbox[:confirm_user_id]} %>
+				</div>
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
 
-</script>
-
-<div id="div_top">
-<%= render 'form_tbl1' %>
-<br/>
+<div style="float:right; padding-right: 20px;">
+<%
+	url = "./edit?header[m_shop_id]=#{@m_shop_id}&header[created_user_id]=#{@created_user_id}&header[audit_date]=#{@audit_date}"			
+%>
+			<input type="button" value="キャンセル" 
+				onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
+								this.value='キャンセル中です...';
+								this.disabled=true;document.location='<%=url%>';
+						}" />
+			&nbsp;&nbsp;
+			<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...' %>	
+	
 </div>
+
+<% end %> <!--  form_tag({:action => 'update' }, :id => "form_update") do -->
+
+<br/>
+
+<!-- 立会人確認用 -->
+<div id="dialog_div">
+	&nbsp;
+</div>
+
+<br/>
+
+<script>
+	
+  	// 更新前チェック
+  	function update_chk() {
+  		var sel_shop = $("#confirm_shop_id")[0];
+  		var sel_user = $("#confirm_user_id")[0];
+  		
+  		if (sel_shop.value == '') {
+  			alert('立会人を選択してください。');
+  			sel_shop.focus();
+  			return false;
+  		}
+  		
+  		if (sel_user.value == '') {
+  			alert('立会人を選択してください。');
+  			sel_user.focus();
+  			return false;
+  		}
+  		
+  		return confirm('保存しても良いですか？');	
+  		
+  	}
+  		
+</script>

@@ -1,0 +1,115 @@
+<%
+	m_fix = Array.new()
+	for i in 7..13
+		m_fix[i - 6] = get_m_fix(current_user.m_shop_id, i, 4)
+		
+		# 新規データの場合は指定額を設定
+		if @d_audit_cashbox["sum#{ (i - 6) }_cashbox"].to_s == "" then
+			if not(m_fix[(i - 6)].nil?) then
+				@d_audit_cashbox["sum#{ (i - 6) }_cashbox"] = m_fix[(i - 6)][1]
+			end 
+		end
+					
+	end
+%>
+
+<table class='rounded-corner' id="tbl2" style="white-space: nowrap">
+
+	<tr>
+
+		<th >
+			&nbsp;
+		</th>
+
+		<% for i in 1..7 %>
+			<% if not(m_fix[i].nil?) then%>
+				<th>
+					<%= link_to(m_fix[i][0] ,{:action => "edit_tbl2", :id => i }, :class => 'modal') %>
+				</th>
+			<% end %>
+		<% end %>
+	</tr>	
+
+	<tr>
+
+		<th >
+			指定額
+		</th>
+
+		<% for i in 1..7 %>
+			<% if not(m_fix[i].nil?) then%>
+				<td class="green" align="right">
+					<%= number_with_delimiter(@d_audit_cashbox["sum#{ i }_cashbox"]) %>
+				</td>
+			<% end %>
+		<% end %>
+	</tr>
+	
+	<tr>
+		<th >
+			金額
+		</th>
+		
+		<% for i in 1..7 %>
+			<% if not(m_fix[i].nil?) then%>
+				<td class="orange" align="right">
+					<%= number_with_delimiter(@d_audit_cashbox["sum#{ i }_money"] ) %>
+				</td>
+			<% end %>
+		<% end %>
+		
+	</tr>
+
+	<tr>
+		<th >
+			過不足金額
+		</th>
+		
+		<% for i in 1..7 %>
+			<% if not(m_fix[i].nil?) then%>
+				<td class="green" align="right">
+					<%= number_with_delimiter(get_kabusoku2(i)) %>
+				</td>
+			<% end %>
+		<% end %>
+		
+	</tr>
+
+	<tr>
+		<th >
+			立替未処理合計
+		</th>
+		
+		<% for i in 1..7 %>
+			<% if not(m_fix[i].nil?) then%>
+				<td class="green" align="right">
+					<%= number_with_delimiter(get_tatekae_kei2(i)) %>
+				</td>
+			<% end %>
+		<% end %>
+		
+	</tr>
+			
+	<tr>
+		<th >
+			実過不足金
+		</th>
+		
+		<% for i in 1..7 %>
+			<% if not(m_fix[i].nil?) then%>
+				<td class="green" align="right">
+					<%= number_with_delimiter(get_jitu_kabusoku2(i)) %>
+				</td>
+			<% end %>
+		<% end %>
+		
+	</tr>
+		
+</table>
+
+<script language="JavaScript">
+$(function(){
+	// スクロール
+	$("#tbl2").tablefix({width: 600, height: 250, fixRows: 1, fixCols: 1});
+});
+</script>
