@@ -21,7 +21,7 @@
     	  <%= User.find(washsale_report.created_user_id).user_name unless washsale_report == nil %>
 		</td>
 		<td style="text-align: center">
-			<%= if shop.shop_kbn == 0 then '直営' else '油外' end%>
+			<%= MCode.find(:first, :conditions => ["kbn = 'shop_kbn' and code = ?", shop.shop_kbn.to_s]).code_name %>
 		</td>
 		<td style="text-align: center">
 			<%= unless washsale_report == nil then "済" else "未" end%>
