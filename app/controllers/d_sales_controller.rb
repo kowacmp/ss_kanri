@@ -122,7 +122,7 @@ p params
     if @m_fix_money == nil
       @m_fix_money = MFixMoney.new  
     end
-    # 2012/09/24 add start oda 算出項目がnilの場合、算出不可
+    # 2012/09/24 oda 算出項目がnilの場合、算出不可 start
     #売上1
     if @d_sale.sale_money1 == nil
       @d_sale.sale_money1=0
@@ -171,7 +171,11 @@ p params
     if @zenjitu_d_sale.sale_pm_out == nil
       @zenjitu_d_sale.sale_pm_out=0
     end
-    # 2012/09/24 add end oda 算出項目がnilの場合、算出不可
+    #その他売上
+    if @d_sale.sale_etc == nil
+      @d_sale.sale_etc=0
+    end
+    # 2012/09/24 oda 算出項目がnilの場合、算出不可 end
     @syo_total=@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i + @d_sale.sale_purika.to_i + @d_sale.recive_money.to_i - @d_sale.pay_money.to_i 
     @total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + @zenjitu_d_sale.sale_changebox.to_i + @d_sale.sale_ass.to_i
     # 2012/09/25 ﾚｲｱｳﾄ修正 小田 start
