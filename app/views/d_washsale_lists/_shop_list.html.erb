@@ -30,7 +30,8 @@
       	  <%= User.find(d_wash_sale.created_user_id).user_name %><% end %>
       </td>
       <td align="center">
-		<%= if shop.shop_kbn == 0 then "直営" else "油外" end %></td>
+		<%= MCode.find(:first, :conditions => ["kbn = 'shop_kbn' and code = ?", shop.shop_kbn.to_s]).code_name %>
+      </td>
       <td align="center">
       	<%= unless d_wash_sale == nil then "済" else "未" end %>
       </td>
