@@ -108,6 +108,11 @@ $(function () {
 	$('#d_sale_sale_pm_out').live('change', function(){ sale_pm_out_calc(); });
 	//釣銭機１、釣銭機２、釣銭機３
 	$(":input[id^=d_sale_sale_change]").live('change', function(){ sale_change_total_calc(); });
+	//2012/09/25 ﾚｲｱｳﾄ修正 小田 start
+	//その他売上
+	$("#d_sale_sale_etc").live('change', function(){ sale_change_total_calc(); });
+	//2012/09/25 ﾚｲｱｳﾄ修正 小田 end
+	//入金
 	//ASS
 	$("#d_sale_sale_ass").live('change', function(){ sale_ass_calc(); });
 	//入金
@@ -120,14 +125,14 @@ $(function () {
 	 	var num1 = Number(format_kanma($("#d_sale_sale_money1").val(), 2));
   		var num2 = Number(format_kanma($("#d_sale_sale_money2").val(), 2));
   		var num3 = Number(format_kanma($("#d_sale_sale_money3").val(), 2));
-  		var total;
-  		
+   		var total;
+  		alert(num4);
   		if (isNaN(num1)) {num1 = 0};
   		if (isNaN(num2)) {num2 = 0};
   		if (isNaN(num3)) {num3 = 0};
-  		
+  		 		
   		total = num1 + num2 + num3;
-  		
+
   		$("#sale_money_total").text(format_kanma(total));
   		$("#sale_money_total2").text(format_kanma(total));
   		
@@ -188,20 +193,27 @@ $(function () {
     
     //釣銭合計を計算
 	function sale_change_total_calc() {
+	
 	 	var num1 = Number(format_kanma($("#d_sale_sale_change1").val(), 2));
   		var num2 = Number(format_kanma($("#d_sale_sale_change2").val(), 2));
   		var num3 = Number(format_kanma($("#d_sale_sale_change3").val(), 2));
+  		//2012/09/25 ﾚｲｱｳﾄ修正 小田
+  		var num4 = Number(format_kanma($("#d_sale_sale_etc").val(), 2));
   		var total;
-  		
+
   		if (isNaN(num1)) {num1 = 0};
   		if (isNaN(num2)) {num2 = 0};
   		if (isNaN(num3)) {num3 = 0};
-  		
-  		total = num1 + num2 + num3;
-  		
+  		//2012/09/25 ﾚｲｱｳﾄ修正 小田 start
+  		if (isNaN(num4)) {num4 = 0};
+  		  		
+  		//total = num1 + num2 + num3;
+  		total = num1 + num2 + num3 + num4;
+  		//2012/09/25 ﾚｲｱｳﾄ修正 小田 end  		
   		$("#sale_change_total").text(format_kanma(total));
   		
   		changebox_aridaka2_calc(); //釣銭有高2を計算
+	
 	};
     
     //ASSを計算

@@ -12,7 +12,10 @@ module DSalesHelper
     select_sql << " , a.recive_money "
     select_sql << " , a.pay_money " 
     select_sql << " , a.sale_ass "
-    select_sql << " , cast(a.sale_change1 as int) + cast(a.sale_change2 as int) + cast(a.sale_change3 as int) as sale_change "
+    # 2012/09/25 ﾚｲｱｳﾄ修正 小田 start
+    #select_sql << " , cast(a.sale_change1 as int) + cast(a.sale_change2 as int) + cast(a.sale_change3 as int) as sale_change "
+    select_sql << " , cast(a.sale_change1 as int) + cast(a.sale_change2 as int) + cast(a.sale_change3 as int) + cast(a.sale_etc as int)as sale_change "
+    # 2012/09/25 ﾚｲｱｳﾄ修正 小田 end
     select_sql << " , a.sale_today_out "
     select_sql << " , a.sale_am_out "
     select_sql << " , a.sale_pm_out "
@@ -50,8 +53,11 @@ module DSalesHelper
     if d_sale then
        @d_sale_ass = zenjitu_d_sale.sale_pm_out.to_i + d_sale.sale_today_out.to_i + d_sale.sale_am_out.to_i   #ASS入金額
        @d_sale_syokei = d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i + d_sale.purika_tesuryo.to_i - d_sale.pay_money.to_i #小計
-       @zenjitu_d_sale_cash_arigaka = zenjitu_d_sale.sale_change1.to_i + zenjitu_d_sale.sale_change2.to_i + zenjitu_d_sale.sale_change3.to_i + zenjitu_d_sale.sale_cashbox.to_i
+       # 2012/09/25 ﾚｲｱｳﾄ修正 小田 start
+       #@zenjitu_d_sale_cash_arigaka = zenjitu_d_sale.sale_change1.to_i + zenjitu_d_sale.sale_change2.to_i + zenjitu_d_sale.sale_change3.to_i + zenjitu_d_sale.sale_cashbox.to_i
+       @zenjitu_d_sale_cash_arigaka = zenjitu_d_sale.sale_change1.to_i + zenjitu_d_sale.sale_change2.to_i + zenjitu_d_sale.sale_change3.to_i  + zenjitu_d_sale.sale_etc.to_i + zenjitu_d_sale.sale_cashbox.to_i
        #@d_sale_calc_aridaka = @zenjitu_d_sale_cash_arigaka.to_i + @d_sale_syokei.to_i + @d_sale.sale_ass.to_i + @d_sale_ass.to_i
+       # 2012/09/25 ﾚｲｱｳﾄ修正 小田 end
        @d_sale_cash_aridaka = d_sale.exist_money
        @calc_exist_money = ((d_sale.exist_money.to_i * -1) + d_sale.over_short.to_i) * -1
        @balance_money = d_sale.balance_money.to_i

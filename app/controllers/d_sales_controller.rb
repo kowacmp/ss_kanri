@@ -167,14 +167,17 @@ p params
     if @d_sale.sale_pm_out == nil
       @d_sale.sale_pm_out=0
     end
-    #翌日出後
+    #前日翌日出後
     if @zenjitu_d_sale.sale_pm_out == nil
       @zenjitu_d_sale.sale_pm_out=0
     end
     # 2012/09/24 add end oda 算出項目がnilの場合、算出不可
     @syo_total=@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i + @d_sale.sale_purika.to_i + @d_sale.recive_money.to_i - @d_sale.pay_money.to_i 
-    @total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + @zenjitu_d_sale.sale_changebox.to_i + @d_sale.sale_ass.to_i 
-    @sale_change_total = @d_sale.sale_change1.to_i + @d_sale.sale_change2.to_i + @d_sale.sale_change3.to_i 
+    @total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + @zenjitu_d_sale.sale_changebox.to_i + @d_sale.sale_ass.to_i
+    # 2012/09/25 ﾚｲｱｳﾄ修正 小田 start
+    #@sale_change_total = @d_sale.sale_change1.to_i + @d_sale.sale_change2.to_i + @d_sale.sale_change3.to_i 
+    @sale_change_total = @d_sale.sale_change1.to_i + @d_sale.sale_change2.to_i + @d_sale.sale_change3.to_i + @d_sale.sale_etc.to_i
+    # 2012/09/25 ﾚｲｱｳﾄ修正 小田 start    
     @changebox_aridaka = @zenjitu_d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i + @sale_change_total - @syo_total - @d_sale.sale_ass.to_i - @zenjitu_d_sale.sale_pm_out.to_i 
     @cash_aridaka = @m_fix_money.total_cash_box.to_i + @changebox_aridaka.to_i + @d_sale.sale_today_out.to_i + @d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i 
 

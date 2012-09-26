@@ -36,13 +36,25 @@
 		  <td class="info_alias"><%= label :zenjitu_d_sale, :sale_pm_out, num_fmt(@zenjitu_d_sale.sale_pm_out.to_i), :id=>'zenjitu_sale_pm_out' %></td>
 		  <td class="title_alias">釣銭機１</td>
 		  <td class="input_alias"><%= f.text_field :sale_change1, :size=>4, :class=>"money" %></td>
+<!-- 2012/09/25 レイアウト修正その他売上追加 小田 start -->
+<!--
 		  <td class="title_alias">ＡＳＳ</td>
 		  <td class="input_alias"><%= f.text_field :sale_ass, :size=>4, :class=>"money" %></td>
+-->
+		  <td class="title_alias">その他売上</td>
+		  <td class="input_alias"><%= f.text_field :sale_etc, :size=>4, :class=>"money" %></td>
+<!--2012/09/25 レイアウト修正その他売上追加 小田 end-->
 		</tr>
 		<tr>
 		  <td class="title_alias">売上２</td>
 		  <td class="input_alias"><%= f.text_field :sale_money2, :size=>4, :class=>"money" %></td>
+<!-- 2012/09/25 レイアウト修正その他売上追加 小田 start -->	  
+		  <td class="title_alias">両替金</td>
+		  <td class="input_alias"><%= f.text_field :sale_ass, :size=>4, :class=>"money" %></td>
+<!--		  
 		  <td class="none_alias" colspan="2" rowspan="3"></td>
+-->
+<!--2012/09/25 レイアウト修正その他売上追加 小田 end-->
 		  <td class="title_alias">当日出</td>
 		  <td class="input_alias"><%= f.text_field :sale_today_out, :size=>4, :class=>"money" %></td>
 		  <td class="title_alias">釣銭機２</td>
@@ -52,7 +64,10 @@
 		</tr>
 		<tr>
 		  <td class="title_alias">売上３</td>
-		  <td class="input_alias"><%= f.text_field :sale_money3, :size=>4, :class=>"money" %></td>  
+		  <td class="input_alias"><%= f.text_field :sale_money3, :size=>4, :class=>"money" %></td>
+<!-- 2012/09/25 レイアウト修正その他売上追加 小田 start -->
+		  <td class="none_alias" colspan="2" rowspan="3"></td>
+<!--2012/09/25 レイアウト修正その他売上追加 小田 end-->	  
 		  <td class="title_alias">翌日出前</td>
 		  <td class="input_alias"><%= f.text_field :sale_am_out, :size=>4, :class=>"money" %></td>
 		  <td class="title_alias">釣銭機３</td>
