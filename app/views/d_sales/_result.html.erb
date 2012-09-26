@@ -19,7 +19,12 @@
   <tr>
     <td><%= "#{data.shop_cd}  #{data.shop_name}" %></td>
     <td style="text-align: center"><%= "#{data.sale_date.to_s[0,4]}/#{data.sale_date.to_s[4,2]}/#{data.sale_date.to_s[6,2]}" unless data.sale_date.blank? %></td>
-    <td><%= "#{data.account}  #{data.user_name}" %></td>
+    <!-- 2012/09/26 oda アカウント表示不可 start-->
+    <!--
+    <td><%#= "{data.account}  #{data.user_name}" %></td>
+    -->
+    <td><%= "#{data.user_name}" %></td>
+    <!-- 2012/09/26 oda アカウント表示不可 end-->
     <td style="text-align: center"><%= data.shop_kbn_name %></td>
     <td style="text-align: center"><%= if data.sale_date.blank? then "未" else "済" end %></td>
     <td style="text-align: center">

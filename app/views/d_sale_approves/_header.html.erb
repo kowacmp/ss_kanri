@@ -21,7 +21,7 @@
   			店舗種別
   		</th>
   		<td>
-  			<% shop_kbn_list = MCode.find(:all, :conditions => ["kbn='shop_kbn'"], :order => "code").collect{|i| [i.code_name, i.code]} %>
+  			<% shop_kbn_list = MCode.find(:all, :conditions => ["kbn='shop_kbn'and code<>'9'"], :order => "code").collect{|i| [i.code_name, i.code]} %>
   			<%=select :header, :shop_kbn, shop_kbn_list, :selected => shop_kbn %>
   		</td>
   		<td>
