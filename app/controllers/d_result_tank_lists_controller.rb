@@ -23,9 +23,10 @@ class DResultTankListsController < ApplicationController
     @m_shops = get_shops(@shop_kbn)
 
     @m_oils = MOil.where('deleted_flg = 0').order('oil_cd')
-    
+ 
     @from_ymd_s = @from_ymd.delete("/")
     @to_ymd_s   = @to_ymd.delete("/")
+
   end
   
   def csv
@@ -51,11 +52,17 @@ class DResultTankListsController < ApplicationController
       csv << str.split(/,/)
       
       #データ処理
+      # 2012/09/26 月跨り不具合修正 oda 
+      @num = Date.parse(@to_ymd_s) - Date.parse(@from_ymd_s)
       @m_shops.each do |shop|
-        for i in @from_ymd_s.to_i..@to_ymd_s.to_i
-            str = shop.shop_cd.to_s + "," + shop.shop_name.tosjis + "," + "#{i.to_s[0,4]}/#{i.to_s[4,2]}/#{i.to_s[6,2]}"
+        #for i in @from_ymd_s.to_i..@to_numymd_s.to_i
+        for i in 0..@num.to_i
+            #str = shop.shop_cd.to_s + "," + shop.shop_name.tosjis + "," + "#{i.to_s[0,4]}/#{i.to_s[4,2]}/#{i.to_s[6,2]}"
+            #str = shop.shop_cd.to_s + "," + shop.shop_name.tosjis + "," + "#{i.to_s[0,4]}/#{i.to_s[4,2]}/#{i.to_s[6,2]}"
+            str = shop.shop_cd.to_s + "," + shop.shop_name.tosjis + "," + (Date.parse(@from_ymd_s) + i).strftime("%Y/%m/%d")
              @m_oils.each do |oil|
-               str = str + "," + get_sum_stock(i.to_s,i.to_s,shop.id,oil.id).to_s
+               #str = str + "," + get_sum_stock(i.to_s,i.to_s,shop.id,oil.id).to_s
+               str = str + "," + get_sum_stock((@from_ymd_s.to_i + i).to_s,(@from_ymd_s.to_i + i).to_s,shop.id,oil.id).to_s
              end
            csv << str.split(/,/)        
         end #for
