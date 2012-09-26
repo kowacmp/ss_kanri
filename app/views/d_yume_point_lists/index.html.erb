@@ -5,9 +5,10 @@
       <th>対象年月</th>
       <td><%= select_year(@time_now,:start_year => @start_year, :end_year => @time_now.year) %><%= select_month(@time_now,:use_month_numbers => true) %></td>
 	  <th>店舗種別</th>
-	  <td><%= select_tag "shop_kbn",
-	        raw('<option value="0">直営</option><option value="1">油外</option>')
-	        %></td> 
+	  <td>
+		<% shop_kbn_list = MCode.find(:all, :conditions => ["kbn='shop_kbn'and code<>'9'"], :order => "code").collect{|i| [i.code_name, i.code]} %>
+		<%= select_tag "shop_kbn", options_for_select(shop_kbn_list) %>
+	  </td> 
 	  <td><%= submit_tag "検索" %></td>
       </tr>
 </table>
