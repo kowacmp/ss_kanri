@@ -20,7 +20,7 @@ class DResultTankListsController < ApplicationController
     end
     @shop_kbn = params[:shop_kbn]
     
-    @m_shops = get_shops(@shop_kbn)
+    @m_shops = get_shops1(@shop_kbn)
 
     @m_oils = MOil.where('deleted_flg = 0').order('oil_cd')
  
