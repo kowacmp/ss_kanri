@@ -16,7 +16,9 @@
 <%
 	m_fix = Array.new()
 	for i in 1..6
-		m_fix[i] = get_m_fix(current_user.m_shop_id, i, 4)
+		m_fix[i] = get_m_fix(@d_audit_cashbox["m_shop_id"], 
+		                     i, 
+		                     @d_audit_cashbox["audit_date"].to_s.gsub("/","")[4..5])
 		
 		# 新規データの場合は指定額を設定
 		if @d_audit_cashbox["cashbox#{ i }"].to_s == "" then

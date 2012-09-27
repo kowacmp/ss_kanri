@@ -10,8 +10,11 @@ class DAuditCashboxesController < ApplicationController
       return
     end 
  
-    # TEST用
-    #@d_audit_cashbox = DAuditCashbox.new()
+  end
+
+  def show
+    
+    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true
     
   end
 
@@ -57,7 +60,7 @@ class DAuditCashboxesController < ApplicationController
     
     if params[:key][:id].to_s == "" then
       #　新規
-      @d_aduit_cashbox = DAuditCashbox.new()
+      @d_audit_cashbox = DAuditCashbox.new()
       
       #  POSTデータに含まれない部分を設定
       @d_audit_cashbox["kakutei_flg"] = 0
@@ -68,14 +71,14 @@ class DAuditCashboxesController < ApplicationController
         @d_audit_cashbox["approve_id#{ i }"] = 0
         @d_audit_cashbox["approve_date#{ i }"] = nil
       end
-      @d_aduit_cashbox["created_user_id"] = current_user.id
+      @d_audit_cashbox["created_user_id"] = current_user.id
     else
       #  更新
-      @d_aduit_cashbox = DAuditCashbox.find(params[:key][:id])
+      @d_audit_cashbox = DAuditCashbox.find(params[:key][:id])
     end
     
     # POSTデータを設定
-    @d_audit_cashbox.attributes(params[:d_audit_cashbox])
+    @d_audit_cashbox.attributes = params[:d_audit_cashbox]
     @d_audit_cashbox.confirm_shop_id = params[:confirm][:shop_id]
     @d_audit_cashbox.confirm_user_id = params[:confirm][:user_id]
     
@@ -83,7 +86,7 @@ class DAuditCashboxesController < ApplicationController
     @d_audit_cashbox.updated_user_id = current_user.id
     
     # 更新完了
-    @d_audit_casshbox.save!
+    @d_audit_cashbox.save!
   
     # 再読込
     redirect_to :action => "edit", :header => {:m_shop_id       => params[:hheader][:m_shop_id],
