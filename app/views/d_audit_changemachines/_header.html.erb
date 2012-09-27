@@ -41,7 +41,7 @@
   		<th>監査人</th>
   		<td style="background-color: #A5D7AA;">
   			<% user = User.find(created_user_id) %>
-  			<%=user.account%>&nbsp;<%=user.user_name%>
+  			<%=user.user_name%>
   			<%=hidden_field :header, :created_user_id, :value => created_user_id %>
   		</td>
   	</tr>

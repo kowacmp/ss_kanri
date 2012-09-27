@@ -190,6 +190,8 @@ class DAuditWashesController < ApplicationController
     
     @d_wash_sales = DWashSale.find_by_sql(sql)
     
+    render :layout => "modal"
+    
   end
   
 private
