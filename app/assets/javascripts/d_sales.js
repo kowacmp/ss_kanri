@@ -126,7 +126,6 @@ $(function () {
   		var num2 = Number(format_kanma($("#d_sale_sale_money2").val(), 2));
   		var num3 = Number(format_kanma($("#d_sale_sale_money3").val(), 2));
    		var total;
-  		alert(num4);
   		if (isNaN(num1)) {num1 = 0};
   		if (isNaN(num2)) {num2 = 0};
   		if (isNaN(num3)) {num3 = 0};
