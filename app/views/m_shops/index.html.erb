@@ -8,7 +8,7 @@
       <th>店舗種別</th>
       <td>
       	<%= select("select",'shop_kbn' ,
-	  	 	MCode.find(:all,:conditions => ["kbn = 'shop_kbn'"], :order => 'code').map do |u|
+	  	 	MCode.find(:all,:conditions => ["kbn = 'shop_kbn' and code <> '9'"], :order => 'code').map do |u|
 	      	[u.code_name1,u.code]
 	   		end, :include_blank => "") %>
       </td>
