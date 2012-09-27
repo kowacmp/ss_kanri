@@ -10,9 +10,6 @@ class DAuditCashboxesController < ApplicationController
       return
     end 
  
-    # TEST用
-    #@d_audit_cashbox = DAuditCashbox.new()
-    
   end
 
   def edit

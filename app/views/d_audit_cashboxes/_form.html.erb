@@ -15,7 +15,9 @@
 	<%= hidden_field :d_audit_cashbox, "comment",    :value => @d_audit_cashbox["comment"] %>
 
 <% for i in 1..6 %>
-	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }"           ,   :value => @d_audit_cashbox["cashbox#{ i }"] %>
+	<!-- form1 描写後 で宣言 -->
+	<%#= hidden_field :d_audit_cashbox, "cashbox#{ i }"           ,   :value => @d_audit_cashbox["cashbox#{ i }"] %>
+	
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_10000paper",   :value => @d_audit_cashbox["cashbox#{ i }_10000paper"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_5000paper",    :value => @d_audit_cashbox["cashbox#{ i }_5000paper"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_2000paper",    :value => @d_audit_cashbox["cashbox#{ i }_2000paper"] %>
@@ -42,7 +44,9 @@
 <% end %>
 
 <% for i in 1..7 %>
-	<%= hidden_field :d_audit_cashbox, "sum#{ i }_cashbox", :value => @d_audit_cashbox["sum#{ i }_cashbox"] %>
+	<!-- form_tbl2 描写後に宣言 -->
+	<%#= hidden_field :d_audit_cashbox, "sum#{ i }_cashbox", :value => @d_audit_cashbox["sum#{ i }_cashbox"] %>
+	
 	<%= hidden_field :d_audit_cashbox, "sum#{ i }_money",   :value => @d_audit_cashbox["sum#{ i }_money"] %>
 	<%= hidden_field :d_audit_cashbox, "sum#{ i }_still1",  :value => @d_audit_cashbox["sum#{ i }_still1"] %>
 	<%= hidden_field :d_audit_cashbox, "sum#{ i }_still2",  :value => @d_audit_cashbox["sum#{ i }_still2"] %>	
@@ -110,9 +114,17 @@
 								this.disabled=true;document.location='<%=url%>';
 						}" />
 			&nbsp;&nbsp;
-			<%= submit_tag '　保　存　', :onlick => "return update_chk();" ,:disable_with => '保存中です...' %>	
+			<%= submit_tag '　保　存　', :onclick => "return update_chk();" ,:disable_with => '保存中です...' %>	
 	
 </div>
+
+<% for i in 1..6 %>
+	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }"           ,   :value => @d_audit_cashbox["cashbox#{ i }"] %>
+<% end %>
+
+<% for i in 1..7 %>
+	<%= hidden_field :d_audit_cashbox, "sum#{ i }_cashbox", :value => @d_audit_cashbox["sum#{ i }_cashbox"] %>
+<% end %>
 
 <% end %> <!--  form_tag({:action => 'update' }, :id => "form_update") do -->
 
