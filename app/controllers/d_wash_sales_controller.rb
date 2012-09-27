@@ -167,7 +167,10 @@ class DWashSalesController < ApplicationController
              #update_d_washsale_item(wash.wash_cd,99,sum_meter,sum_meter_mae)
              
              @d_washsale_item.meter = params["meter_#{wash.wash_cd}_#{99}"]
-             @d_washsale_item.error_money =  sum_uriage - @d_washsale_item.meter
+             
+             # UPDATE 2012.09.27 誤差 = 現金売上高 - 計算上売上高
+             #@d_washsale_item.error_money =  sum_uriage - @d_washsale_item.meter
+             @d_washsale_item.error_money =  @d_washsale_item.meter - sum_uriage
              @d_washsale_item.uriage = 0
              @d_washsale_item.updated_user_id = current_user.id
              @d_washsale_item.save!
@@ -222,7 +225,9 @@ private
     @d_washsale_item.wash_no = wash_no
     @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"]     
     if @d_washsale_item.wash_no == 99      
-       @d_washsale_item.error_money = sum_uriage - @d_washsale_item.meter
+       # UPDATE 2012.09.27 誤差 = 現金売上高 - 計算上売上高
+       #@d_washsale_item.error_money = sum_uriage - @d_washsale_item.meter
+       @d_washsale_item.error_money = @d_washsale_item.meter - sum_uriage
     end
     @d_washsale_item.created_user_id = current_user.id
     @d_washsale_item.updated_user_id = current_user.id
@@ -236,7 +241,9 @@ private
       @d_washsale_item.meter = 0
     end
     if wash_no == 99
-      @d_washsale_item.error_money =  (sum_meter - sum_meter_mae) - @d_washsale_item.meter
+      # UPDATE 2012.09.27 誤差 = 現金売上高 - 計算上売上高
+      #@d_washsale_item.error_money =  (sum_meter - sum_meter_mae) - @d_washsale_item.meter
+      @d_washsale_item.error_money =  @d_washsale_item.meter - (sum_meter - sum_meter_mae)
     end
     @d_washsale_item.updated_user_id = current_user.id
     @d_washsale_item.uriage = @uriage

@@ -69,7 +69,6 @@ class DResultReportsController < ApplicationController
   end
   
   def print
-    
     @input_ymd_s = params[:input_ymd_s]
     @input_ymd_e = params[:input_ymd_e]
     @select_kbn = params[:select_kbn].to_i
@@ -153,6 +152,7 @@ class DResultReportsController < ApplicationController
 
     #ページ番号、タイトル、作成日セット  
     report.events.on :page_create do |e|
+      e.page.item(:title).value("#{@title_label}実績表1")
       e.page.item(:page).value(e.page.no)
       e.page.item(:sakusei_ymd).value(Time.now.strftime("%Y-%m-%d"))
       e.page.item(:taisyo_ymd).value(taisyo_ymd)
@@ -234,7 +234,7 @@ class DResultReportsController < ApplicationController
   
     #タイトルセット
     #  pdf_title = "SS別地下タンク過不足表（日計）_#{@input_ymd_s}.pdf"
-    pdf_title = "油外型実績表1.pdf"
+    pdf_title = "#{@title_label}実績表1.pdf"
     
     ua = request.env["HTTP_USER_AGENT"]
     pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
@@ -315,6 +315,7 @@ class DResultReportsController < ApplicationController
 
     #ページ番号、タイトル、作成日セット  
     report.events.on :page_create do |e|
+      e.page.item(:title).value("#{@title_label}実績表2")
       e.page.item(:page).value(e.page.no)
       e.page.item(:sakusei_ymd).value(Time.now.strftime("%Y-%m-%d"))
       e.page.item(:taisyo_ymd).value(taisyo_ymd)
@@ -410,7 +411,7 @@ class DResultReportsController < ApplicationController
   
     #タイトルセット
     #  pdf_title = "SS別地下タンク過不足表（日計）_#{@input_ymd_s}.pdf"
-    pdf_title = "油外型実績表2.pdf"
+    pdf_title = "#{@title_label}実績表2.pdf"
     
     ua = request.env["HTTP_USER_AGENT"]
     pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
@@ -428,6 +429,7 @@ class DResultReportsController < ApplicationController
     
     #ページ番号、タイトル、作成日セット  
     report.events.on :page_create do |e|
+      e.page.item(:title).value("#{@title_label}実績表1")
       e.page.item(:page).value(e.page.no)
       e.page.item(:sakusei_ymd).value(Time.now.strftime("%Y-%m-%d"))
       e.page.item(:taisyo_ymd).value(taisyo_ymd)
@@ -493,7 +495,7 @@ class DResultReportsController < ApplicationController
   
   
     #タイトルセット
-    pdf_title = "洗車型実績表1.pdf"
+    pdf_title = "#{@title_label}実績表1.pdf"
     
     ua = request.env["HTTP_USER_AGENT"]
     pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
@@ -511,6 +513,7 @@ class DResultReportsController < ApplicationController
 
     #ページ番号、タイトル、作成日セット  
     report.events.on :page_create do |e|
+      e.page.item(:title).value("#{@title_label}実績表2")
       e.page.item(:page).value(e.page.no)
       e.page.item(:sakusei_ymd).value(Time.now.strftime("%Y-%m-%d"))
       e.page.item(:taisyo_ymd).value(taisyo_ymd)
@@ -577,7 +580,7 @@ class DResultReportsController < ApplicationController
   
   
     #タイトルセット
-    pdf_title = "洗車型実績表2.pdf"
+    pdf_title = "#{@title_label}実績表2.pdf"
     
     ua = request.env["HTTP_USER_AGENT"]
     pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
@@ -592,6 +595,8 @@ class DResultReportsController < ApplicationController
   def label_names_get(select_kbn)
     
     if select_kbn == 0
+      @title_label = MCode.find_by_kbn_and_code('shop_kbn','1') ? MCode.find_by_kbn_and_code('shop_kbn','1').code_name : "油外型"
+      
       @keiyu_label = MOil.find(3) ? MOil.find(3).oil_name : "軽油"
       @touyu_label = MOil.find(4) ? MOil.find(4).oil_name : "灯油"
       
@@ -602,6 +607,8 @@ class DResultReportsController < ApplicationController
       @koutin_label = MOiletc.find(5) ? MOiletc.find(5).oiletc_ryaku : "工賃"
       @taiya_label = MOiletc.find(6) ? MOiletc.find(6).oiletc_ryaku : "タイヤ"
     elsif select_kbn == 1
+      @title_label = MCode.find_by_kbn_and_code('shop_kbn','1') ? MCode.find_by_kbn_and_code('shop_kbn','1').code_name : "油外型"
+      
       @chousei_label = MOiletc.find(28) ? MOiletc.find(28).oiletc_ryaku : "調整"
       @syaken_label = MOiletc.find(13) ? MOiletc.find(13).oiletc_ryaku : "車検"
       @kyuyu_purika_label = MOiletc.find(8) ? MOiletc.find(8).oiletc_ryaku : "GP"
@@ -617,12 +624,16 @@ class DResultReportsController < ApplicationController
       @waiper_label = MOiletc.find(18) ? MOiletc.find(18).oiletc_ryaku : "ワイパー"
       @mobil1_label = MOiletc.find(19) ? MOiletc.find(19).oiletc_ryaku : "M-1"
     elsif select_kbn == 2
+      @title_label = MCode.find_by_kbn_and_code('shop_kbn','0') ? MCode.find_by_kbn_and_code('shop_kbn','0').code_name : "洗車型"
+      
       @keiyu_label = MOil.find(3) ? MOil.find(3).oil_name : "軽油"
       @touyu_label = MOil.find(4) ? MOil.find(4).oil_name : "灯油"
       
       @kyuyu_purika_label = MOiletc.find(8) ? MOiletc.find(8).oiletc_ryaku : "GP"
       @cb_label = MOiletc.find(24) ? MOiletc.find(24).oiletc_ryaku : "CB"
     elsif select_kbn == 3
+      @title_label = MCode.find_by_kbn_and_code('shop_kbn','0') ? MCode.find_by_kbn_and_code('shop_kbn','0').code_name : "洗車型"
+      
       @sensya_label = MOiletc.find(4) ? MOiletc.find(4).oiletc_ryaku : "洗車"
       @sensya_purika_label = MOiletc.find(11) ? MOiletc.find(11).oiletc_ryaku : "洗車PPC"
       @muton_label = MOiletc.find(22) ? MOiletc.find(22).oiletc_ryaku : "ムートンパス"
@@ -646,6 +657,8 @@ class DResultReportsController < ApplicationController
       @ozone_label = MOiletc.find(40) ? MOiletc.find(40).oiletc_ryaku : "脱臭機"
       #@spare_label = "予備"
     else
+      @title_label = MCode.find_by_kbn_and_code('shop_kbn','1') ? MCode.find_by_kbn_and_code('shop_kbn','1').code_name : "油外型"
+      
       @keiyu_label = MOil.find(3) ? MOil.find(3).oil_name : "軽油"
       @touyu_label = MOil.find(4) ? MOil.find(4).oil_name : "灯油"
       

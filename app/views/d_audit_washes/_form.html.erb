@@ -37,6 +37,7 @@
   					
   					<!-- 誤差 -->
   					<td rowspan="<%= dt_rec[:max_num] %>" align="center" >
+  						<!-- 
   						<%= form_tag({:action => 'dialog_gosa' }, { :remote => true }) do %>
   							<%= hidden_field(:dialog_gosa, :sale_date_from, :value => dt_rec[:audit_date_from]) %>
   							<%= hidden_field(:dialog_gosa, :sale_date_to,   :value => dt_rec[:audit_date_to]) %>
@@ -44,6 +45,12 @@
   							<%= hidden_field(:dialog_gosa, :m_wash_id,      :value => dt_rec[:m_wash_id]) %>
 							<%= submit_tag '参照', :disable_with => "処理中です..." %>
   						<% end %>
+  						-->
+  						<%=link_to "参照", {:action => "dialog_gosa", :dialog_gosa => {
+  							:sale_date_from => dt_rec[:audit_date_from],
+  							:sale_date_to => dt_rec[:audit_date_to],
+  							:m_shop_id => dt_rec[:m_shop_id],
+  							:m_wash_id => dt_rec[:m_wash_id]}}, :class => "modal" %>
 					</td>
   				<% end %>
 			</tr>

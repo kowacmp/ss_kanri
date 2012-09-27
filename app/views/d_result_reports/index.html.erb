@@ -7,14 +7,15 @@
 	        <%= text_field_tag  "input_ymd" , @input_ymd, :readonly => true ,:class => 'datepicker',:size => 10%>
 	    </td>
 	  <th>実績表種別</th>
-	  
+	  <% shop_kbn_name0 = MCode.find_by_kbn_and_code('shop_kbn','0') ? MCode.find_by_kbn_and_code('shop_kbn','0').code_name : "洗車型"  %>
+	  <% shop_kbn_name1 = MCode.find_by_kbn_and_code('shop_kbn','1') ? MCode.find_by_kbn_and_code('shop_kbn','1').code_name : "油外型"  %>
 	    <td>
 	    	<% if @shop_info.shop_kbn == 0 %>
-	    	<%= select_tag "select_kbn",options_for_select({'洗車型実績表1' => 2,'洗車型実績表2' => 3}) %>
+	    	<%= select_tag "select_kbn",options_for_select({"#{shop_kbn_name0}実績表1" => 2,"#{shop_kbn_name0}実績表2" => 3}) %>
 	    	<% elsif @shop_info.shop_kbn == 1 %>
-	    	<%= select_tag "select_kbn",options_for_select({'油外型実績表1' => 0,'油外型実績表2' => 1}) %>
+	    	<%= select_tag "select_kbn",options_for_select({"#{shop_kbn_name1}実績表1" => 0,"#{shop_kbn_name1}実績表2" => 1}) %>
 	    	<% else %>
-	    	<%= select_tag "select_kbn",options_for_select({'油外型実績表1' => 0,'油外型実績表2' => 1,'洗車型実績表1' => 2,'洗車型実績表2' => 3}) %>
+	    	<%= select_tag "select_kbn",options_for_select({"#{shop_kbn_name1}実績表1" => 0,"#{shop_kbn_name1}実績表2" => 1,"#{shop_kbn_name0}実績表1" => 2,"#{shop_kbn_name0}実績表2" => 3}) %>
 	    	<% end %>
 	    </td>
 	    <td><%= submit_tag '表示'%></td>

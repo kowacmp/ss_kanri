@@ -495,7 +495,15 @@ module DResultsHelper
     end
       
       #レギュラーのみの欠減率を求める
+      #2012/09/27 nishimura <<<<<<<<<<<
+      oil_num_mogas = 0
+      sale_sum_mogas = 0
+      oil_num_mogas_total = 0
+      sale_total_sum_mogas = 0
+      #2012/09/27 nishimura >>>>>>>>>>>
+      
     d_tank_compute_reports.each do |d_tank_compute_report|
+=begin
       if d_tank_compute_report.m_oil_id.to_i == 2
         oil_percent = d_tank_decrease_report.oil2_num.to_f / d_tank_compute_report.sale_sum.to_f * 100
         
@@ -522,7 +530,58 @@ module DResultsHelper
      
         d_tank_decrease_report.oil_percent_total = oil_percent_total.round(2)        
       end
+=end
+      
+      #2012/09/27 nishimura <<<<<<<<<
+      if d_tank_compute_report.m_oil_id.to_i == 1
+        oil_num_mogas = oil_num_mogas + d_tank_decrease_report.oil1_num.to_f
+        sale_sum_mogas = sale_sum_mogas + d_tank_compute_report.sale_sum.to_f
+        oil_num_mogas_total = oil_num_mogas_total + d_tank_decrease_report.oil1_num_total.to_f
+        sale_total_sum_mogas = sale_total_sum_mogas + d_tank_compute_report.sale_total_sum.to_f
+      end
+      
+      if d_tank_compute_report.m_oil_id.to_i == 2
+        oil_num_mogas = oil_num_mogas + d_tank_decrease_report.oil2_num.to_f
+        sale_sum_mogas = sale_sum_mogas + d_tank_compute_report.sale_sum.to_f
+        oil_num_mogas_total = oil_num_mogas_total + d_tank_decrease_report.oil2_num_total.to_f
+        sale_total_sum_mogas = sale_total_sum_mogas + d_tank_compute_report.sale_total_sum.to_f
+      end
+      #2012/09/27 nishimura >>>>>>>>>>>
+
     end
+    
+    #2012/09/27 nishimura <<<<<<<<<<<
+    #if sale_sum_mogas == 0
+    #  d_tank_decrease_report.oil_percent = 0    
+    #else
+      oil_percent = oil_num_mogas / sale_sum_mogas * 100
+      #桁オーバーフロー対策
+        if oil_percent >= 1000
+          oil_percent = 999.99
+        elsif oil_percent <= -1000 
+          oil_percent = -999.99
+        elsif oil_percent.nan?  
+          oil_percent = 0        
+        end  
+        
+      d_tank_decrease_report.oil_percent = oil_percent.round(2)
+    #end
+    
+    #if sale_total_sum_mogas == 0
+    #  d_tank_decrease_report.oil_percent_total = 0
+    #else
+      oil_percent_total = oil_num_mogas_total / sale_total_sum_mogas * 100
+      #桁オーバーフロー対策
+        if oil_percent_total >= 1000
+          oil_percent_total = 999.99
+        elsif oil_percent_total <= -1000  
+          oil_percent_total = -999.99
+        elsif oil_percent_total.nan?  
+          oil_percent_total = 0        
+        end  
+      d_tank_decrease_report.oil_percent_total = oil_percent_total.round(2)
+    #end
+    #2012/09/27 nishimura >>>>>>>>>>>
         
     d_tank_decrease_report.save    
   end

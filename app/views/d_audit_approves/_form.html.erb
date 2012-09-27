@@ -66,14 +66,10 @@
 			</td>
 			<td align="center">
 				<% user = User.find(approval.created_user_id) %>
-				<%= user.account %>
-				&nbsp;
 				<%= user.user_name %>
 			</td>
 			<td align="center">
 				<% user = User.find(approval.confirm_user_id) %>
-				<%= user.account %>
-				&nbsp;
 				<%= user.user_name %>
 			</td>
 			<td align="center">

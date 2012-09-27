@@ -149,7 +149,9 @@ class DSaleEtcsController < ApplicationController
              #update_d_sale_etc_detail(etc.etc_cd,99,sum_meter,sum_meter_mae)
            
              @d_sale_etc_detail.meter = params["meter_#{etc.etc_cd.to_s}_99"]
-             @d_sale_etc_detail.error_money = sum_uriage - @d_sale_etc_detail.meter
+             # UPDATE 2012.19.27 誤差 = 現金売上高 - 計算上売上高
+             #@d_sale_etc_detail.error_money = sum_uriage - @d_sale_etc_detail.meter
+             @d_sale_etc_detail.error_money = @d_sale_etc_detail.meter - sum_uriage
              if @d_sale_etc_detail.etc_no == 99 then
                @d_sale_etc_detail.uriage = 0
              else
@@ -196,7 +198,9 @@ private
     @d_sale_etc_detail.etc_no = etc_no
     @d_sale_etc_detail.meter = params["meter_#{etc_cd}_#{etc_no}"]     
     if @d_sale_etc_detail.etc_no == 99      
-       @d_sale_etc_detail.error_money = sum_uriage - @d_sale_etc_detail.meter
+       # UPDATE 2012.19.27 誤差 = 現金売上高 - 計算上売上高
+       #@d_sale_etc_detail.error_money = sum_uriage - @d_sale_etc_detail.meter
+        @d_sale_etc_detail.error_money = @d_sale_etc_detail.meter - sum_uriage
     end
     @d_sale_etc_detail.created_user_id = current_user.id
     @d_sale_etc_detail.updated_user_id = current_user.id
@@ -211,7 +215,9 @@ private
   def update_d_sale_etc_detail(etc_cd,etc_no,sum_meter=0,sum_meter_mae=0)
     @d_sale_etc_detail.meter = params["meter_#{etc_cd}_#{etc_no}"]
     if etc_no == 99
-      @d_sale_etc_detail.error_money =  (sum_meter - sum_meter_mae) - @d_sale_etc_detail.meter
+      # UPDATE 2012.19.27 誤差 = 現金売上高 - 計算上売上高
+      #@d_sale_etc_detail.error_money =  (sum_meter - sum_meter_mae) - @d_sale_etc_detail.meter
+      @d_sale_etc_detail.error_money =  @d_sale_etc_detail.meter - (sum_meter - sum_meter_mae)
     end
     @d_sale_etc_detail.updated_user_id = current_user.id
     if @d_sale_etc_detail.etc_no == 99 then

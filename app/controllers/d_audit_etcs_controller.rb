@@ -196,6 +196,8 @@ class DAuditEtcsController < ApplicationController
     
     @d_sale_etcs = DSaleEtc.find_by_sql(sql)
     
+    render :layout => "modal"
+    
   end
   
 private 
