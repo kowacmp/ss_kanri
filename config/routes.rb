@@ -6,6 +6,7 @@ SsKanri::Application.routes.draw do
 
   get "d_audit_cashboxes/index"
   get "d_audit_cashboxes/edit"
+  get "d_audit_cashboxes/show"
   get "d_audit_cashboxes/update"
   get "d_audit_cashboxes/edit_tbl1"
   get "d_audit_cashboxes/edit_tbl2"
