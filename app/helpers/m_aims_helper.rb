@@ -1,4 +1,4 @@
-module MGetPointsHelper
+module MAimsHelper
   def sliceString str
     arr = str.split(" ")
     arr.last

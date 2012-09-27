@@ -4,4 +4,9 @@ module MCodesHelper
       [u.code_name,u.id]
         end
   end  
+  
+  def sliceString str
+    arr = str.split(" ")
+    arr.last
+  end
 end
