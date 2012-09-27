@@ -8,8 +8,9 @@
 	<%= hidden_field :key,             "id",         :value => @d_audit_cashbox["id"] %>
 	
 	<!-- 更新データ -->
-	<%= hidden_field :d_audit_cashbox, "audit_date", :value => @d_audit_cashbox["audit_date"] %>
-	<%= hidden_field :d_audit_cashbox, "m_shop_id",  :value => @d_audit_cashbox["m_shop_id"] %>
+	<%= hidden_field :d_audit_cashbox, "audit_date",  :value => @d_audit_cashbox["audit_date"] %>
+	<%= hidden_field :d_audit_cashbox, "audit_class", :value => @d_audit_cashbox["audit_class"] %>
+	<%= hidden_field :d_audit_cashbox, "m_shop_id",   :value => @d_audit_cashbox["m_shop_id"] %>
 
 	<%= hidden_field :d_audit_cashbox, "comment",    :value => @d_audit_cashbox["comment"] %>
 
@@ -49,8 +50,6 @@
 	<%= hidden_field :d_audit_cashbox, "sum#{ i }_still4",  :value => @d_audit_cashbox["sum#{ i }_still4"] %>
 	<%= hidden_field :d_audit_cashbox, "sum#{ i }_still5",  :value => @d_audit_cashbox["sum#{ i }_still5"] %>
 <% end %>
-
-</form>
 
 <table>
 <tr>
@@ -111,7 +110,7 @@
 								this.disabled=true;document.location='<%=url%>';
 						}" />
 			&nbsp;&nbsp;
-			<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...' %>	
+			<%= submit_tag '　保　存　', :onlick => "return update_chk();" ,:disable_with => '保存中です...' %>	
 	
 </div>
 
@@ -119,10 +118,6 @@
 
 <br/>
 
-<!-- 立会人確認用 -->
-<div id="dialog_div">
-	&nbsp;
-</div>
 
 <br/>
 
@@ -150,3 +145,8 @@
   	}
   		
 </script>
+
+<!-- 立会人確認用 -->
+<div id="dialog_div">
+	&nbsp;
+</div>
