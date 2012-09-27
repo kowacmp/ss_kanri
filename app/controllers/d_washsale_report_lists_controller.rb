@@ -8,7 +8,13 @@ class DWashsaleReportListsController < ApplicationController
   def search
     @time_now = Time.now
     #select_yearの開始年
-    @start_year = DWashsaleReport.minimum("sale_date")[0,4].to_i
+    @start_year = DWashsaleReport.minimum("sale_date")
+    if @start_year == nil
+      @start_year = @time_now.year.to_i
+    else
+      @start_year = @start_year[0,4].to_i
+    end
+    
     @mode = params[:mode]
     
     unless @mode == 'list'

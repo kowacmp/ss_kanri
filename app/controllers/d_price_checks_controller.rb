@@ -7,8 +7,12 @@ class DPriceChecksController < ApplicationController
   def search
     @time_now = Time.now
     #select_yearの開始年
-    @start_year = DPriceCheckEtc.minimum("research_day")[0,4].to_i
-    
+    @start_year = DPriceCheckEtc.minimum("research_day")
+    if @start_year == nil
+      @start_year = @time_now.year.to_i
+    else
+      @start_year = @start_year[0,4].to_i
+    end    
       if params[:date] == nil or params[:date] == ''
         @year = @time_now.year.to_s
         @month = format_month(@time_now.month)
