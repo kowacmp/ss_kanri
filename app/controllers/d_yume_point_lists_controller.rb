@@ -67,9 +67,11 @@ class DYumePointListsController < ApplicationController
     #ページ番号、タイトル、作成日セット  
       title1 = "#{@from_ymd[0,4]}／#{@from_ymd[4,2]}"
       if @shop_kbn == 0
-        title2 = "夢ポイント管理表（直営）"
+        shop_kbn_name = MCode.find_by_kbn_and_code('shop_kbn','0') ? MCode.find_by_kbn_and_code('shop_kbn','0').code_name : "洗車型"
+        title2 = "夢ポイント管理表（#{shop_kbn_name}）"
       elsif @shop_kbn == 1
-        title2 = "夢ポイント管理表（油外）"
+        shop_kbn_name = MCode.find_by_kbn_and_code('shop_kbn','1') ? MCode.find_by_kbn_and_code('shop_kbn','1').code_name : "油外型"
+        title2 = "夢ポイント管理表（#{shop_kbn_name}）"
       else
         title2 = ""
       end
