@@ -288,9 +288,9 @@
 			id = this.id.split("_"); 
 			id = id[1];
 			
-			k =  toNum($("#kmeter_" + id + "_99").html());
-			k -= toNum($("#meter_" + id + "_99").val());
-			
+			k  = toNum($("#meter_" + id + "_99").val());			
+			k -=  toNum($("#kmeter_" + id + "_99").html());
+
 			$(this).html(format_kanma(k));
 			
 		});
@@ -303,7 +303,7 @@
 		$("#meter_k").html(format_kanma(k));
 		
 		// 誤差計
-		k = toNum($("#kmeter_k").html()) - toNum($("#meter_k").html());
+		k = toNum($("#meter_k").html()) - toNum($("#kmeter_k").html());
 		$("#gosa_k").html(format_kanma(k));
 		
 	}
