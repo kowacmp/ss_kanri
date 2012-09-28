@@ -15,9 +15,9 @@ module DResultTankListsHelper
   
   def get_shops1(shop_kbn)
     if shop_kbn == nil or shop_kbn == ""
-      m_shops = MShop.where('shop_cd <> 999999').order('shop_cd')
+      m_shops = MShop.where('deleted_flg = 0 and shop_cd <> 999999').order('shop_cd')
     else
-      m_shops = MShop.where('shop_cd <> 999999 and shop_kbn = ?',shop_kbn).order('shop_cd')
+      m_shops = MShop.where('deleted_flg = 0 and shop_cd <> 999999 and shop_kbn = ?',shop_kbn).order('shop_cd')
     end
     return m_shops
   end  

@@ -1,5 +1,9 @@
 SsKanri::Application.routes.draw do
 
+  get "d_result_oil_lists/index"
+
+  get "d_result_oil_lists/csv"
+
   get "d_result_tank_lists/index"
 
   get "d_result_tank_lists/csv"
