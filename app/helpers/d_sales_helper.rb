@@ -55,7 +55,7 @@ module DSalesHelper
        @d_sale_syokei = d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i + d_sale.purika_tesuryo.to_i - d_sale.pay_money.to_i #小計
        # 2012/09/25 ﾚｲｱｳﾄ修正 小田 start
        #@zenjitu_d_sale_cash_arigaka = zenjitu_d_sale.sale_change1.to_i + zenjitu_d_sale.sale_change2.to_i + zenjitu_d_sale.sale_change3.to_i + zenjitu_d_sale.sale_cashbox.to_i
-       @zenjitu_d_sale_cash_arigaka = zenjitu_d_sale.sale_change1.to_i + zenjitu_d_sale.sale_change2.to_i + zenjitu_d_sale.sale_change3.to_i  + zenjitu_d_sale.sale_etc.to_i + zenjitu_d_sale.sale_cashbox.to_i
+       #@zenjitu_d_sale_cash_arigaka = zenjitu_d_sale.sale_change1.to_i + zenjitu_d_sale.sale_change2.to_i + zenjitu_d_sale.sale_change3.to_i  + zenjitu_d_sale.sale_etc.to_i + zenjitu_d_sale.sale_cashbox.to_i
        # 2012/09/25 ﾚｲｱｳﾄ修正 小田 end
        #@d_sale_calc_aridaka = @zenjitu_d_sale_cash_arigaka.to_i + @d_sale_syokei.to_i + @d_sale.sale_ass.to_i + @d_sale_ass.to_i
        @d_sale_cash_aridaka = d_sale.exist_money
