@@ -26,21 +26,11 @@
   				<% if dt_rec[:etc_no] == 1 then %>
   					<td rowspan="<%= dt_rec[:max_num] %>" style="background-color: #C3C3C3;">&nbsp;</td>
   					<td rowspan="<%= dt_rec[:max_num] %>" align="center">
-  						<!-- 
-  						<%= form_tag({:action => 'dialog_gosa' }, { :remote => true }) do %>
-  							<%= hidden_field(:dialog_gosa, :sale_date_from, :value => dt_rec[:audit_date_from]) %>
-  							<%= hidden_field(:dialog_gosa, :sale_date_to,   :value => dt_rec[:audit_date_to]) %>
-  							<%= hidden_field(:dialog_gosa, :m_shop_id,      :value => dt_rec[:m_shop_id]) %>
-  							<%= hidden_field(:dialog_gosa, :m_etc_id,      :value => dt_rec[:m_etc_id]) %>
-							<%= submit_tag '参照', :disable_with => "処理中です..." %>
-  						<% end %>
-  						-->
   						<%=link_to "参照", {:action => "dialog_gosa", :dialog_gosa => {
   							:sale_date_from => dt_rec[:audit_date_from],
   							:sale_date_to => dt_rec[:audit_date_to],
   							:m_shop_id => dt_rec[:m_shop_id],
   							:m_etc_id => dt_rec[:m_etc_id]}}, :class => "modal" %>
-  						
 					</td>
   				<% end %>
 			</tr>
@@ -52,20 +42,17 @@
   				<td align="right" style="background-color: #A5D7AA;"><%= number_with_delimiter(dt_rec[:k_uri]) %></td>
   				<td align="right" style="background-color: #A5D7AA;"><%= number_with_delimiter(dt_rec[:g_uri]) %></td>
   				<td align="right" style="background-color: #A5D7AA;"><%= number_with_delimiter(dt_rec[:gosa])  %></td>
-  			</tr>		
-  			
-  		　　<%  #最終行集計用合算
+  			</tr>
+            <%  #最終行集計用合算
 				k_uri_sum += dt_rec[:k_uri]
 				g_uri_sum += dt_rec[:g_uri]
 				gosa_sum  += dt_rec[:gosa]
 			%>
-  			
 		<%end%>
-		
 	<% end %>
 
-	<!-- 最終合計 -->
-  	<tr>
+    <!-- 最終合計 -->
+    <tr>
   		<td colspan="2" style="border-left-width: 0px; border-top-width: 0px; border-bottom-width: 0px;">&nbsp;</td>
   		<th style="border-width: 3px; "                                        >売上合計</th>
   		<td style="border-width: 3px; background-color: #A5D7AA;" align="right"><%= number_with_delimiter(k_uri_sum) %></td>
