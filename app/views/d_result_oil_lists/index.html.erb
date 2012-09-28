@@ -1,0 +1,37 @@
+<h1>実績データ出力</h1>
+<%= form_tag(url_for(:action => 'search'),:remote => true) do %>
+	<table id='rounded-corner'>
+		<tr>
+	      <th>対象日(From)</th>
+	      <td><%= text_field_tag  "from_ymd" , @from_ymd ,:class => 'datepicker',:size => 10%></td>
+	      <th>対象日(To)</th>
+	      <td><%= text_field_tag  "to_ymd" , @to_ymd ,:class => 'datepicker',:size => 10%></td>
+		  <th>店舗種別</th>
+		  <td><%# if @shop_kbn == 0 %>
+		  	<%#= select_tag "shop_kbn",
+		        raw('<option value=""></option><option value="0" selected>直営</option><option value="1">油外</option>')
+		        %>
+		      <%# elsif @shop_kbn == 1 %>  
+		        <%#= select_tag "shop_kbn",
+		        raw('<option value=""></option><option value="0">直営</option><option value="1" selected>油外</option>')
+		        %>
+		      <%# else %>
+		        <%#= select_tag "shop_kbn",
+		        raw('<option value="" selected></option><option value="0">直営</option><option value="1">油外</option>')
+		        %>
+		      <%# end %>
+		      
+		      <%= select_tag "shop_kbn",  
+        		options_for_select(MCode.find(:all, :conditions=>["kbn='shop_kbn' and code <> '9'"], :order=>"code").collect{|i| [ "#{i.code_name}", i.code ]},@shop_kbn),:include_blank => true %>
+		      
+		  </td> 
+		  <td><%= submit_tag "表示" %></td>
+	      </tr>
+	</table>
+<% end %>
+
+<p>
+	<div id="result">
+	    <%= render partial: 'result'%>
+	</div>
+</p>

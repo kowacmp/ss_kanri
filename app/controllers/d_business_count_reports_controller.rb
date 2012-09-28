@@ -54,11 +54,23 @@ class DBusinessCountReportsController < ApplicationController
         #h.item(:oiletc_4).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 13']).first.oiletc_ryaku)
         #h.item(:oiletc_5).value(MOiletc.find(:all,:conditions => ['oiletc_cd = 7']).first.oiletc_ryaku)
 
-        h.item(:oiletc_1).value(MOiletc.find(:all,:conditions => ['id = 1']).first.oiletc_ryaku)
-        h.item(:oiletc_2).value(MOiletc.find(:all,:conditions => ['id = 3']).first.oiletc_ryaku)
-        h.item(:oiletc_3).value(MOiletc.find(:all,:conditions => ['id = 4']).first.oiletc_ryaku)
-        h.item(:oiletc_4).value(MOiletc.find(:all,:conditions => ['id = 13']).first.oiletc_ryaku)
-        h.item(:oiletc_5).value(MOiletc.find(:all,:conditions => ['id = 7']).first.oiletc_ryaku)
+        #2012/09/28 nishimura <<<<<<<<<<<<<<<<
+        #h.item(:oiletc_1).value(MOiletc.find(:all,:conditions => ['id = 1']).first.oiletc_ryaku)
+        #h.item(:oiletc_2).value(MOiletc.find(:all,:conditions => ['id = 3']).first.oiletc_ryaku)
+        #h.item(:oiletc_3).value(MOiletc.find(:all,:conditions => ['id = 4']).first.oiletc_ryaku)
+        #h.item(:oiletc_4).value(MOiletc.find(:all,:conditions => ['id = 13']).first.oiletc_ryaku)
+        #h.item(:oiletc_5).value(MOiletc.find(:all,:conditions => ['id = 7']).first.oiletc_ryaku)
+        
+        h.item(:oiletc_1).value(MOiletc.find(1) ? MOiletc.find(1).oiletc_name : "")
+        h.item(:oiletc_2).value(MOiletc.find(4) ? MOiletc.find(4).oiletc_name : "")
+        h.item(:oiletc_3).value(MOiletc.find(6) ? MOiletc.find(6).oiletc_name : "")
+        h.item(:oiletc_4).value(MOiletc.find(13) ? MOiletc.find(13).oiletc_name : "")
+        h.item(:oiletc_5).value(MOiletc.find(7) ? MOiletc.find(7).oiletc_name : "")
+        h.item(:oiletc_6).value(MOiletc.find(20) ? MOiletc.find(20).oiletc_name : "")
+        h.item(:oiletc_7).value(MOiletc.find(21) ? MOiletc.find(21).oiletc_name : "")
+        #2012/09/28 nishimura >>>>>>>>>>>>>>>>>
+        
+        
         tmp_ymd = @input_ymd.to_time
         h.item(:month_1).value(tmp_ymd.month)
         tmp_ymd = tmp_ymd.next_month
@@ -77,16 +89,16 @@ class DBusinessCountReportsController < ApplicationController
         row.item(:shop_name).value(shop.shop_name)
         row.item(:aim_1).value(get_d_aim_total(ym,shop.id,11)) 
         row.item(:aim_2).value(get_d_aim_total(ym,shop.id,12)) 
-        row.item(:aim_3).value(get_d_aim_total(ym,shop.id,13)) 
-        row.item(:aim_4).value(get_d_aim_total(ym,shop.id,14)) 
-        row.item(:aim_5).value(get_d_aim_total(ym,shop.id,15)) 
+        row.item(:aim_3).value(get_d_aim_total(ym,shop.id,13))
+        row.item(:aim_4).value(get_d_aim_total(ym,shop.id,15))  #2012/09/28 nishimura 14 => 15 
+        row.item(:aim_5).value(get_d_aim_total(ym,shop.id,14))  #2012/09/28 nishimura 15 => 14  
         row.item(:aim_6).value(get_d_aim_total(ym,shop.id,9)) 
         row.item(:aim_7).value(get_d_aim_total(ym,shop.id,10)) 
          #日計
         d_result = get_result(@input_ymd,shop.id)
         row.item(:day_1).value(get_d_result_collect_get_num(d_result,1))
-        row.item(:day_2).value(get_d_result_collect_get_num(d_result,3))
-        row.item(:day_3).value(get_d_result_collect_get_num(d_result,4))
+        row.item(:day_2).value(get_d_result_collect_get_num(d_result,4))  #2012/09/28 nishimura 3 => 4
+        row.item(:day_3).value(get_d_result_collect_get_num(d_result,6))  #2012/09/28 nishimura 4 => 6
         row.item(:day_4).value(get_d_result_collect_get_num(d_result,13))
         row.item(:day_5).value(get_d_result_collect_get_num(d_result,7))
         row.item(:day_6).value(get_d_result_oiletc_daily(d_result,20))
@@ -96,8 +108,8 @@ class DBusinessCountReportsController < ApplicationController
         end_ymd   = get_from_and_to_ymd(@input_ymd.to_time,2)
         d_results = get_results(start_ymd,end_ymd,shop.id)
         row.item(:sum_1).value(get_d_result_collect(d_results,1))
-        row.item(:sum_2).value(get_d_result_collect(d_results,3))
-        row.item(:sum_3).value(get_d_result_collect(d_results,4))
+        row.item(:sum_2).value(get_d_result_collect(d_results,4))  #2012/09/28 nishimura 3 => 4
+        row.item(:sum_3).value(get_d_result_collect(d_results,6))  #2012/09/28 nishimura 4 => 6
         row.item(:sum_4).value(get_d_result_collect(d_results,13))
         row.item(:sum_5).value(get_d_result_collect(d_results,7))
         row.item(:sum_6).value(get_d_result_oiletc(d_results,20))

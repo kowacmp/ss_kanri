@@ -3,13 +3,27 @@
 <table id="report_view_table" class="rounded-corner">
   <tr>
     <th scope="col">&nbsp;</th>
-    <th colspan="2" scope="col"><%= MOiletc.find(:all,:conditions => ['id = 1']).first.oiletc_name %></th>
-    <th colspan="2" scope="col"><%= MOiletc.find(:all,:conditions => ['id = 4']).first.oiletc_name %></th>
-    <th colspan="2" scope="col"><%= MOiletc.find(:all,:conditions => ['id = 6']).first.oiletc_name %></th>
-    <th colspan="2" scope="col"><%= MOiletc.find(:all,:conditions => ['id = 13']).first.oiletc_name %></th>
-    <th colspan="2" scope="col"><%= MOiletc.find(:all,:conditions => ['id = 7']).first.oiletc_name %></th>
-    <th colspan="2" scope="col">現金会員</th>
-    <th colspan="2" scope="col">車検書換</th>
+    <th colspan="2" scope="col"><%#= MOiletc.find(:all,:conditions => ['id = 1']).first.oiletc_name %>
+    	<%= MOiletc.find(1) ? MOiletc.find(1).oiletc_name : "" %>
+    </th>
+    <th colspan="2" scope="col"><%#= MOiletc.find(:all,:conditions => ['id = 4']).first.oiletc_name %>
+    	<%= MOiletc.find(4) ? MOiletc.find(4).oiletc_name : "" %>
+    </th>
+    <th colspan="2" scope="col"><%#= MOiletc.find(:all,:conditions => ['id = 6']).first.oiletc_name %>
+    	<%= MOiletc.find(6) ? MOiletc.find(6).oiletc_name : "" %>
+    </th>
+    <th colspan="2" scope="col"><%#= MOiletc.find(:all,:conditions => ['id = 13']).first.oiletc_name %>
+    	<%= MOiletc.find(13) ? MOiletc.find(13).oiletc_name : "" %>
+    </th>
+    <th colspan="2" scope="col"><%#= MOiletc.find(:all,:conditions => ['id = 7']).first.oiletc_name %>
+    	<%= MOiletc.find(7) ? MOiletc.find(7).oiletc_name : "" %>
+    </th>
+    <th colspan="2" scope="col"><!--現金会員-->
+    	<%= MOiletc.find(20) ? MOiletc.find(20).oiletc_name : "" %>
+    </th>
+    <th colspan="2" scope="col"><!--車検書換-->
+    	<%= MOiletc.find(21) ? MOiletc.find(21).oiletc_name : "" %>
+    </th>
     <th colspan="8" scope="col">車検予約</th>
   </tr>
   <tr>
@@ -108,7 +122,8 @@
         <% end %>
     </td>
     <td rowspan="2" align="right"><!-- 目標 車検 -->
-    	<%= get_d_aim_total(@ym,shop.id,14) %>
+    	<%#= get_d_aim_total(@ym,shop.id,14) %>
+    	<%= get_d_aim_total(@ym,shop.id,15) %>
     </td>
     <td align="right"><!-- 日計 車検 -->
     	<% d_result = get_result(@input_ymd.delete("/"),shop.id) %>
@@ -124,9 +139,10 @@
         <% end %>
     </td>
     <td rowspan="2" align="right"><!-- 目標 板金 -->
-    	<%= get_d_aim_total(@ym,shop.id,15) %>
-    </td align="right">
-    <td><!-- 日計 板金 -->
+    	<%#= get_d_aim_total(@ym,shop.id,15) %>
+    	<%= get_d_aim_total(@ym,shop.id,14) %>
+    </td>
+    <td align="right"><!-- 日計 板金 -->
     	<% d_result = get_result(@input_ymd.delete("/"),shop.id) %>
     	<% unless d_result == nil %>
     	  <% dr_collect = DResultCollect.where(:d_result_id => d_result.id,:m_oiletc_id => 7).first %>
@@ -148,13 +164,15 @@
     </td>
     <td align="right"><!-- 現金会員 日計-->
     	<% d_result = get_result(@input_ymd.delete("/"),shop.id) %>
-    	<%= get_d_result_oiletc_daily(d_result,9) %>
+    	<%#= get_d_result_oiletc_daily(d_result,9) %>
+    	<%= get_d_result_oiletc_daily(d_result,20) %>
     </td>
     <td rowspan="2" align="right"><!-- 車検書換 目標-->
     	<%= get_d_aim_total(@ym,shop.id,10) %>
     </td>
     <td align="right"><!-- 車検書換 日計-->
-    	<%= get_d_result_oiletc_daily(d_result,10) %>
+    	<%#= get_d_result_oiletc_daily(d_result,10) %>
+    	<%= get_d_result_oiletc_daily(d_result,21) %>
     </td>
     <td rowspan="2" align="right"><%= get_count_d_result_reserve_day(tmp_ymd1.strftime("%Y%m%d"),tmp_ymd1.strftime("%Y%m"),shop.id) %></td>
     <td rowspan="2" align="right">
@@ -197,17 +215,19 @@
     	<% d_results = get_results(@start_ymd,@end_ymd,shop.id) %>
     	<%= get_d_result_collect(d_results,13) unless d_results == nil %>
     </td>
-    <td><!-- 累計 板金-->
+    <td align="right"><!-- 累計 板金-->
     	<% d_results = get_results(@start_ymd,@end_ymd,shop.id) %>
     	<%= get_d_result_collect(d_results,7) unless d_results == nil %>
     </td>
 
-    <td><!-- 現金会員 累計-->
+    <td align="right"><!-- 現金会員 累計-->
     	<% d_results = get_results(@start_ymd,@end_ymd,shop.id) %>
-    	<%= get_d_result_oiletc(d_results,9) unless d_results == nil %>
+    	<%#= get_d_result_oiletc(d_results,9) unless d_results == nil %>
+    	<%= get_d_result_oiletc(d_results,20) unless d_results == nil %>
     </td>
     <td align="right"><!-- 車検書換 累計-->
-    	<%= get_d_result_oiletc(d_results,10) unless d_results == nil %>
+    	<%#= get_d_result_oiletc(d_results,10) unless d_results == nil %>
+    	<%= get_d_result_oiletc(d_results,21) unless d_results == nil %>
     </td>
   </tr>
   <% end %>

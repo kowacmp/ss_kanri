@@ -12,7 +12,7 @@
 	<tr>
 	    <th rowspan="2" scope="col">店舗</th>
 	    <th rowspan="2" scope="col">日付</th>
-	    <th colspan="4" scope="col">在庫量(L)</th>
+	    <th colspan="4" scope="col">出荷量(L)</th>
 	</tr>
 	<tr>
 	  	<% @m_oils.each do |oil| %>
@@ -22,12 +22,9 @@
 	</thead>
 	
 	<tbody>
-	<!-- 2012/09/26 月跨り不具合修正 oda start-->
 	<% @num = Date.parse(@to_ymd_s) - Date.parse(@from_ymd_s) %>
 	<% @m_shops.each do |shop| %>
-		<% #for i in @from_ymd_s.to_i..@to_ymd_s.to_i %>
 		<% for i in 0..@num.to_i %>
-		<!-- 2012/09/26 月跨り不具合修正 oda end-->
 			<tr>
 				<td>
 					<% unless shop.shop_name == shop_name_key %>
@@ -35,17 +32,14 @@
 					<% end %>
 					<% shop_name_key = shop.shop_name %>
 				</td>
-				<!-- 2012/09/26 月跨り不具合修正 oda start-->
-				<!--
-				<td><%#= i.to_s[0,4] + '/' + i.to_s[4,2] + '/' + i.to_s[6,2] %></td>
-				-->
+
 				<td><%= (Date.parse(@from_ymd_s) + i).strftime("%Y/%m/%d") %></td>
-				<% @m_oils.each do |oil| %>
-				<!--
-					<td align="right"><%#= get_sum_stock(i.to_s,i.to_s,shop.id,oil.id) %></td>
-				-->
-					<td align="right"><%= num_fmt(get_sum_stock((@from_ymd_s.to_i + i).to_s,(@from_ymd_s.to_i + i).to_s,shop.id,oil.id)) %></td>					
-				<!-- 2012/09/26 月跨り不具合修正 oda end-->
+				<%# @m_oils.each do |oil| %>
+				<% get_pos_data((@from_ymd_s.to_i + i).to_s,shop.id).each do |oil_list| %>
+					<td align="right">
+						<%#= number_with_delimiter(get_pos_data((@from_ymd_s.to_i + i).to_s,(@from_ymd_s.to_i + i).to_s,shop.id,oil.id)) %>
+						<%= number_with_delimiter(oil_list.pos_data) %>
+					</td>
 				<% end %>
 			</tr>
 		<% end %><!-- for -->
