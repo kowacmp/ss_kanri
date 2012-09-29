@@ -232,8 +232,17 @@ p params
       if @d_sale.save
         update_d_sale_item(params, @d_sale.id)
         #format.html { redirect_to @d_sale, notice: 'D sale was successfully created.' }
-        input_day = @d_sale.sale_date.to_s[0,4] + "/" + @d_sale.sale_date.to_s[4,2] + "/" + @d_sale.sale_date.to_s[6,2]
-        format.html { redirect_to :controller => "d_sales", :action => "new", :input_day => input_day }
+        
+        #2012/09/29 nishimura <<<<<<<<<<<<<<<<<<<<<
+        #input_day = @d_sale.sale_date.to_s[0,4] + "/" + @d_sale.sale_date.to_s[4,2] + "/" + @d_sale.sale_date.to_s[6,2]
+        #format.html { redirect_to :controller => "d_sales", :action => "new", :input_day => input_day }
+        if params[:head_from_view] == "index"
+          format.html { redirect_to :controller => "d_sales", :action => "new", :id => @d_sale.id, :input_shop_kbn=>params[:head_input_shop_kbn], :from_view=>params[:head_from_view]  }
+        else
+          input_day = @d_sale.sale_date.to_s[0,4] + "/" + @d_sale.sale_date.to_s[4,2] + "/" + @d_sale.sale_date.to_s[6,2]
+          format.html { redirect_to :controller => "d_sales", :action => "new", :input_day => input_day }
+        end
+        #2012/09/29 nishimura >>>>>>>>>>>>>>>>>>>>
         format.json { render json: @d_sale, status: :created, location: @d_sale }
       else
         format.html { render action: "index" }
