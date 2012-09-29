@@ -79,10 +79,10 @@
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_arari) %></td>
 	  </tr>
 	  
-	  <% @mo_gas_total = @mo_gas_total + m_shop.mo_gas.to_f %>
-	  <% @keiyu_total = @keiyu_total + m_shop.keiyu.to_f %>
-	  <% @touyu_total = @touyu_total + m_shop.touyu.to_f %>
-	  <% @koua_total = @koua_total + m_shop.koua.to_f %>
+	  <% @mo_gas_total = @mo_gas_total + m_shop.mo_gas.to_f.round(1) %>
+	  <% @keiyu_total = @keiyu_total + m_shop.keiyu.to_f.round(1) %>
+	  <% @touyu_total = @touyu_total + m_shop.touyu.to_f.round(1) %>
+	  <% @koua_total = @koua_total + m_shop.koua.to_f.round(2) %>
 	  <% @buyou_total = @buyou_total + m_shop.buyou.to_i %>
 	  <% @tokusei_total = @tokusei_total + m_shop.tokusei.to_i %>
 	  <% @sensya_total = @sensya_total + m_shop.sensya.to_i %>
@@ -90,10 +90,10 @@
 	  <% @taiya_total = @taiya_total + m_shop.taiya.to_i %>
 	  <% @arari_total = @arari_total + m_shop.arari.to_i %>
 	  
-	  <% @r_mo_gas_total = @r_mo_gas_total + m_shop.r_mo_gas.to_f %>
-	  <% @r_keiyu_total = @r_keiyu_total + m_shop.r_keiyu.to_f %>
-	  <% @r_touyu_total = @r_touyu_total + m_shop.r_touyu.to_f %>
-	  <% @r_koua_total = @r_koua_total + m_shop.r_koua.to_f %>
+	  <% @r_mo_gas_total = @r_mo_gas_total + m_shop.r_mo_gas.to_f.round(1) %>
+	  <% @r_keiyu_total = @r_keiyu_total + m_shop.r_keiyu.to_f.round(1) %>
+	  <% @r_touyu_total = @r_touyu_total + m_shop.r_touyu.to_f.round(1) %>
+	  <% @r_koua_total = @r_koua_total + m_shop.r_koua.to_f.round(2) %>
 	  <% @r_buyou_total = @r_buyou_total + m_shop.r_buyou.to_i %>
 	  <% @r_tokusei_total = @r_tokusei_total + m_shop.r_tokusei.to_i %>
 	  <% @r_sensya_total = @r_sensya_total + m_shop.r_sensya.to_i %>

@@ -191,21 +191,21 @@ class DResultReportsController < ApplicationController
         row.item(:shop).value(data.shop_ryaku) 
                 
         row.item(:mo_gas).value(data.mo_gas)
-          mo_gas_total = mo_gas_total + data.mo_gas.to_f
+          mo_gas_total = mo_gas_total + data.mo_gas.to_f.round(1)
         row.item(:r_mo_gas).value(data.r_mo_gas)
-          r_mo_gas_total = r_mo_gas_total + data.r_mo_gas.to_f
+          r_mo_gas_total = r_mo_gas_total + data.r_mo_gas.to_f.round(1)
         row.item(:keiyu).value(data.keiyu)
-          keiyu_total = keiyu_total + data.keiyu.to_f
+          keiyu_total = keiyu_total + data.keiyu.to_f.round(1)
         row.item(:r_keiyu).value(data.r_keiyu)
-          r_keiyu_total = r_keiyu_total + data.r_keiyu.to_f
+          r_keiyu_total = r_keiyu_total + data.r_keiyu.to_f.round(1)
         row.item(:touyu).value(data.touyu)
-          touyu_total = touyu_total + data.touyu.to_f
+          touyu_total = touyu_total + data.touyu.to_f.round(1)
         row.item(:r_touyu).value(data.r_touyu)
-          r_touyu_total = r_touyu_total + data.r_touyu.to_f
+          r_touyu_total = r_touyu_total + data.r_touyu.to_f.round(1)
         row.item(:koua).value(data.koua)
-          koua_total = koua_total + data.koua.to_f
+          koua_total = koua_total + data.koua.to_f.round(2)
         row.item(:r_koua).value(data.r_koua)
-          r_koua_total = r_koua_total + data.r_koua.to_f
+          r_koua_total = r_koua_total + data.r_koua.to_f.round(2)
         row.item(:buyou).value(data.buyou)
           buyou_total = buyou_total + data.buyou.to_i
         row.item(:r_buyou).value(data.r_buyou)
@@ -384,9 +384,9 @@ class DResultReportsController < ApplicationController
         row.item(:r_sp_plus).value(data.r_sp_plus)
           r_sp_plus_total = r_sp_plus_total + data.r_sp_plus.to_i
         row.item(:atf).value(data.atf)
-          atf_total = atf_total + data.atf.to_f
+          atf_total = atf_total + data.atf.to_f.round(2)
         row.item(:r_atf).value(data.r_atf)
-          r_atf_total = r_atf_total + data.r_atf.to_f
+          r_atf_total = r_atf_total + data.r_atf.to_f.round(2)
         row.item(:kousen).value(data.kousen)
           kousen_total = kousen_total + data.kousen.to_i
         row.item(:r_kousen).value(data.r_kousen)
@@ -404,9 +404,9 @@ class DResultReportsController < ApplicationController
         row.item(:r_waiper).value(data.r_waiper)
           r_waiper_total = r_waiper_total + data.r_waiper.to_i
         row.item(:mobil1).value(data.mobil1)
-          mobil1_total = mobil1_total + data.mobil1.to_f
+          mobil1_total = mobil1_total + data.mobil1.to_f.round(2)
         row.item(:r_mobil1).value(data.r_mobil1)
-          r_mobil1_total = r_mobil1_total + data.r_mobil1.to_f
+          r_mobil1_total = r_mobil1_total + data.r_mobil1.to_f.round(2)
       end #add_row
     end # datas.each
   
