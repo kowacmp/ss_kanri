@@ -175,6 +175,7 @@ $(function () {
     	
     	cash_aridaka_calc();//現金有高を計算
         tucyo_money_calc(); //通帳預金額
+        cash_changebox_calc();//釣銭機（＋）を計算
 
     };
     
@@ -188,6 +189,7 @@ $(function () {
     	$("#sale_pm_out2").text(format_kanma(total));
     	
     	cash_aridaka_calc();//現金有高を計算
+    	cash_changebox_calc();//釣銭機（＋）を計算
     };
     
     //釣銭合計を計算
@@ -354,18 +356,18 @@ $(function () {
     	num[3]=Number(format_kanma($("#syo_total").text(), 2));
     	num[4]=Number(format_kanma($("#sale_ass").text(), 2));
     	num[5]=Number(format_kanma($("#zenjitu_sale_pm_out").text(), 2));
-    	//2012/09/28 翌日出前を加算 oda
+    	//2012/09/28 翌日出前+翌日出後を加算 oda
     	num[6]=Number(format_kanma($("#sale_am_out2").text(), 2));
-
+    	num[7]=Number(format_kanma($("#sale_pm_out2").text(), 2));
 		var i=0;
-      	while(i<6){
-      	//while(i<7){
+      	//while(i<6){
+      	while(i<8){
         	if (isNaN(num[i])) {num[i] = 0};
         	i=i+1;
      	};    	
     	//2012/09/28 算出式変更 翌日出前を加算 oda
     	//total = num[0] + num[1] + num[2] - num[3] - num[4] - num[5];
-    	total = num[0] + num[1] + num[2] + num[6] - num[3] - num[4] - num[5];
+    	total = num[0] + num[1] + num[2] + num[6]  + num[7]- num[3] - num[4] - num[5];
     	//2012/09/28 算出式変更 翌日出前を加算 oda end    	
     	$("#changebox_aridaka2").text(format_kanma( total ));  
     	$("#d_sale_sale_changebox").val(total);
@@ -381,8 +383,7 @@ $(function () {
     	num[0]=Number(format_kanma($("#m_fix_money_total_cash_box2").text(), 2));
      	num[1]=Number(format_kanma($("#changebox_aridaka2").text(), 2));
      	num[2]=Number(format_kanma($("#sale_today_out2").text(), 2));
-    	//2012/09/28 算出式変更 翌日出前を加算 oda
-     	//num[3]=Number(format_kanma($("#sale_am_out2").text(), 2));
+     	num[3]=Number(format_kanma($("#sale_am_out2").text(), 2));
      	num[4]=Number(format_kanma($("#sale_pm_out2").text(), 2));
      	
 		var i=0;
@@ -419,6 +420,34 @@ $(function () {
      	$("#kabusoku").text(format_kanma( total )); 
      	$("#d_sale_over_short").val(total); 	
     };
+    
+    
+    
+    
+    //釣銭機(+)
+    function cash_changebox_calc() {
+    	//前日釣銭有高２-(前日翌日出前＋前日翌日出後)+(翌日出前＋翌日出後)
+    	var num = new Array(3);
+    	var total=0;
+
+    	num[0]=Number(format_kanma($("#zenjitu_changebox_zenjitu").val(), 2));
+     	num[1]=Number(format_kanma($("#sale_am_out2").text(), 2));
+     	num[2]=Number(format_kanma($("#sale_pm_out2").text(), 2));
+     	
+		var i=0;
+      	while(i<3){
+        	if (isNaN(num[i])) {num[i] = 0};
+        	i=i+1;
+     	};    	
+    	
+    	total = num[0] + num[1] + num[2] 
+    	
+    	$("#zenjitu_changebox").text(format_kanma( total )); 
+    	
+    	total_calc();//合計を計算	
+    };
+    
+    
     
     //カンマ編集
     //set…1:カンマ編集する（デフォルト）

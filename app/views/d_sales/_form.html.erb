@@ -319,9 +319,11 @@
       <br />
       <div class="title_alias">釣銭機(＋)</div>
       <div class="info_alias">
-      	<!-- 2012/09/28 算出式変更 翌日出前を加算 oda -->
+      	<!-- 2012/09/28 算出式変更 翌日出前翌日出後を加算 oda -->
       	<%#= label :zenjitu_d_sale, :sale_changebox, num_fmt(@zenjitu_d_sale.sale_changebox.to_i), :id=>'zenjitu_changebox' %>
-      	<%= label( :zenjitu_d_sale, :sale_changebox, num_fmt(@zenjitu_d_sale.sale_changebox.to_i-(@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i + @d_sale.sale_ass.to_i)),:id=>'zenjitu_changebox') %>
+      	
+      	<%= label( :zenjitu_d_sale, :sale_changebox, num_fmt(@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i) + (@d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i)),:id=>'zenjitu_changebox') %>
+      	<%= hidden_field(:zenjitu_changebox, :zenjitu , :value=>num_fmt(@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i))) %>
       </div>
       <br />
       <div class="title_alias">両替金</div>
