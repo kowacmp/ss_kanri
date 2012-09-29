@@ -26,8 +26,11 @@ module DSalesHelper
     select_sql << " , a.balance_money "
     
     select_sql << " from d_sales a "
-    select_sql << " left join(select d_sale_id, sum(item_money) item_money from d_sale_items where m_shop_id = #{@head[:m_shop_id]} and item_class = 3 group by d_sale_id) b on a.id = b.d_sale_id "
-    select_sql << " left join(select d_sale_id, sum(item_money) item_money from d_sale_items where m_shop_id = #{@head[:m_shop_id]} and item_class = 4 group by d_sale_id) c on a.id = c.d_sale_id "
+    # UPDATE 2012.09.29 d_sale_items.m_shop_idを無視する
+    #select_sql << " left join(select d_sale_id, sum(item_money) item_money from d_sale_items where m_shop_id = #{@head[:m_shop_id]} and item_class = 3 group by d_sale_id) b on a.id = b.d_sale_id "
+    #select_sql << " left join(select d_sale_id, sum(item_money) item_money from d_sale_items where m_shop_id = #{@head[:m_shop_id]} and item_class = 4 group by d_sale_id) c on a.id = c.d_sale_id "
+    select_sql << " left join(select d_sale_id, sum(item_money) item_money from d_sale_items where item_class = 3 group by d_sale_id) b on a.id = b.d_sale_id "
+    select_sql << " left join(select d_sale_id, sum(item_money) item_money from d_sale_items where item_class = 4 group by d_sale_id) c on a.id = c.d_sale_id "
     select_sql << " where a.m_shop_id = #{@head[:m_shop_id]} and a.sale_date = '#{select_date}' "
     select_sql << " order by a.sale_date  "
     
@@ -52,7 +55,9 @@ module DSalesHelper
     d_sale = d_sales[0]
     if d_sale then
        @d_sale_ass = zenjitu_d_sale.sale_pm_out.to_i + d_sale.sale_today_out.to_i + d_sale.sale_am_out.to_i   #ASS入金額
-       @d_sale_syokei = d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i + d_sale.purika_tesuryo.to_i - d_sale.pay_money.to_i #小計
+       # 2012/09/29 掛入金加算対応 oda
+       #@d_sale_syokei = d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i + d_sale.purika_tesuryo.to_i - d_sale.pay_money.to_i #小計
+       @d_sale_syokei = d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i + d_sale.purika_tesuryo.to_i + d_sale.recive_money - d_sale.pay_money.to_i #小計
        # 2012/09/25 ﾚｲｱｳﾄ修正 小田 start
        #@zenjitu_d_sale_cash_arigaka = zenjitu_d_sale.sale_change1.to_i + zenjitu_d_sale.sale_change2.to_i + zenjitu_d_sale.sale_change3.to_i + zenjitu_d_sale.sale_cashbox.to_i
        #@zenjitu_d_sale_cash_arigaka = zenjitu_d_sale.sale_change1.to_i + zenjitu_d_sale.sale_change2.to_i + zenjitu_d_sale.sale_change3.to_i  + zenjitu_d_sale.sale_etc.to_i + zenjitu_d_sale.sale_cashbox.to_i
