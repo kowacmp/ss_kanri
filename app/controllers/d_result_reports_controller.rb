@@ -808,13 +808,13 @@ class DResultReportsController < ApplicationController
       select_sql << " left join (select id ,m_shop_id"
       select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
       
-      select_sql << " left join (select d_result_id,sensya,sensya_purika,muton, "
+      select_sql << " left join (select d_result_id,sensya,sensya_purika_sale as sensya_purika,muton, "
       select_sql <<                   " sp_plus,taiyaw,sp,sc "
       select_sql <<            " from d_result_self_reports) c on b.id = c.d_result_id"
       
       select_sql << " left join (select d1.m_shop_id,"
       select_sql <<       "sum(d2.sensya) as r_sensya,"
-      select_sql <<       "sum(d2.sensya_purika) as r_sensya_purika, sum(d2.muton) as r_muton,"
+      select_sql <<       "sum(d2.sensya_purika_sale) as r_sensya_purika, sum(d2.muton) as r_muton,"
       select_sql <<       "sum(d2.sp_plus) as r_sp_plus, sum(d2.taiyaw) as r_taiyaw,"
       select_sql <<       "sum(d2.sp) as r_sp, sum(d2.sc) as r_sc,"
       select_sql <<       "sum(d2.wash_item) as r_wash_item, sum(d2.game) as r_game,"
