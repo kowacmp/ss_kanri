@@ -1,0 +1,115 @@
+<h1>監査入力状況</h1>
+
+<%= form_tag({:action => 'edit' }) do %>
+<table class='rounded-corner' style="white-space: nowrap;" >
+	<tr>
+		<th>
+			監査日
+		</th>
+		<td>
+			<%=text_field :header, :audit_date_from, :maxlength => 10, :style => "width:90px;", :value => audit_date_from %>
+			～
+			<%=text_field :header, :audit_date_to,   :maxlength => 10, :style => "width:90px;", :value => audit_date_to %>
+		</td>
+  		<th>
+  			処理選択
+  		</th>
+  		<td>
+  			<% 
+  			  kansa_list = Array.new 
+  			  kansa_list.push ["金庫", 1]
+  			  kansa_list.push ["釣銭", 2]
+  			  kansa_list.push ["洗車", 3]
+  			  kansa_list.push ["その他", 4]
+  			%>
+            <%=select :header, :kansa, kansa_list, {:selected => kansa} %>
+  		</td>
+  		<th>
+  			店舗種別
+  		</th>
+  		<td>
+  			<% shop_kbn_list = MCode.find(:all, :conditions => ["kbn='shop_kbn'and code<>'9'"], :order => "code").collect{|i| [i.code_name, i.code]} %>
+  			<%=select :header, :shop_kbn, shop_kbn_list, {:selected => shop_kbn, :include_blank => true} %>
+  		</td>
+  		<th>
+  			監査種別
+  		</th>
+  		<td>
+  			<%=radio_button :header, :audit_class, "0", {:checked => (audit_class.to_s == "0")} %>
+  			<label for="header_audit_class_0">自主監査</label>
+  			&nbsp;
+  			<%=radio_button :header, :audit_class, "1", {:checked => (audit_class.to_s == "1")} %>
+  			<label for="header_audit_class_1">本監査</label>
+  		</td>
+  		<td style="border: none;">
+			&nbsp;
+			<%= submit_tag '表示', :onclick => "return kansa_from_to_chk();", :disable_with => "処理中です..." %>
+  		</td>
+	</tr>
+</table>
+<%end%> <!-- form_tag :action = "edit" -->
+
+
+<script language="JavaScript">
+  $(function() {
+  	// 監査日From,Toのカレンダー機能
+    $("#header_audit_date_from").datepicker();
+    $("#header_audit_date_to"  ).datepicker();
+
+  });
+    	
+  // 表示ボタン時の入力チェック
+  function kansa_from_to_chk() {
+  	var from = $("#header_audit_date_from")[0];
+  	var to   = $("#header_audit_date_to")[0];
+  
+  	if (!ckDate(from.value)) {
+  		alert('監査日(From)を正しく入力してください。');
+  		from.focus();
+  		return false;  		
+  	}
+  	
+  	if (!ckDate(to.value)) {
+  		alert('監査日(To)を正しく入力してください。');
+  		to.focus();
+  		return false;  		
+  	}
+  	
+  	if (from.value > to.value) {
+		alert('監査日(From)(To)が前後しています。');
+		from.focus();
+		return false;
+  	}
+    
+  	return true;
+
+  }
+  
+/****************************************************************
+* 機　能： 入力された値が日付でYYYY/MM/DD形式になっているか調べる
+* 引　数： datestr　入力された値
+* 戻り値： 正：true　不正：false
+****************************************************************/
+function ckDate(datestr) {
+    // 正規表現による書式チェック
+    if(!datestr.match(/^\d{4}\/\d{2}\/\d{2}$/)){
+        return false;
+    }
+    var vYear = datestr.substr(0, 4) - 0;
+    var vMonth = datestr.substr(5, 2) - 1; // Javascriptは、0-11で表現
+    var vDay = datestr.substr(8, 2) - 0;
+    // 月,日の妥当性チェック
+    if(vMonth >= 0 && vMonth <= 11 && vDay >= 1 && vDay <= 31){
+        var vDt = new Date(vYear, vMonth, vDay);
+        if(isNaN(vDt)){
+            return false;
+        }else if(vDt.getFullYear() == vYear && vDt.getMonth() == vMonth && vDt.getDate() == vDay){
+            return true;
+        }else{
+            return false;
+        }
+    }else{
+        return false;
+    }
+}
+</script>

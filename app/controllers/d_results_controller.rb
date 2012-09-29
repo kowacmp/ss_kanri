@@ -4,8 +4,12 @@ class DResultsController < ApplicationController
 
   def index
     if params[:result_date].blank?
-      @today = Time.now.strftime("%Y/%m/%d")
-      sql = result_index_sql(Time.now.strftime("%Y%m%d"), '')   
+      # UPDATE 2012.09.29 日付の規定値を前日に変更
+      #@today = Time.now.strftime("%Y/%m/%d")
+      @today = (Time.now - 60*60*24).strftime("%Y/%m/%d")
+      # UPDATE 2012.09.29 日付の規定値を前日に変更
+      #sql = result_index_sql(Time.now.prev_day.strftime("%Y%m%d"), '')   
+      sql = result_index_sql(@today, '')
     else
       @today = params[:result_date][0,4] + "/" + params[:result_date][4,2] + "/" + params[:result_date][6,2]
       sql = result_index_sql(params[:result_date], '')
@@ -76,10 +80,14 @@ class DResultsController < ApplicationController
     end  
        
     if params[:d_result_id].blank?
+      # UPDATE 2012.09.29
       #直接実績データ入力に来た場合はログイン所属、今日の日付がデフォルト
+      #@d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
+      #                                                current_user.m_shop_id, Time.now.strftime("%Y%m%d")])
+      #@today = Time.now.strftime("%Y/%m/%d")
+      @today = (Time.now - 60*60*24).strftime("%Y/%m/%d")
       @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
-                                                      current_user.m_shop_id, Time.now.strftime("%Y%m%d")])
-      @today = Time.now.strftime("%Y/%m/%d")
+                                                      current_user.m_shop_id, @today])      
       @m_shop_id = current_user.m_shop_id
     else
       #実績データ入力状況確認から来た場合は値をセット

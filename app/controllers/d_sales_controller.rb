@@ -12,7 +12,9 @@ class DSalesController < ApplicationController
     @head = DSale.new
 
     if params[:input_day] == nil
-       @head[:input_day] = Time.now.localtime.strftime("%Y/%m/%d")
+      # UPDATE 2012.09.29 日付の規定値を前日にする
+      #@head[:input_day] = Time.now.localtime.strftime("%Y/%m/%d")
+      @head[:input_day] = (Time.now - 60*60*24).localtime.strftime("%Y/%m/%d")
       @head[:input_shop_kbn] = nil
     else
       @head[:input_day] = params[:input_day]
@@ -68,7 +70,9 @@ p params
     end
 
     if params[:input_day] == nil
-       @head[:input_day] = Time.now.localtime.strftime("%Y/%m/%d")
+      #UPDATE 2012.09.29 日付の規定値を前日にする
+      #@head[:input_day] = Time.now.localtime.strftime("%Y/%m/%d")
+      @head[:input_day] = (Time.now - 60*60*24).localtime.strftime("%Y/%m/%d")
     else
        @head[:input_day] = params[:input_day]
     end
