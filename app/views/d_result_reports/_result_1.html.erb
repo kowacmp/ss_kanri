@@ -105,13 +105,13 @@
     
     <tr>
 		<th>日計</th>
-		<td class="input_no"><%= number_with_delimiter(@mo_gas_total) %></td>
+		<td class="input_no"><%= number_with_delimiter(@mo_gas_total.round(1)) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@keiyu_total) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@keiyu_total.round(1)) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@touyu_total) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@touyu_total.round(1)) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@koua_total) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@koua_total.round(2)) %></td>
 	  	<td class="input_no"></td>
 	  	<td class="input_no"><%= number_with_delimiter(@buyou_total) %></td>
 	  	<td class="input_no"></td>
@@ -130,13 +130,13 @@
 	<tr>
 		<th>累計</th>
 		<td class="input_no"></td>
-		<td class="input_no"><%= number_with_delimiter(@r_mo_gas_total) %></td>
+		<td class="input_no"><%= number_with_delimiter(@r_mo_gas_total.round(1)) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_keiyu_total) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@r_keiyu_total.round(1)) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_touyu_total) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@r_touyu_total.round(1)) %></td>
 	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_koua_total) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(@r_koua_total.round(2)) %></td>
 	  	<td class="input_no"></td>
 	  	<td class="input_no"><%= number_with_delimiter(@r_buyou_total) %></td>
 	  	<td class="input_no"></td>

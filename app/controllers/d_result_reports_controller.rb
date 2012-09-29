@@ -127,14 +127,14 @@ class DResultReportsController < ApplicationController
     report.layout.config.list(:list) do
       # フッターに合計をセット.
       events.on :footer_insert do |e|
-        e.section.item(:mo_gas_total).value(mo_gas_total)
-        e.section.item(:r_mo_gas_total).value(r_mo_gas_total)
-        e.section.item(:keiyu_total).value(keiyu_total)
-        e.section.item(:r_keiyu_total).value(r_keiyu_total)
-        e.section.item(:touyu_total).value(touyu_total)
-        e.section.item(:r_touyu_total).value(r_touyu_total)
-        e.section.item(:koua_total).value(koua_total)
-        e.section.item(:r_koua_total).value(r_koua_total)
+        e.section.item(:mo_gas_total).value(mo_gas_total.round(1))
+        e.section.item(:r_mo_gas_total).value(r_mo_gas_total.round(1))
+        e.section.item(:keiyu_total).value(keiyu_total.round(1))
+        e.section.item(:r_keiyu_total).value(r_keiyu_total.round(1))
+        e.section.item(:touyu_total).value(touyu_total.round(1))
+        e.section.item(:r_touyu_total).value(r_touyu_total.round(1))
+        e.section.item(:koua_total).value(koua_total.round(2))
+        e.section.item(:r_koua_total).value(r_koua_total.round(2))
         e.section.item(:buyou_total).value(buyou_total)
         e.section.item(:r_buyou_total).value(r_buyou_total)
         e.section.item(:tokusei_total).value(tokusei_total)
@@ -298,8 +298,8 @@ class DResultReportsController < ApplicationController
         e.section.item(:r_taiyaw_total).value(r_taiyaw_total)
         e.section.item(:sp_plus_total).value(sp_plus_total)
         e.section.item(:r_sp_plus_total).value(r_sp_plus_total)
-        e.section.item(:atf_total).value(atf_total)
-        e.section.item(:r_atf_total).value(r_atf_total)
+        e.section.item(:atf_total).value(atf_total.round(2))
+        e.section.item(:r_atf_total).value(r_atf_total.round(2))
         e.section.item(:kousen_total).value(kousen_total)
         e.section.item(:r_kousen_total).value(r_kousen_total)
         e.section.item(:bt_total).value(bt_total)
@@ -308,8 +308,8 @@ class DResultReportsController < ApplicationController
         e.section.item(:r_bankin_total).value(r_bankin_total)
         e.section.item(:waiper_total).value(waiper_total)
         e.section.item(:r_waiper_total).value(r_waiper_total)
-        e.section.item(:mobil1_total).value(mobil1_total)
-        e.section.item(:r_mobil1_total).value(r_mobil1_total)
+        e.section.item(:mobil1_total).value(mobil1_total.round(2))
+        e.section.item(:r_mobil1_total).value(r_mobil1_total.round(2))
       end
     end
 
