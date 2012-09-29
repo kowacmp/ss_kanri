@@ -11,6 +11,8 @@
   
   <%= hidden_field_tag 'head_input_shop_kbn', @head[:input_shop_kbn] %>
   <%= hidden_field_tag 'head_from_view', @head[:from_view] %>
+  
+  <%= hidden_field_tag 'zenjitu_changebox_zenjitu' , num_fmt(@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i)) %>
  
   
   <% if @d_sale.errors.any? %>
@@ -323,7 +325,7 @@
       	<%#= label :zenjitu_d_sale, :sale_changebox, num_fmt(@zenjitu_d_sale.sale_changebox.to_i), :id=>'zenjitu_changebox' %>
       	
       	<%= label( :zenjitu_d_sale, :sale_changebox, num_fmt(@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i) + (@d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i)),:id=>'zenjitu_changebox') %>
-      	<%= hidden_field(:zenjitu_changebox, :zenjitu , :value=>num_fmt(@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i))) %>
+      	<%#= hidden_field(:zenjitu_changebox, :zenjitu , :value=>num_fmt(@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i))) %>
       </div>
       <br />
       <div class="title_alias">両替金</div>
