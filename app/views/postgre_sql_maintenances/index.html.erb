@@ -1,0 +1,7 @@
+<h1>データベースメンテナンス</h1>
+
+<%=form_tag :action => "sequence" do %>
+	パスワード：<%= password_field_tag "seq_password" %>&nbsp;<%= submit_tag "シーケンス更新" %>
+<% end %>
+
+

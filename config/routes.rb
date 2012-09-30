@@ -1,5 +1,10 @@
 SsKanri::Application.routes.draw do
 
+  get "postgre_sql_maintenances/index"
+  get "postgre_sql_maintenances/sequence"
+  get "postgre_sql_maintenances/seq_update"
+
+
   get "d_result_oil_lists/index"
 
   get "d_result_oil_lists/csv"

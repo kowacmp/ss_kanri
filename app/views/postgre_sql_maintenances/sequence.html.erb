@@ -1,0 +1,35 @@
+<h1>シーケンス更新</h1>
+
+<%= form_tag :action => "seq_update" do %>
+	
+	<% i = 0 %>
+	
+	<%= submit_tag "シーケンス更新",:disable_with => "更新中...",:confirm => '更新します、よろしいですか？' %>
+	
+	<table class="rounded-corner">
+		<tr>
+			<th>テーブル名</th>
+			<th>シーケンス値</th>
+			<th>最大ID値</th>	
+			<th>更新フラグ</th>
+		</tr>
+		<% for seq in @sequences do %>
+			<% i += 1 %>
+			<% table_name = get_table_name(seq["sequences_name"]) %>
+			<% seq_value  = get_sequence_value(seq["sequences_name"]) %>
+			<% max_id     = get_max_id(table_name) %>
+			
+			<tr>
+				<td><%= table_name %></td>
+				<td><%= seq_value %></td>
+				<td><%= max_id %></td>
+				<td>
+					<%=check_box    "update_seq#{i}", "update_flg", {:checked => (seq_value.to_i < max_id.to_i)}, true, false %>
+					<%=hidden_field "update_seq#{i}", "seq_name", :value => seq["sequences_name"] %>
+					<%=hidden_field "update_seq#{i}", "seq_id", :value => max_id %>
+				</td>
+			</tr>
+		<% end %>		
+	</table>
+	
+<% end %>
