@@ -173,9 +173,10 @@ $(function () {
     	total = num1;
     	$("#sale_am_out2").text(format_kanma(total));
     	
-    	cash_aridaka_calc();//現金有高を計算
+    	//cash_aridaka_calc();//現金有高を計算 2012/09/30 nishimura del
         tucyo_money_calc(); //通帳預金額
-        cash_changebox_calc();//釣銭機（＋）を計算
+        //cash_changebox_calc();//釣銭機（＋）を計算 2012/09/30 nishimura del
+        kabusoku_total_calc(); //過不足合計を計算 2012/09/30 nishimura
 
     };
     
@@ -188,8 +189,9 @@ $(function () {
     	total = num1;
     	$("#sale_pm_out2").text(format_kanma(total));
     	
-    	cash_aridaka_calc();//現金有高を計算
-    	cash_changebox_calc();//釣銭機（＋）を計算
+    	//cash_aridaka_calc();//現金有高を計算 2012/09/30 nishimura del
+    	//cash_changebox_calc();//釣銭機（＋）を計算 2012/09/30 nishimura del
+    	kabusoku_total_calc(); //過不足合計を計算 2012/09/30 nishimura
     };
     
     //釣銭合計を計算
@@ -342,9 +344,11 @@ $(function () {
     	
     };
     
+    /* 2012/09/30 nishimura
     //釣銭有高2
     function changebox_aridaka2_calc() {
     	//前日出＋当日出＋釣銭合計ー小計ーASSー前日出
+    	
     	//2012/09/28 算出式変更 翌日出前を加算 oda start
     	//var num = new Array(6);
     	var num = new Array(7);
@@ -373,26 +377,45 @@ $(function () {
     	$("#d_sale_sale_changebox").val(total);
     	cash_aridaka_calc();//現金有高を計算
     };
+    */
+    //釣銭有高2
+    function changebox_aridaka2_calc() {
+    	//前日出＋当日出＋釣銭合計ー小計ーASSー前日出
+    	//↓
+    	//釣銭合計 nishimura
+    	
+    	var total=0;
+
+    	total=Number(format_kanma($("#sale_change_total").text(), 2));
+    	   	
+    	$("#changebox_aridaka2").text(format_kanma( total ));  
+    	$("#d_sale_sale_changebox").val(total);
+    	cash_aridaka_calc();//現金有高を計算
+    };
+    
     
     //現金有高
     function cash_aridaka_calc() {
     	//釣銭有高１＋釣銭有高２＋当日出＋翌日出前＋翌日出後
-    	var num = new Array(5);
+    	//↓
+    	//釣銭有高１＋釣銭有高２＋当日出 2012/09/30 nishimura
+    	var num = new Array(3);
     	var total=0;
 
     	num[0]=Number(format_kanma($("#m_fix_money_total_cash_box2").text(), 2));
      	num[1]=Number(format_kanma($("#changebox_aridaka2").text(), 2));
      	num[2]=Number(format_kanma($("#sale_today_out2").text(), 2));
-     	num[3]=Number(format_kanma($("#sale_am_out2").text(), 2));
-     	num[4]=Number(format_kanma($("#sale_pm_out2").text(), 2));
+     	//num[3]=Number(format_kanma($("#sale_am_out2").text(), 2));
+     	//num[4]=Number(format_kanma($("#sale_pm_out2").text(), 2));
      	
 		var i=0;
-      	while(i<5){
+      	while(i<3){
         	if (isNaN(num[i])) {num[i] = 0};
         	i=i+1;
      	};    	
     	
-    	total = num[0] + num[1] + num[2] + num[3] + num[4];
+    	//total = num[0] + num[1] + num[2] + num[3] + num[4];
+    	total = num[0] + num[1] + num[2];
     	
     	$("#cash_aridaka").text(format_kanma( total )); 
     	$("#d_sale_exist_money").val(total);
@@ -419,11 +442,37 @@ $(function () {
      	
      	$("#kabusoku").text(format_kanma( total )); 
      	$("#d_sale_over_short").val(total); 	
+     	
+     	kabusoku_total_calc(); //過不足合計を計算 2012/09/30 nishimura
     };
     
     
+    //過不足合計
+    function kabusoku_total_calc() {
+    	//翌日出前 + 翌日出後 + 当日出 - 小計 - 両替金 + 過不足
+    	var num = new Array(6);
+    	var total=0;
+
+		num[0]=Number(format_kanma($("#sale_am_out2").text(), 2));
+     	num[1]=Number(format_kanma($("#sale_pm_out2").text(), 2));
+     	num[2]=Number(format_kanma($("#sale_today_out2").text(), 2));
+     	num[3]=Number(format_kanma($("#syo_total").text(), 2));
+    	num[4]=Number(format_kanma($("#sale_ass").text(), 2));
+     	num[5]=Number(format_kanma($("#kabusoku").text(), 2));
+     	
+		var i=0;
+      	while(i<6){
+        	if (isNaN(num[i])) {num[i] = 0};
+        	i=i+1;
+     	};  
+     	total = num[0] + num[1] + num[2] - num[3] - num[4] + num[5];
+     	
+     	$("#kabusoku_total").text(format_kanma( total )); 
+     	//$("#d_sale_over_short").val(total); 	
+    };
     
     
+    /* 2012/09/30 nishimura del
     //釣銭機(+)
     function cash_changebox_calc() {
     	//前日釣銭有高２-(前日翌日出前＋前日翌日出後)+(翌日出前＋翌日出後)
@@ -446,7 +495,7 @@ $(function () {
     	
     	total_calc();//合計を計算	
     };
-    
+    */
     
     
     //カンマ編集

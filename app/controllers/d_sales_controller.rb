@@ -185,7 +185,10 @@ p params
     # 2012/09/28 算出式変更 翌日出前を加算 oda
     #@total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + @zenjitu_d_sale.sale_changebox.to_i + @d_sale.sale_ass.to_i
     #@total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + (@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i) + (@d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i)) + @d_sale.sale_ass.to_i
-    @total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + (@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i) + (@d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i)) + @d_sale.sale_ass.to_i
+    # 2012/09/30 合計 算出式変更 nishimura <<<
+    #@total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + (@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i) + (@d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i)) + @d_sale.sale_ass.to_i
+    @total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + (@zenjitu_d_sale.sale_changebox.to_i - @zenjitu_d_sale.sale_am_out.to_i - @zenjitu_d_sale.sale_pm_out.to_i) + @d_sale.sale_ass.to_i
+    # 2012/09/30 合計 算出式変更 nishimura >>>
     # 2012/09/25 ﾚｲｱｳﾄ修正 小田 start
     #@sale_change_total = @d_sale.sale_change1.to_i + @d_sale.sale_change2.to_i + @d_sale.sale_change3.to_i 
     @sale_change_total = @d_sale.sale_change1.to_i + @d_sale.sale_change2.to_i + @d_sale.sale_change3.to_i + @d_sale.sale_etc.to_i
@@ -194,7 +197,9 @@ p params
     #@changebox_aridaka = @zenjitu_d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i + @sale_change_total - @syo_total - @d_sale.sale_ass.to_i - @zenjitu_d_sale.sale_pm_out.to_i 
     @changebox_aridaka = (@d_sale.sale_pm_out.to_i + @d_sale.sale_am_out.to_i) + @zenjitu_d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i + @sale_change_total - @syo_total - @d_sale.sale_ass.to_i - @zenjitu_d_sale.sale_pm_out.to_i 
 
-    @cash_aridaka = @m_fix_money.total_cash_box.to_i + @changebox_aridaka.to_i + @d_sale.sale_today_out.to_i + @d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i 
+    # 2012/09/30 算出式変更 釣銭有高1 + 釣銭有高2 + 当日出 nishimura
+    #@cash_aridaka = @m_fix_money.total_cash_box.to_i + @changebox_aridaka.to_i + @d_sale.sale_today_out.to_i + @d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i 
+    @cash_aridaka = @m_fix_money.total_cash_box.to_i + @sale_change_total.to_i + @d_sale.sale_today_out.to_i
     #@cash_aridaka = @m_fix_money.total_cash_box.to_i + @changebox_aridaka.to_i + @d_sale.sale_today_out.to_i + @d_sale.sale_pm_out.to_i 
 
     @d_sale.sale_cashbox = @m_fix_money.total_cash_box.to_i #固定金庫(マスタより)

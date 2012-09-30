@@ -12,8 +12,7 @@
   <%= hidden_field_tag 'head_input_shop_kbn', @head[:input_shop_kbn] %>
   <%= hidden_field_tag 'head_from_view', @head[:from_view] %>
   
-  <%= hidden_field_tag 'zenjitu_changebox_zenjitu' , num_fmt(@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i)) %>
- 
+  <%#= hidden_field_tag 'zenjitu_changebox_zenjitu' , num_fmt(@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i)) %>
   
   <% if @d_sale.errors.any? %>
     <div id="error_explanation">
@@ -323,9 +322,9 @@
       <div class="info_alias">
       	<!-- 2012/09/28 算出式変更 翌日出前翌日出後を加算 oda -->
       	<%#= label :zenjitu_d_sale, :sale_changebox, num_fmt(@zenjitu_d_sale.sale_changebox.to_i), :id=>'zenjitu_changebox' %>
-      	
-      	<%= label( :zenjitu_d_sale, :sale_changebox, num_fmt(@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i) + (@d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i)),:id=>'zenjitu_changebox') %>
-      	<%#= hidden_field(:zenjitu_changebox, :zenjitu , :value=>num_fmt(@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i))) %>
+      	<!-- 2012/09/30 算出式変更 前日釣銭高2-前日翌日出前-前日翌日出後 nishimura -->
+      	<%#= label( :zenjitu_d_sale, :sale_changebox, num_fmt(@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i) + (@d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i)),:id=>'zenjitu_changebox') %>
+      	<%= label( :zenjitu_d_sale, :sale_changebox, num_fmt(@zenjitu_d_sale.sale_changebox.to_i - @zenjitu_d_sale.sale_am_out.to_i - @zenjitu_d_sale.sale_pm_out.to_i),:id=>'zenjitu_changebox') %>
       </div>
       <br />
       <div class="title_alias">両替金</div>
@@ -337,19 +336,30 @@
       <div class="title_alias">釣銭有高1</div>
       <div class="info_alias"><label id="m_fix_money_total_cash_box2"><%= num_fmt(@d_sale.sale_cashbox.to_i) %></label></div>
       <div class="title_alias">釣銭有高2</div>
-      <div class="info_alias"><label id="changebox_aridaka2"><%= num_fmt(@changebox_aridaka) %></label></div>
+      <div class="info_alias"><label id="changebox_aridaka2"><%#= num_fmt(@changebox_aridaka) %>
+      	<!-- 2012/09/30 算出項目変更 釣銭機合計 nishimura -->
+      	<%= num_fmt(@sale_change_total) %>
+      </label></div>
+      <!--
       <div class="title_alias">前日出</div>
-      <div class="info_alias"><label id="zenjitu_d_sale_sale_pm_out2"><%= num_fmt(@zenjitu_d_sale.sale_pm_out.to_i) %></label></div>
+      <div class="info_alias"><label id="zenjitu_d_sale_sale_pm_out2"><%#= num_fmt(@zenjitu_d_sale.sale_pm_out.to_i) %></label></div>
+      -->
       <div class="title_alias">当日出</div>
       <div class="info_alias"><label id="sale_today_out2"><%= num_fmt(@d_sale.sale_today_out.to_i) %></label></div>
+      <div class="title_alias">現金有高(B)</div>
+      <div class="info_alias"><label id="cash_aridaka"><%= num_fmt(@cash_aridaka.to_i) %></label></div>
+      <div class="title_alias">過不足 B-A</div>
+      <div class="info_alias"><label id="kabusoku"><%= num_fmt(@cash_aridaka - @total) %></label></div><br /><br />
       <div class="title_alias">翌日出前</div>
       <div class="info_alias"><label id="sale_am_out2"><%= num_fmt(@d_sale.sale_am_out.to_i) %></label></div>
       <div class="title_alias">翌日出後</div>
       <div class="info_alias"><label id="sale_pm_out2"><%= num_fmt(@d_sale.sale_pm_out.to_i) %></label></div>
-      <div class="title_alias">現金有高(B)</div>
-      <div class="info_alias"><label id="cash_aridaka"><%= num_fmt(@cash_aridaka.to_i) %></label></div>
-      <div class="title_alias">過不足 B-A</div>
-      <div class="info_alias"><label id="kabusoku"><%= num_fmt(@cash_aridaka - @total) %></label></div>
+      <div class="title_alias">過不足合計</div>
+      <div class="info_alias"><label id="kabusoku_total">
+      	<!-- 翌日出前 + 翌日出後 + 当日出 - 小計 - 両替金 + 過不足 -->
+      	<%= num_fmt(@d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i -
+      				@syo_total - @d_sale.sale_ass.to_i + (@cash_aridaka - @total)) %>
+      </label></div>
       
       </div>
   </div>
