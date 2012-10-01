@@ -205,7 +205,11 @@
 	<%= hidden_field_tag 'input_ymd_s',@input_ymd_s %>
 	<%= hidden_field_tag 'input_ymd_e',@input_ymd_e %>
 </table>
-<%= submit_tag '印刷',format: 'pdf' %>
+	<% if @shop_info.shop_kbn == 9 or current_user.user_class == 3 %>
+		<%= submit_tag '印刷',format: 'pdf' %>
+	<% else %>
+		<%= submit_tag '印刷',:disabled=>true %>
+	<% end %>
 <% end %>
 
 <script>

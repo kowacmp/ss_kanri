@@ -617,6 +617,7 @@ p params
     select_sql << " left join (select * from m_codes where kbn='shop_kbn') d on b.shop_kbn = cast(d.code as integer) "
 
     condition_sql = " where b.deleted_flg = 0 "
+    condition_sql << " and b.shop_kbn <> 9 " #2012/10/01 nishimura
     if input_shop_kbn.blank?
     else
       condition_sql << " and b.shop_kbn = " + input_shop_kbn
