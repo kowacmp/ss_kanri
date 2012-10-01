@@ -20,10 +20,9 @@ height:100%;
 
 body, p, ol, ul, td, input, select, textarea {
 	color: #666666;
-	font-family: "メイリオ","ＭＳ Ｐゴシック",Osaka,Verdana,Arial,Helvetica,sans-serif;
+	font-family: "ＭＳ Ｐゴシック",Osaka,Verdana,Arial,Helvetica,sans-serif;
 	font-size: 15px;
 	text-transform:none;
-		
 }
 
 input[ type=checkbox ], input[ radio ]{
@@ -85,6 +84,7 @@ div#modal div.container {
 input.money{
   ime-mode: inactive;
   text-align: right;
+  width: 80px;
 }
 
 input.number{
