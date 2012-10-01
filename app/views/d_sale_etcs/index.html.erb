@@ -19,8 +19,7 @@
 <script type="text/javascript">
 $("#input_ymd").change(function(){
     var input_ymd = $("#input_ymd").val();
-    //$.get("d_wash_sales/change_input_ymd?input_ymd=" + input_ymd);
-    $.get("change_input_ymd?input_ymd=" + input_ymd);
+    $.get("<%=url_for({:action => 'change_input_ymd'}) %>?input_ymd=" + input_ymd);
 });
 </script>
 

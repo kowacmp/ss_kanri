@@ -9,7 +9,7 @@ class DResultsController < ApplicationController
       @today = (Time.now - 60*60*24).strftime("%Y/%m/%d")
       # UPDATE 2012.09.29 日付の規定値を前日に変更
       #sql = result_index_sql(Time.now.prev_day.strftime("%Y%m%d"), '')   
-      sql = result_index_sql(@today, '')
+      sql = result_index_sql(@today.delete("/"), '')
     else
       @today = params[:result_date][0,4] + "/" + params[:result_date][4,2] + "/" + params[:result_date][6,2]
       sql = result_index_sql(params[:result_date], '')
