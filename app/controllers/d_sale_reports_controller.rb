@@ -113,6 +113,7 @@ private
     select_sql << " Left join d_sale_reports e on e.m_shop_id = a.m_shop_id and e.sale_date = '#{input_day.to_s.gsub("/", "")}' "
 
     condition_sql = " where b.deleted_flg = 0 "
+    condition_sql << " and b.shop_kbn <> 9 " #2012/10/01 nishimura
     if input_shop_kbn.blank?
     else
       condition_sql << " and b.shop_kbn = " + input_shop_kbn

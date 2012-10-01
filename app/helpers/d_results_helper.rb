@@ -647,7 +647,7 @@ module DResultsHelper
     sql << " left join (select * from m_codes where kbn='shop_kbn') d on s.shop_kbn = cast(d.code as integer)"
     sql << " left join (select * from m_codes where kbn='misumi_flg') m on r.kakutei_flg = cast(m.code as integer)"
     sql << " where s.deleted_flg = 0"
-    
+    sql << " and s.shop_kbn <> 9 " #2012/10/01 nishimura
     unless shop_kbn.blank?
       sql << " and s.shop_kbn = #{shop_kbn}"
     end
