@@ -1,0 +1,69 @@
+<%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
+<% nyuryoku_flg = 0 %>
+<%= form_tag(url_for(:action => 'update')) do %>
+<div id="check">
+<table  id='rounded-corner'>
+	<tr>
+		<th>店舗</th>
+		<th>売上日</th>
+		<th>作成者</th>
+		<th>店舗種別</th>
+		<th>入力状況</th>
+		<th>ロック／解除<br />
+			<input type="checkbox" id="all" />
+		</th>
+		<th>詳細</th>
+	</tr>
+  <% @shops.each do |shop| %>
+    <% nyuryoku_flg = wday_hantei(@wday,shop.id) %>
+    <tr>
+      <td><%= shop.shop_cd.to_s + '　' + shop.shop_name %></td>
+        <% d_sale_etc = DSaleEtc.find(:all,:conditions => ['sale_date = ? and m_shop_id = ?',@input_ymd_s,shop.id]).first %>
+      <td>
+        <% unless d_sale_etc == nil %>
+          <%= d_sale_etc.sale_date[0,4] + '/' + d_sale_etc.sale_date[4,2] + '/' + d_sale_etc.sale_date[6,2] %>
+        <% end %>
+      </td>
+      <td>
+        <% unless d_sale_etc == nil %>	
+          <%= User.find(d_sale_etc.created_user_id).user_name %>
+        <% end %>
+      </td>
+      <td align="center">
+		<%= MCode.find(:first, :conditions => ["kbn = 'shop_kbn' and code = ?", shop.shop_kbn.to_s]).code_name %>
+      </td>
+      <td align="center">
+      	<%= unless d_sale_etc == nil then "済" else "未" end %>
+      </td>
+      <td align="center">
+      	<% unless d_sale_etc == nil %>
+      	  <% if d_sale_etc.kakutei_flg == 1  %>
+      	    <%= check_box_tag("cbox[]",d_sale_etc.id,{:checked => true}) %>
+      	  <% else %>
+      	    <%= check_box_tag("cbox[]",d_sale_etc.id) %> 	  
+      	  <% end %>
+      	<% end %>
+      </td>
+
+      <td><%= link_to image_tag('icon/24_edit.png'), {:controller => 'd_sale_etcs',:action => 'index',
+            :input_ymd => @input_ymd,:m_shop_id => shop.id,:shop_kbn => @shop_kbn,:mode => 'list'} %></td>
+    </tr>
+  <% end %>
+  <%= hidden_field_tag "input_ymd",@input_ymd %>
+  <%= hidden_field_tag "shop_kbn",@shop_kbn %>
+    <tr><td colspan="7"><%= submit_tag(" 更新 ",:disable_with => "更新中...",:confirm => '保存しても良いですか？') %>	 </td></tr>
+</table>
+<% end %>
+</div>
+
+<script type="text/javascript">
+$(function(){
+    $('#all').click(function(){
+    if(this.checked){
+    $('#check input').attr('checked','checked');
+    }else{
+    $('#check input').removeAttr('checked');
+    }
+  });
+});
+</script>

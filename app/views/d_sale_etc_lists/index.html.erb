@@ -1,0 +1,25 @@
+<h1>他売上入力状況</h1>
+<%= form_tag(url_for(:action => 'search'),:remote => true) do %>
+<table id='rounded-corner'>
+	<tr>
+      <th>入力日</th>
+      <td><%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 10%></td>
+	  <th>店舗種別</th>
+	  <td>
+	  	  <% shop_kbn_list = MCode.find(:all, :conditions => ["kbn='shop_kbn'and code<>'9'"], :order => "code").collect{|i| [i.code_name, i.code]} %>	  	
+	  	  <% if @shop_kbn == 0 %>
+			<%= select_tag "shop_kbn", options_for_select(shop_kbn_list), {:selected => "0"} %>
+	      <% else %>  
+	  		<%= select_tag "shop_kbn", options_for_select(shop_kbn_list), {:selected => "1"} %>
+	      <% end %>
+	        </td> 
+	  <td><%= submit_tag "検索" %></td>
+      </tr>
+</table>
+<% end %>
+
+<p>
+	<div id="shop_list">
+	    <%= render partial: 'shop_list'%>
+	</div>
+</p>

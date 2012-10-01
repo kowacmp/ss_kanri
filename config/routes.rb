@@ -1,5 +1,9 @@
 SsKanri::Application.routes.draw do
 
+  get "d_sale_etc_lists/index"
+  get "d_sale_etc_lists/update"
+  get "d_sale_etc_lists/search"
+
   get "postgre_sql_maintenances/index"
   get "postgre_sql_maintenances/sequence"
   get "postgre_sql_maintenances/seq_update"
