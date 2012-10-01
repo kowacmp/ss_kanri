@@ -162,3 +162,7 @@ img{
 div#tabs {
 	display:none;
 }
+input.datepicker{
+	width:80px;
+}
+
