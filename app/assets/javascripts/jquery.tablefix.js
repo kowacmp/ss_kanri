@@ -74,11 +74,23 @@
 			crossDiv
 			    .addClass('crossDiv')
 			    .width(offsetX).height(offsetY);
+			//2012/10/01 tabindex使用のため追加 <<<
+			crossDiv.find('input').each(function(){
+					$(this)[0].disabled = true;
+				});
+			//2012/10/01 tabindex使用のため追加 >>>
+			
 			rowDiv
 			    .addClass('rowDiv')
 				.width(bodyWidth + (withWidth ? 20 : 0) + (withHeight ? 20 : 0))
 				.height(offsetY)
 				.css({left: offsetX + 'px'});
+			//2012/10/01 tabindex使用のため追加 <<<
+			rowDiv.find('input').each(function(){
+					$(this)[0].disabled = true;
+				});
+			//2012/10/01 tabindex使用のため追加 >>>	
+			
 			rowTable.css({
 				marginLeft: -offsetX + 'px',
 				marginRight: (withWidth ? 20 : 0) + (withHeight ? 20 : 0) + 'px'
@@ -88,6 +100,12 @@
 				.width(offsetX)
 				.height(bodyHeight + (withWidth ? 20 : 0) + (withHeight ? 20 : 0))
 				.css({top: offsetY + 'px'});
+			//2012/10/01 tabindex使用のため追加 <<<
+			colDiv.find('input').each(function(){
+					$(this)[0].disabled = true;
+				});
+			//2012/10/01 tabindex使用のため追加 >>>
+				
 			colTable.css({
 				marginTop: -offsetY + 'px',
 				marginBottom: (withWidth ? 20 : 0) + (withHeight ? 20 : 0) + 'px'

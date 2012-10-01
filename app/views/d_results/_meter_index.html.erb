@@ -21,11 +21,12 @@
   
   <% meter_old_totals = Hash::new %>
   <% meter_totals = Hash::new %>
-  
+  <% tab_index = 0 %><!-- 2012/10/01 tabindex nishimura -->
   <tbody>
   	<% @meters.each_with_index do |meter, idx| %>
   	<tr>
   	  <th><%= idx + 1 %></th>
+  	  <% tab_index = idx + 1 %><!-- 2012/10/01 tabindex nishimura -->
   	  <% @m_oils.each do |m_oil| %>
   	    <% @m_codes.each do |m_code| %>
   	      <% if meter["#{m_oil.id}_#{m_code.code}_m_meter_id"].blank? %>  
@@ -44,13 +45,16 @@
   	        <!--td style="min-width: 90px;" align="center"-->
   	        <td style="min-width: 90px;" align="center">
   	          <%#= number_field :meter, meter["#{m_oil.id}_#{m_code.code}_m_meter_id"], :value => meter["#{m_oil.id}_#{m_code.code}_meter"], :maxlength => 9, :readonly => @text, :class=> "meter_input" %>
-  	          <%= number_field :meter, meter["#{m_oil.id}_#{m_code.code}_m_meter_id"], :value => meter["#{m_oil.id}_#{m_code.code}_meter"], :maxlength => 9, :readonly => @text, :class=> "money" %>
+  	          <!-- 2012/10/01 tabindex nishimura -->
+  	          <%#= number_field :meter, meter["#{m_oil.id}_#{m_code.code}_m_meter_id"], :value => meter["#{m_oil.id}_#{m_code.code}_meter"], :maxlength => 9, :readonly => @text, :class=> "money" %>
+  	          <%= number_field :meter, meter["#{m_oil.id}_#{m_code.code}_m_meter_id"], :value => meter["#{m_oil.id}_#{m_code.code}_meter"], :maxlength => 9, :readonly => @text, :class=> "money",:tabindex=>tab_index %>
   	          
   	          <% meter_totals["#{m_oil.id}_#{m_code.code}_m_meter_id"] = 
   	          			meter_totals["#{m_oil.id}_#{m_code.code}_m_meter_id"].to_i + meter["#{m_oil.id}_#{m_code.code}_meter"].to_i %>
   	          
   	        </td>
-          <% end %> 	        
+          <% end %>
+          <% tab_index = tab_index + @meters.count %><!-- 2012/10/01 tabindex nishimura -->
   	    <% end %>
   	  <% end %>  	  	
   	</tr>
