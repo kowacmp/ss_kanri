@@ -29,8 +29,10 @@ $(function () {
    		.live('focus', function () {
             $(this).val(format_kanma($(this).val(), 2)); 
             $(this).select();
+  		})
+  		.live('click', function (){
+            $(this).select();
   		});
-
 });
 
 
