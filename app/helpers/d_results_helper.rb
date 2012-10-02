@@ -724,8 +724,7 @@ module DResultsHelper
     sql << " from d_result_oiletcs r, m_oiletcs m"
     sql << " where r.m_oiletc_id = m.id and r.d_result_id = #{d_result_id}"
     #sql << "   and m.id in(1, 2, 3, 5, 6, 10, 12)"
-    sql << "   and m.id in(1, 2, 3, 4, 5, 6, 28)" #2012/10/02 洗車項目,調整　取得id 変更 nishimura
-    
+    sql << "   and m.oiletc_arari <> 0 and m.shop_kbn = 1"#2012/10/02 洗車項目,調整　取得id 変更 nishimura    
     arari = MOiletc.find_by_sql(sql)
     if arari.blank?
       arari_total = 0
