@@ -1,6 +1,8 @@
 <%= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
 <% kakutei_flg = 0 %>
+<% if notice -%>
 
+<% end %>
 <% sum_goukei_uriage = 0 %>
 <% sum_genkin_uriage = 0 %>
 <% sum_gosa = 0 %>
@@ -18,7 +20,7 @@
 		<th style="width:15%">誤差</th>
 	  </tr>
      <%  @m_etcs.each do |etc| %>
-       <% d_sale_etc = get_d_sale_etc(@input_ymd_s) %>
+       <% d_sale_etc = get_d_sale_etc(@input_ymd_s, @shop_id, @mode) %>
        
        <% unless d_sale_etc == nil %>
          <% kakutei_flg = d_sale_etc.kakutei_flg %>
@@ -71,7 +73,7 @@
 
 		  <td align="right" class="input_no" id="display"><!-- 前回メーター-->
 		  	<span id="z<%=meter_id%>">
-		  	<% d_sale_etc_mae = get_d_sale_etc(@input_ymd_mae_s) %>
+		  	<% d_sale_etc_mae = get_d_sale_etc(@input_ymd_mae_s,@shop_id,@mode) %>
 		  	<% unless d_sale_etc_mae == nil  %>
 		  	  <%if etc.etc_class == 0 then%>
  		  	  	<% d_sale_etc_detail_mae = get_d_sale_etc_detail(d_sale_etc_mae.id, etc.etc_cd,(i+1)) %>
@@ -121,7 +123,7 @@
 	   		    <% d_sale_etc_detail_99 = get_d_sale_etc_detail(d_sale_etc.id, etc.etc_cd,99) %>
 	     		  <% unless d_sale_etc_detail_99 == nil %>
 		    	    <%= link_to '誤差入力',
-		    	        {:controller => 'd_sale_etcs',:action => 'entry_error', :sale_date=> @input_ymd_s,:etc_cd => etc.etc_cd },
+		    	        {:controller => 'd_sale_etcs',:action => 'entry_error', :sale_date=> @input_ymd_s, :shop_id => @shop_id, :mode => @mode ,:etc_cd => etc.etc_cd },
 		    	        :class => 'modal'%> 
 		  	      <% else %>
 		  	        誤差入力不可
@@ -203,7 +205,9 @@
 	 </td></tr>
 	 </table>
 	 <%= hidden_field_tag 'sale_date',@input_ymd.delete("/") %>
-
+     <%= hidden_field_tag 'shop_kbn',@shop_kbn %>
+     <%= hidden_field_tag 'shop_id',@shop.id %>
+     <%= hidden_field_tag 'mode',@mode %>
 	<% end %>
 
 <script language="javascript">

@@ -9,6 +9,11 @@
 	</tr>
 </table>
 
+<% if @mode == 'list' %>
+  <%= link_to '他売上入力状況へ戻る',{:controller => 'd_sale_etc_lists',:action => 'index',
+  	:input_ymd => @input_ymd,:shop_kbn => @shop_kbn} %>
+<% end %>
+
 	<div id="meter_data">
 	    <%= render partial: 'meter_data'%>
 	</div>

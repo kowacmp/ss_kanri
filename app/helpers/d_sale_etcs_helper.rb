@@ -1,13 +1,17 @@
 #coding: utf-8
 module DSaleEtcsHelper
   
-  def get_zenkai_date1(sale_date)
+  def get_zenkai_date1(sale_date,shop_id,mode)
     if sale_date.length == 10
       sale_date = sale_date.delete("/")
     end
-    d_wash_sale = get_d_sale_etc(sale_date) 
-      zenkai_date = DSaleEtc.maximum(:sale_date,
-        :conditions => ['sale_date < ? and m_shop_id = ?',sale_date,current_user.m_shop_id])
+      if mode == 'list'
+        zenkai_date = DSaleEtc.maximum(:sale_date,
+          :conditions => ['sale_date < ? and m_shop_id = ?',sale_date,shop_id])
+      else
+        zenkai_date = DSaleEtc.maximum(:sale_date,
+          :conditions => ['sale_date < ? and m_shop_id = ?',sale_date,current_user.m_shop_id])
+      end
     return zenkai_date
   end
   
@@ -24,8 +28,12 @@ module DSaleEtcsHelper
     MEtc.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ? and etc_cd = ? ",1,etc_cd] ).first    
   end
   
-  def get_d_sale_etc(hiduke)
-    DSaleEtc.find(:all, :conditions => ["sale_date = ? and m_shop_id = ?",hiduke,current_user.m_shop_id]).first
+  def get_d_sale_etc(hiduke,m_shop_id,mode)
+    if mode == 'list' then
+      DSaleEtc.find(:all, :conditions => ["sale_date = ? and m_shop_id = ?",hiduke,m_shop_id]).first
+    else
+      DSaleEtc.find(:all, :conditions => ["sale_date = ? and m_shop_id = ?",hiduke,current_user.m_shop_id]).first
+    end
   end
   
   #複数取得

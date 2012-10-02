@@ -208,7 +208,7 @@ private
     @d_wash_sale = DWashSale.new
     @d_wash_sale.sale_date = sale_date
     if mode == 'list'
-      @d_wash_sale.m_shop_id = shops_id
+      @d_wash_sale.m_shop_id = shop_id
     else
       @d_wash_sale.m_shop_id = current_user.m_shop_id      
     end

@@ -1,3 +1,5 @@
 <%= text_area_tag "error_note",@d_sale_etc_detail.error_note,rows: 8,cols: 30 %><br />
 <%= hidden_field_tag("etc_cd",params[:etc_cd]) %>
 <%= hidden_field_tag("sale_date",@sale_date) %>
+<%= hidden_field_tag("shop_id",@shop_id) %>
+<%= hidden_field_tag("mode",@mode) %>

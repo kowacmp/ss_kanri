@@ -4,20 +4,12 @@ class DSaleEtcsController < ApplicationController
   layout "application",:except => [:entry_error]
   
   def index
-    @m_etcs = get_m_etcs
-    @shop = MShop.find(current_user.m_shop_id)
-    @input_ymd = Time.now.strftime("%Y/%m/%d")
-    @input_ymd_s = Time.now.strftime("%Y%m%d")
-    @input_ymd_mae_s = get_zenkai_date1(@input_ymd_s)
-    @d_sale_etc_today     = get_d_sale_etc(@input_ymd_s)
-    unless @d_sale_etc_today == nil
-      @d_sale_etc_details_today =get_d_sale_etc_details(@d_sale_etc_today.id)
-    end
+    change_input_ymd
   end
 
   def entry_error
     @m_etc = get_m_etc(params[:etc_cd])
-    @d_sale_etc = get_d_sale_etc(params[:sale_date])
+    @d_sale_etc = get_d_sale_etc(params[:sale_date], params[:shop_id], params[:mode])
     @sale_date = params[:sale_date]
     @etc_cd = params[:etc_cd]
     unless @d_sale_etc == nil
@@ -29,10 +21,10 @@ class DSaleEtcsController < ApplicationController
   end
 
   def update_error
-      @d_sale_etc = get_d_sale_etc(params[:sale_date])
+      @d_sale_etc = get_d_sale_etc(params[:sale_date], params[:shop_id], params[:mode])
       if (@d_sale_etc == nil)
-        create_d_sale_etc(params[:sale_date])
-        @d_sale_etc = get_d_sale_etc(params[:sale_date])
+        create_d_sale_etc(params[:sale_date], params[:shop_id], params[:mode])
+        @d_sale_etc = get_d_sale_etc(params[:sale_date], params[:shop_id], params[:mode])
       end
       @d_sale_etc_detail = get_d_sale_etc_detail(@d_sale_etc.id,params[:etc_cd],99)
       unless @d_sale_etc_detail == nil
@@ -53,8 +45,10 @@ class DSaleEtcsController < ApplicationController
               
       respond_to do |format|
         @m_etc = get_m_etc(params[:etc_cd])
-        @d_sale_etc = get_d_sale_etc(params[:sale_date])
+        @d_sale_etc = get_d_sale_etc(params[:sale_date], params[:shop_id], params[:mode])
         @sale_date = params[:sale_date]
+        @shop_id = params[:shop_id]
+        @mode = params[:mode]
         @etc_cd = params[:etc_cd]
         @d_sale_etc_detail = get_d_sale_etc_detail(@d_sale_etc.id,params[:etc_cd],99)
         #format.html { render action: "entry_error",:layout => 'modal', notice: 'D wash sale was successfully updated.' }
@@ -62,23 +56,53 @@ class DSaleEtcsController < ApplicationController
   end
   
   def change_input_ymd
-    @input_ymd = params[:input_ymd]
+    #@m_etcs = get_m_etcs
+    #@shop = MShop.find(current_user.m_shop_id)
+    #@input_ymd = Time.now.strftime("%Y/%m/%d")
+    #@input_ymd_s = Time.now.strftime("%Y%m%d")
+    #@input_ymd_mae_s = get_zenkai_date1(@input_ymd_s)
+    #@d_sale_etc_today     = get_d_sale_etc(@input_ymd_s)
+    #unless @d_sale_etc_today == nil
+    #  @d_sale_etc_details_today =get_d_sale_etc_details(@d_sale_etc_today.id)
+    #end
+    
     @m_etcs = get_m_etcs
-    @input_ymd_s = params[:input_ymd].delete("/")
-    @input_ymd_mae_s = get_zenkai_date1(params[:input_ymd])
-    @d_sale_etc_today     = get_d_sale_etc(@input_ymd_s)
-    @d_sale_etc_mae = get_d_sale_etc(@input_ymd_mae_s)
+    @mode   = params[:mode]
+    unless @mode == 'list'
+      @shop_id = current_user.m_shop_id
+      @shop = MShop.find(current_user.m_shop_id)      
+    else
+      @shop_id = params[:m_shop_id]
+      @shop = MShop.find(params[:m_shop_id])
+    end
+    if params[:input_ymd] == nil
+      @input_ymd = Time.now.strftime("%Y/%m/%d")
+    else
+      @input_ymd = params[:input_ymd]
+    end
+    
+    @shop_kbn             = params[:shop_kbn]
+    @input_ymd_s          = @input_ymd.delete("/")
+    @input_ymd_mae_s      = get_zenkai_date1(@input_ymd,@shop_id,@mode)
+    @d_sale_etc_today     = get_d_sale_etc(@input_ymd_s,@shop_id,@mode)
+    unless @d_sale_etc_today == nil
+      @d_sale_etc_details_today = get_d_sale_etc_details(@d_sale_etc_today.id)
+    end
+    @d_sale_etc_mae       = get_d_sale_etc(@input_ymd_mae_s,@shop_id,@mode)
   end
   
  
   def update
+    @mode      = params[:mode]
+    @shop_id   = params[:shop_id]
+    @sale_date = params[:sale_date]
     DSaleEtcDetail.transaction do
-      @d_sale_etc = get_d_sale_etc(params[:sale_date])
-      @d_sale_etc_mae = get_d_sale_etc(params[:sale_date])
-      if (params[:sale_date] == nil) or (params[:sale_date] == "") or (@d_sale_etc.nil?)
-        create_d_sale_etc(params[:sale_date])
+      @d_sale_etc = get_d_sale_etc(@sale_date,@shop_id,@mode)
+      @d_sale_etc_mae = get_d_sale_etc(@sale_date,@shop_id,@mode)
+      if (@sale_date == nil) or (@sale_date == "") or (@d_sale_etc.nil?)
+        create_d_sale_etc(@sale_date,@shop_id,@mode)
       end
-      @d_sale_etc = get_d_sale_etc(params[:sale_date]) 
+      @d_sale_etc = get_d_sale_etc(@sale_date,@shop_id,@mode) 
 
       @m_etcs = get_m_etcs
       #メーター更新
@@ -86,7 +110,7 @@ class DSaleEtcsController < ApplicationController
         @price = etc.price
         
         sum_uriage = 0
-        @d_sale_etc_mae = get_d_sale_etc(get_zenkai_date1(params[:sale_date]))
+        @d_sale_etc_mae = get_d_sale_etc(get_zenkai_date1(@sale_date,@shop_id,@mode),@shop_id,@mode)
 
         etc.max_num.times do |i| #times
           
@@ -135,7 +159,7 @@ class DSaleEtcsController < ApplicationController
         
         #誤差更新
         @d_sale_etc_detail = get_d_sale_etc_detail(@d_sale_etc.id,etc.id,99)
-        @d_sale_etc_mae = get_d_sale_etc(get_zenkai_date1(params[:sale_date]))
+        @d_sale_etc_mae    = get_d_sale_etc(get_zenkai_date1(@sale_date,@shop_id,@mode),@shop_id,@mode)
          unless @d_sale_etc_detail == nil #unless1
            #データあり
            unless @d_sale_etc_detail.meter == params["meter_#{etc.etc_cd.to_s}_99"] #unless2
@@ -169,22 +193,37 @@ class DSaleEtcsController < ApplicationController
     end #transaction
 
     respond_to do |format|
+      unless params[:shop_kbn] == nil
+        @shop_kbn = params[:shop_kbn]
+      end
       @m_etcs = get_m_etcs
-      @shop = MShop.find(current_user.m_shop_id)
+      if @mode == 'list'
+        @shop = MShop.find(@shop_id)
+      else
+        @shop = MShop.find(current_user.m_shop_id)        
+      end
+      
       @input_ymd = params[:sale_date].to_time.strftime("%Y/%m/%d")
       @input_ymd_s = params[:sale_date]
-      @input_ymd_mae_s = get_zenkai_date1(@input_ymd_s)
-      @d_sale_etc_today     = get_d_sale_etc(@input_ymd_s)
-      @d_sale_etc_mae = get_d_sale_etc(@input_ymd_mae_s)
+      @input_ymd_mae_s = get_zenkai_date1(@input_ymd_s,@shop_id,@mode)
+      @d_sale_etc_today     = get_d_sale_etc(@input_ymd_s,@shop_id,@mode)
+      @d_sale_etc_mae = get_d_sale_etc(@input_ymd_mae_s,@shop_id,@mode)
+      @sale_date = params[:sale_date]
+      @shop_id = params[:shop_id]
+      @mode = params[:mode]
       format.html { render action: "index", notice: 'D sale etc was successfully updated.' }
     end
   end
   
 private 
-  def create_d_sale_etc(sale_date)
+  def create_d_sale_etc(sale_date,shop_id,mode)
     @d_sale_etc = DSaleEtc.new
     @d_sale_etc.sale_date = sale_date
-    @d_sale_etc.m_shop_id = current_user.m_shop_id
+    if mode == 'list'
+      @d_sale_etc.m_shop_id = shop_id
+    else
+      @d_sale_etc.m_shop_id = current_user.m_shop_id      
+    end
     @d_sale_etc.kakutei_flg = 0
     @d_sale_etc.created_user_id = current_user.id
     @d_sale_etc.updated_user_id = current_user.id
