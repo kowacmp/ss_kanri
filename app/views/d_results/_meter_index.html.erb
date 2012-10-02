@@ -34,7 +34,18 @@
             <td style="min-width: 70px;"></td>
             <td style="min-width: 90px;"></td>
   	      <% else %>  	      	
-  	        <td align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %></td>
+  	        
+  	        <% unless @old_meters[idx].blank? %><!-- 2012/10/02  nishimura -->
+	  	        <% if @old_meters[idx]["#{m_oil.id}_#{m_code.code}_meter"].to_i > meter["#{m_oil.id}_#{m_code.code}_meter"].to_i %>
+	  	        	<td style="color: red;" align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %></td>
+	  	        <% else %>
+	  	        	<td align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %></td>
+	  	        <% end %>
+	  	    <% else %>
+	  	    	<td align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %></td>
+  	        <% end %>
+  	        
+  	        
   	        <td style="min-width: 70px; text-align: right;">
   	          <%= number_with_delimiter(@old_meters[idx]["#{m_oil.id}_#{m_code.code}_meter"]) unless @old_meters[idx].blank? %>&nbsp;
   	          
