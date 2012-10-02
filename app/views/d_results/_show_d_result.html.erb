@@ -82,6 +82,7 @@
   </table>
   <br/>
   
+  <!-- 2012/10/02 nisimura マスタ統合による修正
   <table id='rounded-corner'>
 	<tr>
 	  <th width="135">その他売上</th>
@@ -91,18 +92,19 @@
 	  <th width="85">POS日計</th>
 	  <th width="85">POS累計</th>	
 	</tr>
-  <% @m_etcs.each do |m_etc| %>
-    <% flg = tani_check(m_etc.etc_tani) %>  
+  <%# @m_etcs.each do |m_etc| %>
+    <%# flg = tani_check(m_etc.etc_tani) %>  
     <tr>
-      <th><%= m_etc.etc_name %></th> 	
-      <td class="input_no"><%= num_fmt(m_etc.pos1_data, flg) %>&nbsp;<%= m_etc.code_name %></td>
-      <td class="input_no"><%= num_fmt(m_etc.pos2_data, flg) %>&nbsp;<%= m_etc.code_name %></td>
-      <td class="input_no"><%= num_fmt(m_etc.pos3_data, flg) %>&nbsp;<%= m_etc.code_name %></td>  
-      <td class="input_no" id="display"><%= num_fmt(m_etc.pos_total, flg) %>&nbsp;<%= m_etc.code_name %></td> 
-      <td class="input_no" id="display"><%= num_fmt(@etc_ruikeis[m_etc.id.to_i][:etc_ruikei], flg) %>&nbsp;<%= m_etc.code_name %></td>             
+      <th><%#= m_etc.etc_name %></th> 	
+      <td class="input_no"><%#= num_fmt(m_etc.pos1_data, flg) %>&nbsp;<%#= m_etc.code_name %></td>
+      <td class="input_no"><%#= num_fmt(m_etc.pos2_data, flg) %>&nbsp;<%#= m_etc.code_name %></td>
+      <td class="input_no"><%#= num_fmt(m_etc.pos3_data, flg) %>&nbsp;<%#= m_etc.code_name %></td>  
+      <td class="input_no" id="display"><%#= num_fmt(m_etc.pos_total, flg) %>&nbsp;<%#= m_etc.code_name %></td> 
+      <td class="input_no" id="display"><%#= num_fmt(@etc_ruikeis[m_etc.id.to_i][:etc_ruikei], flg) %>&nbsp;<%#= m_etc.code_name %></td>             
     </tr>      
-  <% end %>	
+  <%# end %>	
   </table>	
+  -->
   </div>
 
   <div id="second">
