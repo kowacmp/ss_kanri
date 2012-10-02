@@ -637,6 +637,7 @@ p params
     footer[:cash_money] = ""
     footer[:coin_tesuryo] = ""
     footer[:suito_zan] = ""
+    footer[:uketori_tesuryo] = "" #2012/10/02 nishimura
     
     #設計ファイルOPEN
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_sale_report.tlf')
@@ -647,6 +648,7 @@ p params
         e.section.item(:footer_cash_money).value(footer[:cash_money])
         e.section.item(:footer_coin_tesuryo).value(footer[:coin_tesuryo])
         e.section.item(:footer_suito_zan).value(footer[:suito_zan])
+        e.section.item(:footer_uketori_tesuryo).value(footer[:uketori_tesuryo]) #2012/10/02 nishimura
       end #events.on
     end
 
@@ -689,6 +691,13 @@ p params
           row.item(:calc_exist_money).value(num_fmt(@calc_exist_money))
           row.item(:exist_money).value(num_fmt(@d_sale.exist_money))
           row.item(:over_short).value(num_fmt(@d_sale.over_short))
+          
+          #2012/10/02 出金誤差追加 nishimura <<<
+          error_money = @d_sale.sale_am_out + @d_sale.sale_pm_out + @d_sale.sale_today_out - 
+                          @d_sale_syokei - @d_sale.sale_ass
+          row.item(:error_money).value(num_fmt(error_money)) 
+          #2012/10/02 出金誤差追加 nishimura >>>
+          
         end
         d_sale_total = calc_total(d_sale_total)
       end
@@ -712,6 +721,12 @@ p params
       row.item(:calc_exist_money).value(num_fmt(d_sale_total[:d_sale_calc_aridaka]))
       row.item(:exist_money).value(num_fmt(d_sale_total[:d_sale_cash_aridaka]))
       row.item(:over_short).value(num_fmt(d_sale_total[:kabusoku]))
+      
+      #2012/10/02 出金誤差追加 nishimura <<<
+      error_money_total = d_sale_total[:sale_am_out] + d_sale_total[:sale_pm_out] + d_sale_total[:sale_today_out] - 
+                            d_sale_total[:d_sale_syokei] - d_sale_total[:sale_ass]
+      row.item(:error_money).value(num_fmt(error_money_total))
+      #2012/10/02 出金誤差追加 nishimura >>>
 
     end
     
@@ -720,6 +735,7 @@ p params
     footer[:coin_tesuryo] = num_fmt(@etc_item_total.item_money.to_i)
     #footer[:suito_zan] = num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i)
     footer[:suito_zan] = num_fmt(@balance_money)
+    footer[:uketori_tesuryo] = num_fmt(d_sale_total[:purika_tesuryo].to_i) #2012/10/02 nishimura
     
     #PDF出力
     #タイトルセット

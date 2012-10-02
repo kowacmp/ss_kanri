@@ -39,7 +39,7 @@
 			<th style="min-width: 100px;">出金</th>
 			<th style="min-width: 100px;">小計</th>
 			<th style="min-width: 100px;">釣銭追加</th>
-			<th style="min-width: 100px;">両替金入金</th>
+			<th style="min-width: 100px;">入金額</th>
 			<th style="min-width: 100px;">前日入金</th>
 			<th style="min-width: 100px;">当日入金</th>
 			<th style="min-width: 100px;">翌日入金<br />(前)</th>
@@ -47,6 +47,8 @@
 			<th style="min-width: 100px;">計算上有高</th>
 			<th style="min-width: 100px;">現金有高</th>
 			<th style="min-width: 100px;">過不足</th>
+			<th style="min-width: 100px;">出金誤差</th>
+			<th style="min-width: 100px;">過不足合計</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -55,7 +57,10 @@
 		<% loopcnt.times { |i| %>
 			<% select_day = Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, i + 1) %>				
 			<% @d_sale, @zenjitu_d_sale = get_d_sales_data(select_day.strftime("%Y%m%d")) %>
-		
+			<!-- 2012/10/02 nishimura 出金誤差 = 翌日出前 + 翌日出後 + 当日出 - 小計 - 両替金 -->
+			<% error_money = 0 %>
+			<% (error_money = @d_sale.sale_am_out + @d_sale.sale_pm_out + @d_sale.sale_today_out - 
+								@d_sale_syokei - @d_sale.sale_ass) if @d_sale %>
 			<tr>
 				<td class="title"><%= i + 1 %></td>
 				<td class="title">
@@ -77,9 +82,19 @@
 				<td class="money"><%= num_fmt(@calc_exist_money) if @d_sale %></td><!--計算上有高-->
 				<td class="money"><%= num_fmt(@d_sale.exist_money) if @d_sale %></td><!--現金有高-->
 				<td class="money"><%= num_fmt(@d_sale.over_short) if @d_sale %></td><!--過不足-->
+				<td class="money">
+					<%= num_fmt(error_money) if @d_sale %>
+				</td><!--出金誤差 = 翌日出前 + 翌日出後 + 当日出 - 小計 - 両替金 -->
+				<td class="money">
+					<%= num_fmt(error_money + @d_sale.over_short) if @d_sale %>
+				</td><!--過不足合計 = 出金誤差 + 過不足 -->
 			</tr>
 			<% d_sale_total = calc_total(d_sale_total) %>
 		<% } %>
+		<!-- 2012/10/02 nishimura 出金誤差 = 翌日出前 + 翌日出後 + 当日出 - 小計 - 両替金 -->
+			<% error_money_total = 0 %>
+			<% error_money_total = d_sale_total[:sale_am_out] + d_sale_total[:sale_pm_out] + d_sale_total[:sale_today_out] - 
+									d_sale_total[:d_sale_syokei] - d_sale_total[:sale_ass] %>
 		<tr class="total">
 			<td class="title" colspan="2">合計</td>
 			<td class="money"><%= num_fmt(d_sale_total[:sale_money]) %></td>
@@ -98,13 +113,23 @@
 			<td class="money"><%= num_fmt(d_sale_total[:d_sale_calc_aridaka]) %></td>
 			<td class="money"><%= num_fmt(d_sale_total[:d_sale_cash_aridaka]) %></td>
 			<td class="money"><%= num_fmt(d_sale_total[:kabusoku]) %></td>
+			<td class="money">
+				<%= num_fmt(error_money_total) %>
+			</td>
+			<td class="money">
+				<%= num_fmt(error_money_total + d_sale_total[:kabusoku]) %>
+			</td>
 		</tr>
 		<tr class="total">
 			<td class="title" colspan="2">現金売上</td>
 			<td class="money"><%= num_fmt(d_sale_total[:sale_money].to_i - @etc_item_total.item_money.to_i) %></td>
 		</tr>
 		<tr class="total">
-			<td class="title" colspan="2">コイン手数料</td>
+			<td class="title" colspan="2">受取手数料</td>
+			<td class="money"><%= num_fmt(d_sale_total[:purika_tesuryo].to_i) %></td>
+		</tr>
+		<tr class="total">
+			<td class="title" colspan="2">販売手数料</td>
 			<td class="money"><%= num_fmt(@etc_item_total.item_money.to_i) %></td>
 		</tr>
 		<tr class="total">
