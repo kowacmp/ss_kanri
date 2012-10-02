@@ -541,11 +541,14 @@ p "oil_sql=#{oil_sql}"
       d_result_report.koua = m_oiletc_pos_total(d_result.id, 1, tax_rate)
       d_result_report.buyou = m_oiletc_pos_total(d_result.id, 2, tax_rate)
       d_result_report.tokusei = m_oiletc_pos_total(d_result.id, 3, tax_rate)    
-      d_result_report.sensya = sensya_genkin.to_i + sensya_purika_goukei.to_i
+      #2012/10/01 nishimura
+      #d_result_report.sensya = sensya_genkin.to_i + sensya_purika_goukei.to_i
+      d_result_report.sensya = m_oiletc_pos_total(d_result.id, 4, tax_rate)
+      
       d_result_report.koutin = m_oiletc_pos_total(d_result.id, 5, tax_rate)
       d_result_report.taiya = m_oiletc_pos_total(d_result.id, 6, tax_rate)
       d_result_report.chousei = m_oiletc_pos_total(d_result.id, 28, tax_rate)      
-      d_result_report.arari = arari.to_i + d_result_report.chousei      
+      d_result_report.arari = arari.to_i #+ d_result_report.chousei   #2012/10/02 nishimura del   
       d_result_report.syaken = m_oiletc_pos_total(d_result.id, 13, tax_rate)
       d_result_report.kyuyu_purika = m_oiletc_pos_total(d_result.id, 8, tax_rate)
       d_result_report.sensya_purika = m_oiletc_pos_total(d_result.id, 11, tax_rate)
