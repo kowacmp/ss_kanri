@@ -67,7 +67,7 @@
 		  <td class="title_alias">売上３</td>
 		  <td class="input_alias"><%= f.text_field :sale_money3, :size=>4, :class=>"money" %></td>
 <!-- 2012/09/25 レイアウト修正その他売上追加 小田 start -->
-		  <td class="none_alias" colspan="2" rowspan="3"></td>
+		  <td class="none_alias" colspan="2" style="border-bottom-style: none"></td>
 <!--2012/09/25 レイアウト修正その他売上追加 小田 end-->	  
 		  <td class="title_alias">翌日出前</td>
 		  <td class="input_alias"><%= f.text_field :sale_am_out, :size=>4, :class=>"money" %></td>
@@ -79,6 +79,7 @@
 		<tr>
 		  <td class="title_alias">売上合計</td>
 		  <td class="info_alias"><label id="sale_money_total"><%= num_fmt(@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i) %></label></td>	  
+		  <td class="none_alias" colspan="2" style="border-top-style: none"></td>
 		  <td class="title_alias">翌日出後</td>
 		  <td class="input_alias"><%= f.text_field :sale_pm_out, :size=>4, :class=>"money" %></td>
 	      <td class="title_alias">釣銭機合計</td>
@@ -91,6 +92,19 @@
 	      <%= num_fmt(@zenjitu_d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i -  @d_sale.sale_ass.to_i + @d_sale.sale_am_out.to_i) %>
 	      </label></td>
 
+		</tr>
+		<tr>
+			<td colspan="8" style="border-bottom-style: none"></td>
+			<td class="title_alias">入金確認</td>
+			<td class="input_alias">
+				<%#= f.text_field :recive_check, :size=>4 %>
+				<% if @d_sale.recive_check.to_i == 1 %>
+					<%= f.check_box :recive_check, {:checked => true}, 1, 0 %>
+				<% else %>
+					<%= f.check_box :recive_check, {:checked => false}, 1, 0 %>
+				<% end %>
+			</td>
+	      
 		</tr>
 	</table>
       
