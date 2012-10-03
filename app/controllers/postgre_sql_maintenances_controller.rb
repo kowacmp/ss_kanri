@@ -1,4 +1,7 @@
 class PostgreSqlMaintenancesController < ApplicationController
+
+  skip_before_filter :permission_check
+
   include PostgreSqlMaintenancesHelper
 
   def index

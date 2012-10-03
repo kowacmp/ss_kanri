@@ -25,6 +25,10 @@
   	  <th>メッセージ種別</th>
   	  <td><%= @menu.messege_send %></td>  	  
   	</tr>  	   	   	 	
+  	<tr>
+  	  <th>使用を許可するアクション</th>
+  	  <td><%= @menu.permission_actions %></td>  	  
+  	</tr>  	   	   	 	
   </table>
 
 <%= link_to '編集', edit_menu_path(@menu), :class => 'edit_icon' %> |

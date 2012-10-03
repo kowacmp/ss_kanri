@@ -367,14 +367,24 @@
   <div class="actions">
   	<span class="actions_left">
   	<% if @head[:from_view] == "index" %>
-  		<%= link_to "一覧表に戻る", {:controller => "d_sales", :action => "index", :input_day => @head[:input_day], :input_shop_kbn => @head[:input_shop_kbn]}, :confirm => "一覧表に戻ります。よろしいですか？", :method => :get, :class => 'return_icon' %>
+  		<%= link_to "入力状況へ戻る", {:controller => "d_sales", :action => "index", :input_day => @head[:input_day], :input_shop_kbn => @head[:input_shop_kbn]}, :confirm => "一覧表に戻ります。よろしいですか？", :method => :get, :class => 'return_icon' %>
   	<% end %>
   	</span>
   	<span class="actions_right">
   	<% if @head[:from_view] == "index" %>
-  	    <%= link_to "キャンセル", {:controller => "d_sales", :action => "new", :from_view=>"index", :input_shop_kbn => @head[:input_shop_kbn], :id => @d_sale.id}, :confirm => "入力をキャンセルします。よろしいですか？", :method => :get %>
+  	    <%#= link_to "キャンセル", {:controller => "d_sales", :action => "new", :from_view=>"index", :input_shop_kbn => @head[:input_shop_kbn], :id => @d_sale.id}, :confirm => "入力をキャンセルします。よろしいですか？", :method => :get %>
+		<input type="button" value="キャンセル" 
+				onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
+							this.value='キャンセル中です...';
+							this.disabled=true;document.location='<%= url_for(:controller => "d_sales", :action => "new", :from_view=>"index", :input_shop_kbn => @head[:input_shop_kbn], :id => @d_sale.id) %>';
+						}" />  	    
 	<% else %>
-     	<%= link_to "キャンセル", {:controller => "d_sales", :action => "new", :input_day => @head.input_day}, :confirm => "入力をキャンセルします。よろしいですか？", :method => :get %>
+     	<%#= link_to "キャンセル", {:controller => "d_sales", :action => "new", :input_day => @head.input_day}, :confirm => "入力をキャンセルします。よろしいですか？", :method => :get %>
+		<input type="button" value="キャンセル" 
+		onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
+					this.value='キャンセル中です...';
+					this.disabled=true;document.location='<%= url_for(:controller => "d_sales", :action => "new", :input_day => @head.input_day) %>';
+				}" /> 
   	<% end %>	
   	<% if @d_sale.kakutei_flg == 1 and params[:from_view] != "index" %>
   	   <%= f.submit '  登  録  ', :disable_with => "登録中.....",:confirm => "登録します。よろしいですか？", :method => :post, :disabled=>"disabled" %>
