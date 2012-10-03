@@ -13,7 +13,8 @@
       <th>店舗種別</th>
       <td>
       <%= select :select, :shop_kbn, 
-        MCode.find(:all, :conditions=>["kbn = 'shop_kbn' and code <> '9'"], :order=>"code").collect{|i| [ "#{i.code_name}", i.code ]}, {:include_blank => true} %>
+        MCode.find(:all, :conditions=>["kbn = 'shop_kbn' and code <> '9'"], :order=>"code").collect{|i| [ "#{i.code_name}", i.code ]}, 
+        {:include_blank => true, :selected => session[:select_shop_kbn]} %>
       </td>
     </table>
   </td>
@@ -28,27 +29,30 @@ $("#select_date").change(function(){
     var select_shop_kbn = $("#select_shop_kbn").val();
     
     <% if @flg.to_i == 1%>
-      $.get("index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
+      //$.get("index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
     <% else %>
-      $.get("d_results/index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
+      //$.get("d_results/index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
     <% end %>  
+    $.get("<%=url_for(:action=>"index_select")%>?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
 });
 $("#select_shop_kbn").change(function(){
     var select_date = $("#select_date").val();
     var select_shop_kbn = $("#select_shop_kbn").val();
     
     <% if @flg.to_i == 1%>
-      $.get("index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
+      //$.get("index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
     <% else %>
-      $.get("d_results/index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
+      //$.get("d_results/index_select?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
     <% end %>
+    $.get("<%=url_for(:action=>"index_select")%>?select_date=" + select_date,"select_shop_kbn=" + select_shop_kbn);
 });
 
 	//ロック／解除が変更された場合のイベント
 	$(":checkbox[id^=data_kakutei_flg]")
 	    .live('click', function(){
-	    		$.get(
-	    			'/d_results/lock/',
+	    		$.post(
+	    			//'/d_results/lock/',
+	    			'<%=url_for(:action => "lock")%>',
 	    			{ kakutei_flg: $(this).attr('checked'), id: $(this).parent().find(":hidden[id^=data_id]").val() },
 	    		    "script"
 	    		);
@@ -66,8 +70,9 @@ $("#select_shop_kbn").change(function(){
 	    		};
 	    		
 	    		if(confirm(msg)){
-	    			$.get(
-		    			'/d_results/all_lock/',
+	    			$.post(
+		    			//'/d_results/all_lock/',
+		    			'<%=url_for(:action => "all_lock")%>',
 		    			{ kakutei_flg: $(this).attr('checked'), input_day: $("#select_date").val(), input_shop_kbn: $("#select_shop_kbn").val() },
 					    function(data, status) {        // 通信成功時にデータを表示
 					       $('#result').empty();
@@ -88,4 +93,4 @@ $("#select_shop_kbn").change(function(){
  input { 
  	 width: 90px;
                    }　
-</style>   
+</style>
