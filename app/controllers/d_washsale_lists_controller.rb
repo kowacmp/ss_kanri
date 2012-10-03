@@ -58,4 +58,37 @@ class DWashsaleListsController < ApplicationController
     
   end
 
+  # INSERT 2012.10.03 AJAXでLOCKをかける
+  def lock
+    
+    wash_sale = DWashSale.find(params[:id])
+    if params[:kakutei_flg].to_s == "checked" then
+      wash_sale.kakutei_flg = 1
+    else
+      wash_sale.kakutei_flg = 0
+    end
+    wash_sale.updated_user_id = current_user.id
+    wash_sale.save!
+    
+    head :ok
+  end
+
+  # INSERT 2012.10.03 AJAXでLOCKをかける
+  def lock_all
+    
+    ids = params[:ids].to_s.split(",")
+    for id in ids
+      wash_sale = DWashSale.find(id)
+      if params[:kakutei_flg].to_s == "checked" then
+        wash_sale.kakutei_flg = 1
+      else
+        wash_sale.kakutei_flg = 0
+      end
+      wash_sale.updated_user_id = current_user.id
+      wash_sale.save!
+    end
+    
+    head :ok
+  end
+
 end

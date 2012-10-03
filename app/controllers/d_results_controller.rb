@@ -3,6 +3,7 @@ class DResultsController < ApplicationController
   include DResultsHelper
 
   def index
+    p "session=#{session[:select_shop_kbn]}"
     if params[:result_date].blank?
       # UPDATE 2012.09.29 日付の規定値を前日に変更
       #@today = Time.now.strftime("%Y/%m/%d")
@@ -10,9 +11,12 @@ class DResultsController < ApplicationController
       # UPDATE 2012.09.29 日付の規定値を前日に変更
       #sql = result_index_sql(Time.now.prev_day.strftime("%Y%m%d"), '')   
       sql = result_index_sql(@today.delete("/"), '')
+      
+      # INSRET 2012.10.03 店舗情報の検索条件をsessionに保存
+      session[:select_shop_kbn] = ''
     else
       @today = params[:result_date][0,4] + "/" + params[:result_date][4,2] + "/" + params[:result_date][6,2]
-      sql = result_index_sql(params[:result_date], '')
+      sql = result_index_sql(params[:result_date], session[:select_shop_kbn].to_s)
       @flg = 1     
     end
     
@@ -21,7 +25,10 @@ class DResultsController < ApplicationController
   
   def index_select
     select_date = params[:select_date].delete("/")
-  
+    
+    # INSERT 2012.10.03 店舗種別の検索条件をSessionに保存
+    session[:select_shop_kbn] = params[:select_shop_kbn].to_s
+    p "session=#{session[:select_shop_kbn]}"
     sql = result_index_sql(select_date, params[:select_shop_kbn])
     @m_shops = MShop.find_by_sql(sql)
   end

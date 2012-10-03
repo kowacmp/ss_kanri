@@ -40,7 +40,7 @@ class DResultTankListsController < ApplicationController
     @to_ymd_s   = @to_ymd.delete("/")
     str = "店舗コード".tosjis + ",店舗".tosjis + ",日付".tosjis
     
-    @m_shops = get_shops(@shop_kbn)
+    @m_shops = get_shops1(@shop_kbn)
     @m_oils = MOil.where('deleted_flg = 0').order('oil_cd')
 
     CSV.generate(output = "") do |csv|
