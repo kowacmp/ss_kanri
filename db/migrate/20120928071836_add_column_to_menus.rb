@@ -6,17 +6,17 @@ class AddColumnToMenus < ActiveRecord::Migration
     
     #初期セット
     execute "update menus set permission_actions = 'index?audit_class=0,edit,edit_tbl1,edit_comment' where uri='d_audit_cashboxes?audit_class=0';"
-    execute "update menus set permission_actions = 'd_audit_cashboxes?audit_class=1' where uri='index?audit_class=1,edit,edit_tbl1,edit_tbl2,edit_comment';"
-    execute "update menus set permission_actions = 'd_audit_changemachines?audit_class=0' where uri='index?audit_class=0,show,edit,edit_comment,confirm_shop_id_select,confirm_user_id_select,confirm_user_pass_select';"
-    execute "update menus set permission_actions = 'd_audit_changemachines?audit_class=1' where uri='index?audit_class=1,show,edit,edit_comment,confirm_shop_id_select,confirm_user_id_select,confirm_user_pass_select';"
-    execute "update menus set permission_actions = 'd_audit_etcs?audit_class=0' where uri='index?audit_class=0,edit,dialog_gosa';"
-    execute "update menus set permission_actions = 'd_audit_etcs?audit_class=1' where uri='index?audit_class=1,edit,dialog_gosa';"
-    execute "update menus set permission_actions = 'd_audit_washes?audit_class=0' where uri='index?audit_class=0,edit,dialog_gosa';"
-    execute "update menus set permission_actions = 'd_audit_washes?audit_class=1' where uri='index?audit_class=1,edit,dialog_gosa';"
-    execute "update menus set permission_actions = 'd_results/new' where uri='new,meter_index,tank_index,yume_index,yume_new,yume_edit,yume_delete,select_date';"
-    execute "update menus set permission_actions = 'd_sales/new' where uri='new';"
-    execute "update menus set permission_actions = 'd_washpurika_reports?mode=edit' where uri='index?mode=edit,edit';"
-    execute "update menus set permission_actions = 'd_washpurika_reports?mode=show' where uri='index?mode=show';"
+    execute "update menus set permission_actions = 'index?audit_class=1,edit,edit_tbl1,edit_tbl2,edit_comment' where uri='d_audit_cashboxes?audit_class=1';"
+    execute "update menus set permission_actions = 'index?audit_class=0,show,edit,edit_comment,confirm_shop_id_select,confirm_user_id_select,confirm_user_pass_select' where uri='d_audit_changemachines?audit_class=0';"
+    execute "update menus set permission_actions = 'index?audit_class=1,show,edit,edit_comment,confirm_shop_id_select,confirm_user_id_select,confirm_user_pass_select' where uri='d_audit_changemachines?audit_class=1';"
+    execute "update menus set permission_actions = 'index?audit_class=0,edit,dialog_gosa' where uri='d_audit_etcs?audit_class=0';"
+    execute "update menus set permission_actions = 'index?audit_class=1,edit,dialog_gosa' where uri='d_audit_etcs?audit_class=1';"
+    execute "update menus set permission_actions = 'index?audit_class=0,edit,dialog_gosa' where uri='d_audit_washes?audit_class=0';"
+    execute "update menus set permission_actions = 'index?audit_class=1,edit,dialog_gosa' where uri='d_audit_washes?audit_class=1';"
+    execute "update menus set permission_actions = 'new,meter_index,tank_index,yume_index,yume_new,yume_edit,yume_delete,select_date' where uri='d_results/new';"
+    execute "update menus set permission_actions = 'new' where uri='d_sales/new';"
+    execute "update menus set permission_actions = 'index?mode=edit,edit' where uri='d_washpurika_reports?mode=edit';"
+    execute "update menus set permission_actions = 'index?mode=show' where uri='d_washpurika_reports?mode=show';"
     
   end
 
