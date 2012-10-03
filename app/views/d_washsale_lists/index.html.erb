@@ -23,3 +23,47 @@
 	    <%= render partial: 'shop_list'%>
 	</div>
 </p>
+
+<script>
+$(function (){
+	
+  //ロック／解除が変更された場合のイベント
+  $(":checkbox[id^=data_kakutei_flg]")
+	.live('click', function(){
+		$.post('<%=url_for(:action => "lock")%>',
+			{ kakutei_flg: $(this).attr('checked'), 
+			  id: $(this).parent().find(":hidden[id^=data_id]").val(),
+			  authenticity : "<%=form_authenticity_token%>"  },
+			"script"
+		);
+	}
+  );
+  
+  //全ロック,解除
+  $("#kakutei_flg_all")
+	.live('click', function(){
+		//更新IDを取得
+		ids = "";
+		$(":hidden[id^=data_id]").each( function() {
+			if (ids != "") { ids += "," }
+			ids += this.value;
+		});
+		
+		//AJAX更新
+		$.post('<%=url_for(:action => "lock_all")%>',
+			{ kakutei_flg: $(this).attr('checked'), 
+			  ids: ids,
+			  authenticity : "<%=form_authenticity_token%>"  },
+			"script"
+		);
+		
+		//フラグ更新
+		flg = this.checked;
+		$(":checkbox[id^=data_kakutei_flg]").each( function() {
+			this.checked = flg;
+		});
+	}
+  );
+
+});
+</script>
