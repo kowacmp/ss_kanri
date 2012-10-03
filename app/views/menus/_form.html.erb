@@ -30,12 +30,29 @@
   	</tr>
   	<tr>
   	  <th><%= f.label '処理名' %></th>
-  	  <td><%= f.number_field :uri %></td>  	  
+  	  <td><%= f.text_field :uri %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label 'メッセージ種別' %></th>
   	  <td><%= f.number_field :messege_send %></td>  	  
   	</tr>   	   	   	 	
+  	<tr>
+  	  <th><%= f.label '使用を許可するアクション' %></th>
+  	  <td>
+  	  	<%= f.text_area :permission_actions, :size=>"120x10"  %>
+  	  	<div>
+  	  	※HTTPメソッドがgetのみ登録します。(get以外は全て許可する)<br />
+  	  	※ここを空にすると全てのアクションを許可します。<br /><br />
+  	  	書き方：許可するアクションをカンマ区切りで登録する。<br />
+  	  	例１：処理名と同じコントローラ内のアクション(indexとedit)のみ許可する<br />
+  	  	　　　　index,edit<br />
+  	  	例２：処理名と違うコントローラのアクション(index)のみ許可する<br />
+  	  	　　　　abc/index<br />
+  	  	例３：パラメータを指定して許可する<br />
+  	  	　　　　index?aaaa=123<br />
+  	  	</div>
+  	  </td>  	  
+  	</tr>
   </table>
   <div class="actions">
     <%= f.submit f.object.new_record? ? '追加' : '更新' %>
