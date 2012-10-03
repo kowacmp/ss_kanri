@@ -7,10 +7,10 @@
 	  <th>店舗種別</th>
 	  <td>
 	  	  <% shop_kbn_list = MCode.find(:all, :conditions => ["kbn='shop_kbn'and code<>'9'"], :order => "code").collect{|i| [i.code_name, i.code]} %>	  	
-	  	  <% if @shop_kbn == 0 %>
-			<%= select_tag "shop_kbn", options_for_select(shop_kbn_list), {:selected => "0"} %>
+	  	  <% if @shop_kbn.to_s == "0" %>
+			<%= select_tag "shop_kbn", options_for_select(shop_kbn_list, 0) %>
 	      <% else %>  
-	  		<%= select_tag "shop_kbn", options_for_select(shop_kbn_list), {:selected => "1"} %>
+	  		<%= select_tag "shop_kbn", options_for_select(shop_kbn_list, 1) %>
 	      <% end %>
 	        </td> 
 	  <td><%= submit_tag "検索" %></td>
@@ -23,3 +23,47 @@
 	    <%= render partial: 'shop_list'%>
 	</div>
 </p>
+
+<script>
+$(function (){
+	
+  //ロック／解除が変更された場合のイベント
+  $(":checkbox[id^=data_kakutei_flg]")
+	.live('click', function(){
+		$.post('<%=url_for(:action => "lock")%>',
+			{ kakutei_flg: $(this).attr('checked'), 
+			  id: $(this).parent().find(":hidden[id^=data_id]").val(),
+			  authenticity : "<%=form_authenticity_token%>"  },
+			"script"
+		);
+	}
+  );
+  
+  //全ロック,解除
+  $("#kakutei_flg_all")
+	.live('click', function(){
+		//更新IDを取得
+		ids = "";
+		$(":hidden[id^=data_id]").each( function() {
+			if (ids != "") { ids += "," }
+			ids += this.value;
+		});
+		
+		//AJAX更新
+		$.post('<%=url_for(:action => "lock_all")%>',
+			{ kakutei_flg: $(this).attr('checked'), 
+			  ids: ids,
+			  authenticity : "<%=form_authenticity_token%>"  },
+			"script"
+		);
+		
+		//フラグ更新
+		flg = this.checked;
+		$(":checkbox[id^=data_kakutei_flg]").each( function() {
+			this.checked = flg;
+		});
+	}
+  );
+
+});
+</script>

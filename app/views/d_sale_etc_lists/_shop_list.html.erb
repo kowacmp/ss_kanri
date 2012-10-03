@@ -10,10 +10,11 @@
 		<th>店舗種別</th>
 		<th>入力状況</th>
 		<th>ロック／解除<br />
-			<input type="checkbox" id="all" />
+			<input type="checkbox" id="kakutei_flg_all" />
 		</th>
 		<th>詳細</th>
 	</tr>
+  <% i = 1 %>
   <% @shops.each do |shop| %>
     <% nyuryoku_flg = wday_hantei(@wday,shop.id) %>
     <tr>
@@ -37,26 +38,38 @@
       </td>
       <td align="center">
       	<% unless d_sale_etc == nil %>
+          <!-- DEL 2012.10.03 更新はAJAXで行う
       	  <% if d_sale_etc.kakutei_flg == 1  %>
       	    <%= check_box_tag("cbox[]",d_sale_etc.id,{:checked => true}) %>
       	  <% else %>
       	    <%= check_box_tag("cbox[]",d_sale_etc.id) %> 	  
       	  <% end %>
-      	<% end %>
+      	  -->
+          <% if d_sale_etc.kakutei_flg.to_i == 0 %>
+            <%=  check_box_tag "data_kakutei_flg_#{i}", "0", false  %>
+          <% else %>
+            <%=  check_box_tag "data_kakutei_flg_#{i}", "1", true %>
+          <% end%>
+          <%= hidden_field_tag "data_id_#{i}", d_sale_etc.id %>
+          <% i += 1 %>
+        <% end %>
       </td>
 
       <td><%= link_to image_tag('icon/24_edit.png'), {:controller => 'd_sale_etcs',:action => 'index',
             :input_ymd => @input_ymd,:m_shop_id => shop.id,:shop_kbn => @shop_kbn,:mode => 'list'} %></td>
     </tr>
   <% end %>
-  <%= hidden_field_tag "input_ymd",@input_ymd %>
-  <%= hidden_field_tag "shop_kbn",@shop_kbn %>
+	<!-- DEL 2012.10.03 AJAXで更新する
     <tr><td colspan="7"><%= submit_tag(" 更新 ",:disable_with => "更新中...",:confirm => '保存しても良いですか？') %>	 </td></tr>
+	-->
 </table>
+<%= hidden_field_tag "input_ymd",@input_ymd %>
+<%= hidden_field_tag "shop_kbn",@shop_kbn %>
 <% end %>
 </div>
 
 <script type="text/javascript">
+/* DEL 2012.10.03 AJAXで更新する
 $(function(){
     $('#all').click(function(){
     if(this.checked){
@@ -66,4 +79,5 @@ $(function(){
     }
   });
 });
+*/
 </script>
