@@ -14,7 +14,7 @@ class AddColumnToMenus < ActiveRecord::Migration
     execute "update menus set permission_actions = 'index?audit_class=0,edit,dialog_gosa' where uri='d_audit_washes?audit_class=0';"
     execute "update menus set permission_actions = 'index?audit_class=1,edit,dialog_gosa' where uri='d_audit_washes?audit_class=1';"
     execute "update menus set permission_actions = 'new,meter_index,tank_index,yume_index,yume_new,yume_edit,yume_delete,select_date' where uri='d_results/new';"
-    execute "update menus set permission_actions = 'new' where uri='d_sales/new';"
+    execute "update menus set permission_actions = 'new,report_view' where uri='d_sales/new';"
     execute "update menus set permission_actions = 'index?mode=edit,edit' where uri='d_washpurika_reports?mode=edit';"
     execute "update menus set permission_actions = 'index?mode=show' where uri='d_washpurika_reports?mode=show';"
     
