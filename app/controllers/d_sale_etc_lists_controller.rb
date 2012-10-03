@@ -51,4 +51,37 @@ class DSaleEtcListsController < ApplicationController
     
   end
 
+  # INSERT 2012.10.03 AJAXでLOCKをかける
+  def lock
+    
+    sale_etc = DSaleEtc.find(params[:id])
+    if params[:kakutei_flg].to_s == "checked" then
+      sale_etc.kakutei_flg = 1
+    else
+      sale_etc.kakutei_flg = 0
+    end
+    sale_etc.updated_user_id = current_user.id
+    sale_etc.save!
+    
+    head :ok
+  end
+
+  # INSERT 2012.10.03 AJAXでLOCKをかける
+  def lock_all
+    
+    ids = params[:ids].to_s.split(",")
+    for id in ids
+      sale_etc = DSaleEtc.find(id)
+      if params[:kakutei_flg].to_s == "checked" then
+        sale_etc.kakutei_flg = 1
+      else
+        sale_etc.kakutei_flg = 0
+      end
+      sale_etc.updated_user_id = current_user.id
+      sale_etc.save!
+    end
+    
+    head :ok
+  end
+
 end
