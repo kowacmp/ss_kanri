@@ -93,8 +93,9 @@
 	      </label></td>
 
 		</tr>
+		<% if @head[:from_view] == "index" %>
 		<tr>
-			<td colspan="8" style="border-bottom-style: none"></td>
+			<td colspan="8" style="border-bottom-style: none; border-left-style: none"></td>
 			<td class="title_alias">入金確認</td>
 			<td class="input_alias">
 				<%#= f.text_field :recive_check, :size=>4 %>
@@ -106,6 +107,7 @@
 			</td>
 	      
 		</tr>
+		<% end %>
 	</table>
       
       <br />
