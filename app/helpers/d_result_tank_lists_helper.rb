@@ -13,7 +13,7 @@ module DResultTankListsHelper
     DResultTank.find_by_sql([sql,from_ymd,to_ymd,shop_id,oil_id]).first.stock
   end
   
-  def get_shops1(shop_kbn)
+  def get_shops(shop_kbn)
     if shop_kbn == nil or shop_kbn == ""
       m_shops = MShop.where('deleted_flg = 0 and shop_cd <> 999999').order('shop_cd')
     else
