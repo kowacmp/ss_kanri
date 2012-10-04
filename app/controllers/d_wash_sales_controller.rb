@@ -113,17 +113,20 @@ class DWashSalesController < ApplicationController
         @price = wash.price
         
         sum_uriage = 0
+        #@d_wash_sale_mae = get_d_wash_sale(get_zenkai_date(@sale_date,@shop_id,@mode),@shop_id,@mode) #2012/10/03 nishimura del
         #2012/10/03 機種毎にデータ取得 nishimura <<<
-        #@d_wash_sale_mae = get_d_wash_sale(get_zenkai_date(@sale_date,@shop_id,@mode),@shop_id,@mode)
-        day = washsale_date_format(Date.new(@sale_date[0,4].to_i,@sale_date[4,2].to_i,@sale_date[6,2].to_i), 0)
+        #day = washsale_date_format(Date.new(@sale_date[0,4].to_i,@sale_date[4,2].to_i,@sale_date[6,2].to_i), 0)
         #washsale_plan_flg = get_m_washsale_plan(@shop_id,wash.id,day.wday)
-        
-        @d_wash_sale_mae = get_d_wash_sale(get_wash_zenkai_date(@sale_date,@shop_id,wash.id,@mode),@shop_id,@mode)
+        #@d_wash_sale_mae = get_d_wash_sale(get_wash_zenkai_date(@sale_date,@shop_id,wash.id,@mode),@shop_id,@mode)
         #2012/10/03 機種毎にデータ取得 nishimura >>>
         
         #if washsale_plan_flg == 1 #2012/10/03 nishimura
 
         wash.max_num.times do |i| #times
+         
+         #2012/10/04 機種毎にデータ取得 nishimura <<<
+         @d_wash_sale_mae = get_d_wash_sale(get_wash_zenkai_date(@sale_date,@shop_id,wash.id,i+1,@mode),@shop_id,@mode)
+         #2012/10/04 機種毎にデータ取得 nishimura >>>
           
          v1 = params["meter_#{wash.wash_cd.to_s}_#{i+1}"].to_i
          v2 = 0

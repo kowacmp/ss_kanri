@@ -72,6 +72,7 @@ module DWashSalesHelper
         end
   end
   
+=begin    
   #2012/10/03 nishimura
   #曜日取得
   def washsale_date_format(today, i)
@@ -81,7 +82,7 @@ module DWashSalesHelper
     return day
   end
 
-=begin  
+
   #2012/10/03 nishimura
   #登録フラグ取得
   def get_m_washsale_plan(m_shop_id,m_wash_id,wday)
@@ -143,31 +144,28 @@ module DWashSalesHelper
   
   #2012/10/03 nishimura
   #機種毎前回データ取得
-  def get_wash_zenkai_date(sale_date,shop_id,wash_id,mode)
+  def get_wash_zenkai_date(sale_date,shop_id,wash_id,wash_no,mode)
     
-    sql =  <<-SQL   
-       select max(c.sale_date) as sale_date from 
-       (select a.sale_date,a.m_shop_id,b.m_wash_id from 
-       (select * from d_wash_sales) a 
-       left join d_washsale_items b on  a.id = b.d_wash_sale_id 
-       group by a.sale_date,a.m_shop_id,b.m_wash_id 
-       having a.sale_date < ? and a.m_shop_id = ? and b.m_wash_id = ? 
-       order by a.sale_date,a.m_shop_id,b.m_wash_id) c 
-    SQL
+    sql =  "   
+         select max(c.sale_date) as sale_date from 
+         (select a.sale_date,a.m_shop_id,b.m_wash_id,b.wash_no from 
+         (select * from d_wash_sales) a 
+         left join d_washsale_items b on  a.id = b.d_wash_sale_id and b.meter > 0
+         group by a.sale_date,a.m_shop_id,b.m_wash_id,b.wash_no 
+         having a.sale_date < '#{sale_date}' 
+            and a.m_shop_id = #{shop_id} 
+            and b.m_wash_id = #{wash_id} 
+            and b.wash_no = #{wash_no} 
+         order by a.sale_date,a.m_shop_id,b.m_wash_id,b.wash_no) c 
+      "
 
     if sale_date.length == 10
       sale_date = sale_date.delete("/")
     end
       if mode == 'list'
-        #zenkai_date = DWashSale.maximum(:sale_date,
-        #  :conditions => ['sale_date < ? and m_shop_id = ?',sale_date,shop_id])
-        zenkai_date = DWashSale.find_by_sql([sql,sale_date,shop_id,1]) ? 
-                        DWashSale.find_by_sql([sql,sale_date,shop_id,1]).first.sale_date : ''
+        zenkai_date = DWashSale.find_by_sql(sql) ? DWashSale.find_by_sql(sql).first.sale_date : ''
       else
-        #zenkai_date = DWashSale.maximum(:sale_date,
-        #  :conditions => ['sale_date < ? and m_shop_id = ?',sale_date,current_user.m_shop_id])
-        zenkai_date = DWashSale.find_by_sql([sql,sale_date,current_user.m_shop_id,wash_id]) ? 
-                        DWashSale.find_by_sql([sql,sale_date,current_user.m_shop_id,wash_id]).first.sale_date : ''
+        zenkai_date = DWashSale.find_by_sql(sql) ? DWashSale.find_by_sql(sql).first.sale_date : ''
       end
     return zenkai_date
   end

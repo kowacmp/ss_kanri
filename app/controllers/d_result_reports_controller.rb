@@ -19,8 +19,12 @@ class DResultReportsController < ApplicationController
     
     #@input_ymd_s = @input_ymd.delete("/")
     
-    @input_ymd_s = @input_ymd[0,4] + @input_ymd[5,2] + "01"
+    @input_ymd_s = @input_ymd.delete("/")
+    @input_ymd_s = @input_ymd_s[0,4] + @input_ymd_s[4,2] + "01"
     @input_ymd_e = @input_ymd.delete("/")
+    
+    @day_e = @input_ymd_e[6,2].to_i
+    @month_last_day = Date.new(@input_ymd_e[0,4].to_i,@input_ymd_e[4,2].to_i).end_of_month.day.to_i
     
     @shop_info = MShop.find(current_user.m_shop_id)
     
@@ -249,7 +253,7 @@ class DResultReportsController < ApplicationController
   
   def print_result_2_report(datas,input_ymd_e)
     
-    chousei_total = 0
+    r_chousei_total = 0
     syaken_total = 0
     r_syaken_total = 0
     kyuyu_purika_total = 0
@@ -283,7 +287,7 @@ class DResultReportsController < ApplicationController
     report.layout.config.list(:list) do
       # フッターに合計をセット.
       events.on :footer_insert do |e|
-        e.section.item(:chousei_total).value(chousei_total)
+        e.section.item(:r_chousei_total).value(r_chousei_total)
         e.section.item(:syaken_total).value(syaken_total)
         e.section.item(:r_syaken_total).value(r_syaken_total)
         e.section.item(:kyuyu_purika_total).value(kyuyu_purika_total)
@@ -350,8 +354,8 @@ class DResultReportsController < ApplicationController
       report.page.list(:list).add_row do |row|
         #row.item(:shop).value(data.shop_cd.to_s + ' ' + data.shop_ryaku) 
         row.item(:shop).value(data.shop_ryaku) 
-        row.item(:chousei).value(data.chousei)
-          chousei_total = chousei_total + data.chousei.to_i
+        row.item(:r_chousei).value(data.r_chousei)
+          r_chousei_total = r_chousei_total + data.r_chousei.to_i
         row.item(:oiletc_aim).value(data.oiletc_aim)
         row.item(:oiletc_pace).value(data.oiletc_pace)
         row.item(:syaken_aim).value(data.syaken_aim)  
@@ -425,6 +429,9 @@ class DResultReportsController < ApplicationController
   end
   
   def print_result_self_1_report(datas,input_ymd_e)
+    @day_e = input_ymd_e[6,2].to_i
+    @month_last_day = Date.new(input_ymd_e[0,4].to_i,input_ymd_e[4,2].to_i).end_of_month.day.to_i
+    
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_result_self_1_report.tlf')
     
     taisyo_ymd = input_ymd_e[0,4] + "-" + input_ymd_e[4,2] + "-" + input_ymd_e[6,2] 
@@ -469,7 +476,14 @@ class DResultReportsController < ApplicationController
 
         row.item(:mo_gas).value(data.mo_gas)
         row.item(:r_mo_gas).value(data.r_mo_gas)
-        #row.item(:mo_gas_pace).value(data.mo_gas_pace)
+        
+        if data.r_mo_gas
+          @mo_gas_pace = (data.r_mo_gas.to_f / @day_e * @month_last_day).round(0)
+        else
+          @mo_gas_pace = ""
+        end
+        row.item(:mo_gas_pace).value(@mo_gas_pace)
+        
         #if data.hg_aim != nil or data.rg_aim != nil
         #  mo_gas_aim = data.hg_aim.to_i + data.hg_aim.to_i
         #end
@@ -478,16 +492,35 @@ class DResultReportsController < ApplicationController
         
         row.item(:keiyu).value(data.keiyu)
         row.item(:r_keiyu).value(data.r_keiyu)
-        #row.item(:keiyu_pace).value(data.keiyu_pace)
+        
+        if data.r_keiyu
+          @keiyu_pace = (data.r_keiyu.to_f / @day_e * @month_last_day).round(0)
+        else
+          @keiyu_pace = ""
+        end
+        row.item(:keiyu_pace).value(@keiyu_pace)
         row.item(:keiyu_aim).value(data.keiyu_aim)
         row.item(:touyu).value(data.touyu)
         row.item(:r_touyu).value(data.r_touyu)
-        #row.item(:touyu_pace).value(data.touyu_pace)
+        
+        if data.r_touyu
+          @touyu_pace = (data.r_touyu.to_f / @day_e * @month_last_day).round(0)
+        else
+          @touyu_pace = ""
+        end
+        row.item(:touyu_pace).value(@touyu_pace)
         row.item(:touyu_aim).value(data.touyu_aim)
         
         row.item(:kyuyu_purika_aim).value(data.kyuyu_purika_aim)
         row.item(:kyuyu_purika).value(data.kyuyu_purika)
         row.item(:r_kyuyu_purika).value(data.r_kyuyu_purika)
+        
+        if data.r_kyuyu_purika
+          @kyuyu_purika_pace = (data.r_kyuyu_purika.to_f / @day_e * @month_last_day).round(0)
+        else
+          @kyuyu_purika_pace = ""
+        end
+        row.item(:kyuyu_purika_pace).value(@kyuyu_purika_pace)
         
         row.item(:cb).value(data.cb)
         row.item(:r_cb).value(data.r_cb)
@@ -509,6 +542,8 @@ class DResultReportsController < ApplicationController
   end
   
   def print_result_self_2_report(datas,input_ymd_e)
+    @day_e = input_ymd_e[6,2].to_i
+    @month_last_day = Date.new(input_ymd_e[0,4].to_i,input_ymd_e[4,2].to_i).end_of_month.day.to_i
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_result_self_2_report.tlf')
 
     taisyo_ymd = input_ymd_e[0,4] + "-" + input_ymd_e[4,2] + "-" + input_ymd_e[6,2] 
@@ -550,9 +585,23 @@ class DResultReportsController < ApplicationController
         row.item(:r_sensya).value(data.r_sensya)
         row.item(:sensya_aim).value(data.sensya_aim)
         
+        if data.r_sensya
+          @sensya_pace = (data.r_sensya.to_f / @day_e * @month_last_day).round(0)
+        else
+          @sensya_pace = ""
+        end
+        row.item(:sensya_pace).value(@sensya_pace)
+        
         row.item(:sensya_purika).value(data.sensya_purika)
         row.item(:r_sensya_purika).value(data.r_sensya_purika)
         row.item(:sensya_purika_aim).value(data.sensya_purika_aim)
+        
+        if data.r_sensya_purika
+          @sensya_purika_pace = (data.r_sensya_purika.to_f / @day_e * @month_last_day).round(0)
+        else
+          @sensya_purika_pace = ""
+        end
+        row.item(:sensya_purika_pace).value(@sensya_purika_pace)
         
         #row.item(:muton).value(data.muton)
         row.item(:muton).value(data.muton_aim)
@@ -728,7 +777,7 @@ class DResultReportsController < ApplicationController
       select_sql <<            " from d_result_reports) c on b.id = c.d_result_id"
       
       select_sql << " left join (select d1.m_shop_id,"
-      select_sql <<       "sum(d2.syaken) as r_syaken, sum(d2.kyuyu_purika) as r_kyuyu_purika,"
+      select_sql <<       "sum(d2.chousei) as r_chousei,sum(d2.syaken) as r_syaken, sum(d2.kyuyu_purika) as r_kyuyu_purika,"
       select_sql <<       "sum(d2.sensya_purika) as r_sensya_purika, sum(d2.sp) as r_sp,"
       select_sql <<       "sum(d2.sc) as r_sc, sum(d2.taiyaw) as r_taiyaw,"
       select_sql <<       "sum(d2.sp_plus) as r_sp_plus, sum(d2.atf) as r_atf,"

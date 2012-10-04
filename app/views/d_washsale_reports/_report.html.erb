@@ -18,8 +18,8 @@
 	<!-- 共通ヘッダ -->
 	<tr>
 		<th style="width:24%">機種名</th>
-		<th style="width:15%">月末メーター</th>
-		<th style="width:15%">月初メーター</th>
+		<th style="width:15%">月末メーター</th><!-- 売上入力 -->
+		<th style="width:15%">月初メーター</th><!-- 売上報告 -->
 		<th style="width:15%">月間メーター売上</th>
 		<th style="width:15%">POS売上</th>
 		<th style="width:15%">誤差</th>
@@ -39,6 +39,52 @@
 			<%# @d_wash_sales = get_d_wash_sales_month(@this_month ,@m_shop_id) %>
 			<%# sum_meter = sum_d_washsale_item_meter(@d_wash_sales,wash.id,(i+1)) %>
 			
+			
+			<%
+			   #@d_wash_sales = DWashSale.find(:all, :conditions => ["sale_date between ? and ? and m_shop_id = ?",
+               #                                                     @this_month + "01",
+               #                                                     @this_month + "31",
+               #                                                     @m_shop_id],
+               #                                     :order => 'sale_date')  
+			   
+			   sql =  "
+			       select * from d_wash_sales a 
+			       left join 
+			       (select d_wash_sale_id,meter,m_wash_id,wash_no
+			          from d_washsale_items) b on  a.id = b.d_wash_sale_id and b.meter > 0
+			       where a.sale_date >= '#{@this_month}01' 
+			         and a.sale_date <= '#{@this_month}31' 
+			         and a.m_shop_id = #{@m_shop_id} 
+			         and b.m_wash_id = #{wash.id} 
+			         and b.wash_no = #{i+1} 
+			       order by a.sale_date,a.m_shop_id,b.m_wash_id,b.wash_no
+			    "
+			   
+			   @d_wash_sales = DWashSale.find_by_sql(sql)
+			   
+			   if @d_wash_sales.length > 0 then
+			   #sum_meter = DWashsaleItem.find(:last, :conditions => ["d_wash_sale_id=? and m_wash_id=? and wash_no=?",
+			   #                                                     @d_wash_sales.last.id,
+			   #                                                     wash.id,
+			   #                                                     (i+1)]).meter
+			   sum_meter = DWashsaleItem.find(:last, :conditions => ["d_wash_sale_id=? and m_wash_id=? and wash_no=?",
+			                                                        @d_wash_sales.last.id,
+			                                                        wash.id,
+			                                                        (i+1)]) ? 
+			               	DWashsaleItem.find(:last, :conditions => ["d_wash_sale_id=? and m_wash_id=? and wash_no=?",
+			                                                        @d_wash_sales.last.id,
+			                                                        wash.id,
+			                                                        (i+1)]).meter : 0
+			   end if
+			   
+			   sum_meter = 0 if sum_meter.nil?
+			%>
+			<% meter_id = "meter_" + wash.id.to_s + '_'+ (i+1).to_s %>
+			
+			<!-- 月末メータ -->
+			<td class="no-input-num"><%= number_with_delimiter(sum_meter) %><%= hidden_field_tag meter_id, sum_meter %></td>
+			
+			
             
             <% if @d_washsale_report_last == nil %>
               <% d_washsale_detail_report = nil %>
@@ -53,30 +99,8 @@
 			
 			<!-- 月初メータ -->
 			<td class="no-input-num"><%= number_with_delimiter(sum_meter_last) %></td>					
-			
-            <%
-			   @d_wash_sales = DWashSale.find(:all, :conditions => ["sale_date between ? and ? and m_shop_id = ?",
-                                                                    @this_month + "01",
-                                                                    @this_month + "31",
-                                                                    @m_shop_id],
-                                                    :order => 'sale_date')  
-			   
-			   
-			   if @d_wash_sales.length > 0 then
-			   sum_meter = DWashsaleItem.find(:last, :conditions => ["d_wash_sale_id=? and m_wash_id=? and wash_no=?",
-				                                                     @d_wash_sales.last.id,
-				                                                     wash.id,
-				                                                     (i+1)]).meter
-			   end if
-			   
-			   sum_meter = 0 if sum_meter.nil?
-			%>
-			<% meter_id = "meter_" + wash.id.to_s + '_'+ (i+1).to_s %>
-			
-			<!-- 月末メータ -->
-			<td class="no-input-num"><%= number_with_delimiter(sum_meter) %><%= hidden_field_tag meter_id, sum_meter %></td>
 
-			
+
 			<% last_meter_id = "sale_meter_" + wash.id.to_s + '_'+ (i+1).to_s %>
 			<%
 				sql = "

@@ -31,13 +31,17 @@
        <% sum_keisan_uriage = 0 %>
        
        <!-- 2012/10/03 機種毎にデータ取得 nishimura -->
-       <% day = washsale_date_format(Date.new(@input_ymd_s[0,4].to_i,@input_ymd_s[4,2].to_i,@input_ymd_s[6,2].to_i), 0)%>
+       <%# day = washsale_date_format(Date.new(@input_ymd_s[0,4].to_i,@input_ymd_s[4,2].to_i,@input_ymd_s[6,2].to_i), 0)%>
        <%# washsale_plan_flg = get_m_washsale_plan(@shop.id,wash.id,day.wday) %>
-       
-       <% @input_ymd_mae_s = get_wash_zenkai_date(@input_ymd_s,@shop.id,wash.id,@mode) %>
+       <%# @input_ymd_mae_s = get_wash_zenkai_date(@input_ymd_s,@shop.id,wash.id,@mode) %>
        <!-- 2012/10/03 機種毎にデータ取得 nishimura -->
        
        <% wash.max_num.times do |i| %>
+       
+       <!-- 2012/10/04 機種毎にデータ取得 nishimura -->
+       <% @input_ymd_mae_s = get_wash_zenkai_date(@input_ymd_s,@shop.id,wash.id,i+1,@mode) %>
+       <!-- 2012/10/04 機種毎にデータ取得 nishimura -->
+       
 	  <tr>
 		  <th id="wash_cd_<%= wash.wash_cd.to_s %>_<%= (i+1).to_s %>">
 		  	

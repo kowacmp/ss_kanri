@@ -47,7 +47,11 @@
 	  	<td><%= m_shop.shop_cd.to_s + ' ' +  m_shop.shop_ryaku %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.mo_gas) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_mo_gas) %></td>
-	  	<td class="input_no"><%#= m_shop.mo_gas_pace %></td>
+	  	<td class="input_no">
+	  		<% if m_shop.r_mo_gas %>
+	  			<%= number_with_delimiter((m_shop.r_mo_gas.to_f / @day_e * @month_last_day).round(0)) %>
+	  		<% end %>
+	  	</td>
 	  	<td class="input_no">
 	  		<%# if m_shop.hg_aim != nil or m_shop.rg_aim != nil %>
 	  		<%#= m_shop.hg_aim.to_i + m_shop.rg_aim.to_i %>
@@ -56,16 +60,28 @@
 	  	</td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.keiyu) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_keiyu) %></td>
-	  	<td class="input_no"><%#= m_shop.keiyu_pace %></td>
+	  	<td class="input_no">
+	  		<% if m_shop.r_keiyu %>
+	  			<%= number_with_delimiter((m_shop.r_keiyu.to_f / @day_e * @month_last_day).round(0)) %>
+	  		<% end %>
+	  	</td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.keiyu_aim) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.touyu) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_touyu) %></td>
-	  	<td class="input_no"><%#= m_shop.touyu_pace %></td>
+	  	<td class="input_no">
+	  		<% if m_shop.r_touyu %>
+	  			<%= number_with_delimiter((m_shop.r_touyu.to_f / @day_e * @month_last_day).round(0)) %>
+	  		<% end %>
+	  	</td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.touyu_aim) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.kyuyu_purika_aim) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.kyuyu_purika) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_kyuyu_purika) %></td>
-	  	<td class="input_no"><%#= m_shop.kyuyu_purika_pace %></td>
+	  	<td class="input_no">
+	  		<% if m_shop.r_kyuyu_purika %>
+	  			<%= number_with_delimiter((m_shop.r_kyuyu_purika.to_f / @day_e * @month_last_day).round(0)) %>
+	  		<% end %>
+	  	</td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.cb) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_cb) %></td>
 	  </tr>

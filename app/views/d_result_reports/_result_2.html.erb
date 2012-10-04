@@ -1,4 +1,4 @@
-<% @chousei_total = 0 %>
+<% @r_chousei_total = 0 %>
 
 <% @syaken_total = 0 %><% @kyuyu_purika_total = 0 %><% @sensya_purika_total = 0 %>
 <% @sp_total = 0 %><% @sc_total = 0 %><% @taiyaw_total = 0 %>
@@ -69,7 +69,7 @@
 	<% @m_shops.each do |m_shop| %>
 	  <tr>
 	  	<td><%= m_shop.shop_cd.to_s + ' ' +  m_shop.shop_ryaku %></td>
-	  	<td class="input_no"><%= number_with_delimiter(m_shop.chousei) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_chousei) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.oiletc_aim) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.oiletc_pace) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.syaken_aim) %></td>
@@ -101,7 +101,7 @@
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_mobil1) %></td>
 	  </tr>
 	  
-	  <% @chousei_total = @chousei_total + m_shop.chousei.to_i %>
+	  <% @r_chousei_total = @r_chousei_total + m_shop.r_chousei.to_i %>
 	  
 	  <% @syaken_total = @syaken_total + m_shop.syaken.to_i %>
 	  <% @kyuyu_purika_total = @kyuyu_purika_total + m_shop.kyuyu_purika.to_i %>
@@ -169,7 +169,7 @@
 	
 	<tr>
 		<th>累計</th>
-		<td class="input_no"><%= number_with_delimiter(@chousei_total) %></td>
+		<td class="input_no"><%= number_with_delimiter(@r_chousei_total) %></td>
 		<td class="input_no"></td>
 		<td class="input_no"></td>
 		<td class="input_no"></td>
