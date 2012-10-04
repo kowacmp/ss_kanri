@@ -383,7 +383,7 @@
   <div class="actions">
   	<span class="actions_left">
   	<% if @head[:from_view] == "index" %>
-  		<%= link_to "入力状況へ戻る", {:controller => "d_sales", :action => "index", :input_day => @head[:input_day], :input_shop_kbn => @head[:input_shop_kbn]}, :confirm => "一覧表に戻ります。よろしいですか？", :method => :get, :class => 'return_icon' %>
+  		<%= link_to "入力状況へ戻る", {:controller => "d_sales", :action => "index", :input_day => @head[:input_day], :input_shop_kbn => @head[:input_shop_kbn]}, :confirm => "入力状況へ戻ります。よろしいですか？", :method => :get, :class => 'return_icon' %>
   	<% end %>
   	</span>
   	<span class="actions_right">
