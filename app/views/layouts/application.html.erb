@@ -31,9 +31,17 @@
   <!-- テーブル用↓ -->  
   <%= javascript_include_tag "jquery.tablefix" %>
   
+  <!-- ajax中にUI操作を禁止する(jsのみで反映可) -->
+  <%#= javascript_include_tag "jquery.blockUI.js" %>
+  <%#= javascript_include_tag "jquery.blockUIajax.js" %>
+  
   <%= csrf_meta_tags %> 
 </head>
 <body>
+    <!-- ajax中のUI禁止デザイン -->
+    <div id="blockUIajax" style="display: none;">
+        <img src="<%=image_path("icon/ajax-loader.gif")%>" style="margin-right:5px;">処理中です...
+    </div>
     <div id="modal">
       <div class="background"></div>
       <div class="container"></div>
@@ -62,7 +70,10 @@
 <!--    <p class="notice"><%#= notice %></p>
       <p class="alert"><%#= alert %></p> -->
   
+  <div id="div_yield">
   <%= yield %>
+  </div>
+  
   <%= render :partial => "/layouts/footer.html" %>
   </div>
   
