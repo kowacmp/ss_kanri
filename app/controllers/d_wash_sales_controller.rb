@@ -173,8 +173,6 @@ class DWashSalesController < ApplicationController
          unless @d_washsale_item == nil #unless1
            #データあり
            unless @d_washsale_item.meter == params["meter_#{wash.wash_cd.to_s}_99"] #unless2
-             #2012/10/03 入力値>0の場合のみ登録 nishimura
-             if params["meter_#{wash.wash_cd}_#{99}"].to_i > 0
                #sum_meter = get_sum_meter(@d_wash_sale.id,wash.id)
                #if  @d_wash_sale_mae == nil
                #  sum_meter_mae = 0
@@ -183,18 +181,14 @@ class DWashSalesController < ApplicationController
                #end
                #update_d_washsale_item(wash.wash_cd,99,sum_meter,sum_meter_mae)
                
-               @d_washsale_item.meter = params["meter_#{wash.wash_cd}_#{99}"]
+               @d_washsale_item.meter = params["meter_#{wash.wash_cd}_#{99}"].to_i
                
                # UPDATE 2012.09.27 誤差 = 現金売上高 - 計算上売上高
                #@d_washsale_item.error_money =  sum_uriage - @d_washsale_item.meter
-               @d_washsale_item.error_money =  @d_washsale_item.meter - sum_uriage
+               @d_washsale_item.error_money =  @d_washsale_item.meter - sum_uriage.to_i
                @d_washsale_item.uriage = 0
                @d_washsale_item.updated_user_id = current_user.id
                @d_washsale_item.save!
-             else
-               #入力値>0の場合レコード削除
-               @d_washsale_item.destroy
-             end
            end #unless2
          else
            #データなし
@@ -241,12 +235,12 @@ private
   
   def create_d_washsale_item(d_wash_sale_id,wash_cd,wash_no,sum_uriage=0)
     #2012/10/03 入力値>0の場合のみ登録 nishimura
-    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0
+    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99
       @d_washsale_item = DWashsaleItem.new
       @d_washsale_item.d_wash_sale_id = d_wash_sale_id
       @d_washsale_item.m_wash_id = wash_cd
       @d_washsale_item.wash_no = wash_no
-      @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"]     
+      @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"].to_i
       if @d_washsale_item.wash_no == 99      
          # UPDATE 2012.09.27 誤差 = 現金売上高 - 計算上売上高
          #@d_washsale_item.error_money = sum_uriage - @d_washsale_item.meter
@@ -261,7 +255,7 @@ private
   
   def update_d_washsale_item(wash_cd,wash_no,sum_meter=0,sum_meter_mae=0)
     #2012/10/03 入力値>0の場合のみ登録 nishimura
-    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0
+    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99
       @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"]
       if @d_washsale_item.meter == nil
         @d_washsale_item.meter = 0
