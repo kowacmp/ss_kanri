@@ -93,11 +93,13 @@ class DWashsaleReportsController < ApplicationController
     @d_wash_sales = get_d_wash_sales_month(params[:sale_date],params[:shop_id])
     @d_wash_sales.each do |wash_sale|
       @d_washsale_item = get_d_washsale_item(wash_sale.id,@wash_cd,99) 
-          unless @d_washsale_item.error_money == 0
-            p "***** error_money = #{@d_washsale_item.error_money} *****"
-            p "***** wash_sale.sale_date = #{wash_sale.sale_date} *****"
-            @sale_date << wash_sale.sale_date
-          end #unless
+          if @d_washsale_item
+            unless @d_washsale_item.error_money == 0
+              p "***** error_money = #{@d_washsale_item.error_money} *****"
+              p "***** wash_sale.sale_date = #{wash_sale.sale_date} *****"
+              @sale_date << wash_sale.sale_date
+            end #unless
+          end
     end #each
     @m_washe   = get_m_washe(@wash_cd)
 
