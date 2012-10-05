@@ -52,12 +52,12 @@ module DSaleEtcsHelper
     unless d_sale_etc_deail == nil || d_sale_etc_deail_mae == nil
       if d_sale_etc_deail.meter != 0 && d_sale_etc_deail_mae.meter != 0
         d_sale_etc_deail.meter - d_sale_etc_deail_mae.meter
-          else
-          0
-          end
-        else
-          0
-        end
+      else
+        0
+      end
+    else
+      0
+    end
   end
   
   #2012/10/04 nishimura

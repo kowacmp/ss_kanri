@@ -57,7 +57,8 @@
 		  		<% else %>
 		  		  <div class="field">
    	  	  	      <%# meter_id = "meter_" + d_sale_etc_detail.m_etc_id.to_s + '_'+ d_sale_etc_detail.etc_no.to_s %>
-		  		  <% meter_id = "meter_" + etc.etc_cd.to_s + '_'+ (i+1).to_s %>
+		  		  <%# meter_id = "meter_" + etc.etc_cd.to_s + '_'+ (i+1).to_s %>
+		  		  <% meter_id = "meter_" + etc.id.to_s + '_'+ (i+1).to_s %>
 		  		  <td><%= text_field_tag(meter_id, d_sale_etc_detail.meter ,:class => "money", :style=>"width:100px;") %></td>
 		  		  </div>
 		  		<% end %>
@@ -67,14 +68,16 @@
 		  	      <td align="right">0</td>
 		  	    <% else %>
 		  	      <td>
-		  	        <% meter_id = "meter_" + etc.etc_cd.to_s + '_'+ (i+1).to_s %>
+		  	        <%# meter_id = "meter_" + etc.etc_cd.to_s + '_'+ (i+1).to_s %>
+		  	        <% meter_id = "meter_" + etc.id.to_s + '_'+ (i+1).to_s %>
 		  	        <%= text_field_tag(meter_id,0,:class => "money", :style=>"width:100px;") %>
 		  	      </td>
 		  	    <% end %>
 		  	  <% else %>
 		  	    <td>
-		  	      <% meter_id = "meter_" + etc.etc_cd.to_s + '_'+ (i+1).to_s %>
-		  	      <%= text_field_tag(meter_id,0,:class => "money", :style=>"width:100px;") %>
+					<%# meter_id = "meter_" + etc.etc_cd.to_s + '_'+ (i+1).to_s %>
+					<% meter_id = "meter_" + etc.id.to_s + '_'+ (i+1).to_s %>
+					<%= text_field_tag(meter_id,0,:class => "money", :style=>"width:100px;") %>
 		  	    </td>
 		  	  <% end %>
 		  	<% end %>
@@ -84,14 +87,13 @@
 		  	<% d_sale_etc_mae = get_d_sale_etc(@input_ymd_mae_s,@shop_id,@mode) %>
 		  	<% unless d_sale_etc_mae == nil  %>
 		  	  <%if etc.etc_class == 0 then%>
-		  	  	<!-- 2012/10/05 etc_cd=>etc_id nishimura -->
- 		  	  	<%# d_sale_etc_detail_mae = get_d_sale_etc_detail(d_sale_etc_mae.id, etc.etc_cd,(i+1)) %>
- 		  	  	<% d_sale_etc_detail_mae = get_d_sale_etc_detail(d_sale_etc_mae.id, etc.id,(i+1)) %>
+ 		  	    <%# d_sale_etc_detail_mae = get_d_sale_etc_detail(d_sale_etc_mae.id, etc.etc_cd,(i+1)) %>
+				<% d_sale_etc_detail_mae = get_d_sale_etc_detail(d_sale_etc_mae.id, etc.id,(i+1)) %>
  		  	  <%else%>
- 		  	  	<% d_sale_etc_detail_mae = nil %>
+				<% d_sale_etc_detail_mae = nil %>
  		  	  <%end%>
  		  	<% else %>
- 		  	  <% d_sale_etc_detail_mae = nil %>
+				<% d_sale_etc_detail_mae = nil %>
  		  	<% end %>
 
 		  	<% if d_sale_etc_detail_mae == nil %>
@@ -115,7 +117,9 @@
 		  	   	if not(d_sale_etc_detail_mae.meter.nil?) then
 		  	   		v2 = d_sale_etc_detail_mae.meter
 		  	   	end
-		  	   end  
+		  	   end
+		  	   p "v1=" + v1.to_s
+		  	   p "v2=" + v2.to_s 
 		  	   if v1 < v2 then
 		  	     display_keisan_uriage = v1
 		  	   else
@@ -266,7 +270,6 @@
 			t = toNum($(this).val());             //当日
 			z = toNum($("#z" + this.id).html());  //前回
 	        price = toNum($("#" + this.id.replace("meter", "price")).val()) //単価
-	        		
 			// 当日 - 前回
 			if (t < z) {
 				k = t;
