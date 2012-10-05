@@ -156,9 +156,9 @@
 	<%= hidden_field_tag 'input_ymd_e',@input_ymd_e %>
 </table>
 	<% if @shop_info.shop_kbn == 9 or current_user.user_class == 3 %>
-		<%= submit_tag '印刷',format: 'pdf' %>
+		<%= submit_tag  '  印  刷  ',format: 'pdf' %>
 	<% else %>
-		<%= submit_tag '印刷',:disabled=>true %>
+		<%= submit_tag  '  印  刷  ',:disabled=>true %>
 	<% end %>
 <% end %>
 
