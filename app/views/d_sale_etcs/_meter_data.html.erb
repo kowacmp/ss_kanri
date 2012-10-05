@@ -242,7 +242,7 @@
 	
 	// 計算上売上高再計算
 	function kmeter_update(){
-		
+	var k;	
 		// 各明細計算
 		$("input:text[id^=meter_]:not(input:text[id^=meter_][id$=99])").each(function(){
 			t = toNum($(this).val());             //当日
@@ -263,7 +263,7 @@
 		
 		// 機種名毎集計計算
 		$("span[id^=kmeter_][id$=99]").each(function(){
-			k = 0;
+		    k = 0;
 			id = this.id.split("_");     
 			id = id[0] + "_" + id[1] + "_" // 『kmeter_1_』等
 			

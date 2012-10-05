@@ -16,8 +16,8 @@
 </table>
 
 <% if @mode == 'list' %>
-  <%= link_to '洗車メーター売上入力状況へ戻る',{:controller => 'd_washsale_lists',:action => 'index',
-  	:input_ymd => @input_ymd,:shop_kbn => @shop_kbn} %>
+  <%= link_to '入力状況へ戻る',{:controller => 'd_washsale_lists',:action => 'index',
+  	:input_ymd => @input_ymd,:shop_kbn => @shop_kbn} , :confirm => "入力状況へ戻ります。よろしいですか？", :method => :get, :class => 'return_icon'%>
 <% end %>
 <p>
 	<div id="meter_data">
@@ -26,9 +26,10 @@
 </p>
 
 <% if @mode == "list" %>
-  <%= link_to '洗車メーター売上入力状況へ戻る',{:controller => 'd_washsale_lists',:action => 'index',
-  	:input_ymd => @input_ymd,:shop_kbn => @shop_kbn} %>
+  <%= link_to '入力状況へ戻る',{:controller => 'd_washsale_lists',:action => 'index',
+  	:input_ymd => @input_ymd,:shop_kbn => @shop_kbn} , :confirm => "入力状況へ戻ります。よろしいですか？", :method => :get, :class => 'return_icon'%>
 <% end %>
+
 <!-- 読み込む位置が関係しているので、ここに書く -->
 <script type="text/javascript">
 $("#input_ymd").change(function(){
