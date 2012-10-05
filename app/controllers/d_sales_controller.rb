@@ -180,6 +180,13 @@ p params
     if @d_sale.sale_etc == nil
       @d_sale.sale_etc=0
     end
+    
+    #ブランクのはマスタから固定金庫をセット  
+    if @d_sale.sale_cashbox == 0
+      @d_sale.sale_cashbox = @m_fix_money.total_cash_box.to_i 
+    end
+    
+    
     # 2012/09/24 oda 算出項目がnilの場合、算出不可 end
     @syo_total=@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i + @d_sale.sale_purika.to_i + @d_sale.recive_money.to_i - @d_sale.pay_money.to_i 
     # 2012/09/28 算出式変更 翌日出前を加算 oda
@@ -199,10 +206,10 @@ p params
 
     # 2012/09/30 算出式変更 釣銭有高1 + 釣銭有高2 + 当日出 nishimura
     #@cash_aridaka = @m_fix_money.total_cash_box.to_i + @changebox_aridaka.to_i + @d_sale.sale_today_out.to_i + @d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i 
-    @cash_aridaka = @m_fix_money.total_cash_box.to_i + @sale_change_total.to_i + @d_sale.sale_today_out.to_i
+    @cash_aridaka = @d_sale.sale_cashbox.to_i + @sale_change_total.to_i + @d_sale.sale_today_out.to_i
     #@cash_aridaka = @m_fix_money.total_cash_box.to_i + @changebox_aridaka.to_i + @d_sale.sale_today_out.to_i + @d_sale.sale_pm_out.to_i 
 
-    @d_sale.sale_cashbox = @m_fix_money.total_cash_box.to_i #固定金庫(マスタより)
+    
     @d_sale.sale_changebox = @changebox_aridaka #釣銭機固定金庫
     @d_sale.exist_money = @cash_aridaka #現金有高
     @d_sale.over_short = @cash_aridaka - @total #過不足
@@ -623,7 +630,7 @@ p params
       condition_sql << " and b.shop_kbn = " + input_shop_kbn
     end    
          
-    p "select_sql=#{select_sql}"
+    #p "select_sql=#{select_sql}"
     return DSale.find_by_sql("#{select_sql} #{condition_sql} order by shop_cd")    
   end
   

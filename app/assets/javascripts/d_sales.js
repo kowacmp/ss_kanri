@@ -119,6 +119,8 @@ $(function () {
 	$("table#recive_table :input[id*=_item_money]").live('change', function(){ recive_money_total_calc(); });
 	//出金
 	$("table#pay_table :input[id*=_item_money]").live('change', function(){ pay_money_total_calc(); });
+	//固定金庫
+   $(":input[id^=d_sale_sale_cashbox]").live('change', function(){ sale_cashbox_calc(); });
 	
     //売上合計を計算
     function sale_money_total_calc(){
@@ -320,6 +322,18 @@ $(function () {
 		kabusoku_calc(); //過不足を計算    	
     };
     
+    //釣銭機有高１
+    function sale_cashbox_calc() {
+    	//釣銭機有高１＝固定金庫
+    	var num;
+    	
+    	num=Number(format_kanma($("#d_sale_sale_cashbox").val(), 2));
+    	if (isNaN(num)) {num = 0};
+    	
+    	$("#m_fix_money_total_cash_box2").text(format_kanma( num ));
+    	
+    	cash_aridaka_calc();
+    };
     
     //通帳預金額
     function tucyo_money_calc() {
@@ -447,9 +461,9 @@ $(function () {
     };
     
     
-    //過不足合計
+    //出金誤差
     function kabusoku_total_calc() {
-    	//翌日出前 + 翌日出後 + 当日出 - 小計 - 両替金 + 過不足
+    	//翌日出前 + 翌日出後 + 当日出 - 小計 - 両替金 
     	var num = new Array(6);
     	var total=0;
 
@@ -458,7 +472,7 @@ $(function () {
      	num[2]=Number(format_kanma($("#sale_today_out2").text(), 2));
      	num[3]=Number(format_kanma($("#syo_total").text(), 2));
     	num[4]=Number(format_kanma($("#sale_ass").text(), 2));
-     	num[5]=Number(format_kanma($("#kabusoku").text(), 2));
+     	//num[5]=Number(format_kanma($("#kabusoku").text(), 2));
      	
 		var i=0;
       	while(i<6){

@@ -4,7 +4,7 @@
   <%= f.hidden_field :kakutei_flg %>
   <%= f.hidden_field :pay_money, :class=>"money" %>
   <%= f.hidden_field :recive_money, :class=>"money" %>
-  <%= f.hidden_field :sale_cashbox, :class=>"money" %>
+  <%#= f.hidden_field :sale_cashbox, :class=>"money" %>
   <%= f.hidden_field :sale_changebox, :class=>"money" %>
   <%= f.hidden_field :exist_money, :class=>"money" %>
   <%= f.hidden_field :over_short, :class=>"money" %>
@@ -61,7 +61,13 @@
 		  <td class="title_alias">釣銭機２</td>
 		  <td class="input_alias"><%= f.text_field :sale_change2, :size=>4, :class=>"money" %></td>
 		  <td class="title_alias">固定金庫</td>
-		  <td class="info_alias"><%= num_fmt(@m_fix_money.total_cash_box.to_i) %></td>
+		  <td class="input_alias">
+		  	<% if @head[:from_view] == "index" %>
+		  		<%= f.text_field :sale_cashbox, :size=>4, :class=>"money" %>
+		  	<% else %>
+		  		<%= f.text_field :sale_cashbox, :size=>4, :class=>"money", :readonly=>true %>
+		  	<% end %>
+		  </td>
 		</tr>
 		<tr>
 		  <td class="title_alias">売上３</td>
@@ -370,11 +376,13 @@
       <div class="info_alias"><label id="sale_am_out2"><%= num_fmt(@d_sale.sale_am_out.to_i) %></label></div>
       <div class="title_alias">翌日出後</div>
       <div class="info_alias"><label id="sale_pm_out2"><%= num_fmt(@d_sale.sale_pm_out.to_i) %></label></div>
-      <div class="title_alias">過不足合計</div>
+      <div class="title_alias">出金誤差</div>
       <div class="info_alias"><label id="kabusoku_total">
       	<!-- 翌日出前 + 翌日出後 + 当日出 - 小計 - 両替金 + 過不足 -->
+      	<%#= num_fmt(@d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i - @syo_total - @d_sale.sale_ass.to_i + (@cash_aridaka - @total)) %>
+      	<!-- 翌日出前 + 翌日出後 + 当日出 - 小計 - 両替金 -->
       	<%= num_fmt(@d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i -
-      				@syo_total - @d_sale.sale_ass.to_i + (@cash_aridaka - @total)) %>
+      				@syo_total - @d_sale.sale_ass.to_i) %>
       </label></div>
       
       </div>
