@@ -30,6 +30,11 @@
        
        <% sum_keisan_uriage = 0 %>
        <% etc.max_num.times do |i| %>
+       
+       <!-- 2012/10/05 他売上毎にデータ取得 nishimura -->
+       <% @input_ymd_mae_s = get_etc_zenkai_date(@input_ymd_s,@shop.id,etc.id,i+1,@mode) %>
+       <!-- 2012/10/05 他売上毎にデータ取得 nishimura -->
+       
 	  <tr>
 		  <th id="wash_cd_<%= etc.etc_cd.to_s %>_<%= (i+1).to_s %>">
 		  	<%= etc.etc_name + (i + 1).to_s %>
@@ -40,7 +45,9 @@
 		  	<%= hidden_field_tag price_id, etc.price %>
 		  </th>
 		  	<% unless d_sale_etc == nil %>
-		  	  <% d_sale_etc_detail = get_d_sale_etc_detail(d_sale_etc.id, etc.etc_cd,(i+1)) %>
+		  	  <!-- 2012/10/05 etc_cd=>etc_id nishimura -->
+		  	  <%# d_sale_etc_detail = get_d_sale_etc_detail(d_sale_etc.id, etc.etc_cd,(i+1)) %>
+		  	  <% d_sale_etc_detail = get_d_sale_etc_detail(d_sale_etc.id, etc.id,(i+1)) %>
 		  	<% else %>
 		  	  <% d_sale_etc_detail = nil %>
 		  	<% end %>
@@ -49,7 +56,8 @@
 		  		  <td align="right"><%= number_with_delimiter(d_sale_etc_detail.meter) %></td>
 		  		<% else %>
 		  		  <div class="field">
-   	  	  	      <% meter_id = "meter_" + d_sale_etc_detail.m_etc_id.to_s + '_'+ d_sale_etc_detail.etc_no.to_s %>
+   	  	  	      <%# meter_id = "meter_" + d_sale_etc_detail.m_etc_id.to_s + '_'+ d_sale_etc_detail.etc_no.to_s %>
+		  		  <% meter_id = "meter_" + etc.etc_cd.to_s + '_'+ (i+1).to_s %>
 		  		  <td><%= text_field_tag(meter_id, d_sale_etc_detail.meter ,:class => "money", :style=>"width:100px;") %></td>
 		  		  </div>
 		  		<% end %>
@@ -76,7 +84,9 @@
 		  	<% d_sale_etc_mae = get_d_sale_etc(@input_ymd_mae_s,@shop_id,@mode) %>
 		  	<% unless d_sale_etc_mae == nil  %>
 		  	  <%if etc.etc_class == 0 then%>
- 		  	  	<% d_sale_etc_detail_mae = get_d_sale_etc_detail(d_sale_etc_mae.id, etc.etc_cd,(i+1)) %>
+		  	  	<!-- 2012/10/05 etc_cd=>etc_id nishimura -->
+ 		  	  	<%# d_sale_etc_detail_mae = get_d_sale_etc_detail(d_sale_etc_mae.id, etc.etc_cd,(i+1)) %>
+ 		  	  	<% d_sale_etc_detail_mae = get_d_sale_etc_detail(d_sale_etc_mae.id, etc.id,(i+1)) %>
  		  	  <%else%>
  		  	  	<% d_sale_etc_detail_mae = nil %>
  		  	  <%end%>
@@ -120,11 +130,17 @@
 		    <td rowspan="<%= etc.max_num %>"><center>ー</center></td>
 		    <td rowspan="<%= etc.max_num %>">
 	   		  <% unless d_sale_etc == nil %>
-	   		    <% d_sale_etc_detail_99 = get_d_sale_etc_detail(d_sale_etc.id, etc.etc_cd,99) %>
+	   		  	<!-- 2012/10/05 etc_cd=>etc_id nishimura -->
+	   		    <%# d_sale_etc_detail_99 = get_d_sale_etc_detail(d_sale_etc.id, etc.etc_cd,99) %>
+	   		    <% d_sale_etc_detail_99 = get_d_sale_etc_detail(d_sale_etc.id, etc.id,99) %>
 	     		  <% unless d_sale_etc_detail_99 == nil %>
-		    	    <%= link_to '誤差入力',
+	     		  	<!-- 2012/10/05 etc_id追加 nishimura -->
+		    	    <%#= link_to '誤差入力',
 		    	        {:controller => 'd_sale_etcs',:action => 'entry_error', :sale_date=> @input_ymd_s, :shop_id => @shop_id, :mode => @mode ,:etc_cd => etc.etc_cd },
 		    	        :class => 'modal'%> 
+		    	    <%= link_to '誤差入力',
+		    	        {:controller => 'd_sale_etcs',:action => 'entry_error', :sale_date=> @input_ymd_s, :shop_id => @shop_id, :mode => @mode ,:etc_id => etc.id,:etc_cd => etc.etc_cd },
+		    	        :class => 'modal'%>
 		  	      <% else %>
 		  	        誤差入力不可
 		    	<% end%>
@@ -147,7 +163,9 @@
 	   	
 	   		<% meter_id = "meter_" + etc.etc_cd.to_s + '_'+ 99.to_s %>
 	   		<% unless d_sale_etc == nil %>
-	   		  <% d_sale_etc_detail_99 = get_d_sale_etc_detail(d_sale_etc.id, etc.etc_cd,99) %>
+	   		  <!-- 2012/10/05 etc_cd=>etc_id nishimura -->
+	   		  <%# d_sale_etc_detail_99 = get_d_sale_etc_detail(d_sale_etc.id, etc.etc_cd,99) %>
+	   		  <% d_sale_etc_detail_99 = get_d_sale_etc_detail(d_sale_etc.id, etc.id,99) %>
 	   		  <% unless d_sale_etc_detail_99 == nil %>
 	   		  	<% if kakutei_flg == 1 %>
 	   		    <td align="right"><%= number_with_delimiter(d_sale_etc_detail_99.meter) %></td>

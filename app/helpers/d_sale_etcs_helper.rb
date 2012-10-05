@@ -24,8 +24,9 @@ module DSaleEtcsHelper
    MEtc.find(:all, :conditions => ["(deleted_flg is null or deleted_flg <> ?) and kansa_flg = 0",1], :order => 'etc_cd')    
   end
   
-  def get_m_etc(etc_cd)
-    MEtc.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ? and etc_cd = ? ",1,etc_cd] ).first    
+  def get_m_etc(etc_id)
+    #MEtc.find(:all, :conditions => ["deleted_flg is null or deleted_flg <> ? and etc_cd = ? ",1,etc_cd] ).first
+    MEtc.find(etc_id)    
   end
   
   def get_d_sale_etc(hiduke,m_shop_id,mode)
@@ -57,6 +58,34 @@ module DSaleEtcsHelper
         else
           0
         end
+  end
+  
+  #2012/10/04 nishimura
+  #機種毎前回データ取得
+  def get_etc_zenkai_date(sale_date,shop_id,etc_id,etc_no,mode)
+    
+    sql =  "   
+         select max(c.sale_date) as sale_date from 
+         (select a.sale_date,a.m_shop_id,b.m_etc_id,b.etc_no from 
+         (select * from d_sale_etcs) a 
+         left join d_sale_etc_details b on  a.id = b.d_sale_etc_id and b.meter > 0
+         group by a.sale_date,a.m_shop_id,b.m_etc_id,b.etc_no 
+         having a.sale_date < '#{sale_date}' 
+            and a.m_shop_id = ?
+            and b.m_etc_id = #{etc_id} 
+            and b.etc_no = #{etc_no} 
+         order by a.sale_date,a.m_shop_id,b.m_etc_id,b.etc_no) c 
+      "
+    
+    if sale_date.length == 10
+      sale_date = sale_date.delete("/")
+    end
+      if mode == 'list'
+        zenkai_date = DSaleEtc.find_by_sql([sql,shop_id]) ? DSaleEtc.find_by_sql([sql,shop_id]).first.sale_date : ''
+      else
+        zenkai_date = DSaleEtc.find_by_sql([sql,current_user.m_shop_id]) ? DSaleEtc.find_by_sql([sql,current_user.m_shop_id]).first.sale_date : ''
+      end
+    return zenkai_date
   end
   
 end

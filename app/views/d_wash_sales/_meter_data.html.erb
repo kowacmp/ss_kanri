@@ -61,7 +61,8 @@
 		  		  <td align="right"><%= number_with_delimiter(d_washsales_item.meter) %></td>
 		  		<% else %>
 		  		  <div class="field">
-   	  	  	      <% meter_id = "meter_" + d_washsales_item.m_wash_id.to_s + '_'+ d_washsales_item.wash_no.to_s %>
+   	  	  	      <%# meter_id = "meter_" + d_washsales_item.m_wash_id.to_s + '_'+ d_washsales_item.wash_no.to_s %>
+   	  	  	      <% meter_id = "meter_" + wash.wash_cd.to_s + '_'+ (i+1).to_s %>
 		  		  <!-- 2012/10/03 nishimura -->
 		  		  <td><%= text_field_tag(meter_id, d_washsales_item.meter ,:class => "money", :style=>"width:100px;") %></td>
 		  		  <!--td>
