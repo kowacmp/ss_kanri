@@ -24,9 +24,10 @@ class DWashSalesController < ApplicationController
 
     @shop_kbn          = params[:shop_kbn]
     @input_ymd_s       = @input_ymd.delete("/")
-    @input_ymd_mae_s   = get_zenkai_date(@input_ymd,@shop.id,@mode)
+    #@input_ymd_mae_s   = get_zenkai_date(@input_ymd,@shop.id,@mode)  #2012/10/03 nishimura del
     @d_wash_sale_today = get_d_wash_sale(@input_ymd_s,@shop.id,@mode)
-    @d_wash_sale_mae   = get_d_wash_sale(@input_ymd_mae_s,@shop.id,@mode)
+    #@d_wash_sale_mae   = get_d_wash_sale(@input_ymd_mae_s,@shop.id,@mode)  #2012/10/03 nishimura del
+    
   end
 
   def show_error
@@ -112,14 +113,28 @@ class DWashSalesController < ApplicationController
         @price = wash.price
         
         sum_uriage = 0
-        @d_wash_sale_mae = get_d_wash_sale(get_zenkai_date(@sale_date,@shop_id,@mode),@shop_id,@mode)
+        #@d_wash_sale_mae = get_d_wash_sale(get_zenkai_date(@sale_date,@shop_id,@mode),@shop_id,@mode) #2012/10/03 nishimura del
+        #2012/10/03 機種毎にデータ取得 nishimura <<<
+        #day = washsale_date_format(Date.new(@sale_date[0,4].to_i,@sale_date[4,2].to_i,@sale_date[6,2].to_i), 0)
+        #washsale_plan_flg = get_m_washsale_plan(@shop_id,wash.id,day.wday)
+        #@d_wash_sale_mae = get_d_wash_sale(get_wash_zenkai_date(@sale_date,@shop_id,wash.id,@mode),@shop_id,@mode)
+        #2012/10/03 機種毎にデータ取得 nishimura >>>
+        
+        #if washsale_plan_flg == 1 #2012/10/03 nishimura
 
         wash.max_num.times do |i| #times
+         
+         #2012/10/04 機種毎にデータ取得 nishimura <<<
+         @d_wash_sale_mae = get_d_wash_sale(get_wash_zenkai_date(@sale_date,@shop_id,wash.id,i+1,@mode),@shop_id,@mode)
+         #2012/10/04 機種毎にデータ取得 nishimura >>>
           
          v1 = params["meter_#{wash.wash_cd.to_s}_#{i+1}"].to_i
          v2 = 0
          if not(@d_wash_sale_mae.nil?) then
-           v2 = get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)).meter
+           #2012/10/03 nishimura
+           #v2 = get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)).meter
+           v2 = get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)) ? 
+                  get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)).meter : 0
          end
          v1 = 0 if v1.nil?
          v2 = 0 if v2.nil?
@@ -153,33 +168,33 @@ class DWashSalesController < ApplicationController
         
         #誤差更新
         @d_washsale_item = get_d_washsale_item(@d_wash_sale.id,wash.id,99)
-        @d_wash_sale_mae = get_d_wash_sale(get_zenkai_date(params[:sale_date],@shop_id,@mode),@shop_id,@mode)
+        #2012/10/03 nishimura del
+        #@d_wash_sale_mae = get_d_wash_sale(get_zenkai_date(params[:sale_date],@shop_id,@mode),@shop_id,@mode)
          unless @d_washsale_item == nil #unless1
            #データあり
            unless @d_washsale_item.meter == params["meter_#{wash.wash_cd.to_s}_99"] #unless2
-             
-             #sum_meter = get_sum_meter(@d_wash_sale.id,wash.id)
-             #if  @d_wash_sale_mae == nil
-             #  sum_meter_mae = 0
-             #else
-             #sum_meter_mae = get_sum_meter(@d_wash_sale_mae.id,wash.id) 
-             #end
-             #update_d_washsale_item(wash.wash_cd,99,sum_meter,sum_meter_mae)
-             
-             @d_washsale_item.meter = params["meter_#{wash.wash_cd}_#{99}"]
-             
-             # UPDATE 2012.09.27 誤差 = 現金売上高 - 計算上売上高
-             #@d_washsale_item.error_money =  sum_uriage - @d_washsale_item.meter
-             @d_washsale_item.error_money =  @d_washsale_item.meter - sum_uriage
-             @d_washsale_item.uriage = 0
-             @d_washsale_item.updated_user_id = current_user.id
-             @d_washsale_item.save!
-             
+               #sum_meter = get_sum_meter(@d_wash_sale.id,wash.id)
+               #if  @d_wash_sale_mae == nil
+               #  sum_meter_mae = 0
+               #else
+               #sum_meter_mae = get_sum_meter(@d_wash_sale_mae.id,wash.id) 
+               #end
+               #update_d_washsale_item(wash.wash_cd,99,sum_meter,sum_meter_mae)
+               
+               @d_washsale_item.meter = params["meter_#{wash.wash_cd}_#{99}"].to_i
+               
+               # UPDATE 2012.09.27 誤差 = 現金売上高 - 計算上売上高
+               #@d_washsale_item.error_money =  sum_uriage - @d_washsale_item.meter
+               @d_washsale_item.error_money =  @d_washsale_item.meter - sum_uriage.to_i
+               @d_washsale_item.uriage = 0
+               @d_washsale_item.updated_user_id = current_user.id
+               @d_washsale_item.save!
            end #unless2
          else
            #データなし
            create_d_washsale_item(@d_wash_sale.id,wash.wash_cd,99,sum_uriage)
          end #unless1
+         #end #if washsale_plan_flg == 1 #2012/10/03 nishimura
       end #each
     end #transaction
 
@@ -196,9 +211,9 @@ class DWashSalesController < ApplicationController
 
       @input_ymd = @sale_date.to_time.strftime("%Y/%m/%d")
       @input_ymd_s = @sale_date
-      @input_ymd_mae_s = get_zenkai_date(@input_ymd_s,@shop_id,@mode)
+      #@input_ymd_mae_s = get_zenkai_date(@input_ymd_s,@shop_id,@mode)  #2012/10/03 nishimura del
       @d_wash_sale_today     = get_d_wash_sale(@input_ymd_s,@shop_id,@mode)
-      @d_wash_sale_mae = get_d_wash_sale(@input_ymd_mae_s,@shop_id,@mode)
+      #@d_wash_sale_mae = get_d_wash_sale(@input_ymd_mae_s,@shop_id,@mode)  #2012/10/03 nishimura del
       format.html { render action: "index", notice: 'D wash sale was successfully updated.' }
     end
   end
@@ -219,34 +234,43 @@ private
   end
   
   def create_d_washsale_item(d_wash_sale_id,wash_cd,wash_no,sum_uriage=0)
-    @d_washsale_item = DWashsaleItem.new
-    @d_washsale_item.d_wash_sale_id = d_wash_sale_id
-    @d_washsale_item.m_wash_id = wash_cd
-    @d_washsale_item.wash_no = wash_no
-    @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"]     
-    if @d_washsale_item.wash_no == 99      
-       # UPDATE 2012.09.27 誤差 = 現金売上高 - 計算上売上高
-       #@d_washsale_item.error_money = sum_uriage - @d_washsale_item.meter
-       @d_washsale_item.error_money = @d_washsale_item.meter - sum_uriage
+    #2012/10/03 入力値>0の場合のみ登録 nishimura
+    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99
+      @d_washsale_item = DWashsaleItem.new
+      @d_washsale_item.d_wash_sale_id = d_wash_sale_id
+      @d_washsale_item.m_wash_id = wash_cd
+      @d_washsale_item.wash_no = wash_no
+      @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"].to_i
+      if @d_washsale_item.wash_no == 99      
+         # UPDATE 2012.09.27 誤差 = 現金売上高 - 計算上売上高
+         #@d_washsale_item.error_money = sum_uriage - @d_washsale_item.meter
+         @d_washsale_item.error_money = @d_washsale_item.meter - sum_uriage
+      end
+      @d_washsale_item.created_user_id = current_user.id
+      @d_washsale_item.updated_user_id = current_user.id
+      @d_washsale_item.uriage = @uriage
+      @d_washsale_item.save!
     end
-    @d_washsale_item.created_user_id = current_user.id
-    @d_washsale_item.updated_user_id = current_user.id
-    @d_washsale_item.uriage = @uriage
-    @d_washsale_item.save!
   end
   
   def update_d_washsale_item(wash_cd,wash_no,sum_meter=0,sum_meter_mae=0)
-    @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"]
-    if @d_washsale_item.meter == nil
-      @d_washsale_item.meter = 0
+    #2012/10/03 入力値>0の場合のみ登録 nishimura
+    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99
+      @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"]
+      if @d_washsale_item.meter == nil
+        @d_washsale_item.meter = 0
+      end
+      if wash_no == 99
+        # UPDATE 2012.09.27 誤差 = 現金売上高 - 計算上売上高
+        #@d_washsale_item.error_money =  (sum_meter - sum_meter_mae) - @d_washsale_item.meter
+        @d_washsale_item.error_money =  @d_washsale_item.meter - (sum_meter - sum_meter_mae)
+      end
+      @d_washsale_item.updated_user_id = current_user.id
+      @d_washsale_item.uriage = @uriage
+      @d_washsale_item.save!
+    else
+      #入力値>0の場合レコード削除
+      @d_washsale_item.destroy
     end
-    if wash_no == 99
-      # UPDATE 2012.09.27 誤差 = 現金売上高 - 計算上売上高
-      #@d_washsale_item.error_money =  (sum_meter - sum_meter_mae) - @d_washsale_item.meter
-      @d_washsale_item.error_money =  @d_washsale_item.meter - (sum_meter - sum_meter_mae)
-    end
-    @d_washsale_item.updated_user_id = current_user.id
-    @d_washsale_item.uriage = @uriage
-    @d_washsale_item.save!
   end
 end

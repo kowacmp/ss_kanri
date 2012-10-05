@@ -72,4 +72,102 @@ module DWashSalesHelper
         end
   end
   
+=begin    
+  #2012/10/03 nishimura
+  #曜日取得
+  def washsale_date_format(today, i)
+    day = today + i.days
+    #return_day = day.strftime("%d日")
+    #wday = day_of_the_week(day.wday)
+    return day
+  end
+
+
+  #2012/10/03 nishimura
+  #登録フラグ取得
+  def get_m_washsale_plan(m_shop_id,m_wash_id,wday)
+    
+    if wday == 0
+      #"日"
+      washsale_plan_flg = 
+        MWashsalePlan.find(:first, 
+                           :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]) ? 
+          MWashsalePlan.find(:first, 
+                             :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]).sunday : 0
+    elsif wday == 1
+      #"月"      
+      washsale_plan_flg = 
+        MWashsalePlan.find(:first, 
+                           :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]) ? 
+          MWashsalePlan.find(:first, 
+                             :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]).monday : 0
+    elsif wday == 2
+      #"火"      
+      washsale_plan_flg = 
+        MWashsalePlan.find(:first, 
+                           :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]) ? 
+          MWashsalePlan.find(:first, 
+                             :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]).tuesday : 0
+    elsif wday == 3
+      #"水"      
+      washsale_plan_flg = 
+        MWashsalePlan.find(:first, 
+                           :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]) ? 
+          MWashsalePlan.find(:first, 
+                             :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]).wednesday : 0
+    elsif wday == 4
+      #"木"      
+      washsale_plan_flg = 
+        MWashsalePlan.find(:first, 
+                           :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]) ? 
+          MWashsalePlan.find(:first, 
+                             :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]).thursday : 0
+    elsif wday == 5
+      #"金"      
+      washsale_plan_flg = 
+        MWashsalePlan.find(:first, 
+                           :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]) ? 
+          MWashsalePlan.find(:first, 
+                             :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]).friday : 0
+    elsif wday == 6
+      #"土"    
+      washsale_plan_flg = 
+        MWashsalePlan.find(:first, 
+                           :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]) ? 
+          MWashsalePlan.find(:first, 
+                             :conditions => ["m_shop_id = ? and m_wash_id = ? and deleted_flg = 0",m_shop_id,m_wash_id]).saturday : 0       
+    end
+    
+    return washsale_plan_flg  
+  end
+=end
+  
+  #2012/10/03 nishimura
+  #機種毎前回データ取得
+  def get_wash_zenkai_date(sale_date,shop_id,wash_id,wash_no,mode)
+    
+    sql =  "   
+         select max(c.sale_date) as sale_date from 
+         (select a.sale_date,a.m_shop_id,b.m_wash_id,b.wash_no from 
+         (select * from d_wash_sales) a 
+         left join d_washsale_items b on  a.id = b.d_wash_sale_id and b.meter > 0
+         group by a.sale_date,a.m_shop_id,b.m_wash_id,b.wash_no 
+         having a.sale_date < '#{sale_date}' 
+            and a.m_shop_id = #{shop_id} 
+            and b.m_wash_id = #{wash_id} 
+            and b.wash_no = #{wash_no} 
+         order by a.sale_date,a.m_shop_id,b.m_wash_id,b.wash_no) c 
+      "
+
+    if sale_date.length == 10
+      sale_date = sale_date.delete("/")
+    end
+      if mode == 'list'
+        zenkai_date = DWashSale.find_by_sql(sql) ? DWashSale.find_by_sql(sql).first.sale_date : ''
+      else
+        zenkai_date = DWashSale.find_by_sql(sql) ? DWashSale.find_by_sql(sql).first.sale_date : ''
+      end
+    return zenkai_date
+  end
+  
 end

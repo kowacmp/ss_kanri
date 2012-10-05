@@ -2,9 +2,15 @@ module DWashsaleReportsHelper
   def sum_d_washsale_item_meter(d_wash_sales,m_wash_id,wash_no)
     sum_meter = 0
     d_wash_sales.each do |d_wash_sale|
+      #2012/10/04 nishimura
+      #sum_meter = sum_meter + 
+      #  DWashsaleItem.find(:all,:conditions => ['d_wash_sale_id = ? and m_wash_id = ? and wash_no = ?',
+      #    d_wash_sale.id,m_wash_id,wash_no]).first.meter
       sum_meter = sum_meter + 
-        DWashsaleItem.find(:all,:conditions => ['d_wash_sale_id = ? and m_wash_id = ? and wash_no = ?',
-          d_wash_sale.id,m_wash_id,wash_no]).first.meter
+        (DWashsaleItem.find(:all,:conditions => ['d_wash_sale_id = ? and m_wash_id = ? and wash_no = ?',
+          d_wash_sale.id,m_wash_id,wash_no]).first ? 
+            DWashsaleItem.find(:all,:conditions => ['d_wash_sale_id = ? and m_wash_id = ? and wash_no = ?',
+              d_wash_sale.id,m_wash_id,wash_no]).first.meter : 0)
     end
     return sum_meter
   end
@@ -12,9 +18,15 @@ module DWashsaleReportsHelper
   def sum_d_washsale_item_gosa(d_wash_sales,m_wash_id)
     sum_meter = 0
     d_wash_sales.each do |d_wash_sale|
+      #2012/10/04 nishimura
+      #sum_meter = sum_meter + 
+      #  DWashsaleItem.find(:all,:conditions => ['d_wash_sale_id = ? and m_wash_id = ? and wash_no = 99',
+      #    d_wash_sale.id,m_wash_id]).first.error_money
       sum_meter = sum_meter + 
-        DWashsaleItem.find(:all,:conditions => ['d_wash_sale_id = ? and m_wash_id = ? and wash_no = 99',
-          d_wash_sale.id,m_wash_id]).first.error_money
+        (DWashsaleItem.find(:all,:conditions => ['d_wash_sale_id = ? and m_wash_id = ? and wash_no = 99',
+          d_wash_sale.id,m_wash_id]).first ? 
+            DWashsaleItem.find(:all,:conditions => ['d_wash_sale_id = ? and m_wash_id = ? and wash_no = 99',
+              d_wash_sale.id,m_wash_id]).first.error_money : 0)
     end
     return sum_meter
   end
