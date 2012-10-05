@@ -25,16 +25,18 @@
       </tr>
 </table>
 <% end %>
+<!-- 2012/10/05 削除 oda
 <% if @mode == 'manager' %>
-  <%= link_to '地下タンク計算表一覧',{:controller => 'd_tank_compute_reports',:action => 'index'}%>
+  <%#= link_to '一覧へ戻る',{:controller => 'd_tank_compute_reports',:action => 'index'}, :class => 'return_icon'%>
 <% end %>
+-->
 <p>
 	<div id="result">
 	    <%= render partial: 'result'%>
 	</div>
 </p>
 <% if @mode == 'manager' %>
-  <%= link_to('地下タンク計算表一覧',{:controller => 'd_tank_compute_reports',:action => 'index'}) %>
+  <%= link_to '一覧へ戻る',{:controller => 'd_tank_compute_reports',:action => 'index'}, :class => 'return_icon'%>
 <% end %>
 
 <script type="text/javascript">
