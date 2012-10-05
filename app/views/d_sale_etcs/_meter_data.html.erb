@@ -36,12 +36,12 @@
        <!-- 2012/10/05 他売上毎にデータ取得 nishimura -->
        
 	  <tr>
-		  <th id="wash_cd_<%= etc.etc_cd.to_s %>_<%= (i+1).to_s %>">
+		  <th id="wash_cd_<%= etc.id.to_s %>_<%= (i+1).to_s %>">
 		  	<%= etc.etc_name + (i + 1).to_s %>
 		  	
 		    <%# 単価情報埋め込み %>
 		  	
-		  	<% price_id = "price_" + etc.etc_cd.to_s + '_'+ (i+1).to_s %>
+		  	<% price_id = "price_" + etc.id.to_s + '_'+ (i+1).to_s %>
 		  	<%= hidden_field_tag price_id, etc.price %>
 		  </th>
 		  	<% unless d_sale_etc == nil %>
@@ -159,13 +159,13 @@
 	   	<td colspan="2">&nbsp;</td>
 	   	<th><%= etc.etc_name + "計" %></th>
 	   	<td align="right" class="input_no" id="display">
-	   		<span id=<%="kmeter_" + etc.etc_cd.to_s + '_'+ 99.to_s%>>
+	   		<span id=<%="kmeter_" + etc.id.to_s + '_'+ 99.to_s%>>
 	   		<%= number_with_delimiter(sum_keisan_uriage) %>
 	   		</span>
 	   		<% sum_goukei_uriage = sum_goukei_uriage + sum_keisan_uriage %>
 	   	</td>
 	   	
-	   		<% meter_id = "meter_" + etc.etc_cd.to_s + '_'+ 99.to_s %>
+	   		<% meter_id = "meter_" + etc.id.to_s + '_'+ 99.to_s %>
 	   		<% unless d_sale_etc == nil %>
 	   		  <!-- 2012/10/05 etc_cd=>etc_id nishimura -->
 	   		  <%# d_sale_etc_detail_99 = get_d_sale_etc_detail(d_sale_etc.id, etc.etc_cd,99) %>
@@ -187,12 +187,12 @@
 		<td align="right" class="input_no" id="display">
 			<% unless d_sale_etc_detail_99 == nil %>
 			  <% if sum_keisan_uriage -  d_sale_etc_detail_99.meter == d_sale_etc_detail_99.error_money %>
-			    <span id="gosa_<%=etc.etc_cd.to_s%>">
+			    <span id="gosa_<%=etc.id.to_s%>">
 			    <%= number_with_delimiter(d_sale_etc_detail_99.error_money) %>
 			    <span>
 			  <% else %>
 			    <font color="red">
-			        <span id="gosa_<%=etc.etc_cd.to_s%>">
+			        <span id="gosa_<%=etc.id.to_s%>">
 			    	<%= d_sale_etc_detail_99.error_money %><br />
 			    	</span>
 			    	※更新ボタンを<br />押してください
@@ -200,7 +200,7 @@
 			  <% end %>
 			  <% sum_gosa = sum_gosa + d_sale_etc_detail_99.error_money %>
 			<% else %>
-		      <span id="gosa_<%=etc.etc_cd.to_s%>">
+		      <span id="gosa_<%=etc.id.to_s%>">
 			  0
 			  </span>
 			<% end %>
@@ -276,10 +276,10 @@
 			} else {
 				k = t- z;
 			}
-			
+		
 			// 計算上売上高	
 			$("#k" + this.id).html(format_kanma(k * price));
-				
+		
 		});
 		
 		// 機種名毎集計計算
