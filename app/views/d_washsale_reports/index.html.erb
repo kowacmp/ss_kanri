@@ -19,7 +19,7 @@
 </table>
 <% end %>
 <% if params[:mode] == 'list' %>
-<%= link_to('洗車売上報告書に戻る',{:controller => 'd_washsale_report_lists',:action => 'index',:sale_date => params[:sale_date],:shop_kbn => params[:shop_kbn],:mode => params[:mode]}) %><br />
+<%= link_to('一覧へ戻る',{:controller => 'd_washsale_report_lists',:action => 'index',:sale_date => params[:sale_date],:shop_kbn => params[:shop_kbn],:mode => params[:mode]}, :class => 'return_icon') %><br />
 <% end %>
 <p>
 	<div id="report">
@@ -28,5 +28,5 @@
 </p>
 
 <% if params[:mode] == 'list' %>
-<%= link_to('洗車売上報告書に戻る',{:controller => 'd_washsale_report_lists',:action => 'index',:sale_date => params[:sale_date],:shop_kbn => params[:shop_kbn],:mode => params[:mode]}) %>
+<%= link_to('一覧へ戻る',{:controller => 'd_washsale_report_lists',:action => 'index',:sale_date => params[:sale_date],:shop_kbn => params[:shop_kbn],:mode => params[:mode]}, :class => 'return_icon') %>
 <% end %>

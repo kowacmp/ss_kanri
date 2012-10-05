@@ -1,7 +1,9 @@
 <% old_group_name = '' %>
 <table id="rounded-corner">
 	<tr>
+		<!-- 2012/10/05 所属会社表示無 oda
 		<th>所属会社</th>
+		-->
 		<th>店舗</th>
 		<th>店舗種別</th>
 		<th>最終入力日</th>
@@ -9,9 +11,15 @@
 	</tr>
 	<% @results.each do |result|%>
 	<tr>
-		<td><%= result.group_name unless old_group_name == result.group_name %>
-			<% old_group_name = result.group_name %>
+		<!-- 2012/10/05 所属会社表示無 oda -->
+		<!--
+		<td>
+		-->
+			<%#= result.group_name unless old_group_name == result.group_name %>
+			<%# old_group_name = result.group_name %>
+		<!--
 		</td>
+		-->
 		<td><%= result.shop_cd%>&nbsp;&nbsp;<%= result.shop_name %></td>
 		<td style="text-align: center">
 			<%= MCode.find(:first, :conditions => ["kbn = 'shop_kbn' and code = ?", result.shop_kbn.to_s]).code_name %>
