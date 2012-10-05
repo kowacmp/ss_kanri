@@ -4,7 +4,7 @@
   <%= f.hidden_field :kakutei_flg %>
   <%= f.hidden_field :pay_money, :class=>"money" %>
   <%= f.hidden_field :recive_money, :class=>"money" %>
-  <%= f.hidden_field :sale_cashbox, :class=>"money" %>
+  <%#= f.hidden_field :sale_cashbox, :class=>"money" %>
   <%= f.hidden_field :sale_changebox, :class=>"money" %>
   <%= f.hidden_field :exist_money, :class=>"money" %>
   <%= f.hidden_field :over_short, :class=>"money" %>
@@ -61,7 +61,13 @@
 		  <td class="title_alias">釣銭機２</td>
 		  <td class="input_alias"><%= f.text_field :sale_change2, :size=>4, :class=>"money" %></td>
 		  <td class="title_alias">固定金庫</td>
-		  <td class="info_alias"><%= num_fmt(@m_fix_money.total_cash_box.to_i) %></td>
+		  <td class="input_alias">
+		  	<% if @head[:from_view] == "index" %>
+		  		<%= f.text_field :sale_cashbox, :size=>4, :class=>"money" %>
+		  	<% else %>
+		  		<%= f.text_field :sale_cashbox, :size=>4, :class=>"money", :readonly=>true %>
+		  	<% end %>
+		  </td>
 		</tr>
 		<tr>
 		  <td class="title_alias">売上３</td>

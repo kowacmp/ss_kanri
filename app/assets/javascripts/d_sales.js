@@ -119,6 +119,8 @@ $(function () {
 	$("table#recive_table :input[id*=_item_money]").live('change', function(){ recive_money_total_calc(); });
 	//出金
 	$("table#pay_table :input[id*=_item_money]").live('change', function(){ pay_money_total_calc(); });
+	//固定金庫
+   $(":input[id^=d_sale_sale_cashbox]").live('change', function(){ sale_cashbox_calc(); });
 	
     //売上合計を計算
     function sale_money_total_calc(){
@@ -320,6 +322,18 @@ $(function () {
 		kabusoku_calc(); //過不足を計算    	
     };
     
+    //釣銭機有高１
+    function sale_cashbox_calc() {
+    	//釣銭機有高１＝固定金庫
+    	var num;
+    	
+    	num=Number(format_kanma($("#d_sale_sale_cashbox").val(), 2));
+    	if (isNaN(num)) {num = 0};
+    	
+    	$("#m_fix_money_total_cash_box2").text(format_kanma( num ));
+    	
+    	cash_aridaka_calc();
+    };
     
     //通帳預金額
     function tucyo_money_calc() {
