@@ -153,7 +153,7 @@ module DWashSalesHelper
          left join d_washsale_items b on  a.id = b.d_wash_sale_id and b.meter > 0
          group by a.sale_date,a.m_shop_id,b.m_wash_id,b.wash_no 
          having a.sale_date < '#{sale_date}' 
-            and a.m_shop_id = #{shop_id} 
+            and a.m_shop_id = ? 
             and b.m_wash_id = #{wash_id} 
             and b.wash_no = #{wash_no} 
          order by a.sale_date,a.m_shop_id,b.m_wash_id,b.wash_no) c 
@@ -163,9 +163,9 @@ module DWashSalesHelper
       sale_date = sale_date.delete("/")
     end
       if mode == 'list'
-        zenkai_date = DWashSale.find_by_sql(sql) ? DWashSale.find_by_sql(sql).first.sale_date : ''
+        zenkai_date = DWashSale.find_by_sql([sql,shop_id]) ? DWashSale.find_by_sql([sql,shop_id]).first.sale_date : ''
       else
-        zenkai_date = DWashSale.find_by_sql(sql) ? DWashSale.find_by_sql(sql).first.sale_date : ''
+        zenkai_date = DWashSale.find_by_sql([sql,current_user.m_shop_id]) ? DWashSale.find_by_sql([sql,current_user.m_shop_id]).first.sale_date : ''
       end
     return zenkai_date
   end
