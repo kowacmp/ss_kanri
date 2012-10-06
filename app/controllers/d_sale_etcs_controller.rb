@@ -130,10 +130,12 @@ class DSaleEtcsController < ApplicationController
          #2012/10/05 他売上毎にデータ取得 nishimura >>>
           
           
-          if params["meter_#{etc.etc_cd.to_s}_#{i+1}"].nil? then
+          #if params["meter_#{etc.etc_cd.to_s}_#{i+1}"].nil? then
+          if params["meter_#{etc.id.to_s}_#{i+1}"].nil? then
             v1 = 0
           else
-            v1 = params["meter_#{etc.etc_cd.to_s}_#{i+1}"].to_i
+            #v1 = params["meter_#{etc.etc_cd.to_s}_#{i+1}"].to_i
+            v1 = params["meter_#{etc.id.to_s}_#{i+1}"].to_i
           end 
           v2 = 0
           if not(@d_sale_etc_mae.nil?) then
@@ -160,14 +162,19 @@ class DSaleEtcsController < ApplicationController
          unless @d_sale_etc_detail == nil #unless1
            
            #データあり
-           unless @d_sale_etc_detail.meter == params["meter_#{etc.etc_cd.to_s}_#{i+1}"] #unless2
-             update_d_sale_etc_detail(etc.etc_cd,i+1)
+           #unless @d_sale_etc_detail.meter == params["meter_#{etc.etc_cd.to_s}_#{i+1}"] #unless2
+           unless @d_sale_etc_detail.meter == params["meter_#{etc.id.to_s}_#{i+1}"] #unless2
+             #2012/10/06 不具合修正 oda
+             #update_d_sale_etc_detail(etc.etc_cd,i+1)
+             update_d_sale_etc_detail(etc.id,i+1)
            end #unless2
          else
            #データなし
+           #2012/10/06 不具合修正 oda
            #2012/10/05 id追加 nishimura
            #create_d_sale_etc_detail(@d_sale_etc.id,etc.etc_cd,(i+1))
-           create_d_sale_etc_detail(@d_sale_etc.id,etc.id,etc.etc_cd,(i+1))
+           #create_d_sale_etc_detail(@d_sale_etc.id,etc.id,etc.etc_cd,(i+1))
+           create_d_sale_etc_detail(@d_sale_etc.id,etc.id,etc.id,(i+1))
          end #unless1
 
          #unless @d_sale_etc_mae == nil
@@ -184,7 +191,9 @@ class DSaleEtcsController < ApplicationController
         @d_sale_etc_mae    = get_d_sale_etc(get_zenkai_date1(@sale_date,@shop_id,@mode),@shop_id,@mode)
          unless @d_sale_etc_detail == nil #unless1
            #データあり
-           unless @d_sale_etc_detail.meter == params["meter_#{etc.etc_cd.to_s}_99"] #unless2
+           #2012/10/06 不具合修正 oda
+           #unless @d_sale_etc_detail.meter == params["meter_#{etc.etc_cd.to_s}_99"] #unless2
+           unless @d_sale_etc_detail.meter == params["meter_#{etc.id.to_s}_99"] #unless2
              
              #sum_meter = get_sum_meter(@d_sale_etc.id,etc.id)
              #if  @d_sale_etc_mae == nil
@@ -209,9 +218,11 @@ class DSaleEtcsController < ApplicationController
            end #unless2
          else
            #データなし
+           #2012/10/06 不具合修正 oda
            #2012/10/05 id追加 nishimura
            #create_d_sale_etc_detail(@d_sale_etc.id,etc.etc_cd,99,sum_uriage)
-           create_d_sale_etc_detail(@d_sale_etc.id,etc.id,etc.etc_cd,99,sum_uriage)
+           #create_d_sale_etc_detail(@d_sale_etc.id,etc.id,etc.etc_cd,99,sum_uriage)
+           create_d_sale_etc_detail(@d_sale_etc.id,etc.id,etc.id,99,sum_uriage)
          end #unless1
       end #each
     end #transaction
@@ -258,6 +269,7 @@ private
   #def create_d_sale_etc_detail(d_sale_etc_id,etc_cd,etc_no,sum_uriage=0)
   def create_d_sale_etc_detail(d_sale_etc_id,etc_id,etc_cd,etc_no,sum_uriage=0)
     #2012/10/05 入力値>0の場合のみ登録 nishimura
+    #if params["meter_#{etc_cd}_#{etc_no}"].to_i > 0 or etc_no == 99
     if params["meter_#{etc_cd}_#{etc_no}"].to_i > 0 or etc_no == 99
       @d_sale_etc_detail = DSaleEtcDetail.new
       @d_sale_etc_detail.d_sale_etc_id = d_sale_etc_id
