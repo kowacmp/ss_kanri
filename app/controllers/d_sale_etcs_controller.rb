@@ -203,7 +203,9 @@ class DSaleEtcsController < ApplicationController
              #end
              #update_d_sale_etc_detail(etc.etc_cd,99,sum_meter,sum_meter_mae)
            
-             @d_sale_etc_detail.meter = params["meter_#{etc.etc_cd.to_s}_99"].to_i
+            #2012/10/06 不具合修正 oda
+             #@d_sale_etc_detail.meter = params["meter_#{etc.etc_cd.to_s}_99"].to_i
+             @d_sale_etc_detail.meter = params["meter_#{etc.id.to_s}_99"].to_i
              # UPDATE 2012.19.27 誤差 = 現金売上高 - 計算上売上高
              #@d_sale_etc_detail.error_money = sum_uriage - @d_sale_etc_detail.meter
              @d_sale_etc_detail.error_money = @d_sale_etc_detail.meter - sum_uriage
