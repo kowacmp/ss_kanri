@@ -224,6 +224,7 @@ class DSaleEtcsController < ApplicationController
            #2012/10/05 id追加 nishimura
            #create_d_sale_etc_detail(@d_sale_etc.id,etc.etc_cd,99,sum_uriage)
            #create_d_sale_etc_detail(@d_sale_etc.id,etc.id,etc.etc_cd,99,sum_uriage)
+           #2012/10/09 etc_cdは必要ないが引数のを合わせるため同じコードを渡す
            create_d_sale_etc_detail(@d_sale_etc.id,etc.id,etc.id,99,sum_uriage)
          end #unless1
       end #each
