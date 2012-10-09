@@ -14,7 +14,7 @@ class DAimsController < ApplicationController
        @year = year
        @month = month
        @month_first = Date.new(year.to_i,month.to_i,1)
-       @search_aim = 0
+       @search_aim = 1
     else
        @year = params[:input_year]
        @month = params[:input_month]
