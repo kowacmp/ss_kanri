@@ -31,7 +31,7 @@
   	
 	  <% @m_aims.each_with_index do |m_aim,idx| %>
 		<tr>
-	  	  <th><%= m_aim.aim_name %></th>
+	  	  <th style='background:none;'><%= m_aim.aim_name %><%= "(" + m_aim.aim_tani_name.to_s + ")" %></th>
 	  	  
 	  	  <% for i in 1..6 do %>
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,m_aim.id.to_i]) %>
@@ -53,7 +53,7 @@
 	  
 	  
 	  
-	  <tr>
+	  <tr style="border-top:solid 2px #0000CD;">
 	 	<th><%= @year + "年" %></th>
 		<% for i in 7..12 do %>
 	  	  <th><%= i.to_s + "月" %></th>
@@ -63,7 +63,7 @@
   	
 	  <% @m_aims.each_with_index do |m_aim,idx| %>
 		<tr>
-	  	  <th><%= m_aim.aim_name %></th>
+	  	  <th style='background:none;'><%= m_aim.aim_name %><%= "(" + m_aim.aim_tani_name.to_s + ")" %></th>
 	  	  
 	  	  <% for i in 7..12 do %>
 	  	  	<% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,m_aim.id.to_i]) %>

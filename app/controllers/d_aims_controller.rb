@@ -34,8 +34,20 @@ class DAimsController < ApplicationController
     
     @m_shop = MShop.find(@shop_id)
 
-    @m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=? and deleted_flg=0",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
-    #@m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=?",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
+    #@m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=? and deleted_flg=0",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
+
+    select_sql = "select a.*, b.code_name as aim_tani_name "
+    select_sql << " from m_aims a " 
+    select_sql << " left join (select * from m_codes where kbn='tani') b on a.aim_tani = cast(b.code as integer) "
+
+    condition_sql = " where a.deleted_flg=0 "
+    condition_sql << "  and a.shop_kbn=#{@m_shop.shop_kbn}"
+    if @search_aim.to_i == 0
+      condition_sql << "  and a.input_kbn=#{@search_aim}"
+    end
+
+    @m_aims = MAim.find_by_sql("#{select_sql} #{condition_sql} order by a.aim_code")
+
 
     respond_to do |format|
       format.html # index.html.erb
@@ -188,8 +200,19 @@ class DAimsController < ApplicationController
     #@m_shop = MShop.find(current_user.m_shop_id)
     @m_shop = MShop.find(@shop_id)
     
-    @m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=? and deleted_flg=0",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
-    #@m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=?",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
+    #@m_aims = MAim.find(:all,:conditions=>["shop_kbn=? and input_kbn=? and deleted_flg=0",@m_shop.shop_kbn,@search_aim],:order=>"aim_code")
+
+    select_sql = "select a.*, b.code_name as aim_tani_name "
+    select_sql << " from m_aims a " 
+    select_sql << " left join (select * from m_codes where kbn='tani') b on a.aim_tani = cast(b.code as integer) "
+
+    condition_sql = " where a.deleted_flg=0 "
+    condition_sql << "  and a.shop_kbn=#{@m_shop.shop_kbn}"
+    if @search_aim.to_i == 0
+      condition_sql << "  and a.input_kbn=#{@search_aim}"
+    end
+
+    @m_aims = MAim.find_by_sql("#{select_sql} #{condition_sql} order by a.aim_code")
 
   end
   
