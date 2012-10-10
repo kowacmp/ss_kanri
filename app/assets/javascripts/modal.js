@@ -66,18 +66,17 @@ function firstFocus(container) { return function () {
 
 	// tabindexを取得する関数を定義(取得できない場合は-1)
 	var getTabindex = function (obj) {
-		var tab = $(obj).attr("tabindex");
-		if (!isNaN(tab) && Number(tab) >= 0) {
-			return Number(tab);
+		if (!isNaN(obj.tabIndex) && Number(obj.tabIndex) >= 0) {
+			return Number(obj.tabIndex);
 		} else {
 			return -1;
 		}
 	}
 
 	// コンテナ内の利用可能なオブジェクトを取得
-	var obj = $(container).find(":input:enabled");
-	if (obj.length == 0) { return; } 
-	
+	var obj = container.find(":input:enabled:not(:submit,:button,:reset)");
+	if (obj.length == 0) { return true; } 
+
 	// tabindexが指定されているオブジェクトを取得
 	var objtab = obj.filter("[tabindex]");
 	
@@ -88,7 +87,7 @@ function firstFocus(container) { return function () {
 		// tabindexが一番若いオブジェクトをフォーカス
 		var objFocus;
 		objtab.each( function() {
-			if (getTabindex(this) >= 0) {
+			if (getTabindex(this) > 0) {
 				if (objFocus == null ) {
 					objFocus = this;
 				} else {
@@ -98,7 +97,8 @@ function firstFocus(container) { return function () {
 				}
 			}
 		});
-		$(objFocus).focus();
+		objFocus.focus();
 	}
 
+	return true;
 }}
