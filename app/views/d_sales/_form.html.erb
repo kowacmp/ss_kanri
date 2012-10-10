@@ -149,7 +149,7 @@
 			<% else %>
 			  <% d_sale_items = DSaleItem.find(:all, :conditions=>["d_sale_id = ? and item_class=?", @d_sale.id, 0], :order => "id")%>
 			<% end %>
-			<% 10.times { |i| %>
+			<% 20.times { |i| %>
 				<% if d_sale_items[i] == nil %>
 				  <% @pay_item = DSaleItem.new %>
 				  <% @pay_item.item_money = ""  %>
@@ -193,7 +193,7 @@
 			<% else %>
 			  <% d_sale_items = DSaleItem.find(:all, :conditions=>["d_sale_id = ? and item_class=?", @d_sale.id, 1], :order => "id")%>
 			<% end %>
-			<% 10.times { |i| %>
+			<% 20.times { |i| %>
 				<% if d_sale_items[i] == nil %>
 				  <% @recive_item = DSaleItem.new %>
 				  <% @recive_item.item_money = "" %>
@@ -237,7 +237,7 @@
 			<% else %>
 			  <% d_sale_items = DSaleItem.find(:all, :conditions=>["d_sale_id = ? and (item_class=? or item_class=?)", @d_sale.id, 3,4], :order => "id")%>
 			<% end %>
-			<% 10.times { |i| %>
+			<% 15.times { |i| %>
 				<% if d_sale_items[i] == nil %>
 				  <% @etc_item = DSaleItem.new %>
 				  <% @etc_item.item_money = "" %>
@@ -284,7 +284,7 @@
 			<% else %>
 			  <% d_sale_items = DSaleItem.find(:all, :conditions=>["d_sale_id = ? and item_class=?", @d_sale.id, 2], :order => "id")%>
 			<% end %>
-			<% 10.times { |i| %>
+			<% 15.times { |i| %>
 				<% if d_sale_items[i] == nil %>
 				  <% @purika_item = DSaleItem.new %>
 				  <% @purika_item.item_money = "" %>
@@ -420,6 +420,15 @@
 <% end %>
 
 <%= javascript_include_tag "comma" %>
+<script>
+$(function () {
+	$('#tabs').css("display", "block");
+    $('#pay_table').tablefix({width: 685, height: 430, fixRows: 1, fixCols: 0});
+    $('#recive_table').tablefix({width: 685, height: 430, fixRows: 1, fixCols: 0});
+    $('#etc_table').tablefix({width: 685, height: 430, fixRows: 1, fixCols: 0});
+    $('#purika_table').tablefix({width: 685, height: 430, fixRows: 1, fixCols: 0});
+});	
+</script>
 <%= javascript_include_tag "tabs" %>
   
 <script>
@@ -462,3 +471,5 @@ $(function () {
 
 });	
 </script>
+
+

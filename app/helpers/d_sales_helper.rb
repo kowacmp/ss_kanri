@@ -54,6 +54,8 @@ module DSalesHelper
 
     d_sale = d_sales[0]
     if d_sale then
+       #一覧表にする現金売上は、プリカ手数料とその他売上を引いた値にする
+       d_sale.sale_money = d_sale.sale_money.to_i - d_sale.sonota_money.to_i - d_sale.purika_tesuryo.to_i
        @d_sale_ass = zenjitu_d_sale.sale_pm_out.to_i + d_sale.sale_today_out.to_i + d_sale.sale_am_out.to_i   #ASS入金額
        # 2012/09/29 掛入金加算対応 oda
        #@d_sale_syokei = d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i + d_sale.purika_tesuryo.to_i - d_sale.pay_money.to_i #小計

@@ -376,7 +376,7 @@ p params
   def update_d_sale_item(params, d_sale_id)
 
     #出金
-    10.times{ |i|
+    20.times{ |i|
           pay_item = params[:pay_item][i.to_s]
           update_flg = 0
           
@@ -422,7 +422,7 @@ p params
     }
 
     #入金
-    10.times{ |i|
+    20.times{ |i|
           recive_item = params[:recive_item][i.to_s]
           update_flg = 0
           
@@ -466,7 +466,7 @@ p params
           end
     }
     #その他
-    10.times{ |i|
+    15.times{ |i|
           etc_item = params[:etc_item][i.to_s]
           update_flg = 0
           
@@ -518,7 +518,7 @@ p params
     }
     
     #プリカ
-    10.times{ |i|
+    15.times{ |i|
           purika_item = params[:purika_item][i.to_s]
           if purika_item["id"] == ""
             #insert
