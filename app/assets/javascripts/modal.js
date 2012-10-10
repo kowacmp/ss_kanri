@@ -74,7 +74,7 @@ function firstFocus(container) { return function () {
 	}
 
 	// コンテナ内の利用可能なオブジェクトを取得
-	var obj = container.find(":input:enabled:not(:submit,:button,:reset)");
+	var obj = container.find(":input:enabled");
 	if (obj.length == 0) { return true; } 
 
 	// tabindexが指定されているオブジェクトを取得
@@ -97,7 +97,9 @@ function firstFocus(container) { return function () {
 				}
 			}
 		});
-		objFocus.focus();
+		if (!(objFocus == null)) {
+			objFocus.focus();
+		}
 	}
 
 	return true;
