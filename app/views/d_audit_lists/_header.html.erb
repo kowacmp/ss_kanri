@@ -7,9 +7,7 @@
 			監査日
 		</th>
 		<td>
-			<%=text_field :header, :audit_date_from, :maxlength => 10, :style => "width:90px;", :value => audit_date_from %>
-			～
-			<%=text_field :header, :audit_date_to,   :maxlength => 10, :style => "width:90px;", :value => audit_date_to %>
+			<%=text_field :header, :audit_date, :maxlength => 10, :class=> "datepicker", :value => audit_date %>
 		</td>
   		<th>
   			処理選択
@@ -49,36 +47,16 @@
 </table>
 <%end%> <!-- form_tag :action = "edit" -->
 
-
 <script language="JavaScript">
-  $(function() {
-  	// 監査日From,Toのカレンダー機能
-    $("#header_audit_date_from").datepicker();
-    $("#header_audit_date_to"  ).datepicker();
-
-  });
-    	
+	
   // 表示ボタン時の入力チェック
   function kansa_from_to_chk() {
-  	var from = $("#header_audit_date_from")[0];
-  	var to   = $("#header_audit_date_to")[0];
+  	var from = $("#header_audit_date")[0];
   
   	if (!ckDate(from.value)) {
-  		alert('監査日(From)を正しく入力してください。');
+  		alert('監査日を正しく入力してください。');
   		from.focus();
   		return false;  		
-  	}
-  	
-  	if (!ckDate(to.value)) {
-  		alert('監査日(To)を正しく入力してください。');
-  		to.focus();
-  		return false;  		
-  	}
-  	
-  	if (from.value > to.value) {
-		alert('監査日(From)(To)が前後しています。');
-		from.focus();
-		return false;
   	}
     
   	return true;
