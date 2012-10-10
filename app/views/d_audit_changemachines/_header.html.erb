@@ -49,12 +49,12 @@
   
 </td>
 
-<td>
+<td valign="top">
   <table class='rounded-corner' >
   	<tr>
   		<th>監査日</th>
   		<td>
-  			<%=text_field :header, :audit_date, :size => 11, :maxlength => 10, :value => audit_date %>
+  			<%=text_field :header, :audit_date, :size => 11, :maxlength => 10, :value => audit_date, :class => "datepicker" %>
   		</td>
   	</tr>	
   </table>
@@ -70,11 +70,6 @@
 <% end %> 
 
 <script language="JavaScript">
-  $(function() {
-  	// 監査日のカレンダー機能
-    $("#header_audit_date").datepicker();
-  
-  })
   
   // 表示ボタン時の入力チェック
   function kansa_ymd_chk() {

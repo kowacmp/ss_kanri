@@ -115,7 +115,17 @@
 						this.value='キャンセル中です...';
 						this.disabled=true;document.location='<%=url%>';
 					}" />
-	<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...' %>
+	<!-- 使用不可で開始、立会人入力により使用可 -->
+	<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...', :disabled => true , :id => "btn_update" %>
+	<!-- true の場合は永続的に更新不可 -->
+	<% 
+		if @d_audit_etc.nil? then
+			kakutei_flg = ""
+		else
+			kakutei_flg = @d_audit_etc["kakutei_flg"].to_s
+		end
+	%>
+	<%= hidden_field_tag "update_flg", ((params[:readonly].to_s == "true") or (kakutei_flg == "1")) %>
 </div>
 </td></tr>
 </table>

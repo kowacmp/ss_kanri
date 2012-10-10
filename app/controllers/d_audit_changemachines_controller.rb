@@ -43,12 +43,12 @@ class DAuditChangemachinesController < ApplicationController
           @m_shop_id])
    
     # 監査人が異なる場合の呼出は強制的に照会へ
-    if @d_audit_changemachine.length > 0 then
-      if @d_audit_changemachine[0].created_user_id != @created_user_id then
-        redirect_to :action => "show", :id => @d_audit_changemachine[0].id
-        return
-      end
-    end
+    #if @d_audit_changemachine.length > 0 then
+    #  if @d_audit_changemachine[0].created_user_id != @created_user_id then
+    #    redirect_to :action => "show", :id => @d_audit_changemachine[0].id
+    #    return
+    #  end
+    #end
    
     # データがない場合は新規
     if @d_audit_changemachine.length == 0 then
@@ -140,6 +140,12 @@ class DAuditChangemachinesController < ApplicationController
     end 
     
     # TO:confirm_shop_id_select.js.erb
+    
+  end
+
+  def edit_comment
+    
+    render :layout => "modal"
     
   end
 

@@ -1,6 +1,10 @@
 // d_audit系で共通
 <%if @pass_ok then%>
 	$("#pass_ret").val("1");
+	// 保存ボタンを使用可へ
+	if ($("#update_flg").val() == "false") {
+		$("#btn_update").prop("disabled", false);
+	}
 	$("#dialog_div").dialog("close");
 <%else%>
 	$("#pass_ret").val("0");

@@ -1,14 +1,14 @@
 コメントを入力してください<br/>
-<textarea id="_comment" rows="10" cols="60" style="ime-mode: active;" ></textarea>
+<textarea id="_comment" rows="10" cols="60" style="ime-mode: active;"></textarea>
 <br/>
 <br/>
-<input type="button" value="更新" onclick="return update_comment();" >
+<input type="button" value="更新" onclick="return update_comment();">
+
 
 <script>
 	
 $(function(){
-	// 本体フォームよりコメントを取得
-	$("#_comment").val( $("#d_audit_cashbox_comment").val() );
+	$("#_comment").val( $("#d_audit_changemachine_comment").val() );
 });
 
 function update_comment() {
@@ -17,10 +17,12 @@ function update_comment() {
 		return false;
 	} 
 
-	$("#d_audit_cashbox_comment").val( $("#_comment").val() );
+	$("#d_audit_changemachine_comment").val( $("#_comment").val() );
 
 	// 親フォームのhiddenに書込後、モーダル終了
 	$("div#modal div.background").trigger("click");
 }
 
 </script>
+
+

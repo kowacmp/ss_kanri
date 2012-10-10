@@ -24,7 +24,7 @@
   				$.ajax({
   					type: "GET",
   					url:  "<%=url_for(:controller => "d_audit_changemachines", :action => "confirm_user_id_select")%>?user_id=" + this.value,
- 					async: false,
+ 					//async: false, //共通で画面ロックするため非同期処理へ変更
  					timeout: 5000
   				});
   			}	

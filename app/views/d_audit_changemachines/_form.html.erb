@@ -17,30 +17,7 @@ function toNum(str) {
 
 <%= f.hidden_field :audit_date %>
 
-<!-- コメント入力用 BEGIN -->
-<div id="dialog_comment" style="display: none;">
-	<!-- JQuery.dialog をした部分はPOSTで送信されないため divの外のhiddenで送信する -->
-	<textarea id="textarea_comment" cols="30" rows="10" ></textarea>
-</div>
 <%= f.hidden_field :comment %>
-<script>
-	$(function() {
-		$("#textarea_comment").val($("#d_audit_changemachine_comment").val());
-	});
-
-	function input_comment() {
-		$('#dialog_comment').dialog({
-			autoOpen:true,
-			width:400,
-			modal:true,
-			title:'コメントを入力してください',
-			close: function(event) {
-				$("#d_audit_changemachine_comment").val($("#textarea_comment").val());
-			}
-		});
-	}
-</script>
-<!-- コメント入力用 END -->
 
 <table class='rounded-corner' >
 
@@ -51,7 +28,7 @@ function toNum(str) {
 		</td>
 		<td colspan="5" style="border: none;">&nbsp;</td>
 		<td align="center">
-			<a href="javascript:input_comment();">コメント入力</a>
+			<%= link_to("コメント入力", {:action => "edit_comment"}, :class => 'modal') %>	
 		</td> 
 	</tr>
 
@@ -356,8 +333,11 @@ function toNum(str) {
 								this.disabled=true;document.location='<%=url%>';
 						}" />
 			&nbsp;&nbsp;
-			<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...' %>			
-		</td>	
+			<!-- 使用不可で開始、立会人入力により使用可 -->
+			<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...', :disabled => true , :id => "btn_update"%>			
+			<!-- true の場合は永続的に更新不可 -->
+			<%= hidden_field_tag "update_flg", ((params[:readonly].to_s == "true") or (f.object["kakutei_flg"].to_s == "1")) %>
+		</td>
 	</tr>
 	
 </table>
