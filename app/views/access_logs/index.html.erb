@@ -1,0 +1,39 @@
+<h1>アクセス履歴</h1>
+
+<%= form_tag(url_for(:action => 'index'),{:remote => true, :method => "get"}) do %>
+<table id='rounded-corner'>
+	<tr>
+      <th>日時</th>
+      <td>
+      	<%= select_year(@head[:s_input_day].to_s[0,4].to_i, :prefix=>"", :field_name=>"s_input_day(1i)",
+      	                :start_year => @start_year, :end_year => @head[:s_input_day].to_s[0,4].to_i) %>
+      	                年
+      	<%= select_month(@head[:s_input_day].to_s[4,2].to_i, :prefix=>"", :field_name=>"s_input_day(2i)", :use_month_numbers => true, :include_blank=>true) %>月
+      	<%= select_day(@head[:s_input_day].to_s[6,2].to_i, :prefix=>"", :field_name=>"s_input_day(3i)", :include_blank=>true) %>日<br />
+        ～
+      	<%= select_year(@head[:e_input_day].to_s[0,4].to_i, :prefix=>"", :field_name=>"e_input_day(1i)",
+      	                :start_year => @start_year, :end_year => @head[:e_input_day].to_s[0,4].to_i) %>
+      	                年
+      	<%= select_month(@head[:e_input_day].to_s[4,2].to_i, :prefix=>"", :field_name=>"e_input_day(2i)", :use_month_numbers => true, :include_blank=>true) %>月
+      	<%= select_day(@head[:e_input_day].to_s[6,2].to_i, :prefix=>"", :field_name=>"e_input_day(3i)", :include_blank=>true) %>日</td>
+	  <th>ユーザ</th>
+	  <td>
+		<%= select :head, :user_id, 
+        User.find(:all, :order=>"account").collect{|i| [ "#{i.user_name}", i.id ]}, {:include_blank => true} %>
+	  </td> 
+	  <td rowspan="2"><%= submit_tag "検索" %></td>
+	</tr>
+	<tr>
+	  <th>SQL抽出文</th>
+	  <td colspan="3">
+	  	<%= text_field :head, :sql_where,:size=>100 %>
+	  </td>
+	  
+    </tr>
+</table>
+<% end %>
+<br />
+
+<div id="result">
+<%= render 'result' %>
+</div>

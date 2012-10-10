@@ -6,6 +6,9 @@ class ApplicationController < ActionController::Base
   #権限チェック
   #before_filter :permission_check
   
+  #アクセスログ
+  before_filter :access_log
+  
   include ApplicationHelper
   
   def after_sign_in_path_for(resources)
@@ -115,5 +118,28 @@ class ApplicationController < ActionController::Base
     end
   
   end
+  
+  #アクセスログをDBで管理
+  def access_log
+    #p "****** access_log ******"
+    #p "-- access_date=#{(Time.now).localtime.strftime("%Y/%m/%d  %H:%M:%S")}"
+    #p "-- access_user_id=#{current_user.id if current_user}"
+    #p "-- controller=#{params[:controller]}"
+    #p "-- action=#{params[:action]}"
+    #p "-- remote_host=#{request.headers['REMOTE_HOST']}"
+    #p "-- parameter=#{params}"
+    #p "******************************"
+    access_log = AccessLog.new
+    
+    access_log.access_date = Time.now
+    access_log.user_id = current_user.id if current_user
+    access_log.controller = params[:controller]
+    access_log.action = params[:action]
+    access_log.remote_host = request.headers['REMOTE_HOST']
+    access_log.params = params.to_s
+    
+    access_log.save
+  end
+  
   
 end
