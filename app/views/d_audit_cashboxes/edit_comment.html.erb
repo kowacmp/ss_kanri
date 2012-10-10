@@ -1,5 +1,5 @@
 コメントを入力してください<br/>
-<textarea id="_comment" rows="6" cols="30"></textarea>
+<textarea id="_comment" rows="6" cols="30" style="ime-mode: active;"></textarea>
 <br/>
 <br/>
 <input type="button" value="更新" onclick="return update_comment();">
@@ -18,6 +18,9 @@ function update_comment() {
 	} 
 
 	$("#d_audit_cashbox_comment").val( $("#_comment").val() );
+
+	// 親フォームのhiddenに書込後、モーダル終了
+	$("div#modal div.background").trigger("click");
 }
 
 </script>

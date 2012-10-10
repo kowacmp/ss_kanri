@@ -192,18 +192,16 @@
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_still<%=i%>").val( $("#_still<%=i%>").val().replace(/,/g, "") );		
 		<% end %>
 
-		// AJAX.POST (hiddenをテーブルへ反映)	
-		var postData = {}
-		$('form').find(':input').each(function(){
-			postData[$(this).attr('name')] = $(this).val();
-		});
+		// AJAX.POST (hiddenをテーブルへ反映)	;
+		var postData = $("form").serialize();
 
 		$.ajax({
 			type : "POST",
 			url : "<%= url_for(:action => "update_tbl1") %>",
 			data : postData,
 			success : function (){
-				;
+				// AJAX成功後にモーダルを閉じる
+				$("div#modal div.background").trigger("click");
 			}
 		});
 
