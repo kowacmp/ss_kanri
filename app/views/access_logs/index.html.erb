@@ -16,17 +16,23 @@
       	                年
       	<%= select_month(@head[:e_input_day].to_s[4,2].to_i, :prefix=>"", :field_name=>"e_input_day(2i)", :use_month_numbers => true, :include_blank=>true) %>月
       	<%= select_day(@head[:e_input_day].to_s[6,2].to_i, :prefix=>"", :field_name=>"e_input_day(3i)", :include_blank=>true) %>日</td>
+	  </td>
 	  <th>ユーザ</th>
 	  <td>
+		<%= select :head, :shop_id, 
+        MShop.find(:all, :order=>"shop_cd").collect{|i| [ "#{i.shop_name}", i.id ]}, {:include_blank => true} %>
+
 		<%= select :head, :user_id, 
         User.find(:all, :order=>"account").collect{|i| [ "#{i.user_name}", i.id ]}, {:include_blank => true} %>
-	  </td> 
+	  </td>
 	  <td rowspan="2"><%= submit_tag "検索" %></td>
 	</tr>
 	<tr>
 	  <th>SQL抽出文</th>
 	  <td colspan="3">
 	  	<%= text_field :head, :sql_where,:size=>100 %>
+	  	<br />
+	  	例：shop_name='本社'
 	  </td>
 	  
     </tr>

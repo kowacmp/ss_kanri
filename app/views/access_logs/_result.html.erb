@@ -2,6 +2,7 @@
 
   <tr>
     <th>日時<br />(access_date)</th>
+    <th>店舗<br />(shop_name)</th>
     <th>ユーザID<br />(user_id)</th>
     <th>ユーザ</th>
     <th>コントローラ<br />(controller)</th>
@@ -14,8 +15,9 @@
   <% user = User.find(access_log.user_id) unless access_log.user_id.blank? %>
   <tr>
     <td><%= access_log.access_date.localtime.strftime("%Y/%m/%d  %H:%M:%S") %></td>
+    <td><%= access_log.shop_name %></td>
     <td><%= access_log.user_id %></td>
-    <td><%= "#{user.account} #{user.user_name}" unless access_log.user_id.blank? %></td>
+    <td><%= "#{user.user_name}" unless access_log.user_id.blank? %></td>
     <td><%= access_log.controller %></td>
     <td><%= access_log.action %></td>
     <td><%= access_log.remote_host %></td>
