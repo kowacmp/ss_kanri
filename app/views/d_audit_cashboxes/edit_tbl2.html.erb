@@ -40,17 +40,14 @@
 		<% end %>
 
 		// AJAX.POST (hiddenをテーブルへ反映)	
-		var postData = {}
-		$('form').find(':input').each(function(){
-			postData[$(this).attr('name')] = $(this).val();
-		});
+		var postData = $("form").serialize();
 
 		$.ajax({
 			type : "POST",
 			url : "<%= url_for(:action => "update_tbl2") %>",
 			data : postData,
 			success : function (){
-				;
+				$("div#modal div.background").trigger("click");
 			}
 		});
 
