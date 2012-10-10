@@ -24,16 +24,16 @@
   	  
 	  <tr>
 	 	<th><%= @year + "年" + @month + "月" %></th>
-		<% for i in 1..8 do %>
+		<% for i in 1..7 do %>
 	  	  <th style="min-width: 80px"><%= i.to_s + "日" %></th>
 	  	<% end %>
 	  </tr>
 	  
 	  <tr>
 	  	<th>曜日</th>
-	  	<% for i in 1..8 do %>
+	  	<% for i in 1..7 do %>
 	  	<% day, wday = home_date_format(@month_first, i-1)%>
-	  	  <th><%= wday %></th>
+	  	  <th style='background:none;'><%= wday %></th>
 	  	<% end %>
 	  </tr>
   	
@@ -41,14 +41,14 @@
 	  <%= hidden_field "d_aim[#{idx}]", 'date',:value=> @year + @month %>
 	  <%= hidden_field "d_aim[#{idx}]", 'm_shop_id',:value=> @m_shop.id %>
 		<tr>
-	  	  <th>
-	  	  	<%= m_aim.aim_name %>
+	  	  <th style='background:none;'>
+	  	  	<%= m_aim.aim_name %><%= "(" + m_aim.aim_tani_name.to_s + ")" %>
 	  	  	<%= hidden_field "d_aim[#{idx}]", 'm_aim_id',:value=>m_aim.id %>
 	  	  </th>
 	  	  
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
-	  	  <% for i in 1..8 do %>
+	  	  <% for i in 1..7 do %>
 	  	  	<td>
 	  	  	<%- if @d_aim -%>
 	  	  		<%= hidden_field "d_aim[#{idx}]", 'id',:value=>@d_aim.id %>
@@ -64,28 +64,28 @@
 	  
 	  
 	  
-	  <tr>
+	  <tr style="border-top:solid 2px #0000CD;">
 	 	<th><%= @year + "年" + @month + "月" %></th>
-		<% for i in 9..16 do %>
+		<% for i in 8..14 do %>
 	  	  <th><%= i.to_s + "日" %></th>
 	  	<% end %>
 	  </tr>
 	  
 	  <tr>
 	  	<th>曜日</th>
-	  	<% for i in 9..16 do %>
+	  	<% for i in 8..14 do %>
 	  	<% day, wday = home_date_format(@month_first, i-1)%>
-	  	  <th><%= wday %></th>
+	  	  <th style='background:none;'><%= wday %></th>
 	  	<% end %>
 	  </tr>
   	
 	  <% @m_aims.each_with_index do |m_aim,idx| %>
 		<tr>
-	  	  <th><%= m_aim.aim_name %></th>
+	  	  <th style='background:none;'><%= m_aim.aim_name %><%= "(" + m_aim.aim_tani_name.to_s + ")" %></th>
 	  	  
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
-	  	  <% for i in 9..16 do %>
+	  	  <% for i in 8..14 do %>
 	  	  	<td>
 	  	  	<%- if @d_aim -%>
 			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
@@ -99,28 +99,28 @@
 	  <% end %>
 	  
 	  
-	  <tr>
+	  <tr style="border-top:solid 2px #0000CD;">
 	 	<th><%= @year + "年" + @month + "月" %></th>
-		<% for i in 17..24 do %>
+		<% for i in 15..21 do %>
 	  	  <th><%= i.to_s + "日" %></th>
 	  	<% end %>
 	  </tr>
 	  
 	  <tr>
 	  	<th>曜日</th>
-	  	<% for i in 17..24 do %>
+	  	<% for i in 15..21 do %>
 	  	<% day, wday = home_date_format(@month_first, i-1)%>
-	  	  <th><%= wday %></th>
+	  	  <th style='background:none;'><%= wday %></th>
 	  	<% end %>
 	  </tr>
   	
 	  <% @m_aims.each_with_index do |m_aim,idx| %>
 		<tr>
-	  	  <th><%= m_aim.aim_name %></th>
+	  	  <th style='background:none;'><%= m_aim.aim_name %><%= "(" + m_aim.aim_tani_name.to_s + ")" %></th>
 	  	  
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
-	  	  <% for i in 17..24 do %>
+	  	  <% for i in 15..21 do %>
 	  	  	<td>
 	  	  	<%- if @d_aim -%>
 			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
@@ -133,30 +133,73 @@
 	  	</tr>
 	  <% end %>
 	  
-	  <tr>
+	  
+	  
+	  <tr style="border-top:solid 2px #0000CD;">
 	 	<th><%= @year + "年" + @month + "月" %></th>
-		<% for i in 25..@month_last_day.to_i do %>
+		<% for i in 22..28 do %>
+	  	  <th><%= i.to_s + "日" %></th>
+	  	<% end %>
+	  </tr>
+	  
+	  <tr>
+	  	<th>曜日</th>
+	  	<% for i in 22..28 do %>
+	  	<% day, wday = home_date_format(@month_first, i-1)%>
+	  	  <th style='background:none;'><%= wday %></th>
+	  	<% end %>
+	  </tr>
+  	
+	  <% @m_aims.each_with_index do |m_aim,idx| %>
+		<tr>
+	  	  <th style='background:none;'><%= m_aim.aim_name %><%= "(" + m_aim.aim_tani_name.to_s + ")" %></th>
+	  	  
+	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
+	  	  
+	  	  <% for i in 22..28 do %>
+	  	  	<td>
+	  	  	<%- if @d_aim -%>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
+			<%- else -%>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
+	  	  	<%- end -%>
+	  	  	</td>
+	  	  <% end %>
+	  	  
+	  	</tr>
+	  <% end %>
+	  
+	  
+	  
+	  
+	  <tr style="border-top:solid 2px #0000CD;">
+	 	<th><%= @year + "年" + @month + "月" %></th>
+		<% for i in 29..@month_last_day.to_i do %>
 	  	  <th><%= i.to_s + "日" %></th>
 	  	<% end %>
 	  	<th>合計</th>
+	  	<th>月毎計</th>
+	  	<th>差分</th>
 	  </tr>
 	  
 	  <tr>
 	  	<th>曜日</th>
-	  	<% for i in 25..@month_last_day.to_i do %>
+	  	<% for i in 29..@month_last_day.to_i do %>
 	  	<% day, wday = home_date_format(@month_first, i-1)%>
-	  	  <th><%= wday %></th>
+	  	  <th style='background:none;'><%= wday %></th>
 	  	<% end %>
-	  	<th></th>
+	  	<th style='background:none;'></th>
+	  	<th style='background:none;'></th>
+	  	<th style='background:none;'></th>
 	  </tr>
   	
 	  <% @m_aims.each_with_index do |m_aim,idx| %>
 		<tr>
-	  	  <th><%= m_aim.aim_name %></th>
+	  	  <th style='background:none;'><%= m_aim.aim_name %><%= "(" + m_aim.aim_tani_name.to_s + ")" %></th>
 	  	  
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
-	  	  <% for i in 25..@month_last_day.to_i do %>
+	  	  <% for i in 29..@month_last_day.to_i do %>
 	  	  	<td>
 	  	  	<%- if @d_aim -%>
 			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})",:class=>"money" %>
@@ -171,17 +214,33 @@
 	  	  	<% for i in 1..@month_last_day.to_i do %>
 		  	  	<%- if @d_aim -%>
 		  	  		<% goukei = goukei + eval("@d_aim.aim_value#{i}").to_i%>
-		  	  	<%- else -%>
-		  	  		<% goukei = goukei + 0 %>
 		  	  	<%- end -%>
 	  	  	<% end %>
 	  	  	<%= number_with_delimiter(goukei) %>
 	  	  	
 	  	  </td>
+	  	  <td id="month_goukei<%= idx %>" style="text-align: right">
+	  	  	<% if @d_aim %>
+	  	  	<%= number_with_delimiter(@d_aim.aim_total) %>
+	  	  	<% end %>
+	  	  </td>
+	  	  <td id="sabun<%= idx %>" style="text-align: right">
+	  	  	<% if @d_aim %>
+	  	  	<% if (@d_aim.aim_total.to_i - goukei.to_i) < 0 %>
+	  	  	<span style="color: red">
+	  	  	<% else %>
+	  	  	<span>
+	  	  	<% end %>
+	  	  	<%= number_with_delimiter(@d_aim.aim_total.to_i - goukei.to_i) %>
+	  	  	</span>
+	  	  	<% else %>
+	  	  	<%= number_with_delimiter(goukei) %>
+	  	  	<% end %>
+	  	  </td>
 	  	  <%- if @d_aim -%>
-		  	<%= hidden_field "d_aim[#{idx}]", "aim_total",:value=>@d_aim.aim_total %>
+		  	<%#= hidden_field "d_aim[#{idx}]", "aim_total",:value=>@d_aim.aim_total %>
 		  <%- else -%>
-	  	  	<%= hidden_field "d_aim[#{idx}]", "aim_total",:value=>goukei %>
+	  	  	<%#= hidden_field "d_aim[#{idx}]", "aim_total",:value=>goukei %>
   	  	  <%- end -%>
 	  	</tr>
 	  <% end %>
@@ -204,7 +263,11 @@
 	function totalAim(idx) { 
 		
 		var goukei = 0;
+		var month_goukei = 0;
+		var sabun = 0;
 		var v = 0;
+		var v2 = 0;
+		
 		<% for i in 1..@month_last_day.to_i do %>
 			v = document.getElementById('d_aim_' + idx + '_aim_value<%= i %>').value;
 			
@@ -215,12 +278,27 @@
 			goukei = goukei + Number(document.getElementById('d_aim_' + idx + '_aim_value<%= i %>').value);
 		<% end %>
 		
+		v2 = document.getElementById('month_goukei'+ idx ).innerHTML
+		if (v2.match(/[^0-9]/g)) {
+			month_goukei = v2.replace(/[^0-9]/g,'');
+		}
+		sabun = month_goukei - goukei
+		
 		//カンマ編集して表示する
 	 	var num = new String(goukei).replace(/,/g, "");
 	    while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
+	    
+	    var num_sabun = new String(sabun).replace(/,/g, "");
+	    while(num_sabun != (num_sabun = num_sabun.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
 		
 		document.getElementById('goukei'+ idx ).innerHTML = num;
-		document.getElementById('d_aim_' + idx + '_aim_total').value = goukei;
+		//document.getElementById('d_aim_' + idx + '_aim_total').value = goukei;
+		if(sabun<0){
+		document.getElementById('sabun'+ idx ).style.color = "red";
+		}else{
+		document.getElementById('sabun'+ idx ).style.color = "black";
+		}
+		document.getElementById('sabun'+ idx ).innerHTML = num_sabun;
 		
 		
 		

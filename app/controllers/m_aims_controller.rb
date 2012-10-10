@@ -5,10 +5,11 @@ class MAimsController < ApplicationController
     #@m_aims = MAim.all
     
     select_sql = "select a.*, b.code_name as shop_kbn_name,"
-    select_sql << "           c.code_name as input_kbn_name " 
+    select_sql << "           c.code_name as input_kbn_name, d.code_name as aim_tani_name " 
     select_sql << " from m_aims a " 
     select_sql << " left join (select * from m_codes where kbn='shop_kbn') b on a.shop_kbn = cast(b.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='input_kbn') c on a.input_kbn = cast(c.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='tani') d on a.aim_tani = cast(d.code as integer) "
     
     condition_sql = ""
 
@@ -38,10 +39,11 @@ class MAimsController < ApplicationController
     #@m_aim = MAim.find(params[:id])
     
     select_sql = "select a.*, b.code_name as shop_kbn_name,"
-    select_sql << "           c.code_name as input_kbn_name " 
+    select_sql << "           c.code_name as input_kbn_name, d.code_name as aim_tani_name " 
     select_sql << " from m_aims a " 
     select_sql << " left join (select * from m_codes where kbn='shop_kbn') b on a.shop_kbn = cast(b.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='input_kbn') c on a.input_kbn = cast(c.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='tani') d on a.aim_tani = cast(d.code as integer) "
     
     condition_sql = " where a.id = " + params[:id]
     
@@ -136,10 +138,11 @@ class MAimsController < ApplicationController
   def search
     
     select_sql = "select a.*, b.code_name as shop_kbn_name,"
-    select_sql << "           c.code_name as input_kbn_name " 
+    select_sql << "           c.code_name as input_kbn_name, d.code_name as aim_tani_name " 
     select_sql << " from m_aims a " 
     select_sql << " left join (select * from m_codes where kbn='shop_kbn') b on a.shop_kbn = cast(b.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='input_kbn') c on a.input_kbn = cast(c.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='tani') d on a.aim_tani = cast(d.code as integer) "
     
     condition_sql = ""
     

@@ -210,7 +210,8 @@ p params
     #@cash_aridaka = @m_fix_money.total_cash_box.to_i + @changebox_aridaka.to_i + @d_sale.sale_today_out.to_i + @d_sale.sale_pm_out.to_i 
 
     
-    @d_sale.sale_changebox = @changebox_aridaka #釣銭機固定金庫
+    #@d_sale.sale_changebox = @changebox_aridaka #釣銭機固定金庫
+    @d_sale.sale_changebox = @sale_change_total #釣銭有高2    
     @d_sale.exist_money = @cash_aridaka #現金有高
     @d_sale.over_short = @cash_aridaka - @total #過不足
     

@@ -737,7 +737,7 @@ class DResultReportsController < ApplicationController
     
     
     if select_kbn == 0
-      
+      #油外型実績表1
       select_sql = "select a.*, b.*, c.*, d.*"
     
       select_sql << " from (select id, shop_cd, shop_name,shop_ryaku from m_shops where deleted_flg = 0 and shop_kbn = 1) a "
@@ -764,7 +764,7 @@ class DResultReportsController < ApplicationController
       select_sql <<      " ) d on a.id = d.m_shop_id "
       
     elsif select_kbn == 1
-      
+      #油外型実績表2
       select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*"
     
       select_sql << " from (select id, shop_cd, shop_name,shop_ryaku from m_shops where deleted_flg = 0 and shop_kbn = 1) a "
@@ -790,7 +790,8 @@ class DResultReportsController < ApplicationController
       select_sql <<      " ) d on a.id = d.m_shop_id "
       
       #油外売上
-      select_sql << " left join (select e1.m_shop_id,e1.aim_value#{input_day} as oiletc_aim from d_aims e1"
+      #select_sql << " left join (select e1.m_shop_id,e1.aim_value#{input_day} as oiletc_aim from d_aims e1"
+      select_sql << " left join (select e1.m_shop_id,e1.aim_total as oiletc_aim from d_aims e1"
       select_sql <<            " left join m_aims e2 on e1.m_aim_id = e2.id"
       select_sql << " where e1.date = '#{input_month}' and e2.id = 1 ) e on a.id = e.m_shop_id "
       #車検
@@ -799,7 +800,7 @@ class DResultReportsController < ApplicationController
       select_sql << " where f1.date = '#{input_month}' and f2.id = 14 ) f on a.id = f.m_shop_id "
       
     elsif select_kbn == 2
-      
+      #洗車型実績表1
       #select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*, g.*, h.*, i.*"
       select_sql = "select a.*, b.*, c.*, d.*, e.*, g.*, h.*, i.*"
 
@@ -848,7 +849,7 @@ class DResultReportsController < ApplicationController
       select_sql << " where i1.date = '#{input_month}' and i2.id = 7 ) i on a.id = i.m_shop_id "
       
     elsif select_kbn == 3
-      
+      #洗車型実績表2
       #select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*"
       select_sql = "select a.*, b.*, c.*, d.*, e.*, f.*, g.*, h.*, i.*, j.*, k.*"
     
@@ -876,7 +877,8 @@ class DResultReportsController < ApplicationController
       select_sql <<      " ) d on a.id = d.m_shop_id "
       
       #洗車売上
-      select_sql << " left join (select e1.m_shop_id,e1.aim_value#{input_day} as sensya_aim from d_aims e1"
+      #select_sql << " left join (select e1.m_shop_id,e1.aim_value#{input_day} as sensya_aim from d_aims e1"
+      select_sql << " left join (select e1.m_shop_id,e1.aim_total as sensya_aim from d_aims e1"
       select_sql <<            " left join m_aims e2 on e1.m_aim_id = e2.id"
       select_sql << " where e1.date = '#{input_month}' and e2.id = 2 ) e on a.id = e.m_shop_id "
       #洗車プリカ

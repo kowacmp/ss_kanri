@@ -11,10 +11,10 @@ class DWashSalesController < ApplicationController
   def change_input_ymd
     @m_washes = get_m_washes
     @mode     = params[:mode]
-    unless @mode == 'list'
-      @shop = MShop.find(current_user.m_shop_id)      
-    else
+    if @mode == 'list'
       @shop = MShop.find(params[:m_shop_id])
+    else
+      @shop = MShop.find(current_user.m_shop_id)   
     end
     if params[:input_ymd] == nil
       @input_ymd = Time.now.strftime("%Y/%m/%d")
@@ -133,8 +133,10 @@ class DWashSalesController < ApplicationController
          if not(@d_wash_sale_mae.nil?) then
            #2012/10/03 nishimura
            #v2 = get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)).meter
-           v2 = get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)) ? 
-                  get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)).meter : 0
+           #v2 = get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)) ? 
+           #       get_d_washsale_item(@d_wash_sale_mae.id,wash.wash_cd,(i+1)).meter : 0
+           v2 = get_d_washsale_item(@d_wash_sale_mae.id,wash.id,(i+1)) ? 
+                  get_d_washsale_item(@d_wash_sale_mae.id,wash.id,(i+1)).meter : 0
          end
          v1 = 0 if v1.nil?
          v2 = 0 if v2.nil?
@@ -154,7 +156,8 @@ class DWashSalesController < ApplicationController
            end #unless2
          else
            #データなし
-           create_d_washsale_item(@d_wash_sale.id,wash.wash_cd,(i+1))
+           #create_d_washsale_item(@d_wash_sale.id,wash.wash_cd,(i+1))
+           create_d_washsale_item(@d_wash_sale.id,wash.id,wash.wash_cd,(i+1))
          end #unless1
 
          #unless @d_wash_sale_mae == nil
@@ -192,7 +195,7 @@ class DWashSalesController < ApplicationController
            end #unless2
          else
            #データなし
-           create_d_washsale_item(@d_wash_sale.id,wash.wash_cd,99,sum_uriage)
+           create_d_washsale_item(@d_wash_sale.id,wash.id,wash.wash_cd,99,sum_uriage)
          end #unless1
          #end #if washsale_plan_flg == 1 #2012/10/03 nishimura
       end #each
@@ -233,12 +236,14 @@ private
     @d_wash_sale.save!
   end
   
-  def create_d_washsale_item(d_wash_sale_id,wash_cd,wash_no,sum_uriage=0)
+  #def create_d_washsale_item(d_wash_sale_id,wash_cd,wash_no,sum_uriage=0)
+  def create_d_washsale_item(d_wash_sale_id,wash_id,wash_cd,wash_no,sum_uriage=0)
     #2012/10/03 入力値>0の場合のみ登録 nishimura
     if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99
       @d_washsale_item = DWashsaleItem.new
       @d_washsale_item.d_wash_sale_id = d_wash_sale_id
-      @d_washsale_item.m_wash_id = wash_cd
+      #@d_washsale_item.m_wash_id = wash_cd
+      @d_washsale_item.m_wash_id = wash_id
       @d_washsale_item.wash_no = wash_no
       @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"].to_i
       if @d_washsale_item.wash_no == 99      

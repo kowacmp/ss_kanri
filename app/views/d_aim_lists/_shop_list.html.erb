@@ -16,7 +16,7 @@
       <td align="center"><%= shop.shop_kbn_name %><%#= if shop.shop_kbn == 0 then "直営" else "油外" end %></td>
       <td align="center"><%= link_to(image_tag('icon/24_show.png'),{:controller => 'd_aims',:action => 'index',
             :input_year => @year,:input_month => @month,
-            :input_shop_id => shop.shop_id,:input_aim => 0,:mode => 'list'}) %></td>
+            :input_shop_id => shop.shop_id,:input_aim => 1,:mode => 'list'}) %></td>
     </tr>
   <% end %>
   
