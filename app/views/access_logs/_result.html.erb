@@ -1,0 +1,25 @@
+<table id='rounded-corner' style="width: 930px;">
+
+  <tr>
+    <th>日時<br />(access_date)</th>
+    <th>ユーザID<br />(user_id)</th>
+    <th>ユーザ</th>
+    <th>コントローラ<br />(controller)</th>
+    <th>アクション<br />(action)</th>
+    <th>クライアントのホスト名<br />(remote_host)</th>
+    <th>パラメータ<br />(params)</th>
+  </tr>
+
+<% @access_logs.each do |access_log| %>
+  <% user = User.find(access_log.user_id) unless access_log.user_id.blank? %>
+  <tr>
+    <td><%= access_log.access_date.localtime.strftime("%Y/%m/%d  %H:%M:%S") %></td>
+    <td><%= access_log.user_id %></td>
+    <td><%= "#{user.account} #{user.user_name}" unless access_log.user_id.blank? %></td>
+    <td><%= access_log.controller %></td>
+    <td><%= access_log.action %></td>
+    <td><%= access_log.remote_host %></td>
+    <td><%= link_to image_tag('icon/24_show.png'), {:action => "show_params", :id => access_log.id}, :class => "modal" %></td>
+  </tr>
+<% end %>
+</table>

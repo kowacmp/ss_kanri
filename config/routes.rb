@@ -1,5 +1,7 @@
 SsKanri::Application.routes.draw do
 
+  resources :access_logs
+
   get "d_sale_etc_lists/index"
   get "d_sale_etc_lists/update"
   get "d_sale_etc_lists/search"
