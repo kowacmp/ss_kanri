@@ -467,7 +467,7 @@ p params
           end
     }
     #その他
-    15.times{ |i|
+    10.times{ |i|
           etc_item = params[:etc_item][i.to_s]
           update_flg = 0
           
@@ -519,7 +519,7 @@ p params
     }
     
     #プリカ
-    15.times{ |i|
+    10.times{ |i|
           purika_item = params[:purika_item][i.to_s]
           if purika_item["id"] == ""
             #insert

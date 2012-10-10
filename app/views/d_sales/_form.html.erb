@@ -237,7 +237,7 @@
 			<% else %>
 			  <% d_sale_items = DSaleItem.find(:all, :conditions=>["d_sale_id = ? and (item_class=? or item_class=?)", @d_sale.id, 3,4], :order => "id")%>
 			<% end %>
-			<% 15.times { |i| %>
+			<% 10.times { |i| %>
 				<% if d_sale_items[i] == nil %>
 				  <% @etc_item = DSaleItem.new %>
 				  <% @etc_item.item_money = "" %>
@@ -284,7 +284,7 @@
 			<% else %>
 			  <% d_sale_items = DSaleItem.find(:all, :conditions=>["d_sale_id = ? and item_class=?", @d_sale.id, 2], :order => "id")%>
 			<% end %>
-			<% 15.times { |i| %>
+			<% 10.times { |i| %>
 				<% if d_sale_items[i] == nil %>
 				  <% @purika_item = DSaleItem.new %>
 				  <% @purika_item.item_money = "" %>
