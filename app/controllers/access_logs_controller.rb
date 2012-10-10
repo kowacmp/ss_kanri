@@ -16,15 +16,20 @@ class AccessLogsController < ApplicationController
     @head[:s_input_day] = params[:s_input_day] == "" ? Time.now.localtime.strftime("%Y%m%d") : params[:s_input_day]
     @head[:e_input_day] = params[:e_input_day] == "" ? Time.now.localtime.strftime("%Y%m%d") : params[:e_input_day]
     @head[:user_id] = params[:head] == nil ? nil : params[:head][:user_id]
+    @head[:shop_id] = params[:head] == nil ? nil : params[:head][:shop_id]
     @head[:sql_where] = params[:head] == nil ? nil : params[:head][:sql_where]
 
     
-    select_sql = "select id, access_date, user_id, controller, action, remote_host from Access_logs"
-    where_sql = "access_date between '#{@head[:s_input_day].to_s[0,4]}/#{@head[:s_input_day].to_s[4,2]}/#{@head[:s_input_day].to_s[6,2]} 00:00:00' and '#{@head[:e_input_day].to_s[0,4]}/#{@head[:e_input_day].to_s[4,2]}/#{@head[:e_input_day].to_s[6,2]} 23:59:59'"
-    where_sql << " and user_id=#{@head[:user_id]}" unless @head[:user_id].blank?
-    where_sql << " and #{@head[:sql_where]}" unless @head[:sql_where].blank?
+    select_sql = "select a.id, a.access_date, a.user_id, a.controller, a.action, a.remote_host, c.shop_name "
+    select_sql << " from Access_logs a inner join users b on a.user_id = b.id inner join m_shops c on b.m_shop_id = c.id "
     
-    @access_logs = AccessLog.find_by_sql(select_sql + " where " + where_sql + " order by access_date desc")
+    where_sql = "a.access_date between '#{@head[:s_input_day].to_s[0,4]}/#{@head[:s_input_day].to_s[4,2]}/#{@head[:s_input_day].to_s[6,2]} 00:00:00' and '#{@head[:e_input_day].to_s[0,4]}/#{@head[:e_input_day].to_s[4,2]}/#{@head[:e_input_day].to_s[6,2]} 23:59:59'"
+    where_sql << " and a.user_id=#{@head[:user_id]}" unless @head[:user_id].blank?
+    where_sql << " and b.m_shop_id=#{@head[:shop_id]}" unless @head[:shop_id].blank?
+    where_sql2 = " where #{@head[:sql_where]}" unless @head[:sql_where].blank?
+    
+    
+    @access_logs = AccessLog.find_by_sql("select * from (#{select_sql} where #{where_sql}) as a #{where_sql2} order by access_date desc")
 
     respond_to do |format|
       format.js
