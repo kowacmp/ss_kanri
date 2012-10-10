@@ -58,7 +58,7 @@
 		</tr>
 		<tr>
 		  <th><%= f.label '郵便番号' %></th>
-		  <td><%= f.text_field :shop_zip_cd , :style=>"ime-mode:disabled" ,:maxlength=>8 %></td>  	  
+		  <td><%= f.text_field :shop_zip_cd , :style=>"ime-mode:disabled" ,:maxlength=>8,:size=>15 %></td>  	  
 		</tr>
 		<tr>
 		  <th><%= f.label '住所' %></th>
@@ -66,11 +66,11 @@
 		</tr>
 		<tr>
 		  <th><%= f.label 'TEL' %></th>
-		  <td><%= f.text_field :shop_tel , :style=>"ime-mode:disabled" ,:maxlength=>12 %></td>  	  
+		  <td><%= f.text_field :shop_tel , :style=>"ime-mode:disabled" ,:maxlength=>12,:size=>15 %></td>  	  
 		</tr>
 		<tr>
 		  <th><%= f.label 'FAX' %></th>
-		  <td><%= f.text_field :shop_fax , :style=>"ime-mode:disabled" ,:maxlength=>12 %></td>  	  
+		  <td><%= f.text_field :shop_fax , :style=>"ime-mode:disabled" ,:maxlength=>12,:size=>15 %></td>  	  
 		</tr>
 		<tr>
 		  <th><%= f.label 'E-mail' %></th>
@@ -94,7 +94,10 @@
 			end, :selected => @m_shop.m_shop_group_id, :include_blank => "選択して下さい") %>
 		  </td>  	  
 		</tr>
-		
+		<tr>
+		  <th><%= f.label '配送先コード' %></th>
+		  <td><%= f.number_field :delivery_cd , :style=>"ime-mode:disabled" ,:maxlength=>6,:onkeyup=>"numberCheck(this)"%></td> 	  
+		</tr>
 		
 		<% @m_oils.each_with_index do |m_oil,idx| %>
 		<%- if m_oil.id == @m_shop.m_oil_id1 -%>
@@ -390,13 +393,16 @@
 	 	if (document.getElementById('m_shop_shop_ryaku').value == "") {
 			error_msg_m = error_msg_m + '<li>店舗略称を入力してください。</li>';
 		}
+		if (document.getElementById('m_shop_delivery_cd').value == "") {
+			error_msg_m = error_msg_m + '<li>配送先コードを入力してください。</li>';
+		}
 		
 		var ary_shop_cd = 
 		
 			<% if params[:id].blank? %>
-				String(<%= MShop.find(:all).map do |u| [u.shop_cd] end %>).split(",");
+				String(<%= MShop.find(:all,:conditions=>["shop_cd is not null"]).map do |u| [u.shop_cd] end %>).split(",");
 			<% else %>
-				String(<%= MShop.find(:all,:conditions=>["id <> ?",params[:id]]).map do |u| [u.shop_cd] end %>).split(",");
+				String(<%= MShop.find(:all,:conditions=>["shop_cd is not null and id <> ?",params[:id]]).map do |u| [u.shop_cd] end %>).split(",");
 			<% end %>
 		
 		
@@ -420,7 +426,20 @@
  			}
  		}
 		
+		var ary_delivery_cd = 
 		
+			<% if params[:id].blank? %>
+				String(<%= MShop.find(:all,:conditions=>["delivery_cd is not null"]).map do |u| [u.delivery_cd] end %>).split(",");
+			<% else %>
+				String(<%= MShop.find(:all,:conditions=>["delivery_cd is not null and id <> ?",params[:id]]).map do |u| [u.delivery_cd] end %>).split(",");
+			<% end %>
+		
+		for(i=0; i<ary_delivery_cd.length; i++) {
+			if(ary_delivery_cd[i] == document.getElementById('m_shop_delivery_cd').value) {
+				error_msg_m = error_msg_m + '<li>配送先コードが既に登録されています。</li>';
+				break;
+			}
+		}
 	 	//店舗情報  >>>>>>>>>>>>>>>>>>>>>>>
 	 	
 	 	//固定釣銭  <<<<<<<<<<<<<<<<<<<<<<<

@@ -10,14 +10,20 @@
       </tr>
     </thead>
 
+	<% tab_index = 0 %><!-- 2012/10/09 tabindex nishimura -->
     <tbody>
       <% @m_tanks.each do |m_tank| %>
+      	<% tab_index = tab_index + 1 %><!-- 2012/10/01 tabindex nishimura -->
         <tr>
           <td>タンク<%= m_tank.tank_no %></td>
           <td><%= m_tank.volume %>KL</td>
           <td><%= m_tank.oil_name %></td>
-          <td><%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :maxlength => 9, :readonly => @text, :class => "money" %></td>
-          <td><%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :maxlength => 9, :readonly => @text, :class => "money" %></td>                  
+          <td><%#= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :maxlength => 9, :readonly => @text, :class => "money" %>
+          	<%= number_field :receive, m_tank.m_tank_id, :value => m_tank.receive, :maxlength => 9, :readonly => @text, :class => "money",:tabindex=>tab_index %>
+          </td>
+          <td><%#= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :maxlength => 9, :readonly => @text, :class => "money" %>
+          	<%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :maxlength => 9, :readonly => @text, :class => "money",:tabindex=>tab_index + @m_tanks.count %>
+          </td>                  
         </tr>
       <% end %>
     </tbody>

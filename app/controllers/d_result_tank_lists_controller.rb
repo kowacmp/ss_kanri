@@ -38,7 +38,9 @@ class DResultTankListsController < ApplicationController
     @shop_kbn = params[:shop_kbn]
     @from_ymd_s = @from_ymd.delete("/")
     @to_ymd_s   = @to_ymd.delete("/")
-    str = "店舗コード".tosjis + ",店舗".tosjis + ",日付".tosjis
+    #2012/10/10 店舗コード=>配送先コード nishimura
+    #str = "店舗コード".tosjis + ",店舗".tosjis + ",日付".tosjis
+    str = "配送先コード".tosjis + ",店舗".tosjis + ",日付".tosjis
     
     @m_shops = get_shops1(@shop_kbn)
     @m_oils = MOil.where('deleted_flg = 0').order('oil_cd')
@@ -59,7 +61,9 @@ class DResultTankListsController < ApplicationController
         for i in 0..@num.to_i
             #str = shop.shop_cd.to_s + "," + shop.shop_name.tosjis + "," + "#{i.to_s[0,4]}/#{i.to_s[4,2]}/#{i.to_s[6,2]}"
             #str = shop.shop_cd.to_s + "," + shop.shop_name.tosjis + "," + "#{i.to_s[0,4]}/#{i.to_s[4,2]}/#{i.to_s[6,2]}"
-            str = shop.shop_cd.to_s + "," + shop.shop_name.tosjis + "," + (Date.parse(@from_ymd_s) + i).strftime("%Y/%m/%d")
+            #2012/10/10 店舗コード=>配送先コード nishimura
+            #str = shop.shop_cd.to_s + "," + shop.shop_name.tosjis + "," + (Date.parse(@from_ymd_s) + i).strftime("%Y/%m/%d")
+            str = shop.delivery_cd.to_s + "," + shop.shop_name.tosjis + "," + (Date.parse(@from_ymd_s) + i).strftime("%Y/%m/%d")
              @m_oils.each do |oil|
                #str = str + "," + get_sum_stock(i.to_s,i.to_s,shop.id,oil.id).to_s
                str = str + "," + get_sum_stock((@from_ymd_s.to_i + i).to_s,(@from_ymd_s.to_i + i).to_s,shop.id,oil.id).to_s

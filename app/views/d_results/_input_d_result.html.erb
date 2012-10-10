@@ -177,13 +177,60 @@
 	        <th>日計</th>
 	        <th>累計</th>
 	      </tr>
-          <% @m_oil_etcs.each do |m_oil_etc| %>
+	      <!-- 2012/10/10 コード順と違った並びにしたいためid固定で取得 nisimura 
+          <%# @m_oil_etcs.each do |m_oil_etc| %>
             <tr>
-              <th><%= m_oil_etc.oiletc_name %></th> 	
-              <td><%= number_field :get_num, "#{m_oil_etc.id}", :value => m_oil_etc.get_num, :maxlength => 9, :class => "money" %></td>            
-              <td class="input_no" id="display"><%= @ruikei_eigyos[m_oil_etc.id][:ruikei] %></td> 
+              <th><%#= m_oil_etc.oiletc_name %></th> 	
+              <td><%#= number_field :get_num, "#{m_oil_etc.id}", :value => m_oil_etc.get_num, :maxlength => 9, :class => "money" %></td>            
+              <td class="input_no" id="display"><%#= @ruikei_eigyos[m_oil_etc.id][:ruikei] %></td> 
             </tr>
-          <% end %>	
+          <%# end %>
+          -->
+          <% @m_oil_etcs.each do |m_oil_etc| %>
+          	<% if m_oil_etc.id == 1 %>
+	            <tr>
+	              <th><%= m_oil_etc.oiletc_name %></th> 	
+	              <td><%= number_field :get_num, "#{m_oil_etc.id}", :value => m_oil_etc.get_num, :maxlength => 9, :class => "money" %></td>            
+	              <td class="input_no" id="display"><%= @ruikei_eigyos[m_oil_etc.id][:ruikei] %></td> 
+	            </tr>
+            <% end %>
+          <% end %>
+          <% @m_oil_etcs.each do |m_oil_etc| %>
+          	<% if m_oil_etc.id == 4 %>
+	            <tr>
+	              <th><%= m_oil_etc.oiletc_name %></th> 	
+	              <td><%= number_field :get_num, "#{m_oil_etc.id}", :value => m_oil_etc.get_num, :maxlength => 9, :class => "money" %></td>            
+	              <td class="input_no" id="display"><%= @ruikei_eigyos[m_oil_etc.id][:ruikei] %></td> 
+	            </tr>
+            <% end %>
+          <% end %>
+          <% @m_oil_etcs.each do |m_oil_etc| %>
+          	<% if m_oil_etc.id == 6 %>
+	            <tr>
+	              <th><%= m_oil_etc.oiletc_name %></th> 	
+	              <td><%= number_field :get_num, "#{m_oil_etc.id}", :value => m_oil_etc.get_num, :maxlength => 9, :class => "money" %></td>            
+	              <td class="input_no" id="display"><%= @ruikei_eigyos[m_oil_etc.id][:ruikei] %></td> 
+	            </tr>
+            <% end %>
+          <% end %>
+          <% @m_oil_etcs.each do |m_oil_etc| %>
+          	<% if m_oil_etc.id == 13 %>
+	            <tr>
+	              <th><%= m_oil_etc.oiletc_name %></th> 	
+	              <td><%= number_field :get_num, "#{m_oil_etc.id}", :value => m_oil_etc.get_num, :maxlength => 9, :class => "money" %></td>            
+	              <td class="input_no" id="display"><%= @ruikei_eigyos[m_oil_etc.id][:ruikei] %></td> 
+	            </tr>
+            <% end %>
+          <% end %>
+          <% @m_oil_etcs.each do |m_oil_etc| %>
+          	<% if m_oil_etc.id == 7 %>
+	            <tr>
+	              <th><%= m_oil_etc.oiletc_name %></th> 	
+	              <td><%= number_field :get_num, "#{m_oil_etc.id}", :value => m_oil_etc.get_num, :maxlength => 9, :class => "money" %></td>            
+	              <td class="input_no" id="display"><%= @ruikei_eigyos[m_oil_etc.id][:ruikei] %></td> 
+	            </tr>
+            <% end %>
+          <% end %>
         </table>
       </td>
     <% end %>
