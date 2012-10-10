@@ -20,62 +20,106 @@
 			立会人
 		</th>
 		<th>
-			入力状況
+			入力<br/>
+			状況
+		</th>
+		<th>
+			ロック/解除<br/>
+			<input type="checkbox" id="kakutei_flg_all" />
 		</th>
 		<th>
 			詳細
-		</th>
-		<th>
-			ロック/解除
-		</th>
-		<th>
-			確認
-		</th>
-		<th>
-			承認状況
 		</th>
 	</tr>
 	<!-- end ヘッダ -->
+	<% i = 1 %>
 	
-	<% for audit_rec in @audit %>
+	<% for m_shop in @m_shops %>
+	<% @audit = DAuditCashbox.find_by_sql(@sql + " and m_shop_id = " + m_shop.id.to_s)[0] %>
 	<tr>
-		<th>
-			店舗
-		</th>
-		<th>
-			監査日
-		</th>
-		<th>
-			処理
-		</th>
-		<th>
-			種別
-		</th>
-		<th>
-			監査人
-		</th>
-		<th>
-			立会人
-		</th>
-		<th>
-			入力状況
-		</th>
-		<th>
-			詳細
-		</th>
-		<th>
-			ロック/解除
-		</th>
-		<th>
-			確認
-		</th>
-		<th>
-			承認状況
-		</th>
+		<td align="center">
+			<%= m_shop.shop_cd %><br/><%= m_shop.shop_name %>
+		</td>
+		<td align="center">
+			<%= get_audit_date(@audit) %>
+		</td>
+		<td align="center">
+			<%= @shori_name if not(@audit.nil?) %>
+		</td>
+		<td align="center">
+			<%= get_audit_class(@audit) %>
+		</td>
+		<td align="center">
+			<%= get_kansanin(@audit) %>
+		</td>
+		<td align="center">
+			<%= get_tatiainin(@audit) %>
+		</td>
+		<td align="center">
+			<%= get_nyuryoku(@audit) %>
+		</td>
+		<td align="center">
+			<%if not(@audit.nil?) then %>
+				<% if @audit.kakutei_flg.to_i == 0 %>
+					<%= check_box_tag "data_kakutei_flg_#{i}", "0", false %>
+				<% else %>
+					<%=  check_box_tag "data_kakutei_flg_#{i}", "1", true %>
+				<% end%>
+				<%= hidden_field_tag "data_id_#{i}", @audit.id %>
+				<% i += 1 %>
+			<% end %>
+		</td>
+		<td align="center">
+			<%if not(@audit.nil?) then %>
+				<%= link_to image_tag('icon/24_edit.png'), {:controller => @table,:action => 'edit', :id => @audit.id, :back => "true" } %>
+			<% end %>
+		</td>
 	</tr>
-	<% end %> <!-- 	<% for audit_rec in @audit %> -->
-　
-
-
-
+	<% end %>
 </table>
+
+<script>
+$( function(){
+	
+  //ロック／解除が変更された場合のイベント
+  $(":checkbox[id^=data_kakutei_flg]").click(function(){
+		
+		$.post('<%=url_for(:action => "lock")%>',
+			{ kakutei_flg: $(this).attr('checked'), 
+			  id: $(this).parent().find(":hidden[id^=data_id]").val(),
+			  authenticity : "<%=form_authenticity_token%>",
+			  table : "<%=@table%>" }
+		);
+	
+	}
+  );
+
+  //全ロック,解除
+  $("#kakutei_flg_all").click(function(){
+		//更新IDを取得
+		ids = "";
+		$(":hidden[id^=data_id]").each( function() {
+			if (ids != "") { ids += "," }
+			ids += this.value;
+		});
+		
+		//AJAX更新
+		$.post('<%=url_for(:action => "lock_all")%>',
+			{ kakutei_flg: $(this).attr('checked'), 
+			  ids: ids,
+			  authenticity : "<%=form_authenticity_token%>",
+			  table: "<%=@table%>" },
+			"script"
+		);
+		
+		//フラグ更新
+		flg = this.checked;
+		$(":checkbox[id^=data_kakutei_flg]").each( function() {
+			this.checked = flg;
+		});
+	}
+  );
+
+
+});
+</script>
