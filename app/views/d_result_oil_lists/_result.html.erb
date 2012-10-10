@@ -10,7 +10,7 @@
 	<table id="report_view_table" class="rounded-corner">
 	<thead>
 	<tr>
-	    <th rowspan="2" scope="col">店舗</th>
+	    <th rowspan="2" scope="col" style="width:30%">店舗</th>
 	    <th rowspan="2" scope="col">日付</th>
 	    <th colspan="4" scope="col">出荷量(L)</th>
 	</tr>
@@ -26,9 +26,9 @@
 	<% @m_shops.each do |shop| %>
 		<% for i in 0..@num.to_i %>
 			<tr>
-				<td>
+				<td style="padding-left: 12px">
 					<% unless shop.shop_name == shop_name_key %>
-						<%= shop.shop_cd %> <%= shop.shop_name %>
+						<%= shop.delivery_cd %>&nbsp;<%= shop.shop_name %><%#= shop.shop_cd %>
 					<% end %>
 					<% shop_name_key = shop.shop_name %>
 				</td>
