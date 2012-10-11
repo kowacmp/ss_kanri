@@ -574,7 +574,8 @@ p "oil_sql=#{oil_sql}"
       if old_d_result_report.blank? or day == "01" 
         d_result_report.arari_total = d_result_report.arari
       else
-        d_result_report.arari_total = old_d_result_report.arari + d_result_report.arari 
+        #d_result_report.arari_total = old_d_result_report.arari + d_result_report.arari 
+        d_result_report.arari_total = old_d_result_report.arari_total + d_result_report.arari 
       end
       
       today = Time.parse(d_result.result_date).strftime("%d") 

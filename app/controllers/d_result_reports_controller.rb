@@ -252,6 +252,8 @@ class DResultReportsController < ApplicationController
   end
   
   def print_result_2_report(datas,input_ymd_e)
+    @day_e = input_ymd_e[6,2].to_i
+    @month_last_day = Date.new(input_ymd_e[0,4].to_i,input_ymd_e[4,2].to_i).end_of_month.day.to_i
     
     r_chousei_total = 0
     syaken_total = 0
@@ -357,7 +359,14 @@ class DResultReportsController < ApplicationController
         row.item(:r_chousei).value(data.r_chousei)
           r_chousei_total = r_chousei_total + data.r_chousei.to_i
         row.item(:oiletc_aim).value(data.oiletc_aim)
-        row.item(:oiletc_pace).value(data.oiletc_pace)
+        
+        if data.r_arari
+          @oiletc_pace = (data.r_arari.to_f / @day_e * @month_last_day).round(0)
+        else
+          @oiletc_pace = ""
+        end
+        #row.item(:oiletc_pace).value(data.oiletc_pace)
+        row.item(:oiletc_pace).value(@oiletc_pace)
         row.item(:syaken_aim).value(data.syaken_aim)  
         row.item(:syaken).value(data.syaken)
           syaken_total = syaken_total + data.syaken.to_i
@@ -782,7 +791,8 @@ class DResultReportsController < ApplicationController
       select_sql <<       "sum(d2.sc) as r_sc, sum(d2.taiyaw) as r_taiyaw,"
       select_sql <<       "sum(d2.sp_plus) as r_sp_plus, sum(d2.atf) as r_atf,"
       select_sql <<       "sum(d2.kousen) as r_kousen, sum(d2.bt) as r_bt,"
-      select_sql <<       "sum(d2.bankin) as r_bankin, sum(d2.waiper) as r_waiper, sum(d2.mobil1) as r_mobil1"
+      select_sql <<       "sum(d2.bankin) as r_bankin, sum(d2.waiper) as r_waiper, sum(d2.mobil1) as r_mobil1,"
+      select_sql <<       "sum(trunc(d2.arari,0))   as r_arari"
       select_sql <<            " from d_results d1"
       select_sql <<            " left join (select * from d_result_reports) d2 on d1.id = d2.d_result_id"
       select_sql <<            " where d1.result_date >= '#{input_ymd_s}' and d1.result_date <= '#{input_ymd_e}' "
@@ -797,7 +807,7 @@ class DResultReportsController < ApplicationController
       #車検
       select_sql << " left join (select f1.m_shop_id,f1.aim_total as syaken_aim from d_aims f1"
       select_sql <<            " left join m_aims f2 on f1.m_aim_id = f2.id"
-      select_sql << " where f1.date = '#{input_month}' and f2.id = 14 ) f on a.id = f.m_shop_id "
+      select_sql << " where f1.date = '#{input_month}' and f2.id = 15 ) f on a.id = f.m_shop_id "
       
     elsif select_kbn == 2
       #洗車型実績表1

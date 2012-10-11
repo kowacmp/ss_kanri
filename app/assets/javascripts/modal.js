@@ -45,7 +45,10 @@ function setModal() {
 //モーダルウィンドウを開く
 function displayModal(sign) {
 	if (sign) {
-		$("div#modal").fadeIn(500);
+		//UPDATE BEGIN 2012.10.11 モーダル展開時に初期フォーカスをセットする
+		//$("div#modal").fadeIn(500);
+		$("div#modal").fadeIn(500, firstFocus($("div#modal div.container")));
+		//UPDATE END
 	} else {
 		$("div#modal").fadeOut(250);
 	}
@@ -57,3 +60,45 @@ function adjustCenter(target) {
 	var margin_left = ($(window).width()-$(target).width())/2;
 	$(target).css({top:margin_top+"px", left:margin_left+"px"});
 }
+
+// フォーカスを先頭にセット (container: jQuery(#ID))
+function firstFocus(container) { return function () {
+
+	// tabindexを取得する関数を定義(取得できない場合は-1)
+	var getTabindex = function (obj) {
+		var tab = $(obj).attr("tabindex");
+		if (!isNaN(tab) && Number(tab) >= 0) {
+			return Number(tab);
+		} else {
+			return -1;
+		}
+	}
+
+	// コンテナ内の利用可能なオブジェクトを取得
+	var obj = $(container).find(":input:enabled");
+	if (obj.length == 0) { return; } 
+	
+	// tabindexが指定されているオブジェクトを取得
+	var objtab = obj.filter("[tabindex]");
+	
+	if (objtab.length == 0) {
+		// tabindexなし、最初に見つかったオブジェクトをフォーカス
+		obj.filter(":first").focus();
+	} else {
+		// tabindexが一番若いオブジェクトをフォーカス
+		var objFocus;
+		objtab.each( function() {
+			if (getTabindex(this) >= 0) {
+				if (objFocus == null ) {
+					objFocus = this;
+				} else {
+					if (getTabindex(this) < getTabindex(objFocus)) {
+						objFocus = this;
+					}
+				}
+			}
+		});
+		$(objFocus).focus();
+	}
+
+}}

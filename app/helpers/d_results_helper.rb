@@ -737,7 +737,9 @@ module DResultsHelper
   
   def view_pos_ruikei(oiletc_ruikei, oiletc_nikkei, oiletc_tani)
     if oiletc_tani == 6
-      goukei = ((oiletc_ruikei.to_f * 100) + (oiletc_nikkei.to_f * 100)) / 100
+      #2012/10/10 nishimura
+      #goukei = ((oiletc_ruikei.to_f * 100) + (oiletc_nikkei.to_f * 100)) / 100
+      goukei = (((oiletc_ruikei.to_f * 100) + (oiletc_nikkei.to_f * 100)) / 100).round(2)
     else
       goukei = oiletc_ruikei.to_i + oiletc_nikkei.to_i
     end
