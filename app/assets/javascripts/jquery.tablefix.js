@@ -6,6 +6,10 @@
  */
 (function($){
 	$.fn.tablefix = function(options) {
+		if ($("div#modal .container").html() != '') {
+			$("div#modal").fadeIn();
+		};
+		
 		return this.each(function(index){
 			// 処理継続の判定
 			var baseTable = $(this);
