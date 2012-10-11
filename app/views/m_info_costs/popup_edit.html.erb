@@ -6,10 +6,10 @@
 	<thead>
 		<tr>
 			<th style="min-width: 80px">基本給</th>
-			<th style="min-width: 80px">福利費</th>
 			<% if @user.user_class == 1 %>
 				<th style="min-width: 80px">能力給</th>
 			<% end %>
+			<th style="min-width: 80px">福利費</th>
 			<th style="min-width: 80px">手当１</th>
 			<th style="min-width: 80px">手当２</th>
 			<th style="min-width: 80px">手当３</th>
@@ -19,10 +19,10 @@
 	<tbody>
 		<tr>
 			<td><%= f.number_field :base_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
-			<td><%= f.number_field :night_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
 			<% if @user.user_class == 1 %>
-				<td><%= f.number_field :welfare_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+			   <td><%= f.number_field :skill_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
 			<% end %>
+	        <td><%= f.number_field :welfare_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
 			<td><%= f.number_field :etc_pay1, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
 			<td><%= f.number_field :etc_pay2, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
 			<td><%= f.number_field :etc_pay3, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
@@ -39,5 +39,7 @@
 $(function () {
 	$('div#modal div.container').css("height", "200px");
 	$('div#modal div.container').css("width", "740px");
+	$("div#modal").fadeIn();
+	adjustCenter("div#modal div.container");
 });	
 </script>

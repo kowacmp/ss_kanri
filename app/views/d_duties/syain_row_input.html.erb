@@ -65,10 +65,12 @@
 
 <script>
 $(function () {
-	$('div#modal div.container').css("height", "800px");
+	$('div#modal div.container').css("height", "600px");
 	$('div#modal div.container').css("width", "280px");
 	$("div#modal").fadeIn();
-	$('div#modal #syain_row_input_table').tablefix({width: 210, height: 600, fixRows: 1, fixCols: 0});
+	adjustCenter("div#modal div.container");
+	$('div#modal #syain_row_input_table').tablefix({width: 210, height: 450, fixRows: 1, fixCols: 0});
 	$('div#modal div.bodyDiv').scrollTop(25 * (<%= Time.now.day %> - 2));
+	
 });	
 </script>

@@ -98,7 +98,7 @@
 			colDiv
 			    .addClass('colDiv')
 				.width(offsetX)
-				.height(bodyHeight + (withWidth ? 20 : 0) + (withHeight ? 20 : 0))
+				.height(bodyHeight + (withWidth ? 20 : 0) + (withHeight ? 23 : 0))
 				.css({top: offsetY + 'px'});
 			//2012/10/01 tabindex使用のため追加 <<<
 			colDiv.find('input').each(function(){
@@ -133,7 +133,7 @@
 			// 外部 div の設定
 			div
 				.width(options.width + (withWidth ? 20 : 0) + (withHeight ? 20 : 0))
-				.height(options.height + (withWidth ? 20 : 0) + (withHeight ? 20 : 0));
+				.height(options.height + (withWidth ? 20 : 0) + (withHeight ? 25 : 0));
 		});
 		
 	}

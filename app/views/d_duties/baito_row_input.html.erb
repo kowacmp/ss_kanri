@@ -14,7 +14,8 @@
 		<th style="min-width: 40px">日</th>
 		<th style="max-width: 40px">曜</th>
 		<th style="min-width: 80px">日勤</th>
-		<th style="min-width: 80px">夜勤</th>
+		<th style="min-width: 80px">夜勤(残業)</th>
+		<th style="min-width: 80px">深夜残業</th>
 		<th style="min-width: 80px">合計</th>
 		</tr>
 	</thead>
@@ -48,8 +49,11 @@
 				    <td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
 						<%= text_field_tag "datas[#{i + 1}][night_work_time]", "",  {:size=>4, :class=>"money"} %>
 					</td>
+				    <td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
+						<%= text_field_tag "datas[#{i + 1}][night_over_time]", "",  {:size=>4, :class=>"money"} %>
+					</td>
 					<td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
-						<label id='<%= "datas_#{i + 1}_all_work_time" %>'></label>
+						<label id='<%= "l_datas_#{i + 1}_all_work_time" %>'></label>
 						<%= hidden_field_tag "datas[#{i + 1}][all_work_time]", "" %>
 				    </td>
 				<% else %>
@@ -60,7 +64,10 @@
 			  			<%= text_field_tag "datas[#{i + 1}][night_work_time]", d_dutry.night_work_time,  {:size=>4, :class=>"money"} %>
 			  		</td>
 					<td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
-						<label id='<%= "datas_#{i + 1}_all_work_time" %>'><%= d_dutry.all_work_time %></label>
+			  			<%= text_field_tag "datas[#{i + 1}][night_over_time]", d_dutry.night_over_time,  {:size=>4, :class=>"money"} %>
+			  		</td>
+					<td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
+						<label id='<%= "l_datas_#{i + 1}_all_work_time" %>'><%= d_dutry.all_work_time %></label>
 						<%= hidden_field_tag "datas[#{i + 1}][all_work_time]", d_dutry.all_work_time %>
 				    </td>
 			  	<% end %>
@@ -78,10 +85,11 @@
 
 <script>
 $(function () {
-	$('div#modal div.container').css("height", "800px");
-	$('div#modal div.container').css("width", "450px");
+	$('div#modal div.container').css("height", "600px");
+	$('div#modal div.container').css("width", "550px");
 	$("div#modal").fadeIn();
-	$('div#modal #baito_row_input_table').tablefix({width: 400, height: 600, fixRows: 1, fixCols: 0});
+	adjustCenter("div#modal div.container");
+	$('div#modal #baito_row_input_table').tablefix({width: 500, height: 450, fixRows: 1, fixCols: 0});
 	$('div#modal div.bodyDiv').scrollTop(25 * (<%= Time.now.day %> - 2));
 	
 	//入力チェック

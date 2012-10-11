@@ -16,13 +16,14 @@ $(function () {
     });
            	
 	//バいトの日勤が変更されたら
-	$("div#modal :input[id*=_day_work_time], div#modal :input[id*=_night_work_time]")
+	$("div#modal :input[id*=_day_work_time], div#modal :input[id*=_night_work_time], , div#modal :input[id*=_night_over_time]")
     .live('change', function(){
     	var get_index;
     	var total;
 		var Div_id='';
 		var num1;
 		var num2;
+		var num3;
 		
 	    if ($("div#modal div.bodyDiv").size() > 0) {
 	    	Div_id = 'div.bodyDiv ';
@@ -32,16 +33,19 @@ $(function () {
 	   	get_index = $(this).attr('id').replace("datas_", "");
 	    get_index = get_index.replace("_day_work_time", "");
 	    get_index = get_index.replace("_night_work_time", "");
+	    get_index = get_index.replace("_night_over_time", "");
 	    
 	    num1 = Number($("div#modal " + Div_id + "#datas_" + get_index + "_day_work_time").val());
         if (isNaN(num1)) {num1 = 0};
 	    num2 = Number($("div#modal " + Div_id + "#datas_" + get_index + "_night_work_time").val());
         if (isNaN(num2)) {num2 = 0};
+	    num3 = Number($("div#modal " + Div_id + "#datas_" + get_index + "_night_over_time").val());
+        if (isNaN(num3)) {num3 = 0};
         
-	    total = num1 + num2;
+	    total = num1 + num2 + num3;
 	    
-	    $("div#modal " + Div_id + "#datas_" + get_index + "_all_work_time").text(total);
-	    $("div#modal " + Div_id + "input#datas_" + get_index + "_all_work_time").val(total);
+	    $("div#modal " + Div_id + "#l_datas_" + get_index + "_all_work_time").text(total);
+	    $("div#modal " + Div_id + "#datas_" + get_index + "_all_work_time").val(total);
     });
       
     //各社員の合計日数が変わったら、合計を再計算する

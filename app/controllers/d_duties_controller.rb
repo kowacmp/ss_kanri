@@ -53,18 +53,10 @@ class DDutiesController < ApplicationController
     
     params[:datas].each{|key, data|
       d_dutie = DDuty.find(:first,:conditions=>["duty_nengetu = ? and user_id = ? and day = ?", @input_day[0,6].to_s, data[:user_id], @input_day[6,2]])
-      if d_dutie.blank?
-        d_dutie = DDuty.new
-        d_dutie.duty_nengetu = @input_day[0,6].to_s
-        d_dutie.user_id = data[:user_id]
-        d_dutie.day =  @input_day[6,2]
-        d_dutie.created_user_id = current_user.id
-      end
       
-      d_dutie.m_shop_id = @m_shop_id
-      d_dutie.day_work_time = data[:syukin] if data[:syukin]
-      d_dutie.updated_user_id = current_user.id
-      d_dutie.save
+      #データ更新
+      d_duites_syain_edit(data, d_dutie, @input_day, data[:user_id], @input_day[6,2])
+
     }
     @d_duties = params[:datas]
     
@@ -93,18 +85,10 @@ class DDutiesController < ApplicationController
     
     params[:datas].each{|day, data|
       d_dutie = DDuty.find(:first,:conditions=>["duty_nengetu = ? and user_id = ? and day = ?", @input_day[0,6].to_s, @user_id, day])
-      if d_dutie.blank?
-        d_dutie = DDuty.new
-        d_dutie.duty_nengetu = @input_day[0,6].to_s
-        d_dutie.user_id = @user_id
-        d_dutie.day =  day
-        d_dutie.created_user_id = current_user.id
-      end
-      
-      d_dutie.m_shop_id = @m_shop_id
-      d_dutie.day_work_time = data[:syukin] if data[:syukin]
-      d_dutie.updated_user_id = current_user.id
-      d_dutie.save
+
+      #データ更新
+      d_duites_syain_edit(data, d_dutie, @input_day, @user_id, day)
+
     }
     @d_duties = params[:datas]
     
@@ -130,21 +114,10 @@ class DDutiesController < ApplicationController
     
     params[:datas].each{|key, data|
       d_dutie = DDuty.find(:first,:conditions=>["duty_nengetu = ? and user_id = ? and day = ?", @input_day[0,6].to_s, data[:user_id], @input_day[6,2]])
-      if d_dutie.blank?
-        d_dutie = DDuty.new
-        d_dutie.duty_nengetu = @input_day[0,6].to_s
-        d_dutie.user_id = data[:user_id]
-        d_dutie.day =  @input_day[6,2]
-        d_dutie.created_user_id = current_user.id
-      end
       
-      d_dutie.m_shop_id = @m_shop_id
-      d_dutie.day_work_time = data[:day_work_time] if data[:day_work_time]
-      d_dutie.night_work_time = data[:night_work_time] if data[:night_work_time]      
-      d_dutie.all_work_time = data[:all_work_time] if data[:all_work_time]
+      #データ更新
+      d_duites_baito_edit(data, d_dutie, @input_day, data[:user_id], @input_day[6,2])
       
-      d_dutie.updated_user_id = current_user.id
-      d_dutie.save
     }
     
     @d_duties = params[:datas]
@@ -173,20 +146,10 @@ class DDutiesController < ApplicationController
     
     params[:datas].each{|day, data|
       d_dutie = DDuty.find(:first,:conditions=>["duty_nengetu = ? and user_id = ? and day = ?", @input_day[0,6].to_s, @user_id, day])
-      if d_dutie.blank?
-        d_dutie = DDuty.new
-        d_dutie.duty_nengetu = @input_day[0,6].to_s
-        d_dutie.user_id = @user_id
-        d_dutie.day =  day
-        d_dutie.created_user_id = current_user.id
-      end
+
+      #データ更新
+      d_duites_baito_edit(data, d_dutie, @input_day, @user_id, day)
       
-      d_dutie.m_shop_id = @m_shop_id
-      d_dutie.day_work_time = data[:day_work_time] if data[:day_work_time]
-      d_dutie.night_work_time = data[:night_work_time] if data[:night_work_time]      
-      d_dutie.all_work_time = data[:all_work_time] if data[:all_work_time]     
-      d_dutie.updated_user_id = current_user.id
-      d_dutie.save
     }
     @d_duties = params[:datas]
     
@@ -268,6 +231,64 @@ class DDutiesController < ApplicationController
   end
   
   private
+  
+  #バイト用データ更新
+  def d_duites_baito_edit(data, d_dutie, input_day, user_id, day)
+    
+    if d_dutie.blank?
+      d_dutie = DDuty.new
+      d_dutie.duty_nengetu = input_day[0,6].to_s
+      d_dutie.user_id = user_id
+      d_dutie.day =  day
+      d_dutie.created_user_id = current_user.id
+    end
+    
+    #時間に変更がない場合は更新しない
+    unless d_dutie.day_work_time.to_f == data[:day_work_time].to_f and
+       d_dutie.night_work_time.to_f == data[:night_work_time].to_f and
+       d_dutie.night_over_time.to_f == data[:night_over_time].to_f
+
+      d_dutie.m_shop_id = @m_shop_id
+      d_dutie.day_work_time = data[:day_work_time] if data[:day_work_time]
+      d_dutie.night_work_time = data[:night_work_time] if data[:night_work_time]    
+      d_dutie.night_over_time = data[:night_over_time] if data[:night_over_time]    
+      d_dutie.all_work_time = data[:all_work_time] if data[:all_work_time]   
+      
+      #金額計算
+      m_info_cost = MInfoCost.find(:first, :conditions=>["user_id=?", user_id])
+      establish = Establish.find(1)
+      
+      unless m_info_cost.blank?
+        d_dutie.day_work_money = ((m_info_cost.base_pay.to_i + m_info_cost.skill_pay.to_i) * d_dutie.day_work_time.to_f).ceil #切り上げ
+        d_dutie.night_work_money = (((m_info_cost.base_pay.to_i * establish.add_work_rate.to_f).ceil + m_info_cost.skill_pay.to_i) * d_dutie.day_work_time.to_f).ceil #切り上げ
+        d_dutie.night_over_money = (((m_info_cost.base_pay.to_i * establish.add_nigth_work_rate.to_f).ceil + m_info_cost.skill_pay.to_i) * d_dutie.day_work_time.to_f).ceil #切り上げ
+        d_dutie.all_money = d_dutie.day_work_money + d_dutie.night_work_money + d_dutie.night_over_money
+      end
+      
+      d_dutie.updated_user_id = current_user.id
+      d_dutie.save
+      p "save ok #{day}"
+    end
+    
+  end
+  
+  #社員用データ更新
+  def d_duites_syain_edit(data, d_dutie, input_day, user_id, day)
+
+    if d_dutie.blank?
+      d_dutie = DDuty.new
+      d_dutie.duty_nengetu = @input_day[0,6].to_s
+      d_dutie.user_id = @user_id
+      d_dutie.day =  day
+      d_dutie.created_user_id = current_user.id
+    end
+    
+    d_dutie.m_shop_id = @m_shop_id
+    d_dutie.day_work_time = data[:syukin] if data[:syukin]
+    d_dutie.updated_user_id = current_user.id
+    d_dutie.save
+           
+  end
   
   #分割した日付を１つにする
   def input_day_set(day)

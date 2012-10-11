@@ -127,13 +127,13 @@ class MInfoCostsController < ApplicationController
     
     inp_data = params[:m_info_cost]
     p inp_data
-    m_info_cost = MInfoCost.find(:first, :conditions=>["user_id=?", inp_data[:user_id]])
-    if m_info_cost.blank?
+    @m_info_cost = MInfoCost.find(:first, :conditions=>["user_id=?", inp_data[:user_id]])
+    if @m_info_cost.blank?
       @m_info_cost = MInfoCost.new
       @m_info_cost.user_id = inp_data[:user_id]     
     end
     @m_info_cost.base_pay = inp_data[:base_pay]
-    @m_info_cost.night_pay = inp_data[:night_pay]
+    @m_info_cost.skill_pay = inp_data[:skill_pay]
     @m_info_cost.welfare_pay = inp_data[:welfare_pay] if inp_data[:welfare_pay]
     @m_info_cost.etc_pay1 = inp_data[:etc_pay1]
     @m_info_cost.etc_pay2 = inp_data[:etc_pay2]

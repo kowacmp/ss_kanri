@@ -33,8 +33,7 @@
 		</tr>
 		<!--社員-->
 		<tr>
-			<th>番号</th>
-			<th>氏名</th>
+			<th colspan="2">氏名</th>
 			<th>日数</th>
 			<% loopcnt.times { |i| %>
 			  <th <%= "style='background:none; background-color: #F7DC67'" if Time.now.day == (i+1) %>>
@@ -51,10 +50,7 @@
 			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} "%>
 			<% nisu = d_duty_syain_nisu(select_where) %>
 			<tr id="syain_<%= "#{index}" %>">
-				<td style="text-align: center; min-width: 50px">
-					<%#= hidden_field_tag "syain_user_id_#{index}", user.id %>
-					<%= user.account %></td>
-				<td style="min-width: 130px">
+				<td colspan="2" style="min-width: 130px">
 					<%= link_to user.user_name , {:controller => "d_duties", :action => "syain_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal" %>
 					<%= link_to image_tag('icon/user_edit.png'), {:controller => "m_info_costs", :action => "popup_edit", :user_id => user.id }, :class => "modal" %>
 				</td>
@@ -74,8 +70,7 @@
 		</tr>
 		<!--バイト-->
 		<tr>
-			<th>番号</th>
-			<th>氏名</th>
+			<th colspan="2">氏名</th>
 			<th>時間</th>
 			<% loopcnt.times { |i| %>
 			  <th <%= "style='background:none; background-color: #F7DC67'" if Time.now.day == (i+1) %>>
@@ -90,10 +85,7 @@
 			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} "%>
 			<% jikan = d_duty_baito_jikan(select_where) %>
 			<tr id="baito_<%= "#{index}" %>">
-				<td style="text-align: center; min-width: 50px">
-					<%#= hidden_field_tag "baito_user_id_#{index}", user.id %>
-					<%= user.account %></td>
-				<td style="min-width: 130px">
+				<td colspan="2" style="min-width: 130px">
 					<%= link_to user.user_name, {:controller => "d_duties", :action => "baito_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal" %>
 					<%= link_to image_tag('icon/user_edit.png'), {:controller => "m_info_costs", :action => "popup_edit", :user_id => user.id }, :class => "modal" %>
 				</td>
@@ -118,7 +110,7 @@
 $(function () {
 	$('#d_duty_table').tablefix({width: 925, height: 800, fixRows: 1, fixCols: 1});
 	
-    $('div.bodyDiv').scrollLeft(50 * (<%= Time.now.day %> - 2));
+    $('div.bodyDiv').scrollLeft(40 * (<%= Time.now.day %> - 2));
     
     //$('div.tablefixDiv div.crossDiv a').attr("href", "#");
     //$('div.tablefixDiv div.rowDiv a').attr("href", "#");

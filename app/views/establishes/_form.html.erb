@@ -45,6 +45,14 @@
   	  <th><%= f.label "夢ポイント原価" %></th>
   	  <td><%= f.number_field :yumepoint_cost, :style=>"ime-mode:disabled" ,:maxlength=>6,:class=>"number" %></td>  	  
   	</tr>
+  	<tr>
+  	  <th><%= f.label "残業割増率" %></th>
+  	  <td><%= f.number_field :add_work_rate, :style=>"ime-mode:disabled" ,:maxlength=>6,:class=>"number" %></td>  	  
+  	</tr>
+  	<tr>
+  	  <th><%= f.label "深夜残業割増率" %></th>
+  	  <td><%= f.number_field :add_nigth_work_rate, :style=>"ime-mode:disabled" ,:maxlength=>6,:class=>"number" %></td>  	  
+  	</tr>
   	
   	<tr>
 	  	<td colspan="2" align="right" style="border: none">
