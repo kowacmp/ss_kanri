@@ -5,6 +5,7 @@
 		<th>所属会社</th>
 		-->
 		<th>店舗</th>
+		<th>対象年月</th>
 		<th>店舗種別</th>
 		<th>最終入力日</th>
 		<th>詳細</th>
@@ -21,6 +22,9 @@
 		</td>
 		-->
 		<td><%= result.shop_cd%>&nbsp;&nbsp;<%= result.shop_name %></td>
+		<td style="text-align: center">
+			<%= result.result_date[0,4] + '年' + result.result_date[4,2] + '月' unless result.result_date == nil or result.result_date == ''%>
+		</td>
 		<td style="text-align: center">
 			<%= MCode.find(:first, :conditions => ["kbn = 'shop_kbn' and code = ?", result.shop_kbn.to_s]).code_name %>
 		</td>
