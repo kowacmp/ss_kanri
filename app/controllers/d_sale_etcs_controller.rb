@@ -8,6 +8,8 @@ class DSaleEtcsController < ApplicationController
   end
 
   def entry_error
+    @mode = params[:mode]
+    @shop_id = params[:shop_id]
     @m_etc = get_m_etc(params[:etc_id])
     @d_sale_etc = get_d_sale_etc(params[:sale_date], params[:shop_id], params[:mode])
     @sale_date = params[:sale_date]
@@ -49,7 +51,7 @@ class DSaleEtcsController < ApplicationController
         @d_sale_etc_detail.updated_user_id = current_user.id
       end
       @d_sale_etc_detail.save
-              
+           
       #respond_to do |format|
         @m_etc = get_m_etc(params[:etc_id])
         @d_sale_etc = get_d_sale_etc(params[:sale_date], params[:shop_id], params[:mode])
