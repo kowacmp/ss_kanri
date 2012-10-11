@@ -88,7 +88,9 @@ class DBusinessCountReportsController < ApplicationController
     shops.each do |shop|
       report.page.list(:list).add_row do |row|
         #油外ここから
-        row.item(:shop_name).value(shop.shop_name)
+        # 2012/10/11 帳票出力時店舗名over oda
+        #row.item(:shop_name).value(shop.shop_name)
+        row.item(:shop_name).value(shop.shop_ryaku)
         row.item(:aim_1).value(get_d_aim_total(ym,shop.id,11)) 
         row.item(:aim_2).value(get_d_aim_total(ym,shop.id,12)) 
         row.item(:aim_3).value(get_d_aim_total(ym,shop.id,13))
