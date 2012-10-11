@@ -13,6 +13,15 @@ $('#prefecture_id').change(function(){
 var pref_id = $("#prefecture_id").val();
 $.get("city_select?pref_id=" + pref_id);
 });
+
+$('input[type!="submit"][type!="button"]').live("keypress",function(e){
+  if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+    return false;
+  }else{
+    return true;
+  }
+});
+
 });
 
 
