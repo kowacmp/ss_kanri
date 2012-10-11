@@ -121,15 +121,15 @@ class ApplicationController < ActionController::Base
   
   #アクセスログをDBで管理
   def access_log
-    p "****** access_log ******"
+    #p "****** access_log ******"
     #p "-- access_date=#{(Time.now).localtime.strftime("%Y/%m/%d  %H:%M:%S")}"
     #p "-- access_user_id=#{current_user.id if current_user}"
     #p "-- controller=#{params[:controller]}"
     #p "-- action=#{params[:action]}"
     #p "-- remote_host=#{request.headers['REMOTE_HOST']}"
     #p "-- parameter=#{params}"
-    p "request.headers=#{request.headers}"
-    p "******************************"
+    #p "request.headers=#{request.headers}"
+    #p "******************************"
     access_log = AccessLog.new
     
     access_log.access_date = Time.now
