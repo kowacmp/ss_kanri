@@ -260,8 +260,8 @@ class DDutiesController < ApplicationController
       
       unless m_info_cost.blank?
         d_dutie.day_work_money = ((m_info_cost.base_pay.to_i + m_info_cost.skill_pay.to_i) * d_dutie.day_work_time.to_f).ceil #切り上げ
-        d_dutie.night_work_money = (((m_info_cost.base_pay.to_i * establish.add_work_rate.to_f).ceil + m_info_cost.skill_pay.to_i) * d_dutie.day_work_time.to_f).ceil #切り上げ
-        d_dutie.night_over_money = (((m_info_cost.base_pay.to_i * establish.add_nigth_work_rate.to_f).ceil + m_info_cost.skill_pay.to_i) * d_dutie.day_work_time.to_f).ceil #切り上げ
+        d_dutie.night_work_money = (((m_info_cost.base_pay.to_i * establish.add_work_rate.to_f).ceil + m_info_cost.skill_pay.to_i) * d_dutie.night_work_time.to_f).ceil #切り上げ
+        d_dutie.night_over_money = (((m_info_cost.base_pay.to_i * establish.add_nigth_work_rate.to_f).ceil + m_info_cost.skill_pay.to_i) * d_dutie.night_over_time.to_f).ceil #切り上げ
         d_dutie.all_money = d_dutie.day_work_money + d_dutie.night_work_money + d_dutie.night_over_money
       end
       
