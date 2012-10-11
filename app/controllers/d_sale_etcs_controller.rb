@@ -50,7 +50,7 @@ class DSaleEtcsController < ApplicationController
       end
       @d_sale_etc_detail.save
               
-      respond_to do |format|
+      #respond_to do |format|
         @m_etc = get_m_etc(params[:etc_id])
         @d_sale_etc = get_d_sale_etc(params[:sale_date], params[:shop_id], params[:mode])
         @sale_date = params[:sale_date]
@@ -62,7 +62,7 @@ class DSaleEtcsController < ApplicationController
         #@d_sale_etc_detail = get_d_sale_etc_detail(@d_sale_etc.id,params[:etc_cd],99)
         @d_sale_etc_detail = get_d_sale_etc_detail(@d_sale_etc.id,params[:etc_id],99)
         #format.html { render action: "entry_error",:layout => 'modal', notice: 'D wash sale was successfully updated.' }
-      end
+      #end
   end
   
   def change_input_ymd

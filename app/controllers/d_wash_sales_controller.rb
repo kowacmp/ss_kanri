@@ -86,13 +86,13 @@ class DWashSalesController < ApplicationController
       end
       @d_washsale_item.save
               
-      respond_to do |format|
+      #respond_to do |format|
         @m_washe = get_m_washe(params[:wash_cd])
         @d_wash_sale = get_d_wash_sale(@sale_date,@shop_id,@mode)
         @wash_cd = params[:wash_cd]
         @d_washsale_item = get_d_washsale_item(@d_wash_sale.id,params[:wash_cd],99)
         #format.html { render action: "entry_error",:layout => 'modal', notice: 'D wash sale was successfully updated.' }
-      end
+      #end
   end
   
   def update
