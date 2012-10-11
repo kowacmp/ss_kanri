@@ -44,6 +44,7 @@ class DYumePointListsController < ApplicationController
     sum_sp1 = 0
     sum_sp2 = 0
     #2012/10/11 支払額追加
+    sp3 = Hash.new
     sum_sp3 = 0
     start_ymd = (@from_ymd[0,4].to_s + '/' + @from_ymd[4,2] + '/' + @from_ymd[6,2]).to_time
     start_day = start_ymd.end_of_month.day
@@ -60,7 +61,7 @@ class DYumePointListsController < ApplicationController
           e.section.item("sp1_#{i+1}").value(sp1[i+1])
           e.section.item("sp2_#{i+1}").value(sp2[i+1])
           #2012/10/11 支払額追加
-          e.section.item("sp3_#{i+1}").value(sp2[i+1])
+          e.section.item("sp3_#{i+1}").value(sp3[i+1])
         end # times
         e.section.item(:sp1_sum).value(sum_sp1)
         e.section.item(:sp2_sum).value(sum_sp2)
@@ -115,14 +116,14 @@ class DYumePointListsController < ApplicationController
             #2012/10/11 支払額追加
             row.item("p2_#{i+1}").value(yume_points.yumepoint.to_i)
             p2_sum_col = p2_sum_col + yume_points.yumepoint.to_i
-            row.item("p3_#{i+1}").value(yume_points.pay_money.to_i)
-            p3_sum_col = p3_sum_col + yume_points.pay_money.to_i
+            #row.item("p3_#{i+1}").value(yume_points.pay_money.to_i)
+            #p3_sum_col = p3_sum_col + yume_points.pay_money.to_i
           end
         end #start_day.times
         row.item(:p1_sum).value(p1_sum_col)
         #2012/10/11 支払額追加
         row.item(:p2_sum).value(p2_sum_col)
-        row.item(:p3_sum).value(p3_sum_col)
+        #row.item(:p3_sum).value(p3_sum_col)
       end #add_row
     end # shops.each
 
