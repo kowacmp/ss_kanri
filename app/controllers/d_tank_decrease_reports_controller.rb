@@ -13,12 +13,15 @@ class DTankDecreaseReportsController < ApplicationController
       # UPDATE 2012.09.29 日付の規定値を前日にする
       #@input_ymd = Time.now.strftime("%Y/%m/%d")
       @input_ymd = (Time.now - 60*60*24).strftime("%Y/%m/%d")
+      @rbtn = 1
     else
       @input_ymd = params[:input_ymd]
     end
     @input_ymd_s = @input_ymd.delete("/")
     
-    @groups = MShopGroup.find(:all,[:conditions => 'deleted_flg = 0',:order => 'group_cd'])
+    #2012/10/11 @groups削除 @shops追加 nishimura
+    #@groups = MShopGroup.find(:all,[:conditions => 'deleted_flg = 0',:order => 'group_cd'])
+    @shops = MShop.find(:all,:conditions => 'deleted_flg = 0 and shop_kbn <> 9 ',:order => 'shop_cd')
     
   end
   
@@ -31,6 +34,9 @@ class DTankDecreaseReportsController < ApplicationController
     @input_ymd_s = params[:input_ymd_s]
     old_group_name = ''
     #list_cnt = 0
+    
+    #2012/10/11 nishimura
+=begin
     datas = MShop.find_by_sql(['select b.m_shop_group_id,a.group_name,b.shop_cd,shop_name,shop_ryaku ,d.*
                                 from m_shop_groups a 
                                 left join m_shops b
@@ -42,6 +48,18 @@ class DTankDecreaseReportsController < ApplicationController
                                 left join d_tank_decrease_reports d
                                   on c.id = d.d_result_id
                                 order by b.m_shop_group_id,b.shop_cd',params[:input_ymd_s]])
+=end
+   
+    datas = MShop.find_by_sql(['select b.m_shop_group_id,b.shop_cd,shop_name,shop_ryaku ,d.*
+                                from m_shops b
+                                left join d_results c
+                                  on c.result_date = ?
+                                  and b.id = c.m_shop_id
+                                left join d_tank_decrease_reports d
+                                  on c.id = d.d_result_id
+                                where b.shop_kbn <> 9
+                                order by b.shop_cd',params[:input_ymd_s]])
+
 
 report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_tank_decrease_report.tlf')
 
@@ -76,12 +94,13 @@ end
     datas.each do |data|
     # Set header datas.
       report.page.list(:list).add_row do |row|
-        unless old_group_name == data.group_name
-          row.item(:group_name).value(data.group_name)
-        else
-          row.item(:group_name).value("") 
-        end
-        old_group_name = data.group_name
+        #2012/10/11 nishimura del
+        #unless old_group_name == data.group_name
+        #  row.item(:group_name).value(data.group_name)
+        #else
+        #  row.item(:group_name).value("") 
+        #end
+        #old_group_name = data.group_name
         row.item(:shop_name).value(data.shop_ryaku) 
         if @rbtn == 1
           row.item(:oil1).value(data.oil1_num)

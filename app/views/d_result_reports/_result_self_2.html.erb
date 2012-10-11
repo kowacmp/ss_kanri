@@ -18,7 +18,7 @@
 <table id="report_view_table" class="rounded-corner">
 	<thead>
 	<tr>
-		<th style="min-width: 100px">店舗</th>
+		<th style="min-width: 200px">店舗</th>
 		<th style="min-width: 100px"><%= @sensya_label %></th>
 		<th style="min-width: 100px">累計</th>
 		<th style="min-width: 100px">ペース</th>
@@ -49,7 +49,7 @@
 	<tbody>
 	<% @m_shops.each do |m_shop| %>
 	  <tr>
-	  	<td><%= m_shop.shop_ryaku %></td>
+	  	<td><%= m_shop.shop_cd.to_s + ' ' + m_shop.shop_ryaku %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.sensya) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_sensya) %></td>
 	  	<td class="input_no">

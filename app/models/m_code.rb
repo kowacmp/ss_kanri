@@ -8,7 +8,7 @@ class MCode < ActiveRecord::Base
                                    :message => 'コードが重複しています。'}
   
   validates :code, :numericality => {:greater_than_or_equal_to => 0,
-                                     :less_than_or_equal_to => 9,
+                                     :less_than_or_equal_to => 99,
                                      :message => 'コードは数値で入力してください。'}
   
 end

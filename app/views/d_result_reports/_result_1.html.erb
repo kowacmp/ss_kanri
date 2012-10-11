@@ -29,7 +29,7 @@
 <table id="report_view_table" class="rounded-corner">
 	<thead>
 	<tr>
-		<th style="min-width: 100px">店舗</th>
+		<th style="min-width: 200px">店舗</th>
 		<th style="min-width: 100px">モーガス</th>
 		<th style="min-width: 100px">Rモーガス</th>
 		<th style="min-width: 100px"><%= @keiyu_label %></th>
@@ -56,7 +56,7 @@
 	<tbody>
 	<% @m_shops.each do |m_shop| %>
 	  <tr>
-	  	<td><%= m_shop.shop_ryaku %></td>
+	  	<td><%= m_shop.shop_cd.to_s + ' ' + m_shop.shop_ryaku %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.mo_gas) %><%#= m_shop.mo_gas_aim %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_mo_gas) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.keiyu) %></td>

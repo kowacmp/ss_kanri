@@ -18,8 +18,9 @@
 		<th style="min-width: 90px;"><%= get_title(4) %></th>
 		<th>MG欠減率(%)</th>
 	</tr>
-	<% @groups.each do |group| %>
-	  <% @shops = get_shops(group.id) %>
+	
+	<%# @groups.each do |group| %> <!-- 2012/10/11 nishimura del -->
+	  <%# @shops = get_shops(group.id) %>
       <% @shops.each do |shop| %>
         <% result = get_d_result(shop.id,@input_ymd_s) %>
         <% unless result == nil %>
@@ -49,7 +50,7 @@
         <%# end %>
 	  </tr>
     <% end %>
-	<% end %>
+	<%# end %>
 	<tr>
 		<th colspan="1">合計</th>
 		<td align="right"><%= num_fmt(@sum_oil1) %></td>

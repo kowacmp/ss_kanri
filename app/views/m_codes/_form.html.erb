@@ -18,7 +18,7 @@
   	</tr>
   	<tr>
   	  <th><%= f.label 'コード' %></th>
-  	  <td><%= f.text_field :code, :style=>"ime-mode:disabled" ,:maxlength=>1 %></td>  	  
+  	  <td><%= f.text_field :code, :style=>"ime-mode:disabled",:maxlength=>2,:style=>"text-align:left;width:20px" ,:class=>"money"  %></td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label 'コード名称' %></th>
@@ -47,3 +47,5 @@
     <%#= f.submit f.object.new_record? ? '追加' : '更新' %>
   </div-->
 <% end %>
+
+<%= javascript_include_tag "comma" %>
