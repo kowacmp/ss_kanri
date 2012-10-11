@@ -34,7 +34,7 @@
 	}
 
 	// jQuery.post をオーバライド
-	jQuery.get = function(url,data,handler,dataType) {
+	jQuery.post = function(url,data,handler,dataType) {
 
 		// ブラウザUI操作を禁止する
 		blockUI(true);
