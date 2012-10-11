@@ -43,6 +43,8 @@ class DYumePointListsController < ApplicationController
     sp2 = Hash.new
     sum_sp1 = 0
     sum_sp2 = 0
+    #2012/10/11 支払額追加
+    sum_sp3 = 0
     start_ymd = (@from_ymd[0,4].to_s + '/' + @from_ymd[4,2] + '/' + @from_ymd[6,2]).to_time
     start_day = start_ymd.end_of_month.day
 
@@ -57,9 +59,13 @@ class DYumePointListsController < ApplicationController
         start_day.times do |i|
           e.section.item("sp1_#{i+1}").value(sp1[i+1])
           e.section.item("sp2_#{i+1}").value(sp2[i+1])
+          #2012/10/11 支払額追加
+          e.section.item("sp3_#{i+1}").value(sp2[i+1])
         end # times
         e.section.item(:sp1_sum).value(sum_sp1)
         e.section.item(:sp2_sum).value(sum_sp2)
+        #2012/10/11 支払額追加
+        e.section.item(:sp3_sum).value(sum_sp3)
       end #events.on
     end #list
 
@@ -95,6 +101,8 @@ class DYumePointListsController < ApplicationController
       result_date = @from_ymd
       p1_sum_col = 0
       p2_sum_col = 0
+      #2012/10/11 支払額追加
+      p3_sum_col = 0
     # Set header datas.
       report.page.list(:list).add_row do |row|
         start_day.times do |i|
@@ -104,12 +112,17 @@ class DYumePointListsController < ApplicationController
           unless yume_points == nil
             row.item("p1_#{i+1}").value(yume_points.yumepoint_num.to_i)
             p1_sum_col = p1_sum_col + yume_points.yumepoint_num.to_i
+            #2012/10/11 支払額追加
             row.item("p2_#{i+1}").value(yume_points.yumepoint.to_i)
             p2_sum_col = p2_sum_col + yume_points.yumepoint.to_i
+            row.item("p3_#{i+1}").value(yume_points.pay_money.to_i)
+            p3_sum_col = p3_sum_col + yume_points.pay_money.to_i
           end
         end #start_day.times
         row.item(:p1_sum).value(p1_sum_col)
+        #2012/10/11 支払額追加
         row.item(:p2_sum).value(p2_sum_col)
+        row.item(:p3_sum).value(p3_sum_col)
       end #add_row
     end # shops.each
 
@@ -119,9 +132,13 @@ class DYumePointListsController < ApplicationController
       sum_point = sum_rows_yume_points(result_date,@shop_kbn)
       result_date = (result_date.to_i + 1).to_s
       sp1[i+1] = sum_point.yumepoint_num.to_i
-      sp2[i+1] = sum_point.pay_money.to_i
+      #2012/10/11 支払額追加
+      sp2[i+1] = sum_point.yumepoint.to_i
+      sp3[i+1] = sum_point.pay_money.to_i
       sum_sp1 = sum_sp1 + sum_point.yumepoint_num.to_i unless sum_point == nil
-      sum_sp2 = sum_sp2 + sum_point.pay_money.to_i unless sum_point == nil 
+      #2012/10/11 支払額追加
+      sum_sp2 = sum_sp2 + sum_point.yumepoint.to_i unless sum_point == nil
+      sum_sp3 = sum_sp3 + sum_point.pay_money.to_i unless sum_point == nil 
     end
 
     #ファイル名セット     
