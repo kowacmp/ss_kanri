@@ -43,18 +43,12 @@
 		</td>
 	</tr>
 
-	<!-- DELETE BEGIN 2012.10.12 硬貨枚数を削除 -->
-	
-	<!-- 
 	<tr>
 		<th>500円玉(枚)</th>
 		<td>
 			<input type="text" id="_500coin_mai" class="money" style="width:100px;"  />
 		</td>
 	</tr>
-	-->
-	
-	<!-- DELETE END 2012.10.12 硬貨枚数を削除 -->
 
 	<tr>
 		<th>100円玉(本)</th>
@@ -63,38 +57,26 @@
 		</td>
 	</tr>
 
-	<!-- DELETE BEGIN 2012.10.12 硬貨枚数を削除 -->
-
-	<!-- 
 	<tr>
 		<th>100円玉(枚)</th>
 		<td>
 			<input type="text" id="_100coin_mai" class="money" style="width:100px;"  />
 		</td>
 	</tr>
-	-->
-	
-	<!-- DELETE END 2012.10.12 硬貨枚数を削除 -->
-	
+
 	<tr>
 		<th>50円玉(本)</th>
 		<td>
-			<input type="text" id="_50coin_hon" class="money" style="width:100px;" />
+			<input type="text" id="_50coin_hon" class="money" style="width:100px;"  />
 		</td>
 	</tr>
 
-	<!-- DELETE BEGIN 2012.10.12 硬貨枚数を削除 -->
-	
-	<!--
 	<tr>
 		<th>50円玉(枚)</th>
 		<td>
 			<input type="text" id="_50coin_mai" class="money" style="width:100px;"  />
 		</td>
 	</tr>
-	-->
-	
-	<!-- DELETE END 2012.10.12 硬貨枚数を削除 -->
 
 	<tr>
 		<th>10円玉(本)</th>
@@ -103,18 +85,12 @@
 		</td>
 	</tr>
 
-	<!-- DELETE BEGIN 2012.10.12 硬貨枚数を削除 -->
-	
-	<!--
 	<tr>
 		<th>10円玉(枚)</th>
 		<td>
 			<input type="text" id="_10coin_mai" class="money" style="width:100px;"  />
 		</td>
 	</tr>
-	-->
-	
-	<!-- DELETE END 2012.10.12 硬貨枚数を削除 -->
 
 	<tr>
 		<th>5円玉(本)</th>
@@ -123,18 +99,12 @@
 		</td>
 	</tr>
 
-	<!-- DELETE BEGIN 2012.10.12 硬貨枚数を削除 -->
-
-	<!-- 
 	<tr>
 		<th>5円玉(枚)</th>
 		<td>
 			<input type="text" id="_5coin_mai" class="money" style="width:100px;"  />
 		</td>
 	</tr>
-	-->
-
-	<!-- DELETE END 2012.10.12 硬貨枚数を削除 -->
 
 	<tr>
 		<th>1円玉(本)</th>
@@ -143,18 +113,12 @@
 		</td>
 	</tr>
 
-	<!-- DELETE BEGIN 2012.10.12 硬貨枚数を削除 -->
-	
-	<!-- 	
 	<tr>
 		<th>1円玉(枚)</th>
 		<td>
 			<input type="text" id="_1coin_mai" class="money" style="width:100px;"  />
 		</td>
 	</tr>
-	-->
-	
-	<!-- DELETE BEGIN 2012.10.12 硬貨枚数を削除 -->
 
 	<tr>
 		<th>予備(金額)</th>
@@ -181,56 +145,49 @@
 
 	$(function(){
 		// load (呼出元のhiddenより値を設定)
-		
-		// DELETE BEGIN 2012.10.12 硬貨枚数を削除 
 		$("#_10000paper" ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_10000paper" ).val() );
 		$("#_5000paper"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_5000paper"  ).val() );
 		$("#_2000paper"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_2000paper"  ).val() );
 		$("#_1000paper"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_1000paper"  ).val() );
 		$("#_500coin_20" ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_20" ).val() );
 		$("#_500coin_50" ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_50" ).val() );
-		//$("#_500coin_mai").val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_mai").val() );
+		$("#_500coin_mai").val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_mai").val() );
 		$("#_100coin_hon").val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_100coin_hon").val() );
-		//$("#_100coin_mai").val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_100coin_mai").val() );
+		$("#_100coin_mai").val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_100coin_mai").val() );
 		$("#_50coin_hon" ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_50coin_hon" ).val() );
-		//$("#_50coin_mai" ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_50coin_mai" ).val() );
+		$("#_50coin_mai" ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_50coin_mai" ).val() );
 		$("#_10coin_hon" ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_10coin_hon" ).val() );
-		//$("#_10coin_mai" ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_10coin_mai" ).val() );
+		$("#_10coin_mai" ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_10coin_mai" ).val() );
 		$("#_5coin_hon"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_5coin_hon"  ).val() );
-		//$("#_5coin_mai"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_5coin_mai"  ).val() );
+		$("#_5coin_mai"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_5coin_mai"  ).val() );
 		$("#_1coin_hon"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_1coin_hon"  ).val() );
-		//$("#_1coin_mai"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_1coin_mai"  ).val() );
+		$("#_1coin_mai"  ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_1coin_mai"  ).val() );
 		$("#_yobi"       ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_yobi"       ).val() );
 		<% for i in 1..5 %>
 		$("#_still<%=i%>").val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_still<%=i%>").val() );
 		<% end %>
-		// DELETE END 2012.10.12 硬貨枚数を削除 
 	});
 
 	function func_update() {
 		// save (呼出元のhiddenへ値を設定)
-
-		// DELETE BEGIN 2012.10.12 硬貨枚数を削除 
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_10000paper" ).val( $("#_10000paper" ).val().replace(/,/g, "") );
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_5000paper"  ).val( $("#_5000paper"  ).val().replace(/,/g, "") );
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_2000paper"  ).val( $("#_2000paper"  ).val().replace(/,/g, "") );
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_1000paper"  ).val( $("#_1000paper"  ).val().replace(/,/g, "") );
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_20" ).val( $("#_500coin_20" ).val().replace(/,/g, "") );
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_50" ).val( $("#_500coin_50" ).val().replace(/,/g, "") );
-		//$("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_mai").val( $("#_500coin_mai").val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_500coin_mai").val( $("#_500coin_mai").val().replace(/,/g, "") );
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_100coin_hon").val( $("#_100coin_hon").val().replace(/,/g, "") );
-		//$("#d_audit_cashbox_cashbox<%=params[:id]%>_100coin_mai").val( $("#_100coin_mai").val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_100coin_mai").val( $("#_100coin_mai").val().replace(/,/g, "") );
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_50coin_hon" ).val( $("#_50coin_hon" ).val().replace(/,/g, "") );
-		//$("#d_audit_cashbox_cashbox<%=params[:id]%>_50coin_mai" ).val( $("#_50coin_mai" ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_50coin_mai" ).val( $("#_50coin_mai" ).val().replace(/,/g, "") );
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_10coin_hon" ).val( $("#_10coin_hon" ).val().replace(/,/g, "") );
-		//$("#d_audit_cashbox_cashbox<%=params[:id]%>_10coin_mai" ).val( $("#_10coin_mai" ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_10coin_mai" ).val( $("#_10coin_mai" ).val().replace(/,/g, "") );
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_5coin_hon"  ).val( $("#_5coin_hon"  ).val().replace(/,/g, "") );
-		//$("#d_audit_cashbox_cashbox<%=params[:id]%>_5coin_mai"  ).val( $("#_5coin_mai"  ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_5coin_mai"  ).val( $("#_5coin_mai"  ).val().replace(/,/g, "") );
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_1coin_hon"  ).val( $("#_1coin_hon"  ).val().replace(/,/g, "") );
-		//$("#d_audit_cashbox_cashbox<%=params[:id]%>_1coin_mai"  ).val( $("#_1coin_mai"  ).val().replace(/,/g, "") );
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_1coin_mai"  ).val( $("#_1coin_mai"  ).val().replace(/,/g, "") );
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_yobi"       ).val( $("#_yobi"       ).val().replace(/,/g, "") );
-		// DELETE END 2012.10.12 硬貨枚数を削除 
-		
 		<% for i in 1..5 %>
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_still<%=i%>").val( $("#_still<%=i%>").val().replace(/,/g, "") );		
 		<% end %>
