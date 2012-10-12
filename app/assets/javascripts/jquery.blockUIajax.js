@@ -17,7 +17,7 @@
 					,dataType : dataType
 					,timeout  : 30000
 					,success  : function(data, status, xhr) {
-						if (!(handler == null)) {
+						if ((typeof handler) === "function") {
 							handler(data, status);
 						}
 					 }
@@ -25,7 +25,7 @@
 						blockUI(false);
 						if (status != "success") {
 							ajaxError(status);
-							if (!(handler == null)) {
+							if ((typeof handler) === "function") {
 								handler(null, status);
 							}
 						}
@@ -47,7 +47,7 @@
 					,dataType : dataType
 					,timeout  : 30000
 					,success  : function(data, status, xhr) {
-						if (!(handler == null)) {
+						if ((typeof handler) === "function") {
 							handler(data, status);
 						}
 					 }
@@ -55,7 +55,7 @@
 						blockUI(false);
 						if (status != "success") {
 							ajaxError(status);
-							if (!(handler == null)) {
+							if ((typeof handler) === "function") {
 								handler(null, status);
 							}
 						}
@@ -89,7 +89,9 @@
 								if (status != "success") {
 									ajaxError(status);
 								}
-								fnc_complete(XMLHttpRequest, status);
+								if ((typeof fnc_complete) === "function") {
+									fnc_complete(XMLHttpRequest, status);
+								}
 							}
 		}
 		

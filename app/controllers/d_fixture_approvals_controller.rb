@@ -67,6 +67,7 @@ class DFixtureApprovalsController < ApplicationController
     @fixture.comment = params[:comment]
     @fixture.updated_user_id = current_user.id
     @fixture.save!
+    head :ok
   end
   
   def change_radio
@@ -74,5 +75,6 @@ class DFixtureApprovalsController < ApplicationController
     @fixture.approve_flg = params[:value]
     @fixture.updated_user_id = current_user.id
     @fixture.save!
+    head :ok
   end
 end
