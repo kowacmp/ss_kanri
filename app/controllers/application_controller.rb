@@ -136,7 +136,8 @@ class ApplicationController < ActionController::Base
     access_log.user_id = current_user.id if current_user
     access_log.controller = params[:controller]
     access_log.action = params[:action]
-    access_log.remote_host = request.headers['REMOTE_HOST']
+    #access_log.remote_host = request.headers['REMOTE_HOST']
+    access_log.remote_host = request.headers['REMOTE_ADDR']
     access_log.params = params.to_s
     
     access_log.save
