@@ -22,7 +22,7 @@ class DWashsaleReportsController < ApplicationController
     #@start_year = DWashSale.minimum("sale_date",:conditions => ['m_shop_id = ?',@m_shop_id])[0,4].to_i
     dwashsalemin = DWashSale.minimum("sale_date",:conditions => ['m_shop_id = ?',@m_shop_id])
     if dwashsalemin.nil? then
-      @start_year = nil 
+      @start_year = "none" 
       return 
     end
     @start_year = dwashsalemin[0,4].to_i

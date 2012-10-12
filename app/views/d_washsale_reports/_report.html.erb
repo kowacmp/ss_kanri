@@ -1,5 +1,5 @@
 <%#= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
-<%if @start_year.nil? then%>
+<%if @start_year == "none" then%>
   <font color="red">洗車メータ売上入力が行われていません。</font>
 <%else%> <!-- @start_year.nil? -->
 <%  #最終行集計用初期化
