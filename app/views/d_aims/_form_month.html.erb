@@ -24,7 +24,7 @@
 	  <tr>
 	 	<th><%= @year + "年" %></th>
 		<% for i in 1..6 do %>
-	  	  <th style="min-width: 100px"><%= i.to_s + "月" %></th>
+	  	  <th style="min-width: 80px"><%= i.to_s + "月" %></th>
 	  	<% end %>
 	  </tr>
 	  
@@ -34,11 +34,34 @@
 	  	  <th style='background:none;'><%= m_aim.aim_name %><%= "(" + m_aim.aim_tani_name.to_s + ")" %></th>
 	  	  
 	  	  <% for i in 1..6 do %>
+	  	  <% if m_aim.id == 24 %>
+		  <% @d_aim_uri = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,2]) %>
+	  	  	<% @d_aim_jinken = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,22]) %>
+		  	<td style="text-align:right;">
+		  		<% if @d_aim_uri and @d_aim_jinken %>
+			  		<% if @d_aim_jinken.aim_total.to_f > 0 %>
+			  			<% y_sisu = @d_aim_uri.aim_total.to_f / @d_aim_jinken.aim_total.to_f * 100 %>
+			  			<%= number_with_delimiter(y_sisu.round(1)) %>
+			  		<% end %>
+		  		<% end %>
+			</td>
+		  <% elsif m_aim.id == 25 %>
+		  <% @d_aim_uri = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,1]) %>
+	  	  	<% @d_aim_jinken = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,23]) %>
+		  	<td style="text-align:right;">
+		  		<% if @d_aim_uri and @d_aim_jinken %>
+			  		<% if @d_aim_jinken.aim_total.to_f > 0 %>
+			  			<% y_sisu = @d_aim_uri.aim_total.to_f / @d_aim_jinken.aim_total.to_f * 100 %>
+			  			<%= number_with_delimiter(y_sisu.round(1)) %>
+			  		<% end %>
+		  		<% end %>
+			</td>
+		  <% else %><!-- if else -->
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  <%= hidden_field "d_aim[#{idx}][#{i}]", 'date',:value=> @year + format("%02d",i) %>
 	  	  <%= hidden_field "d_aim[#{idx}][#{i}]", 'm_shop_id',:value=> @m_shop.id %>
 	  	  <%= hidden_field "d_aim[#{idx}][#{i}]", 'm_aim_id',:value=>m_aim.id %>
-	  	  	<td>
+	  	  	<td style="text-align:right;">
 	  	  	<%- if @d_aim -%>
 	  	  		<%= hidden_field "d_aim[#{idx}][#{i}]", 'id',:value=>@d_aim.id %>
 			  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:value=>eval("@d_aim.aim_total"),:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money" %>
@@ -46,6 +69,7 @@
 		  	  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money"%>
 	  	  	<%- end -%>
 	  	  	</td>
+	  	  	<% end %><!-- if end -->
 	  	  <% end %>
 	  	  
 	  	</tr>
@@ -66,11 +90,34 @@
 	  	  <th style='background:none;'><%= m_aim.aim_name %><%= "(" + m_aim.aim_tani_name.to_s + ")" %></th>
 	  	  
 	  	  <% for i in 7..12 do %>
+	  	  	<% if m_aim.id == 24 %>
+	  	  	<% @d_aim_uri = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,2]) %>
+	  	  	<% @d_aim_jinken = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,22]) %>
+		  	<td style="text-align:right;">
+		  		<% if @d_aim_uri and @d_aim_jinken %>
+			  		<% if @d_aim_jinken.aim_total.to_f > 0 %>
+			  			<% y_sisu = @d_aim_uri.aim_total.to_f / @d_aim_jinken.aim_total.to_f * 100 %>
+			  			<%= number_with_delimiter(y_sisu.round(1)) %>
+			  		<% end %>
+		  		<% end %>
+			</td>
+		  	<% elsif m_aim.id == 25 %>
+		  	<% @d_aim_uri = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,1]) %>
+	  	  	<% @d_aim_jinken = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,23]) %>
+		  	<td style="text-align:right;">
+		  		<% if @d_aim_uri and @d_aim_jinken %>
+			  		<% if @d_aim_jinken.aim_total.to_f > 0 %>
+			  			<% y_sisu = @d_aim_uri.aim_total.to_f / @d_aim_jinken.aim_total.to_f * 100 %>
+			  			<%= number_with_delimiter(y_sisu.round(1)) %>
+			  		<% end %>
+		  		<% end %>
+			</td>
+		  	<% else %><!-- if else -->
 	  	  	<% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	    <%= hidden_field "d_aim[#{idx}][#{i}]", 'date',:value=> @year + format("%02d",i) %>
 	  	    <%= hidden_field "d_aim[#{idx}][#{i}]", 'm_shop_id',:value=> @m_shop.id %>
 	  	    <%= hidden_field "d_aim[#{idx}][#{i}]", 'm_aim_id',:value=>m_aim.id %>
-	  	  	<td>
+	  	  	<td style="text-align:right;">
 	  	  	<%- if @d_aim -%>
 	  	  		<%= hidden_field "d_aim[#{idx}][#{i}]", 'id',:value=>@d_aim.id %>
 			  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:value=>eval("@d_aim.aim_total"),:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money" %>
@@ -78,8 +125,8 @@
 		  	  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money" %>
 	  	  	<%- end -%>
 	  	  	</td>
+	  	  	<% end %><!-- if end -->
 	  	  <% end %>
-	  	  
 	  	</tr>
 	  <% end %>
 	  

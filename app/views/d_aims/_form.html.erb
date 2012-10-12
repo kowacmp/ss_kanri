@@ -49,7 +49,7 @@
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
 	  	  <% for i in 1..7 do %>
-	  	  	<td>
+	  	  	<td style="text-align:right;">
 	  	  	<%- if @d_aim -%>
 	  	  		<%= hidden_field "d_aim[#{idx}]", 'id',:value=>@d_aim.id %>
 			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
@@ -86,7 +86,7 @@
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
 	  	  <% for i in 8..14 do %>
-	  	  	<td>
+	  	  	<td style="text-align:right;">
 	  	  	<%- if @d_aim -%>
 			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
 			<%- else -%>
@@ -121,7 +121,7 @@
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
 	  	  <% for i in 15..21 do %>
-	  	  	<td>
+	  	  	<td style="text-align:right;">
 	  	  	<%- if @d_aim -%>
 			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
 			<%- else -%>
@@ -157,7 +157,7 @@
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
 	  	  <% for i in 22..28 do %>
-	  	  	<td>
+	  	  	<td style="text-align:right;">
 	  	  	<%- if @d_aim -%>
 			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
 			<%- else -%>
@@ -200,7 +200,7 @@
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
 	  	  <% for i in 29..@month_last_day.to_i do %>
-	  	  	<td>
+	  	  	<td style="text-align:right;">
 	  	  	<%- if @d_aim -%>
 			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})",:class=>"money" %>
 			<%- else -%>
