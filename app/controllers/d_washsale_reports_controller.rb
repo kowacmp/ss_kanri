@@ -18,7 +18,15 @@ class DWashsaleReportsController < ApplicationController
       @m_shop_id=params[:m_shop_id]
       @shop = MShop.find(@m_shop_id) 
     end
-    @start_year = DWashSale.minimum("sale_date",:conditions => ['m_shop_id = ?',@m_shop_id])[0,4].to_i
+
+    #@start_year = DWashSale.minimum("sale_date",:conditions => ['m_shop_id = ?',@m_shop_id])[0,4].to_i
+    dwashsalemin = DWashSale.minimum("sale_date",:conditions => ['m_shop_id = ?',@m_shop_id])
+    if dwashsalemin.nil? then
+      @start_year = nil 
+      return 
+    end
+    @start_year = dwashsalemin[0,4].to_i
+
     @mode = params[:mode]
     
     unless @mode == 'list'
