@@ -22,14 +22,14 @@ class DBusinessCountReportsController < ApplicationController
     #油外のみ
     @shops = MShop.where(:deleted_flg => 0,:shop_kbn => 1).order(:shop_cd).select('id,shop_name,shop_ryaku,shop_cd')
     #@m_oiletcs = MOiletc.find(:all,:conditions => ['oiletc_cd in (1,4,6,7,13)'],:order => 'oiletc_cd')
-    @m_aims = MAim.where(:aim_code => 11..15).order('aim_code')
+    #@m_aims = MAim.where(:aim_code => 11..15).order('aim_code')  #2012/10/12 nishimura del
   end
 
   def print
     @input_ymd = params[:input_ymd].delete("/")
 #    m_oiletcs = MOiletc.where(:oiletc_cd => 11..15).order('oiletc_cd')
 #    m_oiletcs = MOiletc.find(:all,:conditions => ['oiletc_cd in (1,4,6,7,13)'],:order => 'oiletc_cd')
-    @m_aims = MAim.where(:aim_code => 11..15).order('aim_code')
+    #@m_aims = MAim.where(:aim_code => 11..15).order('aim_code')  #2012/10/12 nishimura del
     ym = @input_ymd[0,6]
     #油外のみ
     shops = MShop.where(:deleted_flg => 0,:shop_kbn => 1).order(:shop_cd).select('id,shop_name,shop_ryaku,shop_cd')

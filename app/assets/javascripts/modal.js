@@ -51,6 +51,7 @@ function displayModal(sign) {
 		//UPDATE END
 	} else {
 		$("div#modal").fadeOut(250);
+		$("div#modal div.container").empty();
 	}
 }
  

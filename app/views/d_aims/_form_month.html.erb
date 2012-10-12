@@ -18,6 +18,10 @@
   <%= hidden_field "input",'aim',:value=>@search_aim%>
   <%= hidden_field "input",'shop_id',:value=>@shop_id%>
   <%= hidden_field "input",'mode',:value=>@mode%>
+<!-- 2012/10/12 戻る-->
+  <% if @mode == 'list' %>
+  <%= link_to "一覧へ戻る", {:controller => "d_aim_lists", :action => "index", :date => params[:date], :shop_kbn => @m_shop.shop_kbn}, :method => :get, :class => 'return_icon' %>
+  <% end %>
   
   <table id='rounded-corner'>
   	  
@@ -139,7 +143,7 @@
     <%= f.submit "  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？'  %>
   </div>
   <% else %>
-  <%= link_to "戻る", {:controller => "d_aim_lists", :action => "index", :date => params[:date], :shop_kbn => @m_shop.shop_kbn}, :method => :get, :class => 'return_icon' %>
+  <%= link_to "一覧へ戻る", {:controller => "d_aim_lists", :action => "index", :date => params[:date], :shop_kbn => @m_shop.shop_kbn}, :method => :get, :class => 'return_icon' %>
   <% end %>
 <% end %>
 
