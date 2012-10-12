@@ -69,11 +69,15 @@ module DAuditCashboxesHelper
       maisu += 50 * @d_audit_cashbox["cashbox#{ i }_500coin_50"].to_i
     end
     
-    if @d_audit_cashbox["cashbox#{ i }_500coin_mai"].nil? or @d_audit_cashbox["cashbox#{ i }_500coin_mai"].blank? then
-      maisu += 0
-    else
-      maisu += 1 * @d_audit_cashbox["cashbox#{ i }_500coin_mai"].to_i
-    end
+    ### DELETE BEGIN 2012.10.12 硬貨枚数削除
+    
+    #if @d_audit_cashbox["cashbox#{ i }_500coin_mai"].nil? or @d_audit_cashbox["cashbox#{ i }_500coin_mai"].blank? then
+    #  maisu += 0
+    #else
+    #  maisu += 1 * @d_audit_cashbox["cashbox#{ i }_500coin_mai"].to_i
+    #end
+    
+    ### DELETE END 2012.10.12 硬貨枚数削除
     
     return maisu * 500
     
@@ -90,11 +94,15 @@ module DAuditCashboxesHelper
       maisu += 50 * @d_audit_cashbox["cashbox#{ i }_100coin_hon"].to_i
     end
     
-    if @d_audit_cashbox["cashbox#{ i }_100coin_mai"].nil? or @d_audit_cashbox["cashbox#{ i }_100coin_mai"].blank? then
-      maisu += 0
-    else
-      maisu += 1 * @d_audit_cashbox["cashbox#{ i }_100coin_mai"].to_i
-    end
+    ### DELETE BEGIN 2012.10.12 硬貨枚数削除
+    
+    #if @d_audit_cashbox["cashbox#{ i }_100coin_mai"].nil? or @d_audit_cashbox["cashbox#{ i }_100coin_mai"].blank? then
+    #  maisu += 0
+    #else
+    #  maisu += 1 * @d_audit_cashbox["cashbox#{ i }_100coin_mai"].to_i
+    #end
+    
+    ### DELETE END 2012.10.12 硬貨枚数削除
     
     return maisu * 100
     
@@ -111,11 +119,15 @@ module DAuditCashboxesHelper
       maisu += 50 * @d_audit_cashbox["cashbox#{ i }_50coin_hon"].to_i
     end
     
-    if @d_audit_cashbox["cashbox#{ i }_50coin_mai"].nil? or @d_audit_cashbox["cashbox#{ i }_50coin_mai"].blank? then
-      maisu += 0
-    else
-      maisu += 1 * @d_audit_cashbox["cashbox#{ i }_50coin_mai"].to_i
-    end
+    ### DELETE BEGIN 2012.10.12 硬貨枚数削除
+    
+    #if @d_audit_cashbox["cashbox#{ i }_50coin_mai"].nil? or @d_audit_cashbox["cashbox#{ i }_50coin_mai"].blank? then
+    #  maisu += 0
+    #else
+    #  maisu += 1 * @d_audit_cashbox["cashbox#{ i }_50coin_mai"].to_i
+    #end
+    
+    ### DELETE END 2012.10.12 硬貨枚数削除
     
     return maisu * 50
     
@@ -132,11 +144,15 @@ module DAuditCashboxesHelper
       maisu += 50 * @d_audit_cashbox["cashbox#{ i }_10coin_hon"].to_i
     end
     
-    if @d_audit_cashbox["cashbox#{ i }_10coin_mai"].nil? or @d_audit_cashbox["cashbox#{ i }_10coin_mai"].blank? then
-      maisu += 0
-    else
-      maisu += 1 * @d_audit_cashbox["cashbox#{ i }_10coin_mai"].to_i
-    end
+    ### DELETE BEGIN 2012.10.12 硬貨枚数削除
+    
+    #if @d_audit_cashbox["cashbox#{ i }_10coin_mai"].nil? or @d_audit_cashbox["cashbox#{ i }_10coin_mai"].blank? then
+    #  maisu += 0
+    #else
+    #  maisu += 1 * @d_audit_cashbox["cashbox#{ i }_10coin_mai"].to_i
+    #end
+    
+    ### DELETE END 2012.10.12 硬貨枚数削除
     
     return maisu * 10
     
@@ -153,11 +169,15 @@ module DAuditCashboxesHelper
       maisu += 50 * @d_audit_cashbox["cashbox#{ i }_5coin_hon"].to_i
     end
     
-    if @d_audit_cashbox["cashbox#{ i }_5coin_mai"].nil? or @d_audit_cashbox["cashbox#{ i }_5coin_mai"].blank? then
-      maisu += 0
-    else
-      maisu += 1 * @d_audit_cashbox["cashbox#{ i }_5coin_mai"].to_i
-    end
+    ### DELETE BEGIN 2012.10.12 硬貨枚数削除
+    
+    #if @d_audit_cashbox["cashbox#{ i }_5coin_mai"].nil? or @d_audit_cashbox["cashbox#{ i }_5coin_mai"].blank? then
+    #  maisu += 0
+    #else
+    #  maisu += 1 * @d_audit_cashbox["cashbox#{ i }_5coin_mai"].to_i
+    #end
+    
+    ### DELETE END 2012.10.12 硬貨枚数削除
     
     return maisu * 5
     
@@ -174,11 +194,15 @@ module DAuditCashboxesHelper
       maisu += 50 * @d_audit_cashbox["cashbox#{ i }_1coin_hon"].to_i
     end
     
-    if @d_audit_cashbox["cashbox#{ i }_1coin_mai"].nil? or @d_audit_cashbox["cashbox#{ i }_1coin_mai"].blank? then
-      maisu += 0
-    else
-      maisu += 1 * @d_audit_cashbox["cashbox#{ i }_1coin_mai"].to_i
-    end
+    ### DELETE BEGIN 2012.10.12 硬貨枚数削除
+    
+    #if @d_audit_cashbox["cashbox#{ i }_1coin_mai"].nil? or @d_audit_cashbox["cashbox#{ i }_1coin_mai"].blank? then
+    #  maisu += 0
+    #else
+    #  maisu += 1 * @d_audit_cashbox["cashbox#{ i }_1coin_mai"].to_i
+    #end
+    
+    ### DELETE END 2012.10.12 硬貨枚数削除
     
     return maisu * 1
     

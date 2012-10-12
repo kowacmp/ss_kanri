@@ -18,29 +18,32 @@
 	<!-- form1 描写後 で宣言 -->
 	<%#= hidden_field :d_audit_cashbox, "cashbox#{ i }"           ,   :value => @d_audit_cashbox["cashbox#{ i }"] %>
 	
+	<%# DELETE BEGIN 2012.10.12 硬貨枚数削除 %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_10000paper",   :value => @d_audit_cashbox["cashbox#{ i }_10000paper"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_5000paper",    :value => @d_audit_cashbox["cashbox#{ i }_5000paper"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_2000paper",    :value => @d_audit_cashbox["cashbox#{ i }_2000paper"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_1000paper" ,   :value => @d_audit_cashbox["cashbox#{ i }_1000paper"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_500coin_50" ,  :value => @d_audit_cashbox["cashbox#{ i }_500coin_50"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_500coin_20" ,  :value => @d_audit_cashbox["cashbox#{ i }_500coin_20"] %>
-	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_500coin_mai" , :value => @d_audit_cashbox["cashbox#{ i }_500coin_mai"] %>
+	<%#= hidden_field :d_audit_cashbox, "cashbox#{ i }_500coin_mai" , :value => @d_audit_cashbox["cashbox#{ i }_500coin_mai"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_100coin_hon" , :value => @d_audit_cashbox["cashbox#{ i }_100coin_hon"] %>
-	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_100coin_mai" , :value => @d_audit_cashbox["cashbox#{ i }_100coin_mai"] %>
+	<%#= hidden_field :d_audit_cashbox, "cashbox#{ i }_100coin_mai" , :value => @d_audit_cashbox["cashbox#{ i }_100coin_mai"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_50coin_hon" ,  :value => @d_audit_cashbox["cashbox#{ i }_50coin_hon"] %>
-	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_50coin_mai" ,  :value => @d_audit_cashbox["cashbox#{ i }_50coin_mai"] %>
+	<%#= hidden_field :d_audit_cashbox, "cashbox#{ i }_50coin_mai" ,  :value => @d_audit_cashbox["cashbox#{ i }_50coin_mai"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_10coin_hon" ,  :value => @d_audit_cashbox["cashbox#{ i }_10coin_hon"] %>
-	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_10coin_mai" ,  :value => @d_audit_cashbox["cashbox#{ i }_10coin_mai"] %>
+	<%#= hidden_field :d_audit_cashbox, "cashbox#{ i }_10coin_mai" ,  :value => @d_audit_cashbox["cashbox#{ i }_10coin_mai"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_5coin_hon" ,   :value => @d_audit_cashbox["cashbox#{ i }_5coin_hon"] %>
-	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_5coin_mai" ,   :value => @d_audit_cashbox["cashbox#{ i }_5coin_mai"] %>
+	<%#= hidden_field :d_audit_cashbox, "cashbox#{ i }_5coin_mai" ,   :value => @d_audit_cashbox["cashbox#{ i }_5coin_mai"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_1coin_hon" ,   :value => @d_audit_cashbox["cashbox#{ i }_1coin_hon"] %>
-	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_1coin_mai" ,   :value => @d_audit_cashbox["cashbox#{ i }_1coin_mai"] %>
+	<%#= hidden_field :d_audit_cashbox, "cashbox#{ i }_1coin_mai" ,   :value => @d_audit_cashbox["cashbox#{ i }_1coin_mai"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_yobi",         :value => @d_audit_cashbox["cashbox#{ i }_yobi"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_still1",       :value => @d_audit_cashbox["cashbox#{ i }_still1"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_still2",       :value => @d_audit_cashbox["cashbox#{ i }_still2"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_still3",       :value => @d_audit_cashbox["cashbox#{ i }_still3"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_still4",       :value => @d_audit_cashbox["cashbox#{ i }_still4"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_still5",       :value => @d_audit_cashbox["cashbox#{ i }_still5"] %>
+	<%# DELETE END 2012.10.12 硬貨枚数削除 %>
+	
 <% end %>
 
 <% for i in 1..7 %>
