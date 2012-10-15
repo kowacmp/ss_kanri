@@ -44,7 +44,9 @@ class DWashsaleListsController < ApplicationController
 
   def search
     if params[:input_ymd] == nil
-      @input_ymd = Time.now.strftime("%Y/%m/%d")
+      # UPDATE 2012.10.15 規定値は前日
+      #@input_ymd = Time.now.strftime("%Y/%m/%d")
+      @input_ymd = (Time.now - 1.day).strftime("%Y/%m/%d")
       @shop_kbn = 0
     else
       @input_ymd = params[:input_ymd]      
