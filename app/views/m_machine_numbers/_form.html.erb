@@ -1,0 +1,96 @@
+<%= form_for(@m_machine_number) do |f| %>
+  <% if @m_machine_number.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@m_machine_number.errors.count, "") %> 件のエラーがあります。</h2>
+
+      <ul>
+      <% @m_machine_number.errors.full_messages.each do |msg| %>
+        <li><%= sliceString(msg) %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+	<table id='rounded-corner'>
+		<tr>
+		  <th><%= f.label "店舗" %></th>
+		  <td colspan="6">
+			<%= f.select(:m_shop_id, MShop.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'shop_cd').map do |u|
+		  		[u.shop_name,u.id]
+		    end, {:include_blank => "選択して下さい"}) %>
+		  </td>  
+		</tr>
+		
+		<tr>
+	  	  <th>POS1釣銭機1</th>
+	  	  <th>POS1釣銭機2</th>
+	  	  <th>POS1釣銭機3</th>
+	  	  <th>POS1釣銭機4</th>
+	  	  <th>POS1釣銭機5</th>
+	  	  <th>POS1釣銭機6</th>
+	  	  <th>POS1釣銭機7</th>
+	  	</tr>
+	  	<tr>
+	  	  <td><%= f.text_field :pos1machineno1,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos1machineno2,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos1machineno3,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos1machineno4,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos1machineno5,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos1machineno6,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos1machineno7,:maxlength=>10,:size=>15 %></td>
+	  	</tr>
+	  	<tr>
+	  	  <th>POS2釣銭機1</th>
+	  	  <th>POS2釣銭機2</th>
+	  	  <th>POS2釣銭機3</th>
+	  	  <th>POS2釣銭機4</th>
+	  	  <th>POS2釣銭機5</th>
+	  	  <th>POS2釣銭機6</th>
+	  	  <th>POS2釣銭機7</th>
+	  	</tr>
+	  	<tr>
+	  	  <td><%= f.text_field :pos2machineno1,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos2machineno2,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos2machineno3,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos2machineno4,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos2machineno5,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos2machineno6,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos2machineno7,:maxlength=>10,:size=>15 %></td>
+	  	</tr>
+	  	<tr>
+	  	  <th>POS3釣銭機1</th>
+	  	  <th>POS3釣銭機2</th>
+	  	  <th>POS3釣銭機3</th>
+	  	  <th>POS3釣銭機4</th>
+	  	  <th>POS3釣銭機5</th>
+	  	  <th>POS3釣銭機6</th>
+	  	  <th>POS3釣銭機7</th>
+	  	</tr>
+	  	<tr>
+	  	  <td><%= f.text_field :pos3machineno1,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos3machineno2,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos3machineno3,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos3machineno4,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos3machineno5,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos3machineno6,:maxlength=>10,:size=>15 %></td>
+	  	  <td><%= f.text_field :pos3machineno7,:maxlength=>10,:size=>15 %></td>
+	  	</tr>
+		
+		<tr>
+	  		<td align="left" style="border: none">
+	  			<%= link_to '戻る', m_machine_numbers_path, :class => 'return_icon' %>
+			</td>
+		  	<td colspan="6" align="right" style="border: none">
+		  		<% if f.object.new_record? %>
+				<%= f.submit "  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？' %>
+				<% else %>
+				<%= f.submit "  更  新  ",:disable_with => "更新中.....",:confirm => '更新しても良いですか？' %>
+				<% end %>
+			</td>
+		</tr>
+	</table>
+
+  <!--div class="actions">
+    <%#= f.submit %>
+  </div-->
+<% end %>

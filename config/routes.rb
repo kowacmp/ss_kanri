@@ -1,5 +1,7 @@
 SsKanri::Application.routes.draw do
 
+  resources :m_machine_numbers
+
   resources :access_logs
 
   get "d_sale_etc_lists/index"
