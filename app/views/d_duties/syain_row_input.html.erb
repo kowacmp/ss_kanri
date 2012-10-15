@@ -26,8 +26,11 @@
 			  	<% if Time.now.day == (i+1) %>
 			  		<td style='background:none; background-color: #F7DC67' >
 			  	<% else %>
-			  		<td style = "background-image:none; background-color: #FF98A7">
-			  	<% end %> 
+			  		<% if week_w == "土" %>
+			  			<td style = "background-image:none; background-color: #498AF3">
+			  	 	<% else %>
+			  	 		<td style = "background-image:none; background-color: #E92033">
+			  	 	<% end %>			  	<% end %> 
 			  <% else %>
 			    <% if Time.now.day == (i+1) %>
 			   		<td style='background:none; background-color: #F7DC67' >

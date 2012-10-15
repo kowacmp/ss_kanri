@@ -17,7 +17,11 @@
 			  	<% if Time.now.day == (i+1) %>
 			  		<th style='background:none; background-color: #F7DC67' >
 			  	<% else %>
-			  		<th style = "background-image:none; background-color: #FF98A7">
+			  		<% if week_w == "土" %>
+			  			<th style = "background-image:none; background-color: #498AF3">
+			  	 	<% else %>
+			  	 		<th style = "background-image:none; background-color: #E92033">
+			  	 	<% end %>
 			  	<% end %> 
 			  <% else %>
 			    <% if Time.now.day == (i+1) %>
