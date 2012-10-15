@@ -17,7 +17,9 @@ class DWashSalesController < ApplicationController
       @shop = MShop.find(current_user.m_shop_id)   
     end
     if params[:input_ymd] == nil
-      @input_ymd = Time.now.strftime("%Y/%m/%d")
+      # UPDATE 2012.10.15
+      #@input_ymd = Time.now.strftime("%Y/%m/%d")
+      @input_ymd = (Time.now - 1.day).strftime("%Y/%m/%d")
     else
       @input_ymd = params[:input_ymd]
     end

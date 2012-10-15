@@ -65,40 +65,34 @@ function adjustCenter(target) {
 // フォーカスを先頭にセット (container: jQuery(#ID))
 function firstFocus(container) { return function () {
 
-	// tabindexを取得する関数を定義(取得できない場合は-1)
-	var getTabindex = function (obj) {
-		if (!isNaN(obj.tabIndex) && Number(obj.tabIndex) >= 0) {
-			return Number(obj.tabIndex);
-		} else {
-			return -1;
-		}
-	}
-
 	// コンテナ内の利用可能なオブジェクトを取得
-	var obj = container.find(":input:enabled");
+	var obj = container.find(":enabled");
 	if (obj.length == 0) { return true; } 
 
-	// tabindexが指定されているオブジェクトを取得
+	// tabindexを持つものを取得
 	var objtab = obj.filter("[tabindex]");
 	
 	if (objtab.length == 0) {
 		// tabindexなし、最初に見つかったオブジェクトをフォーカス
 		obj.filter(":first").focus();
 	} else {
-		// tabindexが一番若いオブジェクトをフォーカス
+		// tabindex>0 && 一番若いtabindexを持つオブジェクトを取得
 		var objFocus;
 		objtab.each( function() {
-			if (getTabindex(this) > 0) {
-				if (objFocus == null ) {
+			if (this.tabIndex > 0) { 
+				if (objFocus == null) {
 					objFocus = this;
 				} else {
-					if (getTabindex(this) < getTabindex(objFocus)) {
+					if (Number(this.tabIndex) < Number(objFocus.tabIndex)) {
 						objFocus = this;
 					}
 				}
 			}
 		});
-		if (!(objFocus == null)) {
+		
+		if (objFocus == null) {
+			objtab.filter(":first").focus(); //all.tabIndex = 0
+		} else {
 			objFocus.focus();
 		}
 	}
