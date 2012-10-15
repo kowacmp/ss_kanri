@@ -33,3 +33,42 @@
 </table>
 <%= submit_tag(" 登  録 ",:disable_with => "登録中...",:confirm => '登録しても良いですか？') %>	 
 <% end %><!-- form -->
+
+<script>
+$(function () {
+
+    //保存の時
+    $("form").submit(function() {
+    	
+         	//必須入力チェック
+         	//購入先、購入品名、個数、単価は必須入力
+         	var buy_shop;
+         	var buy_item;
+         	var buy_num;
+         	var buy_price;
+         	
+         	var errmsg = "";
+         	
+         	$("[id^=row]").each(function(i){
+         		buy_shop = $(this).find(":input[id*=buy_shop]").val();
+         		buy_item = $(this).find(":input[id*=buy_item]").val();
+         		buy_num = $(this).find(":input[id*=buy_num]").val();
+         		buy_price = $(this).find(":input[id*=buy_price]").val();
+         		
+
+         		if (buy_shop != "" || buy_item != "" || buy_num != "" || buy_price != "") {
+         			if (buy_shop == "" || buy_item == "" || buy_num == "" || buy_price == "") {
+         			if (errmsg != "") { errmsg = errmsg + ", " };
+         			errmsg = errmsg + (i+1) + "行目"
+         			};
+         		};
+         	});
+     		if (errmsg != "") {
+     			alert("購入先、購入品名、個数、単価は必須入力です。正しく入力してください。\n（" + errmsg + "）");
+     			return false;
+     	    };         	
+    });
+
+
+});	
+</script>
