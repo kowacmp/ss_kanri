@@ -13,12 +13,14 @@
 
 <table class='rounded-corner' style="width:98%" >
 
+	<!-- DELETE 2012.10.15 ボタンをやめてチェックボックスへ変更
 	<tr>
 		<td colspan="8" align="right" style="border: none;">
 			<input type="button" value=" 　一括 　" onclick="return chk_flgs_all(true);"  <%="disabled = 'disabled'" if (@approval_id == 0) %>><br/>
 			<input type="button" value="一括クリア" onclick="return chk_flgs_all(false);" <%="disabled = 'disabled'" if (@approval_id == 0) %>>
 		</td>
 	</tr>
+	-->
 
 	<tr>
 		<th>店舗</th>
@@ -28,7 +30,19 @@
 		<th>監査人</th>
 		<th>立会人</th>
 		<th>詳細</th>
-		<th>承認</th>
+		<th>
+		<!-- UPDATE 2012.10.15 ボタンをやめてチェックボックスへ変更 -->
+			承認<br/>
+			<input type="checkbox" id="audit_approves_check_all" />
+			<script>
+			$(function() {
+				$("#audit_approves_check_all").click( function (){ 
+					$(":checkbox[id$=approval_flg]:not([disabled=disabled])").prop("checked", $(this).prop("checked"));
+				});
+			});
+			</script>
+		<!-- UPDATE 2012.10.15 ボタンをやめてチェックボックスへ変更 -->
+		</th>
 	</tr>
 	
 	<% rec_cnt = 0 %>
