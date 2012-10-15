@@ -23,14 +23,18 @@
 	    <th>店舗種別</th>
 	    <td><%#= select_tag "shop_kbn",options_for_select({'直営' => 0,'油外' => 1},@shop_kbn) %>
 	    	<%= select_tag "shop_kbn",  
-        		options_for_select(MCode.find(:all, :conditions=>["kbn='shop_kbn' and code <> '9'"], :order=>"code").collect{|i| [ "#{i.code_name}", i.code ]},@shop_kbn) %>
+        		options_for_select(MCode.find(:all, :conditions=>["kbn='shop_kbn' and code <> '9'"], :order=>"code").collect{|i| [ "#{i.code_name}", i.code ]},@shop_kbn), {:include_blank => true}  %>
 	    </td>
+  		<td>
+			<%= check_box "", "approve_flg", {:checked => @approve_flg == 0}, 0, 1 %>
+  			<label>未承認のみ</label>
+  		</td>
 	    <td><%= submit_tag "検索" %></td>
 	</tr>
 </table>
 <% end %>
 <p>
 	<div id="result">
-	    <%= render partial: 'result'%>
+	    <%= render :partial => 'result' %>
 	</div>
 </p>

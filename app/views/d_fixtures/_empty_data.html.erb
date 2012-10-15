@@ -1,4 +1,4 @@
-	     <tr>
+	     <tr id="row<%= i + 1 %>">
 	  	  <td rowspan="2"><%= i + 1 %></td>
 		  <td ><%= text_field_tag("buy_shop_#{i+1}", "" ,
 		  		    :size => 20,:maxlength=>40) %></td>
@@ -8,14 +8,14 @@
 		  		    :class => "money") %></td>  
 		  <td class="input-num"><%= text_field_tag("buy_price_#{i+1}", "" ,
 		  		    :style => "text-align:right",:class => "money") %></td>  
-		  <td colspan="2"></td><!-- 金額--> 
-	    </tr>
-	    <tr>
-		  <td colspan="2"><%= text_field_tag("buy_object_#{i+1}", "" ,
-		  		    :size => 55,:maxlength=>100) %></td>
+		  <td></td><!-- 金額--> 
 		  <td ><%= text_field_tag("now_num_#{i+1}", "" ,
 		  		    :style => "text-align:right",:class => "money") %></td>
 		  <td ><%#= text_field_tag("buy_day_#{i+1}", "" , :style => "text-align:right",:size => 2) %></td>
+	    </tr>
+	    <tr>
+		  <td colspan="5"><%= text_field_tag("buy_object_#{i+1}", "" ,
+		  		    :size => 110,:maxlength=>110) %></td>
 		  <td></td><!-- 承認-->
 		  <td></td><!-- コメント -->
 		  <%= hidden_field_tag "fixture_id_#{i+1}",nil %>

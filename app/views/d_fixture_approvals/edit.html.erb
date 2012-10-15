@@ -2,8 +2,19 @@
 <% i = 0%>
 <% sum_goukei = 0 %>
 <h1>備品購入申請承認</h1>
-<%= link_to '一覧に戻る',{:action => 'index',:from_ymd => @from_ymd,:to_ymd => @to_ymd,:shop_kbn => @shop_kbn} %>
-
+<%= link_to '一覧に戻る',{:action => 'index',:from_ymd => @from_ymd,:to_ymd => @to_ymd,:shop_kbn => @shop_kbn, :approve_flg=> @approve_flg} %>
+<table id='rounded-corner'>
+	<tr>
+	  <th>対象店舗</th>
+	  <td style="background-color: #A5D7AA;">
+	  	<%= "#{@m_shop.shop_cd} #{@m_shop.shop_name}" %>
+	  </td> 
+	  <th>申請日</th>
+	  <td style="background-color: #A5D7AA;">
+	  	<%= "#{@fixtures[0].application_date[0,4]}/#{@fixtures[0].application_date[4,2]}/#{@fixtures[0].application_date[6,2]}" %>
+	  </td>
+	  </tr>
+</table>
 <table id="rounded-corner">
 
 	<tr>
@@ -93,3 +104,4 @@ jQuery(function() {
 <% end %>
 });
 </script>
+

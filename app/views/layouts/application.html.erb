@@ -8,10 +8,21 @@
 
   <% @establish = Establish.find(:first)%>
   <title><%= @establish.system_name %></title>
-  <%= stylesheet_link_tag    "application" %> 
-  <%= stylesheet_link_tag    params[:controller] %> <%# 呼出元のコントローラのCSSを読込 %>
+  <%= stylesheet_link_tag    "application" %>
   <%= javascript_include_tag "application" %>
-  <%= javascript_include_tag params[:controller] %> <%# 呼出元のコントローラのJSを読込 %>
+  
+  <!-- 呼出元のコントローラ名のcss/jsを読み込む-->
+  <% if File.exist?("#{Rails.root.to_s}/app/assets/stylesheets/#{params[:controller].to_s}.css.scss") then %>
+      <%= stylesheet_link_tag    params[:controller] %>
+  <% else %>
+      <!-- "<%="app/assets/stylesheets/#{params[:controller].to_s}.css.scss"%>" is not found -->
+  <% end %>
+  <% if File.exist?("#{Rails.root.to_s}/app/assets/javascripts/#{params[:controller].to_s}.js") then %>
+      <%= javascript_include_tag params[:controller] %>
+  <% else %>
+      <!-- "<%="app/assets/javascripts/#{params[:controller].to_s}.js"%>" is not found -->
+  <% end %>
+
   <%#= javascript_include_tag "jquery.mini" %>
   <%= stylesheet_link_tag    "table" %> 
   <%= stylesheet_link_tag    "icon" %>   

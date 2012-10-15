@@ -30,8 +30,11 @@ class DFixtureApprovalsController < ApplicationController
     @shop_kbn = params[:shop_kbn]
     @from_ymd = params[:from_ymd]
     @to_ymd = params[:to_ymd]
+    @approve_flg = params[:approve_flg]
+    
     @fixtures = DFixture.find(:all,:conditions => ['application_date = ? and created_user_id = ? and m_shop_id = ?',
       params[:date],params[:user_id],params[:shop_id]],:order => 'id')
+    @m_shop = MShop.find(params[:shop_id])
   end
 
   def entry_comment
@@ -40,6 +43,8 @@ class DFixtureApprovalsController < ApplicationController
   end
   
   def search
+    @approve_flg = params[:approve_flg].to_i
+    
     if params[:from_ymd] == nil or params[:from_ymd] == ''
       @from_ymd = '00000000'
     else
@@ -53,13 +58,14 @@ class DFixtureApprovalsController < ApplicationController
     end
     @shop_kbn = params[:shop_kbn]
     
-    if @from_ymd == '00000000' and @to_ymd == '99999999'
-    else
-      @fixtures = DFixture.find_by_sql(['select application_date,m_shop_id,created_user_id from d_fixtures
+#    if @from_ymd == '00000000' and @to_ymd == '99999999'
+#    else
+      @fixtures = DFixture.find_by_sql(["select application_date,m_shop_id,created_user_id from d_fixtures
                     where application_date between ? and ?
+                    #{" and approve_flg = 0 " if @approve_flg == 0}
                     group by application_date,m_shop_id,created_user_id
-                    order by application_date,m_shop_id,created_user_id',@from_ymd,@to_ymd])
-    end
+                    order by application_date,m_shop_id,created_user_id",@from_ymd,@to_ymd])
+#    end
   end
   
   def update_comment
