@@ -187,36 +187,41 @@
 	   		<% unless d_wash_sale == nil %>
 	   		  <% d_washsales_item_99 = get_d_washsale_item(d_wash_sale.id, wash.wash_cd,99) %>
 	   		  <% unless d_washsales_item_99 == nil %>
-	   		    <% if kakutei_flg == 1 %>
-	   		    <td align="right"><%= number_with_delimiter(d_washsales_item_99.meter) %></td>
-	   		    <% else %>
-	   		    <!-- 2012/10/03 nishimura -->
-		  	    <td><%= text_field_tag(meter_id, d_washsales_item_99.meter ,
-		  	      :class => "money" ,:style=>"width:100px;") %></td>
-		  	    <!--td>
-		  	    	<%# if washsale_plan_flg == 1 %>
-			  	    	<%#= text_field_tag(meter_id, d_washsales_item_99.meter ,
-			  	      			:class => "money" ,:style=>"width:100px;") %>
-		  	      	<%# else %>
-			  	      	<%#= text_field_tag(meter_id, d_washsales_item_99.meter ,
-			  	      			:class => "money" ,:style=>"width:100px;",:disabled=>true) %>
-		  	      	<%# end %>
-		  	    </td-->
-		  	    <!-- 2012/10/03 nishimura -->
-		  	    <% end %>
-		  	    <% sum_genkin_uriage = sum_genkin_uriage + d_washsales_item_99.meter %>
+		   		    <% if kakutei_flg == 1 %>
+		   		    <td align="right"><%= number_with_delimiter(d_washsales_item_99.meter) %></td>
+		   		    <% else %>
+		   		    <!-- 2012/10/03 nishimura -->
+			  	    <td><%= text_field_tag(meter_id, d_washsales_item_99.meter ,
+			  	      :class => "money" ,:style=>"width:100px;") %></td>
+			  	    <!--td>
+			  	    	<%# if washsale_plan_flg == 1 %>
+				  	    	<%#= text_field_tag(meter_id, d_washsales_item_99.meter ,
+				  	      			:class => "money" ,:style=>"width:100px;") %>
+			  	      	<%# else %>
+				  	      	<%#= text_field_tag(meter_id, d_washsales_item_99.meter ,
+				  	      			:class => "money" ,:style=>"width:100px;",:disabled=>true) %>
+			  	      	<%# end %>
+			  	    </td-->
+			  	    <!-- 2012/10/03 nishimura -->
+			  	    <% end %>
+			  	    <% sum_genkin_uriage = sum_genkin_uriage + d_washsales_item_99.meter %>
 		  	  <% else %>
-		  	    <td>
-		  	    	<!-- 2012/10/03 nishimura -->
-		  	    	<%= text_field_tag(meter_id,0 ,:class => "money", :style=>"width:100px;") %>
-		  	    	<%# if washsale_plan_flg == 1 %>
-		  	    		<%#= text_field_tag(meter_id,0 ,:class => "money", :style=>"width:100px;") %>
-		  	    	<%# else %>
-		  	    		<%#= text_field_tag(meter_id,0 ,:class => "money", :style=>"width:100px;",:disabled=>true) %>
-		  	    	<%# end %>
-		  	    	<!-- 2012/10/03 nishimura -->
-		  	    </td>
-		  	<% end%>
+		  	    	<!-- 2012/10/16 kakutei_flg条件追加 nishimura -->
+		  	    	<% if kakutei_flg == 1 %>
+		  	    		<td align="right">0</td>
+		  	    	<% else %>
+			  	    	<td>
+				  	    	<!-- 2012/10/03 nishimura -->
+				  	    	<%= text_field_tag(meter_id,0 ,:class => "money", :style=>"width:100px;") %>
+				  	    	<%# if washsale_plan_flg == 1 %>
+				  	    		<%#= text_field_tag(meter_id,0 ,:class => "money", :style=>"width:100px;") %>
+				  	    	<%# else %>
+				  	    		<%#= text_field_tag(meter_id,0 ,:class => "money", :style=>"width:100px;",:disabled=>true) %>
+				  	    	<%# end %>
+				  	    	<!-- 2012/10/03 nishimura -->
+			  	    	</td>
+		  	    	<% end %>
+		  	  <% end %>
 	   		<% else %>
 	   		   <td>
 	   		   	<!-- 2012/10/03 nishimura -->

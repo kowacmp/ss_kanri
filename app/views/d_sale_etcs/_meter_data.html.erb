@@ -167,20 +167,25 @@
 	   	
 	   		<% meter_id = "meter_" + etc.id.to_s + '_'+ 99.to_s %>
 	   		<% unless d_sale_etc == nil %>
-	   		  <!-- 2012/10/05 etc_cd=>etc_id nishimura -->
-	   		  <%# d_sale_etc_detail_99 = get_d_sale_etc_detail(d_sale_etc.id, etc.etc_cd,99) %>
-	   		  <% d_sale_etc_detail_99 = get_d_sale_etc_detail(d_sale_etc.id, etc.id,99) %>
-	   		  <% unless d_sale_etc_detail_99 == nil %>
-	   		  	<% if kakutei_flg == 1 %>
-	   		    <td align="right"><%= number_with_delimiter(d_sale_etc_detail_99.meter) %></td>
-		  	    <% else %>
-		  	    <td><%= text_field_tag(meter_id, d_sale_etc_detail_99.meter ,
-		  	      :class => "money" , :style=>"width:100px;") %></td>
-		  	    <% end %>
-		  	    <% sum_genkin_uriage = sum_genkin_uriage + d_sale_etc_detail_99.meter %>
-		  	  <% else %>
-		  	    <td><%= text_field_tag(meter_id,0 ,:class => "money", :style=>"width:100px;") %></td>
-		  	<% end%>
+		   		<!-- 2012/10/05 etc_cd=>etc_id nishimura -->
+		   		<%# d_sale_etc_detail_99 = get_d_sale_etc_detail(d_sale_etc.id, etc.etc_cd,99) %>
+		   		<% d_sale_etc_detail_99 = get_d_sale_etc_detail(d_sale_etc.id, etc.id,99) %>
+		   		<% unless d_sale_etc_detail_99 == nil %>
+		   		  	<% if kakutei_flg == 1 %>
+		   		    <td align="right"><%= number_with_delimiter(d_sale_etc_detail_99.meter) %></td>
+			  	    <% else %>
+			  	    <td><%= text_field_tag(meter_id, d_sale_etc_detail_99.meter ,
+			  	      :class => "money" , :style=>"width:100px;") %></td>
+			  	    <% end %>
+			  	    <% sum_genkin_uriage = sum_genkin_uriage + d_sale_etc_detail_99.meter %>
+		  	  	<% else %>
+		  	  		<!-- 2012/10/16 kakutei_flg条件追加 nishimura -->
+		  	    	<% if kakutei_flg == 1 %>
+		  	    		<td align="right">0</td>
+		  	    	<% else %>
+		  	    		<td><%= text_field_tag(meter_id,0 ,:class => "money", :style=>"width:100px;") %></td>
+		  	    	<% end %>
+		  	  	<% end%>
 	   		<% else %>
 	   		   <td><%= text_field_tag(meter_id,0 ,:class => "money", :style=>"width:100px;") %></td>
 	   		<% end %>
