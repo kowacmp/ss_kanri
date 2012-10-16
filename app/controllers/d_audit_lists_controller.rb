@@ -19,39 +19,39 @@ class DAuditListsController < ApplicationController
       @shori_name = "金庫"
 
       if params[:header][:audit_class].to_s == "0" then
-        @menu_id = "38"
+        @menu_id = "34"
       else
-        @menu_id = "43"
+        @menu_id = "38"
       end
       
     when "2" #釣銭
       @table = "d_audit_changemachines"
-      @shori_name = "釣銭"
+      @shori_name = "釣銭機"
 
       if params[:header][:audit_class].to_s == "0" then
-        @menu_id = "39"
+        @menu_id = "35"
       else
-        @menu_id = "44"
+        @menu_id = "39"
       end
     
     when "3" #洗車
       @table = "d_audit_washes"
-      @shori_name = "洗車"
+      @shori_name = "洗車機"
 
       if params[:header][:audit_class].to_s == "0" then
-        @menu_id = "40"
+        @menu_id = "35"
       else
-        @menu_id = "45"
+        @menu_id = "40"
       end
     
     when "4" #その他
       @table = "d_audit_etcs"
-      @shori_name = "その他"
+      @shori_name = "他商品"
 
       if params[:header][:audit_class].to_s == "0" then
-        @menu_id = "42"
+        @menu_id = "37"
       else
-        @menu_id = "46"
+        @menu_id = "41"
       end
     
     end
