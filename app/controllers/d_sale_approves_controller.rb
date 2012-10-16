@@ -36,7 +36,7 @@ class DSaleApprovesController < ApplicationController
                        and coalesce(d_sale_reports.approve_id5, 0) != #{current_user.id}
                    "
     end
-    
+    #2012/10/16 確定フラグonの分のみ対象 oda
     sql = "
       select
          d_sale_reports.id
@@ -77,6 +77,7 @@ class DSaleApprovesController < ApplicationController
             d_sale_reports.sale_date = '#{params[:header][:ym]}'
         and m_shops.shop_kbn = #{params[:header][:shop_kbn]}
             #{ where_zumi }
+            and d_sale_reports.kakutei_flg = 1
       order by 
             m_shops.shop_cd
     

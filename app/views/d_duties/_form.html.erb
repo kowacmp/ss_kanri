@@ -109,6 +109,14 @@
 		</tbody>				
 </table>
 
+<!-- 2012/10/16 nishimura -->
+<% if params[:mode] == 'list' %>
+<%= hidden_field_tag :mode,params[:mode] %>
+<%= link_to "入力状況へ戻る", {:controller => "d_duty_lists", :action => "index", 
+		:date =>{"year"=>@head[:input_day].to_s[0,4].to_i,"month"=>@head[:input_day].to_s[4,2].to_i} ,
+		:shop_kbn => MShop.find(@m_shop_id).shop_kbn.to_s}, 
+	  	:confirm => "入力状況へ戻ります。よろしいですか？", :method => :get, :class => 'return_icon' %>
+<% end %>
 
 <script>
 $(function () {

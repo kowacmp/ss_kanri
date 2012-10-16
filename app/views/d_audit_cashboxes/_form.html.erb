@@ -1,3 +1,6 @@
+<!-- INSERT 2012.10.16 コメントのみの更新をするフラグ -->
+<%= hidden_field :comment, :on, :value => params[:comment] %>
+
 <%= form_tag({:action => 'update' }, :id => "form_update") do %>
 	<!-- 検索ヘッダ -->
 	<%= hidden_field :hheader, "m_shop_id",       :value => @m_shop_id %>
@@ -63,6 +66,48 @@
 		</div>		
 	</td>
 </tr>
+
+<% # form_tbl2の表示データがない場合を考慮
+		w_name = ""
+		for i in 1..7
+			w_name += @d_audit_cashbox["sum#{ i }_cashbox_name"].to_s
+		end
+%>
+
+<% if w_name == "" then %>
+<!-- form_tbl2無しのデザイン -->
+<tr>
+	<td>
+		<div id="div_bottom_left" >
+			<%= render 'form_tbl4'%>
+		</div>	
+	</td>
+	<td>
+		<div id="div_middle_right" >
+			<%= render 'form_tbl3' %>
+		</div>		
+		<!-- 立会人 -->
+		<table class='rounded-corner' style="margin-top: 10px;" >
+		<tr>
+			<th rowspan="2">立会人</th>
+			<td>
+				<%=render :partial => 'd_audit_changemachines/confirm_shop_id', :locals => {:c_shop_id => @d_audit_cashbox[:confirm_shop_id], 
+					                                                                        :c_user_id => @d_audit_cashbox[:confirm_user_id]} %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="confirm_user_id_div">
+					<%=render :partial => 'd_audit_changemachines/confirm_user_id', :locals => {:c_shop_id => @d_audit_cashbox[:confirm_shop_id], 
+					                                                                            :c_user_id => @d_audit_cashbox[:confirm_user_id]} %>
+				</div>
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+<% else %>
+<!-- form_tbl2有のデザイン -->
 <tr>
 	<td>
 		<div id="div_middle_left" >
@@ -102,6 +147,7 @@
 		</table>
 	</td>
 </tr>
+<% end %> <!-- if w_name == "" then -->
 </table>
 
 <div style="float:right; padding-right: 20px;">
@@ -121,10 +167,12 @@
 </div>
 
 <% for i in 1..6 %>
-	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }"           ,   :value => @d_audit_cashbox["cashbox#{ i }"] %>
+	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_name", :value => @d_audit_cashbox["cashbox#{ i }_name"] %>
+	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }",      :value => @d_audit_cashbox["cashbox#{ i }"] %>
 <% end %>
 
 <% for i in 1..7 %>
+	<%= hidden_field :d_audit_cashbox, "sum#{ i }_cashbox_name",    :value => @d_audit_cashbox["sum#{ i }_cashbox_name"] %>
 	<%= hidden_field :d_audit_cashbox, "sum#{ i }_cashbox", :value => @d_audit_cashbox["sum#{ i }_cashbox"] %>
 <% end %>
 

@@ -6,6 +6,17 @@
 </div>
 <br />
 <div style="text-align:right">
-<%= submit_tag(" 登録 ",:disable_with => "登録中.....") %>
+<%= submit_tag(" 登録 ",:disable_with => "登録中.....", :id=>"btn_comment") %>
 </div>
 <% end %>
+
+<script>
+$( function () {
+	//$("#btn_comment").click( function () {
+	//	if ($("#error_note").val().length > 200) {
+	//		alert("コメントは200文字以内で入力してください。");
+	//		return false;
+	//	}
+	//});
+});
+</script>

@@ -1,8 +1,12 @@
 SsKanri::Application.routes.draw do
 
+<<<<<<< HEAD
   get "d_duty_reports/index"
 
   get "d_duty_reports/show"
+=======
+  resources :m_machine_numbers
+>>>>>>> 98b19f06b18136ce1fad70e0807b1ee7a68add30
 
   resources :access_logs
 

@@ -1,4 +1,4 @@
-<%= text_area_tag "error_note",@d_washsale_item.error_note,rows: 8,cols: 30 %><br />
+<%= text_area_tag "error_note",@d_washsale_item.error_note,rows: 10,cols: 50, :maxlength => 200 %><br />
 <%= hidden_field_tag("wash_cd",@wash_cd) %>
 <%= hidden_field_tag("sale_date",@sale_date) %>
 <%= hidden_field_tag("shop_id",@shop_id) %>

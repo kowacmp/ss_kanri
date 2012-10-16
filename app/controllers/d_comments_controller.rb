@@ -90,7 +90,9 @@ class DCommentsController < ApplicationController
   end
   
   def change_m_shop
-    sql = "select * from users where deleted_flg = 0 and user_class = 3"
+    # 2012/10/15 表示先社員変更(役職→社員)
+    #sql = "select * from users where deleted_flg = 0 and user_class = 3"
+    sql = "select * from users where deleted_flg = 0 and user_class <> 1"
     unless params[:m_shop_id].blank?
       sql << " and m_shop_id = #{params[:m_shop_id]}"
     end

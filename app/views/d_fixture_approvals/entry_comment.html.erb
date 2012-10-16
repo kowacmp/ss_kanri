@@ -7,6 +7,19 @@
 </div>
 <br />
 <div style="text-align:right">
-<%= submit_tag(" 登  録 ",:disable_with => "登録中.....") %>
+<%= submit_tag(" 登録 ",:disable_with => "登録中.....", :id=>"btn_comment") %>
 </div>
 <% end %>
+
+<script>
+$( function () {
+	// DELETE 2012.10.16 textareaのmaxlength属性で文字数制限
+	//$("#btn_comment").click( function () {
+	//	if ($("#comment").val().length > 100) {
+	//		alert("コメントは100文字以内で入力してください。");
+	//		return false;
+	//	}
+	//});
+});
+</script>
+

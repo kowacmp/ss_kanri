@@ -1,0 +1,28 @@
+<h1>釣銭機番号マスタメンテ</h1>
+
+<%= link_to '新規登録', new_m_machine_number_path, :class => 'add_icon' %>
+<br />
+<table id='rounded-corner'>
+  <tr>
+  	<th style="min-width: 50px">店舗コード</th>
+    <th style="min-width: 200px">店舗</th>
+    <th>POS1釣銭機数</th>
+    <th>POS2釣銭機数</th>
+    <th>POS3釣銭機数</th>
+    <th>編集</th>
+    <th>削除</th>
+  </tr>
+
+<% @m_machine_numbers.each do |m_machine_number| %>
+  <tr>
+  	<td><%= m_machine_number.shop_cd %></td>
+    <td><%= m_machine_number.shop_name %></td>
+    <td align="right"><%= m_machine_number.pos1machineno_count %></td>
+    <td align="right"><%= m_machine_number.pos2machineno_count %></td>
+    <td align="right"><%= m_machine_number.pos3machineno_count %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_machine_number_path(m_machine_number) %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_delete.png'), m_machine_number, :confirm => '削除します。よろしいですか？', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+

@@ -87,7 +87,8 @@
 				<%= user.user_name %>
 			</td>
 			<td align="center">
-				<%= link_to '参照', :controller => @table, :action => "show", :id => approval.id %>
+				<!-- UPDATE 2012.10.16 詳細の呼出先にコメントのみ更新する機能をつける -->
+				<%= link_to '詳細', :controller => @table, :action => "show", :id => approval.id, :comment => true %>
 			</td>
 			<td align="center">
 				<%
@@ -109,7 +110,7 @@
 		
 	<tr>
 		<td colspan="8" align="right" style="border: none">
-			<%= submit_tag '　保　存　', :disable_with => "保存中です...", :confirm => "保存してもよろしいですか？",
+			<%= submit_tag '　登  録　', :disable_with => "登録中です...", :confirm => "登録してもよろしいですか？",
 				:disabled => (@approval_id == 0) %>
 		</td>
 	</tr>

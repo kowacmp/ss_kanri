@@ -37,8 +37,8 @@
 	<% for m_shop in @m_shops %>
 	<% @audit = DAuditCashbox.find_by_sql(@sql + " and m_shop_id = " + m_shop.id.to_s)[0] %>
 	<tr>
-		<td align="center">
-			<%= m_shop.shop_cd %><br/><%= m_shop.shop_name %>
+		<td align="left">
+			<%= m_shop.shop_cd %>&nbsp;&nbsp;<%= m_shop.shop_name %>
 		</td>
 		<td align="center">
 			<%= get_audit_date(@audit) %>
