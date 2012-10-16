@@ -1,21 +1,24 @@
 コメントを入力してください<br/>
-<textarea id="_comment" rows="10" cols="60" style="ime-mode: active;" ></textarea>
+<textarea id="_comment" rows="10" cols="60" style="ime-mode: active;" maxlength="200" ></textarea>
 <br/>
 <br/>
 <input type="button" value="更新" onclick="return update_comment();" >
 
 <script>
-	
+
 $(function(){
 	// 本体フォームよりコメントを取得
 	$("#_comment").val( $("#d_audit_cashbox_comment").val() );
 });
 
 function update_comment() {
+	// maxlengthで長さを制御
+	/* 
 	if ($("#_comment").val().length > 200) {
 		alert("コメントは200文字以内で入力してください。");
 		return false;
 	} 
+	*/
 
 	$("#d_audit_cashbox_comment").val( $("#_comment").val() );
 

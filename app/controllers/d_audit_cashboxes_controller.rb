@@ -51,10 +51,43 @@ class DAuditCashboxesController < ApplicationController
       @d_audit_cashbox.audit_class     = session[:audit_class]
       @d_audit_cashbox.m_shop_id       = @m_shop_id
       @d_audit_cashbox.created_user_id = @created_user_id
-     
-    end
-    
-  end
+      
+      # 名称、及び指定額取得
+      fix_item_class = -1
+      idx = 0
+      m_fix_items = MFixItem.find(:all, :conditions => "deleted_flg=0", :order => "fix_item_class,fix_item_cd")
+      m_fix_money = MFixMoney.find(:first, :conditions => ["deleted_flg=0 and m_shop_id = ? and start_month <= ? and end_month >= ?",
+                                                            @m_shop_id, 
+                                                            @audit_date.to_s.gsub("/","")[4..5],
+                                                            @audit_date.to_s.gsub("/","")[4..5] ])
+      for m_fix_item in m_fix_items
+        if m_fix_money.nil? then
+          # 金額マスタがない場合は未設定
+        else
+          # 金額マスタを読込、金額がある場合のみ設定
+          for i in 1..13
+            if m_fix_money["m_fix_item_id#{ i }"] == m_fix_item[:id] then
+              if not(m_fix_money["fix_money#{ i }"].nil?) and (m_fix_money["fix_money#{ i }"] > 0) then
+                if fix_item_class != m_fix_item.fix_item_class then
+                  fix_item_class = m_fix_item.fix_item_class
+                  idx = 0
+                end
+                idx += 1
+                
+                if fix_item_class == 0 then
+                  @d_audit_cashbox["cashbox#{ idx }_name"] = m_fix_item[:fix_item_ryaku]
+                  @d_audit_cashbox["cashbox#{ idx }"] = m_fix_money["fix_money#{ i }"]
+                else
+                  @d_audit_cashbox["sum#{ idx }_cashbox_name"] = m_fix_item[:fix_item_ryaku]
+                  @d_audit_cashbox["sum#{ idx }_cashbox"] = m_fix_money["fix_money#{ i }"]
+                end # fix_item_class == 0
+              end # if not(m_fix_money["fix_money#{ i }"].nil?) and (m_fix_money["fix_money#{ i }"] > 0)
+            end # if m_fix_money["m_fix_item_id#{ i }"] == m_fix_item[:id] 
+          end # for i in 1..13
+        end # if m_fix_money.nil?
+      end # for m_fix_item in m_fix_items
+    end # if @d_audit_cashbox.nil?
+  end # def
 
   def update
     
