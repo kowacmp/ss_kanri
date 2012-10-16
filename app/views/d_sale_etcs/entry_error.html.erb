@@ -13,11 +13,12 @@
 
 <script>
 $( function () {
-	$("#btn_comment").click( function () {
-		if ($("#error_note").val().length > 200) {
-			alert("コメントは200文字以内で入力してください。");
-			return false;
-		}
-	});
+	// DELETE 2012.10.16 textareaのmaxlength属性で文字数制限
+	//$("#btn_comment").click( function () {
+	//	if ($("#error_note").val().length > 200) {
+	//		alert("コメントは200文字以内で入力してください。");
+	//		return false;
+	//	}
+	//});
 });
 </script>

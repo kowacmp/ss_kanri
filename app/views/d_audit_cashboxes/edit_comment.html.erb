@@ -12,13 +12,11 @@ $(function(){
 });
 
 function update_comment() {
-	// maxlengthで長さを制御
-	/* 
-	if ($("#_comment").val().length > 200) {
-		alert("コメントは200文字以内で入力してください。");
-		return false;
-	} 
-	*/
+	// DELETE 2012.10.16 textareaのmaxlength属性で文字数制限 
+	//if ($("#_comment").val().length > 200) {
+	//	alert("コメントは200文字以内で入力してください。");
+	//	return false;
+	//} 
 
 	$("#d_audit_cashbox_comment").val( $("#_comment").val() );
 
