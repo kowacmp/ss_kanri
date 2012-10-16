@@ -14,7 +14,7 @@ class DAuditChangemachinesController < ApplicationController
   
   def show
     
-    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true
+    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true, :comment => params[:comment].to_s
     
   end
   
@@ -167,5 +167,16 @@ class DAuditChangemachinesController < ApplicationController
     # TO:confirm_user_pass_select.js.erb
 
   end 
+  
+  # コメントのみのAJAX更新
+  def update_comment
+    
+    @d_audit_changemachine = DAuditChangemachine.find(params[:id])
+    @d_audit_changemachine[:comment] = params[:comment]
+    @d_audit_changemachine.save!
+    
+    head :ok
+    
+  end
   
 end

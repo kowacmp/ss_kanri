@@ -13,6 +13,17 @@ function toNum(str) {
 }	
 </script>
 
+<!-- INSERT 2012.10.16 コメントのみの更新をするフラグ -->
+<%= hidden_field :comment, :on, :value => params[:comment] %>
+<% 
+if @d_audit_changemachine[0].nil? then
+	tmp_id = 0
+else
+	tmp_id = @d_audit_changemachine[0][:id].to_s
+end
+%>
+<%= hidden_field :key, :id, :value => tmp_id %>
+
 <%= form_for(@d_audit_changemachine, :url => {:action => "update"} ) do |f| %>
 
 <%= f.hidden_field :audit_date %>
@@ -33,13 +44,13 @@ function toNum(str) {
 	</tr>
 
 	<tr>
-		<th>POS1</th>
+		<th>釣銭機<br/>POS1</th><!-- UPDATE 2012.10.16 POS1→釣銭機POS1 -->
 		<th>監査前有高</th>
 		<th>監査後有高</th>
-		<th>POS2</th>
+		<th>釣銭機<br/>POS2</th><!-- UPDATE 2012.10.16 POS2→釣銭機POS2 -->
 		<th>監査前有高</th>
 		<th>監査後有高</th>
-		<th>POS3</th>
+		<th>釣銭機<br/>POS3</th><!-- UPDATE 2012.10.16 POS3→釣銭機POS3 -->
 		<th>監査前有高</th>
 		<th>監査後有高</th>
 	</tr>  	
@@ -58,7 +69,7 @@ function toNum(str) {
 	</tr>
 	<% end %> <!-- for i in 1..7 -->
 
-	<tr>
+	<tr id="tr_gokei">
 		<th              >合計</th>
 		<td align="right" style="background-color: #A5D7AA;"><span id="pos1_before_money_sum"></span></td>
 		<td align="right" style="background-color: #A5D7AA;"><span id="pos1_after_money_sum"></span></td>
@@ -69,6 +80,16 @@ function toNum(str) {
 		<td align="right" style="background-color: #A5D7AA;"><span id="pos3_before_money_sum"></span></td>
 		<td align="right" style="background-color: #A5D7AA;"><span id="pos3_after_money_sum"></span></td>
 	</tr>
+	
+	<!-- INSERT 2012.10.16 合計欄のみ上下部分太字に変更 -->
+	<script>
+		$(function() {
+			$("#tr_gokei").find("th,td").css({
+				 "border-top-width"    : "3px"
+				,"border-bottom-width" : "3px"
+			});
+		});
+	</script>
 	
 	<tr>
 		<th>補充金額</th>
@@ -130,8 +151,14 @@ function toNum(str) {
 		</td>
 	</tr>
 		
+	<!-- INSERT 2012.10.16 空行を追加 -->
 	<tr>
-		<th>全POS合計<br/>計算上</th>
+		<th colspan="9" style="margin:0px; padding:0px; height:5px;">
+		</th>
+	</tr>
+		
+	<tr>
+		<th>全POS合計<br/>計算上有高</th><!-- UPDATE 2012.10.16 計算上→計算上有高-->
 		<td colspan="2" align="right" style="background-color: #A5D7AA;">
 			<span id="pos_all_keisan_aridaka"></span>			
 		</td>

@@ -1,3 +1,6 @@
+<!-- INSERT 2012.10.16 コメントのみの更新をするフラグ -->
+<%= hidden_field :comment, :on, :value => params[:comment] %>
+
 <%= form_tag({:action => 'update' }, :id => "form_update") do %>
 	<!-- 検索ヘッダ -->
 	<%= hidden_field :hheader, "m_shop_id",       :value => @m_shop_id %>

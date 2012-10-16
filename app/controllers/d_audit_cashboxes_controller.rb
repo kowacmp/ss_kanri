@@ -14,7 +14,7 @@ class DAuditCashboxesController < ApplicationController
 
   def show
     
-    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true
+    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true, :comment => params[:comment].to_s
     
   end
 
@@ -159,5 +159,15 @@ class DAuditCashboxesController < ApplicationController
     
   end
 
+  # コメントのみのAJAX更新
+  def update_comment
+    
+    @d_audit_cashbox = DAuditCashbox.find(params[:id])
+    @d_audit_cashbox[:comment] = params[:comment]
+    @d_audit_cashbox.save!
+    
+    head :ok
+    
+  end
 
 end

@@ -13,7 +13,7 @@
   <table class='rounded-corner' >
   	<tr>
   		<th>対象店舗</th>
-  		<td style="background-color: #A5D7AA;">
+		<td style="background-color: #A5D7AA; min-width: 300px;">
   			<%if session[:audit_class] == "1" then%>
   				<!-- 本監査 -->
 				<%=select :input, :m_shop_id, 

@@ -20,6 +20,14 @@ function update_comment() {
 
 	$("#d_audit_cashbox_comment").val( $("#_comment").val() );
 
+	// INSERT 2012.10.16 コメントのみの更新をするフラグ
+	if ($("#comment_on").val() == "true") {
+		$.post("<%=url_for(:action => "update_comment")%>",
+		       { id      : $("#key_id").val() 
+		        ,comment : $("#_comment").val()
+		        ,authenticity_token : $("#authenticity_token").val() });
+	}
+
 	// 親フォームのhiddenに書込後、モーダル終了
 	$("div#modal div.background").trigger("click");
 }
