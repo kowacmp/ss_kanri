@@ -14,6 +14,7 @@ var pref_id = $("#prefecture_id").val();
 $.get("city_select?pref_id=" + pref_id);
 });
 
+// EnterキーでSubmitされるのを禁止する
 $('input[type!="submit"][type!="button"]').live("keypress",function(e){
   if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
     return false;
@@ -22,8 +23,17 @@ $('input[type!="submit"][type!="button"]').live("keypress",function(e){
   }
 });
 
+// textareaのmaxlength属性を未対応ブラウザ(ie)でも有効にする
+$("textarea[maxlength]").live("change", function() {
+  var maxlength = Number($(this).attr("maxlength"));	
+  if (!isNaN(maxlength)) {
+    if ($(this).val().length > maxlength ) {
+      $(this).val( $(this).val().substr(0, maxlength) );
+    }
+  }
 });
 
+});
 
 //モーダルウィンドウ　STARTーーーーーーーーーーーーーーーーー
 //$(function() {
