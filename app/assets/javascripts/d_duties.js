@@ -52,23 +52,23 @@ $(function () {
     $("div.colDiv #col_syain_nisu_kei")
       .live('click', function(){
 	     //社員出金日数合計をセット
-	     cals_syain_nisu_kei();   	
+	     calc_syain_nisu_kei();   	
     });
     //各バイトの合計時間が変わったら、合計を再計算する
     $("div.colDiv #col_baito_jikan_kei")
       .live('click', function(){
 	     //バイト時間合計をセット
-	     cals_baito_jikan_kei();   	
+	     calc_baito_jikan_kei();   	
     });
 
    
   //社員出金日数合計をセット
-  cals_syain_nisu_kei();
+  calc_syain_nisu_kei();
   //バイト時間合計をセット
-  cals_baito_jikan_kei();
+  calc_baito_jikan_kei();
   
   //社員出金日数合計
-  function cals_syain_nisu_kei() {
+  function calc_syain_nisu_kei() {
     
     var i=0;
     var num;
@@ -109,7 +109,7 @@ $(function () {
   };
   
   //バイト時間数合計
-  function cals_baito_jikan_kei() {
+  function calc_baito_jikan_kei() {
     var i=0;
     var num;
     var total=0;  

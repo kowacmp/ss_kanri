@@ -52,7 +52,7 @@
 		<% users = get_user_dutry(0, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
 		<% users.each_with_index{ |user, index| %>
 			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} "%>
-			<% nisu = d_duty_syain_nisu(select_where) %>
+			<% nisu = d_duty_syain_total(select_where) %>
 			<tr id="syain_<%= "#{index}" %>">
 				<td colspan="2" style="min-width: 130px">
 					<%= link_to user.user_name , {:controller => "d_duties", :action => "syain_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal" %>
@@ -67,7 +67,7 @@
 		<% } %>
 		<!--社員計-->
 		<tr>
-			<td colspan="2">出金日数</td>
+			<td colspan="2">出勤日数</td>
 			<td style="text-align: center;"><label id="col_syain_nisu_kei"></label></td>
 			<%= set_syain_nisu_kei(loopcnt).html_safe %>
 		
@@ -87,7 +87,7 @@
 		<% users = get_user_dutry(1, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
 		<% users.each_with_index{ |user, index| %>
 			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} "%>
-			<% jikan = d_duty_baito_jikan(select_where) %>
+			<% jikan = d_duty_baito_total(select_where) %>
 			<tr id="baito_<%= "#{index}" %>">
 				<td colspan="2" style="min-width: 130px">
 					<%= link_to user.user_name, {:controller => "d_duties", :action => "baito_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal" %>

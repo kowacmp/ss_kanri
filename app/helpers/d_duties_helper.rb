@@ -16,7 +16,8 @@ module DDutiesHelper
   end
   
   #社員の入力欄を作成
-  def set_syain_row(user_id, loopcnt, select_where)
+  #outputkbn->moneyの場合は金額を送る
+  def set_syain_row(user_id, loopcnt, select_where, outputkbn=nil, d_today_color="#F7DC67")
     rtn_html = ""
     d_duties = DDuty.find(:all, :conditions=>["#{select_where}"], :order => "day")
     
@@ -25,23 +26,33 @@ module DDutiesHelper
       
       loopcnt.times { |i|
         if Time.now.day.to_i == (i+1).to_i
-          today_color = "background-color: #F7DC67;"
+          today_color = "background-color: #{d_today_color};";
         else
           today_color =""
         end 
-          
-        rtn_html << "<td style='text-align: center;#{today_color}'>"
+        
+        if outputkbn == "money"
+          rtn_html << "<td style='text-align: right;#{today_color}'>"
+        else
+          rtn_html << "<td style='text-align: center;#{today_color}'>"
+        end
 
         unless d_duties[n].blank?
 
           if d_duties[n].day == (i + 1)
-            if d_duties[n].day_work_time.to_i == 1
-              rtn_html << "<label id='syain_#{i+1}_#{user_id}'>出</label>"
+            
+            if outputkbn == "money"
+              #金額をセット
+              rtn_html << "<label id='syain_#{i+1}_#{user_id}'>#{num_fmt(d_duties[n].all_money)}</label>"
             else
-              rtn_html << "<label id='syain_#{i+1}_#{user_id}' style='color:red'>休</label>"
+              if d_duties[n].day_work_time.to_i == 1
+                rtn_html << "<label id='syain_#{i+1}_#{user_id}'>出</label>"
+              else
+                rtn_html << "<label id='syain_#{i+1}_#{user_id}' style='color:red'>休</label>"
+              end
+              rtn_html << hidden_field_tag("hiden_syain_#{i+1}_#{user_id}", d_duties[n].day_work_time.to_i)
             end
-
-            rtn_html << hidden_field_tag("hiden_syain_#{i+1}_#{user_id}", d_duties[n].day_work_time.to_i)
+            
             
             n += 1
           else
@@ -61,7 +72,7 @@ module DDutiesHelper
       #データがなかったら空枠を作成
       loopcnt.times { |i|
         if Time.now.day.to_i == (i+1).to_i
-          today_color = "background-color: #F7DC67;"
+          today_color = "background-color: #{d_today_color};"
         else
           today_color =""
         end
@@ -75,12 +86,12 @@ module DDutiesHelper
   end
   
   #社員の日数の計
-  def set_syain_nisu_kei(loopcnt)
+  def set_syain_nisu_kei(loopcnt, d_today_color="#F7DC67")
     rtn_html = ""
     
     loopcnt.times { |i|
       if Time.now.day.to_i == (i+1).to_i
-        today_color = "background-color: #F7DC67;"
+        today_color = "background-color: #{d_today_color};"
       else
         today_color =""
       end 
@@ -93,7 +104,8 @@ module DDutiesHelper
   end
 
   #バイトの入力欄作成
-  def set_banto_row(user_id, loopcnt, select_where)
+  #outputkbn->moneyの場合は金額を送る
+  def set_banto_row(user_id, loopcnt, select_where, outputkbn=nil, d_today_color="#F7DC67")
     rtn_html = ""
     d_duties = DDuty.find(:all, :conditions=>["#{select_where}"], :order => "day")
     
@@ -102,20 +114,30 @@ module DDutiesHelper
       
       loopcnt.times { |i|
         if Time.now.day.to_i == (i+1).to_i
-          today_color = "background-color: #F7DC67;"
+          today_color = "background-color: #{d_today_color};"
         else
           today_color =""
         end 
           
-        rtn_html << "<td style='text-align: center;#{today_color}'>"
+        if outputkbn == "money"
+          rtn_html << "<td style='text-align: right;#{today_color}'>"
+        else
+          rtn_html << "<td style='text-align: center;#{today_color}'>"
+        end
 
         unless d_duties[n].blank?
 
           if d_duties[n].day == (i + 1)
-            if d_duties[n].all_work_time.to_f > 0
-              rtn_html << "<label id='baito_#{i+1}_#{user_id}'>#{d_duties[n].all_work_time}</label>"
+
+            if outputkbn == "money"
+              #金額をセット
+              rtn_html << "<label id='baito_#{i+1}_#{user_id}'>#{num_fmt(d_duties[n].all_money)}</label>"
             else
-              rtn_html << "<label id='baito_#{i+1}_#{user_id}'></label>"
+              if d_duties[n].all_work_time.to_f > 0
+                rtn_html << "<label id='baito_#{i+1}_#{user_id}'>#{d_duties[n].all_work_time}</label>"
+              else
+                rtn_html << "<label id='baito_#{i+1}_#{user_id}'></label>"
+              end
             end
             
             n += 1
@@ -134,7 +156,7 @@ module DDutiesHelper
       #データがなかったら空枠を作成
       loopcnt.times { |i|
         if Time.now.day.to_i == (i+1).to_i
-          today_color = "background-color: #F7DC67;"
+          today_color = "background-color: #{d_today_color};"
         else
           today_color =""
         end
@@ -149,13 +171,13 @@ module DDutiesHelper
   end
   
   #バイト時間の計
-  def set_baito_jikan_kei(loopcnt)
+  def set_baito_jikan_kei(loopcnt, d_today_color="#F7DC67")
 
     rtn_html = ""
     
     loopcnt.times { |i|
       if Time.now.day.to_i == (i+1).to_i
-        today_color = "background-color: #F7DC67;"
+        today_color = "background-color: #{d_today_color};"
       else
         today_color =""
       end 
@@ -168,12 +190,23 @@ module DDutiesHelper
            
   end
 
-    
-  def d_duty_syain_nisu(select_where)
-    return DDuty.find_by_sql("select count(*) nisu from d_duties where #{select_where} and day_work_time <> 0 ")
+  #outputkbn->moneyの場合は金額を送る
+  def d_duty_syain_total(select_where, outputkbn=nil)
+    if outputkbn == "money"
+      return DDuty.find_by_sql("select sum(all_money) all_money from d_duties where #{select_where}")
+    else
+      return DDuty.find_by_sql("select count(*) nisu from d_duties where #{select_where} and day_work_time <> 0 ")
+    end
   end
   
-  def d_duty_baito_jikan(select_where)
-    return DDuty.find_by_sql("select sum(all_work_time) jikan from d_duties where #{select_where} ")
+  #outputkbn->moneyの場合は金額を送る
+  def d_duty_baito_total(select_where, outputkbn=nil)
+    if outputkbn == "money"
+      return DDuty.find_by_sql("select sum(all_money) all_money from d_duties where #{select_where} ")
+    else
+      return DDuty.find_by_sql("select sum(all_work_time) jikan from d_duties where #{select_where} ")
+    end    
   end
+  
+
 end

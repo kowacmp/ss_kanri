@@ -284,10 +284,19 @@ class DDutiesController < ApplicationController
     end
     
     d_dutie.m_shop_id = @m_shop_id
-    d_dutie.day_work_time = data[:syukin] if data[:syukin]
-    d_dutie.updated_user_id = current_user.id
-    d_dutie.save
-           
+    unless d_dutie.day_work_time.to_i == data[:syukin].to_i
+      d_dutie.day_work_time = data[:syukin] if data[:syukin]
+      if d_dutie.day_work_time == 1
+        m_info_cost = MInfoCost.find(:first, :conditions=>["user_id=?", d_dutie.user_id])
+        m_info_cost = MInfoCost.new if m_info_cost.blank?
+        d_dutie.all_money = m_info_cost.base_pay.to_i 
+      else
+        d_dutie.all_money = 0 
+      end 
+      d_dutie.updated_user_id = current_user.id
+      d_dutie.save
+    end
+         
   end
   
   #分割した日付を１つにする

@@ -1,24 +1,18 @@
-<h1>人件費</h1>
-<%= form_tag({:controller=> "d_duty_reports", :action => 'show' }) do %>
+<h1>人件費表</h1>
 <table id='rounded-corner'>
 	<tr>
 	  <th>対象店舗</th>
 	  <td style="background-color: #A5D7AA;">
-	  	<% m_shop = MShop.find(@m_shop_id) %>
 	  	<%= hidden_field_tag 'head_input_m_shop_id', @m_shop_id %>
-	  	<%= "#{m_shop.shop_name}" %>
+	  	<%= "#{@m_shop.shop_name}" %>
 	  </td> 
       <th>対象年月</th>
       <td>
       	<%= select_year(@head[:input_day].to_s[0,4].to_i, :prefix=>"", :field_name=>"input_day(1i)",
       	                :start_year => @start_year, :end_year => @head[:input_day].to_s[0,4].to_i) %>年
       	<%= select_month(@head[:input_day].to_s[4,2].to_i, :prefix=>"", :field_name=>"input_day(2i)", :use_month_numbers => true) %>月</td>
-      <td width="400px" style="text-align: right; border-bottom: none; border-right: none; border-top: none">
-      	<%= submit_tag '人件費表確認', {:method => :get} %>
-      </td>
 	  </tr>
 </table>
-<% end %>
 <div id="form">
 	<%= render 'form' %>
 </div>

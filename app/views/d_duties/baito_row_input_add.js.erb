@@ -10,7 +10,7 @@
 <% } %>
 
 <% select_where = " duty_nengetu = '#{@input_day}' and user_id = #{@user_id} "%>
-<% jikan = d_duty_baito_jikan(select_where) %>
+<% jikan = d_duty_baito_total(select_where) %>
 
 <% label_id = "div.colDiv #baito_jikan_#{@user_id}" %> 
 

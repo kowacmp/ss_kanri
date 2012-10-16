@@ -1,0 +1,238 @@
+<% loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[4,2].to_i, -1)).strftime("%d").to_i %>
+
+<table id="d_duty_table" class="rounded-corner">
+	 <thead>
+		<tr>
+			<th colspan="2">日付</th>
+			<% loopcnt.times { |i| %>
+			  <th style="min-width: 55px;"><%= i + 1 %></th>
+            <% } %>
+		</tr>
+		<tr>
+			<th colspan="2">曜日</th>
+			<% loopcnt.times { |i| %>
+		      <% select_day = Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[4,2].to_i, i + 1) %>		
+			  <% week_w = day_of_the_week(select_day.wday) %>	
+			  <% if week_w == "土" or week_w =="日" %>
+		  		<% if week_w == "土" %>
+		  			<th style = "background-image:none; background-color: #498AF3">
+		  	 	<% else %>
+		  	 		<th style = "background-image:none; background-color: #E92033">
+		  	 	<% end %>
+			  <% else %>
+		    	<th style='background:none;'>
+			  <% end %>
+				<%= week_w %>
+			  </th>
+            <% } %>
+
+		</tr>
+		
+		<%if @m_shop.shop_kbn == 0  %>
+			<!--洗車型-->
+			<!--洗車売上目標税込-->
+			<% d_aim_uriage = DAim.find(:first, :conditions=>["date = ? and m_shop_id = ? and m_aim_id = 2", @head[:input_day].to_s[0,6], @m_shop.id]) %>
+			<% d_aim_uriage = DAim.new if d_aim_uriage.blank? %>
+			<tr>
+				<th>洗車売上<br />目標税込</th>
+				<td style="text-align: right">
+					<%= label "d_aim_uriage_aim_total", num_fmt(d_aim_uriage.aim_total.to_i*10000), :class=>"money" %>
+				</td>
+				<% loopcnt.times { |i| %>
+					<td style="text-align:right;"　>
+						<%= label "d_aim_uriage_aim_value#{i+1}", num_fmt(d_aim_uriage["aim_value#{i+1}"].to_i*10000), :class=>"money" %>
+					</td>
+	            <% } %>			
+			</th>
+			<!--人件費目標-->
+			<% d_aim_jinken = DAim.find(:first, :conditions=>["date = ? and m_shop_id = ? and m_aim_id = 22", @head[:input_day].to_s[0,6], @m_shop.id]) %>
+			<% d_aim_jinken = DAim.new if d_aim_jinken.blank? %>
+			<tr>
+				<th>人件費目標</th>
+				<td style="text-align: right">
+					<%= label "d_aim_jinken_aim_total", num_fmt(d_aim_jinken.aim_total.to_i*10000), :class=>"money" %>
+				</td>
+				<% loopcnt.times { |i| %>
+					<td style="text-align:right;"　>
+						<%= label "d_aim_jinken_aim_value#{i+1}", num_fmt(d_aim_jinken["aim_value#{i+1}"].to_i*10000), :class=>"money" %>
+					</td>
+	            <% } %>			
+			</th>
+		<% else %>
+			<!--油外売上目標税込-->
+			<% d_aim_uriage = DAim.find(:first, :conditions=>["date = ? and m_shop_id = ? and m_aim_id = 1", @head[:input_day].to_s[0,6], @m_shop.id]) %>
+			<% d_aim_uriage = DAim.new if d_aim_uriage.blank? %>
+			<tr>
+				<th>油外売上<br />目標税込</th>
+				<td style="text-align: right">
+					<%= label "d_aim_uriage_aim_total", num_fmt(d_aim_uriage.aim_total), :class=>"money" %>
+				</td>
+				<% loopcnt.times { |i| %>
+					<td style="text-align:right;"　>
+						<%= label "d_aim_uriage_aim_value#{i+1}", num_fmt(d_aim_uriage["aim_value#{i+1}"]), :class=>"money" %>
+					</td>
+	            <% } %>			
+			</th>		
+			<!--人件費目標-->
+			<% d_aim_jinken = DAim.find(:first, :conditions=>["date = ? and m_shop_id = ? and m_aim_id = 23", @head[:input_day].to_s[0,6], @m_shop.id]) %>
+			<% d_aim_jinken = DAim.new if d_aim_jinken.blank? %>
+			<tr>
+				<th>人件費目標</th>
+				<td style="text-align: right">
+					<%= label "d_aim_jinken_aim_total", num_fmt(d_aim_jinken.aim_total), :class=>"money" %>
+				</td>
+				<% loopcnt.times { |i| %>
+					<td style="text-align:right;"　>
+						<%= label "d_aim_jinken_aim_value#{i+1}", num_fmt(d_aim_jinken["aim_value#{i+1}"]), :class=>"money" %>
+					</td>
+	            <% } %>			
+			</th>
+		<% end %>
+		
+		<tr>
+			<th>目標Ｙ指数(%)</th>
+			<td style="text-align: right">
+				<%= label "d_aim_y_sisu_aim_total", num_fmt( d_aim_jinken.aim_total.to_i == 0 ? 0: (d_aim_uriage.aim_total.to_i*10000).to_f / (d_aim_jinken.aim_total.to_i*10000).to_f * 100 ), :class=>"money" %>
+			</td>
+			<% loopcnt.times { |i| %>
+				<td style="text-align:right;"　>
+					<%= label "d_aim_y_sisu_aim_value#{i+1}", num_fmt( d_aim_jinken["aim_value#{i+1}"].to_i == 0 ? 0 : (d_aim_uriage["aim_value#{i+1}"].to_i*10000).to_f  / (d_aim_jinken["aim_value#{i+1}"].to_i*10000).to_f  * 100 ), :class=>"money" %>
+				</td> 
+            <% } %>			
+		</th>
+		<!--社員-->
+		<tr>
+			<th style="min-width: 100px">氏名</th>
+			<th style="min-width: 60px;">累計</th>
+		</tr>
+		</thead>
+		<tbody>
+		<!--社員繰り返し-->
+		<% users = get_user_dutry(0, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
+		<% users.each_with_index{ |user, index| %>
+			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} "%>
+			
+			<tr id="syain_<%= "#{index}" %>">
+				<td>
+					<%= user.user_name %>
+				</td>
+				<td style="text-align:right; min-width: 50px">
+					<label id=<%= "syain_total_#{user.id}" %>>
+						<%= num_fmt( d_duty_syain_total(select_where, "money")[0].all_money) %>
+					</label>
+				</td>
+				
+				<%= set_syain_row(user.id, loopcnt, select_where, "money", "none").html_safe %>
+				
+			</tr>
+		<% } %>
+		<!--バイト繰り返し-->
+		<% users = get_user_dutry(1, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
+		<% users.each_with_index{ |user, index| %>
+			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} "%>
+			<tr id="baito_<%= "#{index}" %>">
+				<td>
+					<%= user.user_name %>
+				</td>
+				<td style="text-align:right ;min-width: 50px">
+					<label id=<%= "baito_total_#{user.id}" %>>
+						<%= num_fmt( d_duty_baito_total(select_where, "money")[0].all_money) %>
+					</label>
+				</td>
+				
+				<%= set_banto_row(user.id, loopcnt, select_where, "money", "none").html_safe %>
+				
+			</tr>
+		<% } %>
+		<!--人件費計-->
+		<tr>
+			<th>人件費計</th>
+			<td style="text-align: right;"><label id="col_jinken_kei"></label></td>
+			<%= set_jinken_kei(loopcnt).html_safe %>
+		</tr>
+		
+		<% select_where = " result_date between '#{@head[:input_day].to_s[0,6]}01' and '#{@head[:input_day].to_s[0,6]}32' and m_shop_id = #{@m_shop.id} "%>
+		<%if @m_shop.shop_kbn == 0  %>
+			<!--洗車型-->
+			<th>洗車売上税込</th>
+			<td style="text-align:right; background-color: #99E562">
+				<label id="col_result_kei">
+					<%= num_fmt( d_result_total_sensya(select_where)[0].sensya) %>
+				</label>
+			</td>
+			<%= set_sensya_row(loopcnt, select_where).html_safe %>
+		<% else %>
+			<th>油外売上税込</th>
+			<td style="text-align:right; background-color: #99E562">
+				<label id="col_result_kei">
+					<%= num_fmt( d_result_total_yugai(select_where)[0].arari) %>
+				</label>
+			</td>
+			<%= set_yugai_row(loopcnt, select_where).html_safe %>
+		<% end %>
+		<tr>
+		<th>Ｙ指数(%)</th>
+		<td style="text-align:right;">
+			<label id="col_y_sisu_kei">
+			</label>
+		</td>
+		<% loopcnt.times { |i| %>
+			<td style="text-align:right;"　>
+				<label id="col_y_sisu_<%= i+1 %>" class="money"></label>
+			</td>
+        <% } %>		
+		</tr>	
+		<tr>
+		<th>平均Ｙ指数(%)</th>
+		<td style="text-align:right;">
+			<label id="col_avg_y_sisu_kei">
+			</label>
+		</td>
+		<% loopcnt.times { |i| %>
+			<td style="text-align:right;"　>
+				<label id="col_avg_y_sisu_<%= i+1 %>" class="money"></label>
+			</td>
+        <% } %>		
+		</tr>
+		<tr>
+		<th>WIN金額</th>
+		<td style="text-align:right;">
+			<label id="col_win_kei">
+			</label>
+		</td>
+		<% loopcnt.times { |i| %>
+			<td style="text-align:right;"　>
+				<label id="col_win_<%= i+1 %>" class="money"></label>
+			</td>
+        <% } %>		
+		</tr>
+		<th>人件費ペース</th>
+		<td style="text-align:right;">
+			<label id="col_jinken_pace">
+			</label>
+		</td>
+		</tr>
+		<th>洗車ペース</th>
+		<td style="text-align:right;">
+			<label id="col_sensya_pace">
+			</label>
+		</td>
+		</tr>		
+		<th>WIN金額ﾍﾟｰｽ</th>
+		<td style="text-align:right;">
+			<label id="col_win_pace">
+			</label>
+		</td>
+		</tr>	
+		</tbody>				
+</table>
+
+<%= javascript_include_tag "comma" %>
+
+<script>
+$(function () {
+	$('#d_duty_table').tablefix({width: 925, height: 800, fixRows: 1, fixCols: 1});
+   
+    
+});	
+</script>

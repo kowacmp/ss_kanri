@@ -13,7 +13,7 @@
 	}
 
 	<% select_where = " duty_nengetu = '#{@input_day[0,6]}' and user_id = #{data[:user_id]} "%>
-	<% nisu = d_duty_syain_nisu(select_where) %>
+	<% nisu = d_duty_syain_total(select_where) %>
 
 	<% label_id = "div.colDiv #syain_nisu_#{data[:user_id]}" %> 
 	$("<%= label_id %>").text("<%= nisu[0].nisu %>");

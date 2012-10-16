@@ -4,7 +4,7 @@ class DSalesController < ApplicationController
   include ActionView::Helpers::NumberHelper
   include ApplicationHelper
   include DSalesHelper
- 
+  
   # GET /d_sales
   # GET /d_sales.json
   def index

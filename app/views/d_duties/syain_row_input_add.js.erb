@@ -1,4 +1,3 @@
-
 <% params[:datas].each{|day, data| %>
     <% label_id = "div.bodyDiv #hiden_syain_#{day}_#{@user_id}" %> 
     $("<%= label_id %>").val(<%= data[:syukin].to_i %>);
@@ -16,7 +15,7 @@
 <% } %>
 
 <% select_where = " duty_nengetu = '#{@input_day}' and user_id = #{@user_id} "%>
-<% nisu = d_duty_syain_nisu(select_where) %>
+<% nisu = d_duty_syain_total(select_where) %>
 
 <% label_id = "div.colDiv #syain_nisu_#{@user_id}" %> 
 $("<%= label_id %>").text("<%= nisu[0].nisu %>");
