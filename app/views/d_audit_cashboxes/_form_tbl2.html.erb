@@ -1,18 +1,19 @@
 <%
-	m_fix = Array.new()
-	for i in 7..13
-		m_fix[i - 6] = get_m_fix(@d_audit_cashbox["m_shop_id"], 
-		                         i, 
-		                         @d_audit_cashbox["audit_date"].to_s.gsub("/","")[4..5])
-		
-		# 新規データの場合は指定額を設定
-		if @d_audit_cashbox["sum#{ (i - 6) }_cashbox"].to_s == "" then
-			if not(m_fix[(i - 6)].nil?) then
-				@d_audit_cashbox["sum#{ (i - 6) }_cashbox"] = m_fix[(i - 6)][1]
-			end 
-		end
-					
-	end
+# 名称、指定額は全て ActiveRecord側を採用(新規データについても、コントローラ側でセット済み)
+#	m_fix = Array.new()
+#	for i in 7..13
+#		m_fix[i - 6] = get_m_fix(@d_audit_cashbox["m_shop_id"], 
+#		                         i, 
+#		                         @d_audit_cashbox["audit_date"].to_s.gsub("/","")[4..5])
+#		
+#		# 新規データの場合は指定額を設定
+#		if @d_audit_cashbox["sum#{ (i - 6) }_cashbox"].to_s == "" then
+#			if not(m_fix[(i - 6)].nil?) then
+#				@d_audit_cashbox["sum#{ (i - 6) }_cashbox"] = m_fix[(i - 6)][1]
+#			end 
+#		end
+#					
+#	end
 %>
 
 <table class='rounded-corner' id="tbl2" style="white-space: nowrap">
@@ -24,9 +25,13 @@
 		</th>
 
 		<% for i in 1..7 %>
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then
+			%>
+			<% if @d_audit_cashbox["sum#{ i }_cashbox_name"].to_s != "" then %>
 				<th>
-					<%= link_to(m_fix[i][0] ,{:action => "edit_tbl2", :id => i }, :class => 'modal') %>
+					<%#= link_to(m_fix[i][0] ,{:action => "edit_tbl2", :id => i }, :class => 'modal') 
+					%>
+					<%= link_to(@d_audit_cashbox["sum#{ i }_cashbox_name"].to_s ,{:action => "edit_tbl2", :id => i }, :class => 'modal') %>
 				</th>
 			<% end %>
 		<% end %>
@@ -39,7 +44,9 @@
 		</th>
 
 		<% for i in 1..7 %>
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then 
+			%>
+			<% if @d_audit_cashbox["sum#{ i }_cashbox_name"].to_s != "" then %>
 				<td class="green" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["sum#{ i }_cashbox"]) %>
 				</td>
@@ -53,7 +60,9 @@
 		</th>
 		
 		<% for i in 1..7 %>
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then
+			%>
+			<% if @d_audit_cashbox["sum#{ i }_cashbox_name"].to_s != "" then %>
 				<td class="orange" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["sum#{ i }_money"] ) %>
 				</td>
@@ -68,7 +77,9 @@
 		</th>
 		
 		<% for i in 1..7 %>
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then
+			%>
+			<% if @d_audit_cashbox["sum#{ i }_cashbox_name"].to_s != "" then %>
 				<td class="green" align="right">
 					<%= number_with_delimiter(get_kabusoku2(i)) %>
 				</td>
@@ -83,7 +94,9 @@
 		</th>
 		
 		<% for i in 1..7 %>
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then
+			%>
+			<% if @d_audit_cashbox["sum#{ i }_cashbox_name"].to_s != "" then %>
 				<td class="green" align="right">
 					<%= number_with_delimiter(get_tatekae_kei2(i)) %>
 				</td>
@@ -98,7 +111,8 @@
 		</th>
 		
 		<% for i in 1..7 %>
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then%>
+			<% if @d_audit_cashbox["sum#{ i }_cashbox_name"].to_s != "" then %>
 				<td class="green" align="right">
 					<%= number_with_delimiter(get_jitu_kabusoku2(i)) %>
 				</td>

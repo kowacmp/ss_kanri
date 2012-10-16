@@ -1,2 +1,2 @@
-<%= text_area_tag "comment",@fixture.comment,rows: 10,cols: 50 %><br />
+<%= text_area_tag "comment",@fixture.comment,rows: 10,cols: 50, :maxlength => 100 %><br />
 <%= hidden_field_tag("id",@fixture.id) %>

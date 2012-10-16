@@ -34,7 +34,7 @@
 		<label for="d_audit_cashbox_ledger<%= i %>_2">否</label>
 	</td>
 	<td class="orange" align="left">
-		<%= text_field :d_audit_cashbox, "ledger#{ i }_reason", :value => @d_audit_cashbox["ledger#{ i }_reason"].to_s, :style => "width:300px;" ,:maxlength => 20 %>
+		<%= text_field :d_audit_cashbox, "ledger#{ i }_reason", :value => @d_audit_cashbox["ledger#{ i }_reason"].to_s, :style => "width:300px; ime-mode:active;" ,:maxlength => 20 %>
 	</td>
 </tr>
 <% end %>

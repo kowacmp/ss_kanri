@@ -11,52 +11,52 @@
 <td>
 	
   <table class='rounded-corner' >
-  	<tr>
-  		<th>対象店舗</th>
-  		<td style="background-color: #A5D7AA;">
-  			<%if session[:audit_class] == "1" then%>
-  				<!-- 本監査 -->
+	<tr>
+		<th>対象店舗</th>
+		<td style="background-color: #A5D7AA; min-width: 300px;">
+			<%if session[:audit_class] == "1" then%>
+				<!-- 本監査 -->
 				<%=select :input, :m_shop_id, 
 				          MShop.find(:all, :conditions=> "deleted_flg=0", :order => "shop_cd").collect{|i| ["#{i.shop_cd} #{i.shop_name}",i.id]},
 					      :selected => m_shop_id, :include_blank => "選択してください" %>
-  				<%=hidden_field :header, :m_shop_id, :value => m_shop_id %>
-  				
-  				<!-- select と hidden の同期 -->
-  				<script language="JavaScript">
+				<%=hidden_field :header, :m_shop_id, :value => m_shop_id %>
+				
+			<!-- select と hidden の同期 -->
+				<script language="JavaScript">
 				$(function () {
 					$("#input_m_shop_id").change(function () {
 						$("#header_m_shop_id").val($("#input_m_shop_id").val());
 					});
 				});
-  				</script>
-  			<%else%>
-  				<!-- 自主監査 -->
+				</script>
+			<%else%>
+				<!-- 自主監査 -->
 				<% m_shop = MShop.find(m_shop_id) %>
-  				<%=m_shop.shop_cd%>&nbsp<%=m_shop.shop_name%>
-  				<%=hidden_field :header, :m_shop_id, :value => m_shop_id %>
-  			<%end%>
-  		</td>
-  	</tr>
-  	<tr>
-  		<th>監査人</th>
-  		<td style="background-color: #A5D7AA;">
-  			<% user = User.find(created_user_id) %>
-  			<%=user.user_name%>
-  			<%=hidden_field :header, :created_user_id, :value => created_user_id %>
-  		</td>
-  	</tr>
+				<%=m_shop.shop_cd%>&nbsp<%=m_shop.shop_name%>
+				<%=hidden_field :header, :m_shop_id, :value => m_shop_id %>
+			<%end%>
+		</td>
+	</tr>
+	<tr>
+		<th>監査人</th>
+		<td style="background-color: #A5D7AA;">
+			<% user = User.find(created_user_id) %>
+			<%=user.user_name%>
+			<%=hidden_field :header, :created_user_id, :value => created_user_id %>
+		</td>
+	</tr>
   </table>
   
 </td>
 
 <td valign="top">
   <table class='rounded-corner' >
-  	<tr>
-  		<th>監査日</th>
-  		<td>
-  			<%=text_field :header, :audit_date, :size => 11, :maxlength => 10, :value => audit_date , :class => "datepicker"%>
-  		</td>
-  	</tr>	
+	<tr>
+		<th>監査日</th>
+		<td>
+			<%=text_field :header, :audit_date, :size => 11, :maxlength => 10, :value => audit_date , :class => "datepicker"%>
+		</td>
+	</tr>	
   </table>
 </td>
 

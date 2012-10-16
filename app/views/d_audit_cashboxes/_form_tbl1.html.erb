@@ -14,20 +14,21 @@
 </style>
 
 <%
-	m_fix = Array.new()
-	for i in 1..6
-		m_fix[i] = get_m_fix(@d_audit_cashbox["m_shop_id"], 
-		                     i, 
-		                     @d_audit_cashbox["audit_date"].to_s.gsub("/","")[4..5])
-		
-		# 新規データの場合は指定額を設定
-		if @d_audit_cashbox["cashbox#{ i }"].to_s == "" then
-			if not(m_fix[i].nil?) then
-				@d_audit_cashbox["cashbox#{ i }"] = m_fix[i][1]
-			end 
-		end
-					
-	end
+# 名称、指定額は全て ActiveRecord側を採用(新規データについても、コントローラ側でセット済み)
+#	m_fix = Array.new()
+#	for i in 1..6
+#		m_fix[i] = get_m_fix(@d_audit_cashbox["m_shop_id"], 
+#		                     i, 
+#		                     @d_audit_cashbox["audit_date"].to_s.gsub("/","")[4..5])
+#		
+#		# 新規データの場合は指定額を設定
+#		if @d_audit_cashbox["cashbox#{ i }"].to_s == "" then
+#			if not(m_fix[i].nil?) then
+#				@d_audit_cashbox["cashbox#{ i }"] = m_fix[i][1]
+#			end 
+#		end
+#					
+#	end
 %>
 
 <table class="rounded-corner">
@@ -47,10 +48,16 @@
 		</th>
 
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>
-				<th colspan="2"><%= link_to(m_fix[i][0] ,{:action => "edit_tbl1", :id => i }, :class => 'modal') %></th>
+			<%# if not(m_fix[i].nil?) then %>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
+				<th colspan="2">
+					<%#= link_to(m_fix[i][0] ,{:action => "edit_tbl1", :id => i }, :class => 'modal') 
+					%>
+					<%= link_to(@d_audit_cashbox["cashbox#{ i }_name"].to_s ,{:action => "edit_tbl1", :id => i }, :class => 'modal') %>
+				</th>
+				
 				<td rowspan="2" class="green" align="right" style="min-width: 80px;">
-						<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }"]) %> 
+					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }"]) %> 
 				</td>
 			<% end %>
 		<% end %>
@@ -61,7 +68,9 @@
 		<th >&nbsp;</th>
 
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then 
+			%>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<th colspan="2">指定額</th>
 				<!-- td rowspan="2" -->
 			<% end %>
@@ -72,7 +81,9 @@
 		<th >&nbsp;</th>
 		
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then 
+			%>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<th>本数</th>
 				<th>枚数</th>
 				<th>金額</th>
@@ -87,7 +98,9 @@
 		<th >10,000円札</th>
 
 		<% for i in 1..6 %>		
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then 
+			%>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td class="gray">&nbsp;</td>
 				<td class="orange" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_10000paper"]) %> 
@@ -105,7 +118,9 @@
 		<th >5,000円札</th>
 		
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>		
+			<%# if not(m_fix[i].nil?) then 
+			%>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td class="gray">&nbsp;</td>
 				<td class="orange" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_5000paper"]) %> 
@@ -123,7 +138,9 @@
 		<th >2,000円札</th>
 		
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>		
+			<%# if not(m_fix[i].nil?) then 
+			%>		
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td class="gray">&nbsp;</td>
 				<td class="orange" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_2000paper"]) %>
@@ -141,7 +158,9 @@
 		<th >1,000円札</th>
 		
 		<% for i in 1..6 %>		
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then 
+			%>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td class="gray">&nbsp;</td>
 				<td class="orange" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_1000paper"]) %>
@@ -159,7 +178,9 @@
 		<th >500円玉(20)</th>
 		
 		<% for i in 1..6 %>		
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then
+			%>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td class="orange" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_500coin_20"]) %>	
 				</td>
@@ -179,7 +200,9 @@
 		<th >500円玉(50)</th>
 		
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>		
+			<%# if not(m_fix[i].nil?) then 
+			%>		
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td  class="orange" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_500coin_50"]) %>
 				</td>
@@ -195,7 +218,9 @@
 		<th >100円玉</th>
 		
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>		
+			<%# if not(m_fix[i].nil?) then 
+			%>		
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td class="orange" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_100coin_hon"]) %>	
 				</td>
@@ -215,7 +240,9 @@
 		<th >50円玉</th>
 		
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>		
+			<%# if not(m_fix[i].nil?) then 
+			%>		
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td class="orange" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_50coin_hon"]) %>
 				</td>
@@ -235,7 +262,9 @@
 		<th >10円玉</th>
 		
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>		
+			<%# if not(m_fix[i].nil?) then 
+			%>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td class="orange" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_10coin_hon"]) %>	
 				</td>
@@ -255,7 +284,9 @@
 		<th >5円玉</th>
 		
 		<% for i in 1..6 %>		
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then 
+			%>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td class="orange" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_5coin_hon"]) %>
 				</td>
@@ -275,7 +306,9 @@
 		<th >1円玉</th>
 		
 		<% for i in 1..6 %>	
-			<% if not(m_fix[i].nil?) then%>	
+			<%# if not(m_fix[i].nil?) then 
+			%>	
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>			
 				<td class="orange" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_1coin_hon"]) %>	
 				</td>
@@ -295,7 +328,9 @@
 		<th >予備</th>
 		
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>		
+			<%# if not(m_fix[i].nil?) then
+			%>		
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td colspan="2" class="gray">&nbsp;</td>
 				<td class="orange" align="right">
 					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_yobi"]) %>
@@ -310,7 +345,9 @@
 		<th >合計金額</th>
 		
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then
+			%>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td class="green" colspan="3" align="right">
 					<%= number_with_delimiter(get_kingaku(i)) %>
 				</td>
@@ -324,7 +361,9 @@
 		<th >過不足額</th>
 		
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then
+			%>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td class="green" colspan="3" align="right">
 					<%= number_with_delimiter(get_kabusoku(i)) %>
 				</td>
@@ -338,7 +377,9 @@
 		<th >立替未処理合計</th>
 		
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then
+			%>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td class="green" colspan="3" align="right">
 					<%= number_with_delimiter(get_tatekae_kei(i)) %>
 				</td>
@@ -352,7 +393,9 @@
 		<th >実過不足金</th>
 		
 		<% for i in 1..6 %>
-			<% if not(m_fix[i].nil?) then%>
+			<%# if not(m_fix[i].nil?) then
+			%>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
 				<td class="green" colspan="3" align="right">
 					<%= number_with_delimiter(get_jitu_kabusoku(i)) %>
 				</td>
