@@ -14,36 +14,36 @@ class DAuditApprovesController < ApplicationController
       @table = "d_audit_cashboxes"
 
       if params[:header][:audit_class].to_s == "0" then
-        @menu_id = "38"
+        @menu_id = "34"
       else
-        @menu_id = "43"
+        @menu_id = "38"
       end
       
     when "2" #釣銭
       @table = "d_audit_changemachines"
 
       if params[:header][:audit_class].to_s == "0" then
-        @menu_id = "39"
+        @menu_id = "35"
       else
-        @menu_id = "44"
+        @menu_id = "39"
       end
     
     when "3" #洗車
       @table = "d_audit_washes"
 
       if params[:header][:audit_class].to_s == "0" then
-        @menu_id = "40"
+        @menu_id = "36"
       else
-        @menu_id = "45"
+        @menu_id = "40"
       end
     
     when "4" #その他
       @table = "d_audit_etcs"
 
       if params[:header][:audit_class].to_s == "0" then
-        @menu_id = "42"
+        @menu_id = "37"
       else
-        @menu_id = "46"
+        @menu_id = "41"
       end
     
     end
