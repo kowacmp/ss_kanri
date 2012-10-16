@@ -12,13 +12,16 @@
 <table class='rounded-corner' style="width:95%;" >
 		
 	<tr>
+		<!-- 2012/10/16 レイアウト変更(対象年月追加) oda
 		<th>店舗コード</th>
-		<th>店舗名</th>
+		-->
+		<th style="min-width: 200px">店舗</th>
+		<th>対象年月</th>
 		<th>店舗種別</th>
 		<th>現金有高(累計)</th>
 		<th>過不足(累計)</th>
-		<th>詳細</th>
-		<th>
+		<th style="min-width: 30px">詳細</th>
+		<th style="min-width: 30px">
 			承認<br/> <%# 一括チェック用 %>
 			<input type="checkbox" onchange="return chk_flgs_all(this.checked);" 
 			      <%="disabled = 'disabled'" if (@approval_id == 0) %>>
@@ -30,11 +33,17 @@
 		<% rec_cnt += 1 %>
 
 		<tr>
+			<!-- 2012/10/16 レイアウト変更(対象年月追加) oda
 			<td align="center">
-				<%=approval.shop_cd%>
+				<%#=approval.shop_cd%>
 			</td>
-			<td align="center">
+			-->
+			<td align="left">
+				<%=approval.shop_cd%>&nbsp;&nbsp;
 				<%=approval.shop_name%>
+			</td>
+			<td style="text-align: center">
+				<%= "#{approval.sale_date.to_s[0,4]}" + "年" +"#{approval.sale_date.to_s[4,2]}" + "月" unless approval.sale_date.blank? %>
 			</td>
 			<td align="center">
 				<%=MCode.find(:first, :conditions=>["kbn='shop_kbn' and code=?", approval.shop_kbn]).code_name %>
