@@ -71,14 +71,23 @@ class DAuditChangemachinesController < ApplicationController
         end
       end 
       
+      # 新規のみマスタより名称を取得
+      @m_machine_number = MMachineNumber.find(:first, :conditions => ["m_shop_id = ?", @m_shop_id])
+      if not(@m_machine_number.nil?) then
+        for i in 1..7
+           @d_audit_changemachine["pos1machineno#{ i }"] = @m_machine_number["pos1machineno#{ i }"]
+           @d_audit_changemachine["pos2machineno#{ i }"] = @m_machine_number["pos2machineno#{ i }"]
+           @d_audit_changemachine["pos3machineno#{ i }"] = @m_machine_number["pos3machineno#{ i }"]
+        end
+      end
     end
 
     # 釣銭固定額読込
     @m_fix_money = MFixMoney.find(:first, :conditions => 
       ["m_shop_id = ? AND start_month <= ? AND end_month >= ? ",
           @m_shop_id, 
-          @audit_date.to_s.gsub("/","")[0..5],
-          @audit_date.to_s.gsub("/","")[0..5]])
+          @audit_date.to_s.gsub("/","")[4..5],
+          @audit_date.to_s.gsub("/","")[4..5]])
         
   end
 

@@ -24,6 +24,7 @@ end
 %>
 <%= hidden_field :key, :id, :value => tmp_id %>
 
+
 <%= form_for(@d_audit_changemachine, :url => {:action => "update"} ) do |f| %>
 
 <%= f.hidden_field :audit_date %>
@@ -57,13 +58,22 @@ end
 	
 	<% for i in 1..7 %>
 	<tr>
-		<th>釣銭機№<%=i%></th>
+		<th>
+			<%= f.label f.object["pos1machineno#{ i }"].to_s %>
+			<%= f.hidden_field "pos1machineno#{ i }" %>
+		</th>
 		<td><%=f.text_field 'pos1_before_money' + i.to_s , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;" %></td>
 		<td><%=f.text_field 'pos1_after_money' + i.to_s  , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;" %></td>
-		<th>釣銭機№<%=i%></th>
+		<th>
+			<%= f.label f.object["pos2machineno#{ i }"].to_s %>
+			<%= f.hidden_field "pos2machineno#{ i }" %>
+		</th>
 		<td><%=f.text_field 'pos2_before_money' + i.to_s , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;"  %></td>
 		<td><%=f.text_field 'pos2_after_money' + i.to_s  , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;"  %></td>
-		<th>釣銭機№<%=i%></th>
+		<th>
+			<%= f.label f.object["pos3machineno#{ i }"].to_s %>
+			<%= f.hidden_field "pos3machineno#{ i }" %>
+		</th>
 		<td><%=f.text_field 'pos3_before_money' + i.to_s , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;"  %></td>
 		<td><%=f.text_field 'pos3_after_money' + i.to_s  , :size=>10, :maxlength => 11, :class=>"money", :style=>"width:90px;"  %></td>
 	</tr>
@@ -153,7 +163,7 @@ end
 		
 	<!-- INSERT 2012.10.16 空行を追加 -->
 	<tr>
-		<th colspan="9" style="margin:0px; padding:0px; height:5px;">
+		<td colspan="9" style="margin:0px; padding:0px; height:5px;">
 		</th>
 	</tr>
 		
