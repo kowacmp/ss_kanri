@@ -229,6 +229,8 @@ class DAuditWashesController < ApplicationController
     
   end
   
+  # INSERT END 2012.11.16 コメント機能追加 
+  
 private
   
   # 期間内に洗車売上入力が実行されているかを確認
@@ -327,15 +329,17 @@ private
                         coalesce(b.meter, 0) as sum_meter
                     from 
                                   d_wash_sales     a  -- d_wash_saleは必ず存在,left joinなので必ずデータが返る
-                        left join d_washsale_items b 
+                        left join 
+                        (select * from d_washsale_items
+                         where m_wash_id   =  #{m_wash_rec.id}
+                         and   wash_no     =  #{num}
+                        ) b 
                     on 
                         a.id = b.d_wash_sale_id
                     where 
                            a.sale_date  >=  '#{@audit_date_from.gsub("/","")}' 
                        and a.sale_date  <=  '#{@audit_date_to.gsub("/","")}'
                        and a.m_shop_id  =   #{@m_shop_id} 
-                       and b.m_wash_id   =  #{m_wash_rec.id}
-                       and b.wash_no     =  #{num}
                     order by 
                        a.sale_date desc
                 SQL
