@@ -1,0 +1,37 @@
+<div id="check">
+<table  id='rounded-corner'>
+	<tr>
+		<th>店舗</th>
+		<th>対象年月</th>
+		<th>店舗種別</th>
+		<th>最終登録日</th>
+		<th>詳細</th>
+	</tr>
+  <% i = 1 %>
+  <% @shops.each do |shop| %>
+    <tr>
+      <td><%= shop.shop_cd.to_s + '　' + shop.shop_name %><%=  %></td>
+      <td align="center">
+        <% unless @input_ym_s == nil %>
+          <%= @input_ym_s[0,4] + '年' + @input_ym_s[4,2] + '月' %>
+        <% end %>
+      </td>
+      <td align="center">
+		<%= shop.shop_kbn_name %>
+      </td>
+      <td align="center">
+      	<% unless shop.last_day == nil %>
+      		<%= shop.duty_nengetu[0,4] + '年' + shop.duty_nengetu[4,2] + '月' + shop.last_day.to_s + '日' %>
+      	<% end %>
+      </td>
+      <td>
+      	<%= link_to image_tag('icon/24_edit.png'), {:controller => 'd_duties',:action => 'index',
+            :input_day => @input_ym_s,:m_shop_id => shop.id,:mode => 'list'} %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%= hidden_field_tag "input_ymd",@input_ymd %>
+<%= hidden_field_tag "shop_kbn",@shop_kbn %>
+</div>
+

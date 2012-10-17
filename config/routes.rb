@@ -1,5 +1,8 @@
 SsKanri::Application.routes.draw do
 
+  get "d_duty_lists/index"
+  get "d_duty_lists/search"
+
   get "d_duty_reports/index"
 
   get "d_duty_reports/show"
