@@ -9,8 +9,12 @@
 <% end %>
 
 <hr/>
-                            
-<%=render :partial => 'form' %>
+
+<% if @d_sale_etc_flg.to_s == "true" then %> 
+	<%=render :partial => 'form' %>
+<% else %>
+	<span style="color:red">その他メーター売上入力が行われていません。</span>
+<% end %>
 
 <!-- 読取専用スクリプト -->
 <% if params[:readonly].to_s == "true" then %>

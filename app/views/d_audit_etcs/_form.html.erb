@@ -4,6 +4,23 @@
 	gosa_sum  = 0
 %>
 
+<!-- INSERT BEGIN 2012.10.16 コメント機能追加 -->
+<table class="rounded-corner">
+	<td class="orange" width="100px;" align="center">
+		<%= link_to("コメント入力", {:action => "edit_comment"}, :class => 'modal') %>
+	</td>
+</tr>
+</table>
+<%= hidden_field :comment, :on, :value => params[:comment] %>
+<%
+	if @d_audit_etc.nil? then
+		key_id = ""
+	else
+		key_id = @d_audit_etc[:id].to_s
+	end
+%>
+<%= hidden_field :key,     :id, :value => key_id %>
+<!-- INSERT END 2012.10.16 コメント機能追加 -->
 <table class='rounded-corner' style="width:98%" >	
 	<!-- 共通ヘッダ -->
 	<tr>
@@ -63,6 +80,17 @@
 <tr><td colspan="6" style="border: none; text-align: right;">
 <div style="float:right;">
 <%=form_tag :action => 'update' do %>
+	<!-- INSERT BEGIN 2012.10.16 コメント機能追加 -->
+	<% 
+		if @d_audit_etc.nil? then 
+			comment = ""
+		else
+			comment = @d_audit_etc[:comment].to_s
+		end
+	%>
+	<%= hidden_field :d_audit_etc, :comment, :value => comment %>
+	<!-- INSERT END 2012.10.16 コメント機能追加 -->
+
 	<!-- 立会人 -->
 	<%
   		c_shop_id = @d_audit_etc.confirm_shop_id unless @d_audit_etc.nil?

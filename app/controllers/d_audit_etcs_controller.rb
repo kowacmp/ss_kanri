@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 class DAuditEtcsController < ApplicationController
 
   def index
@@ -24,7 +25,8 @@ class DAuditEtcsController < ApplicationController
   
   def show
     
-    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true
+    # UPDATE 2012.10.16 コメントのみ更新モードを追加
+    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true ,:comment => params[:comment].to_s
     
   end
   
@@ -50,10 +52,18 @@ class DAuditEtcsController < ApplicationController
     
     # from ～ to の読込
     load_from_to(session[:audit_class], @m_shop_id)
-  
-    # _form用のデータ読込
-    read_from
     
+    # d_wash_sale が入力済みかどうか確認
+    if chk_d_sale_etc then
+      @d_sale_etc_flg = true
+      
+      # _form用のデータ読込
+      read_from
+    else
+      @d_sale_etc_flg = false
+      
+    end
+
   end
   
   def update
@@ -95,7 +105,7 @@ class DAuditEtcsController < ApplicationController
       d_audit_etc.approve_date5     = nil
       d_audit_etc.confirm_shop_id   = params[:confirm][:shop_id]
       d_audit_etc.confirm_user_id   = params[:confirm][:user_id]
-      d_audit_etc.comment           = ''
+      d_audit_etc.comment           = params[:d_audit_etc][:comment] #UPDATE 2012.10.16 コメント機能追加
       d_audit_etc.created_user_id   = current_user.id
       d_audit_etc.created_at        = upd_time
       d_audit_etc.updated_user_id   = current_user.id
@@ -104,6 +114,7 @@ class DAuditEtcsController < ApplicationController
       #更新
       d_audit_etc.confirm_shop_id   = params[:confirm][:shop_id]
       d_audit_etc.confirm_user_id   = params[:confirm][:user_id]
+      d_audit_etc.comment           = params[:d_audit_etc][:comment] #INSERT 2012.10.16 コメント機能追加
       d_audit_etc.updated_user_id   = current_user.id
       d_audit_etc.updated_at        = upd_time
     end
@@ -188,7 +199,7 @@ class DAuditEtcsController < ApplicationController
             and a.m_shop_id  =  #{params[:dialog_gosa][:m_shop_id]} 
             and b.m_etc_id   =  #{params[:dialog_gosa][:m_etc_id]}
             and b.etc_no     =  99
-            and b.error_money >  0
+            and b.error_money != 0 --UPDATE 2012.10.16 >0 → != 0
         order by
             a.sale_date
      
@@ -199,8 +210,40 @@ class DAuditEtcsController < ApplicationController
     render :layout => "modal"
     
   end
+
+  # INSERT BEGIN 2012.11.16 コメント機能追加 
+  def edit_comment
+    
+    render :layout => "modal"
+    
+  end
+
+  # コメントのみのAJAX更新
+  def update_comment
+    
+    @d_audit_etc = DAuditEtc.find(params[:id])
+    @d_audit_etc[:comment] = params[:comment]
+    @d_audit_etc.save!
+    
+    head :ok
+    
+  end
+
+  # INSERT END 2012.11.16 コメント機能追加 
   
 private 
+  
+  # 期間内にその他入力が実行されているかを確認
+  def chk_d_sale_etc
+    
+    d_sale_etcs = DSaleEtc.find(:all, :conditions => ["sale_date >= ? and sale_date <= ? and m_shop_id = ? ",
+                                                          @audit_date_from.gsub("/",""),
+                                                          @audit_date_to.gsub("/",""),
+                                                          @m_shop_id])
+    
+    return (d_sale_etcs.length > 0)
+    
+  end
   
   # _form用データ読込
   def read_from
@@ -263,24 +306,47 @@ private
         d_sale_etcs_sum = nil
         if d_audit_etc_detail.nil? then  
           
+          # UPDATE BEGIN 2012.10.16 当日メータは売上最終データを読み込む
+          
+          #sql = <<-SQL
+          #          select 
+          #              coalesce(sum(b.meter), 0) as sum_meter
+          #          from 
+          #                        d_sale_etcs        a 
+          #             inner join d_sale_etc_details b
+          #          on 
+          #              a.id = b.d_sale_etc_id
+          #          where 
+          #                 a.sale_date  >=  '#{@audit_date_from.gsub("/","")}' 
+          #             and a.sale_date  <=  '#{@audit_date_to.gsub("/","")}'
+          #             and a.m_shop_id  =   #{@m_shop_id} 
+          #             and b.m_etc_id   =  #{m_etc_rec.id}
+          #             and b.etc_no     =  #{num}
+          #      SQL
+
           sql = <<-SQL
                     select 
-                        coalesce(sum(b.meter), 0) as sum_meter
+                        coalesce(b.meter, 0) as sum_meter
                     from 
-                                  d_sale_etcs        a 
-                       inner join d_sale_etc_details b
+                                 d_sale_etcs        a  -- d_sale_etcは必ず存在,left joinなので必ずデータが返る
+                       left join 
+                       
+                        (select * from d_sale_etc_details 
+                         where m_etc_id   =  #{m_etc_rec.id}
+                           and etc_no     =  #{num}
+                        ) b
                     on 
                         a.id = b.d_sale_etc_id
                     where 
                            a.sale_date  >=  '#{@audit_date_from.gsub("/","")}' 
                        and a.sale_date  <=  '#{@audit_date_to.gsub("/","")}'
                        and a.m_shop_id  =   #{@m_shop_id} 
-                       and b.m_etc_id   =  #{m_etc_rec.id}
-                       and b.etc_no     =  #{num}
+                    order by 
+                       a.sale_date desc
                 SQL
-           
-          p sql
                 
+          # UPDATE END 2012.10.16 売上は期間内の最終データを読み込む
+          
           d_sale_etcs_sum = DSaleEtc.find_by_sql(sql)[0]
            
         end
