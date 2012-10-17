@@ -69,7 +69,11 @@
   			  if audit_date_to.nil? then
   				audit_date_to = Time.now.strftime('%Y/%m/%d')
 			  end
-  			  to_disabled = (@from[0][0].to_s == audit_date_from)
+  			  # UPDATE 2012.10.17 再呼出時に正しく動作するように変更
+  			  if (audit_date_from.to_s == "") then
+  			  	audit_date_from = @from[0].to_s #コンボ値指定なしは先頭となるため
+  			  end
+  			  to_disabled = not(@from[0].to_s == audit_date_from) #Fromの先頭を選択してる場合のみ使用可
   			%>			
   			<%=text_field :header, :audit_date_to, :value => audit_date_to, :disabled => to_disabled, :style => "width:90px;" %>
   			<input type='hidden' id='h_to' value="<%=@to.join(',')%>">
