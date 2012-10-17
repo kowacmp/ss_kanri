@@ -478,36 +478,46 @@ private
   
   end
   
+  # UPDATE 2012.10.17 監査日のリストの作成方法を変更
   # from～toのコンボ用データ読込
   def load_from_to(audit_class, m_shop_id)
-    
-    #監査日FromTo読み込み
+    # 戻り値の初期化
     @from = Array.new    
     @to   = Array.new
-    a_audit_washs = DAuditWash.find(:all, 
+    
+    #登録済の監査日を読込
+    d_audit_washs = DAuditWash.find(:all, 
                                     :conditions => ["audit_class=? AND m_shop_id=?", 
                                                     audit_class,
                                                     m_shop_id],      
                                     :order => "audit_date_from desc")
     
-    if a_audit_washs.length == 0 then
+    #最後の監査日を読込(audit_classを関係なしに読み込む)
+    d_audit_from = DAuditWash.find(:all,
+                                    :conditions => ["m_shop_id=?", 
+                                                    m_shop_id],      
+                                    :order => "audit_date_from desc")
+    
+    #新規の監査日を作る
+    if d_audit_from.length == 0 then 
       @from.push '0000/00/00'
       @to.push   ''  
     else
-      @from.push Date.strptime(a_audit_washs[0].audit_date_to, "%Y%m%d").next.strftime('%Y/%m/%d')
+      @from.push Date.strptime(d_audit_from[0].audit_date_to, "%Y%m%d").next.strftime('%Y/%m/%d')
       @to.push   ''
+    end
 
-      for d_audit_wash_rec in a_audit_washs
-        if d_audit_wash_rec.audit_date_from == '00000000' then
-          @from.push '0000/00/00'
-        else
-          @from.push Date.strptime(d_audit_wash_rec.audit_date_from, "%Y%m%d").strftime('%Y/%m/%d')
-        end
-        @to.push   Date.strptime(d_audit_wash_rec.audit_date_to, "%Y%m%d").strftime('%Y/%m/%d')
+    #登録済の監査日を作る
+    for d_audit_wash_rec in d_audit_washs
+      if d_audit_wash_rec.audit_date_from == '00000000' then
+        @from.push '0000/00/00'
+      else
+        @from.push Date.strptime(d_audit_wash_rec.audit_date_from, "%Y%m%d").strftime('%Y/%m/%d')
       end
-
-    end    
     
+      @to.push   Date.strptime(d_audit_wash_rec.audit_date_to, "%Y%m%d").strftime('%Y/%m/%d')
+    end
+
   end
   
 end
