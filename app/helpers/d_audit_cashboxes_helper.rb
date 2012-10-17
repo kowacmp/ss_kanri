@@ -199,6 +199,9 @@ module DAuditCashboxesHelper
     gokei += get_kingaku_5coin(i)
     gokei += get_kingaku_1coin(i)
     
+    # INSERT 2012.10.17 予備金額を合計金額に加算
+    gokei += nvl(@d_audit_cashbox["cashbox#{ i }_yobi"], 0).to_i 
+    
     return gokei
     
   end
@@ -206,15 +209,19 @@ module DAuditCashboxesHelper
   # 過不足
   def get_kabusoku(i)
     
-    gokei = 0
+    # UPDATE 2012.10.17 合計金額 - 指定額
+    #gokei = 0
+    #
+    #if @d_audit_cashbox["cashbox#{ i }"].nil? or @d_audit_cashbox["cashbox#{ i }"].blank? then
+    #  gokei += 0
+    #else
+    #  gokei += @d_audit_cashbox["cashbox#{ i }"].to_i
+    #end
+    #
+    #gokei -= get_kingaku(i)
     
-    if @d_audit_cashbox["cashbox#{ i }"].nil? or @d_audit_cashbox["cashbox#{ i }"].blank? then
-      gokei += 0
-    else
-      gokei += @d_audit_cashbox["cashbox#{ i }"].to_i
-    end
-    
-    gokei -= get_kingaku(i)
+    gokei  = get_kingaku(i)
+    gokei -= nvl(@d_audit_cashbox["cashbox#{ i }"], 0).to_i
     
     return gokei
     
