@@ -9,8 +9,12 @@
 <% end %>
 
 <hr/>	                                         
-                                        
-<%=render :partial => 'form' %>
+
+<% if @d_wash_sale_flg.to_s == "true" then %>                                        
+	<%=render :partial => 'form' %>
+<% else %>
+	<span style="color:red">洗車メーター売上入力が行われていません。</span>
+<% end %>
 
 <!-- 読取専用スクリプト -->
 <% if params[:readonly].to_s == "true" then %>

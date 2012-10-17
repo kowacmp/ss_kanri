@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 class DAuditWashesController < ApplicationController
 
   def index
@@ -24,7 +25,8 @@ class DAuditWashesController < ApplicationController
 
   def show
     
-    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true
+    # UPDATE 2012.10.16 コメントのみ更新モードを追加
+    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true, :comment => params[:comment].to_s
     
   end
 
@@ -47,12 +49,20 @@ class DAuditWashesController < ApplicationController
       @audit_date_from = params[:header][:audit_date_from]
       @audit_date_to   = params[:header][:audit_date_to]
     end
-    
+
     # from ～ to の読込
     load_from_to(session[:audit_class], @m_shop_id)
-  
-    # _form用のデータ読込
-    read_from
+    
+    # d_wash_sale が入力済みかどうか確認
+    if chk_d_wash_sale then
+      @d_wash_sale_flg = true
+      
+      # _form用のデータ読込
+      read_from
+    else
+      @d_wash_sale_flg = false
+      
+    end
     
   end
 
@@ -95,7 +105,7 @@ class DAuditWashesController < ApplicationController
       d_audit_wash.approve_date5     = nil
       d_audit_wash.confirm_shop_id   = params[:confirm][:shop_id]
       d_audit_wash.confirm_user_id   = params[:confirm][:user_id]
-      d_audit_wash.comment           = ''
+      d_audit_wash.comment           = params[:d_audit_wash][:comment] #UPDATE 2012.10.16 コメント機能追加
       d_audit_wash.created_user_id   = current_user.id
       d_audit_wash.created_at        = upd_time
       d_audit_wash.updated_user_id   = current_user.id
@@ -104,6 +114,7 @@ class DAuditWashesController < ApplicationController
       #更新
       d_audit_wash.confirm_shop_id   = params[:confirm][:shop_id]
       d_audit_wash.confirm_user_id   = params[:confirm][:user_id]
+      d_audit_wash.comment            = params[:d_audit_wash][:comment] #INSERT 2012.10.16 コメント機能追加
       d_audit_wash.updated_user_id   = current_user.id
       d_audit_wash.updated_at        = upd_time
     end
@@ -188,7 +199,7 @@ class DAuditWashesController < ApplicationController
             and a.m_shop_id  =  #{params[:dialog_gosa][:m_shop_id]} 
             and b.m_wash_id   =  #{params[:dialog_gosa][:m_wash_id]}
             and b.wash_no     =  99
-            and b.error_money >  0
+            and b.error_money !=  0 --UPDATE 2012.10.16 >0 → != 0
         order by
             a.sale_date
      
@@ -199,8 +210,38 @@ class DAuditWashesController < ApplicationController
     render :layout => "modal"
     
   end
+
+  # INSERT BEGIN 2012.11.16 コメント機能追加 
+  def edit_comment
+    
+    render :layout => "modal"
+    
+  end
+
+  # コメントのみのAJAX更新
+  def update_comment
+    
+    @d_audit_wash = DAuditWash.find(params[:id])
+    @d_audit_wash[:comment] = params[:comment]
+    @d_audit_wash.save!
+    
+    head :ok
+    
+  end
   
 private
+  
+  # 期間内に洗車売上入力が実行されているかを確認
+  def chk_d_wash_sale
+    
+    d_wash_sales = DWashSale.find(:all, :conditions => ["sale_date >= ? and sale_date <= ? and m_shop_id = ? ",
+                                                          @audit_date_from.gsub("/",""),
+                                                          @audit_date_to.gsub("/",""),
+                                                          @m_shop_id])
+    
+    return (d_wash_sales.length > 0)
+    
+  end
   
   # _form用データ読込
   def read_from
@@ -263,12 +304,30 @@ private
         d_wash_sales_sum = nil
         if d_audit_wash_detail.nil? then  
           
+          # UPDATE BEGIN 2012.10.16 当日メータは売上最終データを読み込む
+          
+          #sql = <<-SQL
+          #          select 
+          #              coalesce(sum(b.meter), 0) as sum_meter
+          #          from 
+          #                        d_wash_sales     a 
+          #             inner join d_washsale_items b
+          #          on 
+          #              a.id = b.d_wash_sale_id
+          #          where 
+          #                 a.sale_date  >=  '#{@audit_date_from.gsub("/","")}' 
+          #             and a.sale_date  <=  '#{@audit_date_to.gsub("/","")}'
+          #             and a.m_shop_id  =   #{@m_shop_id} 
+          #             and b.m_wash_id   =  #{m_wash_rec.id}
+          #             and b.wash_no     =  #{num}
+          #      SQL
+          
           sql = <<-SQL
                     select 
-                        coalesce(sum(b.meter), 0) as sum_meter
+                        coalesce(b.meter, 0) as sum_meter
                     from 
-                                  d_wash_sales     a 
-                       inner join d_washsale_items b
+                                  d_wash_sales     a  -- d_wash_saleは必ず存在,left joinなので必ずデータが返る
+                        left join d_washsale_items b 
                     on 
                         a.id = b.d_wash_sale_id
                     where 
@@ -277,10 +336,14 @@ private
                        and a.m_shop_id  =   #{@m_shop_id} 
                        and b.m_wash_id   =  #{m_wash_rec.id}
                        and b.wash_no     =  #{num}
+                    order by 
+                       a.sale_date desc
                 SQL
-                
-          d_wash_sales_sum = DWashSale.find_by_sql(sql)[0]
-           
+          
+          # UPDATE END 2012.10.16 売上は期間内の最終データを読み込む
+          
+          d_wash_sales_sum = DWashSale.find_by_sql(sql)[0] 
+          
         end
          
         #明細レコード定義
