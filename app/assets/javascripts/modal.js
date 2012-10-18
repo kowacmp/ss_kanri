@@ -30,10 +30,25 @@ function setModal() {
         });
 		return false;
 	});
- 
+
+	//INSERT BEGIN 2012.10.18 フォーカスセットのon/offを追加
+	$("a.modal_nofocus").live('click', function(){
+		//$("div#modal div.container").load($(this).attr("href"), data="html", onComplete);
+       $.ajax({url: $(this).attr("href"),
+	    cache: false,
+	    success: function(html) {
+	    $("div#modal div.container").css("overflow", "hidden");
+		$("div#modal div.container").html(html);
+		onComplete(false);
+	    }
+        });
+		return false;
+	});
+	//INSERT END 2012.10.18 フォーカスセットのon/offを追加
+
 	//コンテンツの読み込み完了時にモーダルウィンドウを開く
-	function onComplete() {
-		displayModal(true);
+	function onComplete(autofocus) { //UPDATE 2012.10.18 フォーカスセットのon/offを追加
+		displayModal(true, autofocus); //UPDATE 2012.10.18 フォーカスセットのon/offを追加
 		$("div#modal").css("z-index", "1000");
 		$("div#modal div.container a.close").click(function() {
 			displayModal(false);
@@ -43,12 +58,16 @@ function setModal() {
 }
  
 //モーダルウィンドウを開く
-function displayModal(sign) {
+function displayModal(sign, autofocus) { //UPDATE 2012.10.18 フォーカスセットのon/offを追加
 	if (sign) {
-		//UPDATE BEGIN 2012.10.11 モーダル展開時に初期フォーカスをセットする
+		//UPDATE BEGIN 2012.10.18 フォーカスセットのon/offを追加
 		//$("div#modal").fadeIn(500);
-		$("div#modal").fadeIn(500, firstFocus($("div#modal div.container")));
-		//UPDATE END
+		if ( autofocus == false ) {
+			$("div#modal").fadeIn(500);	
+		} else {
+			$("div#modal").fadeIn(500, firstFocus($("div#modal div.container")));			
+		}
+		//UPDATE END 2012.10.18 フォーカスセットのon/offを追加
 	} else {
 		$("div#modal").fadeOut(250);
 		$("div#modal div.container").empty();
