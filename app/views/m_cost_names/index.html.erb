@@ -1,23 +1,29 @@
-<h1>Listing m_cost_names</h1>
+<h1>人件費項目名称マスタメンテ</h1>
 
-<table>
+<%= link_to '新規登録', new_m_cost_name_path, :class => 'add_icon' %>
+
+<table id='rounded-corner'>
   <tr>
-    <th>M shop</th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th style="min-width: 50px">店舗コード</th>
+    <th style="min-width: 200px">店舗</th>
+    <th>月給項目数</th>
+    <th>時給項目数</th>
+    <th>日数項目数</th>
+    <th>入力項目数</th>
+    <th>編集</th>
+    <th>削除</th>
   </tr>
 
 <% @m_cost_names.each do |m_cost_name| %>
   <tr>
-    <td><%= m_cost_name.m_shop_id %></td>
-    <td><%= link_to 'Show', m_cost_name %></td>
-    <td><%= link_to 'Edit', edit_m_cost_name_path(m_cost_name) %></td>
-    <td><%= link_to 'Destroy', m_cost_name, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= m_cost_name.shop_cd %></td>
+    <td><%= m_cost_name.shop_name %></td>
+    <td align="right"><%= m_cost_name.monthly_name_count %></td>
+    <td align="right"><%= m_cost_name.hour_name_count %></td>
+    <td align="right"><%= m_cost_name.day_name_count %></td>
+    <td align="right"><%= m_cost_name.input_name_count %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_edit.png'), edit_m_cost_name_path(m_cost_name) %></td>
+    <td class="icon"><%= link_to image_tag('icon/24_delete.png'), m_cost_name, :confirm => '削除します。よろしいですか？', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
-
-<br />
-
-<%= link_to 'New M cost name', new_m_cost_name_path %>
