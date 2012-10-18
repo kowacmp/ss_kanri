@@ -1,5 +1,7 @@
 SsKanri::Application.routes.draw do
 
+  resources :m_cost_names
+
   get "d_duty_lists/index"
   get "d_duty_lists/search"
 

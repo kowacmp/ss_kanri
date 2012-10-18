@@ -1,0 +1,23 @@
+<h1>Listing m_cost_names</h1>
+
+<table>
+  <tr>
+    <th>M shop</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @m_cost_names.each do |m_cost_name| %>
+  <tr>
+    <td><%= m_cost_name.m_shop_id %></td>
+    <td><%= link_to 'Show', m_cost_name %></td>
+    <td><%= link_to 'Edit', edit_m_cost_name_path(m_cost_name) %></td>
+    <td><%= link_to 'Destroy', m_cost_name, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New M cost name', new_m_cost_name_path %>

@@ -41,7 +41,7 @@
 			<th>日数</th>
 			<% loopcnt.times { |i| %>
 			  <th <%= "style='background:none; background-color: #F7DC67'" if Time.now.day == (i+1) %>>
-			     <%= link_to image_tag('icon/24_edit.png'), {:controller => "d_duties", :action => "syain_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s + format("%02d", (i+1).to_i)}, :class => "modal" %>
+			     <%= link_to image_tag('icon/24_edit.png'), {:controller => "d_duties", :action => "syain_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s + format("%02d", (i+1).to_i)}, :class => "modal_nofocus" %>
 			     
 			  </th>
             <% } %>
@@ -55,7 +55,7 @@
 			<% nisu = d_duty_syain_total(select_where) %>
 			<tr id="syain_<%= "#{index}" %>">
 				<td colspan="2" style="min-width: 130px">
-					<%= link_to user.user_name , {:controller => "d_duties", :action => "syain_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal" %>
+					<%= link_to user.user_name , {:controller => "d_duties", :action => "syain_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal_nofocus" %>
 					<%= link_to image_tag('icon/user_edit.png'), {:controller => "m_info_costs", :action => "popup_edit", :user_id => user.id }, :class => "modal" %>
 				</td>
 				<td style="text-align: center;min-width: 50px"><label id=<%= "syain_nisu_#{user.id}" %>><%= nisu[0].nisu %></label></td>
@@ -78,7 +78,7 @@
 			<th>時間</th>
 			<% loopcnt.times { |i| %>
 			  <th <%= "style='background:none; background-color: #F7DC67'" if Time.now.day == (i+1) %>>
-			     <%= link_to image_tag('icon/24_edit.png'), {:controller => "d_duties", :action => "baito_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s + format("%02d", (i+1).to_i)}, :class => "modal" %>
+			     <%= link_to image_tag('icon/24_edit.png'), {:controller => "d_duties", :action => "baito_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s + format("%02d", (i+1).to_i)}, :class => "modal_nofocus" %>
 			     
 			  </th>
             <% } %>            
@@ -90,7 +90,7 @@
 			<% jikan = d_duty_baito_total(select_where) %>
 			<tr id="baito_<%= "#{index}" %>">
 				<td colspan="2" style="min-width: 130px">
-					<%= link_to user.user_name, {:controller => "d_duties", :action => "baito_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal" %>
+					<%= link_to user.user_name, {:controller => "d_duties", :action => "baito_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal_nofocus" %>
 					<%= link_to image_tag('icon/user_edit.png'), {:controller => "m_info_costs", :action => "popup_edit", :user_id => user.id }, :class => "modal" %>
 				</td>
 				<td style="text-align: center;min-width: 50px"><label id=<%= "baito_jikan_#{user.id}" %>><%= jikan[0].jikan %></label></td>
