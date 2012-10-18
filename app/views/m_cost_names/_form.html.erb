@@ -1,21 +1,102 @@
 <%= form_for(@m_cost_name) do |f| %>
   <% if @m_cost_name.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@m_cost_name.errors.count, "error") %> prohibited this m_cost_name from being saved:</h2>
+      <h2><%= pluralize(@m_cost_name.errors.count, "") %> 件のエラーがあります。</h2>
 
       <ul>
       <% @m_cost_name.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= sliceString(msg) %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
+  
+  
+	<table id='rounded-corner'>
+		<tr>
+		  <th><%= f.label "店舗" %></th>
+		  <td colspan="6">
+			<%= f.select(:m_shop_id, MShop.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'shop_cd').map do |u|
+		  		[u.shop_name,u.id]
+		    end, {:include_blank => "選択して下さい"}) %>
+		  </td>  
+		</tr>
+		
+		<tr>
+	  	  <th>月給項目1</th>
+	  	  <th>月給項目2</th>
+	  	  <th>月給項目3</th>
+	  	  <th>月給項目4</th>
+	  	  <th>月給項目5</th>
+	  	  <th>月給項目6</th>
+	  	</tr>
+	  	<tr>
+	  	  <td><%= f.text_field :monthly_name1,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :monthly_name2,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :monthly_name3,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :monthly_name4,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :monthly_name5,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :monthly_name6,:maxlength=>10,:size=>20 %></td>
+	  	</tr>
+	  	<tr>
+	  	  <th>時給項目1</th>
+	  	  <th>時給項目2</th>
+	  	  <th>時給項目3</th>
+	  	  <th>時給項目4</th>
+	  	  <th>時給項目5</th>
+	  	  <th>時給項目6</th>
+	  	</tr>
+	  	<tr>
+	  	  <td><%= f.text_field :hour_name1,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :hour_name2,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :hour_name3,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :hour_name4,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :hour_name5,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :hour_name6,:maxlength=>10,:size=>20 %></td>
+	  	</tr>
+	  	<tr>
+	  	  <th>日数項目1</th>
+	  	  <th>日数項目2</th>
+	  	</tr>
+	  	<tr>
+	  	  <td><%= f.text_field :day_name1,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :day_name2,:maxlength=>10,:size=>20 %></td>
+	  	</tr>
+	  	<tr>
+	  	  <th>入力項目1</th>
+	  	  <th>入力項目2</th>
+	  	  <th>入力項目3</th>
+	  	  <th>入力項目4</th>
+	  	</tr>
+	  	<tr>
+	  	  <td><%= f.text_field :input_name1,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :input_name2,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :input_name3,:maxlength=>10,:size=>20 %></td>
+	  	  <td><%= f.text_field :input_name4,:maxlength=>10,:size=>20 %></td>
+	  	</tr>
+		
+		<tr>
+	  		<td align="left" style="border: none">
+	  			<%= link_to '戻る', m_cost_names_path, :class => 'return_icon' %>
+			</td>
+		  	<td colspan="6" align="right" style="border: none">
+		  		<% if f.object.new_record? %>
+				<%= f.submit "  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？' %>
+				<% else %>
+				<%= f.submit "  更  新  ",:disable_with => "更新中.....",:confirm => '更新しても良いですか？' %>
+				<% end %>
+			</td>
+		</tr>
+	</table>
 
-  <div class="field">
-    <%= f.label :m_shop_id %><br />
-    <%= f.number_field :m_shop_id %>
+
+
+
+  <!--div class="field">
+    <%# f.label :m_shop_id %><br />
+    <%#= f.number_field :m_shop_id %>
   </div>
   <div class="actions">
-    <%= f.submit %>
-  </div>
+    <%#= f.submit %>
+  </div-->
 <% end %>
