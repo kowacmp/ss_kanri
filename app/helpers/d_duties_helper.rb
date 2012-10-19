@@ -208,5 +208,29 @@ module DDutiesHelper
     end    
   end
   
+  #勤怠データの対象店舗の対象日の入力済みフラグを取得
+  #入力済みフラグが立っているデータが１つでもあれば、１を返す。以外は０
+  def get_d_dutie_input_flg(m_shop_id, duty_nengetu, day)
+    d_duty = DDuty.count("input_flg", :conditions=>["m_shop_id=? and duty_nengetu=? and day=? and input_flg = 1", m_shop_id, duty_nengetu.to_s, day])
 
+    if d_duty == 0
+      return 0
+    else
+      return 1
+    end
+  end 
+  
+  
+  #勤怠データの対象店舗の対象日の確定フラグを取得
+  #確定フラグが立っているデータが１つでもあれば、１を返す。以外は０
+  def get_d_dutie_kakutei_flg(m_shop_id, duty_nengetu, day)
+    d_duty = DDuty.count("input_flg", :conditions=>["m_shop_id=? and duty_nengetu=? and day=? and kakutei_flg = 1", m_shop_id, duty_nengetu.to_s, day])
+
+    if d_duty == 0
+      return 0
+    else
+      return 1
+    end    
+  end
+    
 end

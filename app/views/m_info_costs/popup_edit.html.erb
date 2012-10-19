@@ -3,32 +3,94 @@
 <%= form_for :m_info_cost, :url => { :action => "popup_update" },:remote => true do |f| %>
 <%= f.hidden_field :user_id %>
 <table class="rounded-corner">
-	<thead>
 		<tr>
-			<th style="min-width: 80px">基本給</th>
-			<% if @user.user_class == 1 %>
-				<th style="min-width: 80px">能力給</th>
+			<% if @user.user_class == 0 %>
+				<!--社員の場合-->
+				<th style="min-width: 80px">基本給</th>
+				</tr><tr>
+				<td><%= f.number_field :general_price, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+				</tr><tr>
+				<% unless @m_cost_name.monthly_name1.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.monthly_name1 %></th><% end %>
+				<% unless @m_cost_name.monthly_name2.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.monthly_name2 %></th><% end %>
+				<% unless @m_cost_name.monthly_name3.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.monthly_name3 %></th><% end %>
+				<% unless @m_cost_name.monthly_name4.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.monthly_name4 %></th><% end %>
+				<% unless @m_cost_name.monthly_name5.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.monthly_name5 %></th><% end %>
+				<% unless @m_cost_name.monthly_name6.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.monthly_name6 %></th>
+				<% end %>
+				</tr><tr>
+				<% unless @m_cost_name.monthly_name1.blank? %>
+					<td><%= f.number_field :time_price1, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td><% end %>
+				<% unless @m_cost_name.monthly_name2.blank? %>
+					<td><%= f.number_field :time_price2, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td><% end %>
+				<% unless @m_cost_name.monthly_name3.blank? %>
+					<td><%= f.number_field :time_price3, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td><% end %>
+				<% unless @m_cost_name.monthly_name4.blank? %>
+					<td><%= f.number_field :time_price4, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td><% end %>
+				<% unless @m_cost_name.monthly_name5.blank? %>
+					<td><%= f.number_field :time_price5, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td><% end %>
+				<% unless @m_cost_name.monthly_name6.blank? %>
+					<td><%= f.number_field :time_price6, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+				<% end %>				
+			<% else %>
+				<th style="min-width: 80px">通常単価</th>
+				<th style="min-width: 80px">通常残業</th>
+				<th style="min-width: 80px">深夜単価</th>
+				<th style="min-width: 80px">深夜残業</th>
+				</tr><tr>
+				<td><%= f.number_field :general_price, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+				<td><%= f.number_field :general_overtime, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+				<td><%= f.number_field :night_price, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+				<td><%= f.number_field :night_overtime, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+				</tr><tr>
+				<% unless @m_cost_name.hour_name1.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.hour_name1 %></th><% end %>
+				<% unless @m_cost_name.hour_name2.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.hour_name2 %></th><% end %>
+				<% unless @m_cost_name.hour_name3.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.hour_name3 %></th><% end %>
+				<% unless @m_cost_name.hour_name4.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.hour_name4 %></th><% end %>
+				<% unless @m_cost_name.hour_name5.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.hour_name5 %></th><% end %>
+				<% unless @m_cost_name.hour_name6.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.hour_name6 %></th>
+				<% end %>
+				</tr><tr>			
+				<% unless @m_cost_name.hour_name1.blank? %>
+					<td><%= f.number_field :time_price1, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td><% end %>
+				<% unless @m_cost_name.hour_name2.blank? %>
+					<td><%= f.number_field :time_price2, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td><% end %>
+				<% unless @m_cost_name.hour_name3.blank? %>
+					<td><%= f.number_field :time_price3, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td><% end %>
+				<% unless @m_cost_name.hour_name4.blank? %>
+					<td><%= f.number_field :time_price4, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td><% end %>
+				<% unless @m_cost_name.hour_name5.blank? %>
+					<td><%= f.number_field :time_price5, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td><% end %>
+				<% unless @m_cost_name.hour_name6.blank? %>
+					<td><%= f.number_field :time_price6, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+				<% end %>
+				</tr><tr>
+				<% unless @m_cost_name.day_name1.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.day_name1 %></th>
+				<% end %>
+				<% unless @m_cost_name.day_name2.blank? %>
+					<th style="min-width: 80px"><%= @m_cost_name.day_name2 %></th>
+				<% end %>
+				</tr><tr>
+				<% unless @m_cost_name.day_name1.blank? %>
+					<td><%= f.number_field :day_price1, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+				<% end %>
+				<% unless @m_cost_name.day_name2.blank? %>
+					<td><%= f.number_field :day_price2, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
+				<% end %>
 			<% end %>
-			<th style="min-width: 80px">福利費</th>
-			<th style="min-width: 80px">手当１</th>
-			<th style="min-width: 80px">手当２</th>
-			<th style="min-width: 80px">手当３</th>
-			<th style="min-width: 80px">手当４</th>
 		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td><%= f.number_field :base_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
-			<% if @user.user_class == 1 %>
-			   <td><%= f.number_field :skill_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
-			<% end %>
-	        <td><%= f.number_field :welfare_pay, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
-			<td><%= f.number_field :etc_pay1, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
-			<td><%= f.number_field :etc_pay2, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
-			<td><%= f.number_field :etc_pay3, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
-			<td><%= f.number_field :etc_pay4, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
-		</tr>
-	</tbody>
 </table>
 <%= submit_tag '保存', {:confirm => "保存します。よろしいですか？", :method => :post} %>
 <% end %>
@@ -37,7 +99,7 @@
 
 <script>
 $(function () {
-	$('div#modal div.container').css("height", "200px");
+	$('div#modal div.container').css("height", "300px");
 	$('div#modal div.container').css("width", "740px");
 	$("div#modal").fadeIn();
 	adjustCenter("div#modal div.container");
