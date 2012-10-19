@@ -71,7 +71,7 @@
 		</td>
 		<td align="center">
 			<%if not(@audit.nil?) then %>
-				<%= link_to image_tag('icon/24_edit.png'), {:controller => @table, :action => 'show', :id => @audit.id } %>
+				<%= link_to image_tag('icon/24_edit.png'), {:controller => @table, :action => 'show', :id => @audit.id, :comment => true } %>
 			<% end %>
 		</td>
 	</tr>
