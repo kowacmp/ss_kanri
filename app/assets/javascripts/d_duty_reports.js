@@ -1,4 +1,29 @@
 $(function () {
+	
+    //入力日が変更された場合のイベント 
+    //出力する区分のラジオボタンが変更されたときのイベント
+    $("#_input_day_1i, #_input_day_2i, input[name='head_output_kbn']:radio")
+      .change(function() {
+      			checkbox_name = "input:radio[name='head_output_kbn']:checked";
+
+           	   //show
+           	   $.get(
+				    '/d_duty_reports/show',                 // 送信先
+				    { input_day: String($("#_input_day_1i").val()) + ('00' + $("#_input_day_2i").val()).slice(-2) , head_input_m_shop_id: $("#head_input_m_shop_id").val(), head_output_kbn: $(checkbox_name).val() , remote: true},
+				    function(data, status) {        // 通信成功時にデータを表示
+				       $('#form').empty();
+		               $('#form').append(data);
+					   
+					   calc_jinken_kei();//人件費合計を計算しセット
+					   calc_y_sisu();//実績Y指数を求める
+					   calc_win();//WIN金額を求める
+					   calc_avg_y_sisu();//平均Y指数を求める
+		             },
+				    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
+		            );
+    });	
+
+		
    //人件費合計を計算しセット
   calc_jinken_kei();
   //実績Y指数を求める
@@ -43,16 +68,21 @@ $(function () {
     while(i<32){
       
       total=0;
-      $(Div_id + "[id^=syain_" + Number(i) + "_]").each(function(i){
+      
+      $(Div_id + "[id^=syain_all_money_" + Number(i) + "_]").each(function(i){
           num = Number(format_kanma($(this).text(),2));
+          if ($(this).text() == '') {num = Number(format_kanma($(this).val(),2));};
           if (isNaN(num)) {num = 0};
           total = total + num;
-      })
-      $(Div_id + "[id^=baito_" + Number(i) + "_]").each(function(i){
+      });
+      
+      $(Div_id + "[id^=baito_all_money_" + Number(i) + "_]").each(function(i){
           num = Number(format_kanma($(this).text(),2));
+          if ($(this).text() == '') {num = Number(format_kanma($(this).val(),2));};
           if (isNaN(num)) {num = 0};
           total = total + num;
-      })      
+      });
+           
       $(Div_id + "#col_jinken_kei_" + Number(i)).text(format_kanma(total));
       i=i+1;
     };

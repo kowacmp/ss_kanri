@@ -121,9 +121,11 @@
 						<%= num_fmt( d_duty_syain_total(select_where, "money")[0].all_money) %>
 					</label>
 				</td>
-				
-				<%= set_syain_row(user.id, loopcnt, select_where, "money", "none").html_safe %>
-				
+				<% if @head_output_kbn == 1 #金額を表示 %>
+					<%= set_syain_row(user.id, loopcnt, select_where, "money", "none").html_safe %>
+				<% else %>
+					<%= set_syain_row(user.id, loopcnt, select_where, "time-money", "none").html_safe %>
+				<% end %>
 			</tr>
 		<% } %>
 		<!--バイト繰り返し-->
@@ -139,9 +141,12 @@
 						<%= num_fmt( d_duty_baito_total(select_where, "money")[0].all_money) %>
 					</label>
 				</td>
-				
-				<%= set_banto_row(user.id, loopcnt, select_where, "money", "none").html_safe %>
-				
+
+				<% if @head_output_kbn == 1 #金額を表示 %>
+					<%= set_banto_row(user.id, loopcnt, select_where, "money", "none").html_safe %>
+				<% else %>
+					<%= set_banto_row(user.id, loopcnt, select_where, "time-money", "none").html_safe %>
+				<% end %>				
 			</tr>
 		<% } %>
 		<!--人件費計-->

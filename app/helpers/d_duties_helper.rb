@@ -16,7 +16,9 @@ module DDutiesHelper
   end
   
   #社員の入力欄を作成
+  #outputkbn->nilの場合は時間を送る
   #outputkbn->moneyの場合は金額を送る
+  #outputkbn->time-moneyの場合は時間と金額(hidden)を送る
   def set_syain_row(user_id, loopcnt, select_where, outputkbn=nil, d_today_color="#F7DC67")
     rtn_html = ""
     d_duties = DDuty.find(:all, :conditions=>["#{select_where}"], :order => "day")
@@ -40,17 +42,23 @@ module DDutiesHelper
         unless d_duties[n].blank?
 
           if d_duties[n].day == (i + 1)
-            
-            if outputkbn == "money"
-              #金額をセット
-              rtn_html << "<label id='syain_#{i+1}_#{user_id}'>#{num_fmt(d_duties[n].all_money)}</label>"
-            else
-              if d_duties[n].day_work_time.to_i == 1
-                rtn_html << "<label id='syain_#{i+1}_#{user_id}'>出</label>"
+            case outputkbn
+              when "money"#金額をセット
+                rtn_html << "<label id='syain_all_money_#{i+1}_#{user_id}'>#{num_fmt(d_duties[n].all_money)}</label>"
+              when "time-money"#勤怠を表示して金額を隠しで出力
+                if d_duties[n].day_work_time.to_i == 1
+                  rtn_html << "<label id='syain_#{i+1}_#{user_id}'>出</label>"
+                else
+                  rtn_html << "<label id='syain_#{i+1}_#{user_id}' style='color:red'>休</label>"
+                end
+                rtn_html << hidden_field_tag("syain_all_money_#{i+1}_#{user_id}",d_duties[n].all_money)
               else
-                rtn_html << "<label id='syain_#{i+1}_#{user_id}' style='color:red'>休</label>"
-              end
-              rtn_html << hidden_field_tag("hiden_syain_#{i+1}_#{user_id}", d_duties[n].day_work_time.to_i)
+                if d_duties[n].day_work_time.to_i == 1
+                  rtn_html << "<label id='syain_#{i+1}_#{user_id}'>出</label>"
+                else
+                  rtn_html << "<label id='syain_#{i+1}_#{user_id}' style='color:red'>休</label>"
+                end
+                rtn_html << hidden_field_tag("hiden_syain_#{i+1}_#{user_id}", d_duties[n].day_work_time.to_i)
             end
             
             
@@ -104,7 +112,9 @@ module DDutiesHelper
   end
 
   #バイトの入力欄作成
+  #outputkbn->nilの場合は時間を送る
   #outputkbn->moneyの場合は金額を送る
+  #outputkbn->time-moneyの場合は時間と金額(hidden)を送る
   def set_banto_row(user_id, loopcnt, select_where, outputkbn=nil, d_today_color="#F7DC67")
     rtn_html = ""
     d_duties = DDuty.find(:all, :conditions=>["#{select_where}"], :order => "day")
@@ -128,16 +138,27 @@ module DDutiesHelper
         unless d_duties[n].blank?
 
           if d_duties[n].day == (i + 1)
-
+            case outputkbn
+              when "money"#金額をセット
+                rtn_html << "<label id='baito_all_money_#{i+1}_#{user_id}'>#{num_fmt(d_duties[n].all_money)}</label>"
+              when "time-money"#勤怠を表示して金額を隠しで出力
+                if d_duties[n].all_work_time.to_f > 0
+                  rtn_html << "<label id='baito_#{i+1}_#{user_id}'>#{d_duties[n].all_work_time}</label>"
+                else
+                  rtn_html << "<label id='baito_#{i+1}_#{user_id}'></label>"
+                end
+                rtn_html << hidden_field_tag("baito_all_money_#{i+1}_#{user_id}",d_duties[n].all_money)
+              else
+                if d_duties[n].all_work_time.to_f > 0
+                  rtn_html << "<label id='baito_#{i+1}_#{user_id}'>#{d_duties[n].all_work_time}</label>"
+                else
+                  rtn_html << "<label id='baito_#{i+1}_#{user_id}'></label>"
+                end
+            end
+            
             if outputkbn == "money"
               #金額をセット
-              rtn_html << "<label id='baito_#{i+1}_#{user_id}'>#{num_fmt(d_duties[n].all_money)}</label>"
             else
-              if d_duties[n].all_work_time.to_f > 0
-                rtn_html << "<label id='baito_#{i+1}_#{user_id}'>#{d_duties[n].all_work_time}</label>"
-              else
-                rtn_html << "<label id='baito_#{i+1}_#{user_id}'></label>"
-              end
             end
             
             n += 1

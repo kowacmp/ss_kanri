@@ -23,6 +23,12 @@ class DDutyReportsController < ApplicationController
       @m_shop_id = params[:head_input_m_shop_id]
     end
     
+    if params[:head_output_kbn] == nil
+      @head_output_kbn = 1 #金額を表示
+    else
+      @head_output_kbn = params[:head_output_kbn].to_i
+    end
+    
     #selectboxの選択年度を設定
 
     @start_year = Time.now.localtime.strftime("%Y").to_i - 1

@@ -294,6 +294,18 @@ class DDutiesController < ApplicationController
   def d_duites_baito_edit(data, d_dutie, input_day, user_id, day)
     
     if d_dutie.blank?
+      #時間が入力されていない場合はreturn
+      if data[:day_work_time].blank? and 
+         data[:day_over_time].blank? and
+         data[:night_work_time].blank? and
+         data[:night_over_time].blank? and
+         data[:get_money1].blank? and
+         data[:get_money2].blank? and
+         data[:get_money3].blank? and
+         data[:get_money4].blank?
+        return
+      end
+      
       d_dutie = DDuty.new
       d_dutie.duty_nengetu = input_day[0,6].to_s
       d_dutie.user_id = user_id
@@ -339,8 +351,8 @@ class DDutiesController < ApplicationController
         time_price += (m_info_cost.time_price6.to_i * d_dutie.all_work_time.to_f).ceil 
         #日数単価金額
         day_price = 0
-        day_price += m_info_cost.day_price1.to_i
-        day_price += m_info_cost.day_price1.to_i
+        day_price += m_info_cost.day_price1.to_i if d_dutie.all_work_time.to_f > 0
+        day_price += m_info_cost.day_price1.to_i if d_dutie.all_work_time.to_f > 0
       end
       
       #人件費合計

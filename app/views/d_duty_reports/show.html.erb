@@ -11,7 +11,11 @@
       	<%= select_year(@head[:input_day].to_s[0,4].to_i, :prefix=>"", :field_name=>"input_day(1i)",
       	                :start_year => @start_year, :end_year => @head[:input_day].to_s[0,4].to_i) %>年
       	<%= select_month(@head[:input_day].to_s[4,2].to_i, :prefix=>"", :field_name=>"input_day(2i)", :use_month_numbers => true) %>月</td>
-	  </tr>
+	  <td>
+		<%= radio_button_tag("head_output_kbn",1, :checked => true) %>金額を表示
+		<%= radio_button_tag("head_output_kbn",0) %>勤怠を表示
+	  </td>
+	  </tr>	  
 </table>
 <div id="form">
 	<%= render 'form' %>
