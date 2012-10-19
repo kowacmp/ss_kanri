@@ -167,7 +167,7 @@
 						this.disabled=true;document.location='<%=url%>';
 					}" />
 	<!-- 使用不可で開始、立会人入力により使用可 -->
-	<%= submit_tag '　保　存　', :onclick => "return update_chk()" ,:disable_with => '保存中です...', :disabled => true , :id => "btn_update" %>
+	<%= submit_tag '　登　録　', :onclick => "return update_chk()" ,:disable_with => '登録中です...', :disabled => true , :id => "btn_update" %>
 	<!-- true の場合は永続的に更新不可 -->
 	<% 
 		if @d_audit_wash.nil? then
@@ -207,7 +207,7 @@
   			return false;
   		}
   		
-  		return confirm('保存しても良いですか？');	
+  		return confirm('登録しても良いですか？');	
   		
   	}
   	
