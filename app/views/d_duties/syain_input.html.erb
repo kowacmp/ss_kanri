@@ -3,6 +3,7 @@
 <%= form_tag({:action => 'syain_input_add' }, { :remote => true }) do %>
 <%= hidden_field_tag 'input_day', @input_day %>
 <%= hidden_field_tag 'm_shop_id', @m_shop_id %>
+<%= hidden_field_tag 'system_date', @system_date %>
 <table id="syain_input_table" class="rounded-corner">
 	<thead>
 		<tr>
@@ -11,7 +12,9 @@
 		</tr>
 	</thead>
 	<tbody>
+		<% user_count = 0 %>
 		<% @syain_users.each_with_index{ |user, index| %>
+		  <% user_count += 1 %>
 	      <%= hidden_field_tag "datas[#{index}][user_id]", user.id %>
 		  <% d_dutry = DDuty.find(:first, 
 		  :conditions=>["duty_nengetu = '#{@input_day.to_s[0,6]}' and day = #{@input_day.to_s[6,2]} and user_id = #{user.id}"]) %>
@@ -34,10 +37,12 @@
 		  </td>
 		  </tr>
 		<% } %>
+		<%= hidden_field_tag 'user_conut', user_count %>
 	</tbody>
 </table>
 <br />
-<%= submit_tag '保存', {:confirm => "保存します。よろしいですか？", :method => :post} %>
+<% d_duty_kakutei_flg = get_d_dutie_kakutei_flg(@m_shop_id, @input_day.to_s[0,6].to_i, @input_day.to_s[6,2].to_i ) %>
+<%= submit_tag '保存', {:confirm => "保存します。よろしいですか？", :method => :post, :disabled => d_duty_kakutei_flg==1} %>
 <% end %>
 
 <script>
@@ -47,5 +52,28 @@ $(function () {
 	$("div#modal").fadeIn();
 	adjustCenter("div#modal div.container");
 	$('div#modal #syain_input_table').tablefix({width: 385, height: 450, fixRows: 1, fixCols: 0});
+
+	//入力チェック
+	//保存の時
+    $("form").submit(function() {
+    	var Div_id='';
+    	
+	    if ($("div#modal div.bodyDiv").size() > 0) {
+	    	Div_id = 'div.bodyDiv ';
+	    };
+	    
+	    //システム日付以前分の入力は必須入力
+	    if ($("div#modal " + Div_id + "#input_day").val() < $("div#modal " + Div_id + "#system_date").val()) {
+	    	//必須入力
+	    	var count = $("div#modal " + Div_id + ":checked").length;
+	    	var user_conut = $("div#modal " + Div_id + "#user_conut" ).val();
+	    	if (count != user_conut) {
+	    		alert("勤怠に未入力があります。全て入力してください。");
+ 				return false;
+	    	};
+	    };
+	
+    });
+
 });	
 </script>

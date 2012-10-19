@@ -1,5 +1,6 @@
 <h1>人件費</h1>
 <%= form_tag({:controller=> "d_duty_reports", :action => 'show' }) do %>
+<%= hidden_field_tag :mode,params[:mode] %>
 <table id='rounded-corner'>
 	<tr>
 	  <th>対象店舗</th>

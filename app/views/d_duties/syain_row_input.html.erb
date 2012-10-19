@@ -8,6 +8,7 @@
 <%= hidden_field_tag 'input_day', @input_day %>
 <%= hidden_field_tag 'user_id', @user.id %>
 <%= hidden_field_tag 'm_shop_id', @m_shop_id %>
+<%= hidden_field_tag 'system_date', @system_date %>
 <table id="syain_row_input_table" class="rounded-corner">
 	<thead>
 		<tr>
@@ -43,19 +44,30 @@
 			  <td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
 			  	<% d_dutry = DDuty.find(:first, 
 		              :conditions=>["duty_nengetu = '#{@input_day.to_s[0,6]}' and day = #{ i + 1} and user_id = #{@user.id}"]) %>
-			  	<% if d_dutry.blank? %>
-				  	<%= radio_button_tag("datas[#{i + 1}][syukin]",1) %>出
-					<%= radio_button_tag("datas[#{i + 1}][syukin]",0) %>休
-			  	<% else %>
-			  		<% if d_dutry.day_work_time.to_i == 0 %>
-			  			<%= radio_button_tag("datas[#{i + 1}][syukin]",1) %>出
-						<%= radio_button_tag("datas[#{i + 1}][syukin]",0, :checked => true) %>休
-			  		<% else %>
-			  			<%= radio_button_tag("datas[#{i + 1}][syukin]",1, :checked => true) %>出
+			  	<% d_duty_kakutei_flg = get_d_dutie_kakutei_flg(@m_shop_id, @input_day.to_i, i + 1 ) #確定フラグが立っている場合は入力できない %>
+			  	<% if d_duty_kakutei_flg == 0 %>
+				  	<%= hidden_field_tag "datas_input_day_#{i + 1}", @input_day.to_s[0,6].to_s + format("%02d", i + 1) %>
+				  	<% if d_dutry.blank? %>
+					  	<%= radio_button_tag("datas[#{i + 1}][syukin]",1) %>出
 						<%= radio_button_tag("datas[#{i + 1}][syukin]",0) %>休
+				  	<% else %>
+				  		<% if d_dutry.day_work_time.to_i == 0 %>
+				  			<%= radio_button_tag("datas[#{i + 1}][syukin]",1) %>出
+							<%= radio_button_tag("datas[#{i + 1}][syukin]",0, :checked => true) %>休
+				  		<% else %>
+				  			<%= radio_button_tag("datas[#{i + 1}][syukin]",1, :checked => true) %>出
+							<%= radio_button_tag("datas[#{i + 1}][syukin]",0) %>休
+				  		<% end %>
+				  	<% end %>
+			  	<% else %>
+			  		<% unless d_dutry.blank? %>
+			  			<% if d_dutry.day_work_time.to_i == 0 %>
+			  				<%= label_tag "datas_#{i + 1}_syukin", "休",{:style=>"color:red"} %>
+			  			<% else %>
+			  				<%= label_tag "datas_#{i + 1}_syukin", "出" %>
+			  			<% end %>
 			  		<% end %>
 			  	<% end %>
-			  	
 			  </td>
 
 			</tr>
@@ -74,6 +86,37 @@ $(function () {
 	adjustCenter("div#modal div.container");
 	$('div#modal #syain_row_input_table').tablefix({width: 210, height: 450, fixRows: 1, fixCols: 0});
 	$('div#modal div.bodyDiv').scrollTop(25 * (<%= Time.now.day %> - 2));
+
+	//入力チェック
+	//保存の時
+    $("form").submit(function() {
+    	var Div_id='';
+	    var get_index;
+    	var errmsg='';
+    	    	
+	    if ($("div#modal div.bodyDiv").size() > 0) {
+	    	Div_id = 'div.bodyDiv ';
+	    };
+    	
+    	//システム日付以前分の入力は必須入力
+	    $("div#modal " + Div_id + "[id^=datas_input_day_]").each(function(i){
+		   	var get_index = $(this).attr('id').replace("datas_input_day_", "");
+
+			if ($(this).val() < $("div#modal #system_date").val()) {
+				syukin_checkbox_name = "div#modal " + Div_id + "input:radio[name='datas\\[" + get_index + "\\]\\[syukin\\]']:checked"
+				if (!$(syukin_checkbox_name).val()) {
+				     if (errmsg != "") { errmsg = errmsg + ", "; };
+				     errmsg = errmsg + get_index + "日";
+				};
+			};
+		    
+	    });
+	    
+        if (errmsg != "") {
+			alert("勤怠に未入力があります。(" + errmsg + ")");
+ 			return false;
+ 	    };
 	
+    });	
 });	
 </script>

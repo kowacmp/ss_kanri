@@ -5,11 +5,16 @@
 <table id="baito_input_table" class="rounded-corner">
 	<thead>
 		<tr>
-		<th style="max-width: 230px; min-width: 230px">氏名</th>
+		<th style="max-width: 130px; min-width: 130px">氏名</th>
 		<th style="min-width: 80px">日勤</th>
-		<th style="min-width: 80px">夜勤(残業)</th>
+		<th style="min-width: 80px">残業</th>
+		<th style="min-width: 80px">夜勤</th>
 		<th style="min-width: 80px">深夜残業</th>
-		<th style="min-width: 80px">合計</th>
+		<th style="min-width: 80px">時間合計</th>
+		<th style="min-width: 80px"><%= @m_cost_name.input_name1 %></th>
+		<th style="min-width: 80px"><%= @m_cost_name.input_name2 %></th>
+		<th style="min-width: 80px"><%= @m_cost_name.input_name3 %></th>
+		<th style="min-width: 80px"><%= @m_cost_name.input_name4 %></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -18,11 +23,13 @@
 		  <% d_dutry = DDuty.find(:first, 
 		  :conditions=>["duty_nengetu = '#{@input_day.to_s[0,6]}' and day = #{@input_day.to_s[6,2]} and user_id = #{user.id}"]) %>
 		  <tr>
-		  <td><label id='<%= "datas_#{index}_user_name" %>'><%= user.user_name %></label></td>
-		  
+		  <td><label id='<%= "datas_#{index}_user_name" %>'><%= user.user_name %></label></td> 	
 			<% if d_dutry.blank? %>
 			    <td style="text-align: center;">
 					<%= text_field_tag "datas[#{index}][day_work_time]", "",  {:size=>4, :class=>"money"} %>
+				</td>
+			    <td style="text-align: center;">
+					<%= text_field_tag "datas[#{index}][day_over_time]", "",  {:size=>4, :class=>"money"} %>
 				</td>
 			    <td style="text-align: center;">
 					<%= text_field_tag "datas[#{index}][night_work_time]", "",  {:size=>4, :class=>"money"} %>
@@ -30,13 +37,20 @@
 			    <td style="text-align: center;">
 					<%= text_field_tag "datas[#{index}][night_over_time]", "",  {:size=>4, :class=>"money"} %>
 				</td>
-				<td style="text-align: center;">
+				<td style="text-align: center; background-color: #A5D7AA;">
 					<label id='<%= "l_datas_#{index}_all_work_time" %>'></label>
 					<%= hidden_field_tag "datas[#{index}][all_work_time]", "" %>
 			    </td>
+				<td style="text-align: right;"><%= text_field_tag "datas[#{index}][get_money1]", "",  {:size=>4, :class=>"money"} %></td>
+				<td style="text-align: right;"><%= text_field_tag "datas[#{index}][get_money2]", "",  {:size=>4, :class=>"money"} %></td>
+				<td style="text-align: right;"><%= text_field_tag "datas[#{index}][get_money3]", "",  {:size=>4, :class=>"money"} %></td>
+				<td style="text-align: right;"><%= text_field_tag "datas[#{index}][get_money4]", "",  {:size=>4, :class=>"money"} %></td>
 			<% else %>
 				<td style="text-align: center;">
 		  			<%= text_field_tag "datas[#{index}][day_work_time]", d_dutry.day_work_time,  {:size=>4, :class=>"money"} %>
+		  		</td>
+				<td style="text-align: center;">
+		  			<%= text_field_tag "datas[#{index}][day_over_time]", d_dutry.day_over_time,  {:size=>4, :class=>"money"} %>
 		  		</td>
 				<td style="text-align: center;">
 		  			<%= text_field_tag "datas[#{index}][night_work_time]", d_dutry.night_work_time,  {:size=>4, :class=>"money"} %>
@@ -44,10 +58,14 @@
 				<td style="text-align: center;">
 		  			<%= text_field_tag "datas[#{index}][night_over_time]", d_dutry.night_over_time,  {:size=>4, :class=>"money"} %>
 		  		</td>
-				<td style="text-align: center;">
+				<td style="text-align: center; background-color: #A5D7AA;">
 					<label id='<%= "l_datas_#{index}_all_work_time" %>'><%= d_dutry.all_work_time %></label>
 					<%= hidden_field_tag "datas[#{index}][all_work_time]", d_dutry.all_work_time %>
 			    </td>
+				<td style="text-align: right;"><%= text_field_tag "datas[#{index}][get_money1]", d_dutry.get_money1,  {:size=>4, :class=>"money"} %></td>
+				<td style="text-align: right;"><%= text_field_tag "datas[#{index}][get_money2]", d_dutry.get_money2,  {:size=>4, :class=>"money"} %></td>
+				<td style="text-align: right;"><%= text_field_tag "datas[#{index}][get_money3]", d_dutry.get_money3,  {:size=>4, :class=>"money"} %></td>
+				<td style="text-align: right;"><%= text_field_tag "datas[#{index}][get_money4]", d_dutry.get_money4,  {:size=>4, :class=>"money"} %></td>
 		  	<% end %>
 		  
 		  </tr>
@@ -55,7 +73,8 @@
 	</tbody>
 </table>
 <br />
-<%= submit_tag '保存', {:confirm => "保存します。よろしいですか？", :method => :post} %>
+<% d_duty_kakutei_flg = get_d_dutie_kakutei_flg(@m_shop_id, @input_day.to_s[0,6].to_i, @input_day.to_s[6,2].to_i ) %>
+<%= submit_tag '保存', {:confirm => "保存します。よろしいですか？", :method => :post, :disabled => d_duty_kakutei_flg==1} %>
 <% end %>
 
 <%= javascript_include_tag "comma" %>
@@ -63,10 +82,10 @@
 <script>
 $(function () {
 	$('div#modal div.container').css("height", "600px");
-	$('div#modal div.container').css("width", "700px");
+	$('div#modal div.container').css("width", "900px");
 	$("div#modal").fadeIn();
 	adjustCenter("div#modal div.container");
-	$('#baito_input_table').tablefix({width: 650, height: 450, fixRows: 1, fixCols: 0});
+	$('#baito_input_table').tablefix({width: 850, height: 450, fixRows: 1, fixCols: 1});
 	
 	//入力チェック
 	//保存の時
@@ -94,7 +113,18 @@ $(function () {
 			};
  
 	    });  
-	    
+	    $("div#modal " + Div_id + "[id*=_day_over_time]").each(function(i){
+		   	get_index = $(this).attr('id').replace("datas_", "");
+		    get_index = get_index.replace("_day_over_time", "");
+			user_name = $("div#modal " + Div_id + "#datas_" + get_index + "_user_name").text() + "さん";
+			
+			if (d_duty_validation($(this).val()) == false) {
+				if (errmsg != "") { errmsg = errmsg + ", "; };
+				errmsg = errmsg + user_name;
+			};
+ 
+	    }); 
+	    	    
 	    //夜勤
 	    $("div#modal " + Div_id + "[id*=_night_work_time]").each(function(i){
 		   	get_index = $(this).attr('id').replace("datas_", "");
@@ -107,6 +137,18 @@ $(function () {
 			};
 	        
 	    });  
+	    $("div#modal " + Div_id + "[id*=_night_over_time]").each(function(i){
+		   	get_index = $(this).attr('id').replace("datas_", "");
+		    get_index = get_index.replace("_night_over_time", "");
+			user_name = $("div#modal " + Div_id + "#datas_" + get_index + "_user_name").text() + "さん";
+			
+			if (d_duty_validation($(this).val()) == false) {
+				if (errmsg != "") { errmsg = errmsg + ", "; };
+				errmsg = errmsg + user_name;
+			};
+	        
+	    }); 	    
+	    
         if (errmsg != "") {
 			alert("勤務時間を正しく入力してください。(整数２桁、少数１桁)\n（" + errmsg + "）");
  			return false;

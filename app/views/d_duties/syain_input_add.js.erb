@@ -8,8 +8,10 @@
 		$("<%= label_id %>").text("出");
 		$("<%= label_id %>").css("color", "");
 	}else{
-		$("<%= label_id %>").text("休");
-		$("<%= label_id %>").css("color", "red");
+		if ('<%= data[:syukin].to_s %>' != ''){
+			$("<%= label_id %>").text("休");
+			$("<%= label_id %>").css("color", "red");
+		};
 	}
 
 	<% select_where = " duty_nengetu = '#{@input_day[0,6]}' and user_id = #{data[:user_id]} "%>

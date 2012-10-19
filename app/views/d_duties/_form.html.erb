@@ -1,7 +1,54 @@
 <% loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[4,2].to_i, -1)).strftime("%d").to_i %>
-
+<%= hidden_field_tag :head_input_day, @head[:input_day] %>
+<%= hidden_field_tag :head_m_shop_id, @m_shop_id %>
 <table id="d_duty_table" class="rounded-corner">
 	 <thead>
+		<!--入力済みチェックボックス。確認済みチェックボックス-->
+		<tr>
+			<% if params[:mode] == 'list' #入力状況からきたときは、確定チェックボックスを表示%>
+				<th colspan="3" style="background:none; background-color: #F7DC67">確定</th>
+				<% loopcnt.times { |i| %>
+				    <% if Time.now.day == (i+1) %>
+				   		<th style='background:none; background-color: #F7DC67' >
+				    <% else %>
+				    	<th style="background:none; background-color: #F7DC67">
+				    <% end %>
+				    <% d_duty_input_flg = get_d_dutie_input_flg(@m_shop_id, @head[:input_day].to_i, format("%02d", (i+1).to_i).to_i) %> 
+				    <% d_duty_kakutei_flg = get_d_dutie_kakutei_flg(@m_shop_id, @head[:input_day].to_i, format("%02d", (i+1).to_i).to_i) %>
+					<% if d_duty_input_flg == 1 #入力済みフラグが済みの場合はチェックボックスを出力 %>
+						<% if d_duty_kakutei_flg == 0 %>
+				    		<%=  check_box_tag "d_duty_kakutei_flg_#{i+1}", "0", false  %>
+				    	<% else %>
+				    		<%=  check_box_tag "d_duty_kakutei_flg_#{i+1}", "1", true %>
+				    	<% end %>
+			    	<% else %>
+			    		<label>入力中</label>
+			    	<% end %>
+				  </th>				
+				<% } %>
+			<% else %>
+				<th colspan="3" style="background:none; background-color: #F7DC67">入力が完了したらチェック</th>
+				<% loopcnt.times { |i| %>
+				    <% if Time.now.day == (i+1) %>
+				   		<th style='background:none; background-color: #F7DC67' >
+				    <% else %>
+				    	<th style="background:none; background-color: #F7DC67">
+				    <% end %>
+				    <% d_duty_input_flg = get_d_dutie_input_flg(@m_shop_id, @head[:input_day].to_i, format("%02d", (i+1).to_i).to_i) %> 
+				    <% d_duty_kakutei_flg = get_d_dutie_kakutei_flg(@m_shop_id, @head[:input_day].to_i, format("%02d", (i+1).to_i).to_i) %>
+					<% if d_duty_kakutei_flg == 0 #確定フラグが未確定の場合はチェックボックスを出力 %>
+						<% if d_duty_input_flg == 0 %>
+				    		<%=  check_box_tag "d_duty_input_flg_#{i+1}", "0", false  %>
+				    	<% else %>
+				    		<%=  check_box_tag "d_duty_input_flg_#{i+1}", "1", true %>
+				    	<% end%>
+			    	<% else %>
+			    		<label>確定</label>
+			    	<% end %>
+				  </th>				
+				<% } %>
+			<% end %>
+		</tr>
 		<tr>
 			<th colspan="3" style="min-width: 200px">日付</th>
 			<% loopcnt.times { |i| %>
@@ -34,14 +81,14 @@
 			  </th>
             <% } %>
 
-		</tr>
+		</tr>		
 		<!--社員-->
 		<tr>
 			<th colspan="2">氏名</th>
 			<th>日数</th>
 			<% loopcnt.times { |i| %>
 			  <th <%= "style='background:none; background-color: #F7DC67'" if Time.now.day == (i+1) %>>
-			     <%= link_to image_tag('icon/24_edit.png'), {:controller => "d_duties", :action => "syain_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s + format("%02d", (i+1).to_i)}, :class => "modal_nofocus" %>
+			     <%= link_to image_tag('icon/24_edit.png'), {:controller => "d_duties", :action => "syain_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s + format("%02d", (i+1).to_i)}, :class => "modal" %>
 			     
 			  </th>
             <% } %>
@@ -56,7 +103,7 @@
 			<tr id="syain_<%= "#{index}" %>">
 				<td colspan="2" style="min-width: 130px">
 					<%= link_to user.user_name , {:controller => "d_duties", :action => "syain_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal_nofocus" %>
-					<%= link_to image_tag('icon/user_edit.png'), {:controller => "m_info_costs", :action => "popup_edit", :user_id => user.id }, :class => "modal" %>
+					<%= link_to image_tag('icon/user_edit.png'), {:controller => "m_info_costs", :action => "popup_edit", :user_id => user.id, :m_shop_id => @m_shop_id}, :class => "modal" %>
 				</td>
 				<td style="text-align: center;min-width: 50px"><label id=<%= "syain_nisu_#{user.id}" %>><%= nisu[0].nisu %></label></td>
 				
@@ -78,7 +125,7 @@
 			<th>時間</th>
 			<% loopcnt.times { |i| %>
 			  <th <%= "style='background:none; background-color: #F7DC67'" if Time.now.day == (i+1) %>>
-			     <%= link_to image_tag('icon/24_edit.png'), {:controller => "d_duties", :action => "baito_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s + format("%02d", (i+1).to_i)}, :class => "modal_nofocus" %>
+			     <%= link_to image_tag('icon/24_edit.png'), {:controller => "d_duties", :action => "baito_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s + format("%02d", (i+1).to_i)}, :class => "modal" %>
 			     
 			  </th>
             <% } %>            
@@ -91,7 +138,7 @@
 			<tr id="baito_<%= "#{index}" %>">
 				<td colspan="2" style="min-width: 130px">
 					<%= link_to user.user_name, {:controller => "d_duties", :action => "baito_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal_nofocus" %>
-					<%= link_to image_tag('icon/user_edit.png'), {:controller => "m_info_costs", :action => "popup_edit", :user_id => user.id }, :class => "modal" %>
+					<%= link_to image_tag('icon/user_edit.png'), {:controller => "m_info_costs", :action => "popup_edit", :user_id => user.id, :m_shop_id => @m_shop_id}, :class => "modal" %>
 				</td>
 				<td style="text-align: center;min-width: 50px"><label id=<%= "baito_jikan_#{user.id}" %>><%= jikan[0].jikan %></label></td>
 				
@@ -111,7 +158,7 @@
 
 <!-- 2012/10/16 nishimura -->
 <% if params[:mode] == 'list' %>
-<%= hidden_field_tag :mode,params[:mode] %>
+
 <%= link_to "入力状況へ戻る", {:controller => "d_duty_lists", :action => "index", 
 		:date =>{"year"=>@head[:input_day].to_s[0,4].to_i,"month"=>@head[:input_day].to_s[4,2].to_i} ,
 		:shop_kbn => MShop.find(@m_shop_id).shop_kbn.to_s}, 
@@ -120,16 +167,30 @@
 
 <script>
 $(function () {
-	$('#d_duty_table').tablefix({width: 925, height: 800, fixRows: 1, fixCols: 1});
-	
+	$('#d_duty_table').tablefix({width: 925, height: 700, fixRows: 2, fixCols: 1});
     $('div.bodyDiv').scrollLeft(40 * (<%= Time.now.day %> - 2));
+
+	//列のヘッダーが固定になった場合は、rowDivの内のチェックボックスを有効にして、bodyDiv内のチェックボックスは無効にする
+    if ($("div.rowDiv").size() > 0) {
+		//入力済みチェックボックス
+		$("div.rowDiv [id^=d_duty_input_flg_]").each(function(){
+			$(this).removeAttr("disabled");
+		});
+		$("div.bodyDiv [id^=d_duty_input_flg_]").each(function(){
+			$(this).attr("disabled", "disabled")
+		});
+		//確定チェックボックス
+		$("div.rowDiv [id^=d_duty_kakutei_flg_]").each(function(){
+			$(this).removeAttr("disabled");
+		});
+		$("div.bodyDiv [id^=d_duty_kakutei_flg_]").each(function(){
+			$(this).attr("disabled", "disabled")
+		});
+    };
     
-    //$('div.tablefixDiv div.crossDiv a').attr("href", "#");
-    //$('div.tablefixDiv div.rowDiv a').attr("href", "#");
-    //$('div.tablefixDiv div.colDiv a').attr("href", "#");
-    //$('div.tablefixDiv div.crossDiv a').empty();
-    //$('div.tablefixDiv div.rowDiv a').empty();
-    //$('div.tablefixDiv div.colDiv a').empty();
-    //$('div.tablefixDiv div.bodyDiv a').empty();
+	//社員出金日数合計をセット
+	 $("div.colDiv #col_syain_nisu_kei").trigger("click");
+	//バイト時間合計をセット
+	$("div.colDiv #col_baito_jikan_kei").trigger("click");
 });	
 </script>

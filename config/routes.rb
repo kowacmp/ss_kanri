@@ -57,6 +57,8 @@ SsKanri::Application.routes.draw do
      post :syain_row_input_add
      get :baito_row_input
      post :baito_row_input_add
+     get :input_check
+     get :kakutei_check
    end
   end
 

@@ -16,3 +16,8 @@
 <div id="form">
 	<%= render 'form' %>
 </div>
+<%= link_to "人件費入力へ戻る", {:controller => "d_duties", :action => "index", 
+		:input_day => @head[:input_day],
+		:m_shop_id => @m_shop_id, 
+		:mode => params[:mode]},
+	  	:method => :get, :class => 'return_icon' %>

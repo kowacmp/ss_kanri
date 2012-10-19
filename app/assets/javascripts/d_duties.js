@@ -16,9 +16,56 @@ $(function () {
 				    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
 		            );
     });
+ 
+
+    //入力済みチェックボックスのイベント
+    $(":input[id^=d_duty_input_flg_]")
+	    .live('click', function(){
+	    		var msg;
+	    		if ($(this).attr('checked') == "checked") {
+	    			msg = "入力済みにします。よろしいですか？"
+	    		}else{
+	    			msg = "入力済みを解除します。よろしいですか？"
+	    		};
+	    		
+	    		if(confirm(msg)){
+	    			var get_day = $(this).attr('id').replace("d_duty_input_flg_", "");
+	    			$.get(
+		    			'/d_duties/input_check/',
+		    			{ input_flg: $(this).attr('checked'), input_day: $("#head_input_day").val(), day: get_day, m_shop_id: $("#head_m_shop_id").val() }
+		    		);
+					//return true;
+				}else{
+					return false;	
+				};
+				
+	    	}); 
            	
+    //確定チェックボックスのイベント
+    $(":input[id^=d_duty_kakutei_flg_]")
+	    .live('click', function(){
+	    		var msg;
+	    		if ($(this).attr('checked') == "checked") {
+	    			msg = "確定します。よろしいですか？"
+	    		}else{
+	    			msg = "確定を解除します。よろしいですか？"
+	    		};
+	    		
+	    		if(confirm(msg)){
+	    			var get_day = $(this).attr('id').replace("d_duty_kakutei_flg_", "");
+	    			$.get(
+		    			'/d_duties/kakutei_check/',
+		    			{ kakutei_flg: $(this).attr('checked'), input_day: $("#head_input_day").val(), day: get_day, m_shop_id: $("#head_m_shop_id").val() }
+		    		);
+					//return true;
+				}else{
+					return false;	
+				};
+				
+	    	}); 
+	    	
 	//バいトの日勤が変更されたら
-	$("div#modal :input[id*=_day_work_time], div#modal :input[id*=_night_work_time], , div#modal :input[id*=_night_over_time]")
+	$("div#modal :input[id*=_day_work_time], div#modal :input[id*=_day_over_time], div#modal :input[id*=_night_work_time], div#modal :input[id*=_night_over_time]")
     .live('change', function(){
     	var get_index;
     	var total;
@@ -26,6 +73,7 @@ $(function () {
 		var num1;
 		var num2;
 		var num3;
+		var num4;
 		
 	    if ($("div#modal div.bodyDiv").size() > 0) {
 	    	Div_id = 'div.bodyDiv ';
@@ -34,6 +82,7 @@ $(function () {
 	   	//合計をセット
 	   	get_index = $(this).attr('id').replace("datas_", "");
 	    get_index = get_index.replace("_day_work_time", "");
+	    get_index = get_index.replace("_day_over_time", "");
 	    get_index = get_index.replace("_night_work_time", "");
 	    get_index = get_index.replace("_night_over_time", "");
 	    
@@ -43,8 +92,11 @@ $(function () {
         if (isNaN(num2)) {num2 = 0};
 	    num3 = Number($("div#modal " + Div_id + "#datas_" + get_index + "_night_over_time").val());
         if (isNaN(num3)) {num3 = 0};
+	    num4 = Number($("div#modal " + Div_id + "#datas_" + get_index + "_day_over_time").val());
+        if (isNaN(num4)) {num4 = 0};
+
         
-	    total = num1 + num2 + num3;
+	    total = ((num1*100) + (num2*100) + (num3*100) + (num4*100)) / 100;
 	    
 	    $("div#modal " + Div_id + "#l_datas_" + get_index + "_all_work_time").text(total);
 	    $("div#modal " + Div_id + "#datas_" + get_index + "_all_work_time").val(total);
@@ -62,12 +114,6 @@ $(function () {
 	     //バイト時間合計をセット
 	     calc_baito_jikan_kei();   	
     });
-
-   
-  //社員出金日数合計をセット
-  calc_syain_nisu_kei();
-  //バイト時間合計をセット
-  calc_baito_jikan_kei();
   
   //社員出金日数合計
   function calc_syain_nisu_kei() {

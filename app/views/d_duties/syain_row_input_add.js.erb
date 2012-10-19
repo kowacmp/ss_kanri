@@ -1,25 +1,29 @@
-<% params[:datas].each{|day, data| %>
-    <% label_id = "div.bodyDiv #hiden_syain_#{day}_#{@user_id}" %> 
-    $("<%= label_id %>").val(<%= data[:syukin].to_i %>);
-
-	<% label_id = "div.bodyDiv #syain_#{day}_#{@user_id}" %> 
-
-	if (<%= data[:syukin].to_i %> == 1){
-		$("<%= label_id %>").text("出");
-		$("<%= label_id %>").css("color", "");
-	}else{
-		$("<%= label_id %>").text("休");
-		$("<%= label_id %>").css("color", "red");
-	}
+<% unless params[:datas].blank? %>
+	<% params[:datas].each{|day, data| %>
+	    <% label_id = "div.bodyDiv #hiden_syain_#{day}_#{@user_id}" %> 
+	    $("<%= label_id %>").val(<%= data[:syukin].to_i %>);
 	
-<% } %>
-
-<% select_where = " duty_nengetu = '#{@input_day}' and user_id = #{@user_id} "%>
-<% nisu = d_duty_syain_total(select_where) %>
-
-<% label_id = "div.colDiv #syain_nisu_#{@user_id}" %> 
-$("<%= label_id %>").text("<%= nisu[0].nisu %>");
-
-//合計を計算
-$("div.colDiv #col_syain_nisu_kei").trigger("click");
+		<% label_id = "div.bodyDiv #syain_#{day}_#{@user_id}" %> 
+	
+		if (<%= data[:syukin].to_i %> == 1){
+			$("<%= label_id %>").text("出");
+			$("<%= label_id %>").css("color", "");
+		}else{
+			if ('<%= data[:syukin].to_s %>' != ''){
+				$("<%= label_id %>").text("休");
+				$("<%= label_id %>").css("color", "red");
+			};
+		}
+		
+	<% } %>
+	
+	<% select_where = " duty_nengetu = '#{@input_day}' and user_id = #{@user_id} "%>
+	<% nisu = d_duty_syain_total(select_where) %>
+	
+	<% label_id = "div.colDiv #syain_nisu_#{@user_id}" %> 
+	$("<%= label_id %>").text("<%= nisu[0].nisu %>");
+	
+	//合計を計算
+	$("div.colDiv #col_syain_nisu_kei").trigger("click");
+<% end %>
 $("div#modal div.background").trigger("click");
