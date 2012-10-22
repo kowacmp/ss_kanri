@@ -1,0 +1,4 @@
+// 編集エリアを再表示
+$('#input_area').html("<%= escape_javascript(render :partial => 'form', :locals => { :d_price_check => @d_price_check,
+                                                                                     :input_flg     => true,
+                                                                                     :input_name    => 'input_area'}) %>");

@@ -68,11 +68,6 @@ SsKanri::Application.routes.draw do
   resources :m_etc_shops
 
   get "d_price_checks/index"
-  get "d_price_checks/search"
-  get "d_price_checks/edit"
-  get "d_price_checks/update"  
-  get "d_price_checks/show"
-
 
   get "d_washpurika_reports/index"
   get "d_washpurika_reports/edit"

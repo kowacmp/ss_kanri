@@ -1,0 +1,15 @@
+<%
+	d_price_checks = DPriceCheck.find(:all, 
+	                                  :conditions => ["m_shop_id = ? ",
+	                                  	                @m_shop_id],
+	                                  :order => "research_day desc, research_time desc")
+	                                  
+	d_price_checks = d_price_checks.collect{|t| [
+		"#{t.research_day[0..3]}/#{t.research_day[4..5]}/#{t.research_day[6..7]}　#{'%02d' % t.research_time}時",
+		 t.id]}
+%>
+
+<%= form_tag({:action => "select_d_price_check"}, {:method => :post, :remote => true }) do %>
+	<%= select :select_d_price_check, :id, d_price_checks %>
+	<%= submit_tag "　呼　出　" %>
+<% end %>

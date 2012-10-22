@@ -1,0 +1,4 @@
+// 表示エリアを再表示
+$('#show_area').html("<%= escape_javascript(render :partial => 'form', :locals => { :d_price_check => @d_price_check,
+                                                                       :input_flg     => false,
+                                                                       :input_name    => 'show_area'}) %>");

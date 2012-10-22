@@ -1,0 +1,172 @@
+<%
+## #local args#
+##	d_price_check : d_price_check の ActiveRecord(1行)
+##	input_flg     : 入力可/不可
+##	input_name    : input要素のハッシュ名
+%>
+
+<script>
+$(function() {
+	<% if input_flg.to_s == "true" then %>
+		$("#_form_<%= input_name %>").find(".datepicker").datepicker();
+	<% else %>
+		$("#_form_<%= input_name %>").find("input").attr("readonly", "readonly");
+		$("#_form_<%= input_name %>").find("select").attr("disabled", "disabled");
+	<% end %>
+});
+</script>
+
+<div id="_form_<%= input_name %>">
+
+<%= hidden_field input_name, "id",        :value => d_price_check["id"] %>
+<%= hidden_field input_name, "m_shop_id", :value => d_price_check["m_shop_id"] %>
+
+<table class="rounded-corner">
+<tr>
+	<th>
+		入力日時
+	</th>
+	<td>
+		<% day = "#{d_price_check['research_day'][0..3]}/#{d_price_check['research_day'][4..5]}/#{d_price_check['research_day'][6..7]}" %>
+		<%= text_field input_name, "research_day", :value => day, :maxlength => 10, :class => "datepicker", :readonly => true %>
+	</td>
+	<td>
+		<% 
+			hours = Array.new()
+			for i in 0..23
+				hours.push ["#{i}時", i]
+			end
+		%>
+		<%= select input_name, "research_time", hours, :selected => d_price_check["research_time"], :style => "text-align:right;" %>		
+	</td>
+</tr>
+</table>
+
+<br/>
+
+<table>
+<tr>
+<td>
+
+<table class="rounded-corner">
+<tr>
+	<th>
+		&nbsp;
+	</th>
+	<th>
+		表示/価格
+	</th>
+	<th>
+		レギュラー
+	</th>
+	<th>
+		ハイオク
+	</th>
+	<th>
+		軽油
+	</th>
+	<th>
+		灯油
+	</th>
+</tr>
+
+<%
+	# オイルパネルコード
+	oil_panels = MCode.find(:all, :conditions => ["kbn=?", "oil_panel"], :order => "code").collect{|i| [i.code_name1, i.code]}
+%>
+
+<% for i in 1..2 %><% for j in 1..3 %>
+<tr>
+	<!-- 通常時 / 特売日 -->
+	<% if j == 1 then %>
+		<th rowspan="3">
+			<%= d_price_check["dis#{ i }_name"].to_s %>
+			<%= hidden_field input_name, "dis#{ i }_name", :value => d_price_check["dis#{ i }_name"] %>
+		</th>
+	<% end %> <!-- if j == 1 then -->
+
+	<!-- 表示 / 価格 -->
+	<% if j == 2 then %>
+		<th>
+			<%= d_price_check["dis#{ i }_#{ j }_name"].to_s %>
+			<%= hidden_field input_name, "dis#{ i }_#{ j }_name", :value => d_price_check["dis#{ i }_#{ j }_name"] %>
+			<%= select input_name, "dis#{ i }_#{ j }_code", oil_panels, :include_blank => true, :selected => d_price_check["dis#{ i }_#{ j }_code"], :disabled => not(input_flg) %>
+		</th>
+	<% else %> <!-- if j == 2 -->
+		<th>
+			<%= d_price_check["dis#{ i }_#{ j }_name"].to_s %>
+			<%= hidden_field input_name, "dis#{ i }_#{ j }_name", :value => d_price_check["dis#{ i }_#{ j }_name"] %>
+		</th>
+	<% end %> <!-- if j == 2 -->
+	
+	<!-- レギュラー -->
+	<td>
+		<%= text_field input_name, "dis#{ i }_#{ j }_rg", :value => d_price_check["dis#{ i }_#{ j }_rg"], :maxlength => 10 %>
+	</td>
+	
+	<!-- ハイオク -->
+	<td>
+		<%= text_field input_name, "dis#{ i }_#{ j }_hg", :value => d_price_check["dis#{ i }_#{ j }_hg"], :maxlength => 10 %>
+	</td>
+	
+	<!-- 軽油 -->
+	<td>
+		<%= text_field input_name, "dis#{ i }_#{ j }_kg", :value => d_price_check["dis#{ i }_#{ j }_kg"], :maxlength => 10 %>
+	</td>
+	
+	<!-- 灯油 -->
+	<td>
+		<%= text_field input_name, "dis#{ i }_#{ j }_tg", :value => d_price_check["dis#{ i }_#{ j }_tg"], :maxlength => 10 %>
+	</td>
+	
+</tr>
+<% end %><% end %> <!-- for j in 1..3 --> <!-- for i in 1..2 -->
+
+</table>
+
+</td>
+
+<td valign="top">
+<table class="rounded-corner">
+
+<tr>
+	<th>
+		&nbsp;
+	</th>
+	<th>
+		&nbsp;
+	</th>
+	<th>
+		金額
+	</th>
+</tr>
+
+<% for i in 1..3 %>
+<tr>
+	<th>
+		<%= ["特売", "割チケ", "プリカ"][ (i - 1)] %>
+	</th>	
+	<td>
+		<%= text_field input_name, "minus_name#{ i }", :value => d_price_check["minus_name#{ i }"], :maxlength => 10 %>
+	</td>
+	<td>
+		<%= text_field input_name, "minus_gak#{ i }", :value => d_price_check["minus_gak#{ i }"] ,:class => "money" %>
+	</td>
+</tr>
+<% end %><!-- for i in 1..3 -->
+
+<tr>
+	<th>
+		ゲーム確率
+	</th>
+	<td colspan="3">
+		<%= text_field input_name, "game", :value => d_price_check["game"], :maxlength => 3 %>
+	</td>
+</tr>
+
+</table>
+</td>
+</tr>
+</table>
+
+</div> <!-- <div id="_form_<%= input_name %>"> -->
