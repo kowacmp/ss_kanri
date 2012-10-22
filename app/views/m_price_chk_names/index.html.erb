@@ -1,0 +1,134 @@
+<h1>価格調査項目名称マスタメンテ</h1>
+
+<hr/><br/>
+
+<%= form_for(@m_price_chk_name, :url => {:action => "update"}) do |f| %>
+
+<table class='rounded-corner'>
+<tr>
+	<th>&nbsp;</th>
+	<th>表示/価格</th>
+	<th style="width:80px">レギュラー</th>
+	<th style="width:80px">ハイオク</th>
+	<th style="width:80px">軽油</th>
+	<th style="width:80px">灯油</th>
+</tr>
+<tr>
+	<th rowspan="3">
+		<%= f.text_field :price1_disp1, :maxlength => "10", :style => "width:100px; ime-mode:active;" %>
+	</th>
+	<th>
+		<%= f.text_field :price1_item1, :maxlength => "10", :style => "width:100px; ime-mode:active;" %>
+	</th>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+</tr>
+<tr>
+	<!--  rowspan 2/3 -->
+	<th>
+		<%= f.text_field :price1_item2, :maxlength => "10", :style => "width:100px; ime-mode:active;"  %>
+	</th>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+</tr>
+<tr>
+	<!--  rowspan 3/3 -->
+	<th>
+		<%= f.text_field :price1_item3, :maxlength => "10", :style => "width:100px; ime-mode:active;" %>
+	</th>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+</tr>
+<tr>
+	<th rowspan="3">
+		<%= f.text_field :price2_disp1, :maxlength => "10", :style => "width:100px; ime-mode:active;" %>
+	</th>
+	<th>
+		<%= f.text_field :price2_item1, :maxlength => "10", :style => "width:100px; ime-mode:active;" %>
+	</th>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+</tr>
+<tr>
+	<!--  rowspan 2/3 -->
+	<th>
+		<%= f.text_field :price2_item2, :maxlength => "10", :style => "width:100px; ime-mode:active;" %>
+	</th>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+</tr>
+<tr>
+	<!--  rowspan 3/3 -->
+	<th>
+		<%= f.text_field :price2_item3, :maxlength => "10", :style => "width:100px; ime-mode:active;" %>
+	</th>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+	<td style="background-color: lightgray;">
+		&nbsp;
+	</td>
+</tr>
+<tr>
+	<td colspan="6" style="border: none;">
+		<%= submit_tag "　更　新　", :disable_with => "更新中です...", :confirm => "更新してもよろしいですか？", :style => "float:right; margin:10px;" %>	
+	</td>
+</table>
+
+<% end %> <!-- form_for(@m_price_chk_name) do |f| -->
