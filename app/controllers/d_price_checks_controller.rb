@@ -31,6 +31,12 @@ class DPriceChecksController < ApplicationController
     d_price_check.research_day = d_price_check.research_day.to_s.delete("/")
     d_price_check.updated_user_id = current_user.id
     
+    # 税抜を設定
+    d_price_check.dis1_4_rg = get_zeinuki(d_price_check.dis1_3_rg)
+    d_price_check.dis1_4_hg = get_zeinuki(d_price_check.dis1_3_hg)
+    d_price_check.dis1_4_kg = get_zeinuki_kg(d_price_check.dis1_3_kg)
+    d_price_check.dis1_4_tg = get_zeinuki(d_price_check.dis1_3_tg.to_f / 18)
+    
     # 更新確定
     d_price_check.save!
     
@@ -107,4 +113,37 @@ private
 
   end
 
+  # 税抜金額取得(レギュラー、ハイオク)
+  def get_zeinuki(tanka)
+    
+    # 指定された単価が無い場合ZEROを返す
+    if tanka.nil? then
+      return 0
+    end
+    
+    # 消費税率を取得する
+    establish = Establish.find(1)
+    
+    # 税抜額を計算
+    ret = tanka.to_f / (1.to_f + (establish.tax_rate.to_f / 100.to_f))
+    
+    # 小数点2位で四捨五入
+    return ret.round(1)
+    
+  end
+  
+  # 税抜金額取得(軽油)
+  def get_zeinuki_kg(tanka)
+  
+    # 軽油取引税を取得(消費税込)
+    establish = Establish.find(1)
+  
+    # 税抜額を計算
+    ret = tanka.to_f - establish.light_oil.to_f
+    
+    # 小数点2位で四捨五入
+    return ret.round(1)
+    
+  end
+  
 end
