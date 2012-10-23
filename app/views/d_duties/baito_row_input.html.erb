@@ -53,7 +53,8 @@
 			  	<% d_dutry = DDuty.find(:first, 
 		              :conditions=>["duty_nengetu = '#{@input_day.to_s[0,6]}' and day = #{ i + 1} and user_id = #{@user.id}"]) %>
 			  	<% d_duty_kakutei_flg = get_d_dutie_kakutei_flg(@m_shop_id, @input_day.to_i, i + 1 ) #確定フラグが立っている場合は入力できない %>
-			  	<% if d_duty_kakutei_flg == 0 %>
+			  	<% d_duty_input_flg = get_d_dutie_input_flg(@m_shop_id, @input_day.to_i, i + 1 ) #入力済みフラグが立っている場合は入力できない %>
+			  	<% if d_duty_kakutei_flg == 0 and d_duty_input_flg == 0 %>
 				  	<% if d_dutry.blank? %>
 					    <td style="text-align: center;<%= background_css if background_css %>">
 							<%= text_field_tag "datas[#{i + 1}][day_work_time]", "",  {:size=>4, :class=>"money"} %>
@@ -141,7 +142,17 @@
 					</td>
 					<td style="text-align: right;<%= background_css if background_css %>">
 						<%= label_tag "datas_#{i + 1}_get_money4", d_dutry.get_money4.to_s %>
-					</td>				  	
+					</td>	
+				  <% else %>
+				   	<td style="text-align: right;<%= background_css if background_css %>"></td>	  	
+				   	<td style="text-align: right;<%= background_css if background_css %>"></td>	  	
+				   	<td style="text-align: right;<%= background_css if background_css %>"></td>	  	
+				   	<td style="text-align: right;<%= background_css if background_css %>"></td>	  	
+				   	<td style="text-align: right; background-color: #A5D7AA;"></td>
+				   	<td style="text-align: right;<%= background_css if background_css %>"></td>	  	
+				   	<td style="text-align: right;<%= background_css if background_css %>"></td>	  	
+				   	<td style="text-align: right;<%= background_css if background_css %>"></td>	  	
+				   	<td style="text-align: right;<%= background_css if background_css %>"></td>	  	
 				  <% end %>
 				<% end %>
 			</tr>

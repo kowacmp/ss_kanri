@@ -1,5 +1,5 @@
 <% loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[4,2].to_i, -1)).strftime("%d").to_i %>
-
+<%= hidden_field_tag 'last_day', loopcnt %>
 <table id="d_duty_table" class="rounded-corner">
 	 <thead>
 		<tr>
@@ -110,7 +110,7 @@
 		<!--社員繰り返し-->
 		<% users = get_user_dutry(0, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
 		<% users.each_with_index{ |user, index| %>
-			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} "%>
+			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "%>
 			
 			<tr id="syain_<%= "#{index}" %>">
 				<td>
@@ -131,7 +131,7 @@
 		<!--バイト繰り返し-->
 		<% users = get_user_dutry(1, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
 		<% users.each_with_index{ |user, index| %>
-			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} "%>
+			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "%>
 			<tr id="baito_<%= "#{index}" %>">
 				<td>
 					<%= user.user_name %>
@@ -155,8 +155,9 @@
 			<td style="text-align: right;"><label id="col_jinken_kei"></label></td>
 			<%= set_jinken_kei(loopcnt).html_safe %>
 		</tr>
-		
-		<% select_where = " result_date between '#{@head[:input_day].to_s[0,6]}01' and '#{@head[:input_day].to_s[0,6]}32' and m_shop_id = #{@m_shop.id} "%>
+		<% output_day_cnt, output_day = get_d_duty_output_day(@head[:input_day].to_s[0,6], @m_shop.id) %>
+		<% select_where = " result_date in(#{output_day}) and m_shop_id = #{@m_shop.id} "%>
+		<%= hidden_field_tag 'output_day_cnt', output_day_cnt %>
 		<%if @m_shop.shop_kbn == 0  %>
 			<!--洗車型-->
 			<th>洗車売上税込</th>
@@ -217,9 +218,9 @@
 			</label>
 		</td>
 		</tr>
-		<th>洗車ペース</th>
+		<th>洗車売上ﾍﾟｰｽ</th>
 		<td style="text-align:right;">
-			<label id="col_sensya_pace">
+			<label id="col_result_pace">
 			</label>
 		</td>
 		</tr>		

@@ -371,7 +371,7 @@ class DDutiesController < ApplicationController
     if d_dutie.blank?
       d_dutie = DDuty.new
       d_dutie.duty_nengetu = @input_day[0,6].to_s
-      d_dutie.user_id = @user_id
+      d_dutie.user_id = user_id
       d_dutie.day =  day
       d_dutie.created_user_id = current_user.id
     end

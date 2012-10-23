@@ -18,6 +18,7 @@ $(function () {
 					   calc_y_sisu();//実績Y指数を求める
 					   calc_win();//WIN金額を求める
 					   calc_avg_y_sisu();//平均Y指数を求める
+					   calc_pace();//人件費ペース、売上ペース、WINペース
 		             },
 				    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
 		            );
@@ -32,6 +33,8 @@ $(function () {
   calc_win();
   //平均Y指数を求める
   calc_avg_y_sisu();
+  //人件費ペース、売上ペース、WINペース
+  calc_pace();
   
   //人件費合計合計
   function calc_jinken_kei() {
@@ -214,6 +217,37 @@ $(function () {
   
       i=i+1;
     };     
+  };
+  
+  //人件費ペース、売上ペース、WINペース
+  function calc_pace() {
+  	var Div_id='';
+    if ($("div.colDiv").size() > 0) {
+      Div_id = 'div.colDiv ';
+    };
+    var total;
+    var calc;
+    var last_day = Number($("#last_day").val());
+  	var day_cnt = Number($("#output_day_cnt").val());
+  	
+  	if (day_cnt == 0) {
+    	$(Div_id + "#col_jinken_pace").text("");
+		$(Div_id + "#col_result_pace").text("");
+		$(Div_id + "#col_win_pace").text("");
+  		return
+  	};
+  	//人件費ペース
+    total = Number(format_kanma($(Div_id + "#col_jinken_kei").text(),2));
+ 	calc = Math.round((total / day_cnt) * last_day);
+ 	$(Div_id + "#col_jinken_pace").text(format_kanma(calc));
+  	//売上ペース
+  	total = Number(format_kanma($(Div_id + "#col_result_kei").text(),2));
+ 	calc = Math.round((total / day_cnt) * last_day);
+ 	$(Div_id + "#col_result_pace").text(format_kanma(calc));  	
+  	//WINペース
+  	total = Number(format_kanma($(Div_id + "#col_win_kei").text(),2));
+ 	calc = Math.round((total / day_cnt) * last_day);
+ 	$(Div_id + "#col_win_pace").text(format_kanma(calc));  	
   };
   
 });

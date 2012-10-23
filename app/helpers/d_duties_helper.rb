@@ -211,6 +211,22 @@ module DDutiesHelper
            
   end
 
+  #表示する情報が何日まで表示するかを取得する
+  def get_d_duty_output_day(input_day, m_shop_id)
+    select_sql = "select day from d_duties where duty_nengetu=? and m_shop_id=? and input_flg = 1 group by day"
+    select_days = DDuty.find_by_sql([select_sql, input_day.to_s, m_shop_id])
+    if select_days[0].blank?
+      return 0,"'0'"
+    else
+      ret_array = Array::new
+      select_days.each_with_index{|select_day, index|
+        ret_array[index] = "'#{input_day.to_s + format("%02d",select_day.day.to_i)}'"
+      }
+            
+      return ret_array.count, ret_array.join(',')
+    end
+  end
+  
   #outputkbn->moneyの場合は金額を送る
   def d_duty_syain_total(select_where, outputkbn=nil)
     if outputkbn == "money"

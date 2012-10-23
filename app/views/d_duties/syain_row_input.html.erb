@@ -45,7 +45,8 @@
 			  	<% d_dutry = DDuty.find(:first, 
 		              :conditions=>["duty_nengetu = '#{@input_day.to_s[0,6]}' and day = #{ i + 1} and user_id = #{@user.id}"]) %>
 			  	<% d_duty_kakutei_flg = get_d_dutie_kakutei_flg(@m_shop_id, @input_day.to_i, i + 1 ) #確定フラグが立っている場合は入力できない %>
-			  	<% if d_duty_kakutei_flg == 0 %>
+			  	<% d_duty_input_flg = get_d_dutie_input_flg(@m_shop_id, @input_day.to_i, i + 1 ) #入力済みフラグが立っている場合は入力できない %>
+			  	<% if d_duty_kakutei_flg == 0 and d_duty_input_flg == 0 %>
 				  	<%= hidden_field_tag "datas_input_day_#{i + 1}", @input_day.to_s[0,6].to_s + format("%02d", i + 1) %>
 				  	<% if d_dutry.blank? %>
 					  	<%= radio_button_tag("datas[#{i + 1}][syukin]",1) %>出
