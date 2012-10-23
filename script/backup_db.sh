@@ -7,6 +7,6 @@ set DIR=/backup
 set FILE=$DIR/ss_kanri`date '+%w'`.tar
 rm -f $FILE
 
-su - postgres -c "/usr/bin/pg_dump -Ft -b ss_kanri > $FILE"
+su - postgres -c "/opt/pgsql/bin/pg_dump -Ft -b ss_kanri > $FILE"
 
 

@@ -5,11 +5,20 @@
 	                                  :order => "research_day desc, research_time desc")
 	                                  
 	d_price_checks = d_price_checks.collect{|t| [
-		"#{t.research_day[0..3]}/#{t.research_day[4..5]}/#{t.research_day[6..7]}　#{'%02d' % t.research_time}時",
+		"#{t.research_day[0..3]}/#{t.research_day[4..5]}/#{t.research_day[6..7]}　#{'%02d' % t.research_time}時　",
 		 t.id]}
 %>
 
 <%= form_tag({:action => "select_d_price_check"}, {:method => :post, :remote => true }) do %>
-	<%= select :select_d_price_check, :id, d_price_checks %>
-	<%= submit_tag "　呼　出　" %>
+	<%= select :select_d_price_check, :id, d_price_checks, { }, {:size => 6} %>
+	<!-- リスト選択時に実行
+	<%= submit_tag "　読　込　"%>
+	-->
 <% end %>
+
+<script>
+	$("#select_d_price_check_id").bind("change", function() {
+		$.post("<%=url_for(:action => "select_d_price_check")%>"
+		       ,$(this).parent("form").filter(":first").serialize());
+	});
+</script>
