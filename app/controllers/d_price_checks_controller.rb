@@ -117,7 +117,7 @@ private
   def get_zeinuki(tanka)
     
     # 指定された単価が無い場合ZEROを返す
-    if tanka.nil? then
+    if tanka.to_f == 0 then
       return 0
     end
     
@@ -125,7 +125,7 @@ private
     establish = Establish.find(1)
     
     # 税抜額を計算
-    ret = tanka.to_f / (1.to_f + (establish.tax_rate.to_f / 100.to_f))
+    ret = tanka.to_f / establish.tax_rate.to_f
     
     # 小数点2位で四捨五入
     return ret.round(1)
@@ -134,6 +134,11 @@ private
   
   # 税抜金額取得(軽油)
   def get_zeinuki_kg(tanka)
+  
+    # 指定された単価が無い場合ZEROを返す
+    if tanka.to_f == 0 then
+      return 0
+    end
   
     # 軽油取引税を取得(消費税込)
     establish = Establish.find(1)
