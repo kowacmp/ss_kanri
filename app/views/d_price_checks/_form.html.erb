@@ -101,22 +101,22 @@ $(function() {
 	
 	<!-- レギュラー -->
 	<td>
-		<%= text_field input_name, "dis#{ i }_#{ j }_rg", :value => d_price_check["dis#{ i }_#{ j }_rg"], :maxlength => 10 %>
+		<%= text_field input_name, "dis#{ i }_#{ j }_rg", :value => d_price_check["dis#{ i }_#{ j }_rg"], :maxlength => 10, :style => "ime-mode:active;" %>
 	</td>
 	
 	<!-- ハイオク -->
 	<td>
-		<%= text_field input_name, "dis#{ i }_#{ j }_hg", :value => d_price_check["dis#{ i }_#{ j }_hg"], :maxlength => 10 %>
+		<%= text_field input_name, "dis#{ i }_#{ j }_hg", :value => d_price_check["dis#{ i }_#{ j }_hg"], :maxlength => 10, :style => "ime-mode:active;" %>
 	</td>
 	
 	<!-- 軽油 -->
 	<td>
-		<%= text_field input_name, "dis#{ i }_#{ j }_kg", :value => d_price_check["dis#{ i }_#{ j }_kg"], :maxlength => 10 %>
+		<%= text_field input_name, "dis#{ i }_#{ j }_kg", :value => d_price_check["dis#{ i }_#{ j }_kg"], :maxlength => 10, :style => "ime-mode:active;" %>
 	</td>
 	
 	<!-- 灯油 -->
 	<td >
-		<%= text_field input_name, "dis#{ i }_#{ j }_tg", :value => d_price_check["dis#{ i }_#{ j }_tg"], :maxlength => 10 %>
+		<%= text_field input_name, "dis#{ i }_#{ j }_tg", :value => d_price_check["dis#{ i }_#{ j }_tg"], :maxlength => 10, :style => "ime-mode:active;" %>
 		<div id="<%="label_#{ input_name }_dis#{ i }_#{ j }_tg"%>" style="width:55px; float: right; text-align: right;">
 			&nbsp;
 		</div>
@@ -169,10 +169,10 @@ $(function() {
 		<%= ["特売", "割チケ", "プリカ"][ (i - 1)] %>
 	</th>	
 	<td>
-		<%= text_field input_name, "minus_name#{ i }", :value => d_price_check["minus_name#{ i }"], :maxlength => 10 %>
+		<%= text_field input_name, "minus_name#{ i }", :value => d_price_check["minus_name#{ i }"], :maxlength => 10, :style => "ime-mode:active;" %>
 	</td>
 	<td>
-		<%= text_field input_name, "minus_gak#{ i }", :value => d_price_check["minus_gak#{ i }"] ,:class => "money" %>
+		<%= text_field input_name, "minus_gak#{ i }", :value => d_price_check["minus_gak#{ i }"] ,:class => "money", :style => "width:40px;" %>
 	</td>
 </tr>
 <% end %><!-- for i in 1..3 -->
