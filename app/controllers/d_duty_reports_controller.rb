@@ -10,7 +10,7 @@ class DDutyReportsController < ApplicationController
   end
 
   def show
-    params[:from_view] = "syoukai_menu"
+    #"syoukai_menu"がセットされていたらコメント入力ができる
     @from_view = params[:from_view]
     
     @head = DDuty.new
