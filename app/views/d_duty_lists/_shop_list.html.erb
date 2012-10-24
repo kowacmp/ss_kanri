@@ -31,8 +31,13 @@
       <td align="center"><%= if shop.input_20 == '1' then "済" else "未" end %></td>
       <td align="center"><%= if shop.input_30 == '1' then "済" else "未" end %></td>
       <td align="center">
-      	<%= link_to image_tag('icon/24_edit.png'), {:controller => 'd_duties',:action => 'index',
-            :input_day => @input_ym_s,:m_shop_id => shop.id,:mode => 'list'} %>
+      	<% if @from_view == "syoukai_menu" %>
+	      	<%= link_to image_tag('icon/24_show.png'), {:controller => 'd_duty_reports',:action => 'show',
+	            :input_day => @input_ym_s,:head_input_m_shop_id => shop.id,:from_view => @from_view} %>
+      	<% else %>
+	      	<%= link_to image_tag('icon/24_edit.png'), {:controller => 'd_duties',:action => 'index',
+	            :input_day => @input_ym_s,:m_shop_id => shop.id,:mode => 'list'} %>
+        <% end %>
       </td>
     </tr>
   <% end %>

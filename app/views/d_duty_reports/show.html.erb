@@ -7,6 +7,7 @@
 	  <th>対象店舗</th>
 	  <td style="background-color: #A5D7AA;">
 	  	<%= hidden_field_tag 'head_input_m_shop_id', @m_shop_id %>
+	  	<%= hidden_field_tag 'head_from_view', @from_view %>
 	  	<%= "#{@m_shop.shop_name}" %>
 	  </td> 
       <th>対象年月</th>
@@ -25,8 +26,17 @@
 <div id="form">
 	<%= render 'form' %>
 </div>
-<%= link_to "人件費入力へ戻る", {:controller => "d_duties", :action => "index", 
+<% if @from_view == "syoukai_menu" %>
+	<%= link_to "人件費表一覧へ戻る", {:controller => "d_duty_lists", :action => "index", 
+		:from_view => @from_view,
+		:date=>{:year=>@head[:input_day][0,4],
+			    :month=>@head[:input_day][4,2]},
+		:shop_kbn => @m_shop.shop_kbn},
+	  	:method => :get, :class => 'return_icon' %>
+<% else %>
+	<%= link_to "人件費入力へ戻る", {:controller => "d_duties", :action => "index", 
 		:input_day => @head[:input_day],
 		:m_shop_id => @m_shop_id, 
 		:mode => params[:mode]},
 	  	:method => :get, :class => 'return_icon' %>
+<% end %>

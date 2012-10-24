@@ -6,6 +6,8 @@ class DDutyListsController < ApplicationController
 
   def search
     
+    @from_view = params[:from_view]
+    
     if params[:date] == nil
       @input_ymd = Time.now
       @input_ym_s = Time.now.strftime("%Y%m")

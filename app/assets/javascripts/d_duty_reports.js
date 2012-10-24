@@ -9,7 +9,7 @@ $(function () {
            	   //show
            	   $.get(
 				    '/d_duty_reports/show',                 // 送信先
-				    { input_day: String($("#_input_day_1i").val()) + ('00' + $("#_input_day_2i").val()).slice(-2) , head_input_m_shop_id: $("#head_input_m_shop_id").val(), head_output_kbn: $(checkbox_name).val() , remote: true},
+				    { input_day: String($("#_input_day_1i").val()) + ('00' + $("#_input_day_2i").val()).slice(-2) , head_input_m_shop_id: $("#head_input_m_shop_id").val(), head_output_kbn: $(checkbox_name).val(), from_view:$("#head_from_view").val(), remote: true},
 				    function(data, status) {        // 通信成功時にデータを表示
 				       $('#form').empty();
 		               $('#form').append(data);

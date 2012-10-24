@@ -1,5 +1,6 @@
 <% loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[4,2].to_i, -1)).strftime("%d").to_i %>
 <%= hidden_field_tag 'last_day', loopcnt %>
+
 <table id="d_duty_table" class="rounded-corner">
 	 <thead>
 		<tr>
@@ -232,7 +233,45 @@
 		</tr>	
 		</tbody>				
 </table>
-
+<br />
+<% if @from_view == 'syoukai_menu' %>
+	<!--コメント入力欄を表示（社長）-->
+	<table class="rounded-corner">
+		<thead>
+			<tr>
+				<th colspan="4" style="background-image:none; background-color: #FBBE01">人　件　費　コ　メ　ン　ト　入　力</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<%= form_for(@d_comment1, :url=>{:controller=>"d_duty_reports", :action=>"comment_add", :m_shop_id=>@m_shop_id, :input_day=>@head[:input_day], :renban=>@d_comment1.renban}, :remote=>true) do |f| %>
+					<%= f.text_field :title, :maxlength=>20, :size=>40 %>
+					<br />
+					<%= f.text_area :contents, :rows => 5, :maxlength=>100, :size=>50 %>
+					<%= f.submit f.object.new_record? ? '追加' : '更新', {:confirm => "保存します。よろしいですか？"} %>
+					<% end %>
+			    </td>
+				<td>
+					<%= form_for(@d_comment2, :url=>{:controller=>"d_duty_reports", :action=>"comment_add", :m_shop_id=>@m_shop_id, :input_day=>@head[:input_day], :renban=>@d_comment2.renban}, :remote=>true) do |f| %>
+					<%= f.text_field :title, :maxlength=>20, :size=>40 %>
+					<br />
+					<%= f.text_area :contents, :rows => 5, :maxlength=>100, :size=>50 %>
+					<%= f.submit f.object.new_record? ? '追加' : '更新', {:confirm => "保存します。よろしいですか？"} %>
+					<% end %>
+			    </td>
+				<td>
+					<%= form_for(@d_comment3, :url=>{:controller=>"d_duty_reports", :action=>"comment_add", :m_shop_id=>@m_shop_id, :input_day=>@head[:input_day], :renban=>@d_comment3.renban}, :remote=>true) do |f| %>
+					<%= f.text_field :title, :maxlength=>20, :size=>40 %>
+					<br />
+					<%= f.text_area :contents, :rows => 5, :maxlength=>100, :size=>50 %>
+					<%= f.submit f.object.new_record? ? '追加' : '更新', {:confirm => "保存します。よろしいですか？"} %>
+					<% end %>
+			    </td>				
+			</tr>
+		</tbody>
+	</table>
+<% end %>
 <%= javascript_include_tag "comma" %>
 
 <script>
