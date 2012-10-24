@@ -10,6 +10,8 @@ SsKanri::Application.routes.draw do
   get "d_duty_reports/index"
 
   get "d_duty_reports/show"
+  post "d_duty_reports/comment_add"
+  
   resources :m_machine_numbers
 
   resources :access_logs

@@ -1,5 +1,5 @@
 <h1>人件費</h1>
-<%= form_tag({:controller=> "d_duty_reports", :action => 'show' }) do %>
+<%= form_tag({:controller=> "d_duty_reports", :action => 'show', :head_input_m_shop_id=>@m_shop_id}) do %>
 <%= hidden_field_tag :mode,params[:mode] %>
 <table id='rounded-corner'>
 	<tr>
