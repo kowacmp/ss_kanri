@@ -127,6 +127,15 @@
 		</td>
 	</tr>
 
+	<!-- INSERT BEGIN 2012.10.24 当日油外売上を追加 -->
+	<tr>
+		<th>当日油外売上</th>
+		<td>
+			<input type="text" id="_yugai" class="money" style="width:100px;"  />
+		</td>
+	</tr>
+	<!-- INSERT END 2012.10.24 当日油外売上を追加 -->
+
 	<% for i in 1..5 %>
 	<tr>
 		<th>立替未処理<%=i%>(金額)</th>
@@ -166,6 +175,10 @@
 		<% for i in 1..5 %>
 		$("#_still<%=i%>").val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_still<%=i%>").val() );
 		<% end %>
+		
+		// INSERT BEGIN 2012.10.24 当日油外売上を追加
+		$("#_yugai"      ).val( $("#d_audit_cashbox_cashbox<%=params[:id]%>_yugai").val() );
+		// INSERT END 2012.10.24 当日油外売上を追加
 	});
 
 	function func_update() {
@@ -191,10 +204,14 @@
 		<% for i in 1..5 %>
 		$("#d_audit_cashbox_cashbox<%=params[:id]%>_still<%=i%>").val( $("#_still<%=i%>").val().replace(/,/g, "") );		
 		<% end %>
-
+		
+		// INSERT BEGIN 2012.10.24 当日油外売上を追加
+		$("#d_audit_cashbox_cashbox<%=params[:id]%>_yugai"      ).val( $("#_yugai"      ).val().replace(/,/g, "") );
+		// INSERT END 2012.10.24 当日油外売上を追加
+		
 		// AJAX.POST (hiddenをテーブルへ反映)	;
 		var postData = $("form").serialize();
-
+		
 		$.ajax({
 			type : "POST",
 			url : "<%= url_for(:action => "update_tbl1") %>",
