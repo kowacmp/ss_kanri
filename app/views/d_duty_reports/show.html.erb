@@ -1,4 +1,7 @@
 <h1>人件費表</h1>
+<%= form_tag({:action => 'print'}) do %>
+<%= hidden_field_tag :input_m_shop_id,@m_shop_id %>
+<%= hidden_field_tag :mode,params[:mode] %>
 <table id='rounded-corner'>
 	<tr>
 	  <th>対象店舗</th>
@@ -15,8 +18,10 @@
 		<%= radio_button_tag("head_output_kbn",1, :checked => true) %>金額を表示
 		<%= radio_button_tag("head_output_kbn",0) %>勤怠を表示
 	  </td>
+	  <td><%= submit_tag  '  印  刷  ',format: 'pdf' %></td>
 	  </tr>	  
 </table>
+<% end %>
 <div id="form">
 	<%= render 'form' %>
 </div>

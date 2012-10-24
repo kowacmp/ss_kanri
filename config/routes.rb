@@ -10,6 +10,7 @@ SsKanri::Application.routes.draw do
   get "d_duty_reports/index"
 
   get "d_duty_reports/show"
+  get "d_duty_reports/print"
   resources :m_machine_numbers
 
   resources :access_logs
