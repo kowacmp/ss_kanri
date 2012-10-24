@@ -17,8 +17,12 @@
 <% end %>
 
 <script>
+$(function() {
 	$("#select_d_price_check_id").bind("change", function() {
 		$.post("<%=url_for(:action => "select_d_price_check")%>"
 		       ,$(this).parent("form").filter(":first").serialize());
 	});
+});
 </script>
+
+

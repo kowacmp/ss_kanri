@@ -356,6 +356,24 @@
 		
 	</tr>
 	
+	<!-- INSERT BEGIN 2012.10.24 当日油外売上を追加 -->
+	<tr>
+	
+		<th >当日油外売上</th>
+		
+		<% for i in 1..6 %>
+			<%# if not(m_fix[i].nil?) then
+			%>
+			<% if @d_audit_cashbox["cashbox#{ i }_name"].to_s != "" then %>
+				<td class="orange" colspan="3" align="right">
+					<%= number_with_delimiter(@d_audit_cashbox["cashbox#{ i }_yugai"]) %>
+				</td>
+			<% end %>
+		<% end %> <!-- for i in 1..6 -->
+		
+	</tr
+	<!-- INSERT END 2012.10.24 当日油外売上を追加 -->
+	
 	<tr>
 
 		<th >過不足額</th>

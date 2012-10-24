@@ -223,6 +223,10 @@ module DAuditCashboxesHelper
     gokei  = get_kingaku(i)
     gokei -= nvl(@d_audit_cashbox["cashbox#{ i }"], 0).to_i
     
+    # INSERT BEGIN 2012.10.24 当日油外売上を追加
+    gokei -= nvl(@d_audit_cashbox["cashbox#{ i }_yugai"], 0).to_i
+    # INSERT END 2012.10.24 当日油外売上を追加
+    
     return gokei
     
   end

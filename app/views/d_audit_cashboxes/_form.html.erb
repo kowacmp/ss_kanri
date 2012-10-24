@@ -44,6 +44,11 @@
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_still3",       :value => @d_audit_cashbox["cashbox#{ i }_still3"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_still4",       :value => @d_audit_cashbox["cashbox#{ i }_still4"] %>
 	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_still5",       :value => @d_audit_cashbox["cashbox#{ i }_still5"] %>
+
+	<!-- INSERT BEGIN 2012.10.24 当日油外売上を追加 -->
+	<%= hidden_field :d_audit_cashbox, "cashbox#{ i }_yugai",        :value => @d_audit_cashbox["cashbox#{ i }_yugai"] %>
+	<!-- INSERT END 2012.10.24 当日油外売上を追加 -->
+
 <% end %>
 
 <% for i in 1..7 %>

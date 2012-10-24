@@ -12,6 +12,7 @@ $(function() {
 	<% else %>
 		$("#_form_<%= input_name %>").find("input").attr("readonly", "readonly");
 		$("#_form_<%= input_name %>").find("select").attr("disabled", "disabled");
+		$("#btn_copy").prop("disabled", false);
 	<% end %>
 });
 </script>
