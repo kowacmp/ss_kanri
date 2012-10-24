@@ -1,3 +1,4 @@
+<div id="div_d_washpurika_reports" style="visibility: hidden;">
 <table class='rounded-corner' id="tablefix" >
 <!-- begin ヘッダ -->
 <tr>
@@ -53,24 +54,24 @@
 
 <% tmp_league = "" %>
 <% for rec in @d_washpurika_reports %>
-<% if tmp_league != rec["z_league"] then %>
+<% if tmp_league != rec["before_league"] then %>
 <tr class="sikiri">
 <% end %>	
 	<!-- リーグ -->
-	<% if tmp_league != rec["z_league"] then %>
-	<th rowspan="<%=get_league_count(@d_washpurika_reports, rec["z_league"]) * 3 %>">
-		<%=['A','B','C','D','E','F'][(rec["z_league"] - 1)]%>リーグ
-		<% tmp_league = rec["z_league"] %>
+	<% if tmp_league != rec["before_league"] then %>
+	<th rowspan="<%=get_league_count(@d_washpurika_reports, rec["before_league"]) * 3 %>">
+		<%=get_league_chr(rec["before_league"])%>リーグ
+		<% tmp_league = rec["before_league"] %>
 	</th>
-	<% end %><!-- if rec["z_before_rank"] == 1 then -->
+	<% end %>
 	
 	<!-- 店舗,前月順位,累積pt -->
 	<% m_shop = MShop.find(rec["m_shop_id"]) %>
 	
 	<td rowspan="3" align="center" style="white-space: nowrap">
 		<%= m_shop.shop_cd %>&nbsp;<%= m_shop.shop_ryaku %><br/>
-		<%=['A','B','C','D','E','F'][(rec["z_league"] - 1)]%><%=rec["z_before_rank"]%><br/>
-		<%= number_with_delimiter(rec["z_total_point"]) %>
+		<%=get_league_chr(rec["before_league"])%><%=rec["before_rank"]%><br/>
+		<%= number_with_delimiter(rec["before_total_point"]) %>
 	</td>
 	
 	<th rowspan="1">
@@ -165,31 +166,36 @@
 	<% for rec in @d_washpurika_reports %>
 		<% cnt += 1 %>
 		
-		<%=hidden_field "data#{cnt}", :date     ,   :value => rec["date"] %>
-		<%=hidden_field "data#{cnt}", :m_shop_id,   :value => rec["m_shop_id"] %>
-		<%=hidden_field "data#{cnt}", :total_rank,  :value => rec["total_rank"] %>
-		<%=hidden_field "data#{cnt}", :league,      :value => rec["league"] %>
-		<%=hidden_field "data#{cnt}", :before_rank, :value => rec["before_rank"] %>
-		<%=hidden_field "data#{cnt}", :total_point, :value => rec["total_point"] %>
-		<%=hidden_field "data_#{cnt}", :up_point,    :value => rec["up_point"] %>
-		
-		<% for i in 1..31 %>
-		<%=hidden_field "data#{cnt}", "result#{i}",     :value => rec["result#{i}"] %>
-		<% end %>
-		
-		<%=hidden_field "data#{cnt}", :result_total, :value => rec["result_total"] %>
+		<%=hidden_field "data#{cnt}", :date     ,          :value => rec["date"] %>
+		<%=hidden_field "data#{cnt}", :m_shop_id,          :value => rec["m_shop_id"] %>
+		<%=hidden_field "data#{cnt}", :total_rank,         :value => rec["total_rank"] %>
+		<%=hidden_field "data#{cnt}", :before_league,      :value => rec["before_league"] %>
+		<%=hidden_field "data#{cnt}", :league,             :value => rec["league"] %>
+		<%=hidden_field "data#{cnt}", :before_rank,        :value => rec["before_rank"] %>
+		<%=hidden_field "data#{cnt}", :rank,               :value => rec["rank"] %>
+		<%=hidden_field "data#{cnt}", :before_total_point, :value => rec["before_total_point"] %>
+		<%=hidden_field "data#{cnt}", :total_point,        :value => rec["total_point"] %>
 
 		<% for i in 1..31 %>
-		<%=hidden_field "data#{cnt}", "uriage#{i}",     :value => rec["uriage#{i}"] %>
+		<%=hidden_field "data#{cnt}", "result#{i}",        :value => rec["result#{i}"] %>
 		<% end %>
 		
-		<%=hidden_field "data#{cnt}", :uriage_total, :value => rec["uriage_total"] %>
+		<%=hidden_field "data#{cnt}", :result_total,       :value => rec["result_total"] %>
+
+		<% for i in 1..31 %>
+		<%=hidden_field "data#{cnt}", "uriage#{i}",        :value => rec["uriage#{i}"] %>
+		<% end %>
+		
+		<%=hidden_field "data#{cnt}", :uriage_total,       :value => rec["uriage_total"] %>
 
 		<%=hidden_field "data#{cnt}", :pace,                  :value => rec["pace"] %>
 		<%=hidden_field "data#{cnt}", :same_pace,             :value => rec["same_pace"]%>
 		<%=hidden_field "data#{cnt}", :same_uriage,           :value => rec["same_uriage"]%>
 		<%=hidden_field "data#{cnt}", :same_uriage_total,     :value => rec["same_uriage_total"] %>
 		<%=hidden_field "data#{cnt}", :same_uriage_total_max, :value => rec["same_uriage_total_max"] %>
+		
+		<!-- 今月分のuppoint -->
+		<%=hidden_field "data_#{cnt}", :up_point,                  :value => rec["up_point"] %>
 	<% end %>
 	<!-- end データ部分 -->
 	<br/>
@@ -208,14 +214,18 @@
 	
 <% end %>
 <br/>
+</div> <!-- <div id="div_d_washpurika_reports" style="visibility: hidden;"> -->
 <script language="JavaScript">
 $(function(){
 
 	// リーグの先頭行の仕切りをつける
 	$("tr.sikiri>td,tr.sikiri>th").css("border-top-width","3px");
 
-	// スクロール
+	// スクロール表示
 	$("#tablefix").tablefix({width: 900, height: 500, fixRows: 3, fixCols: 3});
+	
+	// テーブル可視 
+	$("#div_d_washpurika_reports").css("visibility","visible");
 	
 });
 </script>

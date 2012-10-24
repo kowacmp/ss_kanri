@@ -48,7 +48,7 @@ class DWashpurikaReportsController < ApplicationController
       d_washpurika_report.attributes = rec
       d_washpurika_report.updated_user_id = current_user.id
       if params[:update][:rezero].to_s == "true" then
-        d_washpurika_report.total_point = params["data_#{cnt}"][:up_point]   
+        d_washpurika_report.total_point = params["data_#{cnt}"][:up_point]
       end
       
       d_washpurika_report.save!
@@ -86,7 +86,7 @@ private
     # 前月のデータを取得
     washpurika_reports = DWashpurikaReport.find(:all, 
                                                 :conditions => ["date=?", zym],
-                                                :order => "league, before_rank")
+                                                :order => "league, rank")
                                                 
     for rec in washpurika_reports
     
@@ -100,13 +100,13 @@ private
     
       ret_rec["date"] = ym
       ret_rec["m_shop_id"] = rec.m_shop_id
-      ret_rec["z_total_rank"] = rec.total_rank
+      ret_rec["z_total_rank"] = rec.total_rank #DBに存在しない項目
       ret_rec["total_rank"] = washpurika_report.total_rank
-      ret_rec["z_league"] = rec.league
+      ret_rec["before_league"] = rec.league
       ret_rec["league"] = washpurika_report.league
-      ret_rec["z_before_rank"] = rec.before_rank
-      ret_rec["before_rank"] = washpurika_report.before_rank
-      ret_rec["z_total_point"] = rec.total_point
+      ret_rec["before_rank"] = rec.rank
+      ret_rec["rank"] = washpurika_report.rank
+      ret_rec["before_total_point"] = rec.total_point
       ret_rec["total_point"] = washpurika_report.total_point
     
       for d in 1..31
@@ -146,7 +146,7 @@ private
     # 前月のデータを取得
     washpurika_reports = DWashpurikaReport.find(:all, 
                                                 :conditions => ["date=?", zym],
-                                                :order => "league, before_rank")
+                                                :order => "league, rank")
         
     for rec in washpurika_reports
     
@@ -154,13 +154,13 @@ private
       
       ret_rec["date"] = ym
       ret_rec["m_shop_id"] = rec.m_shop_id
-      ret_rec["z_total_rank"] = rec.total_rank
+      ret_rec["z_total_rank"] = rec.total_rank #DBに存在しない項目
       ret_rec["total_rank"] = 0
-      ret_rec["z_league"] = rec.league
+      ret_rec["before_league"] = rec.league
       ret_rec["league"] = 0
-      ret_rec["z_before_rank"] = rec.before_rank
-      ret_rec["before_rank"] = 0
-      ret_rec["z_total_point"] = rec.total_point
+      ret_rec["before_rank"] = rec.rank
+      ret_rec["rank"] = 0
+      ret_rec["before_total_point"] = rec.total_point
       ret_rec["total_point"] = 0
       
       result_total = 0
@@ -300,34 +300,34 @@ private
       
    end # for rec in @washpurika_reports    
  
-   # 旧リーグ、今月売上トータルでソート
-   ret = ret.sort{|a,b| sort_func(a, b, "z_league, uriage_total desc, z_before_rank")}
+   # 今月当初リーグ、今月売上の降順でソート
+   ret = ret.sort{|a,b| sort_func(a, b, "before_league, uriage_total desc")}
  
-   # 旧リーグ、リーグ内順位をつける
-   before_rank = 0
+   # ①今月当初リーグ、今月売上の降順で順位をつける
+   rank = 0
    for rec in ret
-     before_rank += 1
-     if before_rank > 5 then
-       before_rank = 1
+     rank += 1
+     if rank > 5 then
+       rank = 1
      end
      
-     rec["league"] = rec["z_league"]
-     rec["before_rank"] = before_rank
+     rec["league"] = rec["before_league"]
+     rec["rank"] = rank
      
    end
  
-   # 旧リーグの最下位,最上位で入れ替えを行う
+   # ①でつけたリーグ内順位の最上位、最下位で順位が逆転している場合は入れ替えを行う。
    for league in 1..5 # 1:A～B, 2:B～C, 3:C～D, 4:D～E, 5:E～F
      rec1 = nil
      rec2 = nil
      
      for i in 0..(ret.length - 1)
        # 最下位を取得
-       if (ret[i]["league"] == league) and (ret[i]["before_rank"] == 5) then
+       if (ret[i]["league"] == league) and (ret[i]["rank"] == 5) then
          rec1 = i
        end
        # 最上位を取得
-       if (ret[i]["league"] == (league + 1)) and (ret[i]["before_rank"] == 1) then
+       if (ret[i]["league"] == (league + 1)) and (ret[i]["rank"] == 1) then
          rec2 = i
        end
      end
@@ -336,26 +336,26 @@ private
      if (not(rec1.nil?)) and (not(rec2.nil?)) then
         if ret[rec1]["uriage_total"] < ret[rec2]["uriage_total"] then
             ret[rec1]["league"] = (league + 1)
-            ret[rec1]["before_rank"] = 1
+            ret[rec1]["rank"] = 1
             ret[rec2]["league"] = league
-            ret[rec2]["before_rank"] = 5
+            ret[rec2]["rank"] = 5
         end  
      end
  
    end
 
    #今月のリーグ内順位を振り直す
-   ret = ret.sort{|a,b| sort_func(a, b, "league, uriage_total desc, z_league, z_before_rank")}   
+   ret = ret.sort{|a,b| sort_func(a, b, "league, uriage_total desc, before_league, before_rank")}   
    league = 0
-   before_rank = 0
+   rank = 0
    for i in 0..(ret.length - 1)
      if ret[i]["league"] != league then
        league = ret[i]["league"]
-       before_rank = 0
+       rank = 0
      end
-     before_rank += 1
+     rank += 1
      
-     ret[i]["before_rank"] = before_rank
+     ret[i]["rank"] = rank
    end
    
    #合計ポイントの加算
@@ -364,13 +364,12 @@ private
       if ym[4..5] == "01" then
         ret[i]["total_point"] = 0 #1月で累積ポイントはリセット
       else
-        ret[i]["total_point"] = ret[i]["z_total_point"]
+        ret[i]["total_point"] = ret[i]["before_total_point"]
       end 
-      
       
       m_get_point = MGetPoint.find(:first, :conditions=>["rank=? and league_rank=?",
                                                             ret[i]["league"],
-                                                            ret[i]["before_rank"]])
+                                                            ret[i]["rank"]])
                                                             
       if not(m_get_point.nil?) then
           ret[i]["up_point"] = m_get_point.pt.to_i
@@ -380,7 +379,7 @@ private
    end
 
    # 旧リーグ、今月売上トータルでソート
-   ret = ret.sort{|a,b| sort_func(a, b, "z_league, uriage_total desc, z_before_rank")}
+   ret = ret.sort{|a,b| sort_func(a, b, "before_league, uriage_total desc, before_rank")}
 
    return ret
  
