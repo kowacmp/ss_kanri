@@ -471,9 +471,14 @@ class DDutyReportsController < ApplicationController
       end
       
     end
-
+    
+    pdf_title_ym = @head[:input_day].to_s[0,4].to_i.to_s + "年" + @head[:input_day].to_s[4,2].to_i.to_s + "月分"
     #ファイル名セット     
-    pdf_title = "人件費表.pdf"
+    if @head_output_kbn == 1
+      pdf_title = "人件費表(金額)_#{pdf_title_ym}.pdf"
+    else
+      pdf_title = "人件費表(勤怠)_#{pdf_title_ym}.pdf"
+    end
     ua = request.env["HTTP_USER_AGENT"]
     pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
       
