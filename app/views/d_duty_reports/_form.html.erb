@@ -93,11 +93,13 @@
 		<tr>
 			<th>目標Ｙ指数(%)</th>
 			<td style="text-align: right">
-				<%= label "d_aim_y_sisu_aim_total", num_fmt( d_aim_jinken.aim_total.to_i == 0 ? 0: (d_aim_uriage.aim_total.to_i*10000).to_f / (d_aim_jinken.aim_total.to_i*10000).to_f * 100 ), :class=>"money" %>
+				<!--万円単位で入力ため×1000して小数点以下第2を四捨五入した値を出力-->
+				<%= label "d_aim_y_sisu_aim_total", num_fmt( d_aim_jinken.aim_total.to_i == 0 ? 0: (((d_aim_uriage.aim_total.to_i*10000).to_f / (d_aim_jinken.aim_total.to_i*10000).to_f * 1000).round).to_f/10, true), :class=>"money" %>
 			</td>
 			<% loopcnt.times { |i| %>
 				<td style="text-align:right;"　>
-					<%= label "d_aim_y_sisu_aim_value#{i+1}", num_fmt( d_aim_jinken["aim_value#{i+1}"].to_i == 0 ? 0 : (d_aim_uriage["aim_value#{i+1}"].to_i*10000).to_f  / (d_aim_jinken["aim_value#{i+1}"].to_i*10000).to_f  * 100 ), :class=>"money" %>
+					<!--万円単位で入力ため×1000して小数点以下第2を四捨五入した値を出力-->
+					<%= label "d_aim_y_sisu_aim_value#{i+1}", num_fmt( d_aim_jinken["aim_value#{i+1}"].to_i == 0 ? 0 : (((d_aim_uriage["aim_value#{i+1}"].to_i*10000).to_f  / (d_aim_jinken["aim_value#{i+1}"].to_i*10000).to_f  * 1000).round).to_f/10 , true), :class=>"money" %>
 				</td> 
             <% } %>			
 		</th>

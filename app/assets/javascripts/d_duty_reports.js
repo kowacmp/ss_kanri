@@ -118,7 +118,7 @@ $(function () {
       if (num2 == 0){
         val = 0;
       }else{
-        val = Math.floor(num1 / num2 * 100);
+        val = Math.round(num1 / num2 * 1000)/10; //少数第一位まで表示
       };
       $(Div_id + "#col_y_sisu_" + Number(i)).text(format_kanma(val));      
   
@@ -211,7 +211,7 @@ $(function () {
       if (total2 == 0){
         val = 0;
       }else{
-        val = Math.floor(total1 / total2 * 100);
+        val = Math.round(total1 / total2 * 1000)/10; //少数第一位まで表示
       };
       $(Div_id + "#col_avg_y_sisu_" + Number(i)).text(format_kanma(val));      
   

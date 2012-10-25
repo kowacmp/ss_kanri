@@ -341,7 +341,7 @@ class DDutiesController < ApplicationController
         night_over_money = (m_info_cost.night_overtime.to_i * d_dutie.night_over_time.to_f).ceil #深夜残業（m_info_costs.深夜残業×深夜残業時間）　切り上げ
         #勤務金額合計
         d_dutie.work_money = day_work_money + day_over_money + night_work_money + night_over_money
-        #時間単価金額
+        #時間単価金額(切り上げ)
         time_price = 0
         time_price += (m_info_cost.time_price1.to_i * d_dutie.all_work_time.to_f).ceil 
         time_price += (m_info_cost.time_price2.to_i * d_dutie.all_work_time.to_f).ceil 
