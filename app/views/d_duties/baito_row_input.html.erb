@@ -27,7 +27,7 @@
 	<tbody>
 		<% total = Hash::new %>
 		<% loopcnt.times { |i| %>
-			<% background_css = "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>
+			<% background_css = "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) and @input_day.to_s == Time.now.localtime.strftime("%Y%m") %>
 			<tr>
 			<td style="text-align: center; <%= background_css %>"><%= i + 1 %></td>
 		      <% select_day = Date.new(@input_day.to_s[0,4].to_i, @input_day.to_s[4,2].to_i, i + 1) %>		

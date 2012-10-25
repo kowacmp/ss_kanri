@@ -125,9 +125,9 @@
 					</label>
 				</td>
 				<% if @head_output_kbn == 1 #金額を表示 %>
-					<%= set_syain_row(user.id, loopcnt, select_where, "money", "none").html_safe %>
+					<%= set_syain_row(@head[:input_day].to_s[0,6], user.id, loopcnt, select_where, "money", "none").html_safe %>
 				<% else %>
-					<%= set_syain_row(user.id, loopcnt, select_where, "time-money", "none").html_safe %>
+					<%= set_syain_row(@head[:input_day].to_s[0,6], user.id, loopcnt, select_where, "time-money", "none").html_safe %>
 				<% end %>
 			</tr>
 		<% } %>
@@ -146,9 +146,9 @@
 				</td>
 
 				<% if @head_output_kbn == 1 #金額を表示 %>
-					<%= set_banto_row(user.id, loopcnt, select_where, "money", "none").html_safe %>
+					<%= set_banto_row(@head[:input_day].to_s[0,6], user.id, loopcnt, select_where, "money", "none").html_safe %>
 				<% else %>
-					<%= set_banto_row(user.id, loopcnt, select_where, "time-money", "none").html_safe %>
+					<%= set_banto_row(@head[:input_day].to_s[0,6], user.id, loopcnt, select_where, "time-money", "none").html_safe %>
 				<% end %>				
 			</tr>
 		<% } %>

@@ -19,13 +19,14 @@
 	</thead>
 	<tbody>
 		<% loopcnt.times { |i| %>
+			<% background_css = "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) and @input_day.to_s == Time.now.localtime.strftime("%Y%m") %>
 			<tr>
-			<td style="text-align: center; <%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>"><%= i + 1 %></td>
+			<td style="text-align: center; <%= background_css %>"><%= i + 1 %></td>
 		      <% select_day = Date.new(@input_day.to_s[0,4].to_i, @input_day.to_s[4,2].to_i, i + 1) %>		
 			  <% week_w = day_of_the_week(select_day.wday) %>	
 			  <% if week_w == "土" or week_w =="日" %>
 			  	<% if Time.now.day == (i+1) %>
-			  		<td style='background:none; background-color: #F7DC67' >
+			  		<td style='<%= background_css %>' >
 			  	<% else %>
 			  		<% if week_w == "土" %>
 			  			<td style = "background-image:none; background-color: #498AF3">
@@ -33,15 +34,11 @@
 			  	 		<td style = "background-image:none; background-color: #E92033">
 			  	 	<% end %>			  	<% end %> 
 			  <% else %>
-			    <% if Time.now.day == (i+1) %>
-			   		<td style='background:none; background-color: #F7DC67' >
-			    <% else %>
-			    	<td>
-			    <% end %> 
+		   		<td style='<%= background_css %>' >
 			  <% end %>
 				<%= week_w %>
 			  </td>
-			  <td style="text-align: center;<%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>">
+			  <td style="text-align: center;<%= background_css %>">
 			  	<% d_dutry = DDuty.find(:first, 
 		              :conditions=>["duty_nengetu = '#{@input_day.to_s[0,6]}' and day = #{ i + 1} and user_id = #{@user.id}"]) %>
 			  	<% d_duty_kakutei_flg = get_d_dutie_kakutei_flg(@m_shop_id, @input_day.to_i, i + 1 ) #確定フラグが立っている場合は入力できない %>

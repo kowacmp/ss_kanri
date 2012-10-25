@@ -1,6 +1,7 @@
 <% loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[4,2].to_i, -1)).strftime("%d").to_i %>
 <%= hidden_field_tag :head_input_day, @head[:input_day] %>
 <%= hidden_field_tag :head_m_shop_id, @m_shop_id %>
+<% today_color = "background-image:none; background-color: #F7DC67;" %>
 <table id="d_duty_table" class="rounded-corner">
 	 <thead>
 		<!--入力済みチェックボックス。確認済みチェックボックス-->
@@ -8,11 +9,7 @@
 			<% if params[:mode] == 'list' #入力状況からきたときは、確定チェックボックスを表示%>
 				<th colspan="3" style="background:none; background-color: #F7DC67 color:red">確定</th>
 				<% loopcnt.times { |i| %>
-				    <% if Time.now.day == (i+1) %>
-				   		<th style='background:none; background-color: #F7DC67' >
-				    <% else %>
-				    	<th style="background:none; background-color: #F7DC67">
-				    <% end %>
+			   		<th style='background:none; background-color: #F7DC67' >
 				    <% d_duty_input_flg = get_d_dutie_input_flg(@m_shop_id, @head[:input_day].to_i, format("%02d", (i+1).to_i).to_i) %> 
 				    <% d_duty_kakutei_flg = get_d_dutie_kakutei_flg(@m_shop_id, @head[:input_day].to_i, format("%02d", (i+1).to_i).to_i) %>
 					<% if d_duty_input_flg == 1 #入力済みフラグが済みの場合はチェックボックスを出力 %>
@@ -29,11 +26,7 @@
 			<% else %>
 				<th colspan="3" style="background:none; background-color: #F7DC67">入力が完了したらチェック</th>
 				<% loopcnt.times { |i| %>
-				    <% if Time.now.day == (i+1) %>
-				   		<th style='background:none; background-color: #F7DC67' >
-				    <% else %>
-				    	<th style="background:none; background-color: #F7DC67">
-				    <% end %>
+			   		<th style='background:none; background-color: #F7DC67' >
 				    <% d_duty_input_flg = get_d_dutie_input_flg(@m_shop_id, @head[:input_day].to_i, format("%02d", (i+1).to_i).to_i) %> 
 				    <% d_duty_kakutei_flg = get_d_dutie_kakutei_flg(@m_shop_id, @head[:input_day].to_i, format("%02d", (i+1).to_i).to_i) %>
 					<% if d_duty_kakutei_flg == 0 #フラグが未確定の場合はチェックボックスを出力 %>
@@ -52,7 +45,7 @@
 		<tr>
 			<th colspan="3" style="min-width: 200px">日付</th>
 			<% loopcnt.times { |i| %>
-			  <th style="min-width: 25px; <%= "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>"><%= i + 1 %></th>
+			  <th style="min-width: 25px; <%= today_color if Time.now.day == (i+1) and @head[:input_day].to_s == Time.now.localtime.strftime("%Y%m") %>"><%= i + 1 %></th>
             <% } %>
 		</tr>
 		<tr>
@@ -61,8 +54,8 @@
 		      <% select_day = Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[4,2].to_i, i + 1) %>		
 			  <% week_w = day_of_the_week(select_day.wday) %>	
 			  <% if week_w == "土" or week_w =="日" %>
-			  	<% if Time.now.day == (i+1) %>
-			  		<th style='background:none; background-color: #F7DC67' >
+			  	<% if Time.now.day == (i+1) and @head[:input_day].to_s == Time.now.localtime.strftime("%Y%m") %>
+			  		<th style='<%= today_color %>' >
 			  	<% else %>
 			  		<% if week_w == "土" %>
 			  			<th style = "background-image:none; background-color: #498AF3">
@@ -71,10 +64,10 @@
 			  	 	<% end %>
 			  	<% end %> 
 			  <% else %>
-			    <% if Time.now.day == (i+1) %>
-			   		<th style='background:none; background-color: #F7DC67' >
+			    <% if Time.now.day == (i+1) and @head[:input_day].to_s == Time.now.localtime.strftime("%Y%m") %>
+			   		<th style='<%= today_color %>' >
 			    <% else %>
-			    	<th style='background:none;'>
+			    	<th>
 			    <% end %> 
 			  <% end %>
 				<%= week_w %>
@@ -87,10 +80,10 @@
 			<th colspan="2">氏名</th>
 			<th>日数</th>
 			<% loopcnt.times { |i| %>
-			  <th <%= "style='background:none; background-color: #F7DC67'" if Time.now.day == (i+1) %>>
+			  <td style='<%= today_color if Time.now.day == (i+1) and @head[:input_day].to_s == Time.now.localtime.strftime("%Y%m") %>'>
 			     <%= link_to image_tag('icon/24_edit.png'), {:controller => "d_duties", :action => "syain_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s + format("%02d", (i+1).to_i)}, :class => "modal" %>
 			     
-			  </th>
+			  </td>
             <% } %>
 		</tr>
 		</thead>
@@ -107,15 +100,15 @@
 				</td>
 				<td style="text-align: center;min-width: 50px"><label id=<%= "syain_nisu_#{user.id}" %>><%= nisu[0].nisu %></label></td>
 				
-				<%= set_syain_row(user.id, loopcnt, select_where).html_safe %>
+				<%= set_syain_row(@head[:input_day].to_s[0,6], user.id, loopcnt, select_where).html_safe %>
 
 				
 			</tr>
 		<% } %>
 		<!--社員計-->
 		<tr>
-			<td colspan="2">出勤日数</td>
-			<td style="text-align: center;"><label id="col_syain_nisu_kei"></label></td>
+			<td colspan="2" style="background-color: #A5D7AA">出勤日数</td>
+			<td style="text-align: center; background-color: #A5D7AA"><label id="col_syain_nisu_kei"></label></td>
 			<%= set_syain_nisu_kei(loopcnt).html_safe %>
 		
 		</tr>
@@ -124,10 +117,10 @@
 			<th colspan="2">氏名</th>
 			<th>時間</th>
 			<% loopcnt.times { |i| %>
-			  <th <%= "style='background:none; background-color: #F7DC67'" if Time.now.day == (i+1) %>>
+			  <td style='<%= today_color if Time.now.day == (i+1) and @head[:input_day].to_s == Time.now.localtime.strftime("%Y%m") %>'>
 			     <%= link_to image_tag('icon/24_edit.png'), {:controller => "d_duties", :action => "baito_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s + format("%02d", (i+1).to_i)}, :class => "modal" %>
 			     
-			  </th>
+			  </td>
             <% } %>            
 		</tr>
 		<!--バイト繰り返し-->
@@ -142,15 +135,15 @@
 				</td>
 				<td style="text-align: center;min-width: 50px"><label id=<%= "baito_jikan_#{user.id}" %>><%= jikan[0].jikan %></label></td>
 				
-				<%= set_banto_row(user.id, loopcnt, select_where).html_safe %>
+				<%= set_banto_row(@head[:input_day].to_s[0,6], user.id, loopcnt, select_where).html_safe %>
 				
 				
 			</tr>
 		<% } %>
 		<!--バイト計-->
 		<tr>
-			<td colspan="2">勤務時間合計</td>
-			<td style="text-align: center;"><label id="col_baito_jikan_kei"></label></td>
+			<td colspan="2" style="background-color:#A5D7AA">勤務時間合計</td>
+			<td style="text-align: center; background-color:#A5D7AA"><label id="col_baito_jikan_kei"></label></td>
 			<%= set_baito_jikan_kei(loopcnt).html_safe %>
 		</tr>
 		</tbody>				

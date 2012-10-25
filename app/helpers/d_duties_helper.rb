@@ -19,7 +19,7 @@ module DDutiesHelper
   #outputkbn->nilの場合は時間を送る
   #outputkbn->moneyの場合は金額を送る
   #outputkbn->time-moneyの場合は時間と金額(hidden)を送る
-  def set_syain_row(user_id, loopcnt, select_where, outputkbn=nil, d_today_color="#F7DC67")
+  def set_syain_row(input_ym, user_id, loopcnt, select_where, outputkbn=nil, d_today_color="#F7DC67")
     rtn_html = ""
     d_duties = DDuty.find(:all, :conditions=>["#{select_where}"], :order => "day")
     
@@ -27,7 +27,7 @@ module DDutiesHelper
       n = 0
       
       loopcnt.times { |i|
-        if Time.now.day.to_i == (i+1).to_i
+        if Time.now.day.to_i == (i+1).to_i and input_ym.to_s == Time.now.localtime.strftime("%Y%m")
           today_color = "background-color: #{d_today_color};";
         else
           today_color =""
@@ -79,7 +79,7 @@ module DDutiesHelper
     else
       #データがなかったら空枠を作成
       loopcnt.times { |i|
-        if Time.now.day.to_i == (i+1).to_i
+        if Time.now.day.to_i == (i+1).to_i and input_ym.to_s == Time.now.localtime.strftime("%Y%m")
           today_color = "background-color: #{d_today_color};"
         else
           today_color =""
@@ -94,17 +94,17 @@ module DDutiesHelper
   end
   
   #社員の日数の計
-  def set_syain_nisu_kei(loopcnt, d_today_color="#F7DC67")
+  def set_syain_nisu_kei(loopcnt)
     rtn_html = ""
     
     loopcnt.times { |i|
-      if Time.now.day.to_i == (i+1).to_i
-        today_color = "background-color: #{d_today_color};"
-      else
-        today_color =""
-      end 
+#      if Time.now.day.to_i == (i+1).to_i
+#        today_color = "background-color: #{d_today_color};"
+#      else
+#        today_color =""
+#      end 
   
-      rtn_html << "<td style='text-align: center; #{today_color}'>"
+      rtn_html << "<td style='text-align: center; background-color:#A5D7AA'>"
       rtn_html << "<label id='col_syain_nisu_kei_#{i+1}'></label>"
       rtn_html << "</td>"
      }   
@@ -115,7 +115,7 @@ module DDutiesHelper
   #outputkbn->nilの場合は時間を送る
   #outputkbn->moneyの場合は金額を送る
   #outputkbn->time-moneyの場合は時間と金額(hidden)を送る
-  def set_banto_row(user_id, loopcnt, select_where, outputkbn=nil, d_today_color="#F7DC67")
+  def set_banto_row(input_ym, user_id, loopcnt, select_where, outputkbn=nil, d_today_color="#F7DC67")
     rtn_html = ""
     d_duties = DDuty.find(:all, :conditions=>["#{select_where}"], :order => "day")
     
@@ -123,7 +123,7 @@ module DDutiesHelper
       n = 0
       
       loopcnt.times { |i|
-        if Time.now.day.to_i == (i+1).to_i
+        if Time.now.day.to_i == (i+1).to_i and input_ym.to_s == Time.now.localtime.strftime("%Y%m")
           today_color = "background-color: #{d_today_color};"
         else
           today_color =""
@@ -176,7 +176,7 @@ module DDutiesHelper
     else
       #データがなかったら空枠を作成
       loopcnt.times { |i|
-        if Time.now.day.to_i == (i+1).to_i
+        if Time.now.day.to_i == (i+1).to_i and input_ym.to_s == Time.now.localtime.strftime("%Y%m")
           today_color = "background-color: #{d_today_color};"
         else
           today_color =""
@@ -192,18 +192,18 @@ module DDutiesHelper
   end
   
   #バイト時間の計
-  def set_baito_jikan_kei(loopcnt, d_today_color="#F7DC67")
+  def set_baito_jikan_kei(loopcnt)
 
     rtn_html = ""
     
     loopcnt.times { |i|
-      if Time.now.day.to_i == (i+1).to_i
-        today_color = "background-color: #{d_today_color};"
-      else
-        today_color =""
-      end 
+#      if Time.now.day.to_i == (i+1).to_i
+#        today_color = "background-color: #{d_today_color};"
+#      else
+#        today_color =""
+#      end 
   
-      rtn_html << "<td style='text-align: center; #{today_color}'>"
+      rtn_html << "<td style='text-align: center; background-color:#A5D7AA'>"
       rtn_html << "<label id='col_baito_jikan_kei_#{i+1}'></label>"
       rtn_html << "</td>"
      }   
