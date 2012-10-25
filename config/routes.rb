@@ -1,5 +1,9 @@
 SsKanri::Application.routes.draw do
 
+  get "d_price_check_reports/index"
+  get "d_price_check_reports/search"
+  get "d_price_check_reports/print"
+
   get "m_price_chk_names/index"
 
   resources :m_cost_names
