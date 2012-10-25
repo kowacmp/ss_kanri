@@ -117,7 +117,14 @@ $(function() {
 	
 	<!-- 灯油 -->
 	<td >
-		<%= text_field input_name, "dis#{ i }_#{ j }_tg", :value => d_price_check["dis#{ i }_#{ j }_tg"], :maxlength => 10, :style => "ime-mode:active;" %>
+		<%
+		if j == 1 then
+			color_style = "background-color:lightgray;"
+		else
+			color_style = ""
+		end
+		%>
+		<%= text_field input_name, "dis#{ i }_#{ j }_tg", :value => d_price_check["dis#{ i }_#{ j }_tg"], :maxlength => 10, :disabled => (j == 1) , :style => "ime-mode:active; #{ color_style }" %>
 		<div id="<%="label_#{ input_name }_dis#{ i }_#{ j }_tg"%>" style="width:55px; float: right; text-align: right;">
 			&nbsp;
 		</div>
