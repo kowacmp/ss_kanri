@@ -10,8 +10,42 @@ function toNum(str) {
 		num = Number(num);
 		return Math.floor(num);	
 	}
-}	
+}
+
+// INSERT BEGIN 2012.10.25 タブインデックスを設定
+$( function() {
+	
+	var idx = 100; //他の部分とtabindexが当たる場合はこの開始位置をずらしてください
+	
+	for (var i = 1; i <= 3; i++) { //釣銭機POS1～POS3
+	
+		// 監査前有高の縦方向設定
+		for (var j = 1; j <= 7; j++) {
+			$("#d_audit_changemachine_pos" + i + "_before_money" + j).attr("tabindex", idx++);
+		}
+		
+		// 監査後有高の縦方向設定
+		for (var j = 1; j <= 7; j++) {
+			$("#d_audit_changemachine_pos" + i + "_after_money" + j).attr("tabindex", idx++);
+		}
+		
+		// 補充金額、回収金額設定
+		$("#d_audit_changemachine_pos" + i + "_supplement_money").attr("tabindex", idx++);
+		$("#d_audit_changemachine_pos" + i + "_collectt_money").attr("tabindex", idx++);
+	
+	}
+	
+	$("#d_audit_changemachine_pos1_before_money1").focus();
+	
+});
+// INSERT END 2012.10.25 タブインデックスを設定
 </script>
+
+<script>
+	
+	
+</script>
+
 
 <!-- INSERT 2012.10.16 コメントのみの更新をするフラグ -->
 <%= hidden_field :comment, :on, :value => params[:comment] %>
