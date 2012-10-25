@@ -270,4 +270,21 @@ module DDutiesHelper
     end    
   end
     
+  #バイトの詳細合計を集計
+  def calc_baito_total(total, d_dutry)
+   
+   unless d_dutry.blank?
+
+     total[:day_work_time] = ((total[:day_work_time].to_f*10) + (d_dutry[:day_work_time].to_f*10)) / 10
+     total[:day_over_time] = ((total[:day_over_time].to_f*10) + (d_dutry[:day_over_time].to_f*10)) / 10
+     total[:night_work_time] = ((total[:night_work_time].to_f*10) + (d_dutry[:night_work_time].to_f*10)) / 10
+     total[:night_over_time] = ((total[:night_over_time].to_f*10) + (d_dutry[:night_over_time].to_f*10)) / 10
+     total[:all_work_time] = ((total[:all_work_time].to_f*10) + (d_dutry[:all_work_time].to_f*10)) / 10
+     total[:get_money1] = total[:get_money1].to_i + d_dutry[:get_money1].to_i
+     total[:get_money2] = total[:get_money2].to_i + d_dutry[:get_money2].to_i
+     total[:get_money3] = total[:get_money3].to_i + d_dutry[:get_money3].to_i
+     total[:get_money4] = total[:get_money4].to_i + d_dutry[:get_money4].to_i
+   end
+  end
+  
 end

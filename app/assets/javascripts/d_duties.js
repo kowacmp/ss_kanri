@@ -100,8 +100,25 @@ $(function () {
 	    
 	    $("div#modal " + Div_id + "#l_datas_" + get_index + "_all_work_time").text(total);
 	    $("div#modal " + Div_id + "#datas_" + get_index + "_all_work_time").val(total);
+	    
+	    //合計を咲く計算
+	    if ($(this).attr('id').match('_day_work_time')){calc_total("_day_work_time", "day_work_time_total")};
+		if ($(this).attr('id').match('_day_over_time')){calc_total("_day_over_time", "day_over_time_total")};
+		if ($(this).attr('id').match('_night_work_time')){calc_total("_night_work_time", "night_work_time_total")};
+		if ($(this).attr('id').match('_night_over_time')){calc_total("_night_over_time", "night_over_time_total")};
+		
+		calc_total("_all_work_time", "all_work_time_total");
     });
-      
+    
+    //バイトの手当て関係の数値が変更されたら合計を再計算
+    $("div#modal :input[id*=_get_money1], div#modal :input[id*=_get_money2], div#modal :input[id*=_get_money3], div#modal :input[id*=_get_money4]")
+    .live('change', function(){
+		if ($(this).attr('id').match('_get_money1')){calc_total("_get_money1", "get_money1_total")};
+		if ($(this).attr('id').match('_get_money2')){calc_total("_get_money2", "get_money2_total")};
+		if ($(this).attr('id').match('_get_money3')){calc_total("_get_money3", "get_money3_total")};
+		if ($(this).attr('id').match('_get_money4')){calc_total("_get_money4", "get_money4_total")};    	
+    });
+    
     //各社員の合計日数が変わったら、合計を再計算する
     $("div.colDiv #col_syain_nisu_kei")
       .live('click', function(){
@@ -215,4 +232,26 @@ function d_duty_validation(val) {
 	}else{
 		return true;
 	};
+};
+
+//バイトの合計を計算する
+function calc_total(taerget_id, total_id){
+	var Div_id;
+	var num;
+	var total=0;
+	
+    if ($("div.bodyDiv").size() > 0) {
+    	Div_id = 'div.bodyDiv ';
+    };
+    taerget_id = "div#modal " + Div_id + "[id*=" + taerget_id + "]";
+    $(taerget_id).each(function(i){
+    		//id名の先頭が'datas_'の分のみ
+    		if ($(this).attr('id').substring(0,6) == 'datas_') {
+	    		num = Number($(this).text());
+	    		if ($(this).text() == '') {num = Number($(this).val());};
+	        	if (isNaN(num)) {num = 0};
+	        	total = total + (num*10);
+       		};
+    });
+    $("div#modal " + Div_id +  "#" + total_id).text(format_kanma(total/10));	
 };

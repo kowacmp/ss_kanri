@@ -25,6 +25,7 @@
 		</tr>
 	</thead>
 	<tbody>
+		<% total = Hash::new %>
 		<% loopcnt.times { |i| %>
 			<% background_css = "background-image:none; background-color: #F7DC67" if Time.now.day == (i+1) %>
 			<tr>
@@ -97,7 +98,7 @@
 						<td style="text-align: center;<%= background_css if background_css %>">
 				  			<%= text_field_tag "datas[#{i + 1}][night_over_time]", d_dutry.night_over_time,  {:size=>4, :class=>"money"} %>
 				  		</td>
-						<td style="text-align: center; background-color: #A5D7AA;">
+						<td style="text-align: right; background-color: #A5D7AA;">
 							<label id='<%= "l_datas_#{i + 1}_all_work_time" %>'><%= d_dutry.all_work_time %></label>
 							<%= hidden_field_tag "datas[#{i + 1}][all_work_time]", d_dutry.all_work_time %>
 					    </td>
@@ -117,31 +118,32 @@
 				<% else %>
 				  <% unless d_dutry.blank? %>
 					<td style="text-align: right;<%= background_css if background_css %>">
-			  			<%= label_tag "datas_#{i + 1}_day_work_time", d_dutry.day_work_time.to_s %>
+			  			<%= label_tag "datas_#{i + 1}_day_work_time", d_dutry.day_work_time.to_s, {:id=>"datas_#{i + 1}_day_work_time"} %>
 			  		</td>
 					<td style="text-align: right;<%= background_css if background_css %>">
-			  			<%= label_tag "datas_#{i + 1}_day_over_time", d_dutry.day_over_time.to_s %>
+			  			<%= label_tag "datas_#{i + 1}_day_over_time", d_dutry.day_over_time.to_s, {:id=>"datas_#{i + 1}_day_over_time"} %>
 			  		</td>
 					<td style="text-align: right;<%= background_css if background_css %>">
-			  			<%= label_tag "datas_#{i + 1}_night_work_time", d_dutry.night_work_time.to_s %>
+			  			<%= label_tag "datas_#{i + 1}_night_work_time", d_dutry.night_work_time.to_s, {:id=>"datas_#{i + 1}_night_work_time"} %>
 			  		</td>
 					<td style="text-align: right;<%= background_css if background_css %>">
-			  			<%= label_tag "datas_#{i + 1}_night_over_time", d_dutry.night_over_time.to_s %>
+			  			<%= label_tag "datas_#{i + 1}_night_over_time", d_dutry.night_over_time.to_s, {:id=>"datas_#{i + 1}_night_over_time"} %>
 			  		</td>
 					<td style="text-align: right; background-color: #A5D7AA;">
 						<label id='<%= "l_datas_#{i + 1}_all_work_time" %>'><%= d_dutry.all_work_time.to_s %></label>
+						<%= hidden_field_tag "datas[#{i + 1}][all_work_time]", d_dutry.all_work_time %>
 				    </td>
 					<td style="text-align: right;<%= background_css if background_css %>">
-						<%= label_tag "datas_#{i + 1}_get_money1", d_dutry.get_money1.to_s %>
+						<%= label_tag "datas_#{i + 1}_get_money1", d_dutry.get_money1.to_s, {:id=>"datas_#{i + 1}_get_money1"} %>
 					</td>
 					<td style="text-align: right;<%= background_css if background_css %>">
-						<%= label_tag "datas_#{i + 1}_get_money2", d_dutry.get_money2.to_s %>
+						<%= label_tag "datas_#{i + 1}_get_money2", d_dutry.get_money2.to_s, {:id=>"datas_#{i + 1}_get_money2"} %>
 					</td>
 					<td style="text-align: right;<%= background_css if background_css %>">
-						<%= label_tag "datas_#{i + 1}_get_money3", d_dutry.get_money3.to_s %>
+						<%= label_tag "datas_#{i + 1}_get_money3", d_dutry.get_money3.to_s, {:id=>"datas_#{i + 1}_get_money3"} %>
 					</td>
 					<td style="text-align: right;<%= background_css if background_css %>">
-						<%= label_tag "datas_#{i + 1}_get_money4", d_dutry.get_money4.to_s %>
+						<%= label_tag "datas_#{i + 1}_get_money4", d_dutry.get_money4.to_s, {:id=>"datas_#{i + 1}_get_money4"} %>
 					</td>	
 				  <% else %>
 				   	<td style="text-align: right;<%= background_css if background_css %>"></td>	  	
@@ -157,6 +159,18 @@
 				<% end %>
 			</tr>
 		<% } %>
+		<tr>
+			<th colspan="2">合計</th>
+			<th style="text-align: right;"><label id="day_work_time_total"></label></th>
+			<th style="text-align: right;"><label id="day_over_time_total"></label></th>
+			<th style="text-align: right;"><label id="night_work_time_total"></label></th>
+			<th style="text-align: right;"><label id="night_over_time_total"></label></th>
+			<th style="text-align: right;"><label id="all_work_time_total"></label></th>
+			<th style="text-align: right;"><label id="get_money1_total"></label></th>
+			<th style="text-align: right;"><label id="get_money2_total"></label></th>
+			<th style="text-align: right;"><label id="get_money3_total"></label></th>
+			<th style="text-align: right;"><label id="get_money4_total"></label></th>
+		</tr>
 	</tbody>
 </table>
 <br />
@@ -173,6 +187,17 @@ $(function () {
 	adjustCenter("div#modal div.container");
 	$('div#modal #baito_row_input_table').tablefix({width: 850, height: 450, fixRows: 1, fixCols: 2});
 	$('div#modal div.bodyDiv').scrollTop(25 * (<%= Time.now.day %> - 2));
+	
+	//合計計算
+	calc_total("_day_work_time", "day_work_time_total");
+	calc_total("_day_over_time", "day_over_time_total");
+	calc_total("_night_work_time", "night_work_time_total");
+	calc_total("_night_over_time", "night_over_time_total");
+	calc_total("_all_work_time", "all_work_time_total");
+	calc_total("_get_money1", "get_money1_total");
+	calc_total("_get_money2", "get_money2_total");
+	calc_total("_get_money3", "get_money3_total");
+	calc_total("_get_money4", "get_money4_total");
 	
 	//入力チェック
 	//保存の時
@@ -252,7 +277,9 @@ $(function () {
         if (errmsg != "") {
 			alert("勤務時間を正しく入力してください。(整数２桁、少数１桁)\n（" + errmsg + "日）");
  			return false;
- 	    };	
+ 	    };
+ 	    
     });	
 });	
+
 </script>
