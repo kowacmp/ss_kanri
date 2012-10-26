@@ -11,11 +11,13 @@ class UsersController < ApplicationController
     
     select_sql = "select a.*, b.shop_name,"
     select_sql << "           c.code_name as user_class_name, " 
-    select_sql << "           d.authority_name " 
+    select_sql << "           d.authority_name, " 
+    select_sql << "           e.code_name as salary_kbn_name " 
     select_sql << " from users a " 
     select_sql << " left join (select * from m_shops) b on a.m_shop_id = b.id "
     select_sql << " left join (select * from m_codes where kbn='user_class') c on a.user_class = cast(c.code as integer) "
     select_sql << " left join (select * from m_authorities) d on a.m_authority_id = d.id "
+    select_sql << " left join (select * from m_codes where kbn='salary_kbn') e on a.user_class = cast(e.code as integer) "
     
     condition_sql = ""
     
@@ -160,11 +162,13 @@ class UsersController < ApplicationController
     
     select_sql = "select a.*, b.shop_name,"
     select_sql << "           c.code_name as user_class_name, " 
-    select_sql << "           d.authority_name " 
+    select_sql << "           d.authority_name, " 
+    select_sql << "           e.code_name as salary_kbn_name " 
     select_sql << " from users a " 
     select_sql << " left join (select * from m_shops) b on a.m_shop_id = b.id "
     select_sql << " left join (select * from m_codes where kbn='user_class') c on a.user_class = cast(c.code as integer) "
     select_sql << " left join (select * from m_authorities) d on a.m_authority_id = d.id "
+    select_sql << " left join (select * from m_codes where kbn='salary_kbn') e on a.user_class = cast(e.code as integer) "
     
     condition_sql = ""
     

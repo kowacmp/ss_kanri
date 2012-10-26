@@ -51,6 +51,14 @@
 		  </td>	  
 	  	</tr>
 	  	<tr>
+	  	  <th><%= f.label "給与区分" %></th>
+	  	  <td>
+			<%= f.select(:salary_kbn, MCode.find(:all, :conditions => ["kbn = ?",'salary_kbn'], :order => 'code').map do |u|
+		      		[u.code_name,u.code]
+		        end, {:include_blank => "選択して下さい"}) %>
+		  </td>	  
+	  	</tr>
+	  	<tr>
 	  	  <th><%= f.label "入社日" %></th>
 	  	  <td><%= f.date_select :nyusya_date,:use_month_numbers=>true,:start_year=>Date.today.year - 100 %></td>	  
 	  	</tr>

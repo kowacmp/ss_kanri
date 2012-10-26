@@ -98,6 +98,10 @@
 		  <th><%= f.label '配送先コード' %></th>
 		  <td><%= f.number_field :delivery_cd , :style=>"ime-mode:disabled" ,:maxlength=>6,:onkeyup=>"numberCheck(this)"%></td> 	  
 		</tr>
+		<tr>
+		  <th><%= f.label '価格表出力順' %></th>
+		  <td><%= f.number_field :price_sort , :style=>"ime-mode:disabled" ,:maxlength=>3,:onkeyup=>"numberCheck(this)"%></td> 	  
+		</tr>
 		
 		<% @m_oils.each_with_index do |m_oil,idx| %>
 		<%- if m_oil.id == @m_shop.m_oil_id1 -%>
@@ -396,6 +400,9 @@
 		if (document.getElementById('m_shop_delivery_cd').value == "") {
 			error_msg_m = error_msg_m + '<li>配送先コードを入力してください。</li>';
 		}
+		if (document.getElementById('m_shop_price_sort').value == "") {
+			error_msg_m = error_msg_m + '<li>価格表出力順を入力してください。</li>';
+		}
 		
 		var ary_shop_cd = 
 		
@@ -437,6 +444,21 @@
 		for(i=0; i<ary_delivery_cd.length; i++) {
 			if(ary_delivery_cd[i] == document.getElementById('m_shop_delivery_cd').value) {
 				error_msg_m = error_msg_m + '<li>配送先コードが既に登録されています。</li>';
+				break;
+			}
+		}
+		
+		var ary_price_sort = 
+		
+			<% if params[:id].blank? %>
+				String(<%= MShop.find(:all,:conditions=>["price_sort is not null"]).map do |u| [u.price_sort] end %>).split(",");
+			<% else %>
+				String(<%= MShop.find(:all,:conditions=>["price_sort is not null and id <> ?",params[:id]]).map do |u| [u.price_sort] end %>).split(",");
+			<% end %>
+		
+		for(i=0; i<ary_price_sort.length; i++) {
+			if(ary_price_sort[i] == document.getElementById('m_shop_price_sort').value) {
+				error_msg_m = error_msg_m + '<li>価格表出力順が既に登録されています。</li>';
 				break;
 			}
 		}

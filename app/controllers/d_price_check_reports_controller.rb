@@ -40,7 +40,7 @@ class DPriceCheckReportsController < ApplicationController
     
     condition_sql = " where a.deleted_flg = 0 and a.shop_kbn = #{@shop_kbn} "
     
-    @shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.shop_cd")
+    @shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.price_sort")
     
   end
 
@@ -72,7 +72,7 @@ class DPriceCheckReportsController < ApplicationController
     
     condition_sql = " where a.deleted_flg = 0 and a.shop_kbn = #{@shop_kbn} "
     
-    shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.shop_cd")
+    shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.price_sort")
     
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_price_check_report.tlf')
 
