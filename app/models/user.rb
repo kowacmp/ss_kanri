@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   #attr_accessible :email, :account,:password, :password_confirmation, :remember_me
   attr_accessible :email, :account,:password, :password_confirmation, :remember_me,
-                  :user_name,:user_name_kana,:m_shop_id,:m_authority_id,:user_class,
+                  :user_name,:user_name_kana,:m_shop_id,:m_authority_id,:user_class,:salary_kbn,
                   :nyusya_date,:birthday
                   
   validates :account,         :presence => {:message => '社員コードは必須です。'}
@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   validates :m_shop_id,       :presence => {:message => '所属店舗は必須です。'}
   validates :user_class,      :presence => {:message => '社員種別は必須です。'}
   validates :m_authority_id,  :presence => {:message => '権限は必須です。'}
+  validates :salary_kbn,      :presence => {:message => '給与区分は必須です。'}
   
   validates :account,         :uniqueness => {:message => '社員コードが重複しています。'}
   

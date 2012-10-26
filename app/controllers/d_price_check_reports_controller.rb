@@ -40,7 +40,7 @@ class DPriceCheckReportsController < ApplicationController
     
     condition_sql = " where a.deleted_flg = 0 and a.shop_kbn = #{@shop_kbn} "
     
-    @shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.shop_cd")
+    @shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.price_sort")
     
   end
 
@@ -72,7 +72,7 @@ class DPriceCheckReportsController < ApplicationController
     
     condition_sql = " where a.deleted_flg = 0 and a.shop_kbn = #{@shop_kbn} "
     
-    shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.shop_cd")
+    shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.price_sort")
     
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_price_check_report.tlf')
 
@@ -211,7 +211,7 @@ class DPriceCheckReportsController < ApplicationController
           
         end #add_row
       end # shops.each
-      pdf_title = "価格調査表(通常時)_#{ymd}.pdf"
+      pdf_title = "価格表(通常時)_#{ymd}.pdf"
     else
     
       # 詳細作成
@@ -334,13 +334,13 @@ class DPriceCheckReportsController < ApplicationController
           
         end #add_row
       end # shops.each
-      pdf_title = "価格調査表(特売時)_#{ymd}.pdf"
+      pdf_title = "価格表(特売時)_#{ymd}.pdf"
     end
     
     
     
     #ファイル名セット     
-    #pdf_title = "価格調査表.pdf"
+    #pdf_title = "価格表.pdf"
     ua = request.env["HTTP_USER_AGENT"]
     pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
       
