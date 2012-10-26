@@ -58,10 +58,10 @@ $(function() {
 		表示/価格
 	</th>
 	<th>
-		レギュラー
+		ハイオク
 	</th>
 	<th>
-		ハイオク
+		レギュラー
 	</th>
 	<th>
 		軽油
@@ -99,15 +99,15 @@ $(function() {
 			<%= hidden_field input_name, "dis#{ i }_#{ j }_name", :value => d_price_check["dis#{ i }_#{ j }_name"] %>
 		</th>
 	<% end %> <!-- if j == 2 -->
+
+	<!-- ハイオク -->
+	<td>
+		<%= text_field input_name, "dis#{ i }_#{ j }_hg", :value => d_price_check["dis#{ i }_#{ j }_hg"], :maxlength => 10, :style => "ime-mode:active;" %>
+	</td>
 	
 	<!-- レギュラー -->
 	<td>
 		<%= text_field input_name, "dis#{ i }_#{ j }_rg", :value => d_price_check["dis#{ i }_#{ j }_rg"], :maxlength => 10, :style => "ime-mode:active;" %>
-	</td>
-	
-	<!-- ハイオク -->
-	<td>
-		<%= text_field input_name, "dis#{ i }_#{ j }_hg", :value => d_price_check["dis#{ i }_#{ j }_hg"], :maxlength => 10, :style => "ime-mode:active;" %>
 	</td>
 	
 	<!-- 軽油 -->
@@ -171,17 +171,23 @@ $(function() {
 	</th>
 </tr>
 
-<% for i in 1..3 %>
+<% for i in 1..4 %>
 <tr>
 	<th>
-		<%= ["特売", "割チケ", "プリカ"][ (i - 1)] %>
-	</th>	
+		<%= ["特売", "プリカ", "会員", "備考"][ (i - 1)] %>
+	</th>
+	<% if i == 4 then %>
+	<td colspan="2">
+		<%= text_field input_name, "minus_name#{ i }", :value => d_price_check["minus_name#{ i }"], :maxlength => 10, :style => "ime-mode:active; width:120px;" %>
+	</td>
+	<% else %>
 	<td>
 		<%= text_field input_name, "minus_name#{ i }", :value => d_price_check["minus_name#{ i }"], :maxlength => 10, :style => "ime-mode:active;" %>
 	</td>
 	<td>
 		<%= text_field input_name, "minus_gak#{ i }", :value => d_price_check["minus_gak#{ i }"] ,:class => "money", :style => "width:40px;" %>
 	</td>
+	<% end %>
 </tr>
 <% end %><!-- for i in 1..3 -->
 

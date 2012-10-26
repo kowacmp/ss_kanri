@@ -143,8 +143,8 @@ private
     # 軽油取引税を取得(消費税込)
     establish = Establish.find(1)
   
-    # 税抜額を計算
-    ret = tanka.to_f - establish.light_oil.to_f
+    # 税抜額を計算 (( 入力単価 - 軽油取引税 ) ÷ 消費税率) + 軽油取引税
+    ret = ((tanka.to_f - establish.light_oil.to_f) / establish.tax_rate.to_f) + establish.light_oil.to_f
     
     # 小数点2位で四捨五入
     return ret.round(1)
