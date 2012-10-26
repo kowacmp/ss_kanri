@@ -98,7 +98,7 @@ class DPriceCheckReportsController < ApplicationController
           row.item(:shop_name).value(shop.shop_ryaku)
           
           #レギュラー
-          if shop.dis1_1_rg and shop.dis1_2_rg and shop.dis1_1_rg.to_i != 888 and shop.dis1_2_rg.to_i != 888
+          if shop.dis1_1_rg.to_s != "" and shop.dis1_2_rg.to_s != "" and shop.dis1_1_rg.to_i != 888 and shop.dis1_2_rg.to_i != 888
             row.item(:dis1_rg).value(shop.dis1_1_rg.to_s + "/" + shop.dis1_2_rg.to_s)
           else
             row.item(:dis1_rg).value(price_888_print(shop.dis1_1_rg.to_s) + price_888_print(shop.dis1_2_rg.to_s))
@@ -119,7 +119,7 @@ class DPriceCheckReportsController < ApplicationController
             row.item(:dis1_3_rg_p).value("")
           end
           #ハイオク
-          if shop.dis1_1_hg and shop.dis1_2_hg and shop.dis1_1_hg.to_i != 888 and shop.dis1_2_hg.to_i != 888
+          if shop.dis1_1_hg.to_s != "" and shop.dis1_2_hg.to_s != "" and shop.dis1_1_hg.to_i != 888 and shop.dis1_2_hg.to_i != 888
             row.item(:dis1_hg).value(shop.dis1_1_hg.to_s + "/" + shop.dis1_2_hg.to_s)
           else
             row.item(:dis1_hg).value(price_888_print(shop.dis1_1_hg.to_s) + price_888_print(shop.dis1_2_hg.to_s))
@@ -140,7 +140,7 @@ class DPriceCheckReportsController < ApplicationController
             row.item(:dis1_3_hg_p).value("")
           end
           #軽油
-          if shop.dis1_1_kg and shop.dis1_2_kg and shop.dis1_1_kg.to_i != 888 and shop.dis1_2_kg.to_i != 888
+          if shop.dis1_1_kg.to_s != "" and shop.dis1_2_kg.to_s != "" and shop.dis1_1_kg.to_i != 888 and shop.dis1_2_kg.to_i != 888
             row.item(:dis1_kg).value(shop.dis1_1_kg.to_s + "/" + shop.dis1_2_kg.to_s)
           else
             row.item(:dis1_kg).value(price_888_print(shop.dis1_1_kg.to_s) + price_888_print(shop.dis1_2_kg.to_s))
@@ -161,11 +161,12 @@ class DPriceCheckReportsController < ApplicationController
             row.item(:dis1_3_kg_p).value("")
           end
           #灯油
-          if shop.dis1_1_tg and shop.dis1_2_tg and shop.dis1_1_tg.to_i != 888 and shop.dis1_2_tg.to_i != 888
-            row.item(:dis1_tg).value(shop.dis1_1_tg.to_s + "/" + shop.dis1_2_tg.to_s)
-          else
-            row.item(:dis1_tg).value(price_888_print(shop.dis1_1_tg.to_s) + price_888_print(shop.dis1_2_tg.to_s))
-          end
+          #if shop.dis1_1_tg and shop.dis1_2_tg and shop.dis1_1_tg.to_i != 888 and shop.dis1_2_tg.to_i != 888
+          #  row.item(:dis1_tg).value(shop.dis1_1_tg.to_s + "/" + shop.dis1_2_tg.to_s)
+          #else
+          #  row.item(:dis1_tg).value(price_888_print(shop.dis1_1_tg.to_s) + price_888_print(shop.dis1_2_tg.to_s))
+          #end
+          row.item(:dis1_tg).value(price_888_print(shop.dis1_2_tg.to_s))
           #row.item(:dis1_1_tg).value(shop.dis1_1_tg)
           #row.item(:dis1_2_tg).value(shop.dis1_2_tg)
           row.item(:dis1_3_tg).value(price_888_print(shop.dis1_3_tg))
@@ -220,7 +221,7 @@ class DPriceCheckReportsController < ApplicationController
           row.item(:shop_name).value(shop.shop_ryaku)
           
           #レギュラー
-          if shop.dis2_1_rg and shop.dis2_2_rg and shop.dis2_1_rg.to_i != 888 and shop.dis2_2_rg.to_i != 888
+          if shop.dis2_1_rg.to_s != "" and shop.dis2_2_rg.to_s != "" and shop.dis2_1_rg.to_i != 888 and shop.dis2_2_rg.to_i != 888
             row.item(:dis1_rg).value(shop.dis2_1_rg.to_s + "/" + shop.dis2_2_rg.to_s)
           else
             row.item(:dis1_rg).value(price_888_print(shop.dis2_1_rg.to_s) + price_888_print(shop.dis2_2_rg.to_s))
@@ -241,7 +242,7 @@ class DPriceCheckReportsController < ApplicationController
             row.item(:dis1_3_rg_p).value("")
           end
           #ハイオク
-          if shop.dis2_1_hg and shop.dis2_2_hg and shop.dis2_1_hg.to_i != 888 and shop.dis2_2_hg.to_i != 888
+          if shop.dis2_1_hg.to_s != "" and shop.dis2_2_hg.to_s != "" and shop.dis2_1_hg.to_i != 888 and shop.dis2_2_hg.to_i != 888
             row.item(:dis1_hg).value(shop.dis2_1_hg.to_s + "/" + shop.dis2_2_hg.to_s)
           else
             row.item(:dis1_hg).value(price_888_print(shop.dis2_1_hg.to_s) + price_888_print(shop.dis2_2_hg.to_s))
@@ -262,7 +263,7 @@ class DPriceCheckReportsController < ApplicationController
             row.item(:dis1_3_hg_p).value("")
           end
           #軽油
-          if shop.dis2_1_kg and shop.dis2_2_kg and shop.dis2_1_kg.to_i != 888 and shop.dis2_2_kg.to_i != 888
+          if shop.dis2_1_kg.to_s != "" and shop.dis2_2_kg.to_s != "" and shop.dis2_1_kg.to_i != 888 and shop.dis2_2_kg.to_i != 888
             row.item(:dis1_kg).value(shop.dis2_1_kg.to_s + "/" + shop.dis2_2_kg.to_s)
           else
             row.item(:dis1_kg).value(price_888_print(shop.dis2_1_kg.to_s) + price_888_print(shop.dis2_2_kg.to_s))
@@ -283,11 +284,12 @@ class DPriceCheckReportsController < ApplicationController
             row.item(:dis1_3_kg_p).value("")
           end
           #灯油
-          if shop.dis2_1_tg and shop.dis2_2_tg and shop.dis2_1_tg.to_i != 888 and shop.dis2_2_tg.to_i != 888
-            row.item(:dis1_tg).value(shop.dis2_1_tg.to_s + "/" + shop.dis2_2_tg.to_s)
-          else
-            row.item(:dis1_tg).value(price_888_print(shop.dis2_1_tg.to_s) + price_888_print(shop.dis2_2_tg.to_s))
-          end
+          #if shop.dis2_1_tg and shop.dis2_2_tg and shop.dis2_1_tg.to_i != 888 and shop.dis2_2_tg.to_i != 888
+          #  row.item(:dis1_tg).value(shop.dis2_1_tg.to_s + "/" + shop.dis2_2_tg.to_s)
+          #else
+          #  row.item(:dis1_tg).value(price_888_print(shop.dis2_1_tg.to_s) + price_888_print(shop.dis2_2_tg.to_s))
+          #end
+          row.item(:dis1_tg).value(price_888_print(shop.dis2_2_tg.to_s))
           #row.item(:dis2_1_tg).value(shop.dis2_1_tg)
           #row.item(:dis2_2_tg).value(shop.dis2_2_tg)
           row.item(:dis1_3_tg).value(price_888_print(shop.dis2_3_tg))
