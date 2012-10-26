@@ -211,7 +211,7 @@ class DPriceCheckReportsController < ApplicationController
           
         end #add_row
       end # shops.each
-      pdf_title = "価格調査表(通常時)_#{ymd}.pdf"
+      pdf_title = "価格表(通常時)_#{ymd}.pdf"
     else
     
       # 詳細作成
@@ -334,13 +334,13 @@ class DPriceCheckReportsController < ApplicationController
           
         end #add_row
       end # shops.each
-      pdf_title = "価格調査表(特売時)_#{ymd}.pdf"
+      pdf_title = "価格表(特売時)_#{ymd}.pdf"
     end
     
     
     
     #ファイル名セット     
-    #pdf_title = "価格調査表.pdf"
+    #pdf_title = "価格表.pdf"
     ua = request.env["HTTP_USER_AGENT"]
     pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
       
