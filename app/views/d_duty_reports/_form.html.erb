@@ -1,5 +1,6 @@
 <% loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[4,2].to_i, -1)).strftime("%d").to_i %>
 <%= hidden_field_tag 'last_day', loopcnt %>
+<%= hidden_field_tag 'user_disp', @user_disp %>
 
 <table id="d_duty_table" class="rounded-corner">
 	 <thead>
@@ -91,8 +92,8 @@
 		<% end %>
 		
 		<tr>
-			<th>目標Ｙ指数(%)</th>
-			<td style="text-align: right">
+			<th style="min-width: 100px">目標Ｙ指数(%)</th>
+			<td style="text-align: right; min-width: 60px;">
 				<!--万円単位で入力ため×1000して小数点以下第2を四捨五入した値を出力-->
 				<%= label "d_aim_y_sisu_aim_total", num_fmt( d_aim_jinken.aim_total.to_i == 0 ? 0: (((d_aim_uriage.aim_total.to_i*10000).to_f / (d_aim_jinken.aim_total.to_i*10000).to_f * 1000).round).to_f/10, true), :class=>"money" %>
 			</td>
@@ -103,19 +104,31 @@
 				</td> 
             <% } %>			
 		</th>
-		<!--社員-->
 		<tr>
-			<th style="min-width: 100px">氏名</th>
-			<th style="min-width: 60px;">累計</th>
+			<th colspan="2" style="background-image: none; background-color:#FBBE01;">詳細
+			<% if @user_disp == "1" %>
+				<%= radio_button_tag("user_disp",1, :checked => true) %>表示
+				<%= radio_button_tag("user_disp",0) %>非表示
+				<% user_disp_css = "" %>
+			<% else %>
+				<%= radio_button_tag("user_disp",1) %>表示
+				<%= radio_button_tag("user_disp",0, :checked => true) %>非表示
+				<% user_disp_css = "display: none" %>
+			<% end %>
+			</th>
+		</tr>
+		<tr id="simei_midasi" style="<%= user_disp_css %>" >
+			<th>氏名</th>
+			<th>累計</th>		
 		</tr>
 		</thead>
 		<tbody>
 		<!--社員繰り返し-->
-		<% users = get_user_dutry(0, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
+		<% users = get_user_dutry("0,4", @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
 		<% users.each_with_index{ |user, index| %>
 			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "%>
 			
-			<tr id="syain_<%= "#{index}" %>">
+			<tr id="syain_<%= "#{index}" %>" style="<%= user_disp_css %>" >
 				<td>
 					<%= user.user_name %>
 				</td>
@@ -135,7 +148,7 @@
 		<% users = get_user_dutry(1, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
 		<% users.each_with_index{ |user, index| %>
 			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "%>
-			<tr id="baito_<%= "#{index}" %>">
+			<tr id="baito_<%= "#{index}" %>" style="<%= user_disp_css %>" >
 				<td>
 					<%= user.user_name %>
 				</td>
@@ -238,7 +251,7 @@
 <br />
 <% if @from_view == 'syoukai_menu' %>
 	<!--コメント入力欄を表示（社長）-->
-	<table class="rounded-corner">
+	<table class="rounded-corner" style="width: 930px">
 		<thead>
 			<tr>
 				<th colspan="4" style="background-image:none; background-color: #FBBE01">人　件　費　コ　メ　ン　ト　入　力</th>
@@ -278,8 +291,19 @@
 
 <script>
 $(function () {
-	$('#d_duty_table').tablefix({width: 925, height: 800, fixRows: 1, fixCols: 1});
-   
-    
+	if ($('#user_disp').val() == '1'){
+		$('#d_duty_table').tablefix({width: 925, height: 800, fixRows: 1, fixCols: 1});
+	}else{
+		$('#d_duty_table').tablefix({width: 925, height: 480, fixRows: 1, fixCols: 1});
+	};
+	
+	//ユーザ表示チェックボックス
+	$("div.colDiv [id^=user_disp_]").each(function(){
+		$(this).removeAttr("disabled");
+	});
+	$("div.bodyDiv [id^=user_disp_]").each(function(){
+		$(this).attr("disabled", "disabled")
+	});	
+
 });	
 </script>

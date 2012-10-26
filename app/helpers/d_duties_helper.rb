@@ -4,7 +4,7 @@ module DDutiesHelper
   #人権費入力のユーザを取得する
   def get_user_dutry(user_class, m_shop_id, start_yyyy, start_mm, start_dd, end_dd)
     str_conditions = "m_shop_id= #{m_shop_id} and "
-    str_conditions << " user_class = #{user_class} and "
+    str_conditions << " user_class in (#{user_class}) and "
     str_conditions << " nyusya_date <= '#{start_yyyy}/#{start_mm}/#{end_dd}' and "
     str_conditions << " (deleted_flg = 0 or (deleted_flg = 1 and deleted_at>= '#{start_yyyy}/#{start_mm}/#{start_dd}')) "
     

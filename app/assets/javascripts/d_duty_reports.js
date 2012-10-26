@@ -2,14 +2,21 @@ $(function () {
 	
     //入力日が変更された場合のイベント 
     //出力する区分のラジオボタンが変更されたときのイベント
-    $("#_input_day_1i, #_input_day_2i, input[name='head_output_kbn']:radio")
-      .change(function() {
-      			checkbox_name = "input:radio[name='head_output_kbn']:checked";
-
+    //ユーザ表示区分のラジオボタンが変更されたときのイベント
+    $("#_input_day_1i, #_input_day_2i, input[name='head_output_kbn']:radio, input[name='user_disp']:radio")
+      .live('change', function(){
+      			output_kbn_name = "input:radio[name='head_output_kbn']:checked";
+				user_disp_name  = "input:radio[name='user_disp']:checked";
+				
            	   //show
            	   $.get(
 				    '/d_duty_reports/show',                 // 送信先
-				    { input_day: String($("#_input_day_1i").val()) + ('00' + $("#_input_day_2i").val()).slice(-2) , head_input_m_shop_id: $("#head_input_m_shop_id").val(), head_output_kbn: $(checkbox_name).val(), from_view:$("#head_from_view").val(), remote: true},
+				    { input_day: String($("#_input_day_1i").val()) + ('00' + $("#_input_day_2i").val()).slice(-2) , 
+				      head_input_m_shop_id: $("#head_input_m_shop_id").val(), 
+				      head_output_kbn: $(output_kbn_name).val(), 
+				      from_view:$("#head_from_view").val(), 
+				      user_disp:$(user_disp_name).val(), 
+				      remote: true},
 				    function(data, status) {        // 通信成功時にデータを表示
 				       $('#form').empty();
 		               $('#form').append(data);
