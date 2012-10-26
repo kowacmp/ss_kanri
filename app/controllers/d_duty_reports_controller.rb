@@ -16,13 +16,13 @@ class DDutyReportsController < ApplicationController
     @from_view = params[:from_view]
     if @from_view == "syoukai_menu"
       if @user_disp.blank?
-        @user_disp =  0
+        @user_disp = "0"
       end
     end
     
     #ユーザを表示するしない(デフォルトは表示する)
     if @user_disp.blank?
-      @user_disp =  1
+      @user_disp =  "1"
     end    
     
     @head = DDuty.new
