@@ -10,8 +10,20 @@ class DDutyReportsController < ApplicationController
   end
 
   def show
+    #ユーザを表示するしないのパラメータ
+    @user_disp = params[:user_disp]
     #"syoukai_menu"がセットされていたらコメント入力ができる
     @from_view = params[:from_view]
+    if @from_view == "syoukai_menu"
+      if @user_disp.blank?
+        @user_disp =  0
+      end
+    end
+    
+    #ユーザを表示するしない(デフォルトは表示する)
+    if @user_disp.blank?
+      @user_disp =  1
+    end    
     
     @head = DDuty.new
 
@@ -288,7 +300,7 @@ class DDutyReportsController < ApplicationController
     
     # 詳細作成
     #社員繰り返し
-    users = get_user_dutry(0, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt)
+    users = get_user_dutry("0,4", @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt)
     users.each_with_index do |user,idx|
       
       if params[:mode] == 'list'
