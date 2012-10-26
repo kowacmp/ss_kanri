@@ -155,6 +155,9 @@ class DDutyReportsController < ApplicationController
       @head_output_kbn = params[:head_output_kbn].to_i
     end
     
+    #"syoukai_menu"がセットされていたらコメント入力ができる
+    @from_view = params[:head_from_view]
+       
     @m_shop = MShop.find(@m_shop_id)
     
     jinken = Hash.new
@@ -165,7 +168,7 @@ class DDutyReportsController < ApplicationController
     u_total_label = ""
     u_pace_label = ""
     
-    if params[:mode] == 'list'
+    if @from_view == 'syoukai_menu'
       #入力状況から来た場合
       select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and  m_shop_id = #{@m_shop.id} and kakutei_flg = 1 "
     else
@@ -303,7 +306,7 @@ class DDutyReportsController < ApplicationController
     users = get_user_dutry("0,4", @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt)
     users.each_with_index do |user,idx|
       
-      if params[:mode] == 'list'
+      if @from_view == 'syoukai_menu'
         select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and kakutei_flg = 1 "
       else
         select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "
@@ -322,7 +325,7 @@ class DDutyReportsController < ApplicationController
       report.page.list(:list).add_row do |row|
         row.item("user_name").value(user.user_name)
         
-        if params[:mode] == 'list'
+        if @from_view == 'syoukai_menu'
           select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and kakutei_flg = 1 "
         else
           select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "
@@ -372,7 +375,7 @@ class DDutyReportsController < ApplicationController
     users = get_user_dutry(1, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt)
     users.each_with_index do |user,idx|
       
-      if params[:mode] == 'list'
+      if @from_view == 'syoukai_menu'
         select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and kakutei_flg = 1 "
       else
         select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "
@@ -391,7 +394,7 @@ class DDutyReportsController < ApplicationController
       report.page.list(:list).add_row do |row|
         row.item("user_name").value(user.user_name)
         
-        if params[:mode] == 'list'
+        if @from_view == 'syoukai_menu'
           select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and kakutei_flg = 1 "
         else
           select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "
@@ -436,16 +439,18 @@ class DDutyReportsController < ApplicationController
       
     end # users.each
     
+    output_day_cnt, output_day = get_d_duty_output_day(@head[:input_day].to_s[0,6], @m_shop.id ) 
+    select_where = " result_date in(#{output_day}) and m_shop_id = #{@m_shop.id} "
 
     #フッター用合計データ作成
     if @m_shop.shop_kbn == 0
       u_total_label = "洗車売上合計"
       u_pace_label = "洗車ペース"
       
-      select_where = " result_date between '#{@head[:input_day].to_s[0,6]}01' and '#{@head[:input_day].to_s[0,6]}32' and m_shop_id = #{@m_shop.id} "
+      #select_where = " result_date between '#{@head[:input_day].to_s[0,6]}01' and '#{@head[:input_day].to_s[0,6]}32' and m_shop_id = #{@m_shop.id} "
       d_result_self_report = DResultSelfReport.find_by_sql("select b.result_date, a.* from d_result_self_reports a inner join d_results b on a.d_result_id = b.id where #{select_where} order by result_date")
       
-      select_where = " result_date between '#{@head[:input_day].to_s[0,6]}01' and '#{@head[:input_day].to_s[0,6]}32' and m_shop_id = #{@m_shop.id} "
+      #select_where = " result_date between '#{@head[:input_day].to_s[0,6]}01' and '#{@head[:input_day].to_s[0,6]}32' and m_shop_id = #{@m_shop.id} "
       uriage_total = uriage_total.to_i + d_result_total_sensya(select_where)[0].sensya.to_i
       
       unless d_result_self_report.blank?
@@ -464,10 +469,10 @@ class DDutyReportsController < ApplicationController
       u_total_label = "油外売上合計"
       u_pace_label = "油外ペース"
       
-      select_where = " result_date between '#{@head[:input_day].to_s[0,6]}01' and '#{@head[:input_day].to_s[0,6]}32' and m_shop_id = #{@m_shop.id} "
+      #select_where = " result_date between '#{@head[:input_day].to_s[0,6]}01' and '#{@head[:input_day].to_s[0,6]}32' and m_shop_id = #{@m_shop.id} "
       d_result_report = DResultReport.find_by_sql("select b.result_date, a.* from d_result_reports a inner join d_results b on a.d_result_id = b.id where #{select_where} order by result_date")
       
-      select_where = " result_date between '#{@head[:input_day].to_s[0,6]}01' and '#{@head[:input_day].to_s[0,6]}32' and m_shop_id = #{@m_shop.id} "
+      #select_where = " result_date between '#{@head[:input_day].to_s[0,6]}01' and '#{@head[:input_day].to_s[0,6]}32' and m_shop_id = #{@m_shop.id} "
       uriage_total = uriage_total.to_i + d_result_total_yugai(select_where)[0].arari.to_i
       
       unless d_result_report.blank?

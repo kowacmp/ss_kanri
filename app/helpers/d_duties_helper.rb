@@ -213,7 +213,11 @@ module DDutiesHelper
 
   #表示する情報が何日まで表示するかを取得する
   def get_d_duty_output_day(input_day, m_shop_id)
-    select_sql = "select day from d_duties where duty_nengetu=? and m_shop_id=? and input_flg = 1 group by day"
+    if @from_view == 'syoukai_menu'
+      select_sql = "select day from d_duties where duty_nengetu=? and m_shop_id=? and kakutei_flg = 1 group by day"
+    else
+      select_sql = "select day from d_duties where duty_nengetu=? and m_shop_id=? and input_flg = 1 group by day"
+    end
     select_days = DDuty.find_by_sql([select_sql, input_day.to_s, m_shop_id])
     if select_days[0].blank?
       return 0,"'0'"
@@ -261,7 +265,7 @@ module DDutiesHelper
   #勤怠データの対象店舗の対象日の確定フラグを取得
   #確定フラグが立っているデータが１つでもあれば、１を返す。以外は０
   def get_d_dutie_kakutei_flg(m_shop_id, duty_nengetu, day)
-    d_duty = DDuty.count("input_flg", :conditions=>["m_shop_id=? and duty_nengetu=? and day=? and kakutei_flg = 1", m_shop_id, duty_nengetu.to_s, day])
+    d_duty = DDuty.count("kakutei_flg", :conditions=>["m_shop_id=? and duty_nengetu=? and day=? and kakutei_flg = 1", m_shop_id, duty_nengetu.to_s, day])
 
     if d_duty == 0
       return 0

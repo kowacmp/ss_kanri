@@ -126,7 +126,11 @@
 		<!--社員繰り返し-->
 		<% users = get_user_dutry("0,4", @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
 		<% users.each_with_index{ |user, index| %>
-			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "%>
+			<% if @from_view == 'syoukai_menu' %>
+				<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and kakutei_flg = 1 "%>
+			<% else %>
+				<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "%>
+			<% end %>
 			
 			<tr id="syain_<%= "#{index}" %>" style="<%= user_disp_css %>" >
 				<td>
@@ -147,7 +151,11 @@
 		<!--バイト繰り返し-->
 		<% users = get_user_dutry(1, @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt) %>
 		<% users.each_with_index{ |user, index| %>
-			<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "%>
+			<% if @from_view == 'syoukai_menu' %>
+				<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and kakutei_flg = 1 "%>
+			<% else %>
+				<% select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "%>
+			<% end %>
 			<tr id="baito_<%= "#{index}" %>" style="<%= user_disp_css %>" >
 				<td>
 					<%= user.user_name %>
@@ -172,6 +180,7 @@
 			<%= set_jinken_kei(loopcnt).html_safe %>
 		</tr>
 		<% output_day_cnt, output_day = get_d_duty_output_day(@head[:input_day].to_s[0,6], @m_shop.id) %>
+
 		<% select_where = " result_date in(#{output_day}) and m_shop_id = #{@m_shop.id} "%>
 		<%= hidden_field_tag 'output_day_cnt', output_day_cnt %>
 		<%if @m_shop.shop_kbn == 0  %>
