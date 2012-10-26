@@ -2,7 +2,10 @@
 <%= form_tag({:action => 'print'}) do %>
 <table id="report_view_table" class="rounded-corner">
   <tr>
-    <th colspan="3" scope="col">&nbsp;</th>
+    <!--th colspan="3" scope="col">&nbsp;</th-->
+    <th>&nbsp;</th>
+    <th rowspan="3" scope="row"  style="min-width: 20px;">当<br />り<br />確<br />率</th>
+    <th>&nbsp;</th>
     <th colspan="4" scope="col">レギュラー</th>
     <th colspan="4" scope="col">ハイオク</th>
     <th colspan="4" scope="col">軽油</th>
@@ -10,25 +13,25 @@
 
   </tr>
   <tr>
-  	<th style="min-width: 80px;">割チケ</th>
-  	<th rowspan="2" scope="row"  style="min-width: 40px;">当り<br />確率</th>
-    <th style="min-width: 100px;">店舗</th>
+  	<th style="min-width: 120px;">割チケ</th>
+  	<!--th rowspan="3" scope="row"  style="min-width: 40px;">当り<br />確率</th-->
+    <th style="min-width: 120px;">店舗</th>
     <!-- レギュラー -->
-    <th style="min-width: 100px;">看板</th>
-    <th colspan="2" scope="col" style="min-width: 120px;">現金</th>
-    <th style="min-width: 60px;">プリカ</th>
+    <th style="min-width: 65px;">看板</th>
+    <th colspan="2" scope="col">現金</th>
+    <th style="min-width: 50px;">プリカ</th>
     <!-- ハイオク -->
-    <th style="min-width: 100px;">看板</th>
-    <th colspan="2" scope="col" style="min-width: 120px;">現金</th>
-    <th style="min-width: 60px;">プリカ</th>
+    <th style="min-width: 65px;">看板</th>
+    <th colspan="2" scope="col">現金</th>
+    <th style="min-width: 50px;">プリカ</th>
     <!-- 軽油 -->
-    <th style="min-width: 100px;">看板</th>
-    <th colspan="2" scope="col" style="min-width: 120px;">現金</th>
-    <th style="min-width: 60px;">プリカ</th>
+    <th style="min-width: 65px;">看板</th>
+    <th colspan="2" scope="col">現金</th>
+    <th style="min-width: 50px;">プリカ</th>
     <!-- 灯油 -->
-    <th style="min-width: 100px;">看板</th>
-    <th colspan="3" scope="col" style="min-width: 180px;">現金</th>
-    <th style="min-width: 60px;">プリカ</th>
+    <th style="min-width: 65px;">看板</th>
+    <th colspan="3" scope="col">現金</th>
+    <th style="min-width: 50px;">プリカ</th>
     
   </tr>
   <tr>
@@ -36,24 +39,24 @@
   	<th>特売</th>
   	<!-- レギュラー -->
     <th>(税込)</th>
-    <th>(税抜)</th>
-    <th>(税込)</th>
+    <th style="min-width: 50px;">(税抜)</th>
+    <th style="min-width: 50px;">(税込)</th>
     <th>(税込)</th>
     <!-- ハイオク -->
     <th>(税込)</th>
-    <th>(税抜)</th>
-    <th>(税込)</th>
+    <th style="min-width: 50px;">(税抜)</th>
+    <th style="min-width: 50px;">(税込)</th>
     <th>(税込)</th>
     <!-- 軽油 -->
     <th>(税込)</th>
-    <th>(税抜)</th>
-    <th>(税込)</th>
+    <th style="min-width: 50px;">(税抜)</th>
+    <th style="min-width: 50px;">(税込)</th>
     <th>(税込)</th>
     <!-- 灯油 -->
     <th>(税込)</th>
-    <th>(税込)</th>
-    <th>(税込)</th>
-    <th>(税抜)</th>
+    <th style="min-width: 50px;">(税込)</th>
+    <th style="min-width: 50px;">(税込)</th>
+    <th style="min-width: 50px;">(税抜)</th>
     <th>(税込)</th>
   </tr>
 	
@@ -69,12 +72,12 @@
 	  			<%= " " + shop.minus_gak2.to_s %>
 	  		<% end %>
 	  	</td>
-	    <td rowspan="2" scope="row"><%= shop.game %></td>
+	    <td rowspan="2" scope="row" align="center"><%= shop.game %></td>
 	    <td><%= shop.shop_ryaku %></td>
 	    <!-- レギュラー -->
 	    <td rowspan="2" scope="row" align="right">
 	    	<%= price_888_print(shop.dis1_1_rg) %>
-	    	<%= if shop.dis1_1_rg and shop.dis1_2_rg and
+	    	<%= if shop.dis1_1_rg.to_s != "" and shop.dis1_2_rg.to_s != "" and
 	    			shop.dis1_1_rg.to_i != 888 and shop.dis1_2_rg.to_i != 888 then "/" end %>
 	    	<%= price_888_print(shop.dis1_2_rg) %>
 	    </td>
@@ -92,7 +95,7 @@
 	    <!-- ハイオク -->
 	    <td rowspan="2" scope="row" align="right">
 	    	<%= price_888_print(shop.dis1_1_hg) %>
-	    	<%= if shop.dis1_1_hg and shop.dis1_2_hg and
+	    	<%= if shop.dis1_1_hg.to_s != "" and shop.dis1_2_hg.to_s != "" and
 	    			shop.dis1_1_hg.to_i != 888 and shop.dis1_2_hg.to_i != 888 then "/" end %>
 	    	<%= price_888_print(shop.dis1_2_hg) %>
 	    </td>
@@ -110,7 +113,7 @@
 	    <!-- 軽油 -->
 	    <td rowspan="2" scope="row" align="right">
 	    	<%= price_888_print(shop.dis1_1_kg) %>
-	    	<%= if shop.dis1_1_kg and shop.dis1_2_kg and
+	    	<%= if shop.dis1_1_kg.to_s != "" and shop.dis1_2_kg.to_s != "" and
 	    			shop.dis1_1_kg.to_i != 888 and shop.dis1_2_kg.to_i != 888 then "/" end %>
 	    	<%= price_888_print(shop.dis1_2_kg) %>
 	    </td>
@@ -127,9 +130,9 @@
 	    </td>
 	    <!-- 灯油 -->
 	    <td rowspan="2" scope="row" align="right">
-	    	<%= price_888_print(shop.dis1_1_tg) %>
-	    	<%= if shop.dis1_1_tg and shop.dis1_2_tg and
-	    			shop.dis1_1_tg.to_i != 888 and shop.dis1_2_tg.to_i != 888 then "/" end %>
+	    	<%#= price_888_print(shop.dis1_1_tg) %>
+	    	<%#= if shop.dis1_1_tg.to_s != "" and shop.dis1_2_tg.to_s != "" and
+	    	  #		shop.dis1_1_tg.to_i != 888 and shop.dis1_2_tg.to_i != 888 then "/" end %>
 	    	<%= price_888_print(shop.dis1_2_tg) %>
 	    </td>
 	    <td align="right"><%= price_888_print(shop.dis1_3_tg) %></td>
@@ -186,12 +189,12 @@
 	  			<%= " " + shop.minus_gak2.to_s %>
 	  		<% end %>
 	  	</td>
-	    <td rowspan="2" scope="row"><%= shop.game %></td>
+	    <td rowspan="2" scope="row" align="center"><%= shop.game %></td>
 	    <td><%= shop.shop_ryaku %></td>
 	    <!-- レギュラー -->
 	    <td rowspan="2" scope="row" align="right">
 	    	<%= price_888_print(shop.dis2_1_rg) %>
-	    	<%= if shop.dis2_1_rg and shop.dis2_2_rg and
+	    	<%= if shop.dis2_1_rg.to_s != "" and shop.dis2_2_rg.to_s != "" and
 	    			shop.dis2_1_rg.to_i != 888 and shop.dis2_2_rg.to_i != 888 then "/" end %>
 	    	<%= price_888_print(shop.dis2_2_rg) %>
 	    </td>
@@ -210,7 +213,7 @@
 	    <!-- ハイオク -->
 	    <td rowspan="2" scope="row" align="right">
 	    	<%= price_888_print(shop.dis2_1_hg) %>
-	    	<%= if shop.dis2_1_hg and shop.dis2_2_hg and
+	    	<%= if shop.dis2_1_hg.to_s != "" and shop.dis2_2_hg.to_s != "" and
 	    			shop.dis2_1_hg.to_i != 888 and shop.dis2_2_hg.to_i != 888 then "/" end %>
 	    	<%= price_888_print(shop.dis2_2_hg) %>
 	    </td>
@@ -229,7 +232,7 @@
 	    <!-- 軽油 -->
 	    <td rowspan="2" scope="row" align="right">
 	    	<%= price_888_print(shop.dis2_1_kg) %>
-	    	<%= if shop.dis2_1_kg and shop.dis2_2_kg and
+	    	<%= if shop.dis2_1_kg.to_s != "" and shop.dis2_2_kg.to_s != "" and
 	    			shop.dis2_1_kg.to_i != 888 and shop.dis2_2_kg.to_i != 888 then "/" end %>
 	    	<%= price_888_print(shop.dis2_2_kg) %>
 	    </td>
@@ -247,9 +250,9 @@
 	    </td>
 	    <!-- 灯油 -->
 	    <td rowspan="2" scope="row" align="right">
-	    	<%= price_888_print(shop.dis2_1_tg) %>
-	    	<%= if shop.dis2_1_tg and shop.dis2_2_tg and
-	    			shop.dis2_1_tg.to_i != 888 and shop.dis2_2_tg.to_i != 888 then "/" end %>
+	    	<%#= price_888_print(shop.dis2_1_tg) %>
+	    	<%#= if shop.dis2_1_tg and shop.dis2_2_tg and
+	    	  #		shop.dis2_1_tg.to_i != 888 and shop.dis2_2_tg.to_i != 888 then "/" end %>
 	    	<%= price_888_print(shop.dis2_2_tg) %>
 	    </td>
 	    <td align="right"><%= price_888_print(shop.dis2_3_tg) %></td>

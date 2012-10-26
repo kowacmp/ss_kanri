@@ -99,9 +99,11 @@ private
       ret_rec = Hash.new()
     
       ret_rec["date"] = ym
-      ret_rec["m_shop_id"] = rec.m_shop_id
-      ret_rec["z_total_rank"] = rec.total_rank #DBに存在しない項目
-      ret_rec["total_rank"] = washpurika_report.total_rank
+      ret_rec["m_shop_id"]     = rec.m_shop_id
+      ret_rec["dsp_league"]    = rec.before_league #DBに存在しない項目
+      ret_rec["dsp_rank"]      = rec.before_rank   #DBに存在しない項目
+      ret_rec["z_total_rank"]  = rec.total_rank    #DBに存在しない項目
+      ret_rec["total_rank"]    = washpurika_report.total_rank
       ret_rec["before_league"] = rec.league
       ret_rec["league"] = washpurika_report.league
       ret_rec["before_rank"] = rec.rank
@@ -153,8 +155,10 @@ private
       ret_rec = Hash.new()
       
       ret_rec["date"] = ym
-      ret_rec["m_shop_id"] = rec.m_shop_id
-      ret_rec["z_total_rank"] = rec.total_rank #DBに存在しない項目
+      ret_rec["m_shop_id"]    = rec.m_shop_id
+      ret_rec["dsp_league"]   = rec.before_league  #DBに存在しない項目
+      ret_rec["dsp_rank"]     = rec.before_rank    #DBに存在しない項目
+      ret_rec["z_total_rank"] = rec.total_rank     #DBに存在しない項目
       ret_rec["total_rank"] = 0
       ret_rec["before_league"] = rec.league
       ret_rec["league"] = 0
@@ -361,7 +365,7 @@ private
    #合計ポイントの加算
    for i in 0..(ret.length - 1)
       ret[i]["up_point"] = 0
-      if ym[4..5] == "01" then
+      if ym[4..5] == "12" then
         ret[i]["total_point"] = 0 #1月で累積ポイントはリセット
       else
         ret[i]["total_point"] = ret[i]["before_total_point"]
@@ -378,8 +382,8 @@ private
       
    end
 
-   # 旧リーグ、今月売上トータルでソート
-   ret = ret.sort{|a,b| sort_func(a, b, "before_league, uriage_total desc, before_rank")}
+   # 今月リーグ、今月ランクでソート
+   ret = ret.sort{|a,b| sort_func(a, b, "before_league, before_rank")}
 
    return ret
  

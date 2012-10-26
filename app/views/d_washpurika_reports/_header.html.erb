@@ -1,7 +1,7 @@
 <%if session[:washpurika_mode] == "edit" then%>
 	<h1>洗車プリカ販売目標実績更新</h1>
 <%else%>
-	<h1>洗車プリカ販売目標・実績表</h1>。
+	<h1>洗車プリカ販売目標・実績表</h1>
 <%end %>
 
 <%= form_tag({:action => session[:washpurika_mode].to_s }) do %>
