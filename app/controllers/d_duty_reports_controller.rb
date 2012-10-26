@@ -303,7 +303,7 @@ class DDutyReportsController < ApplicationController
     
     # 詳細作成
     #社員繰り返し
-    users = get_user_dutry("0,4", @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt)
+    users = get_user_dutry("0,3", @m_shop_id, @head[:input_day].to_s[0,4], @head[:input_day].to_s[4,2], 1, loopcnt)
     users.each_with_index do |user,idx|
       
       if @from_view == 'syoukai_menu'

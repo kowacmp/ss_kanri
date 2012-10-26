@@ -43,7 +43,7 @@ class DDutiesController < ApplicationController
     @m_shop_id = params[:m_shop_id]
     @system_date = Time.now.localtime.strftime("%Y%m%d")
     
-    @syain_users = get_user_dutry("0,4", @m_shop_id, @input_day.to_s[0,4], @input_day.to_s[4,2], @input_day.to_s[6,2], @input_day.to_s[6,2])
+    @syain_users = get_user_dutry("0,3", @m_shop_id, @input_day.to_s[0,4], @input_day.to_s[4,2], @input_day.to_s[6,2], @input_day.to_s[6,2])
 
     render :layout => 'modal'
   end
