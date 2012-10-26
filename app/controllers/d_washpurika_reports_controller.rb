@@ -365,7 +365,7 @@ private
    #合計ポイントの加算
    for i in 0..(ret.length - 1)
       ret[i]["up_point"] = 0
-      if ym[4..5] == "01" then
+      if ym[4..5] == "12" then
         ret[i]["total_point"] = 0 #1月で累積ポイントはリセット
       else
         ret[i]["total_point"] = ret[i]["before_total_point"]
