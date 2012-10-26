@@ -1,4 +1,4 @@
-<h1><%= @user.user_name %></h1>
+<h1><%= @user.user_name %>（<%= MCode.find(:first, :conditions=>["kbn='salary_kbn' and code=?", @user.salary_kbn.to_s]).code_name1 %>）</h1>
 <%#= form_tag({:action => 'syain_input_add' }, { :remote => true }) do %>
 <%= form_for :m_info_cost, :url => { :action => "popup_update" },:remote => true do |f| %>
 <%= f.hidden_field :user_id %>
@@ -6,10 +6,13 @@
 		<tr>
 			<% if @user.user_class == 0 or @user.user_class == 4 %>
 				<!--社員の場合-->
+				<th rowspan="2"></th>
 				<th style="min-width: 80px">基本給</th>
 				</tr><tr>
 				<td><%= f.number_field :general_price, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
-				</tr><tr>
+				</tr>
+				<tr>
+				<th rowspan="2"></th>
 				<% unless @m_cost_name.monthly_name1.blank? %>
 					<th style="min-width: 80px"><%= @m_cost_name.monthly_name1 %></th><% end %>
 				<% unless @m_cost_name.monthly_name2.blank? %>
@@ -23,7 +26,8 @@
 				<% unless @m_cost_name.monthly_name6.blank? %>
 					<th style="min-width: 80px"><%= @m_cost_name.monthly_name6 %></th>
 				<% end %>
-				</tr><tr>
+				</tr>
+				<tr>
 				<% unless @m_cost_name.monthly_name1.blank? %>
 					<td><%= f.number_field :time_price1, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td><% end %>
 				<% unless @m_cost_name.monthly_name2.blank? %>
@@ -38,16 +42,20 @@
 					<td><%= f.number_field :time_price6, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
 				<% end %>				
 			<% else %>
+				<th rowspan="2"></th>
 				<th style="min-width: 80px">通常単価</th>
 				<th style="min-width: 80px">通常残業</th>
 				<th style="min-width: 80px">深夜単価</th>
 				<th style="min-width: 80px">深夜残業</th>
-				</tr><tr>
+				</tr>
+				<tr>
 				<td><%= f.number_field :general_price, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
 				<td><%= f.number_field :general_overtime, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
 				<td><%= f.number_field :night_price, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
 				<td><%= f.number_field :night_overtime, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
-				</tr><tr>
+				</tr>
+				<tr>
+				<th rowspan="2">時<br />間<br />手<br />当</th>
 				<% unless @m_cost_name.hour_name1.blank? %>
 					<th style="min-width: 80px"><%= @m_cost_name.hour_name1 %></th><% end %>
 				<% unless @m_cost_name.hour_name2.blank? %>
@@ -75,7 +83,9 @@
 				<% unless @m_cost_name.hour_name6.blank? %>
 					<td><%= f.number_field :time_price6, :style=>"ime-mode:disabled" ,:maxlength=>9,:size=>4,:class=>"money" %></td>
 				<% end %>
-				</tr><tr>
+				</tr>
+				<tr>
+				<th rowspan="2">日<br / >数<br / >手<br / >当</th>
 				<% unless @m_cost_name.day_name1.blank? %>
 					<th style="min-width: 80px"><%= @m_cost_name.day_name1 %></th>
 				<% end %>
