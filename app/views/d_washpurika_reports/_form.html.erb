@@ -70,7 +70,7 @@
 	
 	<td rowspan="3" align="center" style="white-space: nowrap">
 		<%= m_shop.shop_cd %>&nbsp;<%= m_shop.shop_ryaku %><br/>
-		<%=get_league_chr(rec["before_league"])%><%=rec["before_rank"]%><br/>
+		前月順位&nbsp;<%=get_league_chr(rec["dsp_league"])%><%=rec["dsp_rank"]%><br/>
 		<%= number_with_delimiter(rec["before_total_point"]) %>
 	</td>
 	
