@@ -92,7 +92,7 @@ input.number{
   text-align: right;
 }
 
-input.text, TEXTAREA.text{
+input.text, textarea.text{
   ime-mode: active;
   text-align: left;
 }

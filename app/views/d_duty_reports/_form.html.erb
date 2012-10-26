@@ -248,25 +248,25 @@
 			<tr>
 				<td>
 					<%= form_for(@d_comment1, :url=>{:controller=>"d_duty_reports", :action=>"comment_add", :m_shop_id=>@m_shop_id, :input_day=>@head[:input_day], :renban=>@d_comment1.renban}, :remote=>true) do |f| %>
-					<%= f.text_field :title, :maxlength=>20, :size=>40 %>
+					<%= f.text_field :title, :maxlength=>20, :size=>40, :class=>"text" %>
 					<br />
-					<%= f.text_area :contents, :rows => 5, :maxlength=>100, :size=>50 %>
+					<%= f.text_area :contents, :rows => 5, :maxlength=>100, :size=>50, :class=>"text" %>
 					<%= f.submit f.object.new_record? ? '追加' : '更新', {:confirm => "保存します。よろしいですか？"} %>
 					<% end %>
 			    </td>
 				<td>
 					<%= form_for(@d_comment2, :url=>{:controller=>"d_duty_reports", :action=>"comment_add", :m_shop_id=>@m_shop_id, :input_day=>@head[:input_day], :renban=>@d_comment2.renban}, :remote=>true) do |f| %>
-					<%= f.text_field :title, :maxlength=>20, :size=>40 %>
+					<%= f.text_field :title, :maxlength=>20, :size=>40, :class=>"text" %>
 					<br />
-					<%= f.text_area :contents, :rows => 5, :maxlength=>100, :size=>50 %>
+					<%= f.text_area :contents, :rows => 5, :maxlength=>100, :size=>50, :class=>"text" %>
 					<%= f.submit f.object.new_record? ? '追加' : '更新', {:confirm => "保存します。よろしいですか？"} %>
 					<% end %>
 			    </td>
 				<td>
 					<%= form_for(@d_comment3, :url=>{:controller=>"d_duty_reports", :action=>"comment_add", :m_shop_id=>@m_shop_id, :input_day=>@head[:input_day], :renban=>@d_comment3.renban}, :remote=>true) do |f| %>
-					<%= f.text_field :title, :maxlength=>20, :size=>40 %>
+					<%= f.text_field :title, :maxlength=>20, :size=>40, :class=>"text" %>
 					<br />
-					<%= f.text_area :contents, :rows => 5, :maxlength=>100, :size=>50 %>
+					<%= f.text_area :contents, :rows => 5, :maxlength=>100, :size=>50, :class=>"text" %>
 					<%= f.submit f.object.new_record? ? '追加' : '更新', {:confirm => "保存します。よろしいですか？"} %>
 					<% end %>
 			    </td>				
