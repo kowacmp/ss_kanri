@@ -87,7 +87,7 @@
 <br />
 <% d_duty_kakutei_flg = get_d_dutie_kakutei_flg(@m_shop_id, @input_day.to_s[0,6].to_i, @input_day.to_s[6,2].to_i ) %>
 <% d_duty_input_flg = get_d_dutie_input_flg(@m_shop_id, @input_day.to_s[0,6].to_i, @input_day.to_s[6,2].to_i ) %>
-<%= submit_tag '保存', {:confirm => "保存します。よろしいですか？", :method => :post, :disabled => (d_duty_kakutei_flg==1 or d_duty_input_flg==1)} %>
+<%= submit_tag '登録', {:confirm => "登録します。よろしいですか？", :method => :post, :disabled => (d_duty_kakutei_flg==1 or d_duty_input_flg==1)} %>
 <% end %>
 
 <%= javascript_include_tag "comma" %>
