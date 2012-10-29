@@ -8,9 +8,7 @@ class DPriceCheckReportsController < ApplicationController
 
   def search
     if params[:input_ymd] == nil
-      # UPDAte 2012.09.29 日付の規定値は前日
-      #@input_ymd = Time.now.strftime("%Y/%m/%d")
-      @input_ymd = (Time.now - 60*60*24).strftime("%Y/%m/%d")
+      @input_ymd = Time.now.strftime("%Y/%m/%d")
     else
       @input_ymd = params[:input_ymd]
     end
