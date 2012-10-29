@@ -60,7 +60,13 @@
 	<!-- リーグ -->
 	<% if tmp_league != rec["before_league"] then %>
 	<th rowspan="<%=get_league_count(@d_washpurika_reports, rec["before_league"]) * 3 %>">
-		<%=get_league_chr(rec["before_league"])%>リーグ
+		<span>
+		<%=get_league_chr(rec["before_league"])%>
+		</span>
+		<!-- リーグのみ縦書き IE only -->
+		<span style="writing-mode: tb-rl; padding-left: 2px; padding-top: 3px;"> 
+			リーグ
+		</span>
 		<% tmp_league = rec["before_league"] %>
 	</th>
 	<% end %>
