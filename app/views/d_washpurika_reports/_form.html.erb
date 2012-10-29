@@ -85,7 +85,7 @@
 	</th>
 	
 	<!-- 目標1～31 -->
-	<% d_aim = DAim.find(:first, :conditions => ["date=? and m_shop_id=? and m_aim_id=8", rec["date"], rec["m_shop_id"]]) %>
+	<% d_aim = DAim.find(:first, :conditions => ["date=? and m_shop_id=? and m_aim_id=26", rec["date"], rec["m_shop_id"]]) %>
 	<% for i in 1..@days %>
 	<td align="right">
 		<%= number_with_delimiter(d_aim["aim_value#{ i }"]) unless d_aim.nil? %>
