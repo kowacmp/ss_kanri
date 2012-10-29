@@ -71,7 +71,7 @@ class DDutyReportsController < ApplicationController
       @d_comment3 = DComment.find(:first,:conditions=>["m_shop_id=? and nengetu=? and renban=3", @m_shop_id, @head[:input_day]])
       @d_comment3 = DComment.new if @d_comment3.blank?
       @d_comment3.title = "人件費表コメント(#{@head[:input_day][0,4]}/#{@head[:input_day][4,2]}/末)"
-      @d_comment3.renban = 2
+      @d_comment3.renban = 3
     end
        
     respond_to do |format|
