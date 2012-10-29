@@ -102,14 +102,14 @@
 			<% end %>
 		</tr>
 </table>
-<%= submit_tag '保存', {:confirm => "保存します。よろしいですか？", :method => :post} %>
+<%= submit_tag '登録', {:confirm => "登録します。よろしいですか？", :method => :post} %>
 <% end %>
 
 <%= javascript_include_tag "comma" %>
 
 <script>
 $(function () {
-	$('div#modal div.container').css("height", "300px");
+	$('div#modal div.container').css("height", "350px");
 	$('div#modal div.container').css("width", "740px");
 	$("div#modal").fadeIn();
 	adjustCenter("div#modal div.container");
