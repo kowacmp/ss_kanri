@@ -1,4 +1,4 @@
-<h1>価格調査表</h1>
+<h1>SS価格表</h1>
 <%= form_tag(url_for(:action => 'search'),:remote => true) do %>
 <table class='rounded-corner'>
 	<tr>
@@ -26,11 +26,3 @@
 	    <%= render partial: 'result'%>
 	</div>
 
-
-<!-- 読み込む位置が関係しているので、ここに書く -->
-<script type="text/javascript">
-//$("#input_ymd").change(function(){
-//    var input_ymd = $("#input_ymd").val();
-//    $.get("<%#=url_for({:action => 'search'}) %>?input_ymd=" + input_ymd);
-//});
-</script>

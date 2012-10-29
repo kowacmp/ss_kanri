@@ -29,7 +29,8 @@ class DPriceCheckReportsController < ApplicationController
     
     ymd = @input_ymd.delete("/")[0,8]
     
-    select_sql = "select a.*,b.* "
+    select_sql = "select a.*,b.*, "
+    select_sql << " c.code_name1 as dis1_2_code_name,d.code_name1 as dis2_2_code_name " 
     select_sql << " from m_shops a " 
     select_sql << " left join ( select x.* from "
     select_sql << "            (select * from d_price_checks where research_day = '#{ymd}') x, "
@@ -37,6 +38,8 @@ class DPriceCheckReportsController < ApplicationController
     select_sql << "             group by m_shop_id,research_day) y "
     select_sql << "             where x.m_shop_id = y.m_shop_id and x.research_day = y.research_day and x.research_time = y.max_time "
     select_sql << "            ) b on a.id = b.m_shop_id "
+    select_sql << " left join (select * from m_codes where kbn='oil_panel') c on b.dis1_2_code = cast(c.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='oil_panel') d on b.dis2_2_code = cast(d.code as integer) "
     
     condition_sql = " where a.deleted_flg = 0 and a.shop_kbn = #{@shop_kbn} "
     
@@ -61,7 +64,8 @@ class DPriceCheckReportsController < ApplicationController
     
     ymd = @input_ymd.delete("/")[0,8]
     
-    select_sql = "select a.*,b.* "
+    select_sql = "select a.*,b.*, "
+    select_sql << " c.code_name1 as dis1_2_code_name,d.code_name1 as dis2_2_code_name "
     select_sql << " from m_shops a " 
     select_sql << " left join ( select x.* from "
     select_sql << "            (select * from d_price_checks where research_day = '#{ymd}') x, "
@@ -69,6 +73,8 @@ class DPriceCheckReportsController < ApplicationController
     select_sql << "             group by m_shop_id,research_day) y "
     select_sql << "             where x.m_shop_id = y.m_shop_id and x.research_day = y.research_day and x.research_time = y.max_time "
     select_sql << "            ) b on a.id = b.m_shop_id "
+    select_sql << " left join (select * from m_codes where kbn='oil_panel') c on b.dis1_2_code = cast(c.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='oil_panel') d on b.dis2_2_code = cast(d.code as integer) "
     
     condition_sql = " where a.deleted_flg = 0 and a.shop_kbn = #{@shop_kbn} "
     
@@ -90,42 +96,20 @@ class DPriceCheckReportsController < ApplicationController
     
 
     if @price_kbn.to_i == 0
-    
+      #通常時
       # 詳細作成
       shops.each do |shop|
         report.page.list(:list).add_row do |row|
-          
+          #店舗
           row.item(:shop_name).value(shop.shop_ryaku)
           
-          #レギュラー
-          if shop.dis1_1_rg.to_s != "" and shop.dis1_2_rg.to_s != "" and shop.dis1_1_rg.to_i != 888 and shop.dis1_2_rg.to_i != 888
-            row.item(:dis1_rg).value(shop.dis1_1_rg.to_s + "/" + shop.dis1_2_rg.to_s)
-          else
-            row.item(:dis1_rg).value(price_888_print(shop.dis1_1_rg.to_s) + price_888_print(shop.dis1_2_rg.to_s))
-          end
-          #row.item(:dis1_1_rg).value(shop.dis1_1_rg)
-          #row.item(:dis1_2_rg).value(shop.dis1_2_rg)
-          row.item(:dis1_3_rg).value(price_888_print(shop.dis1_3_rg))
-          
-          if shop.dis1_3_rg.to_i != 888
-            row.item(:dis1_4_rg).value(shop.dis1_4_rg)
-          else
-            row.item(:dis1_4_rg).value("")
-          end
-          
-          if shop.dis1_3_rg.to_i != 0 and shop.dis1_3_rg.to_i != 888
-            row.item(:dis1_3_rg_p).value(shop.dis1_3_rg.to_i + shop.minus_gak3.to_i)
-          else
-            row.item(:dis1_3_rg_p).value("")
-          end
           #ハイオク
           if shop.dis1_1_hg.to_s != "" and shop.dis1_2_hg.to_s != "" and shop.dis1_1_hg.to_i != 888 and shop.dis1_2_hg.to_i != 888
             row.item(:dis1_hg).value(shop.dis1_1_hg.to_s + "/" + shop.dis1_2_hg.to_s)
           else
             row.item(:dis1_hg).value(price_888_print(shop.dis1_1_hg.to_s) + price_888_print(shop.dis1_2_hg.to_s))
           end
-          #row.item(:dis1_1_hg).value(shop.dis1_1_hg)
-          #row.item(:dis1_2_hg).value(shop.dis1_2_hg)
+          
           row.item(:dis1_3_hg).value(price_888_print(shop.dis1_3_hg))
           
           if shop.dis1_3_hg.to_i != 888
@@ -134,10 +118,42 @@ class DPriceCheckReportsController < ApplicationController
             row.item(:dis1_4_hg).value("")
           end
           
-          if shop.dis1_3_hg.to_i != 0 and shop.dis1_3_hg.to_i != 888
-            row.item(:dis1_3_hg_p).value(shop.dis1_3_hg.to_i + shop.minus_gak3.to_i)
+          if shop.dis1_3_hg.to_i != 0 and shop.dis1_3_hg.to_i != 888 and shop.minus_gak3.to_i != 0
+            row.item(:dis1_3_hg_k).value(shop.dis1_3_hg.to_i + shop.minus_gak3.to_i)
+          else
+            row.item(:dis1_3_hg_k).value("")
+          end
+          
+          if shop.dis1_3_hg.to_i != 0 and shop.dis1_3_hg.to_i != 888 and shop.minus_gak2.to_i != 0
+            row.item(:dis1_3_hg_p).value(shop.dis1_3_hg.to_i + shop.minus_gak2.to_i)
           else
             row.item(:dis1_3_hg_p).value("")
+          end
+          #レギュラー
+          if shop.dis1_1_rg.to_s != "" and shop.dis1_2_rg.to_s != "" and shop.dis1_1_rg.to_i != 888 and shop.dis1_2_rg.to_i != 888
+            row.item(:dis1_rg).value(shop.dis1_1_rg.to_s + "/" + shop.dis1_2_rg.to_s)
+          else
+            row.item(:dis1_rg).value(price_888_print(shop.dis1_1_rg.to_s) + price_888_print(shop.dis1_2_rg.to_s))
+          end
+          
+          row.item(:dis1_3_rg).value(price_888_print(shop.dis1_3_rg))
+          
+          if shop.dis1_3_rg.to_i != 888
+            row.item(:dis1_4_rg).value(shop.dis1_4_rg)
+          else
+            row.item(:dis1_4_rg).value("")
+          end
+          
+          if shop.dis1_3_rg.to_i != 0 and shop.dis1_3_rg.to_i != 888 and shop.minus_gak3.to_i != 0
+            row.item(:dis1_3_rg_k).value(shop.dis1_3_rg.to_i + shop.minus_gak3.to_i)
+          else
+            row.item(:dis1_3_rg_k).value("")
+          end
+          
+          if shop.dis1_3_rg.to_i != 0 and shop.dis1_3_rg.to_i != 888 and shop.minus_gak2.to_i != 0
+            row.item(:dis1_3_rg_p).value(shop.dis1_3_rg.to_i + shop.minus_gak2.to_i)
+          else
+            row.item(:dis1_3_rg_p).value("")
           end
           #軽油
           if shop.dis1_1_kg.to_s != "" and shop.dis1_2_kg.to_s != "" and shop.dis1_1_kg.to_i != 888 and shop.dis1_2_kg.to_i != 888
@@ -145,8 +161,7 @@ class DPriceCheckReportsController < ApplicationController
           else
             row.item(:dis1_kg).value(price_888_print(shop.dis1_1_kg.to_s) + price_888_print(shop.dis1_2_kg.to_s))
           end
-          #row.item(:dis1_1_kg).value(shop.dis1_1_kg)
-          #row.item(:dis1_2_kg).value(shop.dis1_2_kg)
+          
           row.item(:dis1_3_kg).value(price_888_print(shop.dis1_3_kg))
           
           if shop.dis1_3_kg.to_i != 888
@@ -155,20 +170,20 @@ class DPriceCheckReportsController < ApplicationController
             row.item(:dis1_4_kg).value("")
           end
           
-          if shop.dis1_3_kg.to_i != 0 and shop.dis1_3_kg.to_i != 888
-            row.item(:dis1_3_kg_p).value(shop.dis1_3_kg.to_i + shop.minus_gak3.to_i)
+          if shop.dis1_3_kg.to_i != 0 and shop.dis1_3_kg.to_i != 888 and shop.minus_gak3.to_i != 0
+            row.item(:dis1_3_kg_k).value(shop.dis1_3_kg.to_i + shop.minus_gak3.to_i)
+          else
+            row.item(:dis1_3_kg_k).value("")
+          end
+          
+          if shop.dis1_3_kg.to_i != 0 and shop.dis1_3_kg.to_i != 888 and shop.minus_gak2.to_i != 0
+            row.item(:dis1_3_kg_p).value(shop.dis1_3_kg.to_i + shop.minus_gak2.to_i)
           else
             row.item(:dis1_3_kg_p).value("")
           end
           #灯油
-          #if shop.dis1_1_tg and shop.dis1_2_tg and shop.dis1_1_tg.to_i != 888 and shop.dis1_2_tg.to_i != 888
-          #  row.item(:dis1_tg).value(shop.dis1_1_tg.to_s + "/" + shop.dis1_2_tg.to_s)
-          #else
-          #  row.item(:dis1_tg).value(price_888_print(shop.dis1_1_tg.to_s) + price_888_print(shop.dis1_2_tg.to_s))
-          #end
           row.item(:dis1_tg).value(price_888_print(shop.dis1_2_tg.to_s))
-          #row.item(:dis1_1_tg).value(shop.dis1_1_tg)
-          #row.item(:dis1_2_tg).value(shop.dis1_2_tg)
+          
           row.item(:dis1_3_tg).value(price_888_print(shop.dis1_3_tg))
           
           if shop.dis1_3_tg.to_i != 888
@@ -177,78 +192,96 @@ class DPriceCheckReportsController < ApplicationController
             row.item(:dis1_4_tg).value("")
           end
           
-          if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888
-            row.item(:dis1_3_tg_p).value(shop.dis1_3_tg.to_i + shop.minus_gak3.to_i)
+          if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888 and shop.minus_gak3.to_i != 0
+            #row.item(:dis1_3_tg_p).value(shop.dis1_3_tg.to_i + shop.minus_gak3.to_i)
+            row.item(:dis1_3_tg_k).value(shop.dis1_3_tg.to_i + (shop.minus_gak3.to_i * 18))
+          else
+            row.item(:dis1_3_tg_k).value("")
+          end
+          
+          if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888 and shop.minus_gak2.to_i != 0
+            row.item(:dis1_3_tg_p).value(shop.dis1_3_tg.to_i + (shop.minus_gak2.to_i * 18))
           else
             row.item(:dis1_3_tg_p).value("")
           end
+          
+          
           if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888
             row.item(:dis1_3_tg_l).value((shop.dis1_3_tg.to_f/18).round(1))
           else
             row.item(:dis1_3_tg_l).value("")
           end
           
+          #当り確率
           row.item(:game).value(shop.game)
           
-          #row.item(:minus_name1).value(shop.minus_name1)
-          #row.item(:minus_name2).value(shop.minus_name2)
-          #row.item(:minus_name3).value(shop.minus_name3)
+          #特売
           if shop.minus_gak1.to_i < 0
             row.item(:minus_name1).value(shop.minus_name1.to_s + "△" + (shop.minus_gak1.to_i * (-1)).to_s)
           else
             row.item(:minus_name1).value(shop.minus_name1.to_s + " " + shop.minus_gak1.to_s)
           end
-          if shop.minus_gak2.to_i < 0
-            row.item(:minus_name2).value(shop.minus_name2.to_s + "△" + (shop.minus_gak2.to_i * (-1)).to_s)
+          
+          #プリカ/会員
+          if @shop_kbn.to_i == 0
+            #洗車
+            if shop.minus_gak2.to_i != 0 
+              if shop.minus_gak2.to_i < 0
+                row.item(:minus_name2).value(shop.minus_name2.to_s + "△" + (shop.minus_gak2.to_i * (-1)).to_s)
+              else
+                row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_s)
+              end
+            elsif shop.minus_gak3.to_i != 0 
+              if shop.minus_gak3.to_i < 0
+                row.item(:minus_name2).value(shop.minus_name3.to_s + "△" + (shop.minus_gak3.to_i * (-1)).to_s)
+              else
+                row.item(:minus_name2).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_s)
+              end
+            else
+              row.item(:minus_name2).value("")
+            end
           else
-            row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_s)
+            #油外
+            if shop.minus_gak3.to_i != 0 
+              if shop.minus_gak3.to_i < 0
+                row.item(:minus_name2).value(shop.minus_name3.to_s + "△" + (shop.minus_gak3.to_i * (-1)).to_s)
+              else
+                row.item(:minus_name2).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_s)
+              end
+            elsif shop.minus_gak2.to_i != 0 
+              if shop.minus_gak2.to_i < 0
+                row.item(:minus_name2).value(shop.minus_name2.to_s + "△" + (shop.minus_gak2.to_i * (-1)).to_s)
+              else
+                row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_s)
+              end
+            else
+              row.item(:minus_name2).value("")
+            end
           end
-          if shop.minus_gak3.to_i < 0
-            row.item(:minus_name3).value(shop.minus_name3.to_s + "△" + (shop.minus_gak3.to_i * (-1)).to_s)
-          else
-            row.item(:minus_name3).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_s)
-          end
+          
+          #備考
+          row.item(:minus_name4).value(shop.minus_name4)
+          #下看
+          row.item(:dis1_2_code_name).value(shop.dis1_2_code_name)
           
         end #add_row
       end # shops.each
-      pdf_title = "価格表(通常時)_#{ymd}.pdf"
+      pdf_title = "SS価格表(通常時)_#{ymd}.pdf"
     else
-    
+      #特売時
       # 詳細作成
       shops.each do |shop|
         report.page.list(:list).add_row do |row|
-          
+          #店舗
           row.item(:shop_name).value(shop.shop_ryaku)
           
-          #レギュラー
-          if shop.dis2_1_rg.to_s != "" and shop.dis2_2_rg.to_s != "" and shop.dis2_1_rg.to_i != 888 and shop.dis2_2_rg.to_i != 888
-            row.item(:dis1_rg).value(shop.dis2_1_rg.to_s + "/" + shop.dis2_2_rg.to_s)
-          else
-            row.item(:dis1_rg).value(price_888_print(shop.dis2_1_rg.to_s) + price_888_print(shop.dis2_2_rg.to_s))
-          end
-          #row.item(:dis2_1_rg).value(shop.dis2_1_rg)
-          #row.item(:dis2_2_rg).value(shop.dis2_2_rg)
-          row.item(:dis1_3_rg).value(price_888_print(shop.dis2_3_rg))
-          
-          if shop.dis2_3_rg.to_i != 888
-            row.item(:dis1_4_rg).value(get_zeinuki_print(shop.dis2_3_rg))
-          else
-            row.item(:dis1_4_rg).value("")
-          end
-          
-          if shop.dis2_3_rg.to_i != 0 and shop.dis2_3_rg.to_i != 888
-            row.item(:dis1_3_rg_p).value(shop.dis2_3_rg.to_i + shop.minus_gak3.to_i)
-          else
-            row.item(:dis1_3_rg_p).value("")
-          end
           #ハイオク
           if shop.dis2_1_hg.to_s != "" and shop.dis2_2_hg.to_s != "" and shop.dis2_1_hg.to_i != 888 and shop.dis2_2_hg.to_i != 888
             row.item(:dis1_hg).value(shop.dis2_1_hg.to_s + "/" + shop.dis2_2_hg.to_s)
           else
             row.item(:dis1_hg).value(price_888_print(shop.dis2_1_hg.to_s) + price_888_print(shop.dis2_2_hg.to_s))
           end
-          #row.item(:dis2_1_hg).value(shop.dis2_1_hg)
-          #row.item(:dis2_2_hg).value(shop.dis2_2_hg)
+          
           row.item(:dis1_3_hg).value(price_888_print(shop.dis2_3_hg))
           
           if shop.dis2_3_hg.to_i != 888
@@ -257,10 +290,42 @@ class DPriceCheckReportsController < ApplicationController
             row.item(:dis1_4_hg).value("")
           end
           
-          if shop.dis2_3_hg.to_i != 0 and shop.dis2_3_hg.to_i != 888
-            row.item(:dis1_3_hg_p).value(shop.dis2_3_hg.to_i + shop.minus_gak3.to_i)
+          if shop.dis2_3_hg.to_i != 0 and shop.dis2_3_hg.to_i != 888 and shop.minus_gak3.to_i != 0
+            row.item(:dis1_3_hg_k).value(shop.dis2_3_hg.to_i + shop.minus_gak3.to_i)
+          else
+            row.item(:dis1_3_hg_k).value("")
+          end
+          
+          if shop.dis2_3_hg.to_i != 0 and shop.dis2_3_hg.to_i != 888 and shop.minus_gak2.to_i != 0
+            row.item(:dis1_3_hg_p).value(shop.dis2_3_hg.to_i + shop.minus_gak2.to_i)
           else
             row.item(:dis1_3_hg_p).value("")
+          end
+          #レギュラー
+          if shop.dis2_1_rg.to_s != "" and shop.dis2_2_rg.to_s != "" and shop.dis2_1_rg.to_i != 888 and shop.dis2_2_rg.to_i != 888
+            row.item(:dis1_rg).value(shop.dis2_1_rg.to_s + "/" + shop.dis2_2_rg.to_s)
+          else
+            row.item(:dis1_rg).value(price_888_print(shop.dis2_1_rg.to_s) + price_888_print(shop.dis2_2_rg.to_s))
+          end
+          
+          row.item(:dis1_3_rg).value(price_888_print(shop.dis2_3_rg))
+          
+          if shop.dis2_3_rg.to_i != 888
+            row.item(:dis1_4_rg).value(get_zeinuki_print(shop.dis2_3_rg))
+          else
+            row.item(:dis1_4_rg).value("")
+          end
+          
+          if shop.dis2_3_rg.to_i != 0 and shop.dis2_3_rg.to_i != 888 and shop.minus_gak3.to_i != 0
+            row.item(:dis1_3_rg_k).value(shop.dis2_3_rg.to_i + shop.minus_gak3.to_i)
+          else
+            row.item(:dis1_3_rg_k).value("")
+          end
+          
+          if shop.dis2_3_rg.to_i != 0 and shop.dis2_3_rg.to_i != 888 and shop.minus_gak2.to_i != 0
+            row.item(:dis1_3_rg_p).value(shop.dis2_3_rg.to_i + shop.minus_gak2.to_i)
+          else
+            row.item(:dis1_3_rg_p).value("")
           end
           #軽油
           if shop.dis2_1_kg.to_s != "" and shop.dis2_2_kg.to_s != "" and shop.dis2_1_kg.to_i != 888 and shop.dis2_2_kg.to_i != 888
@@ -268,8 +333,7 @@ class DPriceCheckReportsController < ApplicationController
           else
             row.item(:dis1_kg).value(price_888_print(shop.dis2_1_kg.to_s) + price_888_print(shop.dis2_2_kg.to_s))
           end
-          #row.item(:dis2_1_kg).value(shop.dis2_1_kg)
-          #row.item(:dis2_2_kg).value(shop.dis2_2_kg)
+          
           row.item(:dis1_3_kg).value(price_888_print(shop.dis2_3_kg))
           
           if shop.dis2_3_kg.to_i != 888
@@ -278,63 +342,101 @@ class DPriceCheckReportsController < ApplicationController
             row.item(:dis1_4_kg).value("")
           end
           
-          if shop.dis2_3_kg.to_i != 0 and shop.dis2_3_kg.to_i != 888
-            row.item(:dis1_3_kg_p).value(shop.dis2_3_kg.to_i + shop.minus_gak3.to_i)
+          if shop.dis2_3_kg.to_i != 0 and shop.dis2_3_kg.to_i != 888 and shop.minus_gak3.to_i != 0
+            row.item(:dis1_3_kg_k).value(shop.dis2_3_kg.to_i + shop.minus_gak3.to_i)
+          else
+            row.item(:dis1_3_kg_k).value("")
+          end
+          
+          if shop.dis2_3_kg.to_i != 0 and shop.dis2_3_kg.to_i != 888 and shop.minus_gak2.to_i != 0
+            row.item(:dis1_3_kg_p).value(shop.dis2_3_kg.to_i + shop.minus_gak2.to_i)
           else
             row.item(:dis1_3_kg_p).value("")
           end
           #灯油
-          #if shop.dis2_1_tg and shop.dis2_2_tg and shop.dis2_1_tg.to_i != 888 and shop.dis2_2_tg.to_i != 888
-          #  row.item(:dis1_tg).value(shop.dis2_1_tg.to_s + "/" + shop.dis2_2_tg.to_s)
-          #else
-          #  row.item(:dis1_tg).value(price_888_print(shop.dis2_1_tg.to_s) + price_888_print(shop.dis2_2_tg.to_s))
-          #end
           row.item(:dis1_tg).value(price_888_print(shop.dis2_2_tg.to_s))
-          #row.item(:dis2_1_tg).value(shop.dis2_1_tg)
-          #row.item(:dis2_2_tg).value(shop.dis2_2_tg)
+          
           row.item(:dis1_3_tg).value(price_888_print(shop.dis2_3_tg))
           
           if shop.dis2_3_tg.to_i != 888
-            row.item(:dis1_4_tg).value(get_zeinuki_print(shop.dis2_3_tg))
+            row.item(:dis1_4_tg).value(get_zeinuki_print(shop.dis2_3_tg.to_f/18))
           else
             row.item(:dis1_4_tg).value("")
           end
           
-          if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888
-            row.item(:dis1_3_tg_p).value(shop.dis2_3_tg.to_i + shop.minus_gak3.to_i)
+          if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888 and shop.minus_gak3.to_i != 0
+            row.item(:dis1_3_tg_k).value(shop.dis2_3_tg.to_i + (shop.minus_gak3.to_i * 18))
+          else
+            row.item(:dis1_3_tg_k).value("")
+          end
+          
+          if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888 and shop.minus_gak2.to_i != 0
+            row.item(:dis1_3_tg_p).value(shop.dis2_3_tg.to_i + (shop.minus_gak2.to_i * 18))
           else
             row.item(:dis1_3_tg_p).value("")
           end
+          
           if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888
             row.item(:dis1_3_tg_l).value((shop.dis2_3_tg.to_f/18).round(1))
           else
             row.item(:dis1_3_tg_l).value("")
           end
           
+          #当り確率
           row.item(:game).value(shop.game)
           
-          #row.item(:minus_name1).value(shop.minus_name1)
-          #row.item(:minus_name2).value(shop.minus_name2)
-          #row.item(:minus_name3).value(shop.minus_name3)
+          #特売
           if shop.minus_gak1.to_i < 0
             row.item(:minus_name1).value(shop.minus_name1.to_s + "△" + (shop.minus_gak1.to_i * (-1)).to_s)
           else
             row.item(:minus_name1).value(shop.minus_name1.to_s + " " + shop.minus_gak1.to_s)
           end
-          if shop.minus_gak2.to_i < 0
-            row.item(:minus_name2).value(shop.minus_name2.to_s + "△" + (shop.minus_gak2.to_i * (-1)).to_s)
+          
+          #プリカ/会員
+          if @shop_kbn.to_i == 0
+            #洗車
+            if shop.minus_gak2.to_i != 0 
+              if shop.minus_gak2.to_i < 0
+                row.item(:minus_name2).value(shop.minus_name2.to_s + "△" + (shop.minus_gak2.to_i * (-1)).to_s)
+              else
+                row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_s)
+              end
+            elsif shop.minus_gak3.to_i != 0 
+              if shop.minus_gak3.to_i < 0
+                row.item(:minus_name2).value(shop.minus_name3.to_s + "△" + (shop.minus_gak3.to_i * (-1)).to_s)
+              else
+                row.item(:minus_name2).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_s)
+              end
+            else
+              row.item(:minus_name2).value("")
+            end
           else
-            row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_s)
+            #油外
+            if shop.minus_gak3.to_i != 0 
+              if shop.minus_gak3.to_i < 0
+                row.item(:minus_name2).value(shop.minus_name3.to_s + "△" + (shop.minus_gak3.to_i * (-1)).to_s)
+              else
+                row.item(:minus_name2).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_s)
+              end
+            elsif shop.minus_gak2.to_i != 0 
+              if shop.minus_gak2.to_i < 0
+                row.item(:minus_name2).value(shop.minus_name2.to_s + "△" + (shop.minus_gak2.to_i * (-1)).to_s)
+              else
+                row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_s)
+              end
+            else
+              row.item(:minus_name2).value("")
+            end
           end
-          if shop.minus_gak3.to_i < 0
-            row.item(:minus_name3).value(shop.minus_name3.to_s + "△" + (shop.minus_gak3.to_i * (-1)).to_s)
-          else
-            row.item(:minus_name3).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_s)
-          end
+          
+          #備考
+          row.item(:minus_name4).value(shop.minus_name4)
+          #下看
+          row.item(:dis1_2_code_name).value(shop.dis2_2_code_name)
           
         end #add_row
       end # shops.each
-      pdf_title = "価格表(特売時)_#{ymd}.pdf"
+      pdf_title = "SS価格表(特売時)_#{ymd}.pdf"
     end
     
     
