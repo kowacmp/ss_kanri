@@ -3,6 +3,18 @@
 
 	<%= form_tag({:action => 'search' }, { :remote => true }) do %>
 
+<%
+	# 復元用検索パラメータ取得
+	shop_kbn  = nil
+	shop_from = nil
+	shop_to   = nil
+	if not(session[:m_shops_select].nil?)
+		shop_kbn   = session[:m_shops_select][:shop_kbn]
+		shop_from  = session[:m_shops_select][:shop_from]
+		shop_to    = session[:m_shops_select][:shop_to]
+	end 
+%>
+
 <table id='rounded-corner'>
 	<tr>
       <th>店舗種別</th>
@@ -10,14 +22,14 @@
       	<%= select("select",'shop_kbn' ,
 	  	 	MCode.find(:all,:conditions => ["kbn = 'shop_kbn' and code <> '9'"], :order => 'code').map do |u|
 	      	[u.code_name1,u.code]
-	   		end, :include_blank => "") %>
+	   		end, :include_blank => "", :selected => shop_kbn ) %>
       </td>
 	  <th>対象店舗(From)</th>
 	  <td>
 	  	<%= select("select",'shop_from' ,
 	  	 	MShop.find(:all,:conditions => "deleted_flg = 0", :order => 'shop_cd').map do |u|
 	      	[u.shop_ryaku,u.shop_cd]
-	   		end, :include_blank => "") %>
+	   		end, :include_blank => "", :selected => shop_from) %>
 	  </td>
 	  <td style="border: none">～</td>
 	  <th>対象店舗(To)</th>
@@ -25,7 +37,7 @@
 	  	<%= select("select",'shop_to' ,
 	  	 	MShop.find(:all,:conditions => "deleted_flg = 0", :order => 'shop_cd').map do |u|
 	      	[u.shop_ryaku,u.shop_cd]
-	   		end, :include_blank => "") %>
+	   		end, :include_blank => "", :selected => shop_to) %>
 	  </td>
 	  <td style="border: none"><%= submit_tag '検索' %></td>
       </tr>

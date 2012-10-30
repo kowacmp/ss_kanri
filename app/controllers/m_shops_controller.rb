@@ -6,19 +6,30 @@ class MShopsController < ApplicationController
   def index
     #@m_shops = MShop.all
     
-    select_sql = "select a.*, b.code_name as shop_kbn_name"
-    select_sql << " from m_shops a " 
-    select_sql << " left join (select * from m_codes where kbn='shop_kbn') b on a.shop_kbn = cast(b.code as integer) "
+    # 復元用検索パラメータ初期化
+    if not(params[:menu_id].nil?) then
+      session[:m_shops_select] = nil
+    end
     
-    condition_sql = " where deleted_flg = 0 "
+    if session[:m_shops_select].nil? then
+      # 初期呼出
+      select_sql = "select a.*, b.code_name as shop_kbn_name"
+      select_sql << " from m_shops a " 
+      select_sql << " left join (select * from m_codes where kbn='shop_kbn') b on a.shop_kbn = cast(b.code as integer) "
     
-    @m_shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.shop_cd")
+      condition_sql = " where deleted_flg = 0 "
     
+      @m_shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.shop_cd")
     
-    #@m_shops = MShop.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'shop_cd')
+      #@m_shops = MShop.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'shop_cd')
     
-    @m_oils = MOil.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'oil_cd')
-
+      @m_oils = MOil.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'oil_cd')
+    else
+      # 戻り呼出
+      params[:select] = session[:m_shops_select]
+      search
+    end
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @m_shops }
@@ -344,6 +355,9 @@ class MShopsController < ApplicationController
   
   
   def search 
+    
+    # 復元用検索パラメータ保存
+    session[:m_shops_select] = params[:select]
     
     select_sql = "select a.*, b.code_name as shop_kbn_name"
     select_sql << " from m_shops a " 
