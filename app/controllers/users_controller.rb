@@ -6,37 +6,35 @@ class UsersController < ApplicationController
   skip_before_filter :permission_check, :only => ['edit', 'update']
   
   def index
+    
+    # 検索条件をリセット
+    if not(params[:menu_id].nil?) 
+      session[:users_select] = nil
+    end
+    
     #@users = User.all
     #@users = User.find(:all,:order=>"id")
     
-    select_sql = "select a.*, b.shop_name,"
-    select_sql << "           c.code_name as user_class_name, " 
-    select_sql << "           d.authority_name, " 
-    select_sql << "           e.code_name as salary_kbn_name " 
-    select_sql << " from users a " 
-    select_sql << " left join (select * from m_shops) b on a.m_shop_id = b.id "
-    select_sql << " left join (select * from m_codes where kbn='user_class') c on a.user_class = cast(c.code as integer) "
-    select_sql << " left join (select * from m_authorities) d on a.m_authority_id = d.id "
-    select_sql << " left join (select * from m_codes where kbn='salary_kbn') e on a.salary_kbn = cast(e.code as integer) "
-    
-    condition_sql = ""
-    
-    
-    if params[:input_check] == nil
-        @check_del_flg = 0
-        condition_sql = " where a.deleted_flg = 0 "
-        @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
+    if session[:users_select].nil? then
+      # 初回選択時
+      select_sql = "select a.*, b.shop_name,"
+      select_sql << "           c.code_name as user_class_name, " 
+      select_sql << "           d.authority_name, " 
+      select_sql << "           e.code_name as salary_kbn_name " 
+      select_sql << " from users a " 
+      select_sql << " left join (select * from m_shops) b on a.m_shop_id = b.id "
+      select_sql << " left join (select * from m_codes where kbn='user_class') c on a.user_class = cast(c.code as integer) "
+      select_sql << " left join (select * from m_authorities) d on a.m_authority_id = d.id "
+      select_sql << " left join (select * from m_codes where kbn='salary_kbn') e on a.salary_kbn = cast(e.code as integer) "
+      
+      condition_sql = ""
+      condition_sql = " where a.deleted_flg = 0 "
+      @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
     else
-        @check_del_flg = params[:input_check].to_i
-        if @check_del_flg == 0
-          condition_sql = " where a.deleted_flg = 0 "
-          @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
-        else
-          @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
-        end
+      # 検索条件の復元時
+      params[:select] = session[:users_select]
+      search
     end
-    
-    #@users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -160,6 +158,9 @@ class UsersController < ApplicationController
   
   def search 
     
+    # 検索条件を保存しておく
+    session[:users_select] = params[:select]
+    
     select_sql = "select a.*, b.shop_name,"
     select_sql << "           c.code_name as user_class_name, " 
     select_sql << "           d.authority_name, " 
@@ -176,7 +177,7 @@ class UsersController < ApplicationController
       condition_sql = " where a.m_shop_id = " + params[:select][:shop_id]
     end
     
-    if params[:check][:deleted_flg] == "true"
+    if params[:select][:deleted_flg] == "true"
       @check_del_flg = 1
       @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
     else
