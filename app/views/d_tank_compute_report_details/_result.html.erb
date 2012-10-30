@@ -155,7 +155,14 @@
   </tbody>
 </table>
 
+<!-- UPDATE BEGIN 2012.10.30 印刷はモードを問わず常に表示 -->
+<!-- 
 <%= submit_tag '  印  刷  ',format: 'pdf' unless @mode == 'manager' %>
+-->
+<%= hidden_field_tag :mode,    @mode    if @mode == 'manager' %>
+<%= hidden_field_tag :shop_id, @shop_id if @mode == 'manager' %>
+<%= submit_tag '  印  刷  ',format: 'pdf' %>
+<!-- UPDATE END 2012.10.30 印刷はモードを問わずす常に表示 -->
 <% end %>
 
 <script>
