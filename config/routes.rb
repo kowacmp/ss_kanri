@@ -81,6 +81,7 @@ SsKanri::Application.routes.draw do
   get "d_washpurika_reports/index"
   get "d_washpurika_reports/edit"
   get "d_washpurika_reports/show"
+  get "d_washpurika_reports/print"
 
   resources :d_result_reports do
    collection do

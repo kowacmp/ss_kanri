@@ -219,6 +219,17 @@
 	<%end%> <!-- if session[:washpurika_mode].to_s == "edit" then -->
 	
 <% end %>
+
+<%if session[:washpurika_mode].to_s != "edit" then %>
+	<%= form_tag({:action => 'print'}) do %>
+		<!-- begin 帳表用検索パラメータ -->
+		<%= hidden_field :rheader, :y,    :value => params[:header][:y] %>
+		<%= hidden_field :rheader, :m,    :value => params[:header][:m] %>
+		<!-- end 帳表用検索パラメータ -->
+	<%= submit_tag  '  印  刷  ',format: 'pdf' %>
+	<% end %>
+<%end%> <!-- if session[:washpurika_mode].to_s == "edit" then -->
+
 <br/>
 </div> <!-- <div id="div_d_washpurika_reports" style="visibility: hidden;"> -->
 <script language="JavaScript">

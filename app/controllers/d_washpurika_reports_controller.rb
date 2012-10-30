@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 class DWashpurikaReportsController < ApplicationController
 
+  include DWashpurikaReportsHelper
+
   def index
 
     # 引数より入力、照会を取得
@@ -62,6 +64,118 @@ class DWashpurikaReportsController < ApplicationController
                                                :m => params[:hheader][:m]}
     
   end
+
+
+
+
+  def print
+    @d_washpurika_reports = read_d_washpurika_reports(params[:rheader][:y] + params[:rheader][:m])
+    @days = Time.days_in_month(params[:rheader][:m].to_i, params[:rheader][:y].to_i)
+    
+    shops = MShop.find(:all,:conditions => ['shop_kbn = 0'],:order => 'shop_cd')
+    
+    report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_washpurika_report.tlf')
+    
+    #ページ、作成日、タイトル設定
+    report.events.on :page_create do |e|
+      #e.page.item(:page).value(e.page.no)
+      #e.page.item(:sakusei_ymd).value(Time.now.strftime("%Y-%m-%d"))
+      e.page.item(:title).value("洗車プリカ販売目標・実績表")
+    end #evants.on
+    
+    report.start_new_page
+ 
+    #ヘッダー
+    report.page.list(:list).header do |h|
+        output_ym = params[:rheader][:y].to_i.to_s + "年" + params[:rheader][:m].to_i.to_s + "月"
+        output_y = params[:rheader][:y].to_i.to_s + "年"
+        output_m = params[:rheader][:m].to_i.to_s + "月"
+        #h.item(:output_ym).value(output_ym)
+        h.item(:output_y).value(output_y)
+        h.item(:output_m).value(output_m)
+        #h.item(:shop_name).value(@m_shop.shop_name)
+        for i in 1..@days
+          select_day = Date.new(params[:rheader][:y].to_i, params[:rheader][:m].to_i, i)    
+          week_w = day_of_the_week(select_day.wday) 
+          h.item("d_#{i}").value(i)
+          h.item("w_#{i}").value(week_w)
+        end
+    end
+ 
+    tmp_league = ""
+ 
+    # 詳細作成
+    for rec_group in @d_washpurika_reports
+      #リーグが変わった場合実行
+      if tmp_league != rec_group["before_league"]
+        league_idx = 0
+        # Set header datas.
+        report.page.list(:list).add_row do |row|
+        for rec in @d_washpurika_reports
+          #同リーグを１レコードとする
+          if rec["before_league"] == rec_group["before_league"]
+            league_idx = league_idx + 1
+            #１リーグ５店舗までとする
+            if league_idx <= 5 
+              
+              m_shop = MShop.find(rec["m_shop_id"])
+              row.item("league").value(get_league_chr(rec["before_league"]))
+              row.item("shop_name_#{league_idx}").value(m_shop.shop_ryaku)
+              row.item("zen_rank_#{league_idx}").value("前月順位" + get_league_chr(rec["dsp_league"]).to_s + rec["dsp_rank"].to_s)
+              row.item("r_pt_#{league_idx}").value(rec["before_total_point"])
+              
+              #目標1～31
+              d_aim = DAim.find(:first, :conditions => ["date=? and m_shop_id=? and m_aim_id=26", rec["date"], rec["m_shop_id"]])
+              for i in 1..@days
+                row.item("aim_#{league_idx}_#{i}").value(d_aim["aim_value#{ i }"]) unless d_aim.nil?
+              end
+              #目標トータル
+              row.item("aim_total_#{league_idx}").value(d_aim.aim_total) unless d_aim.nil?
+              #枚数差
+              row.item("aim_maisu_#{league_idx}").value(d_aim.aim_total - rec["result_total"]) unless d_aim.nil?
+              #ペース
+              row.item("aim_pace_#{league_idx}").value(rec["pace"])
+              #前年同日迄のペース
+              row.item("same_pace_#{league_idx}").value(rec["same_pace"])
+              #同月過去最高実績
+              row.item("same_uriage_total_max_#{league_idx}").value(rec["same_uriage_total_max"])
+              
+              #実績枚数1～31
+              for i in 1..@days
+                row.item("j_#{league_idx}_#{i}").value(rec["result#{ i }"])
+              end
+              #実績枚数トータル
+              row.item("j_total_#{league_idx}").value(rec["result_total"])
+              #前年同日迄の実績
+              row.item("same_uriage_#{league_idx}").value(rec["same_uriage"])
+              
+              #洗車売上金額
+              row.item("uriage_total_#{league_idx}").value(rec["uriage_total"])
+              #前年同月末実績
+              row.item("same_uriage_total_#{league_idx}").value(rec["same_uriage_total"])
+              #本年ペース - 過去最高
+              row.item("result_total_#{league_idx}").value(rec["pace"] - rec["same_uriage_total_max"])
+            
+            end #if league_idx <= 5 
+          end #if rec["before_league"] == rec_group["before_league"]
+        end #for rec
+        end #add_row  
+      end #if tmp_league != rec_group["before_league"]
+      tmp_league = rec_group["before_league"]
+    end #for rec_group
+    
+    #ファイル名セット     
+    pdf_title = "洗車プリカ販売目標実績表_#{params[:rheader][:y] + params[:rheader][:m]}.pdf"
+    ua = request.env["HTTP_USER_AGENT"]
+    pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
+      
+    #pdfを作成
+    send_data report.generate, :filename    => pdf_title ,#URI.encode(pdf_title), #KOWA IEでファイルをダウンロードすると文字化けするため
+                               :type        => 'application/pdf',
+                               :disposition => 'attachment'
+                               
+  end #def print
+
   
 private
 
