@@ -60,15 +60,11 @@ class DWashpurikaReportsController < ApplicationController
     
     } # commit
     
-    # editにredirectすると元に戻ってしまうため、showに戻る
-    session[:washpurika_mode] = "show" 
-    redirect_to :action => "show", :header => {:y => params[:hheader][:y],
-                                               :m => params[:hheader][:m]}
+    redirect_to :action => "edit", :header => {:y => params[:hheader][:y],
+                                               :m => params[:hheader][:m],
+                                               :d => params[:hheader][:d]}
     
   end
-
-
-
 
   def print
     @d_washpurika_reports = read_d_washpurika_reports(params[:rheader][:y] + params[:rheader][:m])
@@ -405,7 +401,7 @@ private
     else
       ret_rec["same_uriage_total"] = zennen["uriage_total"]
     end
-        
+    
     # 同月過去最高実績
     ret_rec["same_uriage_total_max"] = DWashpurikaReport.maximum(:uriage_total, 
                                                               :conditions => ["m_shop_id=? and date < ? and date like ?",
@@ -415,6 +411,21 @@ private
     
     
     ret_rec["same_uriage_total_max"] = 0 if ret_rec["same_uriage_total_max"].nil?
+    
+    # 前年同月の計算値が0の場合は入力済みを優先させる
+    # ※1年目のみ前年のデータがないので、前年計算値がALL=0で出力されるが、例外的に手入力を許可しているため。
+    #   常に再計算を優先させると前回入力の値が失われることになる。
+    last_input = DWashpurikaReport.find(:first, 
+                                        :conditions => ["date=? and m_shop_id=?",
+                                                          ret_rec["date"],
+                                                          ret_rec["m_shop_id"]])
+    
+    if not(last_input.nil?) then
+      ret_rec["same_pace"]             = last_input["same_pace"]              if ret_rec["same_pace"] == 0
+      ret_rec["same_uriage"]           = last_input["same_uriage"]            if ret_rec["same_uriage"] == 0
+      ret_rec["same_uriage_total"]     = last_input["same_uriage_total"]      if ret_rec["same_uriage_total"] == 0
+      ret_rec["same_uriage_total_max"] = last_input["same_uriage_total_max"]  if ret_rec["same_uriage_total_max"] == 0
+    end
     
     ret.push ret_rec
       
