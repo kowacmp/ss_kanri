@@ -15,6 +15,26 @@ $(function() {
 		$("#btn_copy").prop("disabled", false);
 	<% end %>
 });
+
+// 全角数字入力を半角に置き換える
+$(function () {
+	$("input[id$=hg], input[id$=rg], input[id$=kg], input[id$=tg]").change( function (){
+		var tmp = this.value;
+		tmp = tmp.replace(/０/g, "0");
+		tmp = tmp.replace(/１/g, "1");
+		tmp = tmp.replace(/２/g, "2");
+		tmp = tmp.replace(/３/g, "3");
+		tmp = tmp.replace(/４/g, "4");
+		tmp = tmp.replace(/５/g, "5");
+		tmp = tmp.replace(/６/g, "6");
+		tmp = tmp.replace(/７/g, "7");
+		tmp = tmp.replace(/８/g, "8");
+		tmp = tmp.replace(/９/g, "9");
+		if (tmp != this.value) {
+			this.value = tmp;
+		}
+	});
+});
 </script>
 
 <div id="_form_<%= input_name %>">
