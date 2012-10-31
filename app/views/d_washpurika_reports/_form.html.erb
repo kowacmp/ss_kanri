@@ -1,4 +1,6 @@
+<%= javascript_include_tag "comma" %>
 <div id="div_d_washpurika_reports" style="visibility: hidden;">
+<%=form_tag({:action => "update"}) do %>
 <table class='rounded-corner' id="tablefix" >
 <!-- begin ヘッダ -->
 <tr>
@@ -53,7 +55,9 @@
 <!-- END ヘッダ -->
 
 <% tmp_league = "" %>
+<% cnt = 0 %>
 <% for rec in @d_washpurika_reports %>
+<% cnt += 1%>
 <% if tmp_league != rec["before_league"] then %>
 <tr class="sikiri">
 <% end %>	
@@ -109,12 +113,24 @@
 
 	<!-- 前年同日迄のペース -->
 	<td rowspan="1" align="right">
-		<%= number_with_delimiter(rec["same_pace"]) %>
+		<!-- <%= number_with_delimiter(rec["same_pace"]) %> -->
+		<%if session[:washpurika_mode].to_s == "edit" then %>
+			<%= text_field "data#{cnt}", :same_pace, :value => rec["same_pace"], :class => "money" %> 
+		<% else %>
+			<%= number_with_delimiter(rec["same_pace"]) %>
+			<%= hidden_field "data#{cnt}", :same_pace, :value => rec["same_pace"] %> 
+		<% end %>
 	</td>
 
 	<!-- 同月過去最高実績 -->
 	<td rowspan="2" align="right">
-		<%= number_with_delimiter(rec["same_uriage_total_max"]) %>
+		<!-- <%= number_with_delimiter(rec["same_uriage_total_max"]) %> -->
+		<%if session[:washpurika_mode].to_s == "edit" then %>
+			<%= text_field "data#{cnt}", :same_uriage_total_max, :value => rec["same_uriage_total_max"], :class => "money" %> 
+		<% else %>
+			<%= number_with_delimiter(rec["same_uriage_total_max"]) %>
+			<%= hidden_field "data#{cnt}", :same_uriage_total_max, :value => rec["same_uriage_total_max"] %> 
+		<% end %>
 	</td>
 
 </tr>
@@ -137,7 +153,13 @@
 
 	<!-- 前年同日迄の実績 -->
 	<td rowspan="1" align="right">
-		<%= number_with_delimiter(rec["same_uriage"]) %>
+		<!-- <%= number_with_delimiter(rec["same_uriage"]) %> -->
+		<%if session[:washpurika_mode].to_s == "edit" then %>
+			<%= text_field "data#{cnt}", :same_uriage, :value => rec["same_uriage"], :class => "money" %> 
+		<% else %>
+			<%= number_with_delimiter(rec["same_uriage"]) %>
+			<%= hidden_field "data#{cnt}", :same_uriage, :value => rec["same_uriage"] %> 
+		<% end %>
 	</td>
 
 </tr>
@@ -149,22 +171,40 @@
 	
 	<!-- 前年同月末実績 -->
 	<td align="right">
-		<%= number_with_delimiter(rec["same_uriage_total"]) %>
+		<!-- <%= number_with_delimiter(rec["same_uriage_total"]) %> -->
+		<%if session[:washpurika_mode].to_s == "edit" then %>
+			<%= text_field "data#{cnt}", :same_uriage_total, :value => rec["same_uriage_total"], :class => "money" %> 
+		<% else %>
+			<%= number_with_delimiter(rec["same_uriage_total"]) %>
+			<%= hidden_field "data#{cnt}", :same_uriage_total, :value => rec["same_uriage_total"] %> 
+		<% end %>
 	</td>
 	
 	<!-- 本年ペース - 過去最高 -->
 	<td align="right">
+		<span myid="span_pace_minus<%=cnt%>">
 		<%= number_with_delimiter(rec["pace"] - rec["same_uriage_total_max"]) %>
+		</span>
+		<script>
+		$( function () {
+			$("#data<%=cnt%>_same_uriage_total_max").live("change", function () {
+				var pace  = Number($("#data<%=cnt%>_pace").val());
+				var total = Number(this.value.replace(/,/g, ""));
+				if (isNaN(total)) { total = 0; }
+				$("span[myid=span_pace_minus<%=cnt%>]").html( format_kanma(pace - total) );
+			});
+		});
+		</script>
 	</td>
 </tr>
 <% end %><!-- for rec in @d_washpurika_reports -->
 </table>
 
-<%=form_tag({:action => "update"}) do %>
 	<!-- begin 検索パラメータ -->
 	<%= hidden_field :hheader, :mode, :value => "" %>
 	<%= hidden_field :hheader, :y,    :value => params[:header][:y] %>
 	<%= hidden_field :hheader, :m,    :value => params[:header][:m] %>
+	<%= hidden_field :hheader, :d,    :value => params[:header][:d] %>
 	<!-- end 検索パラメータ -->
 
 	<!-- begin データ部分 -->
@@ -195,10 +235,12 @@
 		<%=hidden_field "data#{cnt}", :uriage_total,       :value => rec["uriage_total"] %>
 
 		<%=hidden_field "data#{cnt}", :pace,                  :value => rec["pace"] %>
-		<%=hidden_field "data#{cnt}", :same_pace,             :value => rec["same_pace"]%>
-		<%=hidden_field "data#{cnt}", :same_uriage,           :value => rec["same_uriage"]%>
-		<%=hidden_field "data#{cnt}", :same_uriage_total,     :value => rec["same_uriage_total"] %>
-		<%=hidden_field "data#{cnt}", :same_uriage_total_max, :value => rec["same_uriage_total_max"] %>
+		
+		<%#### DEL 2012.10.31 text_field で入力可とする %>
+		<%#=hidden_field "data#{cnt}", :same_pace,             :value => rec["same_pace"] %>
+		<%#=hidden_field "data#{cnt}", :same_uriage,           :value => rec["same_uriage"] %>
+		<%#=hidden_field "data#{cnt}", :same_uriage_total,     :value => rec["same_uriage_total"] %>
+		<%#=hidden_field "data#{cnt}", :same_uriage_total_max, :value => rec["same_uriage_total_max"] %>
 		
 		<!-- 今月分のuppoint -->
 		<%=hidden_field "data_#{cnt}", :up_point,                  :value => rec["up_point"] %>
@@ -218,7 +260,7 @@
 	</div>
 	<%end%> <!-- if session[:washpurika_mode].to_s == "edit" then -->
 	
-<% end %>
+<% end %> <!-- form_tag({:action => "update"}) do -->
 
 <%if session[:washpurika_mode].to_s != "edit" then %>
 	<%= form_tag({:action => 'print'}) do %>

@@ -23,7 +23,7 @@ class DWashpurikaReportsController < ApplicationController
 
   def edit
 
-    @d_washpurika_reports = create_d_washpurika_reports(params[:header][:y] + params[:header][:m])
+    @d_washpurika_reports = create_d_washpurika_reports(params[:header][:y] + params[:header][:m], params[:header][:d].to_i)
     @days = Time.days_in_month(params[:header][:m].to_i, params[:header][:y].to_i)
 
   end
@@ -60,7 +60,9 @@ class DWashpurikaReportsController < ApplicationController
     
     } # commit
     
-    redirect_to :action => "edit", :header => {:y => params[:hheader][:y],
+    # editにredirectすると元に戻ってしまうため、showに戻る
+    session[:washpurika_mode] = "show" 
+    redirect_to :action => "show", :header => {:y => params[:hheader][:y],
                                                :m => params[:hheader][:m]}
     
   end
@@ -247,7 +249,7 @@ private
   end
     
   # 洗車プリカ販売目標データ作成
-  def create_d_washpurika_reports(ym)
+  def create_d_washpurika_reports(ym, max_d)
     
     # 戻り値の配列設定
     ret = Array.new()
@@ -286,7 +288,7 @@ private
       result_max_day = 0
       uriage_total = 0
       
-      for d in 1..31
+      for d in 1..max_d
         
         # 売上枚数取得
         sql = "
@@ -341,7 +343,7 @@ private
           uriage_total += d_uriage[0].pos_data.to_i
         end
       
-    end # for d in 1..31
+    end # for d in 1..max_d
     
     ret_rec["result_total"]   = result_total   #枚数1～31計
     ret_rec["result_days"]    = result_days    #実績入力日数
@@ -450,14 +452,14 @@ private
        end
      end
            
-     # 最上位、最下位が逆転している場合は入れ替える
+     # 最上位、最下位を強制的に入れ替える
      if (not(rec1.nil?)) and (not(rec2.nil?)) then
-        if ret[rec1]["uriage_total"] < ret[rec2]["uriage_total"] then
+        #if ret[rec1]["uriage_total"] < ret[rec2]["uriage_total"] then #DEL 2012.10.31 売上に関係なく入れ替える
             ret[rec1]["league"] = (league + 1)
             ret[rec1]["rank"] = 1
             ret[rec2]["league"] = league
             ret[rec2]["rank"] = 5
-        end  
+        #end  
      end
  
    end

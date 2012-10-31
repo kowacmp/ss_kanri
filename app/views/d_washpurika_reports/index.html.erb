@@ -1,2 +1,3 @@
 <%= render :partial => 'header', :locals => {:ym_y => Date.today.year.to_s,
-	                                         :ym_m => sprintf('%02d', Date.today.month) } %>
+	                                         :ym_m => sprintf('%02d', Date.today.month),
+	                                         :ym_d => sprintf('%02d', Date.today.day) } %>
