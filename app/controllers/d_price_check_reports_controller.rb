@@ -102,119 +102,116 @@ class DPriceCheckReportsController < ApplicationController
  
     report.start_new_page
     
+    record_idx = 0
 
     if @price_kbn.to_i == 0
       #通常時
       # 詳細作成
       shops.each do |shop|
         report.page.list(:list).add_row do |row|
+          record_idx = record_idx + 1
+          #偶数の場合色をつける
+          if record_idx % 2 == 0
+            row.item(:record_back).style(:fill, '#dbeef3') # 塗り
+          end
+          
           #店舗
           row.item(:shop_name).value(shop.shop_ryaku)
           
           #ハイオク
-          if shop.dis1_1_hg.to_s != "" and shop.dis1_2_hg.to_s != "" and shop.dis1_1_hg.to_i != 888 and shop.dis1_2_hg.to_i != 888
-            row.item(:dis1_hg).value(shop.dis1_1_hg.to_s + "/" + shop.dis1_2_hg.to_s)
-          else
-            row.item(:dis1_hg).value(price_888_print(shop.dis1_1_hg.to_s) + price_888_print(shop.dis1_2_hg.to_s))
+          #看板
+          row.item(:dis1_1_hg).value(shop.dis1_1_hg)
+          row.item(:dis1_2_hg).value(shop.dis1_2_hg)
+          if shop.dis1_1_hg.to_s != "" or shop.dis1_2_hg.to_s != ""
+            row.item(:dis1_hg).value("/")
           end
-          
-          row.item(:dis1_3_hg).value(price_888_print(shop.dis1_3_hg))
-          
-          if shop.dis1_3_hg.to_i != 888
-            row.item(:dis1_4_hg).value(shop.dis1_4_hg)
-          else
-            row.item(:dis1_4_hg).value("")
-          end
-          
-          if shop.dis1_3_hg.to_i != 0 and shop.dis1_3_hg.to_i != 888 and shop.minus_gak3.to_i != 0
+          #現金(税抜)
+          row.item(:dis1_3_hg).value(shop.dis1_3_hg)
+          #現金(税込)
+          row.item(:dis1_4_hg).value(shop.dis1_4_hg)
+          #会員
+          if shop.dis1_3_hg.to_i != 0 and shop.minus_gak3.to_i != 0
             row.item(:dis1_3_hg_k).value(shop.dis1_3_hg.to_i + shop.minus_gak3.to_i)
           else
             row.item(:dis1_3_hg_k).value("")
           end
-          
-          if shop.dis1_3_hg.to_i != 0 and shop.dis1_3_hg.to_i != 888 and shop.minus_gak2.to_i != 0
+          #プリカ
+          if shop.dis1_3_hg.to_i != 0 and shop.minus_gak2.to_i != 0
             row.item(:dis1_3_hg_p).value(shop.dis1_3_hg.to_i + shop.minus_gak2.to_i)
           else
             row.item(:dis1_3_hg_p).value("")
           end
+          
           #レギュラー
-          if shop.dis1_1_rg.to_s != "" and shop.dis1_2_rg.to_s != "" and shop.dis1_1_rg.to_i != 888 and shop.dis1_2_rg.to_i != 888
-            row.item(:dis1_rg).value(shop.dis1_1_rg.to_s + "/" + shop.dis1_2_rg.to_s)
-          else
-            row.item(:dis1_rg).value(price_888_print(shop.dis1_1_rg.to_s) + price_888_print(shop.dis1_2_rg.to_s))
+          #看板
+          row.item(:dis1_1_rg).value(shop.dis1_1_rg)
+          row.item(:dis1_2_rg).value(shop.dis1_2_rg)
+          if shop.dis1_1_rg.to_s != "" or shop.dis1_2_rg.to_s != ""
+            row.item(:dis1_rg).value("/")
           end
-          
-          row.item(:dis1_3_rg).value(price_888_print(shop.dis1_3_rg))
-          
-          if shop.dis1_3_rg.to_i != 888
-            row.item(:dis1_4_rg).value(shop.dis1_4_rg)
-          else
-            row.item(:dis1_4_rg).value("")
-          end
-          
-          if shop.dis1_3_rg.to_i != 0 and shop.dis1_3_rg.to_i != 888 and shop.minus_gak3.to_i != 0
+          #現金(税抜)
+          row.item(:dis1_3_rg).value(shop.dis1_3_rg)
+          #現金(税込)
+          row.item(:dis1_4_rg).value(shop.dis1_4_rg)
+          #会員
+          if shop.dis1_3_rg.to_i != 0 and shop.minus_gak3.to_i != 0
             row.item(:dis1_3_rg_k).value(shop.dis1_3_rg.to_i + shop.minus_gak3.to_i)
           else
             row.item(:dis1_3_rg_k).value("")
           end
-          
-          if shop.dis1_3_rg.to_i != 0 and shop.dis1_3_rg.to_i != 888 and shop.minus_gak2.to_i != 0
+          #プリカ
+          if shop.dis1_3_rg.to_i != 0 and shop.minus_gak2.to_i != 0
             row.item(:dis1_3_rg_p).value(shop.dis1_3_rg.to_i + shop.minus_gak2.to_i)
           else
             row.item(:dis1_3_rg_p).value("")
           end
+          
           #軽油
-          if shop.dis1_1_kg.to_s != "" and shop.dis1_2_kg.to_s != "" and shop.dis1_1_kg.to_i != 888 and shop.dis1_2_kg.to_i != 888
-            row.item(:dis1_kg).value(shop.dis1_1_kg.to_s + "/" + shop.dis1_2_kg.to_s)
-          else
-            row.item(:dis1_kg).value(price_888_print(shop.dis1_1_kg.to_s) + price_888_print(shop.dis1_2_kg.to_s))
+          #看板
+          row.item(:dis1_1_kg).value(shop.dis1_1_kg)
+          row.item(:dis1_2_kg).value(shop.dis1_2_kg)
+          if shop.dis1_1_kg.to_s != "" or shop.dis1_2_kg.to_s != ""
+            row.item(:dis1_kg).value("/")
           end
-          
-          row.item(:dis1_3_kg).value(price_888_print(shop.dis1_3_kg))
-          
-          if shop.dis1_3_kg.to_i != 888
-            row.item(:dis1_4_kg).value(shop.dis1_4_kg)
-          else
-            row.item(:dis1_4_kg).value("")
-          end
-          
-          if shop.dis1_3_kg.to_i != 0 and shop.dis1_3_kg.to_i != 888 and shop.minus_gak3.to_i != 0
+          #現金(税抜)
+          row.item(:dis1_3_kg).value(shop.dis1_3_kg)
+          #現金(税込)
+          row.item(:dis1_4_kg).value(shop.dis1_4_kg)
+          #会員
+          if shop.dis1_3_kg.to_i != 0 and shop.minus_gak3.to_i != 0
             row.item(:dis1_3_kg_k).value(shop.dis1_3_kg.to_i + shop.minus_gak3.to_i)
           else
             row.item(:dis1_3_kg_k).value("")
           end
-          
-          if shop.dis1_3_kg.to_i != 0 and shop.dis1_3_kg.to_i != 888 and shop.minus_gak2.to_i != 0
+          #プリカ
+          if shop.dis1_3_kg.to_i != 0 and shop.minus_gak2.to_i != 0
             row.item(:dis1_3_kg_p).value(shop.dis1_3_kg.to_i + shop.minus_gak2.to_i)
           else
             row.item(:dis1_3_kg_p).value("")
           end
+          
           #灯油
-          row.item(:dis1_tg).value(price_888_print(shop.dis1_2_tg.to_s))
-          
-          row.item(:dis1_3_tg).value(price_888_print(shop.dis1_3_tg))
-          
-          if shop.dis1_3_tg.to_i != 888
-            row.item(:dis1_4_tg).value(shop.dis1_4_tg)
-          else
-            row.item(:dis1_4_tg).value("")
-          end
-          
-          if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888 and shop.minus_gak3.to_i != 0
+          #看板
+          row.item(:dis1_tg).value(shop.dis1_2_tg)
+          #現金(税込)18L
+          row.item(:dis1_3_tg).value(shop.dis1_3_tg)
+          #現金(税抜)
+          row.item(:dis1_4_tg).value(shop.dis1_4_tg)
+          #会員
+          if shop.dis1_3_tg.to_i != 0 and shop.minus_gak3.to_i != 0
             #row.item(:dis1_3_tg_p).value(shop.dis1_3_tg.to_i + shop.minus_gak3.to_i)
             row.item(:dis1_3_tg_k).value(shop.dis1_3_tg.to_i + (shop.minus_gak3.to_i * 18))
           else
             row.item(:dis1_3_tg_k).value("")
           end
-          
-          if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888 and shop.minus_gak2.to_i != 0
+          #プリカ
+          if shop.dis1_3_tg.to_i != 0 and shop.minus_gak2.to_i != 0
             row.item(:dis1_3_tg_p).value(shop.dis1_3_tg.to_i + (shop.minus_gak2.to_i * 18))
           else
             row.item(:dis1_3_tg_p).value("")
           end
-          
-          
-          if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888
+          #現金(税込)1L
+          if shop.dis1_3_tg.to_i != 0
             row.item(:dis1_3_tg_l).value((shop.dis1_3_tg.to_f/18).round(1))
           else
             row.item(:dis1_3_tg_l).value("")
@@ -280,111 +277,108 @@ class DPriceCheckReportsController < ApplicationController
       # 詳細作成
       shops.each do |shop|
         report.page.list(:list).add_row do |row|
+          record_idx = record_idx + 1
+          #偶数の場合色をつける
+          if record_idx % 2 == 0
+            row.item(:record_back).style(:fill, '#dbeef3') # 塗り
+          end
+          
           #店舗
           row.item(:shop_name).value(shop.shop_ryaku)
           
           #ハイオク
-          if shop.dis2_1_hg.to_s != "" and shop.dis2_2_hg.to_s != "" and shop.dis2_1_hg.to_i != 888 and shop.dis2_2_hg.to_i != 888
-            row.item(:dis1_hg).value(shop.dis2_1_hg.to_s + "/" + shop.dis2_2_hg.to_s)
-          else
-            row.item(:dis1_hg).value(price_888_print(shop.dis2_1_hg.to_s) + price_888_print(shop.dis2_2_hg.to_s))
+          #看板
+          row.item(:dis1_1_hg).value(shop.dis2_1_hg)
+          row.item(:dis1_2_hg).value(shop.dis2_2_hg)
+          if shop.dis2_1_hg.to_s != "" or shop.dis2_2_hg.to_s != ""
+            row.item(:dis1_hg).value("/")
           end
-          
-          row.item(:dis1_3_hg).value(price_888_print(shop.dis2_3_hg))
-          
-          if shop.dis2_3_hg.to_i != 888
-            row.item(:dis1_4_hg).value(get_zeinuki_print(shop.dis2_3_hg))
-          else
-            row.item(:dis1_4_hg).value("")
-          end
-          
-          if shop.dis2_3_hg.to_i != 0 and shop.dis2_3_hg.to_i != 888 and shop.minus_gak3.to_i != 0
+          #現金(税抜)
+          row.item(:dis1_3_hg).value(shop.dis2_3_hg)
+          #現金(税込)
+          row.item(:dis1_4_hg).value(get_zeinuki_print(shop.dis2_3_hg))
+          #会員
+          if shop.dis2_3_hg.to_i != 0 and shop.minus_gak3.to_i != 0
             row.item(:dis1_3_hg_k).value(shop.dis2_3_hg.to_i + shop.minus_gak3.to_i)
           else
             row.item(:dis1_3_hg_k).value("")
           end
-          
-          if shop.dis2_3_hg.to_i != 0 and shop.dis2_3_hg.to_i != 888 and shop.minus_gak2.to_i != 0
+          #プリカ
+          if shop.dis2_3_hg.to_i != 0 and shop.minus_gak2.to_i != 0
             row.item(:dis1_3_hg_p).value(shop.dis2_3_hg.to_i + shop.minus_gak2.to_i)
           else
             row.item(:dis1_3_hg_p).value("")
           end
+          
           #レギュラー
-          if shop.dis2_1_rg.to_s != "" and shop.dis2_2_rg.to_s != "" and shop.dis2_1_rg.to_i != 888 and shop.dis2_2_rg.to_i != 888
-            row.item(:dis1_rg).value(shop.dis2_1_rg.to_s + "/" + shop.dis2_2_rg.to_s)
-          else
-            row.item(:dis1_rg).value(price_888_print(shop.dis2_1_rg.to_s) + price_888_print(shop.dis2_2_rg.to_s))
+          #看板
+          row.item(:dis1_1_rg).value(shop.dis2_1_rg)
+          row.item(:dis1_2_rg).value(shop.dis2_2_rg)
+          if shop.dis2_1_rg.to_s != "" or shop.dis2_2_rg.to_s != ""
+            row.item(:dis1_rg).value("/")
           end
-          
-          row.item(:dis1_3_rg).value(price_888_print(shop.dis2_3_rg))
-          
-          if shop.dis2_3_rg.to_i != 888
-            row.item(:dis1_4_rg).value(get_zeinuki_print(shop.dis2_3_rg))
-          else
-            row.item(:dis1_4_rg).value("")
-          end
-          
-          if shop.dis2_3_rg.to_i != 0 and shop.dis2_3_rg.to_i != 888 and shop.minus_gak3.to_i != 0
+          #現金(税抜)
+          row.item(:dis1_3_rg).value(shop.dis2_3_rg)
+          #現金(税込)
+          row.item(:dis1_4_rg).value(get_zeinuki_print(shop.dis2_3_rg))
+          #会員
+          if shop.dis2_3_rg.to_i != 0 and shop.minus_gak3.to_i != 0
             row.item(:dis1_3_rg_k).value(shop.dis2_3_rg.to_i + shop.minus_gak3.to_i)
           else
             row.item(:dis1_3_rg_k).value("")
           end
-          
-          if shop.dis2_3_rg.to_i != 0 and shop.dis2_3_rg.to_i != 888 and shop.minus_gak2.to_i != 0
+          #プリカ
+          if shop.dis2_3_rg.to_i != 0 and shop.minus_gak2.to_i != 0
             row.item(:dis1_3_rg_p).value(shop.dis2_3_rg.to_i + shop.minus_gak2.to_i)
           else
             row.item(:dis1_3_rg_p).value("")
           end
+          
           #軽油
-          if shop.dis2_1_kg.to_s != "" and shop.dis2_2_kg.to_s != "" and shop.dis2_1_kg.to_i != 888 and shop.dis2_2_kg.to_i != 888
-            row.item(:dis1_kg).value(shop.dis2_1_kg.to_s + "/" + shop.dis2_2_kg.to_s)
-          else
-            row.item(:dis1_kg).value(price_888_print(shop.dis2_1_kg.to_s) + price_888_print(shop.dis2_2_kg.to_s))
+          #看板
+          row.item(:dis1_1_kg).value(shop.dis2_1_kg)
+          row.item(:dis1_2_kg).value(shop.dis2_2_kg)
+          if shop.dis2_1_kg.to_s != "" or shop.dis2_2_kg.to_s != ""
+            row.item(:dis1_kg).value("/")
           end
-          
-          row.item(:dis1_3_kg).value(price_888_print(shop.dis2_3_kg))
-          
-          if shop.dis2_3_kg.to_i != 888
-            row.item(:dis1_4_kg).value(get_zeinuki_kg_print(shop.dis2_3_kg))
-          else
-            row.item(:dis1_4_kg).value("")
-          end
-          
-          if shop.dis2_3_kg.to_i != 0 and shop.dis2_3_kg.to_i != 888 and shop.minus_gak3.to_i != 0
+          #現金(税抜)
+          row.item(:dis1_3_kg).value(shop.dis2_3_kg)
+          #現金(税込)
+          row.item(:dis1_4_kg).value(get_zeinuki_kg_print(shop.dis2_3_kg))
+          #会員
+          if shop.dis2_3_kg.to_i != 0 and shop.minus_gak3.to_i != 0
             row.item(:dis1_3_kg_k).value(shop.dis2_3_kg.to_i + shop.minus_gak3.to_i)
           else
             row.item(:dis1_3_kg_k).value("")
           end
-          
-          if shop.dis2_3_kg.to_i != 0 and shop.dis2_3_kg.to_i != 888 and shop.minus_gak2.to_i != 0
+          #プリカ
+          if shop.dis2_3_kg.to_i != 0 and shop.minus_gak2.to_i != 0
             row.item(:dis1_3_kg_p).value(shop.dis2_3_kg.to_i + shop.minus_gak2.to_i)
           else
             row.item(:dis1_3_kg_p).value("")
           end
+          
           #灯油
-          row.item(:dis1_tg).value(price_888_print(shop.dis2_2_tg.to_s))
-          
-          row.item(:dis1_3_tg).value(price_888_print(shop.dis2_3_tg))
-          
-          if shop.dis2_3_tg.to_i != 888
-            row.item(:dis1_4_tg).value(get_zeinuki_print(shop.dis2_3_tg.to_f/18))
-          else
-            row.item(:dis1_4_tg).value("")
-          end
-          
-          if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888 and shop.minus_gak3.to_i != 0
+          #看板
+          row.item(:dis1_tg).value(shop.dis2_2_tg)
+          #現金(税込)18L
+          row.item(:dis1_3_tg).value(shop.dis2_3_tg)
+          #現金(税抜)
+          row.item(:dis1_4_tg).value(get_zeinuki_print(shop.dis2_3_tg.to_f/18))
+          #会員
+          if shop.dis2_3_tg.to_i != 0 and shop.minus_gak3.to_i != 0
             row.item(:dis1_3_tg_k).value(shop.dis2_3_tg.to_i + (shop.minus_gak3.to_i * 18))
           else
             row.item(:dis1_3_tg_k).value("")
           end
-          
-          if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888 and shop.minus_gak2.to_i != 0
+          #プリカ
+          if shop.dis2_3_tg.to_i != 0 and shop.minus_gak2.to_i != 0
             row.item(:dis1_3_tg_p).value(shop.dis2_3_tg.to_i + (shop.minus_gak2.to_i * 18))
           else
             row.item(:dis1_3_tg_p).value("")
           end
-          
-          if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888
+          #現金(税込)1L
+          if shop.dis2_3_tg.to_i != 0
             row.item(:dis1_3_tg_l).value((shop.dis2_3_tg.to_f/18).round(1))
           else
             row.item(:dis1_3_tg_l).value("")
