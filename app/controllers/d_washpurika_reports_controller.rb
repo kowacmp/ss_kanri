@@ -119,8 +119,8 @@ class DWashpurikaReportsController < ApplicationController
               m_shop = MShop.find(rec["m_shop_id"])
               row.item("league").value(get_league_chr(rec["before_league"]))
               row.item("shop_name_#{league_idx}").value(m_shop.shop_ryaku)
-              row.item("zen_rank_#{league_idx}").value("前月順位" + get_league_chr(rec["dsp_league"]).to_s + rec["dsp_rank"].to_s)
-              row.item("r_pt_#{league_idx}").value(rec["before_total_point"])
+              row.item("zen_rank_#{league_idx}").value("前月順位 " + get_league_chr(rec["dsp_league"]).to_s + rec["dsp_rank"].to_s)
+              row.item("r_pt_#{league_idx}").value("累積pt " + rec["before_total_point"].to_s)
               
               #目標1～31
               d_aim = DAim.find(:first, :conditions => ["date=? and m_shop_id=? and m_aim_id=26", rec["date"], rec["m_shop_id"]])
