@@ -8,7 +8,7 @@
 		&nbsp;
 	</th>
 	<th rowspan="3" style="white-space: nowrap" >
-		店舗<br/>
+		店舗<br/><br/>
 		前月順位<br/>
 		累積pt<br/>
 	</th>
@@ -24,7 +24,7 @@
 		累積
 	</th>
 	<th rowspan="3" style="white-space: nowrap" >
-		枚数差
+		差枚数
 	</th>
 	<th rowspan="2" style="white-space: nowrap" >
 		ペース
@@ -79,9 +79,9 @@
 	<% m_shop = MShop.find(rec["m_shop_id"]) %>
 	
 	<td rowspan="3" align="center" style="white-space: nowrap">
-		<%= m_shop.shop_cd %>&nbsp;<%= m_shop.shop_ryaku %><br/>
-		前月順位&nbsp;<%=get_league_chr(rec["dsp_league"])%><%=rec["dsp_rank"]%><br/>
-		<%= number_with_delimiter(rec["before_total_point"]) %>
+		<%= m_shop.shop_cd %>&nbsp;<%= m_shop.shop_ryaku %><br/><br/>
+		前月順位&nbsp;&nbsp;<%=get_league_chr(rec["dsp_league"])%><%=rec["dsp_rank"]%><br/>
+		累積pt&nbsp;&nbsp;<%= number_with_delimiter(rec["before_total_point"]) %>
 	</td>
 	
 	<th rowspan="1">
