@@ -257,6 +257,9 @@ private
       zym = ym[0..3] + sprintf("%02d", (ym[4..5].to_i - 1)) 
     end
     
+    # 店舗が追加された場合に表示されないので、前月データに場合
+    add_new_shops(zym)
+    
     # 前月のデータを取得
     washpurika_reports = DWashpurikaReport.find(:all, 
                                                 :conditions => ["date=?", zym],
@@ -446,9 +449,17 @@ private
      rec["rank"] = rank
      
    end
- 
+   
+   # リーグの最大を取得する
+   max_league = 0
+   for rec in ret
+     if rec["league"] > max_league then
+       max_league = rec["league"]
+     end
+   end
+   
    # ①でつけたリーグ内順位の最上位、最下位で順位が逆転している場合は入れ替えを行う。
-   for league in 1..5 # 1:A～B, 2:B～C, 3:C～D, 4:D～E, 5:E～F
+   for league in 1..max_league # 1:A～B, 2:B～C, 3:C～D, 4:D～E, 5:E～F　‥
      rec1 = nil
      rec2 = nil
      
@@ -559,6 +570,85 @@ private
     
     return 0
     
+  end
+  
+  # 新規店舗のレコードを追加する
+  def add_new_shops(ym)
+     
+     
+     # 新規店舗を取得
+     sql = "select
+              *
+            from 
+              m_shops
+            where
+                   id not in (select m_shop_id from d_washpurika_reports where date = '#{ ym }')
+              and  shop_kbn = 0
+            order by
+              shop_cd
+           "
+     
+     m_shops = MShop.find_by_sql(sql)
+     
+     # ランクと順位の最大を取得する
+     max_d_washpurika_report = DWashpurikaReport.find(:first, :conditions => ["date=?", ym], :order => "league desc, rank desc")
+     if max_d_washpurika_report.nil?
+       league     = 1
+       rank       = 0
+       total_rank = 0
+     else
+       league     = max_d_washpurika_report.league
+       rank       = max_d_washpurika_report.rank
+       total_rank = max_d_washpurika_report.total_rank
+     end
+     
+     
+     for m_shop in m_shops
+       
+       # 順位+1したものを取得する
+       rank += 1
+       total_rank += 1
+       if rank > 5 
+         league += 1
+         rank = 1
+       end
+       
+       # 新規店舗を最下位に追加する
+       d_washpurika_report = DWashpurikaReport.new()
+       
+       d_washpurika_report.date               = ym
+       d_washpurika_report.m_shop_id          = m_shop.id
+       d_washpurika_report.total_rank         = total_rank
+       d_washpurika_report.before_league      = league
+       d_washpurika_report.league             = league
+       d_washpurika_report.before_rank        = rank
+       d_washpurika_report.rank               = rank
+       d_washpurika_report.before_total_point = 0
+       d_washpurika_report.total_point        = 0
+       
+       for i in 1..31
+         d_washpurika_report["result#{ i }"] = 0
+       end
+       d_washpurika_report.result_total = 0
+       
+       for i in 1..31
+         d_washpurika_report["uriage#{ i }"] = 0
+       end
+       d_washpurika_report.uriage_total = 0
+       
+       d_washpurika_report.pace                  = 0
+       d_washpurika_report.same_pace             = 0
+       d_washpurika_report.same_uriage           = 0
+       d_washpurika_report.same_uriage_total     = 0
+       d_washpurika_report.same_uriage_total_max = 0
+       
+       d_washpurika_report.created_user_id = current_user.id
+       d_washpurika_report.updated_user_id = current_user.id
+       
+       d_washpurika_report.save!
+       
+     end
+     
   end
   
 end
