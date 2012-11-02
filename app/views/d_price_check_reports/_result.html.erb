@@ -514,7 +514,7 @@
 	  			<%= " " + shop.minus_gak1.to_s %>
 	  		<% end %>
 	  	</td>
-	    <td align="center"><%= shop.dis2_2_code_name %></td><!-- ハイオク 下看 -->
+	    <td colspan="3" align="center"><%= shop.dis2_2_code_name %></td><!-- ハイオク 下看 -->
 	    <td align="center"></td><!-- ハイオク 現金税込 -->
 	    <td align="center">
 	    	<%# if shop.dis2_3_hg.to_i != 0 and shop.dis2_3_hg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
@@ -522,7 +522,7 @@
 	    		<%= shop.dis2_3_hg.to_i + shop.minus_gak2.to_i %>
 	    	<% end %>
 		</td><!-- ハイオク プリカ -->
-	    <td align="center"><%= shop.dis2_2_code_name %></td><!-- レギュラー 下看 -->
+	    <td colspan="3"  align="center"><%= shop.dis2_2_code_name %></td><!-- レギュラー 下看 -->
 	    <td align="center"></td><!-- レギュラー 現金税込 -->
 	    <td align="center">
 	    	<%# if shop.dis2_3_rg.to_i != 0 and shop.dis2_3_rg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
@@ -530,7 +530,7 @@
 	    		<%= shop.dis2_3_rg.to_i + shop.minus_gak2.to_i %>
 	    	<% end %>
 		</td><!-- レギュラー プリカ -->
-	    <td align="center"><%= shop.dis2_2_code_name %></td><!-- 軽油 下看 -->
+	    <td colspan="3"  align="center"><%= shop.dis2_2_code_name %></td><!-- 軽油 下看 -->
 	    <td align="center"></td><!-- 軽油 現金税込 -->
 	    <td align="center">
 	    	<%# if shop.dis2_3_kg.to_i != 0 and shop.dis2_3_kg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
