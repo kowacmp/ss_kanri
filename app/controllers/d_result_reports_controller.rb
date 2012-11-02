@@ -358,10 +358,16 @@ class DResultReportsController < ApplicationController
         row.item(:shop).value(data.shop_ryaku) 
         row.item(:r_chousei).value(data.r_chousei)
           r_chousei_total = r_chousei_total + data.r_chousei.to_i
-        row.item(:oiletc_aim).value(data.oiletc_aim)
+        #row.item(:oiletc_aim).value(data.oiletc_aim)
+        if data.oiletc_aim
+          row.item(:oiletc_aim).value((data.oiletc_aim.to_f / 10000).truncate)
+        else
+          row.item(:oiletc_aim).value("")
+        end
         
         if data.r_arari
-          @oiletc_pace = (data.r_arari.to_f / @day_e * @month_last_day).round(0)
+          #@oiletc_pace = (data.r_arari.to_f / @day_e * @month_last_day).round(0)
+          @oiletc_pace = (data.r_arari.to_f / @day_e * @month_last_day / 10000).truncate
         else
           @oiletc_pace = ""
         end
@@ -520,7 +526,13 @@ class DResultReportsController < ApplicationController
         row.item(:touyu_pace).value(@touyu_pace)
         row.item(:touyu_aim).value(data.touyu_aim)
         
-        row.item(:kyuyu_purika_aim).value(data.kyuyu_purika_aim)
+        #row.item(:kyuyu_purika_aim).value(data.kyuyu_purika_aim)
+        if data.kyuyu_purika_aim
+          row.item(:kyuyu_purika_aim).value((data.kyuyu_purika_aim.to_f / 10000).truncate)
+        else
+          row.item(:kyuyu_purika_aim).value("")
+        end
+        
         row.item(:kyuyu_purika).value(data.kyuyu_purika)
         row.item(:r_kyuyu_purika).value(data.r_kyuyu_purika)
         

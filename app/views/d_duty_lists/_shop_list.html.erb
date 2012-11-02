@@ -1,48 +1,114 @@
 <div id="check">
 <table  id='rounded-corner'>
 	<tr>
-		<th>店舗</th>
-		<th>対象年月</th>
-		<th>店舗種別</th>
-		<th>最終登録日</th>
-		<th>入力チェック<br />(10日)</th>
-		<th>入力チェック<br />(20日)</th>
-		<th>入力チェック<br />(月末)</th>
-		<th>詳細</th>
+		<th rowspan="2" >店舗</th>
+		<th rowspan="2" >対象年月</th>
+		<th rowspan="2" >店舗種別</th>
+		<th rowspan="2" >最終登録日</th>
+		<th colspan="2" >(10日)</th>
+		<th colspan="2" >(20日)</th>
+		<th colspan="2" >(月末)</th>
+		<th rowspan="2" >詳細</th>
 	</tr>
-  <% i = 1 %>
-  <% @shops.each do |shop| %>
-    <tr>
-      <td><%= shop.shop_cd.to_s + '　' + shop.shop_name %><%=  %></td>
-      <td align="center">
-        <% unless @input_ym_s == nil %>
-          <%= @input_ym_s[0,4] + '年' + @input_ym_s[4,2] + '月' %>
-        <% end %>
-      </td>
-      <td align="center">
+	<tr>
+		<th>状況</th>
+		<th>確認
+			<%# if @all_kakutei_flg10 == 0 or @all_kakutei_flg10 == nil %>
+			<% if @check_count.kakutei_10_cnt == '0' or @check_count.input_10_cnt != @check_count.kakutei_10_cnt %>
+				<%=  check_box_tag "all_lock_10", "0", false  %>
+			<% else %>
+				<%=  check_box_tag "all_lock_10", "1", true  %>
+			<% end %>
+		</th>
+		<th>状況</th>
+		<th>確認
+			<%# if @all_kakutei_flg == 0 or @all_kakutei_flg == nil %>
+			<% if @check_count.kakutei_20_cnt == '0' or @check_count.input_20_cnt != @check_count.kakutei_20_cnt %>
+				<%=  check_box_tag "all_lock_20", "0", false  %> 
+			<% else %>
+				<%=  check_box_tag "all_lock_20", "1", true  %>
+			<% end %>
+		</th>
+		<th>状況</th>
+		<th>確認
+			<%# if @all_kakutei_flg == 0 or @all_kakutei_flg == nil %>
+			<% if @check_count.kakutei_30_cnt == '0' or @check_count.input_30_cnt != @check_count.kakutei_30_cnt %>
+				<%=  check_box_tag "all_lock_30", "0", false  %> 
+			<% else %>
+				<%=  check_box_tag "all_lock_30", "1", true  %>
+			<% end %>
+		</th>
+	</tr>
+	<% i = 1 %>
+	<%# @shops.each do |shop| %>
+	<% @shops.each.each_with_index do |shop, i| %>
+	<tr>
+		<td><%= shop.shop_cd.to_s + '　' + shop.shop_name %><%=  %></td>
+		<td align="center">
+			<% unless @input_ym_s == nil %>
+				<%= @input_ym_s[0,4] + '年' + @input_ym_s[4,2] + '月' %>
+			<% end %>
+		</td>
+		<td align="center">
 		<%= shop.shop_kbn_name %>
-      </td>
-      <td align="center">
-      	<% unless shop.last_day == nil %>
-      		<%= shop.duty_nengetu[0,4] + '年' + shop.duty_nengetu[4,2] + '月' + shop.last_day.to_s + '日' %>
-      	<% end %>
-      </td>
-      <td align="center"><%= if shop.input_10 == '1' then "済" else "未" end %></td>
-      <td align="center"><%= if shop.input_20 == '1' then "済" else "未" end %></td>
-      <td align="center"><%= if shop.input_30 == '1' then "済" else "未" end %></td>
-      <td align="center">
-      	<% if @from_view == "syoukai_menu" %>
-	      	<%= link_to image_tag('icon/24_show.png'), {:controller => 'd_duty_reports',:action => 'show',
-	            :input_day => @input_ym_s,:head_input_m_shop_id => shop.id,:from_view => @from_view} %>
-      	<% else %>
-	      	<%= link_to image_tag('icon/24_edit.png'), {:controller => 'd_duties',:action => 'index',
-	            :input_day => @input_ym_s,:m_shop_id => shop.id,:mode => 'list'} %>
-        <% end %>
-      </td>
-    </tr>
-  <% end %>
+		</td>
+		<td align="center">
+			<% unless shop.last_day == nil %>
+				<%= shop.duty_nengetu[0,4] + '/' + shop.duty_nengetu[4,2] + '/' + shop.last_day.to_s %>
+			<% end %>
+		</td>
+		<!-- 10日迄の状況表示 -->
+		<td align="center">
+			<%= if shop.input_10 == '1' then "済" else "" end %>
+		</td>
+		<!-- 10日迄の確認 -->
+		<td align="center">
+			<% if shop.input_10 == '1' %>
+				<% if shop.kakutei_10 == '0' %>
+					<%=  check_box_tag "d_duty_kakutei_10_flg_#{shop.id}", "0", false  %>
+				<% else %>
+					<%=  check_box_tag "d_duty_kakutei_10_flg_#{shop.id}", "1", true %>
+				<% end %>
+			<% end %>
+		</td>
+		<!-- 20日迄の状況表示 -->
+		<td align="center"><%= if shop.input_20 == '1' then "済" else "" end %></td>
+		<!-- 20日迄の確認 -->
+		<td align="center">
+			<% if shop.input_20 == '1' %>
+				<% if shop.kakutei_20 == '0' %>
+					<%=  check_box_tag "d_duty_kakutei_20_flg_#{shop.id}", "0", false  %>
+				<% else %>
+					<%=  check_box_tag "d_duty_kakutei_20_flg_#{shop.id}", "1", true %>
+				<% end %>
+			<% end %>
+		</td>
+		<!-- 月末迄の状況表示 -->
+		<td align="center"><%= if shop.input_30 == '1' then "済" else "" end %></td>
+		<!-- 月末迄の確認 -->
+		<td align="center">
+			<% if shop.input_30 == '1' %>
+				<% if shop.kakutei_30 == '0' %>
+					<%=  check_box_tag "d_duty_kakutei_30_flg_#{shop.id}", "0", false  %>
+				<% else %>
+					<%=  check_box_tag "d_duty_kakutei_30_flg_#{shop.id}", "1", true %>
+				<% end %>
+			<% end %>
+		</td>
+		<td align="center">
+			<% if @from_view == "syoukai_menu" %>
+				<%= link_to image_tag('icon/24_show.png'), {:controller => 'd_duty_reports',:action => 'show',
+					:input_day => @input_ym_s,:head_input_m_shop_id => shop.id,:from_view => @from_view} %>
+			<% else %>
+				<%= link_to image_tag('icon/24_edit.png'), {:controller => 'd_duties',:action => 'index',
+					:input_day => @input_ym_s,:m_shop_id => shop.id,:mode => 'list'} %>
+			<% end %>
+		</td>
+	</tr>
+	<% end %>
 </table>
 <%= hidden_field_tag "input_ymd",@input_ymd %>
+<%= hidden_field_tag "input_ym",@input_ym_s %>
 <%= hidden_field_tag "shop_kbn",@shop_kbn %>
 </div>
 

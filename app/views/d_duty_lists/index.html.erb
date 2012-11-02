@@ -33,3 +33,34 @@
 	    <%= render partial: 'shop_list'%>
 	</div>
 </p>
+
+<script type="text/javascript">
+    //全てロック／解除が変更された場合のイベント
+    $("#all_lock")
+	    .live('click', function(){
+	    		var msg;
+	    		if ($(this).attr('checked') == "checked") {
+	    			msg = "すべてロックします。よろしいですか？"
+	    		}else{
+	    			msg = "すべて解除します。よろしいですか？"
+	    		};
+	    		
+	    		if(confirm(msg)){
+	    			$.post(
+		    			//'/d_results/all_lock/',
+		    			'<%=url_for(:action => "all_lock")%>',
+		    			{ kakutei_flg: $(this).attr('checked'), input_day: $("#select_date").val(), input_shop_kbn: $("#shop_kbn").val() },
+					    function(data, status) {        // 通信成功時にデータを表示
+					       $('#result').empty();
+			               $('#result').append(data);
+			               
+			             },
+					    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
+		    		);
+					//return true;
+				}else{
+					return false;	
+				};
+				
+	    	});	    	
+</script>

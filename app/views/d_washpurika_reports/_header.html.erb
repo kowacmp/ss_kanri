@@ -30,6 +30,16 @@
 			%>
 			<%=select :header, :m, m_list, :selected => ym_m %>
 			月
+			<%if session[:washpurika_mode] == "edit" then%>
+			<%
+				d_list = Array.new()
+				for i in 1..31
+					d_list.push [sprintf('%02d', i), sprintf('%02d', i)]
+				end
+			%>
+			<%=select :header, :d, d_list, :selected => ym_d %>
+			日
+			<%end%> <!-- if session[:washpurika_mode] == "edit" then -->
   		</td>
   		<td style="border: none;">
 			&nbsp;

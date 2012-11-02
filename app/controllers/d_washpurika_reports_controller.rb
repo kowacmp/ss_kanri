@@ -23,7 +23,7 @@ class DWashpurikaReportsController < ApplicationController
 
   def edit
 
-    @d_washpurika_reports = create_d_washpurika_reports(params[:header][:y] + params[:header][:m])
+    @d_washpurika_reports = create_d_washpurika_reports(params[:header][:y] + params[:header][:m], params[:header][:d].to_i)
     @days = Time.days_in_month(params[:header][:m].to_i, params[:header][:y].to_i)
 
   end
@@ -61,12 +61,10 @@ class DWashpurikaReportsController < ApplicationController
     } # commit
     
     redirect_to :action => "edit", :header => {:y => params[:hheader][:y],
-                                               :m => params[:hheader][:m]}
+                                               :m => params[:hheader][:m],
+                                               :d => params[:hheader][:d]}
     
   end
-
-
-
 
   def print
     @d_washpurika_reports = read_d_washpurika_reports(params[:rheader][:y] + params[:rheader][:m])
@@ -121,8 +119,8 @@ class DWashpurikaReportsController < ApplicationController
               m_shop = MShop.find(rec["m_shop_id"])
               row.item("league").value(get_league_chr(rec["before_league"]))
               row.item("shop_name_#{league_idx}").value(m_shop.shop_ryaku)
-              row.item("zen_rank_#{league_idx}").value("前月順位" + get_league_chr(rec["dsp_league"]).to_s + rec["dsp_rank"].to_s)
-              row.item("r_pt_#{league_idx}").value(rec["before_total_point"])
+              row.item("zen_rank_#{league_idx}").value("前月順位 " + get_league_chr(rec["dsp_league"]).to_s + rec["dsp_rank"].to_s)
+              row.item("r_pt_#{league_idx}").value("累積pt " + rec["before_total_point"].to_s)
               
               #目標1～31
               d_aim = DAim.find(:first, :conditions => ["date=? and m_shop_id=? and m_aim_id=26", rec["date"], rec["m_shop_id"]])
@@ -247,7 +245,7 @@ private
   end
     
   # 洗車プリカ販売目標データ作成
-  def create_d_washpurika_reports(ym)
+  def create_d_washpurika_reports(ym, max_d)
     
     # 戻り値の配列設定
     ret = Array.new()
@@ -258,6 +256,9 @@ private
     else
       zym = ym[0..3] + sprintf("%02d", (ym[4..5].to_i - 1)) 
     end
+    
+    # 店舗が追加された場合に表示されないので、前月データに場合
+    add_new_shops(zym)
     
     # 前月のデータを取得
     washpurika_reports = DWashpurikaReport.find(:all, 
@@ -286,7 +287,7 @@ private
       result_max_day = 0
       uriage_total = 0
       
-      for d in 1..31
+      for d in 1..max_d
         
         # 売上枚数取得
         sql = "
@@ -341,7 +342,7 @@ private
           uriage_total += d_uriage[0].pos_data.to_i
         end
       
-    end # for d in 1..31
+    end # for d in 1..max_d
     
     ret_rec["result_total"]   = result_total   #枚数1～31計
     ret_rec["result_days"]    = result_days    #実績入力日数
@@ -403,7 +404,7 @@ private
     else
       ret_rec["same_uriage_total"] = zennen["uriage_total"]
     end
-        
+    
     # 同月過去最高実績
     ret_rec["same_uriage_total_max"] = DWashpurikaReport.maximum(:uriage_total, 
                                                               :conditions => ["m_shop_id=? and date < ? and date like ?",
@@ -413,6 +414,21 @@ private
     
     
     ret_rec["same_uriage_total_max"] = 0 if ret_rec["same_uriage_total_max"].nil?
+    
+    # 前年同月の計算値が0の場合は入力済みを優先させる
+    # ※1年目のみ前年のデータがないので、前年計算値がALL=0で出力されるが、例外的に手入力を許可しているため。
+    #   常に再計算を優先させると前回入力の値が失われることになる。
+    last_input = DWashpurikaReport.find(:first, 
+                                        :conditions => ["date=? and m_shop_id=?",
+                                                          ret_rec["date"],
+                                                          ret_rec["m_shop_id"]])
+    
+    if not(last_input.nil?) then
+      ret_rec["same_pace"]             = last_input["same_pace"]              if ret_rec["same_pace"] == 0
+      ret_rec["same_uriage"]           = last_input["same_uriage"]            if ret_rec["same_uriage"] == 0
+      ret_rec["same_uriage_total"]     = last_input["same_uriage_total"]      if ret_rec["same_uriage_total"] == 0
+      ret_rec["same_uriage_total_max"] = last_input["same_uriage_total_max"]  if ret_rec["same_uriage_total_max"] == 0
+    end
     
     ret.push ret_rec
       
@@ -433,9 +449,17 @@ private
      rec["rank"] = rank
      
    end
- 
+   
+   # リーグの最大を取得する
+   max_league = 0
+   for rec in ret
+     if rec["league"] > max_league then
+       max_league = rec["league"]
+     end
+   end
+   
    # ①でつけたリーグ内順位の最上位、最下位で順位が逆転している場合は入れ替えを行う。
-   for league in 1..5 # 1:A～B, 2:B～C, 3:C～D, 4:D～E, 5:E～F
+   for league in 1..max_league # 1:A～B, 2:B～C, 3:C～D, 4:D～E, 5:E～F　‥
      rec1 = nil
      rec2 = nil
      
@@ -450,14 +474,14 @@ private
        end
      end
            
-     # 最上位、最下位が逆転している場合は入れ替える
+     # 最上位、最下位を強制的に入れ替える
      if (not(rec1.nil?)) and (not(rec2.nil?)) then
-        if ret[rec1]["uriage_total"] < ret[rec2]["uriage_total"] then
+        #if ret[rec1]["uriage_total"] < ret[rec2]["uriage_total"] then #DEL 2012.10.31 売上に関係なく入れ替える
             ret[rec1]["league"] = (league + 1)
             ret[rec1]["rank"] = 1
             ret[rec2]["league"] = league
             ret[rec2]["rank"] = 5
-        end  
+        #end  
      end
  
    end
@@ -546,6 +570,85 @@ private
     
     return 0
     
+  end
+  
+  # 新規店舗のレコードを追加する
+  def add_new_shops(ym)
+     
+     
+     # 新規店舗を取得
+     sql = "select
+              *
+            from 
+              m_shops
+            where
+                   id not in (select m_shop_id from d_washpurika_reports where date = '#{ ym }')
+              and  shop_kbn = 0
+            order by
+              shop_cd
+           "
+     
+     m_shops = MShop.find_by_sql(sql)
+     
+     # ランクと順位の最大を取得する
+     max_d_washpurika_report = DWashpurikaReport.find(:first, :conditions => ["date=?", ym], :order => "league desc, rank desc")
+     if max_d_washpurika_report.nil?
+       league     = 1
+       rank       = 0
+       total_rank = 0
+     else
+       league     = max_d_washpurika_report.league
+       rank       = max_d_washpurika_report.rank
+       total_rank = max_d_washpurika_report.total_rank
+     end
+     
+     
+     for m_shop in m_shops
+       
+       # 順位+1したものを取得する
+       rank += 1
+       total_rank += 1
+       if rank > 5 
+         league += 1
+         rank = 1
+       end
+       
+       # 新規店舗を最下位に追加する
+       d_washpurika_report = DWashpurikaReport.new()
+       
+       d_washpurika_report.date               = ym
+       d_washpurika_report.m_shop_id          = m_shop.id
+       d_washpurika_report.total_rank         = total_rank
+       d_washpurika_report.before_league      = league
+       d_washpurika_report.league             = league
+       d_washpurika_report.before_rank        = rank
+       d_washpurika_report.rank               = rank
+       d_washpurika_report.before_total_point = 0
+       d_washpurika_report.total_point        = 0
+       
+       for i in 1..31
+         d_washpurika_report["result#{ i }"] = 0
+       end
+       d_washpurika_report.result_total = 0
+       
+       for i in 1..31
+         d_washpurika_report["uriage#{ i }"] = 0
+       end
+       d_washpurika_report.uriage_total = 0
+       
+       d_washpurika_report.pace                  = 0
+       d_washpurika_report.same_pace             = 0
+       d_washpurika_report.same_uriage           = 0
+       d_washpurika_report.same_uriage_total     = 0
+       d_washpurika_report.same_uriage_total_max = 0
+       
+       d_washpurika_report.created_user_id = current_user.id
+       d_washpurika_report.updated_user_id = current_user.id
+       
+       d_washpurika_report.save!
+       
+     end
+     
   end
   
 end
