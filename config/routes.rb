@@ -68,6 +68,7 @@ SsKanri::Application.routes.draw do
      post :baito_row_input_add
      get :input_check
      get :kakutei_check
+     post :all_input_flg_update
    end
   end
 

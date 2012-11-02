@@ -1,0 +1,28 @@
+var input_flg = '<%= @set_input_flg %>';
+var days = '<%= @bef_all_input_flg_days %>';
+
+
+$("div.rowDiv :input[id^=d_duty_input_flg_]").each(function(i){
+	
+	if (days != ''){
+		var sel_day_array = days.split(","); 
+		var day;
+		day = $(this).attr('id').replace("d_duty_input_flg_", "");
+	
+		if ($.inArray(day, sel_day_array) != -1) {
+			if (input_flg == '1'){
+				$(this).attr('checked','checked');
+			}else{
+				$(this).removeAttr('checked');
+			};
+		};
+	};
+	
+});
+
+if (input_flg == '1'){
+	$('div.crossDiv #arias_all_input_flg').html("<%= j(render :partial => 'arias_all_input_flg', :locals=>{:checked=>true}) %>");
+} else {
+	$('div.crossDiv #arias_all_input_flg').html("<%= j(render :partial => 'arias_all_input_flg', :locals=>{:checked=>false}) %>");
+};
+	

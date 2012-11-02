@@ -266,6 +266,44 @@ class DDutiesController < ApplicationController
         
   end
   
+  #入力済みFLGを一括更新
+  def all_input_flg_update
+
+    day = ""
+    
+    if params[:set_input_flg] == "0"
+
+      params[:datas].each{|key, value|
+        if value.to_s != params[:set_input_flg].to_s
+          day << "," unless day.blank?
+          day << key.sub("d_duty_input_flg_","").to_s
+        end
+      }
+    else
+      day = params[:bef_all_input_flg_days]
+    end
+    
+    unless day.blank?
+      update_sql = "update d_duties "
+      update_sql << " set input_flg = #{params[:set_input_flg]} "
+      update_sql << " , updated_user_id = #{current_user.id} "
+      update_sql << " , updated_at = '#{Time.now.to_datetime}' "
+      update_sql << " where duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
+      update_sql << " and m_shop_id = #{params[:m_shop_id]} "
+      update_sql << " and day in (#{day}) "
+      update_sql << " and kakutei_flg <> 1 "
+      
+      ActiveRecord::Base::connection.execute(update_sql)
+      
+    end
+    
+    respond_to do |format|
+      @set_input_flg = params[:set_input_flg]
+      @bef_all_input_flg_days = day
+      format.js { render :layout => false }
+    end       
+  end
+  
   #確定済み登録
   def kakutei_check
     if params[:kakutei_flg] == "checked" 
