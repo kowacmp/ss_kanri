@@ -7,7 +7,6 @@ class DDutyListsController < ApplicationController
   def search
     
     @from_view = params[:from_view]
-    
     if params[:date] == nil
       @input_ymd = Time.now
       @input_ym_s = Time.now.strftime("%Y%m")
@@ -24,8 +23,8 @@ class DDutyListsController < ApplicationController
     #月末日取得
     @month_last_day = (Date.new(@input_ym_s.to_s[0,4].to_i, @input_ym_s.to_s[4,2].to_i, -1)).strftime("%d").to_i
     
-    select_sql = "select a.*,b.*,f.code_name as shop_kbn_name, "
-    select_sql << " case when c.cnt = 10 then '1' else '0' end as input_10 "
+    select_sql = "select a.*,b.*,f.code_name as shop_kbn_name "
+    select_sql << ", case when c.cnt = 10 then '1' else '0' end as input_10 "
     select_sql << ", case when d.cnt = 10 then '1' else '0' end as input_20 "
     select_sql << ", case when e.cnt = (#{@month_last_day}-20) then '1' else '0' end as input_30 "
 
@@ -96,6 +95,16 @@ class DDutyListsController < ApplicationController
     
     @shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.shop_cd")
     
+    #全体チェックボックス用件数取得
+    select_sql2 = "select sum(CAST(check_count.input_10 AS INTEGER)) as input_10_cnt "
+    select_sql2 << ",sum(CAST(check_count.input_20 AS INTEGER)) as input_20_cnt "
+    select_sql2 << ",sum(CAST(check_count.input_30 AS INTEGER)) as input_30_cnt "
+    select_sql2 << ",sum(CAST(check_count.kakutei_10 AS INTEGER)) as kakutei_10_cnt "
+    select_sql2 << ",sum(CAST(check_count.kakutei_20 AS INTEGER)) as kakutei_20_cnt "
+    select_sql2 << ",sum(CAST(check_count.kakutei_30 AS INTEGER)) as kakutei_30_cnt "
+    
+    @check_count = MShop.find_by_sql("#{select_sql2} from ( #{select_sql} #{condition_sql} order by a.shop_cd) check_count").first
+    
   end
 
   #確定済み登録
@@ -123,6 +132,10 @@ class DDutyListsController < ApplicationController
   
   #確定済み登録
   def kakutei_check_all
+    
+    params[:date]={:year=>params[:input_day].to_s[0,4],:month=>params[:input_day].to_s[4,2]}
+    @shop_kbn = params[:shop_kbn]
+    
     if params[:kakutei_flg] == "checked" 
       params[:kakutei_flg] = 1
     else
@@ -136,12 +149,20 @@ class DDutyListsController < ApplicationController
     update_sql << " where duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
     update_sql << " and day >= #{params[:day1]} "
     update_sql << " and day <= #{params[:day2]} "
-    update_sql << " and m_shop_id in (select id from m_shops where shop_kbn = #{params[:shop_kbn]})"
-    ActiveRecord::Base::connection.execute(update_sql)
-    head :ok
+    #update_sql << " and m_shop_id in (select id from m_shops where shop_kbn = #{params[:shop_kbn]})"
+    update_sql << " and m_shop_id in (#{params[:shop_check]})"
+    #idが取得できなかった場合更新しない
+    if params[:shop_check] != ""
+      ActiveRecord::Base::connection.execute(update_sql)
+    end
+    #head :ok
     #respond_to do |format|
     #  format.js { render :layout => false }
-    #end      
+    #end     
+    search 
+    respond_to do |format|
+      format.html { render :partial => 'shop_list'  }
+    end 
   end
   
 end

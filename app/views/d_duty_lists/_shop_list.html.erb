@@ -13,16 +13,17 @@
 	<tr>
 		<th>状況</th>
 		<th>確認
-			<% if @all_kakutei_flg == 0 or @all_kakutei_flg == nil %>
+			<%# if @all_kakutei_flg10 == 0 or @all_kakutei_flg10 == nil %>
+			<% if @check_count.kakutei_10_cnt == '0' or @check_count.input_10_cnt != @check_count.kakutei_10_cnt %>
 				<%=  check_box_tag "all_lock_10", "0", false  %>
-
 			<% else %>
 				<%=  check_box_tag "all_lock_10", "1", true  %>
 			<% end %>
 		</th>
 		<th>状況</th>
 		<th>確認
-			<% if @all_kakutei_flg == 0 or @all_kakutei_flg == nil %>
+			<%# if @all_kakutei_flg == 0 or @all_kakutei_flg == nil %>
+			<% if @check_count.kakutei_20_cnt == '0' or @check_count.input_20_cnt != @check_count.kakutei_20_cnt %>
 				<%=  check_box_tag "all_lock_20", "0", false  %> 
 			<% else %>
 				<%=  check_box_tag "all_lock_20", "1", true  %>
@@ -30,7 +31,8 @@
 		</th>
 		<th>状況</th>
 		<th>確認
-			<% if @all_kakutei_flg == 0 or @all_kakutei_flg == nil %>
+			<%# if @all_kakutei_flg == 0 or @all_kakutei_flg == nil %>
+			<% if @check_count.kakutei_30_cnt == '0' or @check_count.input_30_cnt != @check_count.kakutei_30_cnt %>
 				<%=  check_box_tag "all_lock_30", "0", false  %> 
 			<% else %>
 				<%=  check_box_tag "all_lock_30", "1", true  %>

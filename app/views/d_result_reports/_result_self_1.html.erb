@@ -74,7 +74,11 @@
 	  		<% end %>
 	  	</td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.touyu_aim) %></td>
-	  	<td class="input_no"><%= number_with_delimiter(m_shop.kyuyu_purika_aim) %></td>
+	  	<td class="input_no"><%#= number_with_delimiter(m_shop.kyuyu_purika_aim) %>
+	  		<% if m_shop.kyuyu_purika_aim %>
+	  			<%= number_with_delimiter((m_shop.kyuyu_purika_aim.to_f / 10000).truncate) %>
+	  		<% end %>
+	  	</td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.kyuyu_purika) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_kyuyu_purika) %></td>
 	  	<td class="input_no">
