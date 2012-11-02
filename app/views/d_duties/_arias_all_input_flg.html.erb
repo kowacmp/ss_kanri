@@ -1,6 +1,6 @@
 <% if checked == true %>
 	<%= button_to_function "全ての入力済みを解除", 
-	          "if (confirm('入力済みを全て解除します。よろしいですか？')) {all_input_flg(0)};", :id=>"all_input_flg" %>
+	          "if (confirm('全ての入力済みを解除します。よろしいですか？')) {all_input_flg(0)};", :id=>"all_input_flg" %>
 	<%#= hidden_field_tag :bef_all_input_flg_days, "" %>
 <% else %>
 	<%= button_to_function "前回の入力済みに復元", 
