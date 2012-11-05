@@ -198,14 +198,16 @@ class DDutyReportsController < ApplicationController
             e.section.item("y_sisu_total_#{i+1}").value(0)
             e.section.item("win_#{i+1}").value(0)
           else
-            e.section.item("y_sisu_total_#{i+1}").value((uriage[i+1].to_f/jinken[i+1].to_f*100).to_i)
+            #e.section.item("y_sisu_total_#{i+1}").value((uriage[i+1].to_f/jinken[i+1].to_f*100).to_i)
+            e.section.item("y_sisu_total_#{i+1}").value((uriage[i+1].to_f/jinken[i+1].to_f*100).round(1))
             e.section.item("win_#{i+1}").value(uriage[i+1].to_i-jinken[i+1].to_i)
           end
           
           if jinken_total_n.to_i == 0
             e.section.item("y_sisu_avg_#{i+1}").value(0)
           else
-            e.section.item("y_sisu_avg_#{i+1}").value((uriage_total_n.to_f/jinken_total_n.to_f*100).to_i)
+            #e.section.item("y_sisu_avg_#{i+1}").value((uriage_total_n.to_f/jinken_total_n.to_f*100).to_i)
+            e.section.item("y_sisu_avg_#{i+1}").value((uriage_total_n.to_f/jinken_total_n.to_f*100).round(1))
           end
         end # times
         
