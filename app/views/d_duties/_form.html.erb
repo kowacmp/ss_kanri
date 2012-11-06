@@ -166,8 +166,10 @@
 $(function () {
 	$('#d_duty_table').tablefix({width: 925, height: 800, fixRows: 2, fixCols: 1});
 	
-    $('div.bodyDiv').scrollLeft(40 * (<%= Time.now.day %> - 2));
-
+	if ('<%= @head[:input_day].to_s %>' == '<%= Time.now.localtime.strftime("%Y%m") %>' ) {
+		$('div.bodyDiv').scrollLeft(40 * (<%= Time.now.day %> - 2));
+	};
+	
 	//列のヘッダーが固定になった場合は、rowDivの内のチェックボックスを有効にして、bodyDiv内のチェックボックスは無効にする
     if ($("div.rowDiv").size() > 0) {
 		//入力済みチェックボックス

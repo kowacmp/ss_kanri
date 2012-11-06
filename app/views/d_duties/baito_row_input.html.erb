@@ -186,8 +186,9 @@ $(function () {
 	$("div#modal").fadeIn();
 	adjustCenter("div#modal div.container");
 	$('div#modal #baito_row_input_table').tablefix({width: 850, height: 450, fixRows: 1, fixCols: 2});
-	$('div#modal div.bodyDiv').scrollTop(25 * (<%= Time.now.day %> - 2));
-	
+	if ('<%= @input_day.to_s %>' == '<%= Time.now.localtime.strftime("%Y%m") %>') {
+		$('div#modal div.bodyDiv').scrollTop(25 * (<%= Time.now.day %> - 2));
+	};
 	//合計計算
 	calc_total("_day_work_time", "day_work_time_total");
 	calc_total("_day_over_time", "day_over_time_total");
