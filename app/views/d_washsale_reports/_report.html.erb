@@ -162,6 +162,26 @@
 		</tr>
       <% end %><!-- times -->
         <tr>
+          <%   
+            # INSERT BEGIN 2012.11.06
+               # ループの中で@d_wash_salesを洗車No毎に読むようになったので、
+               # 合計行の洗車No=99を読み返す。
+			   sql =  "
+			       select * from d_wash_sales a 
+			       left join 
+			       (select d_wash_sale_id,meter,m_wash_id,wash_no
+			          from d_washsale_items) b on  a.id = b.d_wash_sale_id and b.meter > 0
+			       where a.sale_date >= '#{@this_month}01' 
+			         and a.sale_date <= '#{@this_month}31' 
+			         and a.m_shop_id  = #{@m_shop_id} 
+			         and b.m_wash_id  = #{wash.id} 
+			         and b.wash_no    = 99
+			       order by a.sale_date,a.m_shop_id,b.m_wash_id,b.wash_no
+			    "
+			   
+			   @d_wash_sales = DWashSale.find_by_sql(sql)
+            # INSERT END 2012.11.07 
+          %>
           <td colspan="2"></td>
           <th><%= wash.wash_name + "計" %></th>
           <td class="no-input-num"><%= number_with_delimiter(k_sale_sum) %></td>
