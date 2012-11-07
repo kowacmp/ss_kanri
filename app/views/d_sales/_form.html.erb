@@ -160,7 +160,7 @@
 					<td><%= i + 1 %><%= hidden_field :pay_item, :id, {:index => i} %></td>
 					<td>
 						<%= select :pay_item, :m_item_id, 
-						        MItem.find(:all, :conditions=>["item_class=0"]).collect{|i| [ "#{i.item_ryaku}", i.id ]}, {:include_blank => true},{:index => i} %>
+						        MItem.find(:all, :conditions=>["item_class=0 and deleted_flg=0"]).collect{|i| [ "#{i.item_ryaku}", i.id ]}, {:include_blank => true},{:index => i} %>
                     </td>
                     <td><%= text_field :pay_item, :item_name,  {:index => i, :size=>15, :class=>"text"} %></td>
 					<td><%= text_field :pay_item, :item_money,  {:index => i, :size=>4, :class=>"money"} %></td>
@@ -204,7 +204,7 @@
 					<td><%= i + 1 %><%= hidden_field :recive_item, :id, {:index => i} %></td>
 					<td>
 						<%= select :recive_item, :m_item_id, 
-						        MItem.find(:all, :conditions=>["item_class=1"]).collect{|i| [ "#{i.item_ryaku}", i.id ]}, {:include_blank => true},{:index => i} %>
+						        MItem.find(:all, :conditions=>["item_class=1 and deleted_flg=0"]).collect{|i| [ "#{i.item_ryaku}", i.id ]}, {:include_blank => true},{:index => i} %>
                     </td>
                     <td><%= text_field :recive_item, :item_name,  {:index => i, :size=>15, :class=>"text"} %></td>
 					<td><%= text_field :recive_item, :item_money,  {:index => i, :size=>4, :class=>"money"} %></td>
@@ -248,7 +248,7 @@
 					<td><%= i + 1 %><%= hidden_field :etc_item, :id, {:index => i} %></td>
 					<td>
 						<%= select :etc_item, :m_item_id, 
-						        MItem.find(:all, :conditions=>["item_class = 3 or item_class = 4"]).collect{|i| [ "#{i.item_ryaku}", i.id ]}, {:include_blank => true},{:index => i} %>
+						        MItem.find(:all, :conditions=>["(item_class = 3 or item_class = 4) and deleted_flg=0"]).collect{|i| [ "#{i.item_ryaku}", i.id ]}, {:include_blank => true},{:index => i} %>
                     </td>
                     <td><%= text_field :etc_item, :item_name,  {:index => i, :size=>15, :class=>"text"} %></td>
 					<td><%= text_field :etc_item, :item_money,  {:index => i, :size=>4, :class=>"money"} %></td>
@@ -295,7 +295,7 @@
 					<td><%= i + 1 %><%= hidden_field :purika_item, :id, {:index => i} %></td>
 					<td>
 						<%= select :purika_item, :m_shop_id, 
-						        MShop.find(:all).collect{|i| [ "#{i.shop_cd} #{i.shop_name}", i.id ]}, {:include_blank => true},{:index => i} %>
+						        MShop.find(:all, :conditions=>["deleted_flg=0"]).collect{|i| [ "#{i.shop_cd} #{i.shop_name}", i.id ]}, {:include_blank => true},{:index => i} %>
 					</td>
 					<td>
 						<%= text_field :purika_item, :item_name,  {:index => i, :size=>4, :class=>"number"} %>
