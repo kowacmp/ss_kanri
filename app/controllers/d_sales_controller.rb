@@ -646,6 +646,9 @@ p params
     footer[:coin_tesuryo] = ""
     footer[:suito_zan] = ""
     footer[:uketori_tesuryo] = "" #2012/10/02 nishimura
+   
+    d_sale_total = Hash::new #合計データ
+    d_sale_total = calc_total(d_sale_total,true) #初期化
     
     #設計ファイルOPEN
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_sale_report.tlf')
@@ -657,6 +660,28 @@ p params
         e.section.item(:footer_coin_tesuryo).value(footer[:coin_tesuryo])
         e.section.item(:footer_suito_zan).value(footer[:suito_zan])
         e.section.item(:footer_uketori_tesuryo).value(footer[:uketori_tesuryo]) #2012/10/02 nishimura
+        
+        e.section.item(:total_day).value("計")
+        e.section.item(:total_sale_money).value((d_sale_total[:sale_money].to_i)) 
+        e.section.item(:total_sale_purika).value((d_sale_total[:sale_purika].to_i))
+        e.section.item(:total_sonota_money).value((d_sale_total[:sonota_money].to_i))
+        e.section.item(:total_recive_money).value((d_sale_total[:recive_money].to_i))
+        e.section.item(:total_pay_money).value((d_sale_total[:pay_money].to_i))
+        e.section.item(:total_d_sale_syokei).value((d_sale_total[:d_sale_syokei].to_i))
+        e.section.item(:total_sale_ass).value((d_sale_total[:sale_ass].to_i))
+        e.section.item(:total_d_sale_ass).value((d_sale_total[:d_sale_ass].to_i))
+        e.section.item(:total_d_sale_sale_out).value((d_sale_total[:zenjitu_d_sale_sale_pm_out].to_i + d_sale_total[:sale_today_out].to_i))
+        e.section.item(:total_sale_am_out).value((d_sale_total[:sale_am_out].to_i))
+        e.section.item(:total_sale_pm_out).value((d_sale_total[:sale_pm_out].to_i))
+        e.section.item(:total_calc_exist_money).value((d_sale_total[:d_sale_calc_aridaka].to_i))
+        e.section.item(:total_exist_money).value((d_sale_total[:d_sale_cash_aridaka].to_i))
+        e.section.item(:total_over_short).value((d_sale_total[:kabusoku].to_i))
+        
+        #2012/10/02 出金誤差追加 nishimura <<<
+        error_money_total = d_sale_total[:sale_am_out].to_i + d_sale_total[:sale_pm_out].to_i + d_sale_total[:sale_today_out].to_i - 
+                              d_sale_total[:d_sale_syokei].to_i - d_sale_total[:sale_ass].to_i
+        e.section.item(:total_error_money).value((error_money_total))
+                
       end #events.on
     end
 
@@ -669,7 +694,7 @@ p params
       h.item(:zengetumatu_over_short).value(num_fmt(@d_sale_zengetumatu.over_short))
     end
     
-    d_sale_total = Hash::new #合計データ
+    
     #繰り返し
     loopcnt = (Date.new(@head[:input_day].to_s[0,4].to_i, @head[:input_day].to_s[5,2].to_i, -1)).strftime("%d").to_i 
     loopcnt.times { |i| 
@@ -711,32 +736,32 @@ p params
       end
     }
     #合計行
-    report.page.list(:report_list).add_row do |row|
-      row.item(:day).value("計")
-      row.item(:sale_money).value(num_fmt(d_sale_total[:sale_money])) 
-      row.item(:sale_purika).value(num_fmt(d_sale_total[:sale_purika]))
-      row.item(:purika_tesuryo).value(num_fmt(d_sale_total[:purika_tesuryo]))
-      row.item(:sonota_money).value(num_fmt(d_sale_total[:sonota_money]))
-      row.item(:recive_money).value(num_fmt(d_sale_total[:recive_money]))
-      row.item(:pay_money).value(num_fmt(d_sale_total[:pay_money]))
-      row.item(:d_sale_syokei).value(num_fmt(d_sale_total[:d_sale_syokei]))
-      row.item(:sale_ass).value(num_fmt(d_sale_total[:sale_ass]))
-      row.item(:d_sale_ass).value(num_fmt(d_sale_total[:d_sale_ass]))
-      row.item(:zenjitu_d_sale_sale_pm_out).value(num_fmt(d_sale_total[:zenjitu_d_sale_sale_pm_out]))
-      row.item(:sale_today_out).value(num_fmt(d_sale_total[:sale_today_out]))
-      row.item(:sale_am_out).value(num_fmt(d_sale_total[:sale_am_out]))
-      row.item(:sale_pm_out).value(num_fmt(d_sale_total[:sale_pm_out]))
-      row.item(:calc_exist_money).value(num_fmt(d_sale_total[:d_sale_calc_aridaka]))
-      row.item(:exist_money).value(num_fmt(d_sale_total[:d_sale_cash_aridaka]))
-      row.item(:over_short).value(num_fmt(d_sale_total[:kabusoku]))
-      
-      #2012/10/02 出金誤差追加 nishimura <<<
-      error_money_total = d_sale_total[:sale_am_out] + d_sale_total[:sale_pm_out] + d_sale_total[:sale_today_out] - 
-                            d_sale_total[:d_sale_syokei] - d_sale_total[:sale_ass]
-      row.item(:error_money).value(num_fmt(error_money_total))
-      #2012/10/02 出金誤差追加 nishimura >>>
-
-    end
+#    report.page.list(:report_list).add_row do |row|
+#      row.item(:day).value("計")
+#      row.item(:sale_money).value(num_fmt(d_sale_total[:sale_money])) 
+#      row.item(:sale_purika).value(num_fmt(d_sale_total[:sale_purika]))
+#      row.item(:purika_tesuryo).value(num_fmt(d_sale_total[:purika_tesuryo]))
+#      row.item(:sonota_money).value(num_fmt(d_sale_total[:sonota_money]))
+#      row.item(:recive_money).value(num_fmt(d_sale_total[:recive_money]))
+#      row.item(:pay_money).value(num_fmt(d_sale_total[:pay_money]))
+#      row.item(:d_sale_syokei).value(num_fmt(d_sale_total[:d_sale_syokei]))
+#      row.item(:sale_ass).value(num_fmt(d_sale_total[:sale_ass]))
+#      row.item(:d_sale_ass).value(num_fmt(d_sale_total[:d_sale_ass]))
+#      row.item(:zenjitu_d_sale_sale_pm_out).value(num_fmt(d_sale_total[:zenjitu_d_sale_sale_pm_out]))
+#      row.item(:sale_today_out).value(num_fmt(d_sale_total[:sale_today_out]))
+#      row.item(:sale_am_out).value(num_fmt(d_sale_total[:sale_am_out]))
+#      row.item(:sale_pm_out).value(num_fmt(d_sale_total[:sale_pm_out]))
+#      row.item(:calc_exist_money).value(num_fmt(d_sale_total[:d_sale_calc_aridaka]))
+#      row.item(:exist_money).value(num_fmt(d_sale_total[:d_sale_cash_aridaka]))
+#      row.item(:over_short).value(num_fmt(d_sale_total[:kabusoku]))
+#      
+#      #2012/10/02 出金誤差追加 nishimura <<<
+#      error_money_total = d_sale_total[:sale_am_out] + d_sale_total[:sale_pm_out] + d_sale_total[:sale_today_out] - 
+#                            d_sale_total[:d_sale_syokei] - d_sale_total[:sale_ass]
+#      row.item(:error_money).value(num_fmt(error_money_total))
+#      #2012/10/02 出金誤差追加 nishimura >>>
+#
+#    end
     
     #フッターにセットする値をセット
     footer[:cash_money] = num_fmt(d_sale_total[:sale_money].to_i - @etc_item_total.item_money.to_i)

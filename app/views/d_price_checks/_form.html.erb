@@ -205,11 +205,27 @@ $(function () {
 		<%= text_field input_name, "minus_name#{ i }", :value => d_price_check["minus_name#{ i }"], :maxlength => 10, :style => "ime-mode:active;" %>
 	</td>
 	<td>
-		<%= text_field input_name, "minus_gak#{ i }", :value => d_price_check["minus_gak#{ i }"] ,:class => "money", :style => "width:40px;" %>
+		<%= text_field input_name, "minus_gak#{ i }", :value => d_price_check["minus_gak#{ i }"] , :style => "ime-mode:inactive; text-align:right; width:40px;" %>
 	</td>
 	<% end %>
 </tr>
 <% end %><!-- for i in 1..3 -->
+
+<script>
+$(function(){
+	// マイナス額の小数点以下を固定する
+	$("input[id^=<%= input_name %>_minus_gak]").change( function() {
+		var num = Number($(this).val());
+		if (isNaN(num)) {
+			$(this).val("");
+		} else {
+			$(this).val(num.toFixed(1));
+		}
+	});
+});
+
+</script>
+
 
 <tr>
 	<th>
