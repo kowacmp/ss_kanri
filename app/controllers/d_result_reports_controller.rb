@@ -819,7 +819,8 @@ class DResultReportsController < ApplicationController
       #車検
       select_sql << " left join (select f1.m_shop_id,f1.aim_total as syaken_aim from d_aims f1"
       select_sql <<            " left join m_aims f2 on f1.m_aim_id = f2.id"
-      select_sql << " where f1.date = '#{input_month}' and f2.id = 15 ) f on a.id = f.m_shop_id "
+      #select_sql << " where f1.date = '#{input_month}' and f2.id = 15 ) f on a.id = f.m_shop_id "
+      select_sql << " where f1.date = '#{input_month}' and f2.id = 27 ) f on a.id = f.m_shop_id "
       
     elsif select_kbn == 2
       #洗車型実績表1
