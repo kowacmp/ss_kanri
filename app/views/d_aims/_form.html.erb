@@ -25,7 +25,7 @@
 <% end %>
  
   <table id='rounded-corner'>
-  	  
+  	  <% tab_index = 0 %><!-- 2012/11/07 tabindex nishimura -->
 	  <tr>
 	 	<th><%= @year + "年" + @month + "月" %></th>
 		<% for i in 1..7 do %>
@@ -53,12 +53,15 @@
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
 	  	  <% for i in 1..7 do %>
+	  	  <% tab_index = (idx * @month_last_day.to_i) + i %><!-- 2012/11/07 tabindex nishimura -->
 	  	  	<td style="text-align:right;">
 	  	  	<%- if @d_aim -%>
 	  	  		<%= hidden_field "d_aim[#{idx}]", 'id',:value=>@d_aim.id %>
-			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
+			  	<%#= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money",:tabindex=>tab_index %>
 			<%- else -%>
-		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
+		  	  	<%#= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money",:tabindex=>tab_index %>
 	  	  	<%- end -%>
 	  	  	</td>
 	  	  <% end %>
@@ -90,11 +93,12 @@
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
 	  	  <% for i in 8..14 do %>
+	  	  <% tab_index = (idx * @month_last_day.to_i) + i %><!-- 2012/11/07 tabindex nishimura -->
 	  	  	<td style="text-align:right;">
 	  	  	<%- if @d_aim -%>
-			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money",:tabindex=>tab_index %>
 			<%- else -%>
-		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money",:tabindex=>tab_index %>
 	  	  	<%- end -%>
 	  	  	</td>
 	  	  <% end %>
@@ -125,11 +129,12 @@
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
 	  	  <% for i in 15..21 do %>
+	  	  <% tab_index = (idx * @month_last_day.to_i) + i %><!-- 2012/11/07 tabindex nishimura -->
 	  	  	<td style="text-align:right;">
 	  	  	<%- if @d_aim -%>
-			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money",:tabindex=>tab_index %>
 			<%- else -%>
-		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money",:tabindex=>tab_index %>
 	  	  	<%- end -%>
 	  	  	</td>
 	  	  <% end %>
@@ -161,11 +166,12 @@
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
 	  	  <% for i in 22..28 do %>
+	  	  <% tab_index = (idx * @month_last_day.to_i) + i %><!-- 2012/11/07 tabindex nishimura -->
 	  	  	<td style="text-align:right;">
 	  	  	<%- if @d_aim -%>
-			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money",:tabindex=>tab_index %>
 			<%- else -%>
-		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money" %>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})", :class=>"money",:tabindex=>tab_index %>
 	  	  	<%- end -%>
 	  	  	</td>
 	  	  <% end %>
@@ -204,11 +210,12 @@
 	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + @month,@m_shop.id.to_i,m_aim.id.to_i]) %>
 	  	  
 	  	  <% for i in 29..@month_last_day.to_i do %>
+	  	  <% tab_index = (idx * @month_last_day.to_i) + i %><!-- 2012/11/07 tabindex nishimura -->
 	  	  	<td style="text-align:right;">
 	  	  	<%- if @d_aim -%>
-			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})",:class=>"money" %>
+			  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:value=>eval("@d_aim.aim_value#{i}"),:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})",:class=>"money",:tabindex=>tab_index %>
 			<%- else -%>
-		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})",:class=>"money" %>
+		  	  	<%= text_field "d_aim[#{idx}]", "aim_value#{i}",:size=>4, :style=>"ime-mode:disabled" ,:maxlength=>7,:onchange=>"totalAim(#{idx})",:class=>"money",:tabindex=>tab_index %>
 	  	  	<%- end -%>
 	  	  	</td>
 	  	  <% end %>
@@ -254,10 +261,10 @@
   <% if @mode != 'list' %>
   <div class="actions">
     <%#= f.submit f.object.new_record? ? '登録' : '登録' %>
-    <%= f.submit "  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？'  %>
+    <%= f.submit "  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？',:tabindex=>(@m_aims.count * @month_last_day.to_i) + 1  %>
   </div>
   <% else %>
-  <%= link_to "一覧へ戻る", {:controller => "d_aim_lists", :action => "index", :date => params[:date], :shop_kbn => @m_shop.shop_kbn}, :method => :get, :class => 'return_icon' %>
+  <%= link_to "一覧へ戻る", {:controller => "d_aim_lists", :action => "index", :date => params[:date], :shop_kbn => @m_shop.shop_kbn}, :method => :get, :class => 'return_icon',:tabindex=>(@m_aims.count * @month_last_day.to_i) + 1 %>
   <% end %>
 <% end %>
 
