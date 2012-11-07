@@ -24,7 +24,7 @@
   <% end %>
   
   <table id='rounded-corner'>
-  	  
+  	  <% tab_index = 0 %><!-- 2012/11/07 tabindex nishimura -->
 	  <tr>
 	 	<th><%= @year + "年" %></th>
 		<% for i in 1..6 do %>
@@ -36,47 +36,50 @@
 	  <% @m_aims.each_with_index do |m_aim,idx| %>
 		<tr>
 	  	  <th style='background:none;'><%= m_aim.aim_name %><%= "(" + m_aim.aim_tani_name.to_s + ")" %></th>
-	  	  
+	  	  <% tab_index = idx + 1 %><!-- 2012/11/07 tabindex nishimura -->
 	  	  <% for i in 1..6 do %>
-	  	  <% if m_aim.id == 24 %>
-		  <% @d_aim_uri = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,2]) %>
-	  	  	<% @d_aim_jinken = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,22]) %>
-		  	<td style="text-align:right;">
-		  		<% if @d_aim_uri and @d_aim_jinken %>
-			  		<% if @d_aim_jinken.aim_total.to_f > 0 %>
-			  			<% y_sisu = @d_aim_uri.aim_total.to_f / @d_aim_jinken.aim_total.to_f * 100 %>
-			  			<%= number_with_delimiter(y_sisu.round(1)) %>
-			  		<% end %>
-		  		<% end %>
-			</td>
-		  <% elsif m_aim.id == 25 %>
-		  <% @d_aim_uri = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,1]) %>
-	  	  	<% @d_aim_jinken = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,23]) %>
-		  	<td style="text-align:right;">
-		  		<% if @d_aim_uri and @d_aim_jinken %>
-			  		<% if @d_aim_jinken.aim_total.to_f > 0 %>
-			  			<% y_sisu = @d_aim_uri.aim_total.to_f / @d_aim_jinken.aim_total.to_f * 100 %>
-			  			<%= number_with_delimiter(y_sisu.round(1)) %>
-			  		<% end %>
-		  		<% end %>
-			</td>
-		  <% else %><!-- if else -->
-	  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,m_aim.id.to_i]) %>
-	  	  <%= hidden_field "d_aim[#{idx}][#{i}]", 'date',:value=> @year + format("%02d",i) %>
-	  	  <%= hidden_field "d_aim[#{idx}][#{i}]", 'm_shop_id',:value=> @m_shop.id %>
-	  	  <%= hidden_field "d_aim[#{idx}][#{i}]", 'm_aim_id',:value=>m_aim.id %>
-	  	  	<td style="text-align:right;">
-	  	  	<%- if @d_aim -%>
-	  	  		<%= hidden_field "d_aim[#{idx}][#{i}]", 'id',:value=>@d_aim.id %>
-			  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:value=>eval("@d_aim.aim_total"),:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money" %>
-			<%- else -%>
-		  	  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money"%>
-	  	  	<%- end -%>
-	  	  	</td>
-	  	  	<% end %><!-- if end -->
+		  	  <% if m_aim.id == 24 %>
+			  <% @d_aim_uri = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,2]) %>
+		  	  <% @d_aim_jinken = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,22]) %>
+			  <td style="text-align:right;">
+				  <% if @d_aim_uri and @d_aim_jinken %>
+					  <% if @d_aim_jinken.aim_total.to_f > 0 %>
+						  <% y_sisu = @d_aim_uri.aim_total.to_f / @d_aim_jinken.aim_total.to_f * 100 %>
+						  <%= number_with_delimiter(y_sisu.round(1)) %>
+					  <% end %>
+				  <% end %>
+			  </td>
+			  <% elsif m_aim.id == 25 %>
+			  <% @d_aim_uri = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,1]) %>
+		  	  <% @d_aim_jinken = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,23]) %>
+			  <td style="text-align:right;">
+				  <% if @d_aim_uri and @d_aim_jinken %>
+					  <% if @d_aim_jinken.aim_total.to_f > 0 %>
+						  <% y_sisu = @d_aim_uri.aim_total.to_f / @d_aim_jinken.aim_total.to_f * 100 %>
+						  <%= number_with_delimiter(y_sisu.round(1)) %>
+					  <% end %>
+				  <% end %>
+			  </td>
+			  <% else %><!-- if else -->
+		  	  <% @d_aim = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,m_aim.id.to_i]) %>
+		  	  <%= hidden_field "d_aim[#{idx}][#{i}]", 'date',:value=> @year + format("%02d",i) %>
+		  	  <%= hidden_field "d_aim[#{idx}][#{i}]", 'm_shop_id',:value=> @m_shop.id %>
+		  	  <%= hidden_field "d_aim[#{idx}][#{i}]", 'm_aim_id',:value=>m_aim.id %>
+		  	  <td style="text-align:right;">
+			  	  <%- if @d_aim -%>
+				  	  <%= hidden_field "d_aim[#{idx}][#{i}]", 'id',:value=>@d_aim.id %>
+					  <%#= text_field "d_aim[#{idx}][#{i}]", "aim_total",:value=>eval("@d_aim.aim_total"),:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money" %>
+					  <%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:value=>eval("@d_aim.aim_total"),:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money",:tabindex=>tab_index %>
+				  <%- else -%>
+					  <%#= text_field "d_aim[#{idx}][#{i}]", "aim_total",:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money"%>
+					  <%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money",:tabindex=>tab_index %>
+			  	  <%- end -%>
+		  	  </td>
+		  	  <% end %><!-- if end -->
+		  	  <% tab_index = tab_index + @m_aims.count %><!-- 2012/11/07 tabindex nishimura -->
 	  	  <% end %>
-	  	  
 	  	</tr>
+	  	
 	  <% end %>
 	  
 	  
@@ -92,7 +95,7 @@
 	  <% @m_aims.each_with_index do |m_aim,idx| %>
 		<tr>
 	  	  <th style='background:none;'><%= m_aim.aim_name %><%= "(" + m_aim.aim_tani_name.to_s + ")" %></th>
-	  	  
+	  	  <% tab_index = (@m_aims.count * 6) + idx + 1 %><!-- 2012/11/07 tabindex nishimura -->
 	  	  <% for i in 7..12 do %>
 	  	  	<% if m_aim.id == 24 %>
 	  	  	<% @d_aim_uri = DAim.find(:first,:conditions=>['date = ? and m_shop_id = ? and m_aim_id = ? ',@year + format("%02d",i),@m_shop.id.to_i,2]) %>
@@ -124,12 +127,15 @@
 	  	  	<td style="text-align:right;">
 	  	  	<%- if @d_aim -%>
 	  	  		<%= hidden_field "d_aim[#{idx}][#{i}]", 'id',:value=>@d_aim.id %>
-			  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:value=>eval("@d_aim.aim_total"),:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money" %>
+			  	<%#= text_field "d_aim[#{idx}][#{i}]", "aim_total",:value=>eval("@d_aim.aim_total"),:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money" %>
+			  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:value=>eval("@d_aim.aim_total"),:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money",:tabindex=>tab_index %>
 			<%- else -%>
-		  	  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money" %>
+		  	  	<%#= text_field "d_aim[#{idx}][#{i}]", "aim_total",:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money" %>
+		  	  	<%= text_field "d_aim[#{idx}][#{i}]", "aim_total",:size=>6, :style=>"ime-mode:disabled" ,:maxlength=>9, :class=>"money",:tabindex=>tab_index %>
 	  	  	<%- end -%>
 	  	  	</td>
 	  	  	<% end %><!-- if end -->
+	  	  	<% tab_index = tab_index + (@m_aims.count) %><!-- 2012/11/07 tabindex nishimura -->
 	  	  <% end %>
 	  	</tr>
 	  <% end %>
@@ -140,10 +146,10 @@
   <% if @mode != 'list' %>
   <div class="actions">
     <%#= f.submit f.object.new_record? ? '登録' : '登録' %>
-    <%= f.submit "  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？'  %>
+    <%= f.submit "  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？',:tabindex=>(@m_aims.count * 12) + 1  %>
   </div>
   <% else %>
-  <%= link_to "一覧へ戻る", {:controller => "d_aim_lists", :action => "index", :date => params[:date], :shop_kbn => @m_shop.shop_kbn}, :method => :get, :class => 'return_icon' %>
+  <%= link_to "一覧へ戻る", {:controller => "d_aim_lists", :action => "index", :date => params[:date], :shop_kbn => @m_shop.shop_kbn}, :method => :get, :class => 'return_icon',:tabindex=>(@m_aims.count * 12) + 1 %>
   <% end %>
 <% end %>
 

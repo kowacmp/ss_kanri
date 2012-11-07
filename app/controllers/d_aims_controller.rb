@@ -8,18 +8,20 @@ class DAimsController < ApplicationController
     year = date.strftime("%Y")
     month = date.strftime("%m")
     
-    @month_last_day = Date.new(year.to_i,month.to_i,-1).day
+    #@month_last_day = Date.new(year.to_i,month.to_i,-1).day
     
     if params[:input_year] == nil or params[:input_month] == nil or params[:input_aim] == nil
        @year = year
        @month = month
        @month_first = Date.new(year.to_i,month.to_i,1)
        @search_aim = 1
+       @month_last_day = Date.new(year.to_i,month.to_i,-1).day
     else
        @year = params[:input_year]
        @month = params[:input_month]
        @month_first = Date.new(params[:input_year].to_i,params[:input_month].to_i,1)
        @search_aim = params[:input_aim].to_i
+       @month_last_day = Date.new(params[:input_year].to_i,params[:input_month].to_i,-1).day
     end
     
     @d_aim = DAim.new
