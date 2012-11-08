@@ -11,8 +11,12 @@
 <table id="baito_row_input_table" class="rounded-corner">
 	<thead>
 		<tr>
-		<th style="min-width: 40px">日</th>
-		<th style="max-width: 40px">曜</th>
+		<th style="min-width: 40px" rowspan="2">日</th>
+		<th style="max-width: 40px" rowspan="2">曜</th>
+		<th colspan="5">時間</th>
+		<th colspan="4">金額</th>
+		</tr>
+		<tr>
 		<th style="min-width: 80px">日勤</th>
 		<th style="min-width: 80px">残業</th>
 		<th style="min-width: 80px">夜勤</th>
@@ -185,7 +189,7 @@ $(function () {
 	$('div#modal div.container').css("width", "900px");
 	$("div#modal").fadeIn();
 	adjustCenter("div#modal div.container");
-	$('div#modal #baito_row_input_table').tablefix({width: 850, height: 450, fixRows: 1, fixCols: 2});
+	$('div#modal #baito_row_input_table').tablefix({width: 850, height: 450, fixRows: 2, fixCols: 2});
 	if ('<%= @input_day.to_s %>' == '<%= Time.now.localtime.strftime("%Y%m") %>') {
 		$('div#modal div.bodyDiv').scrollTop(25 * (<%= Time.now.day %> - 2));
 	};
