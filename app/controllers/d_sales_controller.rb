@@ -660,6 +660,7 @@ p params
         e.section.item(:footer_coin_tesuryo).value(footer[:coin_tesuryo])
         e.section.item(:footer_suito_zan).value(footer[:suito_zan])
         e.section.item(:footer_uketori_tesuryo).value(footer[:uketori_tesuryo]) #2012/10/02 nishimura
+        e.section.item(:footer_d_sale_kei).value(footer[:d_sale_kei])
         
         e.section.item(:total_day).value("計")
         e.section.item(:total_sale_money).value((d_sale_total[:sale_money].to_i)) 
@@ -670,9 +671,9 @@ p params
         e.section.item(:total_d_sale_syokei).value((d_sale_total[:d_sale_syokei].to_i))
         e.section.item(:total_sale_ass).value((d_sale_total[:sale_ass].to_i))
         e.section.item(:total_d_sale_ass).value((d_sale_total[:d_sale_ass].to_i))
-        e.section.item(:total_d_sale_sale_out).value((d_sale_total[:zenjitu_d_sale_sale_pm_out].to_i + d_sale_total[:sale_today_out].to_i))
-        e.section.item(:total_sale_am_out).value((d_sale_total[:sale_am_out].to_i))
-        e.section.item(:total_sale_pm_out).value((d_sale_total[:sale_pm_out].to_i))
+        e.section.item(:total_d_sale_sale_out).value((d_sale_total[:sale_today_out].to_i))
+        e.section.item(:total_sale_out).value((d_sale_total[:sale_am_out].to_i + d_sale_total[:sale_pm_out].to_i))
+        e.section.item(:total_d_sale_sale).value(d_sale_total[:sale_today_out].to_i + d_sale_total[:sale_am_out].to_i + d_sale_total[:sale_pm_out].to_i)
         e.section.item(:total_calc_exist_money).value((d_sale_total[:d_sale_calc_aridaka].to_i))
         e.section.item(:total_exist_money).value((d_sale_total[:d_sale_cash_aridaka].to_i))
         e.section.item(:total_over_short).value((d_sale_total[:kabusoku].to_i))
@@ -717,7 +718,8 @@ p params
           row.item(:d_sale_syokei).value(num_fmt(@d_sale_syokei))
           row.item(:sale_ass).value(num_fmt(@d_sale.sale_ass))
           row.item(:d_sale_ass).value(num_fmt(@d_sale_ass))
-          row.item(:zenjitu_d_sale_sale_pm_out).value(num_fmt(@zenjitu_d_sale.sale_pm_out))
+          #row.item(:zenjitu_d_sale_sale_pm_out).value(num_fmt(@zenjitu_d_sale.sale_pm_out))
+          row.item(:zenjitu_d_sale_sale_pm_out).value(0)
           row.item(:sale_today_out).value(num_fmt(@d_sale.sale_today_out))
           row.item(:sale_am_out).value(num_fmt(@d_sale.sale_am_out))
           row.item(:sale_pm_out).value(num_fmt(@d_sale.sale_pm_out))
@@ -769,6 +771,7 @@ p params
     #footer[:suito_zan] = num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i)
     footer[:suito_zan] = num_fmt(@balance_money)
     footer[:uketori_tesuryo] = num_fmt(d_sale_total[:purika_tesuryo].to_i) #2012/10/02 nishimura
+    footer[:d_sale_kei] = num_fmt(d_sale_total[:d_sale_syokei].to_i + d_sale_total[:sale_ass].to_i) 
     
     #PDF出力
     #タイトルセット
