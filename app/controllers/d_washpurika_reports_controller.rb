@@ -125,7 +125,11 @@ class DWashpurikaReportsController < ApplicationController
               #目標1～31
               d_aim = DAim.find(:first, :conditions => ["date=? and m_shop_id=? and m_aim_id=26", rec["date"], rec["m_shop_id"]])
               for i in 1..@days
-                row.item("aim_#{league_idx}_#{i}").value(d_aim["aim_value#{ i }"]) unless d_aim.nil?
+                if rec["result#{ i }"].nil? then
+                  row.item("aim_#{league_idx}_#{i}").value("") #わざとだしません
+                else
+                  row.item("aim_#{league_idx}_#{i}").value(d_aim["aim_value#{ i }"]) unless d_aim.nil?
+                end
               end
               #目標トータル
               row.item("aim_total_#{league_idx}").value(d_aim.aim_total) unless d_aim.nil?

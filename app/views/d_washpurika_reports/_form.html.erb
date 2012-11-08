@@ -17,7 +17,21 @@
 	</th>
 	<% for i in 1..@days %>
 	<th rowspan="3" style="white-space: nowrap" >
-		<%=i%>日
+		<%=i%>日<br/><br/>
+		<% ymd = Date::new(@d_washpurika_reports[0]["date"][0..3].to_i, @d_washpurika_reports[0]["date"][4..5].to_i, i) %>
+		<% 
+			case ymd.wday
+			when 0
+				f_color = "red"
+			when 6
+				f_color = "blue"
+			else
+				f_color = "black"
+			end 
+		%>
+		<span style="color:<%=f_color%>;">
+		(<%="日月火水木金土"[ymd.wday]%>)
+		</span>
 	</th>
 	<% end %>
 	<th rowspan="3" style="white-space: nowrap" >
@@ -92,7 +106,11 @@
 	<% d_aim = DAim.find(:first, :conditions => ["date=? and m_shop_id=? and m_aim_id=26", rec["date"], rec["m_shop_id"]]) %>
 	<% for i in 1..@days %>
 	<td align="right">
-		<%= number_with_delimiter(d_aim["aim_value#{ i }"]) unless d_aim.nil? %>
+		<% if rec["result#{ i }"].nil? then%>
+			<!-- わざと表示しません！ -->
+		<% else %>
+			<%= number_with_delimiter(d_aim["aim_value#{ i }"]) unless d_aim.nil? %>
+		<% end %>
 	</td>
 	<% end %>
 	
