@@ -46,6 +46,12 @@ class DYumePointListsController < ApplicationController
     #2012/10/11 支払額追加
     sp3 = Hash.new
     sum_sp3 = 0
+    
+    #2012/11/07 add
+    shop_kbn_footer = 0
+    sum_sp2_2 = 0
+    sum_sp3_2 = 0
+    
     start_ymd = (@from_ymd[0,4].to_s + '/' + @from_ymd[4,2] + '/' + @from_ymd[6,2]).to_time
     start_day = start_ymd.end_of_month.day
 
@@ -67,6 +73,21 @@ class DYumePointListsController < ApplicationController
         e.section.item(:sp2_sum).value(sum_sp2)
         #2012/10/11 支払額追加
         e.section.item(:sp3_sum).value(sum_sp3)
+        
+        #2012/11/07 add
+        shop_kbn_name1 = MCode.find_by_kbn_and_code('shop_kbn','0') ? MCode.find_by_kbn_and_code('shop_kbn','0').code_name : "洗車型"
+        shop_kbn_name2 = MCode.find_by_kbn_and_code('shop_kbn','1') ? MCode.find_by_kbn_and_code('shop_kbn','1').code_name : "油外型"
+        #s1：油外　s2：洗車
+        e.section.item(:s1_label).value("支払額(#{shop_kbn_name2})")
+        e.section.item(:s2_label).value("支払額(#{shop_kbn_name1})")
+        if shop_kbn_footer == 0
+          e.section.item(:s1_sum).value(sum_sp2_2 + sum_sp3_2)
+          e.section.item(:s2_sum).value(sum_sp2 + sum_sp3)
+        else
+          e.section.item(:s1_sum).value(sum_sp2 + sum_sp3)
+          e.section.item(:s2_sum).value(sum_sp2_2 + sum_sp3_2)
+        end
+        
       end #events.on
     end #list
 
@@ -131,7 +152,7 @@ class DYumePointListsController < ApplicationController
     result_date = @from_ymd
     start_day.times do |i|
       sum_point = sum_rows_yume_points(result_date,@shop_kbn)
-      result_date = (result_date.to_i + 1).to_s
+      #result_date = (result_date.to_i + 1).to_s  #2012/11/07 loopの最後に移動
       sp1[i+1] = sum_point.yumepoint_num.to_i
       #2012/10/11 支払額追加
       sp2[i+1] = sum_point.yumepoint.to_i
@@ -140,6 +161,21 @@ class DYumePointListsController < ApplicationController
       #2012/10/11 支払額追加
       sum_sp2 = sum_sp2 + sum_point.yumepoint.to_i unless sum_point == nil
       sum_sp3 = sum_sp3 + sum_point.pay_money.to_i unless sum_point == nil 
+      
+      #2012/11/07 add
+      #別区分のデータ取得
+      if @shop_kbn == 0
+        shop_kbn_footer = @shop_kbn
+        sum_point_2 = sum_rows_yume_points(result_date,1)
+      else
+        shop_kbn_footer = @shop_kbn
+        sum_point_2 = sum_rows_yume_points(result_date,0)
+      end
+      sum_sp2_2 = sum_sp2_2 + sum_point_2.yumepoint.to_i unless sum_point_2 == nil
+      sum_sp3_2 = sum_sp3_2 + sum_point_2.pay_money.to_i unless sum_point_2 == nil 
+      
+      result_date = (result_date.to_i + 1).to_s
+      
     end
 
     #ファイル名セット     

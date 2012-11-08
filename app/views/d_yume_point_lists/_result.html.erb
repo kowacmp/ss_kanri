@@ -81,7 +81,7 @@
 	</tr>
 	<!-- 夢ポイント支払額 　2012/10/11 追加　oda -->
 	<tr style="border-top:solid 2px #0000CD;">
-		<th rowspan="2">支払額</th>
+		<th rowspan="2">通信料</th>
 	</tr>
 	<tr><% result_date = @from_ymd %>
 		 <% start_day.times do |i| %>
@@ -94,6 +94,18 @@
 		<% end %>
 		<td style="text-align: right"><%= gsum_pos3_data.to_i %></td>
 	</tr>
+	
+	<!-- 支払額 　2012/11/07 追加 -->
+	<tr>
+		<th rowspan="2">支払額</th>
+	</tr>
+	<tr>
+		<% start_day.times do |i| %>
+	 		<td style="text-align: right"></td>
+	 	<% end %>
+		<td style="text-align: right"><%= gsum_pos2_data.to_i + gsum_pos3_data.to_i %></td>
+	</tr>
+	
 </tbody>  	
 
 </table>
