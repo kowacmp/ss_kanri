@@ -83,11 +83,14 @@ p params
     @d_sale = DSale.find(:first,
        :conditions=>["m_shop_id = ? and sale_date = ? ", @m_shop_id, @head[:input_day].to_s.gsub("/", "")])
 #p "@d_sale=#{@d_sale}"       
+    new_record_flg = false #新規か更新かを判断するフラグ
     if @d_sale == nil 
       @d_sale = DSale.new
       @d_sale.m_shop_id = @m_shop_id
       @d_sale.sale_date = @head[:input_day].to_s.gsub("/", "")
       @d_sale.kakutei_flg = 0
+      
+      new_record_flg = true
     end
     
     #前日データを取得
@@ -182,7 +185,7 @@ p params
     end
     
     #ブランクのはマスタから固定金庫をセット  
-    if @d_sale.sale_cashbox == 0
+    if @d_sale.sale_cashbox == 0 and new_record_flg == true
       @d_sale.sale_cashbox = @m_fix_money.total_cash_box.to_i 
     end
     
