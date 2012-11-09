@@ -17,15 +17,15 @@
 
   <table id='rounded-corner'>
   	<tr>
-  	  <th><%= f.label '他売上コード' %></th>
+  	  <th><%= f.label '他商品コード' %></th>
   	  <td><%= f.number_field :etc_cd, :style=>"ime-mode:disabled" ,:maxlength=>3 %></td>  	  
   	</tr>
   	<tr>
-  	  <th><%= f.label '他売上名' %></th>
+  	  <th><%= f.label '他商品名' %></th>
   	  <td><%= f.text_field :etc_name,:maxlength=>20 %></td>  	  
   	</tr>
   	<tr>
-  	  <th><%= f.label '他売上略称' %></th>
+  	  <th><%= f.label '他商品略称' %></th>
   	  <td><%= f.text_field :etc_ryaku,:maxlength=>10 %></td>  	  
   	</tr>
   	<tr>
@@ -65,7 +65,7 @@
   	  </td>  	  
   	</tr>
   	<tr>
-  	  <th><%= f.label '他売上種別' %></th>
+  	  <th><%= f.label '他商品種別' %></th>
   	  <td>
   	  	<%= f.select(:etc_class, MCode.find(:all, :conditions => ["kbn = ?",'etc_class'], :order => 'code').map do |u|
       		[u.code_name,u.code]
