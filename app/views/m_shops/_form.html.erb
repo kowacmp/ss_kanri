@@ -562,6 +562,13 @@
 	 			}
 	 		}
 	 		
+	 		if (document.getElementById('m_tank_' + i + '_volume') != null) {
+	 			if (document.getElementById('m_tank_' + i + '_volume').value == "") {
+	 				error_msg_m = error_msg_m + '<li>タンク容量を入力してください。</li>';
+	 				break;
+	 			}
+	 		}
+	 		
 	 		if (document.getElementById('m_tank_' + i + '_tank_union_no') != null) {
 	 			if ((document.getElementById('m_tank_' + i + '_tank_union_no').value == "") ||
 	 					(document.getElementById('m_tank_' + i + '_tank_union_no').value < 1)) {
@@ -806,11 +813,15 @@
 	function form_clear2(idx){
 			document.getElementById('m_fix_money_' + idx + '_start_month').selectedIndex = 0;
 			document.getElementById('m_fix_money_' + idx + '_end_month').selectedIndex = 0;
-			document.getElementById('m_fix_money_' + idx + '_cash_box').value = "";
-			document.getElementById('m_fix_money_' + idx + '_pos_register').value = "";
-			document.getElementById('m_fix_money_' + idx + '_part_time').value = "";
-			document.getElementById('m_fix_money_' + idx + '_wash_money').value = "";
-			document.getElementById('m_fix_money_' + idx + '_money_change').value = "";
+			//document.getElementById('m_fix_money_' + idx + '_cash_box').value = "";
+			//document.getElementById('m_fix_money_' + idx + '_pos_register').value = "";
+			//document.getElementById('m_fix_money_' + idx + '_part_time').value = "";
+			//document.getElementById('m_fix_money_' + idx + '_wash_money').value = "";
+			//document.getElementById('m_fix_money_' + idx + '_money_change').value = "";
+			<% @m_fix_items.each_with_index do |m_fix_item,idx_item| %>
+				document.getElementById('m_fix_money_' + idx + '_fix_money' + <%= idx_item + 1 %>).value = "";
+			<% end %>
+			
 			document.getElementById('m_fix_money_' + idx + '_total_cash_box').value = "";
 			document.getElementById('m_fix_money_' + idx + '_total_change_money').value = "";
 			document.getElementById('m_fix_money_' + idx + '_total_money').value = "";
