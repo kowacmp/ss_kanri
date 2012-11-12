@@ -26,10 +26,14 @@ class DTankComputeReportDetailsController < ApplicationController
           @year = params[:date][:year].to_s
           @month = format_month(params[:date][:month])
           @shop_kbn = params[:shop_kbn]
+          #2012/11/12 表示対象年月　上書き
+          @time_now = Time.mktime(@year.to_i,@month.to_i,1)
         else
           @year  = params[:result_date][0,4]
           @month = params[:result_date][4,2]
           @shop_kbn = params[:shop_kbn]
+          #2012/11/12 表示対象年月　上書き
+          @time_now = Time.mktime(@year.to_i,@month.to_i,1)
         end
       end
       @this_month = @year + @month
@@ -172,14 +176,20 @@ class DTankComputeReportDetailsController < ApplicationController
         sum_receive = sum_receive + tank_compute.receive
         row.item(:sale).value(tank_compute.sale)
         row.item(:compute_stock).value(tank_compute.compute_stock)
-        sum_compute_stock = sum_compute_stock + tank_compute.compute_stock
+        #2012/11/12 最終日の計算在庫量を取得
+        #sum_compute_stock = sum_compute_stock + tank_compute.compute_stock
+        sum_compute_stock = tank_compute.compute_stock
         row.item(:after_stock).value(tank_compute.after_stock)
         row.item(:decrease).value(tank_compute.decrease)
-        sum_decrease = sum_decrease + tank_compute.decrease
+        #2012/11/12 最終日の本日増減を取得
+        #sum_decrease = sum_decrease + tank_compute.decrease
+        sum_decrease = tank_compute.decrease
         row.item(:sale_total).value(tank_compute.sale_total)
         last_sale_total = tank_compute.sale_total
         row.item(:decrease_total).value(tank_compute.decrease_total)
-        sum_decrease_total = sum_decrease_total + tank_compute.decrease_total
+        #2012/11/12 最終日の増減累計を取得
+        #sum_decrease_total = sum_decrease_total + tank_compute.decrease_total
+        sum_decrease_total = tank_compute.decrease_total
         row.item(:total_percentage).value(sprintf("%-8.3f",(tank_compute.decrease_total * 1.000 / tank_compute.sale_total * 1.000)*100) + '%')
 
         end #unless   
