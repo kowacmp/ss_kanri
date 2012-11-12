@@ -181,9 +181,7 @@ class DTankComputeReportDetailsController < ApplicationController
         sum_compute_stock = tank_compute.compute_stock
         row.item(:after_stock).value(tank_compute.after_stock)
         row.item(:decrease).value(tank_compute.decrease)
-        #2012/11/12 最終日の本日増減を取得
-        #sum_decrease = sum_decrease + tank_compute.decrease
-        sum_decrease = tank_compute.decrease
+        sum_decrease = sum_decrease + tank_compute.decrease
         row.item(:sale_total).value(tank_compute.sale_total)
         last_sale_total = tank_compute.sale_total
         row.item(:decrease_total).value(tank_compute.decrease_total)
