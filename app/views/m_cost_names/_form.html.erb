@@ -16,9 +16,14 @@
 		<tr>
 		  <th><%= f.label "店舗" %></th>
 		  <td colspan="6">
-			<%= f.select(:m_shop_id, MShop.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'shop_cd').map do |u|
-		  		[u.shop_name,u.id]
-		    end, {:include_blank => "選択して下さい"}) %>
+		  	<% if f.object.new_record? %>
+				<%= f.select(:m_shop_id, MShop.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'shop_cd').map do |u|
+			  		[u.shop_name,u.id]
+			    end, {:include_blank => "選択して下さい"}) %>
+		    <% else %>
+			    <%= MShop.find(f.object.m_shop_id).shop_name %>
+			    <%= f.hidden_field :m_shop_id %>
+		    <% end %>
 		  </td>  
 		</tr>
 		
