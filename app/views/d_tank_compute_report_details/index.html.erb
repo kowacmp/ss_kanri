@@ -2,6 +2,8 @@
 <%= form_tag(url_for(:action => 'search'),:remote => true) do %>
 <%= hidden_field_tag 'mode',@mode %>
 <%= hidden_field_tag 'shop_id',@shop_id %>
+<!-- 2012/11/12 -->
+<%= hidden_field_tag 'shop_kbn',@shop_kbn %>
 <table id='rounded-corner'>
 	<tr><th>店舗名</th>
 		<td><%= MShop.find(@shop_id).shop_name %>
@@ -35,9 +37,10 @@
 	    <%= render partial: 'result'%>
 	</div>
 </p>
-<% if @mode == 'manager' %>
-  <%= link_to '一覧へ戻る',{:controller => 'd_tank_compute_reports',:action => 'index'}, :class => 'return_icon'%>
-<% end %>
+<!-- 2012/11/12 result内に移動　日付の変更が有効にならないため -->
+<%# if @mode == 'manager' %>
+  <%#= link_to '一覧へ戻る',{:controller => 'd_tank_compute_reports',:action => 'index'}, :class => 'return_icon'%>
+<%# end %>
 
 <script type="text/javascript">
 jQuery(function() {

@@ -276,11 +276,14 @@ class DDutyReportsController < ApplicationController
         d_aim_uriage = DAim.new if d_aim_uriage.blank?
         d_aim_jinken = DAim.new if d_aim_jinken.blank?
 
-        y_sisu = (d_aim_jinken.aim_total.to_i == 0 ? 0: (d_aim_uriage.aim_total.to_i*10000).to_f / (d_aim_jinken.aim_total.to_i*10000).to_f * 100).round
+        #y_sisu = (d_aim_jinken.aim_total.to_i == 0 ? 0: (d_aim_uriage.aim_total.to_i*10000).to_f / (d_aim_jinken.aim_total.to_i*10000).to_f * 100).round
+        y_sisu = (d_aim_jinken.aim_total.to_i == 0 ? 0: (d_aim_uriage.aim_total.to_i).to_f / (d_aim_jinken.aim_total.to_i*10000).to_f * 100).round
         
         if @m_shop.shop_kbn == 0
-          h.item(:u_aim).value(d_aim_uriage.aim_total.to_i*10000)
-          h.item(:j_aim).value(d_aim_jinken.aim_total.to_i*10000)
+          #h.item(:u_aim).value(d_aim_uriage.aim_total.to_i*10000)
+          #h.item(:j_aim).value(d_aim_jinken.aim_total.to_i*10000)
+          h.item(:u_aim).value(d_aim_uriage.aim_total.to_i)
+          h.item(:j_aim).value(d_aim_jinken.aim_total.to_i)
         else
           h.item(:u_aim).value(d_aim_uriage.aim_total)
           h.item(:j_aim).value(d_aim_jinken.aim_total)
@@ -292,8 +295,10 @@ class DDutyReportsController < ApplicationController
           h.item("d_#{i+1}").value(i+1)
           h.item("w_#{i+1}").value(week_w)
           if @m_shop.shop_kbn == 0
-            h.item("u_aim_#{i+1}").value(d_aim_uriage["aim_value#{i+1}"].to_i*10000)
-            h.item("j_aim_#{i+1}").value(d_aim_jinken["aim_value#{i+1}"].to_i*10000)
+            #h.item("u_aim_#{i+1}").value(d_aim_uriage["aim_value#{i+1}"].to_i*10000)
+            #h.item("j_aim_#{i+1}").value(d_aim_jinken["aim_value#{i+1}"].to_i*10000)
+            h.item("u_aim_#{i+1}").value(d_aim_uriage["aim_value#{i+1}"].to_i)
+            h.item("j_aim_#{i+1}").value(d_aim_jinken["aim_value#{i+1}"].to_i)
           else
             h.item("u_aim_#{i+1}").value(d_aim_uriage["aim_value#{i+1}"])
             h.item("j_aim_#{i+1}").value(d_aim_jinken["aim_value#{i+1}"])

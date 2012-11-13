@@ -17,10 +17,14 @@ class DTankComputeReportsController < ApplicationController
           @year = params[:date][:year].to_s
           @month = format_month(params[:date][:month])
           @shop_kbn = params[:shop_kbn]
+          #2012/11/12 表示対象年月　上書き
+          @time_now = Time.mktime(@year.to_i,@month.to_i,1)
         else
           @year  = params[:result_date][0,4]
           @month = params[:result_date][4,2]
           @shop_kbn = params[:shop_kbn]
+          #2012/11/12 表示対象年月　上書き
+          @time_now = Time.mktime(@year.to_i,@month.to_i,1)
         end
       end
       @this_month = @year + @month

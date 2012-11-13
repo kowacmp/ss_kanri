@@ -21,7 +21,7 @@
 	  <th style="min-width: 65px;">前日営業<br />終了後の<br />実在庫量</th>
 	  <th style="min-width: 65px;">ローリー<br />からの<br />受入数量</th>
 	  <th style="min-width: 65px;">計量機<br />からの<br />販売数量</th>
-	  <th style="min-width: 50px;">計量<br />在庫量</th>
+	  <th style="min-width: 50px;">計算<br />在庫量</th>
 	  <th style="min-width: 65px;">当日営業<br />終了後の<br />実在庫量</th>
 	  <th style="min-width: 50px;">本日の<br />増減</th>
 	  <th style="min-width: 70px;">計量機<br />からの<br />販売累計</th>
@@ -105,7 +105,9 @@
 		<td class="input_no">
 		  <% unless tank_compute == nil %>
 		    <%= tank_compute.compute_stock  %>
-			<% sum_compute_stock = sum_compute_stock + tank_compute.compute_stock %>
+		    <!-- 2012/11/12 最終日の計算在庫量を取得 -->
+			<%# sum_compute_stock = sum_compute_stock + tank_compute.compute_stock %>
+			<% sum_compute_stock = tank_compute.compute_stock %>
 		  <% end %>
 		</td>
 		<td class="input_no"><%= tank_compute.after_stock unless tank_compute == nil %></td>
@@ -118,13 +120,17 @@
 		<td class="input_no">
 		  <% unless tank_compute == nil %>
 		  	<%= tank_compute.sale_total %>
-		  	<% last_sale_total = last_sale_total + tank_compute.sale_total %>
+		  	<!-- 2012/11/12 最終日の計量機販売累計を取得 -->
+		  	<%# last_sale_total = last_sale_total + tank_compute.sale_total %>
+		  	<% last_sale_total = tank_compute.sale_total %>
 		  <% end %>
 		</td>
 		<td class="input_no">
 		  <% unless tank_compute == nil %>
 			<%= tank_compute.decrease_total %>
-			<% sum_decrease_total = sum_decrease_total + tank_compute.decrease_total %>
+			<!-- 2012/11/12 最終日の増減累計を取得 -->
+			<%# sum_decrease_total = sum_decrease_total + tank_compute.decrease_total %>
+			<% sum_decrease_total = tank_compute.decrease_total %>
 		  <% end %>
 		</td>
 		<td class="input_no">
@@ -163,6 +169,13 @@
 <%= hidden_field_tag :shop_id, @shop_id if @mode == 'manager' %>
 <%= submit_tag '  印  刷  ',format: 'pdf' %>
 <!-- UPDATE END 2012.10.30 印刷はモードを問わずす常に表示 -->
+<% end %>
+
+<!-- 2012/11/12 -->
+<% if @mode == 'manager' %>
+  <br />
+  <%#= link_to '一覧へ戻る',{:controller => 'd_tank_compute_reports',:action => 'index'}, :class => 'return_icon'%>
+  <%= link_to '一覧へ戻る',{:controller => 'd_tank_compute_reports',:action => 'index',:date => @this_month,:result_date => @this_month,:shop_kbn => @shop_kbn}, :class => 'return_icon'%>
 <% end %>
 
 <script>

@@ -12,7 +12,11 @@ class DFixturesController < ApplicationController
       @input_ymd = params[:input_ymd]
     end
     
-    @fixtures = DFixture.find(:all,:conditions => ['application_date = ?',@input_ymd.delete("/")],:order => 'id')
+    #@fixtures = DFixture.find(:all,:conditions => ['application_date = ?',@input_ymd.delete("/")],:order => 'id')
+    @fixtures = DFixture.find(:all,:conditions => ['application_date = ? and m_shop_id=?', 
+                                                    @input_ymd.delete("/"), 
+                                                    current_user.m_shop_id],
+                                                  :order => 'id')
     
   end
   
@@ -53,7 +57,12 @@ class DFixturesController < ApplicationController
     
     respond_to do |format|
       @shop = MShop.find(current_user.m_shop_id)
-      @fixtures = DFixture.find(:all,:conditions => ['application_date = ?',@input_ymd.delete("/")],:order => 'id')
+      
+      #@fixtures = DFixture.find(:all,:conditions => ['application_date = ?',@input_ymd.delete("/")],:order => 'id')
+      @fixtures = DFixture.find(:all,:conditions => ['application_date = ? and m_shop_id=?', 
+                                                       @input_ymd.delete("/"), 
+                                                       current_user.m_shop_id],
+                                                     :order => 'id')
       format.html { render action: "index", notice: 'D wash sale was successfully updated.' }
     end
   end
