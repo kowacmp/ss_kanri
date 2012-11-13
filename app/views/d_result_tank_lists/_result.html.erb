@@ -44,7 +44,10 @@
 				<!--
 					<td align="right"><%#= get_sum_stock(i.to_s,i.to_s,shop.id,oil.id) %></td>
 				-->
-					<td align="right"><%= num_fmt(get_sum_stock((@from_ymd_s.to_i + i).to_s,(@from_ymd_s.to_i + i).to_s,shop.id,oil.id)) %></td>					
+				<!-- 2012/11/13 -->
+					<td align="right"><%#= num_fmt(get_sum_stock((@from_ymd_s.to_i + i).to_s,(@from_ymd_s.to_i + i).to_s,shop.id,oil.id)) %>
+						<%= num_fmt(get_sum_stock((Date.parse(@from_ymd_s) + i).strftime("%Y%m%d"),(Date.parse(@from_ymd_s) + i).strftime("%Y%m%d"),shop.id,oil.id)) %>
+					</td>					
 				<!-- 2012/09/26 月跨り不具合修正 oda end-->
 				<% end %>
 			</tr>

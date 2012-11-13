@@ -61,7 +61,9 @@ class DResultOilListsController < ApplicationController
             #str = shop.shop_cd.to_s + "," + shop.shop_name.tosjis + "," + (Date.parse(@from_ymd_s) + i).strftime("%Y/%m/%d")
             str = shop.delivery_cd.to_s + "," + shop.shop_name.tosjis + "," + (Date.parse(@from_ymd_s) + i).strftime("%Y/%m/%d")
              #@m_oils.each do |oil|
-             get_pos_data((@from_ymd_s.to_i + i).to_s,shop.id).each do |oil_list|  
+             #2012/11/13
+             #get_pos_data((@from_ymd_s.to_i + i).to_s,shop.id).each do |oil_list|  
+             get_pos_data((Date.parse(@from_ymd_s) + i).strftime("%Y%m%d"),shop.id).each do |oil_list|  
                #str = str + "," + get_pos_data((@from_ymd_s.to_i + i).to_s,(@from_ymd_s.to_i + i).to_s,shop.id,oil.id).to_s
                str = str + "," + oil_list.pos_data.to_s
              end
