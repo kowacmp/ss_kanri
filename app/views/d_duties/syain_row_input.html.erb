@@ -25,7 +25,8 @@
 		      <% select_day = Date.new(@input_day.to_s[0,4].to_i, @input_day.to_s[4,2].to_i, i + 1) %>		
 			  <% week_w = day_of_the_week(select_day.wday) %>	
 			  <% if week_w == "土" or week_w =="日" %>
-			  	<% if Time.now.day == (i+1) %>
+			  	<%# if Time.now.day == (i+1) %>
+			  	<% if Date.today == select_day %>
 			  		<td style='<%= background_css %>' >
 			  	<% else %>
 			  		<% if week_w == "土" %>
