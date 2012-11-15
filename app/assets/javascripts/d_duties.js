@@ -22,8 +22,28 @@ $(function () {
     $(":input[id^=d_duty_input_flg_]")
 	    .live('click', function(){
 	    		var msg;
+	    		var err_msg="";
 	    		if ($(this).attr('checked') == "checked") {
 	    			msg = "入力済みにします。よろしいですか？"
+	    			
+	    			//社員の入力が済んでいない場合はエラーにする
+				    var Div_id = "";
+				    if ($("div.bodyDiv").size() > 0) {
+				    	Div_id = 'div.bodyDiv ';
+				    };
+				    var get_day = $(this).attr('id').replace("d_duty_input_flg_", "");
+				    
+				    $(Div_id + "[id^=hiden_syain_" + Number(get_day) + "_]").each(function(i){
+			            if ($(this).val() == ""){
+			            	err_msg = "社員の勤怠を入力してください。"; 
+			            	return false;
+			            };
+			        })
+			        if (err_msg != "") {
+			        	alert(err_msg); 
+			            return false;
+			        };
+			        
 	    		}else{
 	    			msg = "入力済みを解除します。よろしいですか？"
 	    		};

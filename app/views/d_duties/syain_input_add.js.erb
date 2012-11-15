@@ -1,6 +1,6 @@
 <% params[:datas].each{|key, data| %>
     <% label_id = "div.bodyDiv #hiden_syain_#{@input_day[6,2].to_i}_#{data[:user_id]}" %> 
-    $("<%= label_id %>").val(<%= data[:syukin].to_i %>);
+    $("<%= label_id %>").val(<%= data[:syukin] %>);
 
 	<% label_id = "div.bodyDiv #syain_#{@input_day[6,2].to_i}_#{data[:user_id]}" %> 
 

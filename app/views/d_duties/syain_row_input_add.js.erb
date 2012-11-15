@@ -1,7 +1,7 @@
 <% unless params[:datas].blank? %>
 	<% params[:datas].each{|day, data| %>
 	    <% label_id = "div.bodyDiv #hiden_syain_#{day}_#{@user_id}" %> 
-	    $("<%= label_id %>").val(<%= data[:syukin].to_i %>);
+	    $("<%= label_id %>").val(<%= data[:syukin] %>);
 	
 		<% label_id = "div.bodyDiv #syain_#{day}_#{@user_id}" %> 
 	

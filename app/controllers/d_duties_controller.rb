@@ -415,7 +415,7 @@ class DDutiesController < ApplicationController
     end
     
     d_dutie.m_shop_id = @m_shop_id
-    unless d_dutie.day_work_time.to_i == data[:syukin].to_i
+    if data[:syukin]
       d_dutie.day_work_time = data[:syukin] if data[:syukin]
       d_dutie.all_work_time = d_dutie.day_work_time  
       
