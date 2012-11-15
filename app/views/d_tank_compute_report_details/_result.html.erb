@@ -3,6 +3,7 @@
    sum_decrease = 0
    last_sale_total = 0
    sum_decrease_total = 0
+   sum_compute_sale = 0
    %>
 <% get_ymd = @from_ymd %>
 <% start_ymd = (@from_ymd[0,4].to_s + '/' + @from_ymd[4,2] + '/' + @from_ymd[6,2]).to_time %>
@@ -93,30 +94,44 @@
 		    <% if tank_compute.inspect_flg > 0 %>○<% end %>
 		  <% end %>
 		  </center>
-	    </td>
+		</td>
+		<!-- 前日営業終了後の実在庫量 -->
 		<td class="input_no"><%= tank_compute.before_stock unless tank_compute == nil %></td>
+		<!-- ローリーからの受入数量 -->
 		<td class="input_no">
 		  <% unless tank_compute == nil %>
 			<%= tank_compute.receive %>
 			<% sum_receive = sum_receive + tank_compute.receive %>
-	      <% end %>
+		<% end %>
 		</td>
-		<td class="input_no"><%= tank_compute.sale unless tank_compute == nil %></td>
+		<!-- 計算在庫量 -->
+		<!-- 2012/11/15 計算在庫量累計算出 oda-->
+		<td class="input_no">
+			<%#= tank_compute.sale unless tank_compute == nil %>
+			<% unless tank_compute == nil %>
+				<%= tank_compute.sale  %>
+				<% sum_compute_sale = sum_compute_sale + tank_compute.sale %>
+		 	<% end %>
+		</td>
+		<!-- 計量機からの販売数量 -->
 		<td class="input_no">
 		  <% unless tank_compute == nil %>
-		    <%= tank_compute.compute_stock  %>
-		    <!-- 2012/11/12 最終日の計算在庫量を取得 -->
+			<%= tank_compute.compute_stock  %>
+			<!-- 2012/11/12 最終日の計算在庫量を取得 -->
 			<%# sum_compute_stock = sum_compute_stock + tank_compute.compute_stock %>
 			<% sum_compute_stock = tank_compute.compute_stock %>
 		  <% end %>
 		</td>
+		<!-- 当日営業終了後の実在庫量 -->
 		<td class="input_no"><%= tank_compute.after_stock unless tank_compute == nil %></td>
+		<!-- 本日の増減 -->
 		<td class="input_no">
 		  <% unless tank_compute == nil %>
 			<%= tank_compute.decrease %>
 			<% sum_decrease = sum_decrease + tank_compute.decrease %>
 		  <% end %>
 		</td>
+		<!-- 計量機からの販売累計 -->
 		<td class="input_no">
 		  <% unless tank_compute == nil %>
 		  	<%= tank_compute.sale_total %>
@@ -125,6 +140,7 @@
 		  	<% last_sale_total = tank_compute.sale_total %>
 		  <% end %>
 		</td>
+		<!-- 累計の増減 -->
 		<td class="input_no">
 		  <% unless tank_compute == nil %>
 			<%= tank_compute.decrease_total %>
@@ -133,6 +149,7 @@
 			<% sum_decrease_total = tank_compute.decrease_total %>
 		  <% end %>
 		</td>
+		<!-- 累計の増減率 -->
 		<td class="input_no">
 		  <%= sprintf("%-8.3f",(tank_compute.decrease_total*1.000 / tank_compute.sale_total*1.000)*100) + "%" unless tank_compute == nil %>
 		</td>
@@ -141,14 +158,24 @@
 
     <tr>
 	  <th colspan="3">月間累計</th>
+	<!-- 前日営業終了後の実在庫量 -->
 	  <td></td>
+	<!-- ローリーからの受入数量 -->
 	  <td class="input_no"><%= sum_receive %></td>
-	  <td></td>
+	<!-- 計算在庫量 -->
+	  <td class="input_no"><%= sum_compute_sale %></td>
+	<!-- 計量機からの販売数量 -->
+	<!-- 2012/11/15 計算在庫量累計算出 oda-->
 	  <td class="input_no"><%= sum_compute_stock %></td>
+	<!-- 当日営業終了後の実在庫量 -->
 	  <td></td>
+	<!-- 本日の増減 -->
 	  <td class="input_no"><%= sum_decrease %></td>
+	<!-- 計量機からの販売累計 -->
 	  <td class="input_no"><%= last_sale_total %></td>
+	<!-- 累計の増減 -->
 	  <td class="input_no"><%= sum_decrease_total %></td>
+	<!-- 累計の増減率 -->
 	  <td class="input_no">
 	  	<%#= sprintf("%-8.3f",(sum_decrease_total * 1.000 / last_sale_total * 1.000)*100) + "%"%>
 	  	<% if sum_decrease_total == 0 or last_sale_total == 0 %>
