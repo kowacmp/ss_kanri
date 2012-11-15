@@ -251,8 +251,10 @@ module DAuditCashboxesHelper
   # 実過不足金
   def get_jitu_kabusoku(i)
     
-    return get_kabusoku(i) - get_tatekae_kei(i)
-
+    # UPDATE 2012.11.15 実過不足金は立替未処理額を加算する
+    #return get_kabusoku(i) - get_tatekae_kei(i)
+    return get_kabusoku(i) + get_tatekae_kei(i)
+    
   end
 
   # 過不足金2
@@ -261,15 +263,23 @@ module DAuditCashboxesHelper
     gokei = 0
     
     if @d_audit_cashbox["sum#{ i }_cashbox"].nil? or @d_audit_cashbox["sum#{ i }_cashbox"].blank? then
-      gokei += 0
+      # UPDATE 2012.11.15 合計金額 - 指定額
+      #gokei += 0
+      gokei -= 0
     else
-      gokei += @d_audit_cashbox["sum#{ i }_cashbox"].to_i
+      # UPDATE 2012.11.15 合計金額 - 指定額
+      #gokei += @d_audit_cashbox["sum#{ i }_cashbox"].to_i
+      gokei -= @d_audit_cashbox["sum#{ i }_cashbox"].to_i
     end
     
     if @d_audit_cashbox["sum#{ i }_money"].nil? or @d_audit_cashbox["sum#{ i }_money"].blank? then
-      gokei -= 0  
+      # UPDATE 2012.11.15 合計金額 - 指定額
+      #gokei -= 0
+      gokei += 0
     else
-      gokei -= @d_audit_cashbox["sum#{ i }_money"].to_i
+      # UPDATE 2012.11.15 合計金額 - 指定額
+      #gokei -= @d_audit_cashbox["sum#{ i }_money"].to_i
+      gokei += @d_audit_cashbox["sum#{ i }_money"].to_i
     end 
    
     return gokei    
@@ -296,7 +306,9 @@ module DAuditCashboxesHelper
   # 実過不足2
   def get_jitu_kabusoku2(i)
     
-    return get_kabusoku2(i) - get_tatekae_kei2(i)
+    # UPDATE 2012.11.15 実過不足金は立替未処理額を加算する
+    #return get_kabusoku2(i) - get_tatekae_kei2(i)
+    return get_kabusoku2(i) + get_tatekae_kei2(i)
 
   end
 
