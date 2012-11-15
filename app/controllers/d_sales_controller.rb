@@ -350,14 +350,23 @@ p params
       zengetu = (key_data.sale_date.to_s[0,4].to_i).to_s + (zengetu.to_i - 1).to_s
     end
     
+    zengetuhajime = (Date.new(zengetu[0,4].to_i, zengetu[4,2].to_i, 1)).strftime("%Y%m%d")
     zengetumatu = (Date.new(zengetu[0,4].to_i, zengetu[4,2].to_i, -1)).strftime("%Y%m%d")
     
-    @d_sale_zengetumatu = DSale.find(:first, :conditions=>["m_shop_id = ? and sale_date = ?", @head[:m_shop_id], zengetumatu]) 
+    select_sql = "select sum(exist_money) exist_money, sum(over_short) over_short from d_sales where m_shop_id = ? and sale_date between ? and ?"
+    @d_sale_zengetumatu = DSale.find_by_sql([select_sql, @head[:m_shop_id], zengetuhajime, zengetumatu]) 
     
-    unless @d_sale_zengetumatu 
+    unless @d_sale_zengetumatu[0]
         @d_sale_zengetumatu = DSale.new
+    else
+        @d_sale_zengetumatu = @d_sale_zengetumatu[0]
     end
-    
+
+#    @d_sale_zengetumatu = DSale.find(:first, :conditions=>["m_shop_id = ? and sale_date = ?", @head[:m_shop_id], zengetumatu]) 
+#    
+#    unless @d_sale_zengetumatu 
+#        @d_sale_zengetumatu = DSale.new
+#    end    
     #その他売上合計
     select_sql = "select sum(a.item_money) item_money "
     select_sql << " from d_sale_items a inner join d_sales b on a.d_sale_id = b.id "
