@@ -79,6 +79,7 @@ class DTankComputeReportDetailsController < ApplicationController
       sum_decrease       = 0
       last_sale_total    = 0
       sum_decrease_total = 0
+      sum_sale           = 0
       tank_no            = Array.new
       tank_volume = 0
       @tank_id = params[:tank_id].to_i unless params[:tank_id] == nil
@@ -104,6 +105,7 @@ class DTankComputeReportDetailsController < ApplicationController
          # フッターに合計をセット.
          events.on :page_footer_insert do |e|
            e.section.item(:sum_receive).value(sum_receive)
+           e.section.item(:sum_sale).value(sum_sale)
            e.section.item(:sum_compute_stock).value(sum_compute_stock)
            e.section.item(:sum_decrease).value(sum_decrease)
            e.section.item(:sum_sale_total).value(last_sale_total)
@@ -175,6 +177,8 @@ class DTankComputeReportDetailsController < ApplicationController
         row.item(:receive).value(tank_compute.receive)
         sum_receive = sum_receive + tank_compute.receive
         row.item(:sale).value(tank_compute.sale)
+        #2012/11/15 計量機からの販売数量
+        sum_sale = sum_sale + tank_compute.sale
         row.item(:compute_stock).value(tank_compute.compute_stock)
         #2012/11/12 最終日の計算在庫量を取得
         #sum_compute_stock = sum_compute_stock + tank_compute.compute_stock

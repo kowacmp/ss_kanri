@@ -422,6 +422,8 @@ class DDutyReportsController < ApplicationController
                 else
                   #勤怠表示
                   if d_duties[n].all_work_time.to_f > 0
+                    #2012/11/14 小数点が切り上がっていたため書式無効
+                    row.item("j_#{i+1}").format_enabled(false)
                     row.item("j_#{i+1}").value(d_duties[n].all_work_time)
                   else
                     row.item("j_#{i+1}").value("")

@@ -66,7 +66,9 @@ class DResultTankListsController < ApplicationController
             str = shop.delivery_cd.to_s + "," + shop.shop_name.tosjis + "," + (Date.parse(@from_ymd_s) + i).strftime("%Y/%m/%d")
              @m_oils.each do |oil|
                #str = str + "," + get_sum_stock(i.to_s,i.to_s,shop.id,oil.id).to_s
-               str = str + "," + get_sum_stock((@from_ymd_s.to_i + i).to_s,(@from_ymd_s.to_i + i).to_s,shop.id,oil.id).to_s
+               #2012/11/13
+               #str = str + "," + get_sum_stock((@from_ymd_s.to_i + i).to_s,(@from_ymd_s.to_i + i).to_s,shop.id,oil.id).to_s
+               str = str + "," + get_sum_stock((Date.parse(@from_ymd_s) + i).strftime("%Y%m%d"),(Date.parse(@from_ymd_s) + i).strftime("%Y%m%d"),shop.id,oil.id).to_s
              end
            csv << str.split(/,/)        
         end #for
