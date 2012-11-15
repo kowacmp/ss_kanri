@@ -9,7 +9,7 @@
       <th>権限種別</th>
       <td>
       	<%= select(:select, :m_authority_id, 
-			   MAuthority.find(:all, :order => 'authority_cd').map do |u|
+			   MAuthority.find(:all, :conditions=> "deleted_flg=0",:order => 'authority_cd').map do |u|
 			      [u.authority_name,u.id]
 			   end, :include_blank => "選択して下さい") %>
       </td>
