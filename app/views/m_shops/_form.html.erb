@@ -103,6 +103,24 @@
 		  <td><%= f.number_field :price_sort , :style=>"ime-mode:disabled" ,:maxlength=>3,:onkeyup=>"numberCheck(this)"%></td> 	  
 		</tr>
 		
+		<tr>
+		  <th><%= f.label '決算月' %></th>
+		  <td>
+		  	<!-- 決算月が登録されてなければシステム日付の月 -->
+		  	<% if f.object.settling_month %>
+			  	<%= f.select(:settling_month,
+					  	 		12.times.map do |i|	
+								[(i + 1).to_s + "月", i + 1]
+					  	 		end) %>
+			<% else %>
+				<%= f.select(:settling_month,
+						  	 	12.times.map do |i|	
+								[(i + 1).to_s + "月", i + 1]
+						  	 	end, :selected => Time.now.month) %>
+			<% end %>
+		  </td> 	  
+		</tr>
+		
 		<% @m_oils.each_with_index do |m_oil,idx| %>
 		<%- if m_oil.id == @m_shop.m_oil_id1 -%>
 		<%- elsif m_oil.id == @m_shop.m_oil_id2 -%>
