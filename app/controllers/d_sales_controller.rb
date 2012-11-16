@@ -342,26 +342,44 @@ p params
     
     @from_controller = params[:from_controller]
 
-    #前月末現金有高、過不足取得
-    zengetu = key_data.sale_date.to_s[4,2]
-    if zengetu == 1
-      zengetu = (key_data.sale_date.to_s[0,4].to_i - 1).to_s + "12"
+    #決算月を取得
+    m_shop = MShop.find(@head[:m_shop_id])
+    #前月を取得
+    date = Date.new(key_data.sale_date.to_s[0,4].to_i, key_data.sale_date.to_s[4,2].to_i, 1) -1
+    end_ym = date.strftime("%Y%m")
+#p ">>>>>>>>>>>>> key_data.sale_date.to_s[4,2]=#{key_data.sale_date.to_s[4,2]}"
+#p ">>>>>>>>>>>>> end_ym=#{end_ym}"
+#p ">>>>>>>>>>>>> m_shop.settling_month=#{m_shop.settling_month}"
+    #前月が決算月の場合は前月なし
+    if m_shop.settling_month.blank? or m_shop.settling_month.to_i == end_ym.to_s[4,2].to_i 
+      @d_sale_zengetumatu = DSale.new
     else
-      zengetu = (key_data.sale_date.to_s[0,4].to_i).to_s + (zengetu.to_i - 1).to_s
+      
+      #開始年月
+      if m_shop.settling_month != 12 and
+         key_data.sale_date.to_s[4,2].to_i <= m_shop.settling_month
+        start_y = key_data.sale_date.to_s[0,4].to_i - 1
+      else
+        start_y = key_data.sale_date.to_s[0,4].to_i
+      end
+      if m_shop.settling_month == 12
+        start_m = 1
+      else
+        start_m = m_shop.settling_month + 1
+      end
+      date = Date.new(start_y.to_i, start_m, 1) 
+      start_ym = date.strftime("%Y%m")
+ #     p ">>>>>>>>>>>>>> start_ym=#{start_ym}"     
+      select_sql = "select sum(exist_money) exist_money, sum(over_short) over_short from d_sales where m_shop_id = ? and sale_date between ? and ?"
+      @d_sale_zengetumatu = DSale.find_by_sql([select_sql, @head[:m_shop_id], start_ym.to_s + '01', end_ym.to_s + '31' ])
+       
+      unless @d_sale_zengetumatu[0]
+          @d_sale_zengetumatu = DSale.new
+      else
+          @d_sale_zengetumatu = @d_sale_zengetumatu[0]
+      end
     end
     
-    zengetuhajime = (Date.new(zengetu[0,4].to_i, zengetu[4,2].to_i, 1)).strftime("%Y%m%d")
-    zengetumatu = (Date.new(zengetu[0,4].to_i, zengetu[4,2].to_i, -1)).strftime("%Y%m%d")
-    
-    select_sql = "select sum(exist_money) exist_money, sum(over_short) over_short from d_sales where m_shop_id = ? and sale_date between ? and ?"
-    @d_sale_zengetumatu = DSale.find_by_sql([select_sql, @head[:m_shop_id], zengetuhajime, zengetumatu]) 
-    
-    unless @d_sale_zengetumatu[0]
-        @d_sale_zengetumatu = DSale.new
-    else
-        @d_sale_zengetumatu = @d_sale_zengetumatu[0]
-    end
-
 #    @d_sale_zengetumatu = DSale.find(:first, :conditions=>["m_shop_id = ? and sale_date = ?", @head[:m_shop_id], zengetumatu]) 
 #    
 #    unless @d_sale_zengetumatu 
@@ -673,6 +691,7 @@ p params
         e.section.item(:footer_suito_zan).value(footer[:suito_zan])
         e.section.item(:footer_uketori_tesuryo).value(footer[:uketori_tesuryo]) #2012/10/02 nishimura
         e.section.item(:footer_d_sale_kei).value(footer[:d_sale_kei])
+        e.section.item(:footer_over_short).value(footer[:over_short])
         
         e.section.item(:total_day).value("計")
         e.section.item(:total_sale_money).value((d_sale_total[:sale_money].to_i)) 
@@ -784,6 +803,7 @@ p params
     footer[:suito_zan] = num_fmt(@balance_money)
     footer[:uketori_tesuryo] = num_fmt(d_sale_total[:purika_tesuryo].to_i) #2012/10/02 nishimura
     footer[:d_sale_kei] = num_fmt(d_sale_total[:d_sale_syokei].to_i + d_sale_total[:sale_ass].to_i) 
+    footer[:over_short] = num_fmt(@d_sale_zengetumatu.over_short.to_i + d_sale_total[:kabusoku].to_i)
     
     #PDF出力
     #タイトルセット

@@ -24,7 +24,7 @@
 
 <hr style="clear: both">
 
-
+<% over_short_ruikei = @d_sale_zengetumatu.over_short.to_i %>
 <!--div id="report_view"-->
   	<table id="report_view_table" class="rounded-corner">
   		<thead>
@@ -49,6 +49,7 @@
 			<th style="min-width: 100px;">過不足</th>
 			<th style="min-width: 100px;">出金誤差</th>
 			<th style="min-width: 100px;">過不足合計</th>
+			<th style="min-width: 100px;">過不足累計</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -88,6 +89,10 @@
 				<td class="money">
 					<%= num_fmt(error_money + @d_sale.over_short) if @d_sale %>
 				</td><!--過不足合計 = 出金誤差 + 過不足 -->
+				<td class="money">
+					<% over_short_ruikei = over_short_ruikei + @d_sale.over_short.to_i if @d_sale %>
+					<%= num_fmt(over_short_ruikei) %>
+				</td>
 			</tr>
 			<% d_sale_total = calc_total(d_sale_total) %>
 		<% } %>
@@ -118,6 +123,9 @@
 			</td>
 			<td class="money">
 				<%= num_fmt(error_money_total + d_sale_total[:kabusoku]) %>
+			</td>
+			<td class="money">
+				<%= num_fmt(over_short_ruikei) %>
 			</td>
 		</tr>
 		<tr class="total">
