@@ -326,6 +326,11 @@ p "oil_sql=#{oil_sql}"
   end
   
   def d_result_create
+    d_result_total = Hash.new
+    d_result_total[:mo_gas] = 0
+    d_result_total[:keiyu] = 0
+    d_result_total[:touyu] = 0
+    
     m_shop = MShop.find(params[:select][:m_shop_id])
     d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       m_shop.id, params[:select][:result_date]])
@@ -357,6 +362,14 @@ p "oil_sql=#{oil_sql}"
         d_result_oil.pos3_data = params[:oil_pos3]["#{m_oil.id}"]
         d_result_oil.updated_user_id = current_user.id
         d_result_oil.save
+        case d_result_oil.m_oil_id
+        when 1,2 #レギュラ、ハイオク
+          d_result_total[:mo_gas] = (d_result_total[:mo_gas] + d_result_oil.pos1_data.to_f +  d_result_oil.pos2_data.to_f + d_result_oil.pos3_data.to_f).round(1)
+        when 3 #軽油
+           d_result_total[:keiyu] = (d_result_total[:keiyu] + d_result_oil.pos1_data.to_f +  d_result_oil.pos2_data.to_f + d_result_oil.pos3_data.to_f).round(1)
+        when 4 #灯油
+          d_result_total[:touyu] = (d_result_total[:touyu] + d_result_oil.pos1_data.to_f +  d_result_oil.pos2_data.to_f + d_result_oil.pos3_data.to_f).round(1)
+        end
       end
     end#transuction
     
@@ -491,9 +504,13 @@ p "oil_sql=#{oil_sql}"
         d_result_self_report.d_result_id = d_result.id        
       end
       #油種
-      d_result_self_report.mo_gas = (session[:m_oil_totals][1][:total].to_f + session[:m_oil_totals][2][:total].to_f).round(1)
-      d_result_self_report.keiyu = (session[:m_oil_totals][3][:total].to_f).round(1)
-      d_result_self_report.touyu = (session[:m_oil_totals][4][:total].to_f).round(1)   
+      #d_result_self_report.mo_gas = (session[:m_oil_totals][1][:total].to_f + session[:m_oil_totals][2][:total].to_f).round(1)
+      #d_result_self_report.keiyu = (session[:m_oil_totals][3][:total].to_f).round(1)
+      #d_result_self_report.touyu = (session[:m_oil_totals][4][:total].to_f).round(1)   
+      d_result_self_report.mo_gas = d_result_total[:mo_gas]
+      d_result_self_report.keiyu = d_result_total[:keiyu]
+      d_result_self_report.touyu = d_result_total[:touyu]   
+      
       #油外
       d_result_self_report.kyuyu_purika = m_oiletc_pos_total(d_result.id, 8, tax_rate)
       d_result_self_report.sensya = m_oiletc_pos_total(d_result.id, 33, tax_rate)
@@ -537,9 +554,12 @@ p "oil_sql=#{oil_sql}"
         d_result_report.d_result_id = d_result.id        
       end
       #油種
-      d_result_report.mo_gas = (session[:m_oil_totals][1][:total].to_f + session[:m_oil_totals][2][:total].to_f).round(1)
-      d_result_report.keiyu = (session[:m_oil_totals][3][:total].to_f).round(1)
-      d_result_report.touyu = (session[:m_oil_totals][4][:total].to_f).round(1)
+      #d_result_report.mo_gas = (session[:m_oil_totals][1][:total].to_f + session[:m_oil_totals][2][:total].to_f).round(1)
+      #d_result_report.keiyu = (session[:m_oil_totals][3][:total].to_f).round(1)
+      #d_result_report.touyu = (session[:m_oil_totals][4][:total].to_f).round(1)
+      d_result_report.mo_gas = d_result_total[:mo_gas]
+      d_result_report.keiyu = d_result_total[:keiyu]
+      d_result_report.touyu = d_result_total[:touyu]
       #油外
       sensya_genkin = m_oiletc_pos_total(d_result.id, 12, tax_rate)
       sensya_purika_goukei = m_oiletc_pos_total(d_result.id, 10, tax_rate)
