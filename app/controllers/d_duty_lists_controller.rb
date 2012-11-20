@@ -1,4 +1,4 @@
-
+# -*- coding:utf-8 -*-
 class DDutyListsController < ApplicationController
   def index
     search
@@ -115,14 +115,36 @@ class DDutyListsController < ApplicationController
       params[:kakutei_flg] = 0
     end   
 
+    where_sql = "duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
+    where_sql << " and day >= #{params[:day1]} "
+    where_sql << " and day <= #{params[:day2]} "
+    where_sql << " and m_shop_id = #{params[:m_shop_id]}"
+
+    #確定設定の場合は、再度確定できるか（全て入力済みFLGが１）チェックする
+    if params[:kakutei_flg] == 1
+      d_duty = DDuty.find(:first, :conditions=>[where_sql + " and input_flg != 1"])
+      unless d_duty.blank?
+        case params[:day1].to_i
+          when 1 then check_box_id = "#d_duty_kakutei_10_flg_#{params[:m_shop_id]}"
+          when 11 then check_box_id = "#d_duty_kakutei_20_flg_#{params[:m_shop_id]}"
+          when 21 then check_box_id = "#d_duty_kakutei_30_flg_#{params[:m_shop_id]}"
+        end
+        
+        respond_to do |format|
+          format.js {  render :text => "alert('入力済みでない日があります。詳細画面にて確認してください。'); $('#{check_box_id}').removeAttr('checked');"  }
+        end
+        return false
+      end
+    end
+    
     update_sql = "update d_duties "
     update_sql << " set kakutei_flg = #{params[:kakutei_flg]} "
     update_sql << " , updated_user_id = #{current_user.id} "
     update_sql << " , updated_at = '#{Time.now.to_datetime}' "
-    update_sql << " where duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
-    update_sql << " and day >= #{params[:day1]} "
-    update_sql << " and day <= #{params[:day2]} "
-    update_sql << " and m_shop_id = #{params[:m_shop_id]}"
+    #update_sql << " where duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
+    #update_sql << " and day >= #{params[:day1]} "
+    #update_sql << " and day <= #{params[:day2]} "  
+    update_sql << " where #{where_sql}"
     ActiveRecord::Base::connection.execute(update_sql)
     head :ok
     #respond_to do |format|
@@ -135,22 +157,46 @@ class DDutyListsController < ApplicationController
     
     params[:date]={:year=>params[:input_day].to_s[0,4],:month=>params[:input_day].to_s[4,2]}
     @shop_kbn = params[:shop_kbn]
-    
+
     if params[:kakutei_flg] == "checked" 
       params[:kakutei_flg] = 1
     else
       params[:kakutei_flg] = 0
     end   
-
+    
+    where_sql = "duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
+    where_sql << " and day >= #{params[:day1]} "
+    where_sql << " and day <= #{params[:day2]} "
+    where_sql << " and m_shop_id in (#{params[:shop_check]})"
+    
+    #確定設定の場合は、再度確定できるか（全て入力済みFLGが１）チェックする
+    if params[:kakutei_flg] == 1
+      d_duty = DDuty.find(:first, :conditions=>[where_sql + " and input_flg != 1"])
+      unless d_duty.blank?
+        case params[:day1].to_i
+          when 1 then check_box_id = "#all_lock_10"
+          when 11 then check_box_id = "#all_lock_20"
+          when 21 then check_box_id = "#all_lock_30"
+        end
+        
+        respond_to do |format|
+          format.js {  render :text => "alert('入力済みでない日があります。再度「検索」ボタンを押してください。'); $('#{check_box_id}').removeAttr('checked');"  }
+        end
+        return false
+      end
+    end    
+    
     update_sql = "update d_duties "
     update_sql << " set kakutei_flg = #{params[:kakutei_flg]} "
     update_sql << " , updated_user_id = #{current_user.id} "
     update_sql << " , updated_at = '#{Time.now.to_datetime}' "
-    update_sql << " where duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
-    update_sql << " and day >= #{params[:day1]} "
-    update_sql << " and day <= #{params[:day2]} "
+    #update_sql << " where duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
+    #update_sql << " and day >= #{params[:day1]} "
+    #update_sql << " and day <= #{params[:day2]} "
+    
     #update_sql << " and m_shop_id in (select id from m_shops where shop_kbn = #{params[:shop_kbn]})"
-    update_sql << " and m_shop_id in (#{params[:shop_check]})"
+    #update_sql << " and m_shop_id in (#{params[:shop_check]})"
+    update_sql << " where #{where_sql}"
     #idが取得できなかった場合更新しない
     if params[:shop_check] != ""
       ActiveRecord::Base::connection.execute(update_sql)
@@ -161,7 +207,8 @@ class DDutyListsController < ApplicationController
     #end     
     search 
     respond_to do |format|
-      format.html { render :partial => 'shop_list'  }
+      #format.html { render :partial => 'shop_list'  }
+      format.js { render :layout => false  }
     end 
   end
   

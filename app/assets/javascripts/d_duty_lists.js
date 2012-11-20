@@ -106,6 +106,7 @@ $(function () {
 	    					})
 	    					shop_check_str = shop_check_ary.join(",");
 	    				}
+	    			if (shop_check_str == ""){alert("対象データがありません。");return false;	};
 	    			$.post(
 		    			'/d_duty_lists/kakutei_check_all/',
 		    			{  kakutei_flg : $(this).attr('checked')
@@ -115,12 +116,13 @@ $(function () {
 		    			  ,shop_kbn    : $("#shop_kbn").val() 
 		    			  ,shop_check       : shop_check_str
 		    			  ,remote      : true
-		    			},
-					    function(data, status) {        // 通信成功時にデータを表示
-					       $('#shop_list').empty();
-			               $('#shop_list').append(data);
-			             },
-					    "html"                          // 応答データ形式 xml, html, script, json, jsonp, text
+		    			}//,
+					    //function(data, status) {        // 通信成功時にデータを表示
+					       //$('#shop_list').empty();
+			               //$('#shop_list').append(data);
+			               
+			            // },
+					    //"html"                          // 応答データ形式 xml, html, script, json, jsonp, text
 		    		);
 					//return true;
 				}else{
