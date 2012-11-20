@@ -162,19 +162,24 @@
 	  <td></td>
 	<!-- ローリーからの受入数量 -->
 	  <td class="input_no"><%= sum_receive %></td>
-	<!-- 計算在庫量 -->
-	  <td class="input_no"><%= sum_compute_sale %></td>
 	<!-- 計量機からの販売数量 -->
+	  <td class="input_no"><%#= sum_compute_sale %>
+	  </td>
+	<!-- 計算在庫量 -->
 	<!-- 2012/11/15 計算在庫量累計算出 oda-->
-	  <td class="input_no"><%= sum_compute_stock %></td>
+	  <td class="input_no"><%#= sum_compute_stock %>
+	  </td>
 	<!-- 当日営業終了後の実在庫量 -->
 	  <td></td>
 	<!-- 本日の増減 -->
-	  <td class="input_no"><%= sum_decrease %></td>
+	  <td class="input_no"><%#= sum_decrease %>
+	  </td>
 	<!-- 計量機からの販売累計 -->
-	  <td class="input_no"><%= last_sale_total %></td>
+	  <td class="input_no"><%= last_sale_total %>
+	  </td>
 	<!-- 累計の増減 -->
-	  <td class="input_no"><%= sum_decrease_total %></td>
+	  <td class="input_no"><%= sum_decrease_total %>
+	  </td>
 	<!-- 累計の増減率 -->
 	  <td class="input_no">
 	  	<%#= sprintf("%-8.3f",(sum_decrease_total * 1.000 / last_sale_total * 1.000)*100) + "%"%>

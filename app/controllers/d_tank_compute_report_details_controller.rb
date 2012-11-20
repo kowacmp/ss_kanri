@@ -105,9 +105,10 @@ class DTankComputeReportDetailsController < ApplicationController
          # フッターに合計をセット.
          events.on :page_footer_insert do |e|
            e.section.item(:sum_receive).value(sum_receive)
-           e.section.item(:sum_sale).value(sum_sale)
-           e.section.item(:sum_compute_stock).value(sum_compute_stock)
-           e.section.item(:sum_decrease).value(sum_decrease)
+           #2012/11/20 合計項目非表示 oda
+           #e.section.item(:sum_sale).value(sum_sale)
+           #e.section.item(:sum_compute_stock).value(sum_compute_stock)
+           #e.section.item(:sum_decrease).value(sum_decrease)
            e.section.item(:sum_sale_total).value(last_sale_total)
            e.section.item(:sum_decrease_total).value(sum_decrease_total)
            e.section.item(:sum_total_percentage).value(sprintf("%-8.3f",(sum_decrease_total * 1.000 / last_sale_total *1.000)*100) + '%')
@@ -136,8 +137,14 @@ class DTankComputeReportDetailsController < ApplicationController
           tank = MTank.find(params[:tank_id]) 
           page.item(:oil_name).value(MOil.find(tank.m_oil_id).oil_name)
         end
-        page.item(:user_name).value(current_user.user_name)
-        
+        #2012/11/20 照会一覧より印刷時は、記録責任者はSS名 oda
+        if params[:mode] == 'manager'
+          @m_shop = MShop.find(@shop_id)
+          page.item(:user_name).value(@m_shop.shop_ryaku)
+        else
+          page.item(:user_name).value(current_user.user_name)
+        end   
+
         unless tank_compute_last == nil
           page.item(:receive_last).value(tank_compute_last.receive)
           page.item(:sale_last).value(tank_compute_last.sale)
@@ -173,21 +180,32 @@ class DTankComputeReportDetailsController < ApplicationController
           if tank_compute.inspect_flg > 0
             row.item(:inspect_flg).value("○")
           end 
+        #前日営業終了後の実在庫量
         row.item(:before_stock).value(tank_compute.before_stock)
+        #ローリーからの受入数量
         row.item(:receive).value(tank_compute.receive)
         sum_receive = sum_receive + tank_compute.receive
+        #計量機からの販売数量
         row.item(:sale).value(tank_compute.sale)
+        #2012/11/20 合計項目非表示 oda
         #2012/11/15 計量機からの販売数量
-        sum_sale = sum_sale + tank_compute.sale
+        #sum_sale = sum_sale + tank_compute.sale
+        #計算在庫量
         row.item(:compute_stock).value(tank_compute.compute_stock)
+        #2012/11/20 合計項目非表示 oda
         #2012/11/12 最終日の計算在庫量を取得
         #sum_compute_stock = sum_compute_stock + tank_compute.compute_stock
-        sum_compute_stock = tank_compute.compute_stock
+        #sum_compute_stock = tank_compute.compute_stock
+        #当日営業終了後の実在庫量
         row.item(:after_stock).value(tank_compute.after_stock)
+        #本日の増減
         row.item(:decrease).value(tank_compute.decrease)
-        sum_decrease = sum_decrease + tank_compute.decrease
+        #2012/11/20 合計項目非表示 oda
+        #sum_decrease = sum_decrease + tank_compute.decrease
+        #計量機からの販売数量
         row.item(:sale_total).value(tank_compute.sale_total)
         last_sale_total = tank_compute.sale_total
+        #増減累計
         row.item(:decrease_total).value(tank_compute.decrease_total)
         #2012/11/12 最終日の増減累計を取得
         #sum_decrease_total = sum_decrease_total + tank_compute.decrease_total
