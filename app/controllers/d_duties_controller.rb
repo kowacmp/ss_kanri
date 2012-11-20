@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 class DDutiesController < ApplicationController
   
   include ApplicationHelper
@@ -251,13 +252,27 @@ class DDutiesController < ApplicationController
       params[:input_flg] = 0
     end   
 
+    where_sql = " duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
+    where_sql << " and day = #{params[:day]} "
+    where_sql << " and m_shop_id = #{params[:m_shop_id]}"
+
+    #入力済みを解除にできるのは、確定フラグが１以外の場合のみ
+    if params[:input_flg] == 0
+      d_duty = DDuty.find(:first, :conditions=>[where_sql + " and kakutei_flg = 1"])
+      unless d_duty.blank?
+        respond_to do |format|
+          checkbox_input_flg_id = ":input[id=d_duty_input_flg_#{params[:day]}]"
+          format.js { render :text => "alert('確定されています。入力済みを解除できません。'); $('#{checkbox_input_flg_id}').attr('checked','checked');" }
+        end 
+        return 
+      end
+    end
+    
     update_sql = "update d_duties "
     update_sql << " set input_flg = #{params[:input_flg]} "
     update_sql << " , updated_user_id = #{current_user.id} "
     update_sql << " , updated_at = '#{Time.now.to_datetime}' "
-    update_sql << " where duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
-    update_sql << " and day = #{params[:day]} "
-    update_sql << " and m_shop_id = #{params[:m_shop_id]}"
+    update_sql << " where #{where_sql}"
     ActiveRecord::Base::connection.execute(update_sql)
     
     respond_to do |format|
@@ -284,13 +299,26 @@ class DDutiesController < ApplicationController
     end
     
     unless day.blank?
+      where_sql = " duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
+      where_sql << " and m_shop_id = #{params[:m_shop_id]} "
+      where_sql << " and day in (#{day}) "
+  
+      #入力済みを解除にできるのは、確定フラグが１以外の場合のみ
+      if params[:set_input_flg] == "0"
+        d_duty = DDuty.find(:first, :conditions=>[where_sql + " and kakutei_flg = 1"])
+        unless d_duty.blank?
+          respond_to do |format|
+            format.js { render :text => "alert('確定されている日があります。入力済みを解除できません。');" }
+          end 
+          return 
+        end
+      end
+      
       update_sql = "update d_duties "
       update_sql << " set input_flg = #{params[:set_input_flg]} "
       update_sql << " , updated_user_id = #{current_user.id} "
       update_sql << " , updated_at = '#{Time.now.to_datetime}' "
-      update_sql << " where duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
-      update_sql << " and m_shop_id = #{params[:m_shop_id]} "
-      update_sql << " and day in (#{day}) "
+      update_sql << " where #{where_sql}"
       update_sql << " and kakutei_flg <> 1 "
       
       ActiveRecord::Base::connection.execute(update_sql)
@@ -312,13 +340,28 @@ class DDutiesController < ApplicationController
       params[:kakutei_flg] = 0
     end   
 
+    where_sql = " duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
+    where_sql << " and day = #{params[:day]} "
+    where_sql << " and m_shop_id = #{params[:m_shop_id]}"
+    
+    #確定済みにできるのは、入力フラグが１の場合のみ
+    if params[:kakutei_flg] == 1
+      d_duty = DDuty.find(:first, :conditions=>[where_sql + " and input_flg != 1"])
+      unless d_duty.blank?
+        respond_to do |format|
+          checkbox_kakutei_flg_id = ":input[id=d_duty_kakutei_flg_#{params[:day]}]"
+          format.js { render :text => "alert('入力中です。確定できません。'); $('#{checkbox_kakutei_flg_id}').removeAttr('checked');" }
+        end 
+        return 
+      end
+    end
+    
     update_sql = "update d_duties "
     update_sql << " set kakutei_flg = #{params[:kakutei_flg]} "
     update_sql << " , updated_user_id = #{current_user.id} "
     update_sql << " , updated_at = '#{Time.now.to_datetime}' "
-    update_sql << " where duty_nengetu = '#{params[:input_day].to_s.gsub("/", "")}' "
-    update_sql << " and day = #{params[:day]} "
-    update_sql << " and m_shop_id = #{params[:m_shop_id]}"
+    update_sql << " where #{where_sql}"
+
     ActiveRecord::Base::connection.execute(update_sql)
     
     respond_to do |format|
