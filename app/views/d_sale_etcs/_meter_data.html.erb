@@ -97,7 +97,11 @@
  		  	<% end %>
 
 		  	<% if d_sale_etc_detail_mae == nil %>
-		  	  0
+		  		<%if etc.etc_class == 0 then%>
+		  	  		0
+ 		  	  	<%else%>
+ 		  	  		-
+ 		   		<% end %>
 		  	<% else %>
 		  	  <%= number_with_delimiter(d_sale_etc_detail_mae.meter) %>
 		  	<% end %>
