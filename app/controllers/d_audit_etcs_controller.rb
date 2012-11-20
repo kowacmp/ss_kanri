@@ -306,25 +306,67 @@ private
         d_sale_etcs_sum = nil
         if d_audit_etc_detail.nil? then  
           
-          # UPDATE BEGIN 2012.10.16 当日メータは売上最終データを読み込む
-          
+          # UPDATE BEGIN 2012.11.20 ZEROメータを考慮
+          #
+          ## UPDATE BEGIN 2012.10.16 当日メータは売上最終データを読み込む
+          ##sql = <<-SQL
+          ##          select 
+          ##              coalesce(sum(b.meter), 0) as sum_meter
+          ##          from 
+          ##                        d_sale_etcs        a 
+          ##             inner join d_sale_etc_details b
+          ##          on 
+          ##              a.id = b.d_sale_etc_id
+          ##          where 
+          ##                 a.sale_date  >=  '#{@audit_date_from.gsub("/","")}' 
+          ##             and a.sale_date  <=  '#{@audit_date_to.gsub("/","")}'
+          ##             and a.m_shop_id  =   #{@m_shop_id} 
+          ##             and b.m_etc_id   =  #{m_etc_rec.id}
+          ##             and b.etc_no     =  #{num}
+          ##      SQL
+          #
           #sql = <<-SQL
           #          select 
-          #              coalesce(sum(b.meter), 0) as sum_meter
+          #              coalesce(b.meter, 0) as sum_meter
           #          from 
-          #                        d_sale_etcs        a 
-          #             inner join d_sale_etc_details b
+          #                       d_sale_etcs        a  -- d_sale_etcは必ず存在,left joinなので必ずデータが返る
+          #             left join 
+          #             
+          #              (select * from d_sale_etc_details 
+          #               where m_etc_id   =  #{m_etc_rec.id}
+          #                 and etc_no     =  #{num}
+          #              ) b
           #          on 
           #              a.id = b.d_sale_etc_id
           #          where 
           #                 a.sale_date  >=  '#{@audit_date_from.gsub("/","")}' 
           #             and a.sale_date  <=  '#{@audit_date_to.gsub("/","")}'
           #             and a.m_shop_id  =   #{@m_shop_id} 
-          #             and b.m_etc_id   =  #{m_etc_rec.id}
-          #             and b.etc_no     =  #{num}
+          #          order by 
+          #             a.sale_date desc
           #      SQL
-
-          sql = <<-SQL
+          ## UPDATE END 2012.10.16 売上は期間内の最終データを読み込む
+          
+          if m_etc_rec.etc_class.to_i == 1 then
+            #ゼロメータ(期間内のメータ計がそのまま売上個数)
+            sql = <<-SQL
+                    select 
+                        coalesce(sum(b.meter), 0) as sum_meter
+                    from 
+                                  d_sale_etcs        a 
+                       inner join d_sale_etc_details b
+                    on 
+                        a.id = b.d_sale_etc_id
+                    where 
+                           a.sale_date  >=  '#{@audit_date_from.gsub("/","")}' 
+                       and a.sale_date  <=  '#{@audit_date_to.gsub("/","")}'
+                       and a.m_shop_id  =   #{@m_shop_id} 
+                       and b.m_etc_id   =  #{m_etc_rec.id}
+                       and b.etc_no     =  #{num}
+                  SQL
+          else
+            #前回メータ(期間内の最終メータ - 前回メータが売上個数)
+            sql = <<-SQL
                     select 
                         coalesce(b.meter, 0) as sum_meter
                     from 
@@ -343,9 +385,9 @@ private
                        and a.m_shop_id  =   #{@m_shop_id} 
                     order by 
                        a.sale_date desc
-                SQL
-                
-          # UPDATE END 2012.10.16 売上は期間内の最終データを読み込む
+              SQL
+          end
+          # UPDATE END 2012.11.20 ZEROメータを考慮
           
           d_sale_etcs_sum = DSaleEtc.find_by_sql(sql)[0]
            
@@ -382,6 +424,12 @@ private
           dt_rec[:z_meter]   = 0 #前回監査なし          
         end
         
+        # INSERT BEGIN 2012.11.20 ZEROメータを考慮
+        if m_etc_rec.etc_class.to_i == 1 then
+          dt_rec[:z_meter] = "-"
+        end
+        # INSERT END 2012.11.20 ZEROメータを考慮
+        
         #計算上売上高(当日メータ - 前回メータ)
         #if dt_rec[:t_meter] < dt_rec[:z_meter] then
         #  dt_rec[:k_uri] = dt_rec[:t_meter] #故障の場合は0から再カウント
@@ -393,11 +441,24 @@ private
         if not(d_audit_etc_detail.nil?) then
           dt_rec[:k_uri] = d_audit_etc_detail.uriage
         else
-          if dt_rec[:t_meter] < dt_rec[:z_meter] then
-            dt_rec[:k_uri] = dt_rec[:t_meter] #故障の場合は0から再カウント
+          # UPDATE BEGIN 2012.11.20 ZEROメータを考慮
+          #if dt_rec[:t_meter] < dt_rec[:z_meter] then
+          #  dt_rec[:k_uri] = dt_rec[:t_meter] #故障の場合は0から再カウント
+          #else
+          #  dt_rec[:k_uri] = dt_rec[:t_meter] - dt_rec[:z_meter]
+          #end
+          
+          if m_etc_rec.etc_class.to_i == 1 then
+            dt_rec[:k_uri] = dt_rec[:t_meter]
           else
-            dt_rec[:k_uri] = dt_rec[:t_meter] - dt_rec[:z_meter]
+            if dt_rec[:t_meter] < dt_rec[:z_meter] then
+              dt_rec[:k_uri] = dt_rec[:t_meter] #故障の場合は0から再カウント
+            else
+              dt_rec[:k_uri] = dt_rec[:t_meter] - dt_rec[:z_meter]
+            end
           end
+          # UPDATE END 2012.11.20 ZEROメータを考慮
+          
           dt_rec[:k_uri] *= m_etc_rec.price
         end
         
