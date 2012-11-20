@@ -67,7 +67,18 @@ class DAuditWashesController < ApplicationController
   end
 
   def update
-        
+
+    # INSERT BEGIN 2012.11.20 削除機能を追加 
+    if not(params[:delete_id].blank?)
+      DAuditWash.transaction {  
+        DAuditWash.destroy_all(["id=?", params[:delete_id].to_i])
+        DAuditWashDetail.destroy_all(["d_audit_wash_id=?", params[:delete_id].to_i])
+      }
+      redirect_to :action => "index", :audit_class => session[:audit_class]
+      return
+    end
+    # INSERT END 2012.11.20 削除機能を追加
+
     #更新日時をバッファ
     upd_time = Time.now 
 

@@ -158,6 +158,32 @@
   	
 	<% end %>
 	<br/>
+<!-- INSERT BEGIN 2012.11.20 最終データのみ削除機能を追加 -->
+<%
+	# 表示中のデータが最終データかを確認する
+	wash_max = DAuditWash.find(:first, :conditions => ["m_shop_id=?", @m_shop_id], :order => "audit_date_from desc")
+	b_del = false
+	if not(wash_max.nil?) then
+		if wash_max.audit_date_from == @audit_date_from.delete("/") then
+			b_del = true
+		end
+	end
+%>
+<% if b_del then %>
+	<%= hidden_field_tag "delete_id" %>
+	<%= submit_tag "　削　除　", :onclick => "return audit_wash_delete();", :disable_with => "削除中です..." %>
+	<script>
+		function audit_wash_delete(){
+			if (confirm('削除します。よろしいですか？')) {
+				$('#delete_id').val('<%= wash_max.id %>');
+				return true;
+			} else {
+				return false;
+			}
+		}
+	</script>
+<% end %>
+<!-- INSERT END 2012.11.20 最終データのみ削除機能を追加-->
 <%
 	url = "./edit?header[m_shop_id]=#{@m_shop_id}&header[created_user_id]=#{@created_user_id}&header[audit_date_from]=#{@audit_date_from}&header[audit_date_to]=#{@audit_date_to}"			
 %>

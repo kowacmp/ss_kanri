@@ -36,7 +36,7 @@
 			<% d_aim_uriage = DAim.find(:first, :conditions=>["date = ? and m_shop_id = ? and m_aim_id = 2", @head[:input_day].to_s[0,6], @m_shop.id]) %>
 			<% d_aim_uriage = DAim.new if d_aim_uriage.blank? %>
 			<tr>
-				<th>洗車売上<br />目標税込</th>
+				<th>洗車売上目標</th>
 				<td style="text-align: right">
 					<%#= label "d_aim_uriage_aim_total", num_fmt(d_aim_uriage.aim_total.to_i*10000), :class=>"money" %>
 					<%= label "d_aim_uriage_aim_total", num_fmt(d_aim_uriage.aim_total.to_i), :class=>"money" %>
@@ -69,7 +69,7 @@
 			<% d_aim_uriage = DAim.find(:first, :conditions=>["date = ? and m_shop_id = ? and m_aim_id = 1", @head[:input_day].to_s[0,6], @m_shop.id]) %>
 			<% d_aim_uriage = DAim.new if d_aim_uriage.blank? %>
 			<tr>
-				<th>油外売上<br />目標税込</th>
+				<th>油外売上目標</th>
 				<td style="text-align: right">
 					<%= label "d_aim_uriage_aim_total", num_fmt(d_aim_uriage.aim_total), :class=>"money" %>
 				</td>
@@ -189,7 +189,7 @@
 		<%= hidden_field_tag 'output_day_cnt', output_day_cnt %>
 		<%if @m_shop.shop_kbn == 0  %>
 			<!--洗車型-->
-			<th>洗車売上税込</th>
+			<th>洗車売上</th>
 			<td style="text-align:right; background-color: #99E562">
 				<label id="col_result_kei">
 					<%= num_fmt( d_result_total_sensya(select_where)[0].sensya) %>
