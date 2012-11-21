@@ -34,15 +34,31 @@
             <td style="min-width: 70px;"></td>
             <td style="min-width: 90px;"></td>
   	      <% else %>  	      	
-  	        
+  	        <!-- INSERT BEGIN 2012.11.21 タンク名を表示する -->
+  	        <%
+  	        	tank_name = ""
+  	        	m_meter1 = MMeter.find(meter["#{m_oil.id}_#{m_code.code}_m_meter_id"].to_i)
+  	        	if not(m_meter1.nil?)
+  	        		m_tank1 = MTank.find(m_meter1.m_tank_id)
+  	        		m_tank2 = MTank.find(:all, 
+  	        							 :conditions => ["m_shop_id=? and m_oil_id=? and tank_union_no=?", m_tank1.m_shop_id, m_tank1.m_oil_id, m_tank1.tank_union_no],
+  	        							 :order => "tank_no")
+  	        		
+  	        		m_tank2.each do | m_tank2_rec |
+  	        			tank_name += "," if tank_name != "" 
+  	        			tank_name += "T" + m_tank2_rec.tank_no.to_s
+  	        		end
+  	        	end
+  	        %>
+  	        <!-- INSERT END 2012.11.21 タンク名を表示する -->
   	        <% unless @old_meters[idx].blank? %><!-- 2012/10/02  nishimura -->
 	  	        <% if @old_meters[idx]["#{m_oil.id}_#{m_code.code}_meter"].to_i > meter["#{m_oil.id}_#{m_code.code}_meter"].to_i %>
-	  	        	<td style="color: red;" align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %></td>
+	  	        	<td style="color: red;" align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %><br/><%=tank_name%></td>
 	  	        <% else %>
-	  	        	<td align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %></td>
+	  	        	<td align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %><br/><%=tank_name%></td>
 	  	        <% end %>
 	  	    <% else %>
-	  	    	<td align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %></td>
+	  	    	<td align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %><br/><%=tank_name%></td>
   	        <% end %>
   	        
   	        
