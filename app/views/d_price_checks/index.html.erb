@@ -21,26 +21,26 @@
 		                                            :input_flg     => true,
 		                                            :input_name    => "input_area"} %>
 	</div>
-	<!-- UPDATE BEGIN 2012.11.21 未来日の入力を不可にする -->
+	<!-- UPDATE BEGIN 2012.11.21 未来日時の入力を不可にする -->
 	<%#= submit_tag "　更　新　", :disable_with => "処理中です..", :style => "float:right; margin-top:10px; margin-right:40px;"%>
 	<%= submit_tag "　更　新　", :onclick => "return chk_koshin();", :disable_with => "処理中です..", :style => "float:right; margin-top:10px; margin-right:40px;"%>
 	<script>
 		function chk_koshin() {
 			var ymd = $("#input_area_research_day").val().split("/");
-			ymd = new Date(Number(ymd[0]), Number(ymd[1]) - 1, Number(ymd[2]));
+			ymd = new Date(Number(ymd[0]), Number(ymd[1]) - 1, Number(ymd[2]), Number($("#input_area_research_time").val()));
 			
 			var symd = new Date();
-			symd = new Date(symd.getFullYear(), symd.getMonth(), symd.getDate());
-
+			symd = new Date(symd.getFullYear(), symd.getMonth(), symd.getDate(), symd.getHours());
+			
 			if (symd < ymd) {
-				alert("本日以降の日付が入力されています。");
+				alert("未来日時が設定されています。");
 				return false;
 			} else {
 				return true;
 			}
 		}
 	</script>
-	<!-- UPDATE END 2012.11.21 未来日の入力を不可にする -->
+	<!-- UPDATE END 2012.11.21 未来日時の入力を不可にする -->
 	<br/><br/>
 <% end %> <!-- form_tag({:action => "update"}, {:method => :post, :remote => true }) do -->
 
