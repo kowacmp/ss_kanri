@@ -1,12 +1,17 @@
 <%= form_tag({:action => 'd_result_tank_create' }, { :remote => true }) do %>
-  <table id="tank_view_table" class="rounded-corner" width="435">
+  <table id="tank_view_table" class="rounded-corner" width="775px"> <!-- UPDATE 2012.11.22 横幅調整 435 → 775px -->
   	<thead>
       <tr>
   	    <th style="max-width: 65px;">タンク</th>
   	    <th style="max-width: 60px;">容量</th>
   	    <th style="max-width: 150px;">油種</th>
   	    <th style="max-width: 80px;">仕入</th>
-  	    <th style="max-width: 80px;">在庫</th>  	  	  	  	
+  	    <th style="max-width: 80px;">在庫</th>
+  	    <!-- INSERT BEGIN 2012.11.22 調整額追加 -->
+  	    <th style="max-width: 80px;">メーター異常</th>
+  	    <th style="max-width: 80px;">地下タンク戻し</th>
+  	    <th style="width: 155px;">コメント</th>
+  	    <!-- INSERT END   2012.11.22 調整額追加 -->
       </tr>
     </thead>
 
@@ -23,7 +28,18 @@
           </td>
           <td><%#= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :maxlength => 9, :readonly => @text, :class => "money" %>
           	<%= number_field :stock, m_tank.m_tank_id, :value => m_tank.stock, :maxlength => 9, :readonly => @text, :class => "money",:tabindex=>tab_index + @m_tanks.count %>
-          </td>                  
+          </td>
+          <!-- INSERT BEGIN 2012.11.22 調整額追加 -->
+          <td>
+          	<%= number_field :adjust1, m_tank.m_tank_id, :value => m_tank.adjust1, :maxlength => 9, :readonly => @text, :class => "money", :tabindex=>tab_index + @m_tanks.count * 2 %>
+          </td>
+          <td>
+          	<%= number_field :adjust2, m_tank.m_tank_id, :value => m_tank.adjust2, :maxlength => 9, :readonly => @text, :class => "money", :tabindex=>tab_index + @m_tanks.count * 3 %>
+          </td>
+          <td>
+          	<%= text_field :comment, m_tank.m_tank_id, :value => m_tank.comment, :maxlength => 20, :readonly => @text, :style => "ime-mode:active; width:150px;", :tabindex=>tab_index + @m_tanks.count * 4 %>
+          </td>
+          <!-- INSERT END   2012.11.22 調整額追加 -->
         </tr>
       <% end %>
     </tbody>
@@ -52,6 +68,6 @@
 
 <script>
 $(function () {
-	$('#tank_view_table').tablefix({width: 435, height: 420, fixRows: 1});
+	$('#tank_view_table').tablefix({width: 775, height: 420, fixRows: 1}); // UPDATE 2012.11.22 横幅調整 435 → 775px
 });	
 </script>

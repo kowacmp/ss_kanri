@@ -112,7 +112,10 @@ module DResultsHelper
   end
   
   def oil_betu_result_tank_sql(d_result_id) 
-    sql = "select t.m_oil_id, SUM(receive) r_sum, SUM(stock) s_sum"
+    # UPDATE BEGIN 2012.11.22 調整額追加
+    #sql = "select t.m_oil_id, SUM(receive) r_sum, SUM(stock) s_sum"
+    sql = "select t.m_oil_id, SUM(receive) r_sum, SUM(stock) s_sum, SUM(adjust1) a1_sum, SUM(adjust2) a2_sum "
+    # UPDATE END 2012.11.22 調整額追加
     sql << " from d_result_tanks dt, m_tanks t"
     sql << " where dt.d_result_id = #{d_result_id} and t.deleted_flg = 0"
     sql << "   and dt.m_tank_id = t.id group by t.m_oil_id order by t.m_oil_id"
@@ -172,7 +175,12 @@ module DResultsHelper
         @meters[idx][:volume] = volumes[m_oil.id][:sum_volume]
         @meters[idx][:meter_susumi] = ""
         @meters[idx][:receive] = ""
-        @meters[idx][:stock] = ""
+        @meters[idx][:stock] = ""        
+        # INSERT BEGIN 2012.11.22 調整額追加
+        @meters[idx][:tank_kabusoku_t] = ""  
+        @meters[idx][:adjust1] = ""
+        @meters[idx][:adjust2] = ""
+        # INSERT END 2012.11.22 調整額追加
         @meters[idx][:tank_kabusoku] = ""
         @meters[idx][:meter_kabusoku] = ""  
       end
@@ -219,6 +227,10 @@ module DResultsHelper
           result_tanks[d_result_tank.m_oil_id.to_i] = Hash::new
           result_tanks[d_result_tank.m_oil_id.to_i][:tank_stock] = d_result_tank.s_sum
           result_tanks[d_result_tank.m_oil_id.to_i][:tank_receive] = d_result_tank.r_sum
+          # INSERT BEGIN 2012.11.22 調整額追加
+          result_tanks[d_result_tank.m_oil_id.to_i][:adjust1] = d_result_tank.a1_sum
+          result_tanks[d_result_tank.m_oil_id.to_i][:adjust2] = d_result_tank.a2_sum
+          # INSERT END 2012.11.22 調整額追加
           result_tanks[d_result_tank.m_oil_id.to_i][:old_tank_stock] = 0
         end      
       else                   
@@ -226,7 +238,11 @@ module DResultsHelper
           result_tanks[d_result_tank.m_oil_id.to_i] = Hash::new
           result_tanks[d_result_tank.m_oil_id.to_i][:tank_stock] = d_result_tank.s_sum
           result_tanks[d_result_tank.m_oil_id.to_i][:tank_receive] = d_result_tank.r_sum
-        end         
+          # INSERT BEGIN 2012.11.22 調整額追加
+          result_tanks[d_result_tank.m_oil_id.to_i][:adjust1] = d_result_tank.a1_sum
+          result_tanks[d_result_tank.m_oil_id.to_i][:adjust2] = d_result_tank.a2_sum
+          # INSERT END 2012.11.22 調整額追加
+        end
         old_d_result_tanks.each do |old_d_result_tank|
           result_tanks[old_d_result_tank.m_oil_id.to_i][:old_tank_stock] = old_d_result_tank.s_sum
         end
@@ -240,6 +256,11 @@ module DResultsHelper
         @meters[idx][:meter_susumi] = result_meters[m_oil.id][:meter].to_i - result_meters[m_oil.id][:old_meter].to_i
         @meters[idx][:receive] = result_tanks[m_oil.id][:tank_receive]
         @meters[idx][:stock] = result_tanks[m_oil.id][:tank_stock]
+        # INSERT BEGIN 2012.11.22 調整額追加
+        @meters[idx][:tank_kabusoku_t] = @meters[idx][:stock].to_i - (result_tanks[m_oil.id][:old_tank_stock].to_i + @meters[idx][:receive].to_i - (@meters[idx][:meter_susumi].to_i + (result_tanks[m_oil.id][:adjust1].to_i + result_tanks[m_oil.id][:adjust2].to_i)))  
+        @meters[idx][:adjust1] = result_tanks[m_oil.id][:adjust1]
+        @meters[idx][:adjust2] = result_tanks[m_oil.id][:adjust2]
+        # INSERT END 2012.11.22 調整額追加
         #2012/09/21 nishimura 計算式修正
         #@meters[idx][:tank_kabusoku] = result_tanks[m_oil.id][:old_tank_stock].to_i + @meters[idx][:receive].to_i - @meters[idx][:stock].to_i - @meters[idx][:meter_susumi].to_i  
         @meters[idx][:tank_kabusoku] = @meters[idx][:stock].to_i - (result_tanks[m_oil.id][:old_tank_stock].to_i + @meters[idx][:receive].to_i - @meters[idx][:meter_susumi].to_i)
@@ -403,6 +424,15 @@ module DResultsHelper
       end
     end                                                       
     
+    # INSERT BEGIN 2012.11.22 販売数量に調整を加算 
+    sales.each_with_index do |sale, idx|
+      d_result_tank = DResultTank.find(:first, :conditions => ["d_result_id=? and m_tank_id=?", d_result_id, idx])
+      if not(d_result_tank.nil?)
+        sale[:sale] += (d_result_tank.adjust1.to_i + d_result_tank.adjust2.to_i)
+      end
+    end
+    # INSERT END 2012.11.22 販売数量に調整を加算
+    
     #地下タンク仕入量、在庫量抽出
     d_result_tanks = DResultTank.find(:all, :conditions => ["d_result_id = ?", d_result.id])   
     tanks = Array::new
@@ -480,6 +510,31 @@ module DResultsHelper
       d_tank_decrease_report["oil#{d_tank_compute_report.m_oil_id}_id"] = d_tank_compute_report.m_oil_id
       d_tank_decrease_report["oil#{d_tank_compute_report.m_oil_id}_num"] = d_tank_compute_report.decrease_sum
     end
+    
+    # INSERT 2012.11.22 BEGIN 油種1～4の調整額をセット
+    for idx in 1..4
+       oil_id = d_tank_decrease_report["oil#{ idx }_id"].to_i
+       
+       sql = "select sum(d_result_tanks.adjust1) as sum_adjust1, sum(d_result_tanks.adjust2) as sum_adjust2 
+              from d_result_tanks inner join m_tanks
+                on d_result_tanks.m_tank_id = m_tanks.id
+              where d_result_tanks.d_result_id = #{d_result.id}
+                and m_tanks.m_oil_id = #{oil_id} "
+                
+      sum_adjust = DResultTank.find_by_sql(sql)[0]
+      
+      d_tank_decrease_report["oil#{idx}_adj1"] = sum_adjust.sum_adjust1.to_i
+      d_tank_decrease_report["oil#{idx}_adj2"] = sum_adjust.sum_adjust2.to_i
+      
+      if old_d_tank_decrease_report.blank? or day == "01"
+        d_tank_decrease_report["oil#{idx}_adj1_total"] = d_tank_decrease_report["oil#{idx}_adj1"].to_i
+        d_tank_decrease_report["oil#{idx}_adj2_total"] = d_tank_decrease_report["oil#{idx}_adj2"].to_i
+      else
+        d_tank_decrease_report["oil#{idx}_adj1_total"] = d_tank_decrease_report["oil#{idx}_adj1"].to_i + old_d_tank_decrease_report["oil#{idx}_adj1_total"].to_i
+        d_tank_decrease_report["oil#{idx}_adj2_total"] = d_tank_decrease_report["oil#{idx}_adj2"].to_i + old_d_tank_decrease_report["oil#{idx}_adj2_total"].to_i
+      end
+    end
+    # INSERT 2012.11.22 END 油種1～4の調整額をセット
     
     #前回レコードがない場合、または月初めの場合は累計項目に今回の値を代入
     if old_d_tank_decrease_report.blank? or day == "01" 

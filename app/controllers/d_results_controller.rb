@@ -316,7 +316,12 @@ p "oil_sql=#{oil_sql}"
         @meters[idx][:meter_susumi] = ""
         @meters[idx][:receive] = ""
         @meters[idx][:stock] = ""
-        @meters[idx][:tank_kabusoku] = ""  
+        @meters[idx][:tank_kabusoku] = ""
+        # INSERT BEGIN 2012.11.22 調整額追加
+        @meters[idx][:adjust1] = ""
+        @meters[idx][:adjust2] = ""
+        @meters[idx][:tank_kabusoku_adjust] = ""
+        # INSERT END 2012.11.22 調整額追加
       end
       tank_betu_total(0, @m_shop.id)
     else  
@@ -846,7 +851,10 @@ p "oil_sql=#{oil_sql}"
     end
         
     #仕入、在庫データ取得    
-    sql = "select t.id m_tank_id, t.tank_no, t.volume, o.oil_name, d.receive, d.stock from m_tanks t"
+    # UPDATE BEGIN 2012.11.22 調整額追加 
+    #sql = "select t.id m_tank_id, t.tank_no, t.volume, o.oil_name, d.receive, d.stock from m_tanks t"
+    sql = "select t.id m_tank_id, t.tank_no, t.volume, o.oil_name, d.receive, d.stock, d.adjust1, d.adjust2, d.comment from m_tanks t"
+    # UPDATE END 2012.11.22 調整額追加 
     sql << " left join d_result_tanks d on (t.id = d.m_tank_id and d.d_result_id = #{d_result_id})"
     sql << " left join m_oils o on (t.m_oil_id = o.id)"
     sql << " where t.m_shop_id = #{@m_shop_id} and t.deleted_flg = 0 and o.deleted_flg = 0 "
@@ -882,6 +890,11 @@ p "oil_sql=#{oil_sql}"
       
         d_result_tank.receive = params[:receive]["#{m_tank.id}"]
         d_result_tank.stock = params[:stock]["#{m_tank.id}"]     
+        # INSERT BEGIN 2012.11.22 調整額追加
+        d_result_tank.adjust1 = params[:adjust1]["#{m_tank.id}"]
+        d_result_tank.adjust2 = params[:adjust2]["#{m_tank.id}"]
+        d_result_tank.comment = params[:comment]["#{m_tank.id}"]
+        # INSERT END   2012.11.22 調整額追加
         d_result_tank.updated_user_id = current_user.id 
         d_result_tank.save      
       end  

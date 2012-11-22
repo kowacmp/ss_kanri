@@ -1,6 +1,8 @@
 <%#= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
 
 <table id='rounded-corner'>
+	<!-- UPDATE BEGIN 2012.11.22 調整額追加 -->
+	<!--
 	<tr>
 	  <th style="min-width: 75px;">油種</th>
 	  <th>タンク容量(KL)</th>
@@ -8,8 +10,22 @@
 	  <th>メーター過不足</th>
 	  <th>地下タンク過不足</th>
 	  <th>仕入(L)</th>
-	  <th>在庫(L)</th> 	  	  	  	  	  	  
-	</tr>	
+	  <th>在庫(L)</th>
+	</tr>
+	-->
+	<tr>
+	  <th style="min-width: 75px;">油種</th>
+	  <th>タンク容量<br/>(KL)</th>
+	  <th>メーター進み</th>
+	  <th>メーター<br/>過不足</th>
+	  <th>地下タンク<br/>過不足</th>
+	  <th>地下タンク<br/>過不足(調整)</th>
+	  <th>メーター異常</th>
+	  <th>タンク戻し</th>
+	  <th>仕入(L)</th>
+	  <th>在庫(L)</th>
+	</tr>
+	<!-- UPDATE END 2012.11.22 調整額追加 -->
   <% @meters.each do |meter| %>
     <tr>
       <th><%= meter[:oil_name] %></th>
@@ -38,8 +54,13 @@
       <% else %>
         <td class="input_no" id="display"><%= num_fmt(meter[:tank_kabusoku]) %></td>
       <% end %>
+      <!-- INSERT BEIGN 2012.11.22 調整額追加 -->
+      <td class="input_no" id="display"><%= num_fmt(meter[:tank_kabusoku_t]) %></td>
+      <td class="input_no" id="display"><%= num_fmt(meter[:adjust1]) %></td>
+      <td class="input_no" id="display"><%= num_fmt(meter[:adjust2]) %></td>
+      <!-- INSERT END 2012.11.22 調整額追加 -->
       <td class="input_no" id="display"><%= num_fmt(meter[:receive]) %></td>
-      <td class="input_no" id="display"><%= num_fmt(meter[:stock]) %></td>                                            
+      <td class="input_no" id="display"><%= num_fmt(meter[:stock]) %></td>
     </tr>
   <% end %>	
 </table>
