@@ -1,19 +1,44 @@
-	  	<td align="right">
+		<!--油種1-->
+	  	<td td rowspan="2" align="right">
 	  		<%= num_fmt(print.oil1_num_total) unless print == nil  unless print == nil %>
 	  		<% @sum_oil1 = @sum_oil1 + print.oil1_num_total unless print == nil %>
 	  	</td>
+	  	<!-- メーター異常-->
 	  	<td align="right">
+	  		<%= num_fmt(print.oil1_adj1_total) unless print == nil  unless print == nil %>
+	  		<% @sum_oil1_adj1 = @sum_oil1_adj1 + print.oil1_adj1_total unless print == nil %>
+	  	</td>
+		<!--油種2-->
+	  	<td rowspan="2" align="right">
 	  		<%= num_fmt(print.oil2_num_total) unless print == nil %>
 	  		<% @sum_oil2 = @sum_oil2 + print.oil2_num_total unless print == nil %>
 	  	</td>
+	  	<!-- メーター異常-->
 	  	<td align="right">
+	  		<%= num_fmt(print.oil2_adj1_total) unless print == nil  unless print == nil %>
+	  		<% @sum_oil2_adj1 = @sum_oil2_adj1 + print.oil2_adj1_total unless print == nil %>
+	  	</td>
+		<!--油種3-->
+	  	<td rowspan="2" align="right">
 	  		<%= num_fmt(print.oil3_num_total) unless print == nil %>
 	  		<% @sum_oil3 = @sum_oil3 + print.oil3_num_total unless print == nil %>
 	  	</td>
+	  	<!-- メーター異常-->
 	  	<td align="right">
+	  		<%= num_fmt(print.oil3_adj1_total) unless print == nil  unless print == nil %>
+	  		<% @sum_oil3_adj1 = @sum_oil3_adj1 + print.oil3_adj1_total unless print == nil %>
+	  	</td>
+		<!--油種4-->
+	  	<td rowspan="2" align="right">
 	  		<%= num_fmt(print.oil4_num_total) unless print == nil %>
 	  		<% @sum_oil4 = @sum_oil4 + print.oil4_num_total unless print == nil %>
 	  	</td>
+	  	<!-- メーター異常-->
 	  	<td align="right">
+	  		<%= num_fmt(print.oil4_adj1_total) unless print == nil  unless print == nil %>
+	  		<% @sum_oil4_adj1 = @sum_oil4_adj1 + print.oil4_adj1_total unless print == nil %>
+	  	</td>
+	  	<!--欠減率 -->
+	  	<td rowspan="2" align="right">
 	  		<%= print.oil_percent_total unless print == nil %>
 	  	</td>

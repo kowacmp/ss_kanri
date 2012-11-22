@@ -30,6 +30,15 @@ class DTankDecreaseReportsController < ApplicationController
     oil2_sum = 0
     oil3_sum = 0
     oil4_sum = 0
+    #2012/11/19 調整枠追加 oda
+    oil1_adj1_sum = 0
+    oil1_adj2_sum = 0
+    oil2_adj1_sum = 0
+    oil2_adj2_sum = 0
+    oil3_adj1_sum = 0
+    oil3_adj2_sum = 0
+    oil4_adj1_sum = 0
+    oil4_adj2_sum = 0
     @rbtn = params[:rbtn].to_i
     @input_ymd_s = params[:input_ymd_s]
     old_group_name = ''
@@ -70,7 +79,16 @@ report.layout.config.list(:list) do
     e.section.item(:oil2_sum).value(oil2_sum)
     e.section.item(:oil3_sum).value(oil3_sum)
     e.section.item(:oil4_sum).value(oil4_sum)
-  end
+    #2012/11/19 調整枠追加 oda
+    e.section.item(:oil1_adj1_sum).value(oil1_adj1_sum)
+    e.section.item(:oil1_adj2_sum).value(oil1_adj2_sum)
+    e.section.item(:oil2_adj1_sum).value(oil2_adj1_sum)
+    e.section.item(:oil2_adj2_sum).value(oil2_adj2_sum)
+    e.section.item(:oil3_adj1_sum).value(oil3_adj1_sum)
+    e.section.item(:oil3_adj2_sum).value(oil3_adj2_sum)
+    e.section.item(:oil4_adj1_sum).value(oil4_adj1_sum)
+    e.section.item(:oil4_adj2_sum).value(oil4_adj2_sum)
+    end
 end
 
     #ページ番号、タイトル、作成日セット  
@@ -112,6 +130,24 @@ end
           oil2_sum = oil2_sum + data.oil2_num.to_i
           oil3_sum = oil3_sum + data.oil3_num.to_i
           oil4_sum = oil4_sum + data.oil4_num.to_i
+          #2012/11/19 調整枠追加 oda
+          row.item(:oil1_adj1).value(data.oil1_adj1)
+          row.item(:oil1_adj2).value(data.oil1_adj2)
+          row.item(:oil2_adj1).value(data.oil2_adj1)
+          row.item(:oil2_adj2).value(data.oil2_adj2)
+          row.item(:oil3_adj1).value(data.oil3_adj1)
+          row.item(:oil3_adj2).value(data.oil3_adj2)
+          row.item(:oil4_adj1).value(data.oil4_adj1)
+          row.item(:oil4_adj2).value(data.oil4_adj2)
+          oil1_adj1_sum = oil1_adj1_sum + data.oil1_adj1.to_i
+          oil1_adj2_sum = oil1_adj2_sum + data.oil1_adj2.to_i
+          oil2_adj1_sum = oil2_adj1_sum + data.oil2_adj1.to_i
+          oil2_adj2_sum = oil2_adj2_sum + data.oil2_adj2.to_i
+          oil3_adj1_sum = oil3_adj1_sum + data.oil3_adj1.to_i
+          oil3_adj2_sum = oil3_adj2_sum + data.oil3_adj2.to_i
+          oil4_adj1_sum = oil4_adj1_sum + data.oil4_adj1.to_i
+          oil4_adj2_sum = oil4_adj2_sum + data.oil4_adj2.to_i
+
         elsif @rbtn == 2
           row.item(:oil1).value(data.oil1_num_total)
           row.item(:oil2).value(data.oil2_num_total)
@@ -122,6 +158,24 @@ end
           oil2_sum = oil2_sum + data.oil2_num_total.to_i
           oil3_sum = oil3_sum + data.oil3_num_total.to_i
           oil4_sum = oil4_sum + data.oil4_num_total.to_i
+
+          #2012/11/19 調整枠追加 oda
+          row.item(:oil1_adj1).value(data.oil1_adj1_total)
+          row.item(:oil1_adj2).value(data.oil1_adj2_total)
+          row.item(:oil2_adj1).value(data.oil2_adj1_total)
+          row.item(:oil2_adj2).value(data.oil2_adj2_total)
+          row.item(:oil3_adj1).value(data.oil3_adj1_total)
+          row.item(:oil3_adj2).value(data.oil3_adj2_total)
+          row.item(:oil4_adj1).value(data.oil4_adj1_total)
+          row.item(:oil4_adj2).value(data.oil4_adj2)
+          oil1_adj1_sum = oil1_adj1_sum + data.oil1_adj1_total.to_i
+          oil1_adj2_sum = oil1_adj2_sum + data.oil1_adj2_total.to_i
+          oil2_adj1_sum = oil2_adj1_sum + data.oil2_adj1_total.to_i
+          oil2_adj2_sum = oil2_adj2_sum + data.oil2_adj2_total.to_i
+          oil3_adj1_sum = oil3_adj1_sum + data.oil3_adj1_total.to_i
+          oil3_adj2_sum = oil3_adj2_sum + data.oil3_adj2_total.to_i
+          oil4_adj1_sum = oil4_adj1_sum + data.oil4_adj1_total.to_i
+          oil4_adj2_sum = oil4_adj2_sum + data.oil4_adj2_total.to_i
         else
           row.item(:oil1).value(0)
           row.item(:oil2).value(0)
@@ -132,6 +186,23 @@ end
           oil2_sum = 0
           oil3_sum = 0
           oil4_sum = 0
+          #2012/11/19 調整枠追加 oda
+          row.item(:oil1_adj1).value(0)
+          row.item(:oil1_adj2).value(0)
+          row.item(:oil2_adj1).value(0)
+          row.item(:oil2_adj2).value(0)
+          row.item(:oil3_adj1).value(0)
+          row.item(:oil3_adj2).value(0)
+          row.item(:oil4_adj1).value(0)
+          row.item(:oil4_adj2).value(0)
+          oil1_adj1_sum = 0
+          oil1_adj2_sum = 0
+          oil2_adj1_sum = 0
+          oil2_adj2_sum = 0
+          oil3_adj1_sum = 0
+          oil3_adj2_sum = 0
+          oil4_adj1_sum = 0
+          oil4_adj2_sum = 0
         end
       end #add_row
     end # datas.each
