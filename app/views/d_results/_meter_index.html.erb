@@ -12,7 +12,7 @@
       <th>No</th>
   	  <% @m_oils.each do |m_oil| %>
   	    <% @m_codes.each do |m_code| %>
-  	      <th style="min-width: 35px;">計量</th>
+  	      <th style="min-width: 35px;">計量<br/>(ﾀﾝｸ)</th>
   	      <th colspan="2"><%= m_code.code_name %></th>
   	    <% end %> 	
   	  <% end %>    	
@@ -53,12 +53,12 @@
   	        <!-- INSERT END 2012.11.21 タンク名を表示する -->
   	        <% unless @old_meters[idx].blank? %><!-- 2012/10/02  nishimura -->
 	  	        <% if @old_meters[idx]["#{m_oil.id}_#{m_code.code}_meter"].to_i > meter["#{m_oil.id}_#{m_code.code}_meter"].to_i %>
-	  	        	<td style="color: red;" align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %><br/><%=tank_name%></td>
+	  	        	<td style="color: red;" align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %><br/>(<%=tank_name%>)</td>
 	  	        <% else %>
-	  	        	<td align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %><br/><%=tank_name%></td>
+	  	        	<td align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %><br/>(<%=tank_name%>)</td>
 	  	        <% end %>
 	  	    <% else %>
-	  	    	<td align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %><br/><%=tank_name%></td>
+	  	    	<td align="center"><%= meter["#{m_oil.id}_#{m_code.code}_meter_no"] %><br/>(<%=tank_name%>)</td>
   	        <% end %>
   	        
   	        
