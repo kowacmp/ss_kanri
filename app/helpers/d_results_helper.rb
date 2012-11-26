@@ -185,7 +185,7 @@ module DResultsHelper
         @meters[idx][:meter_kabusoku] = ""  
       end
     else  
-      m_sql = "select t.m_oil_id, dm.meter, COALESCE(old_dm.meter, 0) old_meter"
+      m_sql = "select t.m_oil_id, dm.meter, dm.sub_meter, COALESCE(old_dm.meter, 0) old_meter"
       m_sql << " from m_meters m"
       m_sql << " left join m_tanks t on (m.m_tank_id = t.id)"
       m_sql << " left join d_result_meters dm on (dm.m_meter_id = m.id and dm.d_result_id = #{d_result.id})"
@@ -207,8 +207,12 @@ module DResultsHelper
         result_meters[d_result_meter.m_oil_id.to_i][:meter] += d_result_meter.meter.to_i
         #2012/09/24 nishimura 条件修正
         #if d_result_meter.meter.to_i > d_result_meter.old_meter.to_i
-        if d_result_meter.meter.to_i >= d_result_meter.old_meter.to_i
-          result_meters[d_result_meter.m_oil_id.to_i][:old_meter] += d_result_meter.old_meter.to_i        
+        if d_result_meter.sub_meter.blank?
+          if d_result_meter.meter.to_i >= d_result_meter.old_meter.to_i
+            result_meters[d_result_meter.m_oil_id.to_i][:old_meter] += d_result_meter.old_meter.to_i        
+          end
+        else
+          result_meters[d_result_meter.m_oil_id.to_i][:old_meter] += d_result_meter.sub_meter.to_i
         end
       end
           
@@ -253,7 +257,9 @@ module DResultsHelper
         @meters[idx] = Hash::new
         @meters[idx][:oil_name] = m_oil.oil_name
         @meters[idx][:volume] = volumes[m_oil.id][:sum_volume]
+        
         @meters[idx][:meter_susumi] = result_meters[m_oil.id][:meter].to_i - result_meters[m_oil.id][:old_meter].to_i
+        
         @meters[idx][:receive] = result_tanks[m_oil.id][:tank_receive]
         @meters[idx][:stock] = result_tanks[m_oil.id][:tank_stock]
         # INSERT BEGIN 2012.11.22 調整額追加

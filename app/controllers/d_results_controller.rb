@@ -789,6 +789,66 @@ p "oil_sql=#{oil_sql}"
     render :layout => 'modal'
   end
   
+  def meter_yobi_index
+    @result_date = params[:result_date]
+    @edit_flg = params[:edit_flg]
+    @m_shop_id = params[:m_shop_id]
+    
+    @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
+                                                      @m_shop_id, @result_date])
+    if @d_result.blank?
+      d_result_id = 0
+    else
+      d_result_id = @d_result.id  
+    end
+    
+    @m_oils = MOil.find(:all, :conditions => ["deleted_flg = 0"], :order => 'oil_cd')
+    @m_codes = MCode.find(:all, :conditions => ["kbn = 'pos_class'", :order => 'code'])
+
+    #終了時メーター
+    max_no = 0
+    meter = Hash::new 
+    
+    @m_oils.each do |m_oil|
+      @m_codes.each do |m_code|
+        sql = "select m.id m_meter_id, m.meter_no, d.sub_meter from m_meters m"
+        sql << " left join d_result_meters d on (m.id = d.m_meter_id and d.d_result_id = #{d_result_id})"
+        sql << " left join m_tanks t on (m.m_tank_id = t.id)"
+        sql << " left join m_oils o on (t.m_oil_id = o.id)"
+        sql << " where m.pos_class = #{m_code.code} and o.id = #{m_oil.id} and t.m_shop_id = #{@m_shop_id}"
+        sql << "  and m.deleted_flg = 0 and t.deleted_flg = 0 and o.deleted_flg = 0"
+        sql << " order by m.number"
+                          
+        meter["#{m_oil.id}_#{m_code.code}"] = MOil.find_by_sql(sql)
+        max_no = meter["#{m_oil.id}_#{m_code.code}"].size if meter["#{m_oil.id}_#{m_code.code}"].size > max_no
+      end
+    end
+    
+    @meters = Array::new
+    for i in 0..max_no - 1
+      @meters[i] = Hash::new
+    end
+    
+    @m_oils.each do |m_oil|
+      @m_codes.each do |m_code|
+                                      
+        meter["#{m_oil.id}_#{m_code.code}"].each_with_index do |m_meter, idx|
+          @meters[idx]["#{m_oil.id}_#{m_code.code}_m_meter_id"] = m_meter.m_meter_id
+          @meters[idx]["#{m_oil.id}_#{m_code.code}_meter_no"] = m_meter.meter_no
+          @meters[idx]["#{m_oil.id}_#{m_code.code}_sub_meter"] = m_meter.sub_meter
+        end
+      end
+    end
+        
+    if @d_result.blank? or @edit_flg.to_i == 1 or @d_result.kakutei_flg == 0
+      @text = false 
+    else
+      @text = true
+    end       
+    
+    render :layout => 'modal'
+  end
+  
   def d_result_meter_create
     d_result_check(params[:result_date], params[:m_shop_id])
     
@@ -809,7 +869,8 @@ p "oil_sql=#{oil_sql}"
           d_result_meter.updated_user_id = current_user.id        
         end
         
-        d_result_meter.meter = params[:meter]["#{m_meter.id}"]
+        d_result_meter.meter = params[:meter]["#{m_meter.id}"] unless params[:meter].blank?
+        d_result_meter.sub_meter = params[:sub_meter]["#{m_meter.id}"] unless params[:sub_meter].blank?
         d_result_meter.updated_user_id = current_user.id 
         d_result_meter.save
       end
