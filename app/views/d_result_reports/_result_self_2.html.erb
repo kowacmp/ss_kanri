@@ -57,7 +57,7 @@
 	  			<%= number_with_delimiter((m_shop.r_sensya.to_f / @day_e * @month_last_day).round(0)) %>
 	  		<% end %>
 	  	</td>
-	  	<td class="input_no"><%= number_with_delimiter(m_shop.sensya_aim) %></td>
+	  	<td class="input_no"><%= number_with_delimiter((m_shop.sensya_aim.to_f / 10000).truncate) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.sensya_purika) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_sensya_purika) %></td>
 	  	<td class="input_no">
@@ -65,7 +65,7 @@
 	  			<%= number_with_delimiter((m_shop.r_sensya_purika.to_f / @day_e * @month_last_day).round(0)) %>
 	  		<% end %>
 	  	</td>
-	  	<td class="input_no"><%= number_with_delimiter(m_shop.sensya_purika_aim) %></td>
+	  	<td class="input_no"><%= number_with_delimiter((m_shop.sensya_purika_aim.to_f / 10000).truncate) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.muton_aim) %><%#= m_shop.muton %></td>			
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_muton) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.sp_plus_aim) %><%#= m_shop.sp_plus %></td>			
