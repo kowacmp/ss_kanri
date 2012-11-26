@@ -55,7 +55,11 @@
         <td class="input_no" id="display"><%= num_fmt(meter[:tank_kabusoku]) %></td>
       <% end %>
       <!-- INSERT BEIGN 2012.11.22 調整額追加 -->
-      <td class="input_no" id="display"><%= num_fmt(meter[:tank_kabusoku_t]) %></td>
+      <% if meter[:tank_kabusoku_t].to_i < 0 %>
+      	<td class="input_no" id="display" style="color: red;"><%= num_fmt(meter[:tank_kabusoku_t]) %></td>
+      <% else %>
+        <td class="input_no" id="display"><%= num_fmt(meter[:tank_kabusoku_t]) %></td>
+      <% end %>
       <td class="input_no" id="display"><%= num_fmt(meter[:adjust1]) %></td>
       <td class="input_no" id="display"><%= num_fmt(meter[:adjust2]) %></td>
       <!-- INSERT END 2012.11.22 調整額追加 -->
