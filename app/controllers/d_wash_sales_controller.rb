@@ -142,13 +142,27 @@ class DWashSalesController < ApplicationController
          end
          v1 = 0 if v1.nil?
          v2 = 0 if v2.nil?
-         if v1 < v2 then
-           @uriage = v1 * @price
-           sum_uriage += @uriage
+         
+         # UPDATE BEGIN 2012.11.26 前回予備メータ追加 
+         #if v1 < v2 then
+         #  @uriage = v1 * @price
+         #  sum_uriage += @uriage
+         #else
+         #  @uriage = (v1 - v2) * @price
+         #  sum_uriage += @uriage
+         #end    
+         
+         if params["sub_meter_#{wash.wash_cd.to_s}_#{i+1}"].nil? then
+           if v1 == 0 then
+             @uriage = 0
+           else
+             @uriage = (v1 - v2) * @price
+           end 
          else
-           @uriage = (v1 - v2) * @price
-           sum_uriage += @uriage
-         end    
+           @uriage = (v1 - params["sub_meter_#{wash.wash_cd.to_s}_#{i+1}"].to_i) * @price
+         end
+         sum_uriage += @uriage
+         # UPDATE END 2012.11.26 前回予備メータ追加 
           
          @d_washsale_item = get_d_washsale_item(@d_wash_sale.id,wash.id,(i+1))
          unless @d_washsale_item == nil #unless1
@@ -168,7 +182,7 @@ class DWashSalesController < ApplicationController
          #else
          #  sum_uriage = sum_uriage + @d_washsale_item.meter
          #end
-               
+
         end #times
         
         #誤差更新
@@ -241,13 +255,17 @@ private
   #def create_d_washsale_item(d_wash_sale_id,wash_cd,wash_no,sum_uriage=0)
   def create_d_washsale_item(d_wash_sale_id,wash_id,wash_cd,wash_no,sum_uriage=0)
     #2012/10/03 入力値>0の場合のみ登録 nishimura
-    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99
+    # UPDATE BEGIN 2012.11.27 前回予備メータ追加
+    #if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99
+    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99 or (not(params["sub_meter_#{wash_cd}_#{wash_no}"].nil?))
+    # UPDATE END 2012.11.27 前回予備メータ追加
       @d_washsale_item = DWashsaleItem.new
       @d_washsale_item.d_wash_sale_id = d_wash_sale_id
       #@d_washsale_item.m_wash_id = wash_cd
       @d_washsale_item.m_wash_id = wash_id
       @d_washsale_item.wash_no = wash_no
       @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"].to_i
+      @d_washsale_item.sub_meter = params["sub_meter_#{wash_cd}_#{wash_no}"]  # INSERT 2012.11.26 前回予備メータ追加
       if @d_washsale_item.wash_no == 99      
          # UPDATE 2012.09.27 誤差 = 現金売上高 - 計算上売上高
          #@d_washsale_item.error_money = sum_uriage - @d_washsale_item.meter
@@ -262,8 +280,12 @@ private
   
   def update_d_washsale_item(wash_cd,wash_no,sum_meter=0,sum_meter_mae=0)
     #2012/10/03 入力値>0の場合のみ登録 nishimura
-    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99
+    # UPDATE BEGIN 2012.11.27 前回予備メータ追加
+    #if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99
+    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99 or (not(params["sub_meter_#{wash_cd}_#{wash_no}"].nil?))
+    # UPDATE END 2012.11.27 前回予備メータ追加
       @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"]
+      @d_washsale_item.sub_meter = params["sub_meter_#{wash_cd}_#{wash_no}"]  # INSERT 2012.11.26 前回予備メータ追加
       if @d_washsale_item.meter == nil
         @d_washsale_item.meter = 0
       end
