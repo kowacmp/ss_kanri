@@ -1,1 +1,5 @@
-$('#meter_index').html("<%= j(render :partial => 'meter_index')%>");
+<% if @yobi_flg=0 %>
+	$('#meter_index').html("<%= j(render :partial => 'meter_index')%>");
+<% else %>
+	$('#meter_yobi_index').html("<%= j(render :partial => 'meter_yobi_index')%>");
+<%end%>
