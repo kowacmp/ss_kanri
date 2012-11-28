@@ -109,20 +109,31 @@
 		<% if rec["result#{ i }"].nil? then%>
 			<!-- わざと表示しません！ -->
 		<% else %>
-			<%= number_with_delimiter(d_aim["aim_value#{ i }"]) unless d_aim.nil? %>
+			<% if d_aim.blank? or d_aim.aim_total == nil %>
+				0
+			<% else %>
+				<%= number_with_delimiter(d_aim["aim_value#{ i }"]) %>
+			<% end %>
 		<% end %>
 	</td>
 	<% end %>
 	
 	<!-- 目標トータル　-->
 	<td align="right">
-		<%= number_with_delimiter(d_aim.aim_total) unless d_aim.nil? %>
+		<% if d_aim.blank? or d_aim.aim_total == nil %>
+			0
+		<% else %>
+			<%= number_with_delimiter(d_aim.aim_total) %>
+		<% end %>
 	</td>
 	
 	<!-- 枚数差 -->
 	<td rowspan="3" align="right">
-		<%= number_with_delimiter(d_aim.aim_total - rec["result_total"]) unless d_aim.nil? %>
-	</td>
+		<% if d_aim.blank? or d_aim.aim_total == nil %>
+			0
+		<% else %>
+			<%= number_with_delimiter(d_aim.aim_total - rec["result_total"]) %>
+		<% end %>	</td>
 	
 	<!-- ペース -->
 	<td rowspan="2" align="right">
