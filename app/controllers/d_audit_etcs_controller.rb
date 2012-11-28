@@ -382,7 +382,7 @@ private
                         coalesce(b.meter, 0) as sum_meter
                     from 
                                  d_sale_etcs        a  -- d_sale_etcは必ず存在,left joinなので必ずデータが返る
-                       left join 
+                       inner join  -- UPDATE 2012.11.28 明細レコードがない場合は未入力とする left join → inner join 
                        
                         (select * from d_sale_etc_details 
                          where m_etc_id   =  #{m_etc_rec.id}
@@ -421,18 +421,25 @@ private
         dt_rec[:g_uri] = 0                   #現金売上高(合計行のみ)
         dt_rec[:gosa] = 0                    #誤差(合計行のみ)
         
-        #当日メータ(優先順位：登録済の詳細、売上集計)
-        if not(d_audit_etc_detail.nil?) then
-          dt_rec[:t_meter]   = d_audit_etc_detail.meter       
-        else
-          dt_rec[:t_meter]   = d_sale_etcs_sum.sum_meter.to_i 
-        end
-        
         #前回メータ
         if not(d_audit_etc_detail_z.nil?) then
           dt_rec[:z_meter]   = d_audit_etc_detail_z.meter #前回監査登録済
         else
           dt_rec[:z_meter]   = 0 #前回監査なし          
+        end
+        
+        #当日メータ(優先順位：登録済の詳細、売上集計)
+        if not(d_audit_etc_detail.nil?) then
+          dt_rec[:t_meter]   = d_audit_etc_detail.meter       
+        else
+          # UPDATE BEGIN 2012.11.28 明細レコードがない場合は未入力とする
+          #dt_rec[:t_meter]   = d_sale_etcs_sum.sum_meter.to_i 
+          if d_sale_etcs_sum.blank? then
+            dt_rec[:t_meter] = dt_rec[:z_meter] #データなしの場合は前回メータより変更無しの意味
+          else
+            dt_rec[:t_meter] = d_sale_etcs_sum.sum_meter.to_i 
+          end
+          # UPDATE END 2012.11.28 明細レコードがない場合は未入力とする
         end
         
         # INSERT BEGIN 2012.11.20 ZEROメータを考慮
@@ -462,15 +469,47 @@ private
           if m_etc_rec.etc_class.to_i == 1 then
             dt_rec[:k_uri] = dt_rec[:t_meter]
           else
-            if dt_rec[:t_meter] < dt_rec[:z_meter] then
-              dt_rec[:k_uri] = dt_rec[:t_meter] #故障の場合は0から再カウント
-            else
-              dt_rec[:k_uri] = dt_rec[:t_meter] - dt_rec[:z_meter]
-            end
+            # UPDATE BEGIN 2012.11.28 計算上売上高はdetail.uriageの集計とする
+            #if dt_rec[:t_meter] < dt_rec[:z_meter] then
+            #  dt_rec[:k_uri] = dt_rec[:t_meter] #故障の場合は0から再カウント
+            #else
+            #  dt_rec[:k_uri] = dt_rec[:t_meter] - dt_rec[:z_meter]
+            #end
+            
+            sql = <<-SQL
+                    select 
+                        sum(b.uriage) as sum_uriage
+                    from 
+                        d_sale_etcs a 
+                        
+                        inner join
+                        
+                        d_sale_etc_details b
+                        
+                    on 
+                        a.id = b.d_sale_etc_id
+                    where 
+                           a.sale_date  >= :sale_date_from
+                       and a.sale_date  <= :sale_date_to
+                       and a.m_shop_id   = :m_shop_id
+                       and b.m_etc_id    = :m_etc_id
+                       and b.etc_no      = :num    
+                SQL
+             
+            sql_params = { 
+                         :sale_date_from => @audit_date_from.gsub("/",""),
+                         :sale_date_to => @audit_date_to.gsub("/",""),
+                         :m_shop_id => @m_shop_id,
+                         :m_etc_id => m_etc_rec.id,
+                         :num => num
+                       }
+             
+            dt_rec[:k_uri] = DSaleEtc.find_by_sql([sql, sql_params])[0].sum_uriage.to_i
+            # UPDATE END 2012.11.28 計算上売上高はdetail.uriageの集計とする
           end
           # UPDATE END 2012.11.20 ZEROメータを考慮
           
-          dt_rec[:k_uri] *= m_etc_rec.price
+          # dt_rec[:k_uri] *= m_etc_rec.price
         end
         
         #売上集計
