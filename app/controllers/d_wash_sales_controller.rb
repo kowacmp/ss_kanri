@@ -152,7 +152,7 @@ class DWashSalesController < ApplicationController
          #  sum_uriage += @uriage
          #end    
          
-         if params["sub_meter_#{wash.wash_cd.to_s}_#{i+1}"].nil? then
+         if params["sub_meter_#{wash.wash_cd.to_s}_#{i+1}"].blank? then
            if v1 == 0 then
              @uriage = 0
            else
@@ -257,7 +257,7 @@ private
     #2012/10/03 入力値>0の場合のみ登録 nishimura
     # UPDATE BEGIN 2012.11.27 前回予備メータ追加
     #if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99
-    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99 or (not(params["sub_meter_#{wash_cd}_#{wash_no}"].nil?))
+    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99 or (not(params["sub_meter_#{wash_cd}_#{wash_no}"].blank?))
     # UPDATE END 2012.11.27 前回予備メータ追加
       @d_washsale_item = DWashsaleItem.new
       @d_washsale_item.d_wash_sale_id = d_wash_sale_id
@@ -282,7 +282,7 @@ private
     #2012/10/03 入力値>0の場合のみ登録 nishimura
     # UPDATE BEGIN 2012.11.27 前回予備メータ追加
     #if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99
-    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99 or (not(params["sub_meter_#{wash_cd}_#{wash_no}"].nil?))
+    if params["meter_#{wash_cd}_#{wash_no}"].to_i > 0 or wash_no == 99 or (not(params["sub_meter_#{wash_cd}_#{wash_no}"].blank?))
     # UPDATE END 2012.11.27 前回予備メータ追加
       @d_washsale_item.meter = params["meter_#{wash_cd}_#{wash_no}"]
       @d_washsale_item.sub_meter = params["sub_meter_#{wash_cd}_#{wash_no}"]  # INSERT 2012.11.26 前回予備メータ追加
