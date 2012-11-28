@@ -12,12 +12,23 @@
 	<%= form_tag({:action => 'update'}) do %>
 	  <table  id='rounded-corner'>
 	  <tr>
+	  	<!-- UPDATE BEGIN 2012.11.28 前回予備メータ追加 --> 
+		<!--
 		<th style="width:24%">機種名</th>
 		<th style="width:15%">当日メーター</th>
 		<th style="width:15%">前回メーター</th>
 		<th style="width:15%">計算上売上高</th>
 		<th style="width:15%">現金売上高</th>
 		<th style="width:15%">誤差</th>
+		-->
+		<th style="width:24%">機種名</th>
+		<th style="width:12%">当日メーター</th>
+		<th style="width:12%">前回メーター</th>
+		<th style="width:12%">計算上売上高</th>
+		<th style="width:12%">現金売上高</th>
+		<th style="width:12%">誤差</th>		
+		<th style="width:12%">前回予備ﾒｰﾀ</th>
+		<!-- UPDATE END 2012.11.28 前回予備メータ追加 --> 
 	  </tr>
      <%  @m_etcs.each do |etc| %>
        <% d_sale_etc = get_d_sale_etc(@input_ymd_s, @shop_id, @mode) %>
@@ -122,13 +133,23 @@
 		  	   		v2 = d_sale_etc_detail_mae.meter
 		  	   	end
 		  	   end
-		  	   p "v1=" + v1.to_s
-		  	   p "v2=" + v2.to_s 
-		  	   if v1 < v2 then
-		  	     display_keisan_uriage = v1
+		  	   #UPDATE BEGIN 2012.11.28 前回予備メータ追加
+		  	   #if v1 < v2 then
+		  	   #  display_keisan_uriage = v1
+		  	   #else
+		  	   #	 display_keisan_uriage = (v1 - v2)
+		  	   #end
+		  	   
+		  	   if d_sale_etc_detail.blank? or d_sale_etc_detail.sub_meter.blank? then
+		  	   	 if v1 == 0 then
+		  	       display_keisan_uriage = 0
+		  	     else
+		  	       display_keisan_uriage = (v1 - v2)
+		  	     end 
 		  	   else
-		  	   	 display_keisan_uriage = (v1 - v2)
+		  	   	 display_keisan_uriage = (v1 - d_sale_etc_detail.sub_meter.to_i) 
 		  	   end
+		  	   #UPDATE END 2012.11.28 前回予備メータ追加
 		  	%>
 		  	<% display_keisan_uriage = display_keisan_uriage * etc.price %>
 		  	<span id="k<%=meter_id%>"><%= number_with_delimiter(display_keisan_uriage) %></span>
@@ -157,6 +178,38 @@
 	   		  <% end %>
 		    </td>
 		  <% end %>
+		  <!-- INSERT BEGIN 2012.11.28 前回予備メータ追加 -->
+		  <%if etc.etc_class == 0 then%>
+		    <% unless (d_sale_etc_detail == nil) %>
+		      <% if d_sale_etc.kakutei_flg == 1 %>
+		        <td align="right"><%= number_with_delimiter(d_sale_etc_detail.sub_meter) %></td>
+		      <% else %>
+		        <div class="field">
+		        <% sub_meter_id = "sub_meter_" + etc.id.to_s + '_'+ (i+1).to_s %>
+		        <td><%= text_field_tag(sub_meter_id, d_sale_etc_detail.sub_meter ,:class => "money", :style=>"width:100px;") %></td>
+		        </div>
+		      <% end %>
+		    <% else %>
+		      <% unless d_sale_etc == nil %>
+		        <% if d_sale_etc.kakutei_flg == 1 %>
+		          <td align="right">0</td>
+		        <% else %>
+		          <td>
+		            <% sub_meter_id = "sub_meter_" + etc.id.to_s + '_'+ (i+1).to_s %>
+		            <%= text_field_tag(sub_meter_id, nil, :class => "money", :style=>"width:100px;") %>
+		          </td>
+		        <% end %>
+		      <% else %>
+		        <td>
+		        <% sub_meter_id = "sub_meter_" + etc.id.to_s + '_'+ (i+1).to_s %>
+		        <%= text_field_tag(sub_meter_id, nil, :class => "money", :style=>"width:100px;") %>
+		        </td>
+		      <% end %>
+		    <% end %>
+		  <%else%> <!-- if etc.etc_class == 0 then -->
+		    <td align="center"> ー </td>
+		  <%end%>
+		  <!-- INSERT END 2012.11.28 前回予備メータ追加 -->
 	  </tr>
 	    <% end %>
 	  <tr>
@@ -230,7 +283,10 @@
 	     <% if kakutei_flg == 1 %>
 	       <%= submit_tag("  登  録  ",:disabled => true) %>	 
 	     <% else %>
-	       <%= submit_tag("  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？') %>	  
+	       <!-- UPDATE BEGIN 2012.11.28 前回予備メータ追加 -->
+	       <%#= submit_tag("  登  録  ",:disable_with => "登録中.....",:confirm => '登録しても良いですか？') %>	  
+	       <%= submit_tag("  登  録  ",:disable_with => "登録中.....", :onclick => "return chk_sale_etc();") %>	
+	       <!-- UPDATE END 2012.11.28 前回予備メータ追加 -->
 	     <% end %>
 	   </div>
 	 </td></tr>
@@ -269,6 +325,15 @@
 			return true;
 		});
 		
+		// INSERT BEGIN 2012.11.28 予備メータ追加 
+		$("input:text[id^=sub_meter_]").blur(function(){
+				
+			kmeter_update();
+			
+			return true;
+		});
+		// INSERT END 2012.11.28 予備メータ追加
+		
 	});
 	
 	// 計算上売上高再計算
@@ -278,13 +343,32 @@
 		$("input:text[id^=meter_]:not(input:text[id^=meter_][id$=99])").each(function(){
 			t = toNum($(this).val());             //当日
 			z = toNum($("#z" + this.id).html());  //前回
-	        price = toNum($("#" + this.id.replace("meter", "price")).val()) //単価
+			y = $("#sub_" + this.id).val();       //ADD 2012.11.26 予備メータ追加
+			
+			price = toNum($("#" + this.id.replace("meter", "price")).val()) //単価
+	        
+	        // UPDATE BEGIN 2012.11.26 予備メータ追加 
+			/*
 			// 当日 - 前回
 			if (t < z) {
 				k = t;
 			} else {
 				k = t- z;
 			}
+			*/
+			
+			if (y == null || y == "") {
+				if ( t == 0) {
+					//当日メータ=0、予備メータ=未入力の場合は計算しない
+					k = 0; 
+				} else {
+					k = t - z;
+				}
+			} else {
+				k = t - toNum(y);
+			}
+			
+			// UPDATE END 2012.11.26 予備メータ追加 
 		
 			// 計算上売上高	
 			$("#k" + this.id).html(format_kanma(k * price));
@@ -336,6 +420,31 @@
 		$("#gosa_k").html(format_kanma(k));
 		
 	}
+
+	// INSERT BEGIN 2012.11.28 予備メータ追加 
+	function chk_sale_etc() {
+		
+		var ret = true;
+		
+		//計算上売上高がマイナスはエラーとする
+		$("span:[id^=kmeter]").each(function(){
+			if (toNum($(this).html()) < 0) {
+				ret = false;
+			}
+		});
+		
+		if (!(ret)) {
+			alert("計算上売上高がマイナスのデータがあります。");	
+		}
+		
+		if (ret) {
+			ret = confirm("登録しても良いですか？");
+		}
+		
+		return ret;
+		
+	}
+	// INSERT END 2012.11.28 予備メータ追加 
 
 </script>
 <%= javascript_include_tag "comma" %>
