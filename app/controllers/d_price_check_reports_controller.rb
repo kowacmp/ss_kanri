@@ -228,7 +228,7 @@ class DPriceCheckReportsController < ApplicationController
           if shop.minus_gak1.to_i < 0
             row.item(:minus_name1).value(shop.minus_name1.to_s + "△" + (shop.minus_gak1.to_i * (-1)).to_s)
           else
-            row.item(:minus_name1).value(shop.minus_name1.to_s + " " + shop.minus_gak1.to_s)
+            row.item(:minus_name1).value(shop.minus_name1.to_s + " " + shop.minus_gak1.to_i.to_s)
           end
           
           #プリカ/会員
@@ -238,13 +238,13 @@ class DPriceCheckReportsController < ApplicationController
               if shop.minus_gak2.to_i < 0
                 row.item(:minus_name2).value(shop.minus_name2.to_s + "△" + (shop.minus_gak2.to_i * (-1)).to_s)
               else
-                row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_s)
+                row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_i.to_s)
               end
             elsif shop.minus_gak3.to_i != 0 
               if shop.minus_gak3.to_i < 0
                 row.item(:minus_name2).value(shop.minus_name3.to_s + "△" + (shop.minus_gak3.to_i * (-1)).to_s)
               else
-                row.item(:minus_name2).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_s)
+                row.item(:minus_name2).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_i.to_s)
               end
             else
               row.item(:minus_name2).value("")
@@ -255,13 +255,13 @@ class DPriceCheckReportsController < ApplicationController
               if shop.minus_gak3.to_i < 0
                 row.item(:minus_name2).value(shop.minus_name3.to_s + "△" + (shop.minus_gak3.to_i * (-1)).to_s)
               else
-                row.item(:minus_name2).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_s)
+                row.item(:minus_name2).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_i.to_s)
               end
             elsif shop.minus_gak2.to_i != 0 
               if shop.minus_gak2.to_i < 0
                 row.item(:minus_name2).value(shop.minus_name2.to_s + "△" + (shop.minus_gak2.to_i * (-1)).to_s)
               else
-                row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_s)
+                row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_i.to_s)
               end
             else
               row.item(:minus_name2).value("")
@@ -395,7 +395,7 @@ class DPriceCheckReportsController < ApplicationController
           if shop.minus_gak1.to_i < 0
             row.item(:minus_name1).value(shop.minus_name1.to_s + "△" + (shop.minus_gak1.to_i * (-1)).to_s)
           else
-            row.item(:minus_name1).value(shop.minus_name1.to_s + " " + shop.minus_gak1.to_s)
+            row.item(:minus_name1).value(shop.minus_name1.to_s + " " + shop.minus_gak1.to_i.to_s)
           end
           
           #プリカ/会員
@@ -405,13 +405,13 @@ class DPriceCheckReportsController < ApplicationController
               if shop.minus_gak2.to_i < 0
                 row.item(:minus_name2).value(shop.minus_name2.to_s + "△" + (shop.minus_gak2.to_i * (-1)).to_s)
               else
-                row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_s)
+                row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_i.to_s)
               end
             elsif shop.minus_gak3.to_i != 0 
               if shop.minus_gak3.to_i < 0
                 row.item(:minus_name2).value(shop.minus_name3.to_s + "△" + (shop.minus_gak3.to_i * (-1)).to_s)
               else
-                row.item(:minus_name2).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_s)
+                row.item(:minus_name2).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_i.to_s)
               end
             else
               row.item(:minus_name2).value("")
@@ -422,13 +422,13 @@ class DPriceCheckReportsController < ApplicationController
               if shop.minus_gak3.to_i < 0
                 row.item(:minus_name2).value(shop.minus_name3.to_s + "△" + (shop.minus_gak3.to_i * (-1)).to_s)
               else
-                row.item(:minus_name2).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_s)
+                row.item(:minus_name2).value(shop.minus_name3.to_s + " " + shop.minus_gak3.to_i.to_s)
               end
             elsif shop.minus_gak2.to_i != 0 
               if shop.minus_gak2.to_i < 0
                 row.item(:minus_name2).value(shop.minus_name2.to_s + "△" + (shop.minus_gak2.to_i * (-1)).to_s)
               else
-                row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_s)
+                row.item(:minus_name2).value(shop.minus_name2.to_s + " " + shop.minus_gak2.to_i.to_s)
               end
             else
               row.item(:minus_name2).value("")

@@ -86,14 +86,14 @@
 			  		<% if shop.minus_gak2.to_i < 0 %>
 			  			<%= "△" + (shop.minus_gak2.to_i * (-1)).to_s %>
 			  		<% else %>
-			  			<%= " " + shop.minus_gak2.to_s %>
+			  			<%= " " + shop.minus_gak2.to_i.to_s %>
 			  		<% end %>
 			    <% elsif shop.minus_gak3.to_i != 0 %>
 			  		<%= shop.minus_name3 %>
 			  		<% if shop.minus_gak3.to_i < 0 %>
 			  			<%= "△" + (shop.minus_gak3.to_i * (-1)).to_s %>
 			  		<% else %>
-			  			<%= " " + shop.minus_gak3.to_s %>
+			  			<%= " " + shop.minus_gak3.to_i.to_s %>
 			  		<% end %>
 			  	<% else %>
 		  		<% end %>
@@ -105,14 +105,14 @@
 			  		<% if shop.minus_gak3.to_i < 0 %>
 			  			<%= "△" + (shop.minus_gak3.to_i * (-1)).to_s %>
 			  		<% else %>
-			  			<%= " " + shop.minus_gak3.to_s %>
+			  			<%= " " + shop.minus_gak3.to_i.to_s %>
 			  		<% end %>
 		  		<% elsif shop.minus_gak2.to_i != 0 %>
 		  			<%= shop.minus_name2 %>
 			  		<% if shop.minus_gak2.to_i < 0 %>
 			  			<%= "△" + (shop.minus_gak2.to_i * (-1)).to_s %>
 			  		<% else %>
-			  			<%= " " + shop.minus_gak2.to_s %>
+			  			<%= " " + shop.minus_gak2.to_i.to_s %>
 			  		<% end %>
 			  	<% else %>
 		  		<% end %>
@@ -299,7 +299,7 @@
 	  		<% if shop.minus_gak1.to_i < 0 %>
 	  			<%= "△" + (shop.minus_gak1.to_i * (-1)).to_s %>
 	  		<% else %>
-	  			<%= " " + shop.minus_gak1.to_s %>
+	  			<%= " " + shop.minus_gak1.to_i.to_s %>
 	  		<% end %>
 	  	</td>
 	    <td colspan="3" align="center"><%= shop.dis1_2_code_name %></td><!-- ハイオク 下看 -->
@@ -369,14 +369,14 @@
 			  		<% if shop.minus_gak2.to_i < 0 %>
 			  			<%= "△" + (shop.minus_gak2.to_i * (-1)).to_s %>
 			  		<% else %>
-			  			<%= " " + shop.minus_gak2.to_s %>
+			  			<%= " " + shop.minus_gak2.to_i.to_s %>
 			  		<% end %>
 			    <% elsif shop.minus_gak3.to_i != 0 %>
 			  		<%= shop.minus_name3 %>
 			  		<% if shop.minus_gak3.to_i < 0 %>
 			  			<%= "△" + (shop.minus_gak3.to_i * (-1)).to_s %>
 			  		<% else %>
-			  			<%= " " + shop.minus_gak3.to_s %>
+			  			<%= " " + shop.minus_gak3.to_i.to_s %>
 			  		<% end %>
 			  	<% else %>
 		  		<% end %>
@@ -388,14 +388,14 @@
 			  		<% if shop.minus_gak3.to_i < 0 %>
 			  			<%= "△" + (shop.minus_gak3.to_i * (-1)).to_s %>
 			  		<% else %>
-			  			<%= " " + shop.minus_gak3.to_s %>
+			  			<%= " " + shop.minus_gak3.to_i.to_s %>
 			  		<% end %>
 		  		<% elsif shop.minus_gak2.to_i != 0 %>
 		  			<%= shop.minus_name2 %>
 			  		<% if shop.minus_gak2.to_i < 0 %>
 			  			<%= "△" + (shop.minus_gak2.to_i * (-1)).to_s %>
 			  		<% else %>
-			  			<%= " " + shop.minus_gak2.to_s %>
+			  			<%= " " + shop.minus_gak2.to_i.to_s %>
 			  		<% end %>
 			  	<% else %>
 		  		<% end %>
@@ -579,7 +579,7 @@
 	  		<% if shop.minus_gak1.to_i < 0 %>
 	  			<%= "△" + (shop.minus_gak1.to_i * (-1)).to_s %>
 	  		<% else %>
-	  			<%= " " + shop.minus_gak1.to_s %>
+	  			<%= " " + shop.minus_gak1.to_i.to_s %>
 	  		<% end %>
 	  	</td>
 	    <td colspan="3" align="center"><%= shop.dis2_2_code_name %></td><!-- ハイオク 下看 -->
