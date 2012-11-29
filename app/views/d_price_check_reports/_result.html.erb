@@ -277,15 +277,15 @@
 	    <!-- 会員 -->
 	    <td align="center">
 	    	<%# if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888 and shop.minus_gak3.to_i != 0 %>
-	    	<% if shop.dis1_3_tg.to_i != 0 and shop.minus_gak4.to_i != 0 %>
-	    		<%= ((shop.dis1_3_tg.to_f/18).round(1) + shop.minus_gak4.to_i).round(1) %>
+	    	<% if shop.dis1_3_tg.to_i != 0 and shop.minus_gak5.to_i != 0 %>
+	    		<%= ((shop.dis1_3_tg.to_f/18).round(1) + shop.minus_gak5.to_i).round(1) %>
 	    	<% end %>
 	    </td>
 	    <!-- 会員18L -->
 	    <td align="center">
 	    	<%# if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888 and shop.minus_gak3.to_i != 0 %>
-	    	<% if shop.dis1_3_tg.to_i != 0 and shop.minus_gak4.to_i != 0 %>
-	    		<%= shop.dis1_3_tg.to_i + (shop.minus_gak4.to_i * 18) %>
+	    	<% if shop.dis1_3_tg.to_i != 0 and shop.minus_gak5.to_i != 0 %>
+	    		<%= shop.dis1_3_tg.to_i + (shop.minus_gak5.to_i * 18) %>
 	    	<% end %>
 	    </td>
 	  </tr>
@@ -615,14 +615,14 @@
 	    <td align="center"></td>--><!-- 灯油 現金税込 -->
 	    <td align="center">
 	    	<%# if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
-	    	<% if shop.dis2_3_tg.to_i != 0 and shop.minus_gak5.to_i != 0 %>
-	    		<%= ((shop.dis2_3_tg.to_f/18).round(1) + shop.minus_gak5.to_i).round(1) %>
+	    	<% if shop.dis2_3_tg.to_i != 0 and shop.minus_gak4.to_i != 0 %>
+	    		<%= ((shop.dis2_3_tg.to_f/18).round(1) + shop.minus_gak4.to_i).round(1) %>
 	    	<% end %>
 		</td><!-- 灯油 プリカ -->
 		<td align="center">
 	    	<%# if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
-	    	<% if shop.dis2_3_tg.to_i != 0 and shop.minus_gak5.to_i != 0 %>
-	    		<%= shop.dis2_3_tg.to_i + (shop.minus_gak5.to_i * 18) %>
+	    	<% if shop.dis2_3_tg.to_i != 0 and shop.minus_gak4.to_i != 0 %>
+	    		<%= shop.dis2_3_tg.to_i + (shop.minus_gak4.to_i * 18) %>
 	    	<% end %>
 		</td><!-- 灯油 プリカ18L -->
 	  </tr>
