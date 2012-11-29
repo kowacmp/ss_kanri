@@ -7,10 +7,10 @@
     <th>&nbsp;</th>
     <th rowspan="3" scope="row"  style="min-width: 20px;">当<br />り<br />確<br />率</th>
     <th>&nbsp;</th>
-    <th colspan="6 scope="col">ハイオク</th>
-    <th colspan="6" scope="col">レギュラー</th>
-    <th colspan="6" scope="col">軽油</th>
-    <th colspan="6" scope="col">灯油</th>
+    <th colspan="6" scope="col" style="font-weight:bolder;">ハイオク</th>
+    <th colspan="6" scope="col" style="font-weight:bolder;">レギュラー</th>
+    <th colspan="6" scope="col" style="font-weight:bolder;">軽油</th>
+    <th colspan="6" scope="col" style="font-weight:bolder;">灯油</th>
 
   </tr>
   <tr>
@@ -81,17 +81,17 @@
 	  	<td style="min-height: 15px;">
 	  		<% if @shop_kbn.to_i == 0 %>
 	  			<!-- 洗車 -->
-		  		<% if shop.minus_gak2.to_f != 0 %>
+		  		<% if shop.minus_gak2.to_i != 0 %>
 			  		<%= shop.minus_name2 %>
 			  		<% if shop.minus_gak2.to_f < 0 %>
-			  			<%= "△" + (shop.minus_gak2.to_f * (-1)).to_s %>
+			  			<%= "△" + (shop.minus_gak2.to_i * (-1)).to_s %>
 			  		<% else %>
 			  			<%= " " + shop.minus_gak2.to_s %>
 			  		<% end %>
-			    <% elsif shop.minus_gak3.to_f != 0 %>
+			    <% elsif shop.minus_gak3.to_i != 0 %>
 			  		<%= shop.minus_name3 %>
-			  		<% if shop.minus_gak3.to_f < 0 %>
-			  			<%= "△" + (shop.minus_gak3.to_f * (-1)).to_s %>
+			  		<% if shop.minus_gak3.to_i < 0 %>
+			  			<%= "△" + (shop.minus_gak3.to_i * (-1)).to_s %>
 			  		<% else %>
 			  			<%= " " + shop.minus_gak3.to_s %>
 			  		<% end %>
@@ -100,17 +100,17 @@
 		  		
 	  		<% else %>
 		  		<!-- 油外 -->
-		  		<% if shop.minus_gak3.to_f != 0 %>
+		  		<% if shop.minus_gak3.to_i != 0 %>
 			  		<%= shop.minus_name3 %>
-			  		<% if shop.minus_gak3.to_f < 0 %>
-			  			<%= "△" + (shop.minus_gak3.to_f * (-1)).to_s %>
+			  		<% if shop.minus_gak3.to_i < 0 %>
+			  			<%= "△" + (shop.minus_gak3.to_i * (-1)).to_s %>
 			  		<% else %>
 			  			<%= " " + shop.minus_gak3.to_s %>
 			  		<% end %>
-		  		<% elsif shop.minus_gak2.to_f != 0 %>
+		  		<% elsif shop.minus_gak2.to_i != 0 %>
 		  			<%= shop.minus_name2 %>
-			  		<% if shop.minus_gak2.to_f < 0 %>
-			  			<%= "△" + (shop.minus_gak2.to_f * (-1)).to_s %>
+			  		<% if shop.minus_gak2.to_i < 0 %>
+			  			<%= "△" + (shop.minus_gak2.to_i * (-1)).to_s %>
 			  		<% else %>
 			  			<%= " " + shop.minus_gak2.to_s %>
 			  		<% end %>
@@ -119,7 +119,7 @@
 	  		<% end %>
 	  	</td>
 	    <td rowspan="2" scope="row" align="center"><%= shop.game %></td>
-	    <td><%= shop.shop_ryaku %></td>
+	    <td style="font-weight:bold;"><%= shop.shop_ryaku %></td>
 	    <!-- ハイオク -->
 	    <!-- <td rowspan="2" scope="row" align="right"> -->
 	    <!-- 2012/10/31 888の場合表示無対応消去 oda -->
@@ -147,19 +147,23 @@
 	    	<%= shop.dis1_4_hg %>
 	    </td>
 	    <!-- 現金(税込) -->
+	    <!-- 201211/28 レイアウト修正 oda
 	    <td align="center">
+	    -->
+	    <td rowspan="2" scope="row" align="center"style="font-weight:bold;">
 	    	<%#= price_888_print(shop.dis1_3_hg) %>
 	    	<%= shop.dis1_3_hg %>
 	    </td>
-	   	<!-- プリカ(会員) -->
+	   	<!-- 会員 -->
 	    <!-- <td rowspan="2" scope="row" align="right"> -->
 	    <td align="center">
 	    	<%# if shop.dis1_3_hg.to_i != 0 and shop.dis1_3_hg.to_i != 888 and shop.minus_gak3.to_i != 0 %>
-	    	<% if shop.dis1_3_hg.to_i != 0 and shop.minus_gak3.to_f != 0 %>
-	    		<%= shop.dis1_3_hg.to_i + shop.minus_gak3.to_f %>
+	    	<% if shop.dis1_3_hg.to_i != 0 and shop.minus_gak3.to_i != 0 %>
+	    		<%= shop.dis1_3_hg.to_i + shop.minus_gak3.to_i %>
 	    	<% end %>
 	    </td>
 	    <!-- レギュラー -->
+	    <!-- 看板1 -->
 	    <td style="border-right:none; min-width: 56px;" align="right">
 	    	<%#= price_888_print(shop.dis1_1_rg) %>
 	    	<%#= if shop.dis1_1_rg.to_s != "" and shop.dis1_2_rg.to_s != "" and
@@ -167,31 +171,38 @@
 	    	<%#= price_888_print(shop.dis1_2_rg) %>
 	    	<%= shop.dis1_1_rg %>
 	    </td>
-	    
+	    <!-- 看板2 -->
 	    <td style="border-right:none; border-left:none; min-width: 4px;" align="center">
 			<%= if shop.dis1_1_rg.to_s != "" or shop.dis1_2_rg.to_s != "" then "/" end %>
 	    </td>
+	    <!-- 看板3 -->
 	    <td style="border-left:none; min-width: 56px;" align="left">
 	    	<%= shop.dis1_2_rg %>
 	    </td>
-	    
+	    <!-- 現金(税抜) -->
 	    <td rowspan="2" scope="row" align="center">
 	    	<%# if shop.dis1_3_rg.to_i != 888 %>
 	    		<%#= shop.dis1_4_rg %>
 	    	<%# end %>
 	    	<%= shop.dis1_4_rg %>
 	    </td>
+	    <!-- 現金(税込) -->
+	    <!-- 201211/28 レイアウト修正  oda
 	    <td align="center">
+	    -->
+	    <td rowspan="2" scope="row" align="center"style="font-weight:bold;">
 	    	<%#= price_888_print(shop.dis1_3_rg) %>
 	    	<%= shop.dis1_3_rg %>
 	    </td>
+	   	<!-- 会員 -->
 	    <td align="center">
 	    	<%# if shop.dis1_3_rg.to_i != 0 and shop.dis1_3_rg.to_i != 888 and shop.minus_gak3.to_i != 0 %>
-			<% if shop.dis1_3_rg.to_i != 0 and shop.minus_gak3.to_f != 0 %>
-	    		<%= shop.dis1_3_rg.to_i + shop.minus_gak3.to_f %>
+			<% if shop.dis1_3_rg.to_i != 0 and shop.minus_gak3.to_i != 0 %>
+	    		<%= shop.dis1_3_rg.to_i + shop.minus_gak3.to_i %>
 	    	<% end %>
 	    </td>
 	    <!-- 軽油 -->
+	    <!-- 看板1 -->
 	    <td style="border-right:none; min-width: 56px;" align="right">
 	    	<%#= price_888_print(shop.dis1_1_kg) %>
 	    	<%#= if shop.dis1_1_kg.to_s != "" and shop.dis1_2_kg.to_s != "" and
@@ -199,116 +210,139 @@
 	    	<%#= price_888_print(shop.dis1_2_kg) %>
 	    	<%= shop.dis1_1_kg %>
 	    </td>
-	    
+	    <!-- 看板2 -->
 	    <td style="border-right:none; border-left:none; min-width: 4px;" align="center">
 	    	<%= if shop.dis1_1_kg.to_s != "" or shop.dis1_2_kg.to_s != "" then "/" end %>
 	    </td>
+	    <!-- 看板3 -->
 	    <td style="border-left:none; min-width: 56px;" align="left">
 	    	<%= shop.dis1_2_kg %>
 	    </td>
-	    
+	    <!-- 現金(税抜) -->
 	    <td rowspan="2" scope="row" align="center">
 	    	<%# if shop.dis1_3_kg.to_i != 888 %>
 	    		<%#= shop.dis1_4_kg %>
 	    	<%# end %>
 	    	<%= shop.dis1_4_kg %>
 	    </td>
+	    <!-- 現金(税込) -->
+	    <!-- 201211/28 レイアウト修正  oda
 	    <td align="center">
+	    -->
+	    <td rowspan="2" scope="row" align="center"style="font-weight:bold;">
 	    	<%#= price_888_print(shop.dis1_3_kg) %>
 	    	<%= shop.dis1_3_kg %>
 	    </td>
+	   	<!-- 会員 -->
 	    <td align="center">
 	    	<%# if shop.dis1_3_kg.to_i != 0 and shop.dis1_3_kg.to_i != 888 and shop.minus_gak3.to_i != 0 %>
-	    	<% if shop.dis1_3_kg.to_i != 0 and shop.minus_gak3.to_f != 0 %>
-	    		<%= shop.dis1_3_kg.to_i + shop.minus_gak3.to_f %>
+	    	<% if shop.dis1_3_kg.to_i != 0 and shop.minus_gak3.to_i != 0 %>
+	    		<%= shop.dis1_3_kg.to_i + shop.minus_gak3.to_i %>
 	    	<% end %>
 	    </td>
 	    <!-- 灯油 -->
+	    <!-- 看板 -->
+	    <!-- 201211/28 レイアウト修正  oda
 	    <td align="center">
+	    -->
+	    <td rowspan="2" scope="row" align="center">
 	    	<%#= price_888_print(shop.dis1_1_tg) %>
 	    	<%#= if shop.dis1_1_tg.to_s != "" and shop.dis1_2_tg.to_s != "" and
 	    	  		shop.dis1_1_tg.to_i != 888 and shop.dis1_2_tg.to_i != 888 then "/" end %>
 	    	<%#= price_888_print(shop.dis1_2_tg) %>
 	    	<%= shop.dis1_2_tg %>
 	    </td>
+	    <!-- 現金(税込) -->
+	    <!-- 201211/28 レイアウト修正  oda
 	    <td align="center">
+	    -->
+	    <td rowspan="2" scope="row" align="center"style="font-weight:bold;">
 	    	<%#= price_888_print(shop.dis1_3_tg) %>
 	    	<%= shop.dis1_3_tg %>
 	    </td>
+	    <!-- 現金(税込)1ﾘｯﾄﾙ -->
 	    <td rowspan="2" scope="row" align="center">
 	    	<%# if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888 %>
 	    	<% if shop.dis1_3_tg.to_i != 0 %>
 	    		<%= (shop.dis1_3_tg.to_f/18).round(1) %>
 	    	<% end %>
 	    </td>
+	    <!-- 現金(税抜)1ﾘｯﾄﾙ -->
 	    <td rowspan="2" scope="row" align="center">
 	    	<%# if shop.dis1_3_tg.to_i != 888 %>
 	    		<%#= shop.dis1_4_tg %>
 	    	<%# end %>
 	    	<%= shop.dis1_4_tg %>
 	    </td>
+	    <!-- 会員 -->
 	    <td align="center">
 	    	<%# if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888 and shop.minus_gak3.to_i != 0 %>
-	    	<% if shop.dis1_3_tg.to_i != 0 and shop.minus_gak3.to_f != 0 %>
-	    		<%= ((shop.dis1_3_tg.to_f/18).round(1) + shop.minus_gak3.to_f).round(1) %>
+	    	<% if shop.dis1_3_tg.to_i != 0 and shop.minus_gak4.to_i != 0 %>
+	    		<%= ((shop.dis1_3_tg.to_f/18).round(1) + shop.minus_gak4.to_i).round(1) %>
 	    	<% end %>
 	    </td>
+	    <!-- 会員18L -->
 	    <td align="center">
 	    	<%# if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888 and shop.minus_gak3.to_i != 0 %>
-	    	<% if shop.dis1_3_tg.to_i != 0 and shop.minus_gak3.to_f != 0 %>
-	    		<%= shop.dis1_3_tg.to_i + (shop.minus_gak3.to_f * 18) %>
+	    	<% if shop.dis1_3_tg.to_i != 0 and shop.minus_gak4.to_i != 0 %>
+	    		<%= shop.dis1_3_tg.to_i + (shop.minus_gak4.to_i * 18) %>
 	    	<% end %>
 	    </td>
 	  </tr>
-	  
+<!-- 二段目 -->
 	  <tr>
 	  	<td style="min-height: 15px;">
-	  		<%= shop.minus_name4 %>
+	  		<%= shop.minus_name6 %>
 	  	</td>
 	  	<td>
 	  		<%= shop.minus_name1 %>
-	  		<% if shop.minus_gak1.to_f < 0 %>
-	  			<%= "△" + (shop.minus_gak1.to_f * (-1)).to_s %>
+	  		<% if shop.minus_gak1.to_i < 0 %>
+	  			<%= "△" + (shop.minus_gak1.to_i * (-1)).to_s %>
 	  		<% else %>
 	  			<%= " " + shop.minus_gak1.to_s %>
 	  		<% end %>
 	  	</td>
 	    <td colspan="3" align="center"><%= shop.dis1_2_code_name %></td><!-- ハイオク 下看 -->
-	    <td align="center"></td><!-- ハイオク 現金税込 -->
+	    <!-- 201211/28 レイアウト修正  oda
+	    <td align="center"></td>--><!-- ハイオク 現金税込 -->
 	    <td align="center">
 	    	<%# if shop.dis1_3_hg.to_i != 0 and shop.dis1_3_hg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
-	    	<% if shop.dis1_3_hg.to_i != 0 and shop.minus_gak2.to_f != 0 %>
-	    		<%= shop.dis1_3_hg.to_i + shop.minus_gak2.to_f %>
+	    	<% if shop.dis1_3_hg.to_i != 0 and shop.minus_gak2.to_i != 0 %>
+	    		<%= shop.dis1_3_hg.to_i + shop.minus_gak2.to_i %>
 	    	<% end %>
 		</td><!-- ハイオク プリカ -->
 	    <td colspan="3" align="center"><%= shop.dis1_2_code_name %></td><!-- レギュラー 下看 -->
-	    <td align="center"></td><!-- レギュラー 現金税込 -->
+	    <!-- 201211/28 レイアウト修正  oda
+	    <td align="center"></td>--><!-- レギュラー 現金税込 -->
 	    <td align="center">
 	    	<%# if shop.dis1_3_rg.to_i != 0 and shop.dis1_3_rg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
-	    	<% if shop.dis1_3_rg.to_i != 0 and shop.minus_gak2.to_f != 0 %>
-	    		<%= shop.dis1_3_rg.to_i + shop.minus_gak2.to_f %>
+	    	<% if shop.dis1_3_rg.to_i != 0 and shop.minus_gak2.to_i != 0 %>
+	    		<%= shop.dis1_3_rg.to_i + shop.minus_gak2.to_i %>
 	    	<% end %>
 		</td><!-- レギュラー プリカ -->
 	    <td colspan="3" align="center"><%= shop.dis1_2_code_name %></td><!-- 軽油 下看 -->
-	    <td align="center"></td><!-- 軽油 現金税込 -->
+	    <!-- 201211/28 レイアウト修正  oda
+	    <td align="center">--></td></td><!-- 軽油 現金税込 -->
 	    <td align="center">
 	    	<%# if shop.dis1_3_kg.to_i != 0 and shop.dis1_3_kg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
-	    	<% if shop.dis1_3_kg.to_i != 0 and shop.minus_gak2.to_f != 0 %>
-	    		<%= shop.dis1_3_kg.to_i + shop.minus_gak2.to_f %>
+	    	<% if shop.dis1_3_kg.to_i != 0 and shop.minus_gak2.to_i != 0 %>
+	    		<%= shop.dis1_3_kg.to_i + shop.minus_gak2.to_i %>
 	    	<% end %>
 		</td><!-- 軽油 プリカ -->
-	    <td align="center"><%= shop.dis1_2_code_name %></td><!-- 灯油 下看 -->
-	    <td align="center"></td><!-- 灯油 現金税込 -->
+	    <!-- 201211/28 レイアウト修正  oda
+	    <td align="center"><%= shop.dis1_2_code_name %>--></td><!-- 灯油 下看 -->
+	    <!-- 201211/28 レイアウト修正  oda
+	    <td align="center"></td>--><!-- 灯油 現金税込 -->
 	    <td align="center">
 	    	<%# if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
-	    	<% if shop.dis1_3_tg.to_i != 0 and shop.minus_gak2.to_f != 0 %>
-	    		<%= ((shop.dis1_3_tg.to_f/18).round(1) + shop.minus_gak2.to_f).round(1) %>
+	    	<% if shop.dis1_3_tg.to_i != 0 and shop.minus_gak4.to_i != 0 %>
+	    		<%= ((shop.dis1_3_tg.to_f/18).round(1) + shop.minus_gak4.to_i).round(1) %>
 	    	<% end %>
 		</td><!-- 灯油 プリカ -->
 		<td align="center">
 	    	<%# if shop.dis1_3_tg.to_i != 0 and shop.dis1_3_tg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
-	    	<% if shop.dis1_3_tg.to_i != 0 and shop.minus_gak2.to_f != 0 %>
-	    		<%= shop.dis1_3_tg.to_i + (shop.minus_gak2.to_f * 18) %>
+	    	<% if shop.dis1_3_tg.to_i != 0 and shop.minus_gak4.to_i != 0 %>
+	    		<%= shop.dis1_3_tg.to_i + (shop.minus_gak4.to_i * 18) %>
 	    	<% end %>
 		</td><!-- 灯油 プリカ18L -->
 	  </tr>
@@ -330,17 +364,17 @@
 	  	<td style="min-height: 15px;">
 	  		<% if @shop_kbn.to_i == 0 %>
 	  			<!-- 洗車 -->
-		  		<% if shop.minus_gak2.to_f != 0 %>
+		  		<% if shop.minus_gak2.to_i != 0 %>
 			  		<%= shop.minus_name2 %>
-			  		<% if shop.minus_gak2.to_f < 0 %>
-			  			<%= "△" + (shop.minus_gak2.to_f * (-1)).to_s %>
+			  		<% if shop.minus_gak2.to_i < 0 %>
+			  			<%= "△" + (shop.minus_gak2.to_i * (-1)).to_s %>
 			  		<% else %>
 			  			<%= " " + shop.minus_gak2.to_s %>
 			  		<% end %>
-			    <% elsif shop.minus_gak3.to_f != 0 %>
+			    <% elsif shop.minus_gak3.to_i != 0 %>
 			  		<%= shop.minus_name3 %>
-			  		<% if shop.minus_gak3.to_f < 0 %>
-			  			<%= "△" + (shop.minus_gak3.to_f * (-1)).to_s %>
+			  		<% if shop.minus_gak3.to_i < 0 %>
+			  			<%= "△" + (shop.minus_gak3.to_i * (-1)).to_s %>
 			  		<% else %>
 			  			<%= " " + shop.minus_gak3.to_s %>
 			  		<% end %>
@@ -349,17 +383,17 @@
 		  		
 	  		<% else %>
 		  		<!-- 油外 -->
-		  		<% if shop.minus_gak3.to_f != 0 %>
+		  		<% if shop.minus_gak3.to_i != 0 %>
 			  		<%= shop.minus_name3 %>
-			  		<% if shop.minus_gak3.to_f < 0 %>
-			  			<%= "△" + (shop.minus_gak3.to_f * (-1)).to_s %>
+			  		<% if shop.minus_gak3.to_i < 0 %>
+			  			<%= "△" + (shop.minus_gak3.to_i * (-1)).to_s %>
 			  		<% else %>
 			  			<%= " " + shop.minus_gak3.to_s %>
 			  		<% end %>
-		  		<% elsif shop.minus_gak2.to_f != 0 %>
+		  		<% elsif shop.minus_gak2.to_i != 0 %>
 		  			<%= shop.minus_name2 %>
-			  		<% if shop.minus_gak2.to_f < 0 %>
-			  			<%= "△" + (shop.minus_gak2.to_f * (-1)).to_s %>
+			  		<% if shop.minus_gak2.to_i < 0 %>
+			  			<%= "△" + (shop.minus_gak2.to_i * (-1)).to_s %>
 			  		<% else %>
 			  			<%= " " + shop.minus_gak2.to_s %>
 			  		<% end %>
@@ -387,19 +421,25 @@
 		<td style="border-left:none; min-width: 56px;" align="left">
 	    	<%= shop.dis2_2_hg %>
 	    </td>
+	    <!-- 現金(税抜) -->
 	    <td rowspan="2" scope="row" align="center">
 	    	<%# if shop.dis2_3_hg.to_i != 888 %>
 	    		<%#= shop.dis2_4_hg %>
-	    		<%= get_zeinuki_print(shop.dis2_3_hg) %>
 	    	<%# end %>
+	    	<%= get_zeinuki_print(shop.dis2_3_hg) %>
 	    </td>
-	    <td align="center">
+	    <!-- 現金(税込み) -->
+	    <!-- 20121128 レイアウト修正  oda
+	    <td align="center"></td>
+		-->
+	    <td rowspan="2" scope="row" align="center"style="font-weight:bold;">
 	    	<%#= price_888_print(shop.dis2_3_hg) %>
 	    	<%= shop.dis2_3_hg %>
 	    </td>
+	    <!-- 会員 -->
 	    <td align="center">
-	    	<% if shop.dis2_3_hg.to_i != 0 and shop.dis2_3_hg.to_i != 888 and shop.minus_gak3.to_f != 0 %>
-	    		<%= shop.dis2_3_hg.to_i + shop.minus_gak3.to_f %>
+	    	<% if shop.dis2_3_hg.to_i != 0 and shop.dis2_3_hg.to_i != 888 and shop.minus_gak3.to_i != 0 %>
+	    		<%= shop.dis2_3_hg.to_i + shop.minus_gak3.to_i %>
 	    	<% end %>
 	    </td>
 	    <!-- レギュラー -->
@@ -419,19 +459,26 @@
 		<td style="border-left:none; min-width: 56px;" align="left">
 	    	<%= shop.dis2_2_rg %>
 	    </td>
+	    <!-- 現金(税抜) -->
 	    <td rowspan="2" scope="row" align="center">
 	    	<%# if shop.dis2_3_rg.to_i != 888 %>
 	    		<%#= shop.dis2_4_rg %>
-	    		<%= get_zeinuki_print(shop.dis2_3_rg) %>
 	    	<%# end %>
+	    		<%= get_zeinuki_print(shop.dis2_3_rg) %>
 	    </td>
-	    <td align="center"><%#= price_888_print(shop.dis2_3_rg) %>
+	    <!-- 現金(税込) -->
+	    <!-- 20121128 レイアウト修正  oda
+	    <td align="center"></td>
+		-->
+	    <td rowspan="2" scope="row" align="center"style="font-weight:bold;">
+	    	<%#= price_888_print(shop.dis2_3_rg) %>
 	    	<%= shop.dis2_3_rg %>
 	    </td>
+	    <!-- 会員 -->
 	    <td align="center">
 	    	<%# if shop.dis2_3_rg.to_i != 0 and shop.dis2_3_rg.to_i != 888 and shop.minus_gak3.to_i != 0 %>
-	    	<% if shop.dis2_3_rg.to_i != 0 and shop.minus_gak3.to_f != 0 %>
-	    		<%= shop.dis2_3_rg.to_i + shop.minus_gak3.to_f %>
+	    	<% if shop.dis2_3_rg.to_i != 0 and shop.minus_gak3.to_i != 0 %>
+	    		<%= shop.dis2_3_rg.to_i + shop.minus_gak3.to_i %>
 	    	<% end %>
 	    </td>
 	    <!-- 軽油 -->
@@ -451,105 +498,131 @@
 		<td style="border-left:none; min-width: 56px;" align="left">
 	    	<%= shop.dis2_2_kg %>
 	    </td>
+	    <!-- 現金(税抜) -->
 	    <td rowspan="2" scope="row" align="center">
 	    	<%# if shop.dis2_3_kg.to_i != 888 %>
 	    		<%#= shop.dis2_4_kg %>
-	    		<%= get_zeinuki_kg_print(shop.dis2_3_kg) %>
 	    	<%# end %>
+	    	<%= get_zeinuki_kg_print(shop.dis2_3_kg) %>
 	    </td>
-	    <td align="center"><%= price_888_print(shop.dis2_3_kg) %></td>
+	    <!-- 現金(税込) -->
+	    <!-- 20121128 レイアウト修正  oda
+	    <td align="center">
+	    -->
+	    <td rowspan="2" scope="row" align="center"style="font-weight:bold;">
+	    	<%#= price_888_print(shop.dis2_3_kg) %>
+	    	<%= shop.dis2_3_kg %>
+	    </td>
+	    <!-- 会員 -->
 	    <td align="center">
 	    	<%# if shop.dis2_3_kg.to_i != 0 and shop.dis2_3_kg.to_i != 888 and shop.minus_gak3.to_i != 0 %>
-	    	<% if shop.dis2_3_kg.to_i != 0 and shop.minus_gak3.to_f != 0 %>
-	    		<%= shop.dis2_3_kg.to_i + shop.minus_gak3.to_f %>
+	    	<% if shop.dis2_3_kg.to_i != 0 and shop.minus_gak3.to_i != 0 %>
+	    		<%= shop.dis2_3_kg.to_i + shop.minus_gak3.to_i %>
 	    	<% end %>
 	    </td>
 	    <!-- 灯油 -->
+	    <!-- 看板 -->
+	    <!-- 201211/28 レイアウト修正  oda
 	    <td align="center">
+	    -->
+	    <td rowspan="2" scope="row" align="center">
 	    	<%#= price_888_print(shop.dis2_1_tg) %>
 	    	<%#= if shop.dis2_1_tg and shop.dis2_2_tg and
 	    	  #		shop.dis2_1_tg.to_i != 888 and shop.dis2_2_tg.to_i != 888 then "/" end %>
 	    	<%#= price_888_print(shop.dis2_2_tg) %>
 	    	<%= shop.dis2_2_tg %>
 	    </td>
+	    <!-- 現金(税込) -->
+	    <!-- 201211/28 レイアウト修正  oda
 	    <td align="center">
+	    -->
+	    <td rowspan="2" scope="row" align="center"style="font-weight:bold;">
 	    	<%#= price_888_print(shop.dis2_3_tg) %>
 	    	<%= shop.dis2_3_tg %>
 	    </td>
+	    <!-- 現金(税込)１ﾘｯﾄﾙ -->
 	    <td rowspan="2" scope="row" align="center">
 	    	<%# if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888 %>
 	    	<% if shop.dis2_3_tg.to_i != 0  %>
 	    		<%= (shop.dis2_3_tg.to_f/18).round(1) %>
 	    	<% end %>
 	    </td>
+	    <!-- 現金(税抜)１ﾘｯﾄﾙ -->
 	    <td rowspan="2" scope="row" align="center">
 	    	<%# if shop.dis2_3_tg.to_i != 888 %>
 	    		<%#= shop.dis2_4_tg %>
-	    		<%= get_zeinuki_print(shop.dis2_3_tg.to_f/18) %>
 	    	<%# end %>
+	    	<%= get_zeinuki_print(shop.dis2_3_tg.to_f/18) %>
 	    </td>
+	    <!-- 会員 -->
 	    <td align="center">
 	    	<%# if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888 and shop.minus_gak3.to_i != 0 %>
-	    	<% if shop.dis2_3_tg.to_i != 0 and shop.minus_gak3.to_f != 0 %>
-	    		<%= ((shop.dis2_3_tg.to_f/18).round(1) + shop.minus_gak3.to_f).round(1) %>
+	    	<% if shop.dis2_3_tg.to_i != 0 and shop.minus_gak5.to_i != 0 %>
+	    		<%= ((shop.dis2_3_tg.to_f/18).round(1) + shop.minus_gak5.to_i).round(1) %>
 	    	<% end %>
 	    </td>
+	    <!-- 会員18L -->
 	    <td align="center">
 	    	<%# if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888 and shop.minus_gak3.to_i != 0 %>
-	    	<% if shop.dis2_3_tg.to_i != 0 and shop.minus_gak3.to_f != 0 %>
-	    		<%= shop.dis2_3_tg.to_i + (shop.minus_gak3.to_f * 18) %>
+	    	<% if shop.dis2_3_tg.to_i != 0 and shop.minus_gak5.to_i != 0 %>
+	    		<%= shop.dis2_3_tg.to_i + (shop.minus_gak5.to_i * 18) %>
 	    	<% end %>
 	    </td>
 	  </tr>
-	  
+	<!-- 二段目 -->
 	  <tr>
 	  	<td style="min-height: 15px;">
-	  		<%= shop.minus_name4 %>
+	  		<%= shop.minus_name6 %>
 	  	</td>
 	  	<td>
 	  		<%= shop.minus_name1 %>
-	  		<% if shop.minus_gak1.to_f < 0 %>
-	  			<%= "△" + (shop.minus_gak1.to_f * (-1)).to_s %>
+	  		<% if shop.minus_gak1.to_i < 0 %>
+	  			<%= "△" + (shop.minus_gak1.to_i * (-1)).to_s %>
 	  		<% else %>
 	  			<%= " " + shop.minus_gak1.to_s %>
 	  		<% end %>
 	  	</td>
 	    <td colspan="3" align="center"><%= shop.dis2_2_code_name %></td><!-- ハイオク 下看 -->
-	    <td align="center"></td><!-- ハイオク 現金税込 -->
+	    <!-- 201211/28 レイアウト修正  oda
+	    <td align="center"></td>--><!-- ハイオク 現金税込 -->
 	    <td align="center">
 	    	<%# if shop.dis2_3_hg.to_i != 0 and shop.dis2_3_hg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
-	    	<% if shop.dis2_3_hg.to_i != 0 and shop.minus_gak2.to_f != 0 %>
-	    		<%= shop.dis2_3_hg.to_i + shop.minus_gak2.to_f %>
+	    	<% if shop.dis2_3_hg.to_i != 0 and shop.minus_gak2.to_i != 0 %>
+	    		<%= shop.dis2_3_hg.to_i + shop.minus_gak2.to_i %>
 	    	<% end %>
 		</td><!-- ハイオク プリカ -->
 	    <td colspan="3"  align="center"><%= shop.dis2_2_code_name %></td><!-- レギュラー 下看 -->
-	    <td align="center"></td><!-- レギュラー 現金税込 -->
+	    <!-- 201211/28 レイアウト修正  oda
+	    <td align="center">--></td><!-- レギュラー 現金税込 -->
 	    <td align="center">
 	    	<%# if shop.dis2_3_rg.to_i != 0 and shop.dis2_3_rg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
-	    	<% if shop.dis2_3_rg.to_i != 0 and shop.minus_gak2.to_f != 0 %>
-	    		<%= shop.dis2_3_rg.to_i + shop.minus_gak2.to_f %>
+	    	<% if shop.dis2_3_rg.to_i != 0 and shop.minus_gak2.to_i != 0 %>
+	    		<%= shop.dis2_3_rg.to_i + shop.minus_gak2.to_i %>
 	    	<% end %>
 		</td><!-- レギュラー プリカ -->
 	    <td colspan="3"  align="center"><%= shop.dis2_2_code_name %></td><!-- 軽油 下看 -->
-	    <td align="center"></td><!-- 軽油 現金税込 -->
+	    <!-- 201211/28 レイアウト修正  oda
+	    <td align="center"></td>--><!-- 軽油 現金税込 -->
 	    <td align="center">
 	    	<%# if shop.dis2_3_kg.to_i != 0 and shop.dis2_3_kg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
-	    	<% if shop.dis2_3_kg.to_i != 0 and shop.minus_gak2.to_f != 0 %>
-	    		<%= shop.dis2_3_kg.to_i + shop.minus_gak2.to_f %>
+	    	<% if shop.dis2_3_kg.to_i != 0 and shop.minus_gak2.to_i != 0 %>
+	    		<%= shop.dis2_3_kg.to_i + shop.minus_gak2.to_i %>
 	    	<% end %>
 		</td><!-- 軽油 プリカ -->
-	    <td align="center"><%= shop.dis2_2_code_name %></td><!-- 灯油 下看 -->
-	    <td align="center"></td><!-- 灯油 現金税込 -->
+	    <!-- 201211/28 レイアウト修正  oda
+	    <td align="center"><%= shop.dis2_2_code_name %></td>--><!-- 灯油 下看 -->
+	    <!-- 201211/28 レイアウト修正  oda
+	    <td align="center"></td>--><!-- 灯油 現金税込 -->
 	    <td align="center">
 	    	<%# if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
-	    	<% if shop.dis2_3_tg.to_i != 0 and shop.minus_gak2.to_f != 0 %>
-	    		<%= ((shop.dis2_3_tg.to_f/18).round(1) + shop.minus_gak2.to_f).round(1) %>
+	    	<% if shop.dis2_3_tg.to_i != 0 and shop.minus_gak5.to_i != 0 %>
+	    		<%= ((shop.dis2_3_tg.to_f/18).round(1) + shop.minus_gak5.to_i).round(1) %>
 	    	<% end %>
 		</td><!-- 灯油 プリカ -->
 		<td align="center">
 	    	<%# if shop.dis2_3_tg.to_i != 0 and shop.dis2_3_tg.to_i != 888 and shop.minus_gak2.to_i != 0 %>
-	    	<% if shop.dis2_3_tg.to_i != 0 and shop.minus_gak2.to_f != 0 %>
-	    		<%= shop.dis2_3_tg.to_i + (shop.minus_gak2.to_f * 18) %>
+	    	<% if shop.dis2_3_tg.to_i != 0 and shop.minus_gak5.to_i != 0 %>
+	    		<%= shop.dis2_3_tg.to_i + (shop.minus_gak5.to_i * 18) %>
 	    	<% end %>
 		</td><!-- 灯油 プリカ18L -->
 	  </tr>
