@@ -298,6 +298,7 @@
 	  		<%= shop.minus_name1 %>
 	  		<% if shop.minus_gak1.to_i < 0 %>
 	  			<%= "△" + (shop.minus_gak1.to_i * (-1)).to_s %>
+	  		<% elsif shop.minus_gak1.to_i == 0 %>
 	  		<% else %>
 	  			<%= " " + shop.minus_gak1.to_i.to_s %>
 	  		<% end %>
@@ -578,6 +579,7 @@
 	  		<%= shop.minus_name1 %>
 	  		<% if shop.minus_gak1.to_i < 0 %>
 	  			<%= "△" + (shop.minus_gak1.to_i * (-1)).to_s %>
+	  		<% elsif shop.minus_gak1.to_i == 0 %>
 	  		<% else %>
 	  			<%= " " + shop.minus_gak1.to_i.to_s %>
 	  		<% end %>

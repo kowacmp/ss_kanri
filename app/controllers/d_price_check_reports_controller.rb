@@ -227,6 +227,8 @@ class DPriceCheckReportsController < ApplicationController
           #特売
           if shop.minus_gak1.to_i < 0
             row.item(:minus_name1).value(shop.minus_name1.to_s + "△" + (shop.minus_gak1.to_i * (-1)).to_s)
+          elsif shop.minus_gak1.to_i == 0
+            row.item(:minus_name1).value(shop.minus_name1.to_s)
           else
             row.item(:minus_name1).value(shop.minus_name1.to_s + " " + shop.minus_gak1.to_i.to_s)
           end
@@ -394,6 +396,8 @@ class DPriceCheckReportsController < ApplicationController
           #特売
           if shop.minus_gak1.to_i < 0
             row.item(:minus_name1).value(shop.minus_name1.to_s + "△" + (shop.minus_gak1.to_i * (-1)).to_s)
+          elsif shop.minus_gak1.to_i == 0
+            row.item(:minus_name1).value(shop.minus_name1.to_s)
           else
             row.item(:minus_name1).value(shop.minus_name1.to_s + " " + shop.minus_gak1.to_i.to_s)
           end
