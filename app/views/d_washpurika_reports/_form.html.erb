@@ -37,8 +37,8 @@
 	<th rowspan="3" style="white-space: nowrap" >
 		累積
 	</th>
-	<th rowspan="3" style="white-space: nowrap" >
-		差枚数
+	<th rowspan="1" style="white-space: nowrap" >
+		月合計
 	</th>
 	<th rowspan="2" style="white-space: nowrap" >
 		ペース
@@ -51,11 +51,15 @@
 	</th>
 </tr>
 <tr>
+	<th rowspan="2" style="white-space: nowrap" >
+		差枚数
+	</th>
 	<th rowspan="1" style="white-space: nowrap" >
 		前年同日迄の実績
 	</th>
 </tr>
 <tr>
+
 	<th rowspan="1" style="white-space: nowrap" >
 		洗車売上金額
 	</th>
@@ -104,26 +108,55 @@
 	
 	<!-- 目標1～31 -->
 	<% d_aim = DAim.find(:first, :conditions => ["date=? and m_shop_id=? and m_aim_id=26", rec["date"], rec["m_shop_id"]]) %>
+<!-- 2012/11/30 目標値累積修正 oda -->
+	<% aim_cnt = 0 %>
 	<% for i in 1..@days %>
 	<td align="right">
 		<% if rec["result#{ i }"].nil? then%>
 			<!-- わざと表示しません！ -->
 		<% else %>
-			<%= number_with_delimiter(d_aim["aim_value#{ i }"]) unless d_aim.nil? %>
+			<% if d_aim.blank? or d_aim.aim_total == nil %>
+				0
+			<% else %>
+				<%= number_with_delimiter(d_aim["aim_value#{ i }"]) %>
+				<!-- 2012/11/30 目標値累積修正 oda -->
+				<% aim_cnt += d_aim["aim_value#{ i }"].to_i %>
+			<% end %>
 		<% end %>
 	</td>
 	<% end %>
 	
-	<!-- 目標トータル　-->
+	<!-- 目標累積　-->
 	<td align="right">
-		<%= number_with_delimiter(d_aim.aim_total) unless d_aim.nil? %>
+		<!-- 2012/11/30 目標値累積修正 oda -->
+		<%# if d_aim.blank? or d_aim.aim_total == nil %>
+		<%# else %>
+			<%#= number_with_delimiter(d_aim.aim_total) %>
+		<%# end %>
+		<%= aim_cnt %>
 	</td>
-	
-	<!-- 枚数差 -->
+	<!-- 2012/11/30 月合計表示 oda -->
+	<!-- 月合計 -->
+	<td align="right">
+
+		<% if d_aim.blank? or d_aim.aim_total == nil %>
+			0
+		<% else %>
+			<%= number_with_delimiter(d_aim.aim_total) %>
+		<% end %>
+	</td>
+	<!-- 差枚数 -->
+	<!-- 2012/11/30 月合計表示(差枚数移動) oda
 	<td rowspan="3" align="right">
-		<%= number_with_delimiter(d_aim.aim_total - rec["result_total"]) unless d_aim.nil? %>
+	-->
+		<%# if d_aim.blank? or d_aim.aim_total == nil %>
+		<%# else %>
+			<%#= number_with_delimiter(d_aim.aim_total - rec["result_total"]) %>
+		<%# end %>
+	<!--
 	</td>
-	
+	-->
+
 	<!-- ペース -->
 	<td rowspan="2" align="right">
 		<%= number_with_delimiter(rec["pace"]) %>
@@ -168,7 +201,14 @@
 	<td rowspan="2" align="right">
 		<%= number_with_delimiter(rec["result_total"]) %>
 	</td>
-
+	<!-- 2012/11/30 月合計表示(差枚数移動) oda -->
+	<td rowspan="2" align="right">
+		<% if d_aim.blank? or d_aim.aim_total == nil %>
+			0
+		<% else %>
+			<%= number_with_delimiter(aim_cnt - rec["result_total"]) %>
+		<% end %>
+	</td>
 	<!-- 前年同日迄の実績 -->
 	<td rowspan="1" align="right">
 		<!-- <%= number_with_delimiter(rec["same_uriage"]) %> -->

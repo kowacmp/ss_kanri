@@ -340,7 +340,7 @@ private
                         coalesce(b.meter, 0) as sum_meter
                     from 
                                   d_wash_sales     a  -- d_wash_saleは必ず存在,left joinなので必ずデータが返る
-                        left join 
+                        inner join -- UPDATE 2012.11.28 明細レコードがない場合は未入力とする left join → inner join 
                         (select * from d_washsale_items
                          where m_wash_id   =  #{m_wash_rec.id}
                          and   wash_no     =  #{num}
@@ -357,7 +357,15 @@ private
           
           # UPDATE END 2012.10.16 売上は期間内の最終データを読み込む
           
-          d_wash_sales_sum = DWashSale.find_by_sql(sql)[0] 
+          # UPDATE BEGIN 2012.11.28 明細レコードがない場合は未入力とする
+          #d_wash_sales_sum = DWashSale.find_by_sql(sql)[0]
+          d_wash_sales_sum = DWashSale.find_by_sql(sql)
+          if d_wash_sales_sum.length == 0 
+            d_wash_sales_sum = nil
+          else
+            d_wash_sales_sum = d_wash_sales_sum[0]
+          end
+          # UPDATE END 2012.11.28 明細レコードがない場合は未入力とする
           
         end
          
@@ -378,19 +386,27 @@ private
         dt_rec[:g_uri] = 0                   #現金売上高(合計行のみ)
         dt_rec[:gosa] = 0                    #誤差(合計行のみ)
         
-        #当日メータ(優先順位：登録済の詳細、売上集計)
-        if not(d_audit_wash_detail.nil?) then
-          dt_rec[:t_meter]   = d_audit_wash_detail.meter       
-        else
-          dt_rec[:t_meter]   = d_wash_sales_sum.sum_meter.to_i 
-        end
-        
         #前回メータ
         if not(d_audit_wash_z.nil?) then
           dt_rec[:z_meter]   = d_audit_wash_detail_z.meter #前回監査登録済
         else
           dt_rec[:z_meter]   = 0 #前回監査なし          
         end
+        
+        #当日メータ(優先順位：登録済の詳細、売上集計)
+        if not(d_audit_wash_detail.nil?) then
+          dt_rec[:t_meter]   = d_audit_wash_detail.meter       
+        else
+          # UPDATE BEGIN 2012.11.28 明細レコードがない場合は未入力とする
+          #dt_rec[:t_meter]   = d_wash_sales_sum.sum_meter.to_i 
+          if d_wash_sales_sum.blank? then
+            dt_rec[:t_meter] = dt_rec[:z_meter] #データなしの場合は前回メータより変更無しの意味
+          else
+            dt_rec[:t_meter] = d_wash_sales_sum.sum_meter.to_i 
+          end
+          # UPDATE END 2012.11.28 明細レコードがない場合は未入力とする
+        end
+        
         
         #計算上売上高(当日メータ - 前回メータ)
         #if dt_rec[:t_meter] < dt_rec[:z_meter] then
@@ -403,12 +419,46 @@ private
         if not(d_audit_wash_detail.nil?) then
           dt_rec[:k_uri] = d_audit_wash_detail.uriage
         else
-          if dt_rec[:t_meter] < dt_rec[:z_meter] then
-            dt_rec[:k_uri] = dt_rec[:t_meter] #故障の場合は0から再カウント
-          else
-            dt_rec[:k_uri] = dt_rec[:t_meter] - dt_rec[:z_meter]
-          end
-          dt_rec[:k_uri] *= m_wash_rec.price
+          # UPDATE BEGIN 2012.11.28 計算上売上高はdetail.uriageの集計とする
+          
+          #if dt_rec[:t_meter] < dt_rec[:z_meter] then
+          #  dt_rec[:k_uri] = dt_rec[:t_meter] #故障の場合は0から再カウント
+          #else
+          #  dt_rec[:k_uri] = dt_rec[:t_meter] - dt_rec[:z_meter]
+          #end
+          #dt_rec[:k_uri] *= m_wash_rec.price
+          
+          sql = <<-SQL
+                    select 
+                        sum(b.uriage) as sum_uriage
+                    from 
+                        d_wash_sales a 
+                        
+                        inner join
+                        
+                        d_washsale_items b
+                        
+                    on 
+                        a.id = b.d_wash_sale_id
+                    where 
+                           a.sale_date  >= :sale_date_from
+                       and a.sale_date  <= :sale_date_to
+                       and a.m_shop_id   = :m_shop_id
+                       and b.m_wash_id   = :m_wash_id
+                       and b.wash_no     = :num    
+                SQL
+          
+          sql_params = { 
+                         :sale_date_from => @audit_date_from.gsub("/",""),
+                         :sale_date_to => @audit_date_to.gsub("/",""),
+                         :m_shop_id => @m_shop_id,
+                         :m_wash_id => m_wash_rec.id,
+                         :num => num
+                       }
+          
+          dt_rec[:k_uri] = DWashSale.find_by_sql([sql, sql_params])[0].sum_uriage.to_i
+           
+          # UPDATE END 2012.11.28 計算上売上高はdetail.uriageの集計とする
         end
         
         #売上集計

@@ -67,10 +67,10 @@ $(function () {
 
 <table>
 <tr>
-<td>
+<td valign="top">
 
 <table class="rounded-corner">
-<tr>
+<tr >
 	<th>
 		&nbsp;
 	</th>
@@ -191,25 +191,30 @@ $(function () {
 	</th>
 </tr>
 
-<% for i in 1..4 %>
+<%# for i in 1..4 %>
+<% for i in 1..6 %>
 <tr>
 	<th>
-		<%= ["特売", "プリカ", "会員", "備考"][ (i - 1)] %>
+		<%#= ["特売", "プリカ", "会員", "備考"][ (i - 1)] %>
+		<%=["特売", "ﾌﾟﾘｶ(ｶﾞｿﾘﾝ・軽油)", "会員", "ﾌﾟﾘｶ(灯油)", "会員(灯油)", "備考"][ (i - 1)] %>
 	</th>
-	<% if i == 4 then %>
+	<%# if i == 4 then %>
+	<% if i == 6 then %>
 	<td colspan="2">
 		<%= text_field input_name, "minus_name#{ i }", :value => d_price_check["minus_name#{ i }"], :maxlength => 10, :style => "ime-mode:active; width:120px;" %>
 	</td>
 	<% else %>
 	<td>
+		<% if DPriceCheck.column_names.include?("minus_name#{ i }") then %>
 		<%= text_field input_name, "minus_name#{ i }", :value => d_price_check["minus_name#{ i }"], :maxlength => 10, :style => "ime-mode:active;" %>
+		<% end %>
 	</td>
 	<td>
-		<%= text_field input_name, "minus_gak#{ i }", :value => d_price_check["minus_gak#{ i }"] , :style => "ime-mode:inactive; text-align:right; width:40px;" %>
+		<%= text_field input_name, "minus_gak#{ i }", :value => d_price_check["minus_gak#{ i }"].to_i , :style => "ime-mode:inactive; text-align:right; width:40px;" %>
 	</td>
 	<% end %>
 </tr>
-<% end %><!-- for i in 1..3 -->
+<% end %><!-- for i in 1..5 -->
 
 <script>
 $(function(){
@@ -219,7 +224,8 @@ $(function(){
 		if (isNaN(num)) {
 			$(this).val("");
 		} else {
-			$(this).val(num.toFixed(1));
+			//$(this).val(num.toFixed(1));
+			$(this).val(num.toFixed(0));
 		}
 	});
 });

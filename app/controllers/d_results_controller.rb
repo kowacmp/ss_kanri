@@ -3,7 +3,6 @@ class DResultsController < ApplicationController
   include DResultsHelper
 
   def index
-    p "session=#{session[:select_shop_kbn]}"
     if params[:result_date].blank?
       # UPDATE 2012.09.29 日付の規定値を前日に変更
       #@today = Time.now.strftime("%Y/%m/%d")
@@ -28,7 +27,7 @@ class DResultsController < ApplicationController
     
     # INSERT 2012.10.03 店舗種別の検索条件をSessionに保存
     session[:select_shop_kbn] = params[:select_shop_kbn].to_s
-    p "session=#{session[:select_shop_kbn]}"
+
     sql = result_index_sql(select_date, params[:select_shop_kbn])
     @m_shops = MShop.find_by_sql(sql)
   end
@@ -135,7 +134,7 @@ class DResultsController < ApplicationController
       oil_sql << " and d.d_result_id = #{@d_result.id})"  
     end    
     oil_sql << " where m.deleted_flg = 0 order by m.oil_cd"
-p "oil_sql=#{oil_sql}"
+
     @pos1_gasorin, @pos2_gasorin, @pos3_gasorin, @total_gasorin = 0,0,0,0
     @pos1_mofuel, @pos2_mofuel, @pos3_mofuel, @total_mofuel = 0,0,0,0
     
@@ -692,6 +691,8 @@ p "oil_sql=#{oil_sql}"
     @result_date = params[:result_date]
     @edit_flg = params[:edit_flg]
     @m_shop_id = params[:m_shop_id]
+    #2012/11/27 追加 ﾒｰﾀｰ入力画面または予備ﾒｰﾀｰ入力画面で登録時の判定に使用 oda
+    @yobi_flg= 0 
     
     @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       @m_shop_id, @result_date])
@@ -793,7 +794,9 @@ p "oil_sql=#{oil_sql}"
     @result_date = params[:result_date]
     @edit_flg = params[:edit_flg]
     @m_shop_id = params[:m_shop_id]
-    
+    #2012/11/27 追加 ﾒｰﾀｰ入力画面または予備ﾒｰﾀｰ入力画面で登録時の判定に使用 oda
+    @yobi_flg = 1
+   
     @d_result = DResult.find(:first, :conditions => ["m_shop_id = ? and result_date = ?",
                                                       @m_shop_id, @result_date])
     if @d_result.blank?

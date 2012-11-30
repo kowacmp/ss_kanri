@@ -154,13 +154,27 @@ class DSaleEtcsController < ApplicationController
            end
            v1 = 0 if v1.nil?
            v2 = 0 if v2.nil?
-           if v1 < v2 then
-             @uriage = v1 * @price
-             sum_uriage += @uriage
+           
+           # UPDATE BEGIN 2012.11.28 前回予備メータ追加 
+           #if v1 < v2 then
+           #  @uriage = v1 * @price
+           #  sum_uriage += @uriage
+           #else
+           #  @uriage = (v1 - v2) * @price
+           #  sum_uriage += @uriage 
+           #end  
+          
+           if params["sub_meter_#{etc.id.to_s}_#{i+1}"].blank? then
+             if v1 == 0 then
+               @uriage = 0
+             else
+               @uriage = (v1 - v2) * @price
+             end 
            else
-             @uriage = (v1 - v2) * @price
-             sum_uriage += @uriage 
-           end  
+             @uriage = (v1 - params["sub_meter_#{etc.id.to_s}_#{i+1}"].to_i) * @price
+           end
+           sum_uriage += @uriage
+           # UPDATE END 2012.11.28 前回予備メータ追加 
           
          @d_sale_etc_detail = get_d_sale_etc_detail(@d_sale_etc.id,etc.id,(i+1))
          unless @d_sale_etc_detail == nil #unless1
@@ -277,7 +291,10 @@ private
   def create_d_sale_etc_detail(d_sale_etc_id,etc_id,etc_cd,etc_no,sum_uriage=0)
     #2012/10/05 入力値>0の場合のみ登録 nishimura
     #if params["meter_#{etc_cd}_#{etc_no}"].to_i > 0 or etc_no == 99
-    if params["meter_#{etc_cd}_#{etc_no}"].to_i > 0 or etc_no == 99
+    # UPDATE BEGIN 2012.11.28 前回予備メータ追加
+    #if params["meter_#{etc_cd}_#{etc_no}"].to_i > 0 or etc_no == 99
+    if params["meter_#{etc_cd}_#{etc_no}"].to_i > 0 or etc_no == 99 or (not(params["sub_meter_#{etc_cd}_#{etc_no}"].blank?))
+    # UPDATE END 2012.11.28 前回予備メータ追加
       @d_sale_etc_detail = DSaleEtcDetail.new
       @d_sale_etc_detail.d_sale_etc_id = d_sale_etc_id
       
@@ -286,6 +303,7 @@ private
       @d_sale_etc_detail.m_etc_id = etc_id
       @d_sale_etc_detail.etc_no = etc_no
       @d_sale_etc_detail.meter = params["meter_#{etc_cd}_#{etc_no}"].to_i
+      @d_sale_etc_detail.sub_meter = params["sub_meter_#{etc_cd}_#{etc_no}"] # INSERT 2012.11.28 前回予備メータ追加
       if @d_sale_etc_detail.etc_no == 99      
          # UPDATE 2012.19.27 誤差 = 現金売上高 - 計算上売上高
          #@d_sale_etc_detail.error_money = sum_uriage - @d_sale_etc_detail.meter
@@ -304,8 +322,12 @@ private
   
   def update_d_sale_etc_detail(etc_cd,etc_no,sum_meter=0,sum_meter_mae=0)
     #2012/10/05 入力値>0の場合のみ登録 nishimura
-    if params["meter_#{etc_cd}_#{etc_no}"].to_i > 0 or etc_no == 99
+    # UPDATE BEGIN 2012.11.28 前回予備メータ追加
+    #if params["meter_#{etc_cd}_#{etc_no}"].to_i > 0 or etc_no == 99
+    if params["meter_#{etc_cd}_#{etc_no}"].to_i > 0 or etc_no == 99 or (not(params["sub_meter_#{etc_cd}_#{etc_no}"].blank?))
+    # UPDATE END 2012.11.28 前回予備メータ追加
       @d_sale_etc_detail.meter = params["meter_#{etc_cd}_#{etc_no}"].to_i
+      @d_sale_etc_detail.sub_meter = params["sub_meter_#{etc_cd}_#{etc_no}"] # INSERT 2012.11.28 前回予備メータ追加
       if etc_no == 99
         # UPDATE 2012.19.27 誤差 = 現金売上高 - 計算上売上高
         #@d_sale_etc_detail.error_money =  (sum_meter - sum_meter_mae) - @d_sale_etc_detail.meter
