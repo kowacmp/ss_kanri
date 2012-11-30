@@ -124,17 +124,40 @@ class DWashpurikaReportsController < ApplicationController
               
               #目標1～31
               d_aim = DAim.find(:first, :conditions => ["date=? and m_shop_id=? and m_aim_id=26", rec["date"], rec["m_shop_id"]])
+              aim_total = 0
               for i in 1..@days
                 if rec["result#{ i }"].nil? then
                   row.item("aim_#{league_idx}_#{i}").value("") #わざとだしません
                 else
-                  row.item("aim_#{league_idx}_#{i}").value(d_aim["aim_value#{ i }"]) unless d_aim.nil?
+                  #2012/11/30 目標値累積修正 oda
+                  #row.item("aim_#{league_idx}_#{i}").value(d_aim["aim_value#{ i }"]) unless d_aim.nil?
+                  if d_aim.blank? or d_aim.aim_total == nil
+                    row.item("aim_#{league_idx}_#{i}").value(0)
+                  else
+                    row.item("aim_#{league_idx}_#{i}").value(d_aim["aim_value#{ i }"])
+                    aim_total += d_aim["aim_value#{ i }"].to_i
+                  end
                 end
               end
+              #2012/11/30 目標値累積修正 oda
               #目標トータル
-              row.item("aim_total_#{league_idx}").value(d_aim.aim_total) unless d_aim.nil?
+              #row.item("aim_total_#{league_idx}").value(d_aim.aim_total) unless d_aim.nil?
+              if d_aim.blank? or d_aim.aim_total == nil
+                row.item("aim_total_#{league_idx}").value(0)
+              else
+                row.item("aim_total_#{league_idx}").value(aim_total)
+              end
+              #2012/11/30 月合計表示 oda
+              #月目標
+              if d_aim.blank? or d_aim.aim_total == nil
+                row.item("aim_month_#{league_idx}").value(0)
+              else
+                row.item("aim_month_#{league_idx}").value(d_aim.aim_total)
+              end
               #枚数差
-              row.item("aim_maisu_#{league_idx}").value(d_aim.aim_total - rec["result_total"]) unless d_aim.nil?
+              #2012/11/30 目標値累積修正 oda
+              #row.item("aim_maisu_#{league_idx}").value(d_aim.aim_total - rec["result_total"]) unless d_aim.nil?
+              row.item("aim_maisu_#{league_idx}").value(aim_total - rec["result_total"])
               #ペース
               row.item("aim_pace_#{league_idx}").value(rec["pace"])
               #前年同日迄のペース
