@@ -252,151 +252,97 @@
 
 <!-- 合計行 -->
 <tr>
-	<!-- 社員コード -->
-	<td rowspan="2">
-		&nbsp;
-	</td>
 	<!-- ユーザ名 -->
-	<td rowspan="2"> 
-		合計
+	<td colspan = 2 style="text-align: center; min-height: 30px"> 
+		合&nbsp;&nbsp;計
 	</td>
 	<!-- 出勤日数 -->
-	<td rowspan="2">
+	<td>
 		&nbsp;
 	</td>
 	<!--  日勤時間 -->
-	<td rowspan="2" style="text-align: right;">
+	<td style="text-align: right;">
 		<%= number_to_currency(get_day_work_times(@d_duties), :precision => 1, :unit => "") %>
 	</td>
 	<!-- 日勤(1:単価) -->
-	<td>
-		&nbsp;
-	</td>
-	<!--  残業時間 -->
-	<td rowspan="2" style="text-align: right;">
-		<%= number_to_currency(get_day_over_times(@d_duties), :precision => 1, :unit => "") %>
-	</td>
-	<!-- 残業(1:単価) -->
-	<td>
-		&nbsp;
-	</td>
-	<!--  夜勤時間 -->
-	<td rowspan="2" style="text-align: right;">
-		<%= number_to_currency(get_night_work_times(@d_duties), :precision => 1, :unit => "") %>
-	</td>
-	<!-- 夜勤(1:単価) -->
-	<td>
-		&nbsp;
-	</td>
-	<!--  深残時間 -->
-	<td rowspan="2" style="text-align: right;">
-		<%= number_to_currency(get_night_overtimes(@d_duties), :precision => 1, :unit => "") %>
-	</td>
-	<!-- 深残(1:単価) -->
-	<td>
-		&nbsp;
-	</td>
-	<!-- 時間1(1:単価) -->
-	<td style="border-left-width: 3px;">
-		&nbsp;
-	</td>
-	<!-- 時間2(1:単価) -->
-	<td>
-		&nbsp;
-	</td>
-	<!-- 時間3(1:単価) -->
-	<td>
-		&nbsp;
-	</td>
-	<!-- 時間4(1:単価) -->
-	<td>
-		&nbsp;
-	</td>
-	<!-- 時間5(1:単価) -->
-	<td>
-		&nbsp;
-	</td>
-	<!-- 時間6(1:単価) -->
-	<td>
-		&nbsp;
-	</td>
-	<!-- 日数1(1:単価) -->
-	<td>
-		&nbsp;
-	</td>
-	<!-- 日数2(1:単価) -->
-	<td>
-		&nbsp;
-	</td>
-	<!-- 手当1 -->
-	<td rowspan="2" style="text-align: right; border-left-width: 3px;">
-		<%= number_with_delimiter(get_moneys1(@d_duties)) %>
-	</td>
-	<!-- 手当2 -->
-	<td rowspan="2" style="text-align: right;">
-		<%= number_with_delimiter(get_moneys2(@d_duties)) %>
-	</td>
-	<!-- 手当3 -->
-	<td rowspan="2" style="text-align: right;">
-		<%= number_with_delimiter(get_moneys3(@d_duties)) %>
-	</td>
-	<!-- 手当4 -->
-	<td rowspan="2" style="text-align: right;">
-		<%= number_with_delimiter(get_moneys4(@d_duties)) %>
-	</td>
-	<!-- 支払額 -->
-	<td rowspan="2" style="text-align: right; border-left-width: 3px;">
-		<%= number_with_delimiter(get_shiharai_gaks(@d_duties)) %>
-	</td>
-</tr>
-<tr>
-	<!-- 日勤(2:金額) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(get_general_moneys(@d_duties)) %>
 	</td>
-	<!-- 残業(2:金額) -->
+	<!--  残業時間 -->
+	<td style="text-align: right;">
+		<%= number_to_currency(get_day_over_times(@d_duties), :precision => 1, :unit => "") %>
+	</td>
+	<!-- 残業(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(get_general_overtime_moneys(@d_duties)) %>
 	</td>
-	<!-- 夜勤(2:金額) -->
+	<!--  夜勤時間 -->
+	<td style="text-align: right;">
+		<%= number_to_currency(get_night_work_times(@d_duties), :precision => 1, :unit => "") %>
+	</td>
+	<!-- 夜勤(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(get_night_moneys(@d_duties)) %>
 	</td>
-	<!-- 深残(2:金額) -->
+	<!--  深残時間 -->
+	<td style="text-align: right;">
+		<%= number_to_currency(get_night_overtimes(@d_duties), :precision => 1, :unit => "") %>
+	</td>
+	<!-- 深残(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(get_night_overtime_moneys(@d_duties)) %>
 	</td>
-	<!-- 時間1(2:金額) -->
-	<td style="text-align: right; border-left-width: 3px;">
+	<!-- 時間1(1:単価) -->
+	<td style="border-left-width: 3px;">
 		<%= number_with_delimiter(get_time1_moneys(@d_duties)) %>
 	</td>
-	<!-- 時間2(2:金額) -->
+	<!-- 時間2(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(get_time2_moneys(@d_duties)) %>
 	</td>
-	<!-- 時間3(2:金額) -->
+	<!-- 時間3(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(get_time3_moneys(@d_duties)) %>
 	</td>
-	<!-- 時間4(2:金額) -->
+	<!-- 時間4(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(get_time4_moneys(@d_duties)) %>
 	</td>
-	<!-- 時間5(2:金額) -->
+	<!-- 時間5(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(get_time5_moneys(@d_duties)) %>
 	</td>
-	<!-- 時間6(2:金額) -->
+	<!-- 時間6(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(get_time6_moneys(@d_duties)) %>
 	</td>
-	<!-- 日数1(2:金額)-->
+	<!-- 日数1(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(get_day1_money(@d_duties))%>
 	</td>
-	<!-- 日数2(2:金額)-->
+	<!-- 日数2(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(get_day2_money(@d_duties))%>
+	</td>
+	<!-- 手当1 -->
+	<td style="text-align: right; border-left-width: 3px;">
+		<%= number_with_delimiter(get_moneys1(@d_duties)) %>
+	</td>
+	<!-- 手当2 -->
+	<td style="text-align: right;">
+		<%= number_with_delimiter(get_moneys2(@d_duties)) %>
+	</td>
+	<!-- 手当3 -->
+	<td style="text-align: right;">
+		<%= number_with_delimiter(get_moneys3(@d_duties)) %>
+	</td>
+	<!-- 手当4 -->
+	<td style="text-align: right;">
+		<%= number_with_delimiter(get_moneys4(@d_duties)) %>
+	</td>
+	<!-- 支払額 -->
+	<td style="text-align: right; border-left-width: 3px;">
+		<%= number_with_delimiter(get_shiharai_gaks(@d_duties)) %>
 	</td>
 </tr>
 <!-- 合計行 END -->

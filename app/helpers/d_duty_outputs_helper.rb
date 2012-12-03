@@ -108,7 +108,7 @@ module DDutyOutputsHelper
   def get_night_overtimes(d_duties)
     ret = 0
     for d_duty in d_duties
-      ret += d_duty.night_overtime.to_f
+      ret += d_duty.night_over_time.to_f
     end
     return ret
   end
