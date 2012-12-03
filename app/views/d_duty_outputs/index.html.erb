@@ -1,0 +1,25 @@
+<h1>給与データ出力</h1>
+<%= form_tag(url_for(:action => "show"), :remote => true ) do %>
+<table class='rounded-corner'>
+<tr>
+	<th>対象年月</th>
+	<td>
+		<%= select :d_duty_output, :year, @years, :selected => Time.now.year %>年
+		<%= select :d_duty_output, :month, @months, :selected => Time.now.month %>月
+	</td>
+	<th>対象店舗</th>
+	<td>
+		<%= select :d_duty_output, :m_shop_id, MShop.find(:all, :conditions => "shop_kbn in (0,1)", :order => "shop_cd").collect{|t| [t.shop_ryaku, t.id] } %>
+	</td>
+	<td>
+		<%= submit_tag "　表　示　" %>
+	</td>
+</tr>
+</table>
+<% end %> <!-- form_tag -->
+
+<hr/>
+
+<div id="form">
+	&nbsp;
+</div>

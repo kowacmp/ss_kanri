@@ -1,5 +1,7 @@
 SsKanri::Application.routes.draw do
 
+  get "d_duty_outputs/index"
+  
   get "d_price_check_reports/index"
   get "d_price_check_reports/search"
   get "d_price_check_reports/print"
