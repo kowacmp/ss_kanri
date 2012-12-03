@@ -405,7 +405,7 @@ private
       if z_result_days == 0 then
           ret_rec["same_pace"] = 0
       else
-          ret_rec["same_pace"] = z_result_days / z_result_days * Time.days_in_month(ym[4..5].to_i, ym[0..3].to_i - 1)
+          ret_rec["same_pace"] = z_uriage_total.to_f / z_result_days * Time.days_in_month(ym[4..5].to_i, ym[0..3].to_i - 1).round(0)
       end
         
     end
