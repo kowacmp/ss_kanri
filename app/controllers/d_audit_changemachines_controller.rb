@@ -101,7 +101,7 @@ class DAuditChangemachinesController < ApplicationController
       ["audit_date=? AND audit_class=? AND m_shop_id=?",
           params[:d_audit_changemachine][:audit_date],
           session[:audit_class],
-          current_user.m_shop_id])
+          params[:d_audit_changemachine][:m_shop_id]])
     
     #新規の場合
     if @d_audit_changemachine.nil? then
@@ -109,7 +109,7 @@ class DAuditChangemachinesController < ApplicationController
       
       # form_forで定義されていない部分の初期化
       @d_audit_changemachine.audit_class = session[:audit_class]
-      @d_audit_changemachine.m_shop_id = current_user.m_shop_id
+      @d_audit_changemachine.m_shop_id = params[:d_audit_changemachine][:m_shop_id]
       @d_audit_changemachine.kakutei_flg = 0
       @d_audit_changemachine.kakunin_flg = 0
       

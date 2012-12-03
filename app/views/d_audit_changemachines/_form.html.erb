@@ -61,6 +61,8 @@ end
 
 <%= form_for(@d_audit_changemachine, :url => {:action => "update"} ) do |f| %>
 
+<%= hidden_field :d_audit_changemachine, :m_shop_id, :value => @m_shop_id %>
+
 <%= f.hidden_field :audit_date %>
 
 <%= f.hidden_field :comment %>
