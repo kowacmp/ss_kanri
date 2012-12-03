@@ -58,18 +58,18 @@ class DAuditChangemachinesController < ApplicationController
       @d_audit_changemachine.audit_date  = @audit_date.to_s.gsub("/","")
       
       #前回監査データより一部データを読込し設定
-      zenkansa = DAuditChangemachine.find(:first, :conditions => 
-        ["audit_date<? AND m_shop_id=?",
-          @audit_date.to_s.gsub("/",""),
-          @m_shop_id])
+      #zenkansa = DAuditChangemachine.find(:first, :conditions => 
+      #  ["audit_date<? AND m_shop_id=?",
+      #    @audit_date.to_s.gsub("/",""),
+      #    @m_shop_id])
       
-      if not(zenkansa.nil?) then
-        for pos in 1..3
-          for i in 1..7
-            @d_audit_changemachine["pos#{pos}_before_money#{i}"] = zenkansa["pos#{pos}_after_money#{i}"]
-          end
-        end
-      end 
+      #if not(zenkansa.nil?) then
+      #  for pos in 1..3
+      #    for i in 1..7
+      #      @d_audit_changemachine["pos#{pos}_before_money#{i}"] = zenkansa["pos#{pos}_after_money#{i}"]
+      #    end
+      #  end
+      #end 
       
       # 新規のみマスタより名称を取得
       @m_machine_number = MMachineNumber.find(:first, :conditions => ["m_shop_id = ?", @m_shop_id])
