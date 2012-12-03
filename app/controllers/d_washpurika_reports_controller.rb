@@ -375,14 +375,14 @@ private
     ret_rec["result_days"]    = result_days    #実績入力日数
     ret_rec["result_max_day"] = result_max_day #実績入力最終日
     ret_rec["uriage_total"]   = uriage_total   #売上1～31計
-    
+    day_cnt = Time.days_in_month(ym[4..5].to_i, ym[0..3].to_i)   #売上1～31計
     # ペース
     if result_days == 0 then
       ret_rec["pace"] = 0
     else
-      ret_rec["pace"] = uriage_total / result_days * Time.days_in_month(ym[4..5].to_i, ym[0..3].to_i)
+      #ret_rec["pace"] = uriage_total / result_days * Time.days_in_month(ym[4..5].to_i, ym[0..3].to_i)
+      ret_rec["pace"] = (uriage_total.to_f / result_days * Time.days_in_month(ym[4..5].to_i, ym[0..3].to_i)).round(0)
     end
-    
     # 前年同月データを読込
     zennen = DWashpurikaReport.find(:first, 
                                     :conditions => ["date=? and m_shop_id=?",
