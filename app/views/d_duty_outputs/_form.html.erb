@@ -348,7 +348,11 @@
 <!-- 合計行 END -->
 </table>
 
-<%= submit_tag  '  印  刷  ',format: 'pdf' %>
+<%= form_tag(url_for(:action => "print"), :remote => true ) do %>
+	<%= hidden_field :d_duty_output, :year,  :value => @year %>
+	<%= hidden_field :d_duty_output, :month, :value => @month %>
+	<%= hidden_field :d_duty_output, :m_shop_id, :value => @m_shop_id %>
+	<%= submit_tag  '  印  刷  ',format: 'pdf' %>
 <% end %>
 
 <script>
