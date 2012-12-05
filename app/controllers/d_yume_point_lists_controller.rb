@@ -80,12 +80,18 @@ class DYumePointListsController < ApplicationController
         #s1：油外　s2：洗車
         e.section.item(:s1_label).value("支払額(#{shop_kbn_name2})")
         e.section.item(:s2_label).value("支払額(#{shop_kbn_name1})")
+        #2012/12/05 総合計追加
+        e.section.item(:all_label).value("総合計")
         if shop_kbn_footer == 0
           e.section.item(:s1_sum).value(sum_sp2_2 + sum_sp3_2)
           e.section.item(:s2_sum).value(sum_sp2 + sum_sp3)
+          #2012/12/05 総合計追加
+          e.section.item(:all_sum).value(sum_sp2 + sum_sp3 + sum_sp2_2 + sum_sp3_2)
         else
           e.section.item(:s1_sum).value(sum_sp2 + sum_sp3)
           e.section.item(:s2_sum).value(sum_sp2_2 + sum_sp3_2)
+         #2012/12/05 総合計追加
+          e.section.item(:all_sum).value(sum_sp2 + sum_sp3 + sum_sp2_2 + sum_sp3_2)
         end
         
       end #events.on

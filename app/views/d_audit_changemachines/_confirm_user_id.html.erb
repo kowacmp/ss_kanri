@@ -9,7 +9,10 @@
 	#end 
 	
 	# 一律でだれでもよい
-	users = User.find(:all, :conditions => ["deleted_flg=0 and m_shop_id=?", c_shop_id], :order => "account") 
+	# UPDATE BEGIN 2012.12.05 ログイン本人は表示しない
+	#users = User.find(:all, :conditions => ["deleted_flg=0 and m_shop_id=?", c_shop_id], :order => "account") 
+	users = User.find(:all, :conditions => ["deleted_flg=0 and m_shop_id=? and id!=?", c_shop_id, current_user.id], :order => "account") 
+	# UPDATE END 2012.12.05 ログイン本人は表示しない
 %>
 
 <%=select       :confirm, :user_id, users.collect{|i| [i.user_name, i.id]}, 
