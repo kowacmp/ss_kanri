@@ -10,7 +10,7 @@ module DDutiesHelper
     p "str_conditions=#{str_conditions}"
     users = User.find(:all, 
               :conditions=>[str_conditions],
-              :order => "account")
+              :order => "duty_sort, account")
               
 
   end
