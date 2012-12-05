@@ -83,12 +83,31 @@ class DAuditChangemachinesController < ApplicationController
     end
 
     # 釣銭固定額読込
-    @m_fix_money = MFixMoney.find(:first, :conditions => 
-      ["m_shop_id = ? AND start_month <= ? AND end_month >= ? ",
-          @m_shop_id, 
-          @audit_date.to_s.gsub("/","")[4..5],
-          @audit_date.to_s.gsub("/","")[4..5]])
-        
+    # UPDATE BEGIN 2012.12.05 年またぎの月指定をしている場合を考慮 
+    #@m_fix_money = MFixMoney.find(:first, :conditions => 
+    #  ["m_shop_id = ? AND start_month <= ? AND end_month >= ? ",
+    #      @m_shop_id, 
+    #      @audit_date.to_s.gsub("/","")[4..5],
+    #      @audit_date.to_s.gsub("/","")[4..5]])
+   
+      m_fix_moneys = MFixMoney.find(:all, :conditions => ["deleted_flg=0 and m_shop_id=?", @m_shop_id])
+      @m_fix_money = nil
+      t_month = @audit_date.to_s.gsub("/","")[4..5].to_i
+      for rec in m_fix_moneys
+        if rec.start_month.to_i <= rec.end_month.to_i then
+          if (rec.start_month.to_i <= t_month) and (rec.end_month.to_i >= t_month) then
+            @m_fix_money = rec
+          end
+        else 
+          for i in rec.start_month.to_i .. 12
+              @m_fix_money = rec if i == t_month
+          end
+          for i in 1 .. rec.end_month.to_i
+              @m_fix_money = rec if i == t_month
+          end
+        end 
+      end # for rec in m_fix_moneys
+    # UPDATE BEGIN 2012.12.05 年またぎの月指定をしている場合を考慮 
   end
 
   def update

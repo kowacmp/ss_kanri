@@ -349,36 +349,46 @@ module DAuditCashboxesHelper
   # 過不足
   def get_kabusoku_gokei3
     
-    return get_jitu_aridaka_gokei3 - get_kinko_gokei3 
-    
+    # UPDATE BEGIN 2012.12.05 実過不足額の計とする
+    # return get_jitu_aridaka_gokei3 - get_kinko_gokei3 
+    ret = 0
+    for i in 1..6
+      ret += get_jitu_kabusoku(i)
+    end
+    for i in 1..7
+      ret += get_jitu_kabusoku2(i)
+    end
+    return ret
+    # UPDATE END 2012.12.05 実過不足額の計とする
   end
 
   # 釣銭固定額読込
-  def get_m_fix(m_shop_id, cd, month)
-    
-    m_fix_item = MFixItem.find(:first, :conditions => ["fix_item_cd=?", cd])
-    if m_fix_item.nil? then
-      return nil
-    end
-    
-    m_fix_money = MFixMoney.find(:first, :conditions => ["m_shop_id=? and start_month <= ? and end_month >= ?", m_shop_id, month, month])
-    if m_fix_money.nil? then
-      return nil
-    end
-
-    for i in 1..13 
-      if m_fix_money["m_fix_item_id#{i}"] == m_fix_item.id then
-        if nvl(m_fix_money["fix_money#{i}"], 0) > 0 then
-          return [m_fix_item.fix_item_ryaku, m_fix_money["fix_money#{i}"]]
-        else
-          return nil
-        end
-      end
-    end
-    
-    return nil
-    
-  end
+  # DELETE 2012.12.05 未使用の為削除
+  #def get_m_fix(m_shop_id, cd, month)
+  #  
+  #  m_fix_item = MFixItem.find(:first, :conditions => ["fix_item_cd=?", cd])
+  #  if m_fix_item.nil? then
+  #    return nil
+  #  end
+  #  
+  #  m_fix_money = MFixMoney.find(:first, :conditions => ["m_shop_id=? and start_month <= ? and end_month >= ?", m_shop_id, month, month])
+  #  if m_fix_money.nil? then
+  #    return nil
+  #  end
+  #
+  #  for i in 1..13 
+  #    if m_fix_money["m_fix_item_id#{i}"] == m_fix_item.id then
+  #      if nvl(m_fix_money["fix_money#{i}"], 0) > 0 then
+  #        return [m_fix_item.fix_item_ryaku, m_fix_money["fix_money#{i}"]]
+  #      else
+  #        return nil
+  #      end
+  #    end
+  #  end
+  #  
+  #  return nil
+  #  
+  #end
  
   def nvl(value, zero)
     if value.to_s == "" then

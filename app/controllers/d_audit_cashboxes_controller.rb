@@ -56,10 +56,32 @@ class DAuditCashboxesController < ApplicationController
       fix_item_class = -1
       idx = 0
       m_fix_items = MFixItem.find(:all, :conditions => "deleted_flg=0", :order => "fix_item_class,fix_item_cd")
-      m_fix_money = MFixMoney.find(:first, :conditions => ["deleted_flg=0 and m_shop_id = ? and start_month <= ? and end_month >= ?",
-                                                            @m_shop_id, 
-                                                            @audit_date.to_s.gsub("/","")[4..5],
-                                                            @audit_date.to_s.gsub("/","")[4..5] ])
+      
+      # UPDATE BEGIN 2012.12.05 年またぎの月指定をしている場合を考慮 
+      # m_fix_money = MFixMoney.find(:first, :conditions => ["deleted_flg=0 and m_shop_id = ? and start_month <= ? and end_month >= ?",
+      #                                                      @m_shop_id, 
+      #                                                      @audit_date.to_s.gsub("/","")[4..5],
+      #                                                      @audit_date.to_s.gsub("/","")[4..5] ])
+      
+      m_fix_moneys = MFixMoney.find(:all, :conditions => ["deleted_flg=0 and m_shop_id=?", @m_shop_id])
+      m_fix_money = nil
+      t_month = @audit_date.to_s.gsub("/","")[4..5].to_i
+      for rec in m_fix_moneys
+        if rec.start_month.to_i <= rec.end_month.to_i then
+          if (rec.start_month.to_i <= t_month) and (rec.end_month.to_i >= t_month) then
+            m_fix_money = rec
+          end
+        else 
+          for i in rec.start_month.to_i .. 12
+              m_fix_money = rec if i == t_month
+          end
+          for i in 1 .. rec.end_month.to_i
+              m_fix_money = rec if i == t_month
+          end
+        end 
+      end # for rec in m_fix_moneys
+      # UPDATE END 2012.12.05 年またぎの月指定をしている場合を考慮 
+      
       for m_fix_item in m_fix_items
         if m_fix_money.nil? then
           # 金額マスタがない場合は未設定
