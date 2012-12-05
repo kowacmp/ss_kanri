@@ -1,13 +1,15 @@
+<%= form_tag({:action => 'print'}) do %>
 <table class='rounded-corner'>
 <tr>
 	<th>対象年月</th>
 	<td>
-		<%= @year %>年
-		<%= @month %>月
+		<%= "#{ @year }年 #{@month}月" %>
+		<%= hidden_field :header, :title1, :value => "#{ @year }年 #{@month}月" %>
 	</td>
 	<th>所属店舗</th>
 	<td style="min-width: 150px;">
 		<%= MShop.find(@m_shop_id).shop_ryaku %>
+		<%= hidden_field :header, :title2, :value => MShop.find(@m_shop_id).shop_ryaku %>
 	</td>
 </tr>
 </table>
@@ -53,41 +55,53 @@
 
 	<th style="min-width: 70px;">
 		<%= @m_cost_name.hour_name1 %>
+		<%= hidden_field :header, :hour_name1, :value => @m_cost_name.hour_name1 %>
 	</th>
 	<th style="min-width: 70px;">
 		<%= @m_cost_name.hour_name2 %>
+		<%= hidden_field :header, :hour_name2, :value => @m_cost_name.hour_name2 %>
 	</th>
 	<th style="min-width: 70px;">
 		<%= @m_cost_name.hour_name3 %>
+		<%= hidden_field :header, :hour_name3, :value => @m_cost_name.hour_name3 %>
 	</th>
 	<th style="min-width: 70px;">
 		<%= @m_cost_name.hour_name4 %>
+		<%= hidden_field :header, :hour_name4, :value => @m_cost_name.hour_name4 %>
 	</th>
 	<th style="min-width: 70px;">
 		<%= @m_cost_name.hour_name5 %>
+		<%= hidden_field :header, :hour_name5, :value => @m_cost_name.hour_name5 %>
 	</th>
 	<th style="min-width: 70px;">
 		<%= @m_cost_name.hour_name6 %>
+		<%= hidden_field :header, :hour_name6, :value => @m_cost_name.hour_name6 %>
 	</th>
 
 	<th style="min-width: 70px;">
 		<%= @m_cost_name.day_name1 %>
+		<%= hidden_field :header, :day_name1, :value => @m_cost_name.day_name1 %>
 	</th>
 	<th style="min-width: 70px;">
 		<%= @m_cost_name.day_name2 %>
+		<%= hidden_field :header, :day_name2, :value => @m_cost_name.day_name2 %>
 	</th>
 
 	<th style="min-width: 70px;">
 		<%= @m_cost_name.input_name1 %>
+		<%= hidden_field :header, :name1, :value => @m_cost_name.input_name1 %>
 	</th>
 	<th style="min-width: 70px;">
 		<%= @m_cost_name.input_name2 %>
+		<%= hidden_field :header, :name2, :value => @m_cost_name.input_name2 %>
 	</th>
 	<th style="min-width: 70px;">
 		<%= @m_cost_name.input_name3 %>
+		<%= hidden_field :header, :name3, :value => @m_cost_name.input_name3 %>
 	</th>
 	<th style="min-width: 70px;">
 		<%= @m_cost_name.input_name4 %>
+		<%= hidden_field :header, :name4, :value => @m_cost_name.input_name4 %>
 	</th>
 	
 	<th style="min-width: 70px;">
@@ -95,157 +109,196 @@
 	</th>
 </tr>
 
+<% list_no = 0 %>
 <% for d_duty in @d_duties %>
+<% list_no += 1 %>
+<% list_name = "list#{ list_no }" %>
 <tr>
 	<!-- 社員コード -->
 	<td rowspan="2" style="text-align: right; border-bottom-width: 2px;">
 		<%= d_duty.account[(d_duty.account.length - 3) .. (d_duty.account.length - 1)] %>
+		<%= hidden_field list_name, :u_code, :value => d_duty.account[(d_duty.account.length - 3) .. (d_duty.account.length - 1)] %>
 	</td>
 	<!-- ユーザ名 -->
 	<td rowspan="2" style="border-bottom-width: 2px;"> 
 		<%= d_duty.user_name %>
+		<%= hidden_field list_name, :user_name, :value => d_duty.user_name %>
 	</td>
 	<!-- 出勤日数 -->
 	<td rowspan="2" style="text-align: center; border-bottom-width: 2px;">
 		<%= d_duty.day %>
+		<%= hidden_field list_name, :d_cnt, :value => d_duty.day %>
 	</td>
 	<!--  日勤時間 -->
 	<td rowspan="2" style="text-align: right; border-bottom-width: 2px;">
 		<%= number_to_currency(d_duty.day_work_time, :precision => 1, :unit => "") %>
+		<%= hidden_field list_name, :d_time1, :value => number_to_currency(d_duty.day_work_time, :precision => 1, :unit => "") %>
 	</td>
 	<!-- 日勤(1:単価) -->
 	<td style="text-align: right;">
-		<% if d_duty.general_price.nil? then%>
-			&nbsp;
-		<% else %>
-			<%= number_with_delimiter(d_duty.general_price) %>
-		<% end %>
+		<% tanka = get_tanka(d_duty.day_work_money, d_duty.day_work_time) %>
+		<%= number_with_delimiter(tanka) %>
+		<%= hidden_field list_name, :g_price1, :value => number_with_delimiter(tanka) %>
 	</td>
 	<!--  残業時間 -->
 	<td rowspan="2" style="text-align: right; border-bottom-width: 2px;" >
 		<%= number_to_currency(d_duty.day_over_time, :precision => 1, :unit => "") %>
+		<%= hidden_field list_name, :d_time2, :value => number_to_currency(d_duty.day_over_time, :precision => 1, :unit => "") %>
 	</td>
 	<!-- 残業(1:単価) -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(d_duty.general_overtime) %>
+		<% tanka = get_tanka(d_duty.day_over_money, d_duty.day_over_time) %>
+		<%= number_with_delimiter(tanka) %>
+		<%= hidden_field list_name, :g_price2, :value => number_with_delimiter(tanka) %>
 	</td>
 	<!--  夜勤時間 -->
 	<td rowspan="2" style="text-align: right; border-bottom-width: 2px;">
 		<%= number_to_currency(d_duty.night_work_time, :precision => 1, :unit => "") %>
+		<%= hidden_field list_name, :d_time3, :value => number_to_currency(d_duty.night_work_time, :precision => 1, :unit => "") %>
 	</td>
 	<!-- 夜勤(1:単価) -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(d_duty.night_price) %>
+		<% tanka = get_tanka(d_duty.night_work_money, d_duty.night_work_time) %>
+		<%= number_with_delimiter(tanka) %>
+		<%= hidden_field list_name, :n_price1, :value => number_with_delimiter(tanka) %>
 	</td>
 	<!--  深残時間 -->
 	<td rowspan="2" style="text-align: right; border-bottom-width: 2px;">
 		<%= number_to_currency(d_duty.night_over_time, :precision => 1, :unit => "") %>
+		<%= hidden_field list_name, :d_time4, :value => number_to_currency(d_duty.night_over_time, :precision => 1, :unit => "") %>
 	</td>
 	<!-- 深残(1:単価) -->
 	<td style="text-align: right; ">
-		<%= number_with_delimiter(d_duty.night_overtime) %>
+		<% tanka = get_tanka(d_duty.night_over_money, d_duty.night_over_time) %>
+		<%= number_with_delimiter(tanka) %>
+		<%= hidden_field list_name, :n_price2, :value => number_with_delimiter(tanka) %>
 	</td>
 	<!-- 時間1(1:単価) -->
 	<td style="text-align: right; border-left-width: 3px;">
 		<%= number_with_delimiter(d_duty.time_price1) %>
+		<%= hidden_field list_name, :t_price1, :value => number_with_delimiter(d_duty.time_price1) %>
 	</td>
 	<!-- 時間2(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(d_duty.time_price2) %>
+		<%= hidden_field list_name, :t_price2, :value => number_with_delimiter(d_duty.time_price2) %>
 	</td>
 	<!-- 時間3(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(d_duty.time_price3) %>
+		<%= hidden_field list_name, :t_price3, :value => number_with_delimiter(d_duty.time_price3) %>
 	</td>
 	<!-- 時間4(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(d_duty.time_price4) %>
+		<%= hidden_field list_name, :t_price4, :value => number_with_delimiter(d_duty.time_price4) %>
 	</td>
 	<!-- 時間5(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(d_duty.time_price5) %>
+		<%= hidden_field list_name, :t_price5, :value => number_with_delimiter(d_duty.time_price5) %>
 	</td>
 	<!-- 時間6(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(d_duty.time_price6) %>
+		<%= hidden_field list_name, :t_price6, :value => number_with_delimiter(d_duty.time_price6) %>
 	</td>
 	<!-- 日数1(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(d_duty.day_price1) %>
+		<%= hidden_field list_name, :d_price1, :value => number_with_delimiter(d_duty.day_price1) %>
 	</td>
 	<!-- 日数2(1:単価) -->
 	<td style="text-align: right;">
 		<%= number_with_delimiter(d_duty.day_price2) %>
+		<%= hidden_field list_name, :d_price2, :value => number_with_delimiter(d_duty.day_price2) %>
 	</td>
 	<!-- 手当1 -->
 	<td rowspan="2" style="text-align: right; border-left-width: 3px; border-bottom-width: 2px;">
 		<%= number_with_delimiter(d_duty.get_money1) %>
+		<%= hidden_field list_name, :m_money1, :value => number_with_delimiter(d_duty.get_money1) %>
 	</td>
 	<!-- 手当2 -->
 	<td rowspan="2" style="text-align: right; border-bottom-width: 2px;">
 		<%= number_with_delimiter(d_duty.get_money2) %>
+		<%= hidden_field list_name, :m_money2, :value => number_with_delimiter(d_duty.get_money2) %>
 	</td>
 	<!-- 手当3 -->
 	<td rowspan="2" style="text-align: right; border-bottom-width: 2px;">
 		<%= number_with_delimiter(d_duty.get_money3) %>
+		<%= hidden_field list_name, :m_money3, :value => number_with_delimiter(d_duty.get_money3) %>
 	</td>
 	<!-- 手当4 -->
 	<td rowspan="2" style="text-align: right; border-bottom-width: 2px;">
 		<%= number_with_delimiter(d_duty.get_money4) %>
+		<%= hidden_field list_name, :m_money4, :value => number_with_delimiter(d_duty.get_money4) %>
 	</td>
 	<!-- 支払額 -->
 	<td rowspan="2" style="text-align: right; border-left-width: 3px; border-bottom-width: 2px;">
 		<%= number_with_delimiter(get_shiharai_gak(d_duty)) %>
+		<%= hidden_field list_name, :sum_money, :value => number_with_delimiter(get_shiharai_gak(d_duty)) %>
 	</td>
 </tr>
 <tr>
 	<!-- 日勤(2:金額) -->
 	<td style="text-align: right; border-bottom-width: 2px;">
-		<%= number_with_delimiter(get_general_money(d_duty)) %>
+		<%= number_with_delimiter(d_duty.day_work_money) %>
+		<%= hidden_field list_name, :g_money1, :value => number_with_delimiter(d_duty.day_work_money) %>
 	</td>
 	<!-- 残業(2:金額) -->
 	<td style="text-align: right; border-bottom-width: 2px;">
-		<%= number_with_delimiter(get_general_overtime_money(d_duty)) %>
+		<%= number_with_delimiter(d_duty.day_over_money) %>
+		<%= hidden_field list_name, :g_money2, :value => number_with_delimiter(d_duty.day_over_money) %>
 	</td>
 	<!-- 夜勤(2:金額) -->
 	<td style="text-align: right; border-bottom-width: 2px;">
-		<%= number_with_delimiter(get_night_money(d_duty)) %>
+		<%= number_with_delimiter(d_duty.night_work_money) %>
+		<%= hidden_field list_name, :n_money1, :value => number_with_delimiter(d_duty.night_work_money) %>
 	</td>
 	<!-- 深残(2:金額) -->
 	<td style="text-align: right; border-bottom-width: 2px;">
-		<%= number_with_delimiter(get_night_overtime_money(d_duty)) %>
+		<%= number_with_delimiter(d_duty.night_over_money) %>
+		<%= hidden_field list_name, :n_money2, :value => number_with_delimiter(d_duty.night_over_money) %>
 	</td>
 	<!-- 時間1(2:金額) -->
 	<td style="text-align: right; border-left-width: 3px; border-bottom-width: 2px;">
 		<%= number_with_delimiter(d_duty.time1_money) %>
+		<%= hidden_field list_name, :t_money1, :value => number_with_delimiter(d_duty.time1_money) %>
 	</td>
 	<!-- 時間2(2:金額) -->
 	<td style="text-align: right; border-bottom-width: 2px;">
 		<%= number_with_delimiter(d_duty.time2_money) %>
+		<%= hidden_field list_name, :t_money2, :value => number_with_delimiter(d_duty.time2_money) %>
 	</td>
 	<!-- 時間3(2:金額) -->
 	<td style="text-align: right; border-bottom-width: 2px;">
 		<%= number_with_delimiter(d_duty.time3_money) %>
+		<%= hidden_field list_name, :t_money3, :value => number_with_delimiter(d_duty.time3_money) %>
 	</td>
 	<!-- 時間4(2:金額) -->
 	<td style="text-align: right; border-bottom-width: 2px;">
 		<%= number_with_delimiter(d_duty.time4_money) %>
+		<%= hidden_field list_name, :t_money4, :value => number_with_delimiter(d_duty.time4_money) %>
 	</td>
 	<!-- 時間5(2:金額) -->
 	<td style="text-align: right; border-bottom-width: 2px;">
 		<%= number_with_delimiter(d_duty.time5_money) %>
+		<%= hidden_field list_name, :t_money5, :value => number_with_delimiter(d_duty.time5_money) %>
 	</td>
 	<!-- 時間6(2:金額) -->
 	<td style="text-align: right; border-bottom-width: 2px;">
 		<%= number_with_delimiter(d_duty.time6_money) %>
+		<%= hidden_field list_name, :t_money6, :value => number_with_delimiter(d_duty.time6_money) %>
 	</td>
 	<!-- 日数1(2:金額)-->
 	<td style="text-align: right; border-bottom-width: 2px;">
 		<%= number_with_delimiter(d_duty.day1_money)%>
+		<%= hidden_field list_name, :d_money1, :value => number_with_delimiter(d_duty.day1_money) %>
 	</td>
 	<!-- 日数2(2:金額)-->
 	<td style="text-align: right; border-bottom-width: 2px;">
 		<%= number_with_delimiter(d_duty.day2_money)%>
+		<%= hidden_field list_name, :d_money2, :value => number_with_delimiter(d_duty.day2_money) %>
 	</td>
 </tr>
 <% end %> <!-- for d_duty in @d_duties -->
@@ -262,98 +315,136 @@
 	</td>
 	<!--  日勤時間 -->
 	<td style="text-align: right;">
-		<%= number_to_currency(get_day_work_times(@d_duties), :precision => 1, :unit => "") %>
+		<% ret = number_to_currency(get_sum_d(@d_duties, "day_work_time"), :precision => 1, :unit => "") %>
+		<%= ret %>
+		<%= hidden_field :footer, :d_time1_sum, :value => ret %>
 	</td>
-	<!-- 日勤(1:単価) -->
+	<!-- 日勤金額 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_general_moneys(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "day_work_money")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :g_money1_sum, :value => ret %>
 	</td>
 	<!--  残業時間 -->
 	<td style="text-align: right;">
-		<%= number_to_currency(get_day_over_times(@d_duties), :precision => 1, :unit => "") %>
+		<% ret = number_to_currency(get_sum_d(@d_duties, "day_over_time"), :precision => 1, :unit => "") %>
+		<%= ret %>
+		<%= hidden_field :footer, :d_time2_sum, :value => ret %>
 	</td>
-	<!-- 残業(1:単価) -->
+	<!-- 残業金額 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_general_overtime_moneys(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "day_over_money")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :g_money2_sum, :value => ret %>
 	</td>
 	<!--  夜勤時間 -->
 	<td style="text-align: right;">
-		<%= number_to_currency(get_night_work_times(@d_duties), :precision => 1, :unit => "") %>
+		<% ret = number_to_currency(get_sum_d(@d_duties, "night_work_time"), :precision => 1, :unit => "") %>
+		<%= ret %>
+		<%= hidden_field :footer, :d_time3_sum, :value => ret %>
 	</td>
-	<!-- 夜勤(1:単価) -->
+	<!-- 夜勤金額 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_night_moneys(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "night_work_money")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :g_money3_sum, :value => ret %>
 	</td>
 	<!--  深残時間 -->
 	<td style="text-align: right;">
-		<%= number_to_currency(get_night_overtimes(@d_duties), :precision => 1, :unit => "") %>
+		<% ret = number_to_currency(get_sum_d(@d_duties, "night_over_time"), :precision => 1, :unit => "") %>
+		<%= ret %>
+		<%= hidden_field :footer, :d_time4_sum, :value => ret %>
 	</td>
-	<!-- 深残(1:単価) -->
+	<!-- 深残金額 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_night_overtime_moneys(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "night_over_money")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :g_money4_sum, :value => ret %>
 	</td>
-	<!-- 時間1(1:単価) -->
+	<!-- 時間1金額 -->
 	<td style="border-left-width: 3px; text-align: right;">
-		<%= number_with_delimiter(get_time1_moneys(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "time1_money")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :t_money1_sum, :value => ret %>
 	</td>
-	<!-- 時間2(1:単価) -->
+	<!-- 時間2金額 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_time2_moneys(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "time2_money")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :t_money2_sum, :value => ret %>
 	</td>
-	<!-- 時間3(1:単価) -->
+	<!-- 時間3金額 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_time3_moneys(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "time3_money")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :t_money3_sum, :value => ret %>
 	</td>
-	<!-- 時間4(1:単価) -->
+	<!-- 時間4金額 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_time4_moneys(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "time4_money")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :t_money4_sum, :value => ret %>
 	</td>
-	<!-- 時間5(1:単価) -->
+	<!-- 時間5金額 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_time5_moneys(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "time5_money")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :t_money5_sum, :value => ret %>
 	</td>
-	<!-- 時間6(1:単価) -->
+	<!-- 時間6金額 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_time6_moneys(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "time6_money")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :t_money6_sum, :value => ret %>
 	</td>
-	<!-- 日数1(1:単価) -->
+	<!-- 日数1金額 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_day1_money(@d_duties))%>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "day1_money")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :d_money1_sum, :value => ret %>
 	</td>
-	<!-- 日数2(1:単価) -->
+	<!-- 日数2金額 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_day2_money(@d_duties))%>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "day2_money")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :d_money2_sum, :value => ret %>
 	</td>
 	<!-- 手当1 -->
 	<td style="text-align: right; border-left-width: 3px;">
-		<%= number_with_delimiter(get_moneys1(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "get_money1")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :m_money1_sum, :value => ret %>
 	</td>
 	<!-- 手当2 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_moneys2(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "get_money2")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :m_money2_sum, :value => ret %>
 	</td>
 	<!-- 手当3 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_moneys3(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "get_money3")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :m_money3_sum, :value => ret %>
 	</td>
 	<!-- 手当4 -->
 	<td style="text-align: right;">
-		<%= number_with_delimiter(get_moneys4(@d_duties)) %>
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "get_money4")) %>
+		<%= ret %>
+		<%= hidden_field :footer, :m_money4_sum, :value => ret %>
 	</td>
 	<!-- 支払額 -->
 	<td style="text-align: right; border-left-width: 3px;">
-		<%= number_with_delimiter(get_shiharai_gaks(@d_duties)) %>
+		<% ret = number_with_delimiter(get_shiharai_gaks(@d_duties)) %>
+		<%= ret %>
+		<%= hidden_field :footer, :all_money, :value => ret %>
 	</td>
 </tr>
 <!-- 合計行 END -->
 </table>
 
-<%= form_tag(url_for(:action => "print"), :remote => true ) do %>
-	<%= hidden_field :d_duty_output, :year,  :value => @year %>
-	<%= hidden_field :d_duty_output, :month, :value => @month %>
-	<%= hidden_field :d_duty_output, :m_shop_id, :value => @m_shop_id %>
-	<%= submit_tag  '  印  刷  ',format: 'pdf' %>
-<% end %>
+<%= submit_tag  '  印  刷  ',format: 'pdf' %>
+<% end %> <!-- form_tag(url_for(:action => "print"), :remote => true ) do -->
 
 <script>
 $(function() {
