@@ -45,7 +45,10 @@
         
   	  </td>  	  
   	</tr>
-  	
+  	<tr>
+  	  <th><%= f.label '内訳カナ' %></th>
+  	  <td><%= f.text_field :item_kana,:maxlength=>10,:size=>20 %></td>  	  
+  	</tr>  	
   	<tr>
   		<td align="left" style="border: none">
   			<%= link_to '戻る', {:action=>"index",:input_check=>@check_del_flg}, :class => 'return_icon' %>

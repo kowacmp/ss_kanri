@@ -17,14 +17,14 @@ class MItemsController < ApplicationController
     if params[:input_check] == nil
         @check_del_flg = 0
         condition_sql = " where a.deleted_flg = 0 "
-        @m_items = MItem.find_by_sql("#{select_sql} #{condition_sql} order by a.item_class,a.m_item_account_id,a.item_name")
+        @m_items = MItem.find_by_sql("#{select_sql} #{condition_sql} order by a.item_class,a.m_item_account_id,a.item_kana,a.item_name")
     else
         @check_del_flg = params[:input_check].to_i
         if @check_del_flg == 0
           condition_sql = " where a.deleted_flg = 0 "
-          @m_items = MItem.find_by_sql("#{select_sql} #{condition_sql} order by a.item_class,a.m_item_account_id,a.item_name")
+          @m_items = MItem.find_by_sql("#{select_sql} #{condition_sql} order by a.item_class,a.m_item_account_id,a.item_kana,a.item_name")
         else
-          @m_items = MItem.find_by_sql("#{select_sql} #{condition_sql} order by a.item_class,a.m_item_account_id,a.item_name")
+          @m_items = MItem.find_by_sql("#{select_sql} #{condition_sql} order by a.item_class,a.m_item_account_id,a.item_kana,a.item_name")
         end
     end
     
@@ -93,7 +93,8 @@ class MItemsController < ApplicationController
   # POST /m_items.json
   def create
     @m_item = MItem.new(params[:m_item])
-
+require 'nkf'
+@m_item.item_kana = NKF::nkf('-Z1 -Ww', @m_item.item_kana) #
     respond_to do |format|
       if @m_item.save
         #format.html { redirect_to @m_item, notice: 'M item was successfully created.' }
@@ -111,7 +112,8 @@ class MItemsController < ApplicationController
   # PUT /m_items/1.json
   def update
     @m_item = MItem.find(params[:id])
-
+require 'nkf'
+params[:m_item][:item_kana] = NKF::nkf('-Z1 -Ww', params[:m_item][:item_kana])
     respond_to do |format|
       if @m_item.update_attributes(params[:m_item])
         input_check = params[:input][:check].to_i
@@ -161,11 +163,11 @@ class MItemsController < ApplicationController
     
     if params[:check][:deleted_flg] == "true"
       @check_del_flg = 1
-      @m_items = MItem.find_by_sql("#{select_sql} #{condition_sql} order by a.item_class,a.m_item_account_id,a.item_name")
+      @m_items = MItem.find_by_sql("#{select_sql} #{condition_sql} order by a.item_class,a.m_item_account_id,a.item_kana, a.item_name")
     else
       @check_del_flg = 0
       condition_sql = " where a.deleted_flg = 0 "
-      @m_items = MItem.find_by_sql("#{select_sql} #{condition_sql} order by a.item_class,a.m_item_account_id,a.item_name")
+      @m_items = MItem.find_by_sql("#{select_sql} #{condition_sql} order by a.item_class,a.m_item_account_id,a.item_kana, a.item_name")
     end
     
   end
