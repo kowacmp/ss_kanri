@@ -76,11 +76,27 @@ class MInfoCostsController < ApplicationController
 
   #ポップアップ用
   def popup_edit
+    @input_day = params[:input_day]
     
     @m_cost_name = MCostName.find(:first, :conditions=>["m_shop_id = ? and deleted_flg = 0", params[:m_shop_id]])
     @m_cost_name = MCostName.new if @m_cost_name.blank?
       
     @user = User.find(params[:user_id])
+    
+    #入社年月からの経過年月を求める
+    input_y = params[:input_day].to_s[0,4].to_i
+    input_m = params[:input_day].to_s[4,2].to_i
+    nyusya_y = @user.nyusya_date.localtime.strftime("%Y").to_i
+    nyusya_m = @user.nyusya_date.localtime.strftime("%m").to_i
+    
+    if input_m < nyusya_m
+      @keika_m = 12 - nyusya_m + input_m
+      input_y = input_y - 1
+    else
+      @keika_m = input_m - nyusya_m
+    end
+    @keika_y = input_y - nyusya_y
+    
     @m_info_cost = MInfoCost.find(:first, :conditions=>["user_id=?", params[:user_id]])
     if @m_info_cost.blank?
       @m_info_cost = MInfoCost.new

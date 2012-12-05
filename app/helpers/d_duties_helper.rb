@@ -7,7 +7,7 @@ module DDutiesHelper
     str_conditions << " user_class in (#{user_class}) and "
     str_conditions << " nyusya_date <= '#{start_yyyy}/#{start_mm}/#{end_dd}' and "
     str_conditions << " (deleted_flg = 0 or (deleted_flg = 1 and deleted_at>= '#{start_yyyy}/#{start_mm}/#{start_dd}')) "
-    
+    p "str_conditions=#{str_conditions}"
     users = User.find(:all, 
               :conditions=>[str_conditions],
               :order => "account")

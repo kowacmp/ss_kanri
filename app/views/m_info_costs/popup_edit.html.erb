@@ -1,4 +1,8 @@
-<h1><%= @user.user_name %>　（<%= MCode.find(:first, :conditions=>["kbn='salary_kbn' and code=?", @user.salary_kbn.to_s]).code_name1 %>）</h1>
+<h1><%= @user.user_name %>　
+	（<%= MCode.find(:first, :conditions=>["kbn='salary_kbn' and code=?", @user.salary_kbn.to_s]).code_name1 %>）　
+	勤続年数：<%= "#{@keika_y}年" unless @keika_y ==0 %>
+	<%= "#{@keika_m}ヶ月" %>
+</h1>
 <%#= form_tag({:action => 'syain_input_add' }, { :remote => true }) do %>
 <%= form_for :m_info_cost, :url => { :action => "popup_update" },:remote => true do |f| %>
 <%= f.hidden_field :user_id %>
