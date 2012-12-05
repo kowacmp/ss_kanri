@@ -702,6 +702,7 @@ module DResultsHelper
   def result_index_sql(date, shop_kbn)
     sql = "select s.shop_cd, s.shop_name, r.id, r.kakutei_flg, u.user_name, u.account, d.code_name shop_kbn_name, m.code_name flg,"
     sql << "      substr(r.result_date, 1, 4) || '/' || substr(r.result_date, 5, 2) || '/' || substr(r.result_date, 7, 2) as result_date"
+    sql << ",s.id as shop_id"
     sql << " from m_shops s"
     sql << " left join d_results r on (r.m_shop_id = s.id and r.result_date = '#{date}')"
     sql << " left join users u on (r.created_user_id = u.id)"
@@ -807,4 +808,25 @@ module DResultsHelper
     
     return goukei
   end
+  #2012/12/05 予備メーター入力件数取得追加
+  #予備メーター入力件数取得
+  def get_submeter_count_results(m_shop_id,ymd)
+
+    sql = <<-SQL
+    SELECT count(*) as cnt FROM d_results
+      INNER JOIN d_result_meters
+      ON d_results.id = d_result_meters.d_result_id
+      AND sub_meter is not null
+      WHERE d_results.m_shop_id=?
+      AND d_results.result_date=?
+    SQL
+    submeter_count = DResult.find_by_sql([sql,m_shop_id,ymd]).first
+    if submeter_count == nil
+      cnt = 0
+    else
+      cnt = submeter_count.cnt
+    end
+    return cnt
+  end
+  
 end

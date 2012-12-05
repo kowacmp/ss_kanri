@@ -17,23 +17,52 @@
   <% i = 1 %>
   <% @shops.each do |shop| %>
     <% nyuryoku_flg = wday_hantei(@wday,shop.id) %>
+    <!-- 2012/12/05 予備メーター入力件数取得-->
+    <% submeter_cnt = get_submeter_count_etc(shop.id,@input_ymd_s) %>
+    
     <tr>
-      <td><%= shop.shop_cd.to_s + '　' + shop.shop_name %></td>
+    <!-- 2012/12/05 予備メーター入力有無判定-->
+	    <% if submeter_cnt == "0" %>
+	      <td>
+	    <% else %>
+	      <td style="color: red; font-weight: bold">
+	    <% end %>
+      	<%= shop.shop_cd.to_s + '　' + shop.shop_name %></td>
         <% d_sale_etc = DSaleEtc.find(:all,:conditions => ['sale_date = ? and m_shop_id = ?',@input_ymd_s,shop.id]).first %>
-      <td>
+    <!-- 2012/12/05 予備メーター入力有無判定-->
+	    <% if submeter_cnt == "0" %>
+	      <td>
+	    <% else %>
+	      <td style="color: red; font-weight: bold">
+	    <% end %>
         <% unless d_sale_etc == nil %>
           <%= d_sale_etc.sale_date[0,4] + '/' + d_sale_etc.sale_date[4,2] + '/' + d_sale_etc.sale_date[6,2] %>
         <% end %>
       </td>
-      <td>
+	    <!-- 2012/12/05 予備メーター入力有無判定-->
+	    <% if submeter_cnt == "0" %>
+	      <td>
+	    <% else %>
+	      <td style="color: red; font-weight: bold">
+	    <% end %>
         <% unless d_sale_etc == nil %>	
           <%= User.find(d_sale_etc.created_user_id).user_name %>
         <% end %>
       </td>
-      <td align="center">
+	    <!-- 2012/12/05 予備メーター入力有無判定-->
+	    <% if submeter_cnt == "0" %>
+	      <td align="center">
+	    <% else %>
+	      <td align="center" style="color: red; font-weight: bold">
+	    <% end %>
 		<%= MCode.find(:first, :conditions => ["kbn = 'shop_kbn' and code = ?", shop.shop_kbn.to_s]).code_name %>
       </td>
-      <td align="center">
+	    <!-- 2012/12/05 予備メーター入力有無判定-->
+	    <% if submeter_cnt == "0" %>
+	      <td align="center">
+	    <% else %>
+	      <td align="center" style="color: red; font-weight: bold">
+	    <% end %>
       	<%= unless d_sale_etc == nil then "済" else "未" end %>
       </td>
       <td align="center">

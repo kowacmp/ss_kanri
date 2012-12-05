@@ -27,4 +27,25 @@ module DWashsaleListsHelper
     
     return wday_cnt
   end
+  #2012/12/05 予備メーター入力件数取得追加
+  #予備メーター入力件数取得
+  def get_submeter_count_wash(m_shop_id,ymd)
+
+    sql = <<-SQL
+    SELECT count(*) as cnt FROM d_wash_sales
+      INNER JOIN d_washsale_items
+      ON d_wash_sales.id = d_washsale_items.d_wash_sale_id
+      AND sub_meter is not null
+      WHERE d_wash_sales.m_shop_id=?
+      AND d_wash_sales.sale_date=?
+    SQL
+    submeter_count = DWashSale.find_by_sql([sql,m_shop_id,ymd]).first
+    if submeter_count == nil
+      cnt = 0
+    else
+      cnt = submeter_count.cnt
+    end
+    return cnt
+  end
+
 end

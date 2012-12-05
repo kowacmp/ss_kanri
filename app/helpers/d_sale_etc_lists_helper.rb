@@ -33,4 +33,25 @@ module DSaleEtcListsHelper
       DSaleEtc.find(:all, :conditions => ["sale_date = ?",hiduke],:order => 'id')   
   end
   
+  #2012/12/05 予備メーター入力件数取得追加
+  #予備メーター入力件数取得
+  def get_submeter_count_etc(m_shop_id,ymd)
+
+    sql = <<-SQL
+    SELECT count(*) as cnt FROM d_sale_etcs
+      INNER JOIN d_sale_etc_details
+      ON d_sale_etcs.id = d_sale_etc_details.d_sale_etc_id
+      AND sub_meter is not null
+      WHERE d_sale_etcs.m_shop_id=?
+      AND d_sale_etcs.sale_date=?
+    SQL
+    submeter_count = DSaleEtc.find_by_sql([sql,m_shop_id,ymd]).first
+    if submeter_count == nil
+      cnt = 0
+    else
+      cnt = submeter_count.cnt
+    end
+    return cnt
+  end
+  
 end
