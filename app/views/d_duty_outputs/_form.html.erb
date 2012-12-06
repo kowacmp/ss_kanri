@@ -26,6 +26,9 @@
 	</th>
 	
 	<th >
+		退職
+	</th>	
+	<th >
 		出勤<br/>日数
 	</th>
 	<th>
@@ -123,6 +126,18 @@
 	<td rowspan="2" style="border-bottom-width: 2px;"> 
 		<%= d_duty.user_name %>
 		<%= hidden_field list_name, :user_name, :value => d_duty.user_name %>
+	</td>
+	<!-- 退職 -->
+	<td rowspan="2" style="border-bottom-width: 2px; text-align: center; color: red"> 
+		<% 
+		if d_duty.taisyoku_date.blank? 
+			ret = ""
+		else
+			ret = "退"
+		end 
+		%>
+		<%= ret %>
+		<%= hidden_field list_name, :taisyoku, :value => ret %>	
 	</td>
 	<!-- 出勤日数 -->
 	<td rowspan="2" style="text-align: center; border-bottom-width: 2px;">

@@ -33,6 +33,7 @@ class DDutyOutputsController < ApplicationController
          d_duties.user_id               --ユーザID
         ,users.account                  --社員コード
         ,users.user_name                --ユーザ名
+        ,users.taisyoku_date            --退職日
         ,m_info_costs.time_price1
         ,m_info_costs.time_price2
         ,m_info_costs.time_price3
@@ -73,6 +74,7 @@ class DDutyOutputsController < ApplicationController
          d_duties.user_id               --ユーザID
         ,users.account                  --社員コード
         ,users.user_name                --ユーザ名
+        ,users.taisyoku_date
         ,m_info_costs.general_price
         ,m_info_costs.general_overtime
         ,m_info_costs.night_price
@@ -143,7 +145,7 @@ class DDutyOutputsController < ApplicationController
     end # for detail in details
     
     #ファイル名セット     
-    pdf_title = "給与内訳リスト_#{@year}年#{@month}月_title2.pdf"
+    pdf_title = "給与内訳リスト_#{header[:title1]}_#{header[:title2]}.pdf"
     ua = request.env["HTTP_USER_AGENT"]
     pdf_title = URI.encode(pdf_title) if ua.include?('MSIE') #InternetExproler対応
       

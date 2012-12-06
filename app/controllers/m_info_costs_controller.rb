@@ -86,8 +86,11 @@ class MInfoCostsController < ApplicationController
     #入社年月からの経過年月を求める
     input_y = params[:input_day].to_s[0,4].to_i
     input_m = params[:input_day].to_s[4,2].to_i
-    nyusya_y = @user.nyusya_date.localtime.strftime("%Y").to_i
-    nyusya_m = @user.nyusya_date.localtime.strftime("%m").to_i
+    #2012/12/06 入社年月日属性変更対応
+    #nyusya_y = @user.nyusya_date.localtime.strftime("%Y").to_i
+    #nyusya_m = @user.nyusya_date.localtime.strftime("%m").to_i
+    nyusya_y = @user.nyusya_date[0,4].to_i
+    nyusya_m = @user.nyusya_date[4,2].to_i
     
     if input_m < nyusya_m
       @keika_m = 12 - nyusya_m + input_m

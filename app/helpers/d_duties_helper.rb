@@ -5,8 +5,12 @@ module DDutiesHelper
   def get_user_dutry(user_class, m_shop_id, start_yyyy, start_mm, start_dd, end_dd)
     str_conditions = "m_shop_id= #{m_shop_id} and "
     str_conditions << " user_class in (#{user_class}) and "
-    str_conditions << " nyusya_date <= '#{start_yyyy}/#{start_mm}/#{end_dd}' and "
-    str_conditions << " (deleted_flg = 0 or (deleted_flg = 1 and deleted_at>= '#{start_yyyy}/#{start_mm}/#{start_dd}')) "
+    #2012/12/06 入社年月日属性変更対応
+    #str_conditions << " nyusya_date <= '#{start_yyyy}/#{start_mm}/#{end_dd}' and "
+    str_conditions << " nyusya_date <= '#{start_yyyy}#{start_mm}#{end_dd}' and "
+    #2012/12/06 退職日追加対応 削除日→退職日
+    #str_conditions << " (deleted_flg = 0 or (deleted_flg = 1 and deleted_at>= '#{start_yyyy}/#{start_mm}/#{start_dd}')) "
+    str_conditions << " deleted_flg = 0 and (coalesce(taisyoku_date,'') = '' or (substring(taisyoku_date,1,6) >= '#{start_yyyy}#{start_mm}')) "
     p "str_conditions=#{str_conditions}"
     users = User.find(:all, 
               :conditions=>[str_conditions],
