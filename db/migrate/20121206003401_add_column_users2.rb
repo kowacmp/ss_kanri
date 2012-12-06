@@ -23,7 +23,7 @@ class AddColumnUsers2 < ActiveRecord::Migration
     remove_column :users, :tmp_birthday
     
     # 新規項目追加
-    add_column :users, :duty_sort,     :integer, :defalut => 0
+    add_column :users, :duty_sort,     :integer, :default => 0
     add_column :users, :org_shop_id,   :integer
     add_column :users, :taisyoku_date, :string, :limit => 8
     add_column :users, :return_date,   :string, :limit => 8
