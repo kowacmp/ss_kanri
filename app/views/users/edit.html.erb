@@ -42,6 +42,16 @@
 	        end, {:include_blank => "選択して下さい"}) %>
 		  </td>  	  
 	  	</tr>
+	  	<!-- INSERT BEGIN 主店舗ID 2012.12.06 -->
+	  	<tr>
+	  	  <th><%= f.label "主所属店舗" %></th>
+	  	  <td>
+			<%= f.select(:org_shop_id, MShop.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'shop_cd').map do |u|
+	      		[u.shop_name,u.id]
+	        end, {:include_blank => "選択して下さい"}) %>
+		  </td>  	  
+	  	</tr>
+	  	<!-- INSERT END 主店舗ID 2012.12.06 -->
 	  	<tr>
 	  	  <th><%= f.label "社員種別" %></th>
 	  	  <td>
@@ -66,13 +76,47 @@
 	        end, {:include_blank => "選択して下さい"}) %>
 		  </td>  	  
 	  	</tr>
+	  	<!-- INSERT BEGIN 人件費出力区分追加 2012.12.06 -->
+	  	<tr>
+	  		<th><%= f.label "人件費出力区分" %></th>
+	  		<td>
+			<%= f.select(:duty_sort, MCode.find(:all, :conditions => ["kbn = ?",'duty_sort'], :order => 'code').map do |u|
+	      		["#{u.code}:#{u.code_name}",u.code]
+	        end, {:include_blank => "選択して下さい"}) %>
+	  		</td>
+	  	</tr>
+	  	<!-- INSERT END 人件値出力区分追加 2012.12.06 -->
 	  	<tr>
 	  	  <th><%= f.label "入社日" %></th>
-	  	  <td><%= f.date_select :nyusya_date,:use_month_numbers=>true,:start_year=>Date.today.year - 100, :use_month_numbers => true %></td>  	  
+	  	  <td>
+	  	  	<!-- UPDATE BEGIN 入社日型変更 2012.12.06 -->
+	  	  	<%#= f.date_select :nyusya_date,:use_month_numbers=>true,:start_year=>Date.today.year - 100, :use_month_numbers => true %>
+	  	  	<%= f.text_field :nyusya_date, :class => "datepicker" %>
+	  	  	<!-- UPDATE END 入社日型変更 2012.12.06 -->
+	  	  </td>  	  
+	  	</tr>
+	  	<!-- INSERT BEGIN 退職日,返却日追加 2012.12.06 -->
+	  	<tr>
+	  		<th><%= f.label "退職日" %></th>
+	  		<td>
+	  			<%= f.text_field :taisyoku_date, :class => "datepicker" %>
+	  		</td>
 	  	</tr>
 	  	<tr>
+	  		<th><%= f.label "返却日" %></th>
+	  		<td>
+	  			<%= f.text_field :return_date, :class => "datepicker" %>
+	  		</td>
+	  	</tr>
+	  	<!-- INSERT END 退職日,返却日追加 2012.12.06 -->
+	  	<tr>
 	  	  <th><%= f.label "生年月日" %></th>
-	  	  <td><%= f.date_select :birthday,:use_month_numbers=>true,:start_year=>Date.today.year - 100, :use_month_numbers => true %></td>  	  
+	  	  <td>
+	  	  	<!-- UPDATE BEGIN 生年月日型変更 2012.12.06 -->
+	  	  	<%#= f.date_select :birthday,:use_month_numbers=>true,:start_year=>Date.today.year - 100, :use_month_numbers => true %>
+	  	    <%= f.text_field :birthday, :class => "datepicker" %>
+	  	    <!-- UPDATE END 生年月日型変更 2012.12.06 -->
+	  	  </td>
 	  	</tr>
 		<% end %>
 	
@@ -129,3 +173,66 @@
 <%#= link_to '戻る', users_path, :class => 'return_icon' %>
 <%# end %>
 
+<!-- INSERT BEGIN 生年月日型変更 2012.12.06 -->
+<script>
+$(function(){
+	// 表示時に「yyyymmdd→yyyy/mm/dd」へ
+	$(".datepicker").each(function(){
+		var ymd = $(this).val();
+		
+		if (ymd.length == 8) {
+			ymd = ymd.substring(0, 4) + "/" + ymd.substring(4, 6) + "/" + ymd.substring(6, 8);
+			$(this).val(ymd);
+		}
+		
+	});
+
+	// submit時に日付チェック 及び "/"を消す
+	$("form").submit(function(){
+		var ymd = $(".datepicker");
+		
+		for (i = 0; i < ymd.length; i++) {
+			if (ymd[i].value != "" && (!ckDate(ymd[i].value))) {
+				alert("日付を正しく入力してください。");
+				ymd[i].focus();
+				return false;
+			}
+		}
+		
+		for (i = 0; i < ymd.length; i++) {
+			ymd[i].value = ymd[i].value.replace(/\//g, "")
+		}
+		return true;
+	});
+
+});
+
+/****************************************************************
+* 機　能： 入力された値が日付でYYYY/MM/DD形式になっているか調べる
+* 引　数： datestr　入力された値
+* 戻り値： 正：true　不正：false
+****************************************************************/
+function ckDate(datestr) {
+    // 正規表現による書式チェック
+    if(!datestr.match(/^\d{4}\/\d{2}\/\d{2}$/)){
+        return false;
+    }
+    var vYear = datestr.substr(0, 4) - 0;
+    var vMonth = datestr.substr(5, 2) - 1; // Javascriptは、0-11で表現
+    var vDay = datestr.substr(8, 2) - 0;
+    // 月,日の妥当性チェック
+    if(vMonth >= 0 && vMonth <= 11 && vDay >= 1 && vDay <= 31){
+        var vDt = new Date(vYear, vMonth, vDay);
+        if(isNaN(vDt)){
+            return false;
+        }else if(vDt.getFullYear() == vYear && vDt.getMonth() == vMonth && vDt.getDate() == vDay){
+            return true;
+        }else{
+            return false;
+        }
+    }else{
+        return false;
+    }
+}
+</script>
+<!-- END BEGIN 生年月日型変更 2012.12.06 -->

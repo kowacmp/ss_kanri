@@ -11,7 +11,8 @@ class User < ActiveRecord::Base
   #attr_accessible :email, :account,:password, :password_confirmation, :remember_me
   attr_accessible :email, :account,:password, :password_confirmation, :remember_me,
                   :user_name,:user_name_kana,:m_shop_id,:m_authority_id,:user_class,:salary_kbn,
-                  :nyusya_date,:birthday
+                  :nyusya_date,:birthday, :duty_sort, :org_shop_id, :taisyoku_date, :return_date
+                  # ADD 2012.12.06 人件費出力区分,主店舗id,退職日,返却日
                   
   validates :account,         :presence => {:message => '社員コードは必須です。'}
   validates :user_name,       :presence => {:message => '氏名は必須です。'}

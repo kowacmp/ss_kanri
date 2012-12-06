@@ -98,52 +98,49 @@ class DDutyOutputsController < ApplicationController
 
   def print
     
+    # 印刷データを取得( _form.html.erbよりパラメータ送信 )
+    # hash_keyはレポート定義のアイテム名を合わせています
+    header  = params[:header]
+    footer  = params[:footer]
+    details = Array.new()
+    list_no = 1
+    until params["list#{ list_no }"].blank?
+      details.push params["list#{ list_no }"]
+      list_no += 1
+    end
+    
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_salary_list.tlf')
     
     report.events.on :page_create do |e|
       e.page.item(:page).value(e.page.no)
       e.page.item(:sakusei_ymd).value(Time.now.strftime("%Y-%m-%d"))
-
-      header = params[:header]        
-      # _form.html.erb
-      header.each_key do |key| 
-        e.page.item(key).value(header[key])
-      end # header.each_key do |key| 
+      
+      e.page.values(header)
 
     end #evants.on
-    
-    footer = params[:footer]
     
     report.layout.config.list(:list) do
       
       # フッターに合計をセット.
       events.on :footer_insert do |e|
         
-        footer.each_key do |key|
-          e.section.item(key).value(footer[key])
-        end 
+        e.section.values(footer)
         
-     end #events.on
+      end #events.on
     end #list
     
     report.start_new_page
     
     # 詳細作成
-    list_no = 1
-    until params["list#{ list_no }"].blank?
-    
+    for detail in details
+      
       report.page.list(:list).add_row do |row|
-         
-          detail = params["list#{ list_no }"]
           
-          detail.each_key do |key|
-            row.item(key).value(detail[key])
-          end # detail.each_key do |key|
+          row.values(detail)
           
       end #add_row
       
-      list_no += 1
-    end # until params["list#{ list_no }"].blank?
+    end # for detail in details
     
     #ファイル名セット     
     pdf_title = "給与内訳リスト_#{@year}年#{@month}月_title2.pdf"
