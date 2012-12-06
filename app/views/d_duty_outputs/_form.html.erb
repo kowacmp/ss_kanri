@@ -7,9 +7,9 @@
 		<%= hidden_field :header, :title1, :value => "#{ @year }年 #{@month}月" %>
 	</td>
 	<th>所属店舗</th>
-	<td style="min-width: 150px;">
-		<%= MShop.find(@m_shop_id).shop_ryaku %>
-		<%= hidden_field :header, :title2, :value => MShop.find(@m_shop_id).shop_ryaku %>
+	<td style="min-width: 200px;">
+		<%= MShop.find(@m_shop_id).shop_name %>
+		<%= hidden_field :header, :title2, :value => MShop.find(@m_shop_id).shop_name %>
 	</td>
 </tr>
 </table>
