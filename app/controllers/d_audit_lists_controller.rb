@@ -10,15 +10,23 @@ class DAuditListsController < ApplicationController
   def edit
 
     # 検索パラメータ取得
-    @p_header = params[:header]
+    # UPDATE BEGIN 2012.12.06 
+    #@p_header = params[:header]
+    if params[:back].to_s == "true" then
+       @p_header = session[:d_audit_list_header]
+    else
+      @p_header = params[:header]
+      session[:d_audit_list_header] = @p_header
+    end
+    # UPDATE END 2012.12.06
     
     # 処理選択よりメニューIDを取得する
-    case params[:header][:kansa].to_s
+    case @p_header[:kansa].to_s
     when "1" #金庫
       @table = "d_audit_cashboxes"
       @shori_name = "金庫"
 
-      if params[:header][:audit_class].to_s == "0" then
+      if @p_header[:audit_class].to_s == "0" then
         @menu_id = "34"
       else
         @menu_id = "38"
@@ -28,7 +36,7 @@ class DAuditListsController < ApplicationController
       @table = "d_audit_changemachines"
       @shori_name = "釣銭機"
 
-      if params[:header][:audit_class].to_s == "0" then
+      if @p_header[:audit_class].to_s == "0" then
         @menu_id = "35"
       else
         @menu_id = "39"
@@ -38,7 +46,7 @@ class DAuditListsController < ApplicationController
       @table = "d_audit_washes"
       @shori_name = "洗車機"
 
-      if params[:header][:audit_class].to_s == "0" then
+      if @p_header[:audit_class].to_s == "0" then
         @menu_id = "35"
       else
         @menu_id = "40"
@@ -48,7 +56,7 @@ class DAuditListsController < ApplicationController
       @table = "d_audit_etcs"
       @shori_name = "他商品"
 
-      if params[:header][:audit_class].to_s == "0" then
+      if @p_header[:audit_class].to_s == "0" then
         @menu_id = "37"
       else
         @menu_id = "41"
@@ -122,6 +130,18 @@ class DAuditListsController < ApplicationController
     end
     
     head :ok
+    
+  end
+  
+  # 詳細遷移時
+  def goto_detail
+    
+    # クリックされたテーブルとidを保存
+    session[:d_audit_list_to_controller] = params[:to_controller]
+    session[:d_audit_list_to_id] = params[:to_id]
+    
+    # 指定された監査に編集モードで移動
+    redirect_to :controller => params[:to_controller], :action => 'edit', :id => params[:to_id], :audit_list => "true"
     
   end
   

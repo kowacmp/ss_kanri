@@ -144,10 +144,14 @@ class DAuditCashboxesController < ApplicationController
     @d_audit_cashbox.save!
   
     # 再読込
-    redirect_to :action => "edit", :header => {:m_shop_id       => params[:hheader][:m_shop_id],
-                                               :created_user_id => params[:hheader][:created_user_id],
-                                               :audit_date      => params[:hheader][:audit_date]}
+    if params[:audit_list].to_s == "true" then
+      redirect_to :action => "edit", :id => @d_audit_cashbox.id, :audit_list => true
+    else
+      redirect_to :action => "edit", :header => {:m_shop_id       => params[:hheader][:m_shop_id],
+                                                 :created_user_id => params[:hheader][:created_user_id],
+                                                 :audit_date      => params[:hheader][:audit_date]}
       
+    end
   
   end
 

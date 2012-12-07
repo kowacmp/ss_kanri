@@ -71,7 +71,10 @@
 		</td>
 		<td align="center">
 			<%if not(@audit.nil?) then %>
-				<%= link_to image_tag('icon/24_edit.png'), {:controller => @table, :action => 'show', :id => @audit.id, :comment => true } %>
+				<!-- UPDATE BEGIN 2012.12.06 -->
+				<%#= link_to image_tag('icon/24_edit.png'), {:controller => @table, :action => 'show', :id => @audit.id, :comment => true } %>
+				<%= link_to image_tag('icon/24_edit.png'), {:action => 'goto_detail', :to_controller => @table, :to_id => @audit.id }, :id => "link_#{ @table }_#{ @audit.id}" %>
+				<!-- UPDATE END 2012.12.06 -->
 			<% end %>
 		</td>
 	</tr>
@@ -80,7 +83,12 @@
 
 <script>
 $( function(){
-	
+
+  // 詳細から戻った場合にはクリックされた位置を復元する
+  <% if params[:back].to_s == "true" %>
+  window.location.href = "<%="#link_#{ session[:d_audit_list_to_controller] }_#{ session[:d_audit_list_to_id] }"%>"
+  <% end %>
+  
   //ロック／解除が変更された場合のイベント
   $(":checkbox[id^=data_kakutei_flg]").click(function(){
 		

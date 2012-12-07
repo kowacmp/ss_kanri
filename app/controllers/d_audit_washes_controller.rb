@@ -74,7 +74,11 @@ class DAuditWashesController < ApplicationController
         DAuditWash.destroy_all(["id=?", params[:delete_id].to_i])
         DAuditWashDetail.destroy_all(["d_audit_wash_id=?", params[:delete_id].to_i])
       }
-      redirect_to :action => "index", :audit_class => session[:audit_class]
+      if params[:audit_list].to_s == "true" then
+        redirect_to :controller => "d_audit_lists", :action => "edit", :back => true
+      else
+        redirect_to :action => "index", :audit_class => session[:audit_class]
+      end
       return
     end
     # INSERT END 2012.11.20 削除機能を追加
@@ -188,7 +192,11 @@ class DAuditWashesController < ApplicationController
     } #トランザクションCommit
     
     # トップに戻る
-    redirect_to :action => "edit", :id => @id
+    if params[:audit_list].to_s == "true" then
+      redirect_to :action => "edit", :id => @id, :audit_list => true
+    else
+      redirect_to :action => "edit", :id => @id      
+    end
     
   end
 
