@@ -350,6 +350,9 @@ p params
 #p ">>>>>>>>>>>>> key_data.sale_date.to_s[4,2]=#{key_data.sale_date.to_s[4,2]}"
 #p ">>>>>>>>>>>>> end_ym=#{end_ym}"
 #p ">>>>>>>>>>>>> m_shop.settling_month=#{m_shop.settling_month}"
+
+#UPDATE BEGIN 2012.12.07 前月末現金有高, 前月末過不足の計算方法を修正
+=begin
     #前月が決算月の場合は前月なし
     if m_shop.settling_month.blank? or m_shop.settling_month.to_i == end_ym.to_s[4,2].to_i 
       @d_sale_zengetumatu = DSale.new
@@ -371,8 +374,6 @@ p params
       start_ym = date.strftime("%Y%m")
  #     p ">>>>>>>>>>>>>> start_ym=#{start_ym}"     
       
-      # UPDATE BEGIN 2012.12.07 前月末現金有高は前月末のデータ、前月末過不足は期首～前月末のデータの集計
-=begin
       select_sql = "select sum(exist_money) exist_money, sum(over_short) over_short from d_sales where m_shop_id = ? and sale_date between ? and ?"
       @d_sale_zengetumatu = DSale.find_by_sql([select_sql, @head[:m_shop_id], start_ym.to_s + '01', end_ym.to_s + '31' ])
       
@@ -381,25 +382,6 @@ p params
       else
           @d_sale_zengetumatu = @d_sale_zengetumatu[0]
       end
-=end
-      
-      d_conditions = ["m_shop_id = ? and sale_date between ? and ?",
-                        @head[:m_shop_id],
-                        start_ym.to_s + '01',
-                        end_ym.to_s + '31']
-      
-      @d_sale_zengetumatu = DSale.new
-      
-      d_sale_last = DSale.find(:first, :conditions => d_conditions, :order => "sale_date desc")
-      if d_sale_last.blank?
-        @d_sale_zengetumatu.exist_money = 0
-      else
-        @d_sale_zengetumatu.exist_money = d_sale_last.exist_money.to_i
-      end
-      
-      @d_sale_zengetumatu.over_short = DSale.sum(:over_short, :conditions => d_conditions).to_i
-      # UPDATE BEGIN 2012.12.07 前月末現金有高は前月末のデータ、前月末過不足は期首～前月末のデータの集計
-       
     end
     
 #    @d_sale_zengetumatu = DSale.find(:first, :conditions=>["m_shop_id = ? and sale_date = ?", @head[:m_shop_id], zengetumatu]) 
@@ -407,6 +389,46 @@ p params
 #    unless @d_sale_zengetumatu 
 #        @d_sale_zengetumatu = DSale.new
 #    end    
+=end
+
+    @d_sale_zengetumatu = DSale.new
+    
+    # 前月末現金有高は前月データ末尾の現金有高とする
+    d_condtion = ["m_shop_id = ? and sale_date <= ?", @head[:m_shop_id], end_ym.to_s + '31']
+    d_sale_last = DSale.find(:first, :conditions => d_condtion, :order => "sale_date desc")
+    if d_sale_last.blank? 
+      @d_sale_zengetumatu.exist_money = 0
+    else
+      @d_sale_zengetumatu.exist_money = d_sale_last.exist_money.to_i
+    end
+    
+    # 前月末過不足は期首～前月までの過不足金の計
+    if m_shop.settling_month.blank? or m_shop.settling_month.to_i == end_ym.to_s[4,2].to_i 
+      over_short.over_short = 0 # 今月が期首のため前月末は0とする
+    else
+      
+      #開始年月
+      if m_shop.settling_month != 12 and
+         key_data.sale_date.to_s[4,2].to_i <= m_shop.settling_month
+        start_y = key_data.sale_date.to_s[0,4].to_i - 1
+      else
+        start_y = key_data.sale_date.to_s[0,4].to_i
+      end
+      if m_shop.settling_month == 12
+        start_m = 1
+      else
+        start_m = m_shop.settling_month + 1
+      end
+      date = Date.new(start_y.to_i, start_m, 1) 
+      start_ym = date.strftime("%Y%m")
+      
+      d_condtion = ["m_shop_id = ? and sale_date between ? and ?", @head[:m_shop_id], start_ym + '01', end_ym.to_s + '31']
+      over_short.over_short = DSale.sum(:over_short, :conditions => d_condtion).to_i
+      
+    end
+    
+#UPDATE BEGIN 2012.12.07 前月末現金有高, 前月末過不足の計算方法を修正
+
     #その他売上合計
     select_sql = "select sum(a.item_money) item_money "
     select_sql << " from d_sale_items a inner join d_sales b on a.d_sale_id = b.id "
