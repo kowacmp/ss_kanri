@@ -2,6 +2,9 @@
 <%= hidden_field :comment, :on, :value => params[:comment] %>
 
 <%= form_tag({:action => 'update' }, :id => "form_update") do %>
+	<!-- 監査リストからedit呼び出しされたのを保持するフラグ -->
+	<%= hidden_field_tag :audit_list, (params["audit_list"].to_s == "true").to_s %>
+
 	<!-- 検索ヘッダ -->
 	<%= hidden_field :hheader, "m_shop_id",       :value => @m_shop_id %>
 	<%= hidden_field :hheader, "created_user_id", :value => @created_user_id %>
@@ -157,7 +160,11 @@
 
 <div style="float:right; padding-right: 20px;">
 <%
-	url = "./edit?header[m_shop_id]=#{@m_shop_id}&header[created_user_id]=#{@created_user_id}&header[audit_date]=#{@audit_date}"			
+	if params[:audit_list].to_s == "true" then
+	url = "./edit?audit_list=true&id=#{params[:id]}"
+	else
+	url = "./edit?header[m_shop_id]=#{@m_shop_id}&header[created_user_id]=#{@created_user_id}&header[audit_date]=#{@audit_date}"
+	end
 %>
 			<input type="button" value="キャンセル" 
 				onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
@@ -166,7 +173,7 @@
 						}" />
 			&nbsp;&nbsp;
 			<!-- 使用不可で開始、立会人入力より使用可 -->
-			<%= submit_tag("　登　録　" ,:onclick => "return update_chk()" ,:disable_with => "登録中です...", :disabled => true , :id => "btn_update") %>	
+			<%= submit_tag("　登　録　" ,:onclick => "return update_chk()" ,:disable_with => "登録中です...", :disabled => not(params["audit_list"].to_s == "true") , :id => "btn_update") %>	
 			<!-- true の場合は永続的に更新不可 -->
 			<%= hidden_field_tag "update_flg", ((params[:readonly].to_s == "true") or (@d_audit_cashbox["kakutei_flg"].to_s == "1")) %>
 </div>

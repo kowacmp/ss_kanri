@@ -80,6 +80,8 @@
 <tr><td colspan="6" style="border: none; text-align: right;">
 <div style="float:right;">
 <%=form_tag :action => 'update' do %>
+    <%= hidden_field_tag :audit_list, params[:audit_list] %>
+    
 	<!-- INSERT BEGIN 2012.10.16 コメント機能追加 -->
 	<% 
 		if @d_audit_etc.nil? then 
@@ -162,7 +164,11 @@
 <% end %>
 <!-- INSERT END 2012.11.20 最終データのみ削除機能を追加-->
 <%
+	if params[:audit_list].to_s == "true" then
+	url = "./edit?id=#{params[:id]}&audit_list=true"
+	else
 	url = "./edit?header[m_shop_id]=#{@m_shop_id}&header[created_user_id]=#{@created_user_id}&header[audit_date_from]=#{@audit_date_from}&header[audit_date_to]=#{@audit_date_to}"			
+	end
 %>
 	<input type="button" value="キャンセル" 
 			onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
@@ -170,7 +176,7 @@
 						this.disabled=true;document.location='<%=url%>';
 					}" />
 	<!-- 使用不可で開始、立会人入力により使用可 -->
-	<%= submit_tag '　登　録　', :onclick => "return update_chk()" ,:disable_with => '登録中です...', :disabled => true , :id => "btn_update" %>
+	<%= submit_tag '　登　録　', :onclick => "return update_chk()" ,:disable_with => '登録中です...', :disabled => not(params["audit_list"].to_s == "true") , :id => "btn_update" %>
 	<!-- true の場合は永続的に更新不可 -->
 	<% 
 		if @d_audit_etc.nil? then

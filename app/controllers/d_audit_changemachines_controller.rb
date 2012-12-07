@@ -154,8 +154,11 @@ class DAuditChangemachinesController < ApplicationController
     @d_audit_changemachine.save
     
     #トップに戻る
-    redirect_to :action => "edit", :id => @d_audit_changemachine.id, :readonly => false
-
+    if params[:audit_list].to_s == "true" then
+      redirect_to :action => "edit", :id => @d_audit_changemachine.id, :audit_list => true
+    else
+      redirect_to :action => "edit", :id => @d_audit_changemachine.id, :readonly => false
+    end
   end
 
   # 立会人(店舗)選択時イベント(d_audit系で共通)

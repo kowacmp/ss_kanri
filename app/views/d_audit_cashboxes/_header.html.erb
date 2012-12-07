@@ -63,7 +63,7 @@
 </tr>
 <tr>
 	<td colspan="2" align="right" style="margin-right: 5px;">
-		<%= submit_tag '　表　示　', :onclick => "return kansa_ymd_chk()", :disable_with => "処理中です..." %>
+		<%= submit_tag '　表　示　', :onclick => "return kansa_ymd_chk()", :disable_with => "処理中です...", :disabled => (params["audit_list"].to_s == "true") %>
 	</td>
 </tr>
 </table>
