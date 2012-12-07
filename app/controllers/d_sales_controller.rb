@@ -404,7 +404,7 @@ p params
     
     # 前月末過不足は期首～前月までの過不足金の計
     if m_shop.settling_month.blank? or m_shop.settling_month.to_i == end_ym.to_s[4,2].to_i 
-      over_short.over_short = 0 # 今月が期首のため前月末は0とする
+      @d_sale_zengetumatu.over_short = 0 # 今月が期首のため前月末は0とする
     else
       
       #開始年月
@@ -423,7 +423,7 @@ p params
       start_ym = date.strftime("%Y%m")
       
       d_condtion = ["m_shop_id = ? and sale_date between ? and ?", @head[:m_shop_id], start_ym + '01', end_ym.to_s + '31']
-      over_short.over_short = DSale.sum(:over_short, :conditions => d_condtion).to_i
+      @d_sale_zengetumatu.over_short = DSale.sum(:over_short, :conditions => d_condtion).to_i
       
     end
     
