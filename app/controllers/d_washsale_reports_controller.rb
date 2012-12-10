@@ -45,8 +45,10 @@ class DWashsaleReportsController < ApplicationController
     end
 
     @d_washsale_report = get_d_washsale_report(@this_month,@m_shop_id)
-    @d_washsale_report_last = get_d_washsale_report(@last_month,@m_shop_id)
-    
+    @d_washsale_report_last = 
+      DWashsaleReport.find(:first,
+                           :conditions => ["m_shop_id = ? and sale_date like ? ", @m_shop_id, @last_month + "%"],
+                           :order => "sale_date")
     @m_washes = get_m_washes
   end
 
