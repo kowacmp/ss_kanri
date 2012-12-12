@@ -206,6 +206,45 @@ $(function () {
 	calc_total("_get_money3", "get_money3_total");
 	calc_total("_get_money4", "get_money4_total");
 	
+	//Tabindexを設定する
+	var Div_id='';
+    if ($("div#modal div.bodyDiv").size() > 0) {
+    	Div_id = 'div.bodyDiv ';
+    };
+	tabindex = 1;
+	$("div#modal " + Div_id + "[id*=_day_work_time]").each(function(i){
+		$(this).attr("tabindex", tabindex);
+		tabindex = tabindex + 1;
+	});
+	$("div#modal " + Div_id + "[id*=_day_over_time]").each(function(i){
+		$(this).attr("tabindex", tabindex);
+		tabindex = tabindex + 1;
+	});
+	$("div#modal " + Div_id + "[id*=_night_work_time]").each(function(i){
+		$(this).attr("tabindex", tabindex);
+		tabindex = tabindex + 1;
+	});
+	$("div#modal " + Div_id + "[id*=_night_over_time]").each(function(i){
+		$(this).attr("tabindex", tabindex);
+		tabindex = tabindex + 1;
+	});
+	$("div#modal " + Div_id + "[id*=_get_money1]").each(function(i){
+		$(this).attr("tabindex", tabindex);
+		tabindex = tabindex + 1;
+	});
+	$("div#modal " + Div_id + "[id*=_get_money2]").each(function(i){
+		$(this).attr("tabindex", tabindex);
+		tabindex = tabindex + 1;
+	});
+	$("div#modal " + Div_id + "[id*=_get_money3]").each(function(i){
+		$(this).attr("tabindex", tabindex);
+		tabindex = tabindex + 1;
+	});
+	$("div#modal " + Div_id + "[id*=_get_money4]").each(function(i){
+		$(this).attr("tabindex", tabindex);
+		tabindex = tabindex + 1;
+	});
+	
 	//入力チェック
 	//保存の時
     $("form").submit(function() {
