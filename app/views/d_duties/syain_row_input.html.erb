@@ -100,23 +100,25 @@ $(function () {
 	    };
     	
     	//システム日付以前分の入力は必須入力
+    	//システム日付より前の日で未入力の場合は「休」をセットする
 	    $("div#modal " + Div_id + "[id^=datas_input_day_]").each(function(i){
 		   	var get_index = $(this).attr('id').replace("datas_input_day_", "");
 
-			if ($(this).val() < $("div#modal #system_date").val()) {
-				syukin_checkbox_name = "div#modal " + Div_id + "input:radio[name='datas\\[" + get_index + "\\]\\[syukin\\]']:checked"
-				if (!$(syukin_checkbox_name).val()) {
-				     if (errmsg != "") { errmsg = errmsg + ", "; };
-				     errmsg = errmsg + get_index + "日";
+			//if ($(this).val() < $("div#modal #system_date").val()) {
+				syukin_checkbox_name = "div#modal " + Div_id + "input:radio[name='datas\\[" + get_index + "\\]\\[syukin\\]']"
+				if (!$(syukin_checkbox_name + ":checked").val()) {
+				     //if (errmsg != "") { errmsg = errmsg + ", "; };
+				     //errmsg = errmsg + get_index + "日";
+				     $(syukin_checkbox_name).val(['0']);
 				};
-			};
+			//};
 		    
 	    });
 	    
-        if (errmsg != "") {
-			alert("勤怠に未入力があります。(" + errmsg + ")");
- 			return false;
- 	    };
+        //if (errmsg != "") {
+		//	alert("勤怠に未入力があります。(" + errmsg + ")");
+ 		//	return false;
+ 	    //};
 	
     });	
 });	

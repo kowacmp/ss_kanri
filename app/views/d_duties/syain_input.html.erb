@@ -64,16 +64,25 @@ $(function () {
 	    };
 	    
 	    //システム日付以前分の入力は必須入力
-	    if ($("div#modal " + Div_id + "#input_day").val() < $("div#modal " + Div_id + "#system_date").val()) {
+	    //システム日付より前の日で未入力の場合は「休」をセットする
+	    //if ($("div#modal " + Div_id + "#input_day").val() < $("div#modal " + Div_id + "#system_date").val()) {
 	    	//必須入力
 	    	var count = $("div#modal " + Div_id + ":checked").length;
 	    	var user_conut = $("div#modal " + Div_id + "#user_conut" ).val();
 	    	if (count != user_conut) {
-	    		alert("勤怠に未入力があります。全て入力してください。");
- 				return false;
+	    		//alert("勤怠に未入力があります。全て入力してください。");
+ 				//return false;
+ 				for (i = 0; i < user_conut; i = i +1){
+	 				syukin_checkbox_name = "div#modal " + Div_id + "input:radio[name='datas\\[" + i + "\\]\\[syukin\\]']"
+	 				if (!$(syukin_checkbox_name + ":checked").val()) {
+	 					$(syukin_checkbox_name).val(['0']);
+	 				};
+	 				
+	 				
+ 				};
 	    	};
-	    };
-	
+	    //};
+	    
     });
 
 });	
