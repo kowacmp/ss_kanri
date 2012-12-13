@@ -289,7 +289,9 @@ private
     
     # 前月のデータを取得
     washpurika_reports = DWashpurikaReport.find(:all, 
-                                                :conditions => ["date=?", zym],
+                                                #2012/12/13 久留米南SS対象外
+                                                #:conditions => ["date=?", zym],
+                                                :conditions => ["date=? and m_shop_id<>?", zym,5],
                                                 :order => "league, rank")
         
     for rec in washpurika_reports
@@ -611,6 +613,7 @@ private
             where
                    id not in (select m_shop_id from d_washpurika_reports where date = '#{ ym }')
               and  shop_kbn = 0
+              and id<>5
             order by
               shop_cd
            "
