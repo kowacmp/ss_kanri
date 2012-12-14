@@ -97,7 +97,7 @@
 	  		<th><%= f.label "ユーザランク" %></th>
 	  		<td>
 			<%= f.select(:user_rank, MCode.find(:all, :conditions => ["kbn = ?",'user_rank'], :order => 'code').map do |u|
-	      		["#{u.code}:#{u.code_name}",u.code]
+	      		["#{u.code}:#{u.code_name}",u.code.to_i]
 	        end, {:include_blank => "選択して下さい"}) %>
 	  		</td>
 	  	</tr>
