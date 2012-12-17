@@ -301,8 +301,8 @@ module DDutiesHelper
     input_y = input_ym.to_s[0,4].to_i
     input_m = input_ym.to_s[4,2].to_i
 
-    nyusya_y = nyusya_ym[0,4].to_i
-    nyusya_m = nyusya_ym[4,2].to_i
+    nyusya_y = nyusya_ym.to_s[0,4].to_i
+    nyusya_m = nyusya_ym.to_s[4,2].to_i
     
     if input_m < nyusya_m
       keika_m = 12 - nyusya_m + input_m

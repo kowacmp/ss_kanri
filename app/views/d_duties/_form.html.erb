@@ -47,7 +47,7 @@
 			<% end %>
 		</tr>
 		<tr>
-			<th colspan="3" style="min-width: 200px">日付</th>
+			<th colspan="3" style="min-width: 300px">日付</th>
 			<% loopcnt.times { |i| %>
 			  <th style="min-width: 25px; <%= today_color if Time.now.day == (i+1) and @head[:input_day].to_s == Time.now.localtime.strftime("%Y%m") %>"><%= i + 1 %></th>
             <% } %>
@@ -81,12 +81,11 @@
 		</tr>		
 		<!--社員-->
 		<tr>
-			<th colspan="2">氏名</th>
+			<th colspan="2">氏名(ﾗﾝｸ/勤続年数)</th>
 			<th>日数</th>
 			<% loopcnt.times { |i| %>
 			  <td style='<%= today_color if Time.now.day == (i+1) and @head[:input_day].to_s == Time.now.localtime.strftime("%Y%m") %>'>
 			     <%= link_to image_tag('icon/24_edit.png'), {:controller => "d_duties", :action => "syain_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s + format("%02d", (i+1).to_i)}, :class => "modal" %>
-			     
 			  </td>
             <% } %>
 		</tr>
@@ -100,7 +99,9 @@
 			<tr id="syain_<%= "#{index}" %>">
 				<td colspan="2" style="min-width: 130px">
 					<%= link_to user.user_name , {:controller => "d_duties", :action => "syain_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal_nofocus" %>
-					<%= link_to image_tag('icon/user_edit.png'), {:controller => "m_info_costs", :action => "popup_edit", :user_id => user.id, :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s}, :class => "modal" %>
+					<%= "(#{get_user_rank_name(user.user_rank)}/#{get_keika_ym(@head[:input_day].to_s[0,6], user.nyusya_date.to_s[0,6])})" %>	
+			        <%= link_to image_tag('icon/user_edit.png'), {:controller => "m_info_costs", :action => "popup_edit", :user_id => user.id, :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s}, :class => "modal" %>
+			        			    
 				</td>
 				<td style="text-align: center;min-width: 50px"><label id=<%= "syain_nisu_#{user.id}" %>><%= nisu[0].nisu %></label></td>
 				
@@ -118,7 +119,7 @@
 		</tr>
 		<!--バイト-->
 		<tr>
-			<th colspan="2">氏名</th>
+			<th colspan="2">氏名(ﾗﾝｸ/勤続年数)</th>
 			<th>時間</th>
 			<% loopcnt.times { |i| %>
 			  <td style='<%= today_color if Time.now.day == (i+1) and @head[:input_day].to_s == Time.now.localtime.strftime("%Y%m") %>'>
@@ -135,6 +136,7 @@
 			<tr id="baito_<%= "#{index}" %>">
 				<td colspan="2" style="min-width: 130px">
 					<%= link_to user.user_name, {:controller => "d_duties", :action => "baito_row_input", :m_shop_id => @m_shop_id, :input_day => @head[:input_day], :user_id => user.id }, :class => "modal_nofocus" %>
+					<%= "(#{get_user_rank_name(user.user_rank)}/#{get_keika_ym(@head[:input_day].to_s[0,6], user.nyusya_date.to_s[0,6])})" %>	
 					<%= link_to image_tag('icon/user_edit.png'), {:controller => "m_info_costs", :action => "popup_edit", :user_id => user.id, :m_shop_id => @m_shop_id, :input_day => @head[:input_day].to_s}, :class => "modal" %>
 				</td>
 				<td style="text-align: center;min-width: 50px"><label id=<%= "baito_jikan_#{user.id}" %>><%= jikan[0].jikan %></label></td>
