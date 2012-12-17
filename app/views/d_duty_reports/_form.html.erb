@@ -122,7 +122,7 @@
 			</th>
 		</tr>
 		<tr id="simei_midasi" style="<%= user_disp_css %>" >
-			<th>氏名</th>
+			<th>氏名&nbsp;(ﾗﾝｸ/勤続年数)</th>
 			<th>累計</th>		
 		</tr>
 		</thead>
@@ -138,7 +138,8 @@
 			
 			<tr id="syain_<%= "#{index}" %>" style="<%= user_disp_css %>" >
 				<td>
-					<%= user.user_name %>
+					<%= user.user_name %>&nbsp;
+					<%= "(#{get_user_rank_name(user.user_rank)}/#{get_keika_ym(@head[:input_day].to_s[0,6], user.nyusya_date.to_s[0,6])})" %>	
 				</td>
 				<td style="text-align:right; min-width: 50px">
 					<label id=<%= "syain_total_#{user.id}" %>>
@@ -162,7 +163,8 @@
 			<% end %>
 			<tr id="baito_<%= "#{index}" %>" style="<%= user_disp_css %>" >
 				<td>
-					<%= user.user_name %>
+					<%= user.user_name %>&nbsp;
+					<%= "(#{get_user_rank_name(user.user_rank)}/#{get_keika_ym(@head[:input_day].to_s[0,6], user.nyusya_date.to_s[0,6])})" %>	
 				</td>
 				<td style="text-align:right ;min-width: 50px">
 					<label id=<%= "baito_total_#{user.id}" %>>

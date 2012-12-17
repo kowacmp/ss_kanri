@@ -5,9 +5,12 @@
     <th>所属店舗</th>
     <th>社員種別</th>
     <th>権限</th>
-    <th>給与区分</th>
+    <th>給与<br>区分</th>
+    <th>ﾗﾝｸ</th>
+    <th>出力<br>区分</th>
+    <th>区分内<br>ｿｰﾄ順</th>
     <th>編集</th>
-    <th>パスワード変更</th>
+    <th>ﾊﾟｽﾜｰﾄﾞ<br>変更</th>
     <th>削除</th>
   </tr>
 
@@ -21,10 +24,17 @@
   <tr>
   	<td class="<%= "#{del_flg}" %>"><%= user.account %></td>
     <td class="<%= "#{del_flg}" %>"><%= user.user_name %></td>
-    <td class="<%= "#{del_flg}" %>"><%= user.shop_name %></td>
+    <!-- 2012/12/17 店舗略称に変更
+    <td class="<%#= "#{del_flg}" %>"><%= user.shop_name %></td>
+    -->
+    <td class="<%= "#{del_flg}" %>"><%= user.shop_ryaku %></td>
     <td class="<%= "#{del_flg}" %>"><%= user.user_class_name %></td>
     <td class="<%= "#{del_flg}" %>"><%= user.authority_name %></td>
     <td class="<%= "#{del_flg}" %>"><%= user.salary_kbn_name %></td>
+    <!-- 2012/12/17 ランク、人件費出力区分、区分内順追加表示 -->
+    <td class="<%= "#{del_flg}" %>"><%= user.rank_name %></td>
+    <td class="<%= "#{del_flg}" %>"><%= user.duty_sort_name %></td>
+    <td class="<%= "#{del_flg}" %>"><%= user.duty_kbn_sort %></td>
     <td class="icon">
     	<%- if user.deleted_flg == 0 -%>
     	<%= link_to image_tag('icon/24_edit.png'), {:action=>"edit",:id=>user.id,:pass_flg=>0,:return_flg=>1} %>
