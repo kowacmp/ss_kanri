@@ -295,4 +295,41 @@ module DDutiesHelper
    end
   end
   
+  #勤続年月を求める
+  def get_keika_ym(input_ym, nyusya_ym)
+    #入社年月からの経過年月を求める
+    input_y = input_ym.to_s[0,4].to_i
+    input_m = input_ym.to_s[4,2].to_i
+
+    nyusya_y = nyusya_ym[0,4].to_i
+    nyusya_m = nyusya_ym[4,2].to_i
+    
+    if input_m < nyusya_m
+      keika_m = 12 - nyusya_m + input_m
+      input_y = input_y - 1
+    else
+      keika_m = input_m - nyusya_m
+    end
+    keika_y = input_y - nyusya_y
+    
+    tmp_str = ""
+    tmp_str << "#{keika_y}年" unless keika_y ==0
+    tmp_str << "#{keika_m}ヶ月"  
+    
+    return tmp_str
+  end
+  
+  #ユーザ情報のランク名称を取得
+  def get_user_rank_name(user_rank)
+    
+    m_code = MCode.where(:kbn => 'user_rank', :code => user_rank.to_s).first
+    
+    if m_code.blank?
+      return ""
+    else
+      return m_code.code_name
+    end
+    
+  end
+  
 end
