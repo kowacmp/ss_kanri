@@ -7,7 +7,10 @@
 		<th>売上日</th>
 		<td>
 			<% unless @mode == 'list' %>
-			  <%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 8 %>
+			  <!-- UPDATE BEGIN カレンダーの入力のみに制限 2012.12.17 -->
+			  <%#= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 8 %>
+			  <%= text_field_tag "input_ymd", @input_ymd, :class => "datepicker", :size => 8, :readonly => true %>
+			  <!-- UPDATE END カレンダーの入力のみに制限 2012.12.17 -->
 			<% else %>
 			  <%= @input_ymd %>	
 			<% end %>

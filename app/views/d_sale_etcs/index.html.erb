@@ -5,7 +5,12 @@
 		<th>対象店舗</th>
 		<td class="input_no" id="display"><%= @shop.shop_cd %>&nbsp;&nbsp;<%= @shop.shop_name %></td>
 		<th>売上日</th>
-		<td><%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 8 %></td>
+		<td>
+			<!-- UPDATE BEGIN カレンダーの入力のみに制限 2012.12.17 -->
+			<%#= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 8 %>
+			<%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 8, :readonly => true %>
+			<!-- UPDATE END カレンダーの入力のみに制限 2012.12.17 -->
+		</td>
 	</tr>
 </table>
 
