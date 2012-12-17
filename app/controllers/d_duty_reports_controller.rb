@@ -324,20 +324,24 @@ class DDutyReportsController < ApplicationController
     # Set header datas.
       if idx == 0
         report.page.list(:list).add_row do |row|
-          row.item("user_name").value("名前")
-          row.item("ruikei").value("累計")
+          row.item("user_name").value("名前(ﾗﾝｸ)")
+          row.item("years").value("勤続年数")
+          row.item("ruikei").value("累計    ")
         end #add_row
       end
     
       report.page.list(:list).add_row do |row|
-        row.item("user_name").value(user.user_name)
+        #2012/12/17 ランク表示
+        #row.item("user_name").value(user.user_name)
+        row.item("user_name").value(user.user_name + "(" + get_user_rank_name(user.user_rank) + ")")
         
         if @from_view == 'syoukai_menu'
           select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and kakutei_flg = 1 "
         else
           select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "
         end
-        
+        #2012/12/17 勤続年数表示
+        row.item("years").value(get_keika_ym(@head[:input_day].to_s[0,6],user.nyusya_date.to_s[0,6]))
         row.item("ruikei").value(d_duty_syain_total(select_where, "money")[0].all_money)
         jinken_total = jinken_total.to_i + d_duty_syain_total(select_where, "money")[0].all_money.to_i
         
@@ -393,20 +397,25 @@ class DDutyReportsController < ApplicationController
     # Set header datas.
       if idx == 0
         report.page.list(:list).add_row do |row|
-          row.item("user_name").value("名前")
-          row.item("ruikei").value("累計")
+          row.item("user_name").value("名前(ﾗﾝｸ)")
+          row.item("years").value("勤続年数")
+          row.item("ruikei").value("累計    ")
         end #add_row
       end
     
       report.page.list(:list).add_row do |row|
-        row.item("user_name").value(user.user_name)
-        
+        #2012/12/17 ランク表示
+        #row.item("user_name").value(user.user_name)
+        row.item("user_name").value(user.user_name + "(" + get_user_rank_name(user.user_rank) + ")")
+
         if @from_view == 'syoukai_menu'
           select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and kakutei_flg = 1 "
         else
           select_where = " duty_nengetu = '#{@head[:input_day].to_s[0,6]}' and user_id = #{user.id} and input_flg = 1 "
         end
         
+        #2012/12/17 勤続年数表示
+        row.item("years").value(get_keika_ym(@head[:input_day].to_s[0,6],user.nyusya_date.to_s[0,6]))
         row.item("ruikei").value(d_duty_baito_total(select_where, "money")[0].all_money)
         jinken_total = jinken_total.to_i + d_duty_baito_total(select_where, "money")[0].all_money.to_i
         
