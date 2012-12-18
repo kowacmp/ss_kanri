@@ -122,7 +122,7 @@ class DAuditApprovesController < ApplicationController
         when "d_audit_changemachines"
           rec = DAuditChangemachine.find(approval[:id])
         when "d_audit_washes"
-          rec = DAutitWash.find(approval[:id])
+          rec = DAuditWash.find(approval[:id])
         when "d_audit_etcs"
           rec = DAuditEtc.find(approval[:id])
         end 
