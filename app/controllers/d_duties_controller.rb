@@ -424,30 +424,33 @@ class DDutiesController < ApplicationController
         d_dutie.work_money = day_work_money + day_over_money + night_work_money + night_over_money
         #時間単価金額(切り上げ)
         time_price = 0
-        time_price += (m_info_cost.time_price1.to_i * d_dutie.all_work_time.to_f).ceil 
-        time_price += (m_info_cost.time_price2.to_i * d_dutie.all_work_time.to_f).ceil 
-        time_price += (m_info_cost.time_price3.to_i * d_dutie.all_work_time.to_f).ceil 
-        time_price += (m_info_cost.time_price4.to_i * d_dutie.all_work_time.to_f).ceil 
-        time_price += (m_info_cost.time_price5.to_i * d_dutie.all_work_time.to_f).ceil 
-        time_price += (m_info_cost.time_price6.to_i * d_dutie.all_work_time.to_f).ceil 
+        time_price1 = (m_info_cost.time_price1.to_i * d_dutie.all_work_time.to_f).ceil 
+        time_price2 = (m_info_cost.time_price2.to_i * d_dutie.all_work_time.to_f).ceil 
+        time_price3 = (m_info_cost.time_price3.to_i * d_dutie.all_work_time.to_f).ceil 
+        time_price4 = (m_info_cost.time_price4.to_i * d_dutie.all_work_time.to_f).ceil 
+        time_price5 = (m_info_cost.time_price5.to_i * d_dutie.all_work_time.to_f).ceil 
+        time_price6 = (m_info_cost.time_price6.to_i * d_dutie.all_work_time.to_f).ceil 
+        time_price = time_price1 + time_price2 + time_price3 + time_price4 + time_price5 + time_price6
+        
         #日数単価金額
         day_price = 0
-        day_price += m_info_cost.day_price1.to_i if d_dutie.all_work_time.to_f > 0
-        day_price += m_info_cost.day_price1.to_i if d_dutie.all_work_time.to_f > 0
+        day_price1 = m_info_cost.day_price1.to_i if d_dutie.all_work_time.to_f > 0
+        day_price2 = m_info_cost.day_price2.to_i if d_dutie.all_work_time.to_f > 0
+        day_price = day_price1.to_i + day_price2.to_i
         
         #人件費情報マスタの内容を勤怠データに保存する
-        d_dutie.day_work_money = m_info_cost.general_price.to_i #日勤金額
-        d_dutie.day_over_money = m_info_cost.general_overtime.to_i #残業金額
-        d_dutie.night_work_money = m_info_cost.night_price.to_i #深夜金額
-        d_dutie.night_over_money = m_info_cost.night_overtime.to_i #深夜残業金額
-        d_dutie.time1_money = m_info_cost.time_price1.to_i #時間１金額
-        d_dutie.time2_money = m_info_cost.time_price2.to_i #時間２金額
-        d_dutie.time3_money = m_info_cost.time_price3.to_i #時間３金額
-        d_dutie.time4_money = m_info_cost.time_price4.to_i #時間４金額
-        d_dutie.time5_money = m_info_cost.time_price5.to_i #時間５金額
-        d_dutie.time6_money = m_info_cost.time_price6.to_i #時間６金額
-        d_dutie.day1_money  = m_info_cost.day_price1.to_i #日数１金額
-        d_dutie.day2_money = m_info_cost.day_price2.to_i #日数２金額
+        d_dutie.day_work_money = day_work_money.to_i #日勤金額
+        d_dutie.day_over_money = day_over_money.to_i #残業金額
+        d_dutie.night_work_money = night_work_money.to_i #深夜金額
+        d_dutie.night_over_money = night_over_money.to_i #深夜残業金額
+        d_dutie.time1_money = time_price1.to_i #時間１金額
+        d_dutie.time2_money = time_price2.to_i #時間２金額
+        d_dutie.time3_money = time_price3.to_i #時間３金額
+        d_dutie.time4_money = time_price4.to_i #時間４金額
+        d_dutie.time5_money = time_price5.to_i #時間５金額
+        d_dutie.time6_money = time_price6.to_i #時間６金額
+        d_dutie.day1_money  = day_price1.to_i #日数１金額
+        d_dutie.day2_money = day_price2.to_i #日数２金額
       end
       
       #人件費合計
