@@ -1,4 +1,4 @@
-<table class='rounded-corner' style="width:98%; white-space: nowrap;">
+<table class='rounded-corner' style="width:99%; white-space: nowrap;">
 	<!-- begin ヘッダ -->
 	<tr>
 		<th>
@@ -29,6 +29,9 @@
 		</th>
 		<th>
 			詳細
+		</th>
+		<th>
+			承認<br />状況
 		</th>
 	</tr>
 	<!-- end ヘッダ -->
@@ -76,6 +79,11 @@
 				<%= link_to image_tag('icon/24_edit.png'), {:action => 'goto_detail', :to_controller => @table, :to_id => @audit.id }, :id => "link_#{ @table }_#{ @audit.id}" %>
 				<!-- UPDATE END 2012.12.06 -->
 			<% end %>
+		</td>
+		<td align="center">
+			<%if not(@audit.nil?) then %>
+    			<%= link_to image_tag('icon/kessai.png'), {:controller => "d_audit_lists", :action => "show", :to_controller => @table, :id => @audit.id}, :class => "modal" %>
+    		<% end %>
 		</td>
 	</tr>
 	<% end %>
