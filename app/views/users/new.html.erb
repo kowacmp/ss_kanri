@@ -126,7 +126,16 @@
 	  	  	<!-- UPDATE END 生年月日型変更 2012.12.06 -->
 	  	  </td>	  
 	  	</tr>
-	  	
+	  	<!-- INSERT BEGIN 2012.12.17 支払区分追加 -->
+	  	<tr>
+	  		<th><%= f.label "支払区分" %></th>
+	  		<td>
+				<%= f.select(:pay_kbn, MCode.find(:all, :conditions => ["kbn = ?",'pay_kbn'], :order => 'code').map do |u|
+	      			["#{u.code}:#{u.code_name}",u.code.to_i]
+	        	end, {:include_blank => "選択して下さい"}) %>
+	  		</td>
+	  	</tr>
+	  	<!-- INSERT END 2012.12.17 支払区分追加 -->
 	  	<tr>
 	  		<td align="left" style="border: none">
 	  			<%= link_to '戻る', users_path, :class => 'return_icon' %>

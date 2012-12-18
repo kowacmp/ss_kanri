@@ -12,9 +12,10 @@ class User < ActiveRecord::Base
   attr_accessible :email, :account,:password, :password_confirmation, :remember_me,
                   :user_name,:user_name_kana,:m_shop_id,:m_authority_id,:user_class,:salary_kbn,
                   :nyusya_date,:birthday, :duty_sort, :org_shop_id, :taisyoku_date, :return_date,
-                  :duty_kbn_sort, :user_rank
+                  :duty_kbn_sort, :user_rank, :pay_kbn
                   # ADD 2012.12.06 人件費出力区分,主店舗id,退職日,返却日
                   # ADD 2012.12.14 出力区分内順,ユーザーランク
+                  # ADD 2012.12.18 支払区分追加
                   
   validates :account,         :presence => {:message => '社員コードは必須です。'}
   validates :user_name,       :presence => {:message => '氏名は必須です。'}
@@ -32,6 +33,9 @@ class User < ActiveRecord::Base
                                           :message => '社員コードは４文字以上１０文字以内で入力してください。'}
   
   validate :duty_kbn_sort_uniqueness? # ADD 2012.12.14 出力区分内順のユニークチェック
+  
+  validate :chk_return_date?
+  validate :chk_pay_kbn?
   
   def email_required?
     false
@@ -56,5 +60,17 @@ private
     end
   end
   # INSERT END 2012.12.14 出力区分内順のユニークチェック
+  
+  def chk_return_date?
+    if not(self.return_date.blank?) and self.taisyoku_date.blank?
+      errors.add :base, "返却日の入力には退職日の入力が必要です。"
+    end
+  end
+  
+  def chk_pay_kbn?
+    if not(self.pay_kbn.blank?) and self.return_date.blank?
+      errors.add :base, "支払区分の入力には返却日の入力が必要です。"
+    end
+  end
   
 end

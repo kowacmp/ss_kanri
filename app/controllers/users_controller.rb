@@ -17,19 +17,24 @@ class UsersController < ApplicationController
     
     if session[:users_select].nil? then
       # 初回選択時
-      select_sql = "select a.*, b.shop_name,"
+      #2012/12/17 ランク、人件費出力区分、区分内順追加表示
+      select_sql = "select a.*, b.shop_name, b.shop_ryaku,"
       select_sql << "           c.code_name as user_class_name, " 
       select_sql << "           d.authority_name, " 
-      select_sql << "           e.code_name as salary_kbn_name " 
+      select_sql << "           e.code_name as salary_kbn_name, " 
+      select_sql << "           f.code_name as duty_sort_name, " 
+      select_sql << "           g.code_name as rank_name " 
       select_sql << " from users a " 
       select_sql << " left join (select * from m_shops) b on a.m_shop_id = b.id "
       select_sql << " left join (select * from m_codes where kbn='user_class') c on a.user_class = cast(c.code as integer) "
       select_sql << " left join (select * from m_authorities) d on a.m_authority_id = d.id "
       select_sql << " left join (select * from m_codes where kbn='salary_kbn') e on a.salary_kbn = cast(e.code as integer) "
-      
+      select_sql << " left join (select * from m_codes where kbn='duty_sort') f on a.duty_sort = cast(f.code as integer) "
+      select_sql << " left join (select * from m_codes where kbn='user_rank') g on a.user_rank = cast(g.code as integer) "
       condition_sql = ""
       condition_sql = " where a.deleted_flg = 0 "
-      @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
+      #@users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
+      @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.duty_sort,a.duty_kbn_sort,a.account")
     else
       # 検索条件の復元時
       params[:select] = session[:users_select]
@@ -160,16 +165,20 @@ class UsersController < ApplicationController
     
     # 検索条件を保存しておく
     session[:users_select] = params[:select]
-    
-    select_sql = "select a.*, b.shop_name,"
+    #2012/12/17 ランク、人件費出力区分、区分内順追加表示
+    select_sql = "select a.*, b.shop_name, shop_ryaku,"
     select_sql << "           c.code_name as user_class_name, " 
     select_sql << "           d.authority_name, " 
-    select_sql << "           e.code_name as salary_kbn_name " 
+    select_sql << "           e.code_name as salary_kbn_name, " 
+    select_sql << "           f.code_name as duty_sort_name, " 
+    select_sql << "           g.code_name as rank_name " 
     select_sql << " from users a " 
     select_sql << " left join (select * from m_shops) b on a.m_shop_id = b.id "
     select_sql << " left join (select * from m_codes where kbn='user_class') c on a.user_class = cast(c.code as integer) "
     select_sql << " left join (select * from m_authorities) d on a.m_authority_id = d.id "
     select_sql << " left join (select * from m_codes where kbn='salary_kbn') e on a.salary_kbn = cast(e.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='duty_sort') f on a.duty_sort = cast(f.code as integer) "
+    select_sql << " left join (select * from m_codes where kbn='user_rank') g on a.user_rank = cast(g.code as integer) "
     
     condition_sql = ""
     
@@ -179,7 +188,8 @@ class UsersController < ApplicationController
     
     if params[:select][:deleted_flg] == "true"
       @check_del_flg = 1
-      @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
+      #@users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
+      @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.duty_sort,a.duty_kbn_sort,a.account")
     else
       @check_del_flg = 0
       if condition_sql == ""
@@ -187,7 +197,8 @@ class UsersController < ApplicationController
       else
         condition_sql = condition_sql + " and a.deleted_flg = 0 "
       end
-      @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
+      #@users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.account")
+      @users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.duty_sort,a.duty_kbn_sort,a.account")
     end
     
     #@users = User.find_by_sql("#{select_sql} #{condition_sql} order by a.id")
