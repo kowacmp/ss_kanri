@@ -47,6 +47,7 @@ function wareki_input(id) {
 		
 	// 西暦のテキストボックスの後に和暦入力欄を追加する
 	$("#" + id).after(html);
+	$("#" + cmb_g).val(wareki_table.length -1); //和暦の初期値は最新の年号へ
 
 	var input_s   = $("#" + id);
 	var input_g   = $("#" + cmb_g);
