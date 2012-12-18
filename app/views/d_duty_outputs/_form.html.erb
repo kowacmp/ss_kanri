@@ -26,7 +26,10 @@
 	</th>
 	<th >
 		退職
-	</th>	
+	</th>
+	<th >
+		返却日<br/>
+		支払形態
 	<th >
 		出勤<br/>日数
 	</th>
@@ -138,6 +141,18 @@
 		<%= ret %>
 		<%= hidden_field list_name, :taisyoku, :value => ret %>	
 	</td>
+	<!-- 返却日 -->
+	<td style="text-align: center; ">
+		<% 
+		if d_duty.return_date.blank?
+			ret = ""
+		else
+			ret = d_duty.return_date[0..3] + "/" + d_duty.return_date[4..5] + "/" + d_duty.return_date[6..7]
+		end 
+		%>
+		<%= ret %>
+		<%= hidden_field list_name, :return_date, :value => ret %>	
+	</td>
 	<!-- 出勤日数 -->
 	<td rowspan="2" style="text-align: center; border-bottom-width: 2px;">
 		<%= d_duty.day %>
@@ -153,7 +168,6 @@
 		<% tanka = get_tanka(d_duty.day_work_money, d_duty.day_work_time) %>
 		<%= number_with_delimiter(tanka) %>
 		<%= hidden_field list_name, :g_price1, :value => number_with_delimiter(tanka) %>
-
 	</td>
 	<!--  残業時間 -->
 	<td rowspan="2" style="text-align: right; border-bottom-width: 2px;" >
@@ -255,6 +269,19 @@
 	</td>
 </tr>
 <tr>
+	<!-- 支払形態 -->
+	<td style="text-align: center; border-bottom-width: 2px;">
+		<%
+			code = MCode.find(:first, :conditions => ["kbn='pay_kbn' and code=?", d_duty.pay_kbn])
+			if code.blank? 
+				ret = ""
+			else
+				ret = code.code_name
+			end
+		%>
+		<%= ret %>
+		<%= hidden_field list_name, :pay_kbn, :value => ret %>
+	</td>
 	<!-- 日勤(2:金額) -->
 	<td style="text-align: right; border-bottom-width: 2px;">
 		<%= number_with_delimiter(d_duty.day_work_money) %>
