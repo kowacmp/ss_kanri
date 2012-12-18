@@ -92,7 +92,34 @@ class DAuditListsController < ApplicationController
     end
       
   end
-
+  
+  def show
+    p "params[:to_controller]=#{params[:to_controller]}"
+    p "params[:id]=#{params[:id]}"
+    d_audit_lists = DAuditCashbox.find_by_sql("select * from #{params[:to_controller]} where id = #{params[:id]}")
+    
+    @d_audit_list = d_audit_lists[0]
+    
+    @approve_names = Array.new
+    
+    5.times {|i|
+      @approve_names[i] = ""
+      
+      if @d_audit_list["approve_id#{i+1}"].blank? or @d_audit_list["approve_id#{i+1}"] == 0
+      else
+        user = User.find(@d_audit_list["approve_id#{i+1}"])
+        m_authoritie = MAuthority.find(user.m_authority_id)
+        @approve_names[i] = m_authoritie.authority_name
+      end
+      
+    }
+    
+    
+    
+    render :layout => 'modal'
+      
+  end
+  
   # AJAX LOCK処理(単体)
   def lock
     
