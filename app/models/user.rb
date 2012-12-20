@@ -47,8 +47,8 @@ private
   def duty_kbn_sort_uniqueness?
     if self.duty_kbn_sort.to_i != 0
       chk_rec = User.find(:first, :conditions => 
-        ["account != ? and m_shop_id = ? and duty_sort = ? and duty_kbn_sort = ?",
-          self.account,
+        ["id != ? and m_shop_id = ? and duty_sort = ? and duty_kbn_sort = ?",
+          self.id,
           self.m_shop_id,
           self.duty_sort,
           self.duty_kbn_sort])

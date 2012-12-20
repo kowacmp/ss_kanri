@@ -30,11 +30,11 @@
     <td class="<%= "#{del_flg}" %>"><%= user.shop_ryaku %></td>
     <td class="<%= "#{del_flg}" %>"><%= user.user_class_name %></td>
     <td class="<%= "#{del_flg}" %>"><%= user.authority_name %></td>
-    <td class="<%= "#{del_flg}" %>"><%= user.salary_kbn_name %></td>
+    <td class="<%= "#{del_flg}" %>" align="center"><%= user.salary_kbn_name %></td>
     <!-- 2012/12/17 ランク、人件費出力区分、区分内順追加表示 -->
-    <td class="<%= "#{del_flg}" %>"><%= user.rank_name %></td>
-    <td class="<%= "#{del_flg}" %>"><%= user.duty_sort_name %></td>
-    <td class="<%= "#{del_flg}" %>"><%= user.duty_kbn_sort %></td>
+    <td class="<%= "#{del_flg}" %>" align="center"><%= user.rank_name %></td>
+    <td class="<%= "#{del_flg}" %>" align="center"><%= user.duty_sort_name %></td>
+    <td class="<%= "#{del_flg}" %>" align="center"><%= user.duty_kbn_sort %></td>
     <td class="icon">
     	<%- if user.deleted_flg == 0 -%>
     	<%= link_to image_tag('icon/24_edit.png'), {:action=>"edit",:id=>user.id,:pass_flg=>0,:return_flg=>1} %>
