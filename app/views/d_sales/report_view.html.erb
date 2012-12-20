@@ -130,7 +130,10 @@
 		</tr>
 		<tr class="total">
 			<td class="title" colspan="2">現金売上</td>
-			<td class="money"><%= num_fmt(d_sale_total[:sale_money].to_i - d_sale_total[:purika_tesuryo].to_i) %></td>
+			<td class="money">
+				<%#2012/12/20 start 現金売上は、プリカ手数料は引かない = num_fmt(d_sale_total[:sale_money].to_i - d_sale_total[:purika_tesuryo].to_i) %>
+				<%= num_fmt(d_sale_total[:sale_money].to_i) %>
+			</td>
 		</tr>
 		<tr class="total">
 			<td class="title" colspan="2">受取手数料</td>
