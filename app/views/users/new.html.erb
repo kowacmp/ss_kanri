@@ -1,3 +1,5 @@
+<%= javascript_include_tag "wareki" %> <!-- 和暦入力機能 -->
+
 <h1>登録</h1>
 
 <%= form_for @user, :url=>{:controller=>'users',:action=> 'create'} do |f| %>
@@ -88,7 +90,7 @@
 	  	<tr>
 	  		<th><%= f.label "ユーザランク" %></th>
 	  		<td>
-			<%= f.select(:user_rank, MCode.find(:all, :conditions => ["kbn = ?",'user_rank'], :order => 'code').map do |u|
+			<%= f.select(:user_rank, MCode.find(:all, :conditions => ["kbn = ?",'user_rank'], :order => 'CAST(code AS integer)').map do |u|
 	      		["#{u.code}:#{u.code_name}",u.code.to_i]
 	        end, {:include_blank => "選択して下さい"}) %>
 	  		</td>
@@ -189,6 +191,12 @@ $(function(){
 		}
 		return true;
 	});
+
+	// 日付の入力を和暦にする
+	wareki_input("user_nyusya_date");
+	wareki_input("user_taisyoku_date");
+	wareki_input("user_return_date");
+	wareki_input("user_birthday");
 
 });
 

@@ -34,6 +34,8 @@ class DDutyOutputsController < ApplicationController
         ,users.account                  --社員コード
         ,users.user_name                --ユーザ名
         ,users.taisyoku_date            --退職日
+        ,users.return_date              --返却日
+        ,users.pay_kbn                  --支払区分
         ,m_info_costs.time_price1
         ,m_info_costs.time_price2
         ,m_info_costs.time_price3
@@ -75,6 +77,8 @@ class DDutyOutputsController < ApplicationController
         ,users.account                  --社員コード
         ,users.user_name                --ユーザ名
         ,users.taisyoku_date
+        ,users.return_date              --返却日
+        ,users.pay_kbn                  --支払区分
         ,m_info_costs.general_price
         ,m_info_costs.general_overtime
         ,m_info_costs.night_price
