@@ -128,6 +128,13 @@
 	<td rowspan="2" style="border-bottom-width: 2px;"> 
 		<%= d_duty.user_name %>
 		<%= hidden_field list_name, :user_name, :value => d_duty.user_name %>
+		<br/>
+		<%
+			user = User.find(d_duty.user_id)
+			ret = "(#{get_user_rank_name(user.user_rank)}/#{get_keika_ym(sprintf('%04d',@year) + sprintf('%0d',@month), user.nyusya_date.to_s[0,6])})"
+		%>
+		<%= ret %>
+		<%= hidden_field list_name, :user_name2, :value => ret %>
 	</td>
 	<!-- 退職 -->
 	<td rowspan="2" style="border-bottom-width: 2px; text-align: center; color: red"> 

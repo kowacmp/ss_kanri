@@ -1,5 +1,7 @@
 module DDutyOutputsHelper
 
+  include DDutiesHelper #get_user_rank_name,get_keika_ym
+
 #明細行計算項目
   
   # 単価取得
