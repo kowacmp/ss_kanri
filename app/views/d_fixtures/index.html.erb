@@ -5,7 +5,7 @@
 		<th>対象店舗</th>
 		<td><%= @shop.shop_cd %>&nbsp;&nbsp;<%= @shop.shop_name %></td> <th>
      入力日</th><td>
-	  <%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 10%>
+	  <%= text_field_tag  "input_ymd" , @input_ymd ,:size => 12%>
 	</td>
 	<th>申請者</th><td><%= current_user.user_name %></td>
 </tr>
@@ -16,6 +16,18 @@
 	    <%= render partial: 'fixture_data'%>
 	</div>
 </p>
+
+<% # 入力済みの日付を赤にするため日付と色情報を作成する
+	fixtures = DFixture.find(:all, :select => "distinct application_date" ,:conditions => ['m_shop_id=?', current_user.m_shop_id])
+	daycolors = ""
+	for fixture in fixtures
+		daycolors += "," if not(daycolors.blank?)
+		daycolors += "'#{ fixture.application_date[0..3] }-#{ fixture.application_date[4..5].to_i }-#{ fixture.application_date[6..7].to_i }' : 'red' "
+	end
+%>
+<script type="text/javascript">
+	$("#input_ymd").datepicker({ dayColors : {<%=raw daycolors%>} });
+</script>
 
 <!-- 読み込む位置が関係しているので、ここに書く -->
 <script type="text/javascript">

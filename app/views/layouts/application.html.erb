@@ -33,8 +33,9 @@
   <!--カレンダー用↓ --> 
   <%= stylesheet_link_tag 'jquery-ui-1.8.22.custom' %>    
   <%= javascript_include_tag "jquery-ui-1.8.22.custom.min" %>
+  <%= javascript_include_tag "jquery.ui.datepicker.js" %>
   <%= javascript_include_tag "jquery.ui.datepicker-ja" %> 
-    
+  
   <!-- ドロップダウンメニュー用↓ -->  
   <%= javascript_include_tag "ddsmoothmenu" %>
   <%= stylesheet_link_tag 'ddsmoothmenu' %>  
@@ -45,6 +46,9 @@
   <!-- ajax中にUI操作を禁止する(jsのみで反映可) -->
   <%= javascript_include_tag "jquery.blockUI.js" %>
   <%= javascript_include_tag "jquery.blockUIajax.js" %>
+  
+  <!-- 和暦入力用 -->
+  <%= javascript_include_tag "jquery.input_wareki.js" %>
   
   <%= csrf_meta_tags %> 
 </head>
