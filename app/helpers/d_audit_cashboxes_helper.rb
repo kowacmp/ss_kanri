@@ -351,18 +351,9 @@ module DAuditCashboxesHelper
   
   # 過不足
   def get_kabusoku_gokei3
-    
-    # UPDATE BEGIN 2012.12.05 実過不足額の計とする
-    # return get_jitu_aridaka_gokei3 - get_kinko_gokei3 
-    ret = 0
-    for i in 1..6
-      ret += get_jitu_kabusoku(i)
-    end
-    for i in 1..7
-      ret += get_jitu_kabusoku2(i)
-    end
-    return ret
-    # UPDATE END 2012.12.05 実過不足額の計とする
+
+     return get_jitu_aridaka_gokei3 - get_kinko_gokei3 
+
   end
 
   # 釣銭固定額読込
