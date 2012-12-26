@@ -119,12 +119,12 @@
 		<td colspan="2" align="center" style="border-bottom-width: 3px" >
 			<% if not(@appraval_id.blank?) %>
 			
-				<%= radio_button_tag("rbtn#{fixture.id}",1,:checked => (fixture.approve_flg == 1) ) %>
+				<%= radio_button_tag("rbtn#{fixture.id}",1, (fixture.approve_flg == 1)) %>
 				<label for='<%="rbtn#{fixture.id}_1"%>'>承認</label>
 				
 				&nbsp;&nbsp;
 				
-				<%= radio_button_tag("rbtn#{fixture.id}",2,:checked => (fixture.approve_flg == 2) ) %>
+				<%= radio_button_tag("rbtn#{fixture.id}",2, (fixture.approve_flg == 2)) %>
 				<label for='<%="rbtn#{fixture.id}_2"%>'>却下</label>
 			
 			<% end %> <!-- if not(@appraval_id.blank?) -->
