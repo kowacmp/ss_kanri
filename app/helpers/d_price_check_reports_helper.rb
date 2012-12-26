@@ -46,4 +46,17 @@ module DPriceCheckReportsHelper
     
   end
   
+  # 小数点1桁まで表示,ただし.0の場合は小数点以下を表示しない
+  def format_minus_gak(par)
+    
+    ret = sprintf("%.1f", par.to_f)
+    
+    if /.0$/ =~ ret
+      ret = sprintf("%.0f", par.to_f)
+    end
+    
+    return ret
+    
+  end
+  
 end

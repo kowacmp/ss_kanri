@@ -210,7 +210,7 @@ $(function () {
 		<% end %>
 	</td>
 	<td>
-		<%= text_field input_name, "minus_gak#{ i }", :value => d_price_check["minus_gak#{ i }"].to_i , :style => "ime-mode:inactive; text-align:right; width:40px;" %>
+		<%= text_field input_name, "minus_gak#{ i }", :value => d_price_check["minus_gak#{ i }"] , :style => "ime-mode:inactive; text-align:right; width:40px;" %>
 	</td>
 	<% end %>
 </tr>
@@ -224,8 +224,7 @@ $(function(){
 		if (isNaN(num)) {
 			$(this).val("");
 		} else {
-			//$(this).val(num.toFixed(1));
-			$(this).val(num.toFixed(0));
+			$(this).val(num.toFixed(1));
 		}
 	});
 });
