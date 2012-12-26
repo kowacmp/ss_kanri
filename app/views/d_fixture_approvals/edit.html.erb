@@ -1,5 +1,23 @@
-<%#= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
-<% i = 0%>
+<%
+	# 承認できるユーザかどうか確認する
+	menu = Menu.find(:all,:conditions => ['uri = ?','d_fixture_approvals']).first
+	m_approval = MApproval.find(:all,:conditions => ['menu_id = ?',menu.id]).first
+
+	unless m_approval.blank?
+		if m_approval.approval_id1 == current_user.id
+			@appraval_id = m_approval.approval_id1
+		elsif m_approval.approval_id2 == current_user.id
+			@appraval_id = m_approval.approval_id2
+		elsif m_approval.approval_id3 == current_user.id
+			@appraval_id = m_approval.approval_id3
+		elsif m_approval.approval_id4 == current_user.id
+			@appraval_id = m_approval.approval_id4
+		elsif m_approval.approval_id5 == current_user.id
+			@appraval_id = m_approval.approval_id5
+		end	
+	end
+%>
+<% i = 0 %>
 <% sum_goukei = 0 %>
 <h1>備品購入申請承認</h1>
 <%= link_to '一覧へ戻る',{:action => 'index',:from_ymd => @from_ymd,:to_ymd => @to_ymd,:shop_kbn => @shop_kbn, :approve_flg=> @approve_flg}, :class => 'return_icon' %>
@@ -16,82 +34,116 @@
 	  </tr>
 </table>
 <table id="rounded-corner" style="width: 98%">
-
+	
 	<tr>
-		<th style="width: 20px">No</th>
+		<th rowspan="2" >No</th>
 		<th>購入先</th>
 		<th>購入品名</th>
-		<th style="width: 40px">個数</th>
-		<th style="width: 50px">単価</th>
+		<th>個数</th>
+		<th>単価</th>
 		<th>金額</th>
-		<th>購入目的</th>
-		<th style="width: 40px">現在庫</th>
-		<th style="width: 70px">購入日</th>
-		<th style="width: 50px">承認</th>
-		<th style="width: 50px">コメント</th>
+		<th>現在庫</th>
+		<th>購入日</th>
 	</tr>
+		
+	<tr>
+		<!-- No -->
+		<th colspan="4" >購入目的</th>
+		<th colspan="2" >
+			承認
+			<% if not(@appraval_id.blank?) %>
+				<!-- 機能未実装
+				<input type="button" value="一括" onclick="return all_check(1);" />
+				<input type="button" value="クリア" onclick="return all_check(0);" />
+				-->
+			<% end %>
+		</th>
+		<th>コメント</th>
+	</tr>
+	
 <% @fixtures.each do |fixture| %>
     <% i = i + 1%>
-    <tr>
-    <td><%= i %></td>
-    <td><%= fixture.buy_shop %></td>
-    <td><%= fixture.buy_item %></td>
-    <td align="right"><%= number_with_delimiter(fixture.buy_num) %></td>
-    <td align="right"><%= number_with_delimiter(fixture.buy_price) %></td>
-    <td align="right"><%= number_with_delimiter(goukei = fixture.buy_num * fixture.buy_price) %>
-    	<% sum_goukei = sum_goukei + goukei %>
-    </td>
-    <td><%= fixture.buy_object %></td>
-    <td align="right"><%= number_with_delimiter(fixture.now_num) %></td>
-    <% if fixture.buy_day == nil or fixture.buy_day == "" %>
-    <td><%= fixture.buy_day %>
-    <% else %>
-    <td><%= fixture.buy_day[0,4] + "/"+ fixture.buy_day[4,2] + "/" + fixture.buy_day[6,2] %></td>
-    <% end %>
+    
+	<tr>
+		<!-- No -->
+		<td rowspan="2" align="center" style="border-bottom-width: 3px">
+			<%= i %>
+		</td>
+		<!-- 購入先 -->
+		<td>
+			<%= fixture.buy_shop %>
+		</td>
+		<!-- 購入品名 -->
+		<td>
+			<%= fixture.buy_item %>
+		</td>
+		<!-- 個数 -->
+		<td align="right">
+			<%= number_with_delimiter(fixture.buy_num) %>
+		</td>
+		<!-- 単価 -->
+		<td align="right">
+			<%= number_with_delimiter(fixture.buy_price) %>
+		</td>
+		<!-- 金額 -->
+		<td align="right">
+			<%= number_with_delimiter(goukei = fixture.buy_num * fixture.buy_price) %>
+			<% sum_goukei = sum_goukei + goukei %>
+		</td>
+		<!-- 現在庫 -->
+		<td align="right">
+			<%= number_with_delimiter(fixture.now_num) %>
+		</td>
+		<!-- 購入日 -->
+		<td align="center">
+			<%
+				buy_day = fixture.buy_day
+				if buy_day.blank? 
+					buy_day = ""
+				else
+					buy_day = buy_day[0,4] + "/"+ buy_day[4,2] + "/" + buy_day[6,2]
+				end
+			%>
+			<%= buy_day %>
+		</td>
+	</tr>
 
-    <% menu = Menu.find(:all,:conditions => ['uri = ?','d_fixture_approvals']).first %>    
-    <% m_approval = MApproval.find(:all,:conditions => ['menu_id = ?',menu.id]).first %>
-
-    <% unless m_approval == nil %> 
-      <% if m_approval.approval_id1 == current_user.id %>
-        <% @appraval_id = m_approval.approval_id1 %>
-      <% elsif m_approval.approval_id2 == current_user.id %>
-        <% @appraval_id = m_approval.approval_id2 %>
-      <% elsif m_approval.approval_id3 == current_user.id %>
-        <% @appraval_id = m_approval.approval_id3 %>
-      <% elsif m_approval.approval_id4 == current_user.id %>
-        <% @appraval_id = m_approval.approval_id4 %>
-      <% elsif m_approval.approval_id5 == current_user.id %>
-        <% @appraval_id = m_approval.approval_id5 %> 
-      <% end %>
-    <% end %>
-    <% unless @appraval_id == nil or @appraval_id == ""%>
-	    <td><% if fixture.approve_flg == 1 %>
-	    	  <%= radio_button_tag("rbtn#{fixture.id}",1,:checked => true) %>
-	    	<% else %>
-	    	  <%= radio_button_tag("rbtn#{fixture.id}",1) %>
-	    	<% end %>
-	    	承認
-	    	<% if fixture.approve_flg == 2 %>
-	    	  <%= radio_button_tag("rbtn#{fixture.id}",2,:checked => true) %>
-	    	<% else %>
-	    	  <%= radio_button_tag("rbtn#{fixture.id}",2) %>
-	    	<% end %>
-	    	却下
-	    </td>
-	    <td align="center"><%= link_to '入力',{:action => 'entry_comment',:id => fixture.id},:class => 'modal' %></td>
-    <% else %>
-	    <td></td>
-	    <td></td>
-    <% end %> 
-    </tr>
+	<tr>
+		<!-- No -->
+		<!-- 購入目的 -->
+		<td colspan="4" style="border-bottom-width: 3px">
+			<%= fixture.buy_object %>
+		</td>
+		
+		<!-- 承認 -->
+		<td colspan="2" align="center" style="border-bottom-width: 3px" >
+			<% if not(@appraval_id.blank?) %>
+			
+				<%= radio_button_tag("rbtn#{fixture.id}",1,:checked => (fixture.approve_flg == 1) ) %>
+				<label for='<%="rbtn#{fixture.id}_1"%>'>承認</label>
+				
+				&nbsp;&nbsp;
+				
+				<%= radio_button_tag("rbtn#{fixture.id}",2,:checked => (fixture.approve_flg == 2) ) %>
+				<label for='<%="rbtn#{fixture.id}_2"%>'>却下</label>
+			
+			<% end %> <!-- if not(@appraval_id.blank?) -->
+		</td>
+		<!-- コメント-->
+		<td align="center" style="border-bottom-width: 3px">
+			<% if not(@appraval_id.blank?) %>
+				<%= link_to '入力',{:action => 'entry_comment',:id => fixture.id},:class => 'modal' %>
+			<% end %>
+		</td>
+	</tr>
 <% end %>
   <tr>
   	<th colspan="5">購入合計額</th>
   	<td align="right"><%= number_with_delimiter(sum_goukei) %></td>
-  	<td colspan="5"></td>
+  	<td colspan="2"></td>
   </tr>
 </table>
+
 <div id="message"></div>
 <%= link_to '一覧へ戻る',{:action => 'index',:from_ymd => @from_ymd,:to_ymd => @to_ymd,:shop_kbn => @shop_kbn, :approve_flg=> @approve_flg}, :class => 'return_icon' %>
 <script type="text/javascript">
@@ -104,4 +156,3 @@ jQuery(function() {
 <% end %>
 });
 </script>
-
