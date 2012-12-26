@@ -336,10 +336,13 @@ module DAuditCashboxesHelper
     
     for i in 1..6
       gokei += get_kingaku(i)
+      gokei += get_tatekae_kei(i) # ADD 2012.12.26 立替未処理額を追加
+      gokei -= @d_audit_cashbox["cashbox#{ i }_yugai"].to_i # ADD 2012.12.26 当日油外売上を引く
     end 
 
     for i in 1..7 
       gokei += nvl(@d_audit_cashbox["sum#{ i }_money"], 0).to_i
+      gokei += get_tatekae_kei2(i) # ADD 2012.12.26 立替未処理額を追加
     end
 
     return gokei
