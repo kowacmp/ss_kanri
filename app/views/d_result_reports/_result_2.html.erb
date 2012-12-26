@@ -31,7 +31,7 @@
 <table id="report_view_table" class="rounded-corner">
 	<thead>
 	<tr>
-		<th style="min-width: 200px">店舗</th>
+		<th style="min-width: 150px">店舗</th>
 		<th style="min-width: 100px"><%= @chousei_label %></th>
 		<th style="min-width: 100px">油外目標</th>
 		<th style="min-width: 100px">油外ペ</th>
@@ -141,72 +141,140 @@
 	  		
     <% end %>
     
-    <tr>
+    <tr style="border-top:solid 2px #0000CD;">
 		<th>日計</th>
-		<td class="input_no"></td>
-		<td class="input_no"></td>
-		<td class="input_no"></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@syaken_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@kyuyu_purika_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@sensya_purika_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@sp_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@sc_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@taiyaw_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@sp_plus_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@atf_total.round(2)) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@kousen_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@bt_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@bankin_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@waiper_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@mobil1_total.round(2)) %></td>
-	  	<td class="input_no"></td>
+		<!-- 2012/12/26 本社所属のみ表示 -->
+		<% if @shop_info.id == 1 %>
+			<td class="input_no"></td>
+			<td class="input_no"></td>
+			<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@syaken_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@kyuyu_purika_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@sensya_purika_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@sp_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@sc_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@taiyaw_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@sp_plus_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@atf_total.round(2)) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@kousen_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@bt_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@bankin_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@waiper_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@mobil1_total.round(2)) %></td>
+		  	<td class="input_no"></td>
+		  <% else %>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+		<% end %>
 	</tr>
 	
 	<tr>
 		<th>累計</th>
-		<td class="input_no"><%= number_with_delimiter(@r_chousei_total) %></td>
-		<td class="input_no"></td>
-		<td class="input_no"></td>
-		<td class="input_no"></td>
-		<td class="input_no"></td>
-		<td class="input_no"><%= number_with_delimiter(@r_syaken_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_kyuyu_purika_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_sensya_purika_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_sp_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_sc_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_taiyaw_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_sp_plus_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_atf_total.round(2)) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_kousen_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_bt_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_bankin_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_waiper_total) %></td>
-	  	<td class="input_no"></td>
-	  	<td class="input_no"><%= number_with_delimiter(@r_mobil1_total.round(2)) %></td>
+		<!-- 2012/12/26 本社所属のみ表示 -->
+		<% if @shop_info.id == 1 %>
+			<td class="input_no"><%= number_with_delimiter(@r_chousei_total) %></td>
+			<td class="input_no"></td>
+			<td class="input_no"></td>
+			<td class="input_no"></td>
+			<td class="input_no"></td>
+			<td class="input_no"><%= number_with_delimiter(@r_syaken_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_kyuyu_purika_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_sensya_purika_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_sp_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_sc_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_taiyaw_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_sp_plus_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_atf_total.round(2)) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_kousen_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_bt_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_bankin_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_waiper_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_mobil1_total.round(2)) %></td>
+		  <% else %>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+		<% end %>
 	</tr>
     </tbody>
     <%= hidden_field_tag 'select_kbn',@select_kbn %>
@@ -222,8 +290,8 @@
 
 <script>
 $(function () {
-	//$("#report_view_table").tablefix({width:900,height:500,fixCols:1,fixRows:1});
-	$("#page").css("width", "4000px");
+	$("#report_view_table").tablefix({width:900,height:500,fixCols:1,fixRows:1});
+	//$("#page").css("width", "4000px");
 });
 </script>
 

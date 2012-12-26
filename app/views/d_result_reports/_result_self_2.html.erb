@@ -1,3 +1,47 @@
+<!-- 2012/12/26 集計表示　-->
+<!-- 洗車 -->
+<% @sensya_total = 0 %>
+<% @r_sensya_total = 0 %>
+<!-- 洗車ﾌﾟﾘｶ -->
+<% @sensya_purika_total = 0 %>
+<% @r_sensya_purika_total = 0 %>
+<!-- ﾑｰﾄﾝﾊﾟｽ -->
+<% @muton_total = 0 %>
+<% @r_muton_total = 0 %>
+<!-- SPﾌﾟﾗｽ -->
+<% @sp_plus_total = 0 %>
+<% @r_sp_plus_total = 0 %>
+<!-- ﾀｲﾔW -->
+<% @taiyaw_total = 0 %>
+<% @r_taiyaw_total = 0 %>
+<!-- SC -->
+<% @sc_total = 0 %>
+<% @r_sc_total = 0 %>
+<!-- SP -->
+<% @sp_total = 0 %>
+<% @r_sp_total = 0 %>
+<!-- 洗用品 -->
+<% @r_wash_item_total = 0 %>
+<!-- ｽﾛｯﾄ -->
+<% @r_game_total = 0 %>
+<!-- ﾍﾙｽ -->
+<% @r_health_total = 0 %>
+<!-- ﾈｯﾄ -->
+<% @r_net_total = 0 %>
+<!-- 充電器 -->
+<% @r_charge_total = 0 %>
+<!-- ｵｿﾞﾝ -->
+<% @r_ozone_total = 0 %>
+
+<% @kyuyu_purika_total = 0 %><% @sensya_purika_total = 0 %>
+<% @sp_total = 0 %><% @sc_total = 0 %><% @taiyaw_total = 0 %>
+<% @sp_plus_total = 0 %><% @atf_total = 0 %><% @kousen_total = 0 %>
+<% @bt_total = 0 %><% @bankin_total = 0 %><% @waiper_total = 0 %><% @mobil1_total = 0 %>
+
+<% @r_syaken_total = 0 %><% @r_kyuyu_purika_total = 0 %><% @r_sensya_purika_total = 0 %>
+<% @r_sp_total = 0 %><% @r_sc_total = 0 %><% @r_taiyaw_total = 0 %>
+<% @r_sp_plus_total = 0 %><% @r_atf_total = 0 %><% @r_kousen_total = 0 %>
+<% @r_bt_total = 0 %><% @r_bankin_total = 0 %><% @r_waiper_total = 0 %><% @r_mobil1_total = 0 %>
 
 <div style="width: 900px">
 <span style="float:right">
@@ -18,7 +62,7 @@
 <table id="report_view_table" class="rounded-corner">
 	<thead>
 	<tr>
-		<th style="min-width: 200px">店舗</th>
+		<th style="min-width: 150px">店舗</th>
 		<th style="min-width: 100px"><%= @sensya_label %></th>
 		<th style="min-width: 100px">累計</th>
 		<th style="min-width: 100px">ペース</th>
@@ -83,9 +127,141 @@
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_charge) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_ozone) %></td>
 	  </tr>
+	  <!-- 2012/12/26 集計　-->
+	  <% @sensya_total = @sensya_total + m_shop.sensya.to_i %>
+	  <% @sensya_purika_total = @sensya_purika_total + m_shop.sensya_purika.to_i %>
+	  <% @muton_total = @muton_total + m_shop.muton_aim.to_i %>
+	  <% @sp_plus_total = @sp_plus_total + m_shop.sp_plus_aim.to_i %>
+	  <% @taiyaw_total = @taiyaw_total + m_shop.taiyaw_aim.to_i %>
+	  <% @sc_total = @sc_total + m_shop.sc_aim.to_i %>
+	  <% @sp_total = @sp_total + m_shop.sp_aim.to_i %>
+	  
+	  <% @r_sensya_total = @r_sensya_total + m_shop.r_sensya.to_i %>
+	  <% @r_sensya_purika_total = @r_sensya_purika_total + m_shop.r_sensya_purika.to_i %>
+	  <% @r_muton_total = @r_muton_total + m_shop.r_muton.to_i %>
+	  <% @r_sp_plus_total = @r_sp_plus_total + m_shop.r_sp_plus.to_i %>
+	  <% @r_taiyaw_total = @r_taiyaw_total + m_shop.r_taiyaw.to_i %>
+	  <% @r_sc_total = @r_sc_total + m_shop.r_sc.to_i %>
+	  <% @r_sp_total = @r_sp_total + m_shop.r_sp.to_i %>
+	  <% @r_wash_item_total = @r_wash_item_total + m_shop.r_wash_item.to_i %>
+	  <% @r_game_total = @r_game_total + m_shop.r_game.to_i %>
+	  <% @r_health_total = @r_health_total + m_shop.r_health.to_i %>
+	  <% @r_net_total = @r_net_total + m_shop.r_net.to_i %>
+	  <% @r_charge_total = @r_charge_total + m_shop.r_charge.to_i %>
+	  <% @r_ozone_total = @r_ozone_total + m_shop.r_ozone.to_i %>
 	  		
     <% end %>
-    
+	  <!-- 2012/12/26 集計表示　-->
+    <tr style="border-top:solid 2px #0000CD;">
+		<th>日計</th>
+		<!-- 本社所属のみ表示 -->
+		<% if @shop_info.id == 1 %>
+		  	<td class="input_no"><%= number_with_delimiter(@sensya_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@sensya_purika_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@muton_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@sp_plus_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@taiyaw_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@sc_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@sp_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  <% else %>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+		<% end %>
+	</tr>
+	
+	<tr>
+		<th>累計</th>
+		<!-- 本社所属のみ表示 -->
+		<% if @shop_info.id == 1 %>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_sensya_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_sensya_purika_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_muton_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_sp_plus_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_taiyaw_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_sc_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_sp_total) %></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_wash_item_total) %></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_game_total) %></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_health_total) %></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_net_total) %></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_charge_total) %></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_ozone_total) %></td>
+		  <% else %>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+		<% end %>
+	</tr>
     </tbody>
     <%= hidden_field_tag 'select_kbn',@select_kbn %>
 	<%= hidden_field_tag 'input_ymd_s',@input_ymd_s %>
@@ -100,7 +276,7 @@
 
 <script>
 $(function () {
-	//$("#report_view_table").tablefix({width:900,height:500,fixCols:1,fixRows:1});
-	$("#page").css("width", "3500px");
+	$("#report_view_table").tablefix({width:900,height:500,fixCols:1,fixRows:1});
+	//$("#page").css("width", "3500px");
 });
 </script>

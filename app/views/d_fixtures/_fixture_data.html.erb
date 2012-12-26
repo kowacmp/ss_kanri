@@ -3,14 +3,14 @@
 <%= form_tag({:action => 'update'}) do %>
 <table id="rounded-corner">
 	<tr>
-		<th rowspan="2" style="min-width: 17px">No</th>
-		<th  style="min-width: 150px">購入先</th>
-		<th  style="min-width: 220px">購入品名</th>
-		<th  style="min-width: 70px">個数</th>
-		<th  style="min-width: 70px">単価</th>
-		<th  style="min-width: 90px">金額</th>
-		<th  style="min-width: 70px">現在庫</th>
-		<th  style="min-width: 80px">購入日</th>
+		<th rowspan="2" style="min-width: 17px" align="center">No</th>
+		<th style="min-width: 150px">購入先</th>
+		<th style="min-width: 220px">購入品名</th>
+		<th style="min-width: 70px">個数</th>
+		<th style="min-width: 70px">単価</th>
+		<th style="min-width: 90px">金額</th>
+		<th style="min-width: 70px">現在庫</th>
+		<th style="min-width: 80px">購入日</th>
 	</tr>
 
 	<tr>
@@ -25,7 +25,7 @@
 	<% end %><!-- each -->
 	
 	
-	<% (10 - i).times do |j| %>
+	<% (20 - i).times do |j| %>
 	  <%# if j == 0 then j = j + i end %>
 	      <% j = j + i %>
 	      <%= render partial: 'empty_data', :locals => {:i => j}%>

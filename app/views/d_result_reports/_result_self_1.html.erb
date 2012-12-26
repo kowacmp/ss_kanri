@@ -1,3 +1,19 @@
+<!-- 2012/12/26 集計表示　-->
+<!-- ﾓｰｶﾞｽ-->
+<% @mo_gas_total = 0 %>
+<% @r_mo_gas_total = 0 %>
+<!-- 軽油-->
+<% @keiyu_total = 0 %>
+<% @r_keiyu_total = 0 %>
+<!-- 灯油-->
+<% @touyu_total = 0 %>
+<% @r_touyu_total = 0 %>
+<!-- GP-->
+<% @kyuyu_total = 0 %>
+<% @r_kyuyu_total = 0 %>
+<!-- CB-->
+<% @cb_total = 0 %>
+<% @r_cb_total = 0 %>
 
 <div style="width: 900px">
 <span style="float:right">
@@ -19,7 +35,7 @@
 <table id="report_view_table" class="rounded-corner">
 	<thead>
 	<tr>
-		<th style="min-width: 200px">店舗</th>
+		<th style="min-width: 150px">店舗</th>
 		<th style="min-width: 100px">モーガス</th>
 		<th style="min-width: 100px">Rモーガス</th>
 		<th style="min-width: 100px">モペース</th>
@@ -89,9 +105,110 @@
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.cb) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_cb) %></td>
 	  </tr>
+	<!-- 2012/12/26 集計表示　-->
+	  <% @mo_gas_total = @mo_gas_total + m_shop.mo_gas.to_f.round(1) %>
+	  <% @keiyu_total = @keiyu_total + m_shop.keiyu.to_f.round(1) %>
+	  <% @touyu_total = @touyu_total + m_shop.touyu.to_f.round(1) %>
+	  <% @kyuyu_total = @kyuyu_total + m_shop.kyuyu_purika.to_i %>
+	  <% @cb_total = @cb_total + m_shop.cb.to_i %>
+
+	  <% @r_mo_gas_total = @r_mo_gas_total + m_shop.r_mo_gas.to_f.round(1) %>
+	  <% @r_keiyu_total = @r_keiyu_total + m_shop.r_keiyu.to_f.round(1) %>
+	  <% @r_touyu_total = @r_touyu_total + m_shop.r_touyu.to_f.round(1) %>
+	  <% @r_kyuyu_total = @r_kyuyu_total + m_shop.r_kyuyu_purika.to_i %>
+	  <% @r_cb_total = @r_cb_total + m_shop.r_cb.to_i %>
+
 	  
     <% end %>
     </tbody>
+<!-- 2012/12/26 集計表示　-->
+    <tr style="border-top:solid 2px #0000CD;">
+		<th>日計</th>
+		<!-- 本社所属のみ表示 -->
+		<% if @shop_info.id == 1 %>
+			<td class="input_no"><%= number_with_delimiter(@mo_gas_total.round(1)) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@keiyu_total.round(1)) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@touyu_total.round(1)) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@kyuyu_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@cb_total) %></td>
+		  	<td class="input_no"></td>
+		  <% else %>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+		<% end %>
+	</tr>
+	
+	<tr>
+		<th>累計</th>
+		<!-- 本社所属のみ表示 -->
+		<% if @shop_info.id == 1 %>
+		  	<td class="input_no"></td>
+			<td class="input_no"><%= number_with_delimiter(@r_mo_gas_total.round(1)) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_keiyu_total.round(1)) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_touyu_total.round(1)) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_kyuyu_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_cb_total) %></td>
+		  <% else %>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+			<td ></td>
+		<% end %>
+	</tr>
     <%= hidden_field_tag 'select_kbn',@select_kbn %>
 	<%= hidden_field_tag 'input_ymd_s',@input_ymd_s %>
 	<%= hidden_field_tag 'input_ymd_e',@input_ymd_e %>
@@ -105,7 +222,7 @@
 
 <script>
 $(function () {
-	//$("#report_view_table").tablefix({width:900,height:500,fixCols:1,fixRows:1});
-	$("#page").css("width", "2800px");
+	$("#report_view_table").tablefix({width:900,height:500,fixCols:1,fixRows:1});
+	//$("#page").css("width", "2800px");
 });
 </script>

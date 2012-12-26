@@ -24,7 +24,7 @@ class DFixturesController < ApplicationController
     @input_ymd = params[:input_ymd]
     input_ymd_s = @input_ymd.delete("/")
     DFixture.transaction do
-      10.times do |i|
+      20.times do |i|
         if params["fixture_id_#{i+1}"] == nil or params["fixture_id_#{i+1}"] == ""
           fixture = DFixture.new
         else

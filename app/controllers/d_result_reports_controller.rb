@@ -101,7 +101,7 @@ class DResultReportsController < ApplicationController
   end
 
   private
-  
+  #油外型実績表1
   def print_result_1_report(datas,input_ymd_e)
     
     mo_gas_total = 0
@@ -239,7 +239,6 @@ class DResultReportsController < ApplicationController
   
   
     #タイトルセット
-    #  pdf_title = "SS別地下タンク過不足表（日計）_#{@input_ymd_s}.pdf"
     pdf_title = "#{@title_label}実績表1.pdf"
     
     ua = request.env["HTTP_USER_AGENT"]
@@ -250,7 +249,7 @@ class DResultReportsController < ApplicationController
                                :type        => 'application/pdf',
                                :disposition => 'attachment'    
   end
-  
+  #油外型実績表2
   def print_result_2_report(datas,input_ymd_e)
     @day_e = input_ymd_e[6,2].to_i
     @month_last_day = Date.new(input_ymd_e[0,4].to_i,input_ymd_e[4,2].to_i).end_of_month.day.to_i
@@ -431,7 +430,6 @@ class DResultReportsController < ApplicationController
   
   
     #タイトルセット
-    #  pdf_title = "SS別地下タンク過不足表（日計）_#{@input_ymd_s}.pdf"
     pdf_title = "#{@title_label}実績表2.pdf"
     
     ua = request.env["HTTP_USER_AGENT"]
@@ -442,15 +440,49 @@ class DResultReportsController < ApplicationController
                                :type        => 'application/pdf',
                                :disposition => 'attachment'    
   end
-  
+  #洗車型実績表1
   def print_result_self_1_report(datas,input_ymd_e)
+#2012/12/26 集計表示
+    #モーガス
+    mo_gas_total = 0
+    r_mo_gas_total = 0
+    #軽油
+    keiyu_total = 0
+    r_keiyu_total = 0
+    #灯油
+    touyu_total = 0
+    r_touyu_total = 0
+    #GP
+    kyuyu_purika_total = 0
+    r_kyuyu_purika_total = 0
+    #CB
+    cb_total = 0
+    r_cb_total = 0
+
+    
     @day_e = input_ymd_e[6,2].to_i
     @month_last_day = Date.new(input_ymd_e[0,4].to_i,input_ymd_e[4,2].to_i).end_of_month.day.to_i
     
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_result_self_1_report.tlf')
-    
+#2012/12/26 集計表示
+    report.layout.config.list(:list) do
+      # フッターに合計をセット.
+      events.on :footer_insert do |e|
+        e.section.item(:mo_gas_total).value(mo_gas_total.round(1))
+        e.section.item(:r_mo_gas_total).value(r_mo_gas_total.round(1))
+        e.section.item(:keiyu_total).value(keiyu_total.round(1))
+        e.section.item(:r_keiyu_total).value(r_keiyu_total.round(1))
+        e.section.item(:touyu_total).value(touyu_total.round(1))
+        e.section.item(:r_touyu_total).value(r_touyu_total.round(1))
+        e.section.item(:kyuyu_purika_total).value(kyuyu_purika_total)
+        e.section.item(:r_kyuyu_purika_total).value(r_kyuyu_purika_total)
+        e.section.item(:cb_total).value(cb_total)
+        e.section.item(:r_cb_total).value(r_cb_total)
+      end
+    end
+
     taisyo_ymd = input_ymd_e[0,4] + "-" + input_ymd_e[4,2] + "-" + input_ymd_e[6,2] 
-    
+
     #ページ番号、タイトル、作成日セット  
     report.events.on :page_create do |e|
       e.page.item(:title).value("#{@title_label}実績表1")
@@ -491,7 +523,6 @@ class DResultReportsController < ApplicationController
 
         row.item(:mo_gas).value(data.mo_gas)
         row.item(:r_mo_gas).value(data.r_mo_gas)
-        
         if data.r_mo_gas
           @mo_gas_pace = (data.r_mo_gas.to_f / @day_e * @month_last_day).round(0)
         else
@@ -545,7 +576,17 @@ class DResultReportsController < ApplicationController
         
         row.item(:cb).value(data.cb)
         row.item(:r_cb).value(data.r_cb)
-        
+        #2012/12/26 集計表示
+        mo_gas_total = mo_gas_total + data.mo_gas.to_f.round(1)
+        r_mo_gas_total = r_mo_gas_total + data.r_mo_gas.to_f.round(1)
+        keiyu_total = keiyu_total + data.keiyu.to_f.round(1)
+        r_keiyu_total = r_keiyu_total + data.r_keiyu.to_f.round(1)
+        touyu_total = touyu_total + data.touyu.to_f.round(1)
+        r_touyu_total = r_touyu_total + data.r_touyu.to_f.round(1)
+        kyuyu_purika_total = kyuyu_purika_total + data.kyuyu_purika.to_i
+        r_kyuyu_purika_total = r_kyuyu_purika_total + data.r_kyuyu_purika.to_i
+        cb_total = cb_total + data.cb.to_i
+        r_cb_total = r_cb_total + data.r_cb.to_i
       end #add_row
     end # datas.each
   
@@ -561,11 +602,73 @@ class DResultReportsController < ApplicationController
                                :type        => 'application/pdf',
                                :disposition => 'attachment'    
   end
-  
+  #油外型実績表2
   def print_result_self_2_report(datas,input_ymd_e)
+#2012/12/26 集計表示
+#洗車
+sensya_total = 0
+r_sensya_total = 0
+#洗車ﾌﾟﾘｶ
+sensya_purika_total = 0
+r_sensya_purika_total = 0
+#ﾑｰﾄﾝﾊﾟｽ
+muton_total = 0
+r_muton_total = 0
+#SPﾌﾟﾗｽ
+sp_plus_total = 0
+r_sp_plus_total = 0
+#ﾀｲﾔW
+taiyaw_total = 0
+r_taiyaw_total = 0
+#SC
+sc_total = 0
+r_sc_total = 0
+#SP
+sp_total = 0
+r_sp_total = 0
+#洗用品
+r_wash_item_total = 0
+#ｽﾛｯﾄ
+r_game_total = 0
+#ﾍﾙｽ
+r_health_total = 0
+#ﾈｯﾄ
+r_net_total = 0
+#充電器
+r_charge_total = 0
+#ｵｿﾞﾝ
+r_ozone_total = 0
+
+
     @day_e = input_ymd_e[6,2].to_i
     @month_last_day = Date.new(input_ymd_e[0,4].to_i,input_ymd_e[4,2].to_i).end_of_month.day.to_i
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_result_self_2_report.tlf')
+     #2012/12/26 集計表示
+    report.layout.config.list(:list) do
+      # フッターに合計をセット.
+      events.on :footer_insert do |e|
+        e.section.item(:sensya_total).value(sensya_total)
+        e.section.item(:r_sensya_total).value(r_sensya_total)
+        e.section.item(:sensya_purika_total).value(sensya_purika_total)
+        e.section.item(:r_sensya_purika_total).value(r_sensya_purika_total)
+        e.section.item(:muton_total).value(muton_total)
+        e.section.item(:r_muton_total).value(r_muton_total)
+        e.section.item(:sp_plus_total).value(sp_plus_total)
+        e.section.item(:r_sp_plus_total).value(r_sp_plus_total)
+        e.section.item(:taiyaw_total).value(taiyaw_total)
+        e.section.item(:r_taiyaw_total).value(r_taiyaw_total)
+        e.section.item(:sc_total).value(sc_total)
+        e.section.item(:r_sc_total).value(r_sc_total)
+        e.section.item(:sp_total).value(sp_total)
+        e.section.item(:r_sp_total).value(r_sp_total)
+        e.section.item(:r_wash_item_total).value(r_wash_item_total)
+        e.section.item(:r_game_total).value(r_game_total)
+        e.section.item(:r_health_total).value(r_health_total)
+        e.section.item(:r_net_total).value(r_net_total)
+        e.section.item(:r_charge_total).value(r_charge_total)
+        e.section.item(:r_ozone_total).value(r_ozone_total)
+      end
+    end
 
     taisyo_ymd = input_ymd_e[0,4] + "-" + input_ymd_e[4,2] + "-" + input_ymd_e[6,2] 
 
@@ -647,6 +750,29 @@ class DResultReportsController < ApplicationController
         row.item(:r_charge).value(data.r_charge)
         row.item(:r_ozone).value(data.r_ozone)
         
+        #2012/12/26 集計表示
+        sensya_total = sensya_total + data.sensya.to_i
+        sensya_purika_total = sensya_purika_total + data.sensya_purika.to_i
+        muton_total = muton_total + data.muton_aim.to_i
+        sp_plus_total = sp_plus_total + data.sp_plus_aim.to_i
+        taiyaw_total = taiyaw_total + data.taiyaw_aim.to_i
+        sc_total = sc_total + data.sc_aim.to_i
+        sp_total = sp_total + data.sp_aim.to_i
+        
+        r_sensya_total = r_sensya_total + data.r_sensya.to_i
+        r_sensya_purika_total = r_sensya_purika_total + data.r_sensya_purika.to_i
+        r_muton_total = r_muton_total + data.r_muton.to_i
+        r_sp_plus_total = r_sp_plus_total + data.r_sp_plus.to_i
+        r_taiyaw_total = r_taiyaw_total + data.r_taiyaw.to_i
+        r_sc_total = r_sc_total + data.r_sc.to_i
+        r_sp_total = r_sp_total + data.r_sp.to_i
+        r_wash_item_total = r_wash_item_total + data.r_wash_item.to_i
+        r_game_total = r_game_total + data.r_game.to_i
+        r_health_total = r_health_total + data.r_health.to_i
+        r_net_total = r_net_total + data.r_net.to_i
+        r_charge_total = r_charge_total + data.r_charge.to_i
+        r_ozone_total = r_ozone_total + data.r_ozone.to_i
+
       end #add_row
     end # datas.each
   
