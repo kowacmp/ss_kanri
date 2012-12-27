@@ -93,7 +93,8 @@
 	<tbody>
 	<% @m_shops.each do |m_shop| %>
 	  <tr>
-	  	<td><%= m_shop.shop_cd.to_s + ' ' + m_shop.shop_ryaku %></td>
+	  	<th style="text-align: left;">
+	  		<%= m_shop.shop_cd.to_s + ' ' + m_shop.shop_ryaku %></th>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.sensya) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_sensya) %></td>
 	  	<td class="input_no">
