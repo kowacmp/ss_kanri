@@ -127,30 +127,32 @@ class DResultReportsController < ApplicationController
     
     
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_result_1_report.tlf')
-
-    report.layout.config.list(:list) do
-      # フッターに合計をセット.
-      events.on :footer_insert do |e|
-        e.section.item(:mo_gas_total).value(mo_gas_total.round(1))
-        e.section.item(:r_mo_gas_total).value(r_mo_gas_total.round(1))
-        e.section.item(:keiyu_total).value(keiyu_total.round(1))
-        e.section.item(:r_keiyu_total).value(r_keiyu_total.round(1))
-        e.section.item(:touyu_total).value(touyu_total.round(1))
-        e.section.item(:r_touyu_total).value(r_touyu_total.round(1))
-        e.section.item(:koua_total).value(koua_total.round(2))
-        e.section.item(:r_koua_total).value(r_koua_total.round(2))
-        e.section.item(:buyou_total).value(buyou_total)
-        e.section.item(:r_buyou_total).value(r_buyou_total)
-        e.section.item(:tokusei_total).value(tokusei_total)
-        e.section.item(:r_tokusei_total).value(r_tokusei_total)
-        e.section.item(:sensya_total).value(sensya_total)
-        e.section.item(:r_sensya_total).value(r_sensya_total)
-        e.section.item(:koutin_total).value(koutin_total)
-        e.section.item(:r_koutin_total).value(r_koutin_total)
-        e.section.item(:taiya_total).value(taiya_total)
-        e.section.item(:r_taiya_total).value(r_taiya_total)
-        e.section.item(:arari_total).value(arari_total)
-        e.section.item(:r_arari_total).value(r_arari_total)
+    #2012/12/27 本社以外は日計/累計無
+    if @shop_info.id == 1
+      report.layout.config.list(:list) do
+        # フッターに合計をセット.
+        events.on :footer_insert do |e|
+          e.section.item(:mo_gas_total).value(mo_gas_total.round(1))
+          e.section.item(:r_mo_gas_total).value(r_mo_gas_total.round(1))
+          e.section.item(:keiyu_total).value(keiyu_total.round(1))
+          e.section.item(:r_keiyu_total).value(r_keiyu_total.round(1))
+          e.section.item(:touyu_total).value(touyu_total.round(1))
+          e.section.item(:r_touyu_total).value(r_touyu_total.round(1))
+          e.section.item(:koua_total).value(koua_total.round(2))
+          e.section.item(:r_koua_total).value(r_koua_total.round(2))
+          e.section.item(:buyou_total).value(buyou_total)
+          e.section.item(:r_buyou_total).value(r_buyou_total)
+          e.section.item(:tokusei_total).value(tokusei_total)
+          e.section.item(:r_tokusei_total).value(r_tokusei_total)
+          e.section.item(:sensya_total).value(sensya_total)
+          e.section.item(:r_sensya_total).value(r_sensya_total)
+          e.section.item(:koutin_total).value(koutin_total)
+          e.section.item(:r_koutin_total).value(r_koutin_total)
+          e.section.item(:taiya_total).value(taiya_total)
+          e.section.item(:r_taiya_total).value(r_taiya_total)
+          e.section.item(:arari_total).value(arari_total)
+          e.section.item(:r_arari_total).value(r_arari_total)
+        end
       end
     end
 
@@ -285,36 +287,39 @@ class DResultReportsController < ApplicationController
     
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_result_2_report.tlf')
 
-    report.layout.config.list(:list) do
-      # フッターに合計をセット.
-      events.on :footer_insert do |e|
-        e.section.item(:r_chousei_total).value(r_chousei_total)
-        e.section.item(:syaken_total).value(syaken_total)
-        e.section.item(:r_syaken_total).value(r_syaken_total)
-        e.section.item(:kyuyu_purika_total).value(kyuyu_purika_total)
-        e.section.item(:r_kyuyu_purika_total).value(r_kyuyu_purika_total)
-        e.section.item(:sensya_purika_total).value(sensya_purika_total)
-        e.section.item(:r_sensya_purika_total).value(r_sensya_purika_total)
-        e.section.item(:sp_total).value(sp_total)
-        e.section.item(:r_sp_total).value(r_sp_total)
-        e.section.item(:sc_total).value(sc_total)
-        e.section.item(:r_sc_total).value(r_sc_total)
-        e.section.item(:taiyaw_total).value(taiyaw_total)
-        e.section.item(:r_taiyaw_total).value(r_taiyaw_total)
-        e.section.item(:sp_plus_total).value(sp_plus_total)
-        e.section.item(:r_sp_plus_total).value(r_sp_plus_total)
-        e.section.item(:atf_total).value(atf_total.round(2))
-        e.section.item(:r_atf_total).value(r_atf_total.round(2))
-        e.section.item(:kousen_total).value(kousen_total)
-        e.section.item(:r_kousen_total).value(r_kousen_total)
-        e.section.item(:bt_total).value(bt_total)
-        e.section.item(:r_bt_total).value(r_bt_total)
-        e.section.item(:bankin_total).value(bankin_total)
-        e.section.item(:r_bankin_total).value(r_bankin_total)
-        e.section.item(:waiper_total).value(waiper_total)
-        e.section.item(:r_waiper_total).value(r_waiper_total)
-        e.section.item(:mobil1_total).value(mobil1_total.round(2))
-        e.section.item(:r_mobil1_total).value(r_mobil1_total.round(2))
+    #2012/12/27 本社以外は日計/累計無
+    if @shop_info.id == 1
+      report.layout.config.list(:list) do
+        # フッターに合計をセット.
+        events.on :footer_insert do |e|
+          e.section.item(:r_chousei_total).value(r_chousei_total)
+          e.section.item(:syaken_total).value(syaken_total)
+          e.section.item(:r_syaken_total).value(r_syaken_total)
+          e.section.item(:kyuyu_purika_total).value(kyuyu_purika_total)
+          e.section.item(:r_kyuyu_purika_total).value(r_kyuyu_purika_total)
+          e.section.item(:sensya_purika_total).value(sensya_purika_total)
+          e.section.item(:r_sensya_purika_total).value(r_sensya_purika_total)
+          e.section.item(:sp_total).value(sp_total)
+          e.section.item(:r_sp_total).value(r_sp_total)
+          e.section.item(:sc_total).value(sc_total)
+          e.section.item(:r_sc_total).value(r_sc_total)
+          e.section.item(:taiyaw_total).value(taiyaw_total)
+          e.section.item(:r_taiyaw_total).value(r_taiyaw_total)
+          e.section.item(:sp_plus_total).value(sp_plus_total)
+          e.section.item(:r_sp_plus_total).value(r_sp_plus_total)
+          e.section.item(:atf_total).value(atf_total.round(2))
+          e.section.item(:r_atf_total).value(r_atf_total.round(2))
+          e.section.item(:kousen_total).value(kousen_total)
+          e.section.item(:r_kousen_total).value(r_kousen_total)
+          e.section.item(:bt_total).value(bt_total)
+          e.section.item(:r_bt_total).value(r_bt_total)
+          e.section.item(:bankin_total).value(bankin_total)
+          e.section.item(:r_bankin_total).value(r_bankin_total)
+          e.section.item(:waiper_total).value(waiper_total)
+          e.section.item(:r_waiper_total).value(r_waiper_total)
+          e.section.item(:mobil1_total).value(mobil1_total.round(2))
+          e.section.item(:r_mobil1_total).value(r_mobil1_total.round(2))
+        end
       end
     end
 
@@ -464,20 +469,23 @@ class DResultReportsController < ApplicationController
     @month_last_day = Date.new(input_ymd_e[0,4].to_i,input_ymd_e[4,2].to_i).end_of_month.day.to_i
     
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_result_self_1_report.tlf')
-#2012/12/26 集計表示
-    report.layout.config.list(:list) do
-      # フッターに合計をセット.
-      events.on :footer_insert do |e|
-        e.section.item(:mo_gas_total).value(mo_gas_total.round(1))
-        e.section.item(:r_mo_gas_total).value(r_mo_gas_total.round(1))
-        e.section.item(:keiyu_total).value(keiyu_total.round(1))
-        e.section.item(:r_keiyu_total).value(r_keiyu_total.round(1))
-        e.section.item(:touyu_total).value(touyu_total.round(1))
-        e.section.item(:r_touyu_total).value(r_touyu_total.round(1))
-        e.section.item(:kyuyu_purika_total).value(kyuyu_purika_total)
-        e.section.item(:r_kyuyu_purika_total).value(r_kyuyu_purika_total)
-        e.section.item(:cb_total).value(cb_total)
-        e.section.item(:r_cb_total).value(r_cb_total)
+    #2012/12/26 集計表示
+    #2012/12/27 本社以外は日計/累計無
+    if @shop_info.id == 1
+      report.layout.config.list(:list) do
+        # フッターに合計をセット.
+        events.on :footer_insert do |e|
+          e.section.item(:mo_gas_total).value(mo_gas_total.round(1))
+          e.section.item(:r_mo_gas_total).value(r_mo_gas_total.round(1))
+          e.section.item(:keiyu_total).value(keiyu_total.round(1))
+          e.section.item(:r_keiyu_total).value(r_keiyu_total.round(1))
+          e.section.item(:touyu_total).value(touyu_total.round(1))
+          e.section.item(:r_touyu_total).value(r_touyu_total.round(1))
+          e.section.item(:kyuyu_purika_total).value(kyuyu_purika_total)
+          e.section.item(:r_kyuyu_purika_total).value(r_kyuyu_purika_total)
+          e.section.item(:cb_total).value(cb_total)
+          e.section.item(:r_cb_total).value(r_cb_total)
+        end
       end
     end
 
@@ -643,30 +651,33 @@ r_ozone_total = 0
     @day_e = input_ymd_e[6,2].to_i
     @month_last_day = Date.new(input_ymd_e[0,4].to_i,input_ymd_e[4,2].to_i).end_of_month.day.to_i
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_result_self_2_report.tlf')
-     #2012/12/26 集計表示
-    report.layout.config.list(:list) do
-      # フッターに合計をセット.
-      events.on :footer_insert do |e|
-        e.section.item(:sensya_total).value(sensya_total)
-        e.section.item(:r_sensya_total).value(r_sensya_total)
-        e.section.item(:sensya_purika_total).value(sensya_purika_total)
-        e.section.item(:r_sensya_purika_total).value(r_sensya_purika_total)
-        e.section.item(:muton_total).value(muton_total)
-        e.section.item(:r_muton_total).value(r_muton_total)
-        e.section.item(:sp_plus_total).value(sp_plus_total)
-        e.section.item(:r_sp_plus_total).value(r_sp_plus_total)
-        e.section.item(:taiyaw_total).value(taiyaw_total)
-        e.section.item(:r_taiyaw_total).value(r_taiyaw_total)
-        e.section.item(:sc_total).value(sc_total)
-        e.section.item(:r_sc_total).value(r_sc_total)
-        e.section.item(:sp_total).value(sp_total)
-        e.section.item(:r_sp_total).value(r_sp_total)
-        e.section.item(:r_wash_item_total).value(r_wash_item_total)
-        e.section.item(:r_game_total).value(r_game_total)
-        e.section.item(:r_health_total).value(r_health_total)
-        e.section.item(:r_net_total).value(r_net_total)
-        e.section.item(:r_charge_total).value(r_charge_total)
-        e.section.item(:r_ozone_total).value(r_ozone_total)
+    #2012/12/26 集計表示
+    #2012/12/27 本社以外は日計/累計無
+    if @shop_info.id == 1
+      report.layout.config.list(:list) do
+        # フッターに合計をセット.
+        events.on :footer_insert do |e|
+          e.section.item(:sensya_total).value(sensya_total)
+          e.section.item(:r_sensya_total).value(r_sensya_total)
+          e.section.item(:sensya_purika_total).value(sensya_purika_total)
+          e.section.item(:r_sensya_purika_total).value(r_sensya_purika_total)
+          e.section.item(:muton_total).value(muton_total)
+          e.section.item(:r_muton_total).value(r_muton_total)
+          e.section.item(:sp_plus_total).value(sp_plus_total)
+          e.section.item(:r_sp_plus_total).value(r_sp_plus_total)
+          e.section.item(:taiyaw_total).value(taiyaw_total)
+          e.section.item(:r_taiyaw_total).value(r_taiyaw_total)
+          e.section.item(:sc_total).value(sc_total)
+          e.section.item(:r_sc_total).value(r_sc_total)
+          e.section.item(:sp_total).value(sp_total)
+          e.section.item(:r_sp_total).value(r_sp_total)
+          e.section.item(:r_wash_item_total).value(r_wash_item_total)
+          e.section.item(:r_game_total).value(r_game_total)
+          e.section.item(:r_health_total).value(r_health_total)
+          e.section.item(:r_net_total).value(r_net_total)
+          e.section.item(:r_charge_total).value(r_charge_total)
+          e.section.item(:r_ozone_total).value(r_ozone_total)
+        end
       end
     end
 
