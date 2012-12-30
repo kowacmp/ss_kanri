@@ -36,7 +36,9 @@
 	      <td><%= @m_shop.shop_cd %>&nbsp;&nbsp;<%= @m_shop.shop_name %></td>
 		  <th>対象年月</th>
 		  <td><%#= select_date(@month_first,{:use_month_numbers=>true,:discard_day=>true})%>
-		  	<%= select_year(@month_first,:end_year => @month_first.year) %>年
+		  <!-- 2012/12/30 翌年度入力可対応 -->
+		  	<%#= select_year(@month_first,:end_year => @month_first.year) %>年
+		  	<%= select_year(@month_first,:end_year => @month_end.year) %>年
       		<%= select_month(@month_first,:use_month_numbers=>true) %>月
 		  </td> 
 		  <th>対象区分</th>

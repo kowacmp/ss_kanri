@@ -16,12 +16,16 @@ class DAimsController < ApplicationController
        @month_first = Date.new(year.to_i,month.to_i,1)
        @search_aim = 1
        @month_last_day = Date.new(year.to_i,month.to_i,-1).day
+       #2012/12/30 翌年度入力可対応
+       @month_end = Date.new(year.to_i + 1,month.to_i,1)
     else
        @year = params[:input_year]
        @month = params[:input_month]
        @month_first = Date.new(params[:input_year].to_i,params[:input_month].to_i,1)
        @search_aim = params[:input_aim].to_i
        @month_last_day = Date.new(params[:input_year].to_i,params[:input_month].to_i,-1).day
+       #2012/12/30 翌年度入力可対応
+       @month_end = Date.new(params[:input_year].to_i,params[:input_month].to_i,1)
     end
     
     @d_aim = DAim.new
