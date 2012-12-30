@@ -18,7 +18,9 @@ class DAimListsController < ApplicationController
     
     @month_first = Date.new(year.to_i,month.to_i,1)
     @input_ymd = Date.new(year.to_i,month.to_i,1).strftime("%Y/%m/%d")
-    
+    #2012/12/30 翌年度入力可対応
+    @month_end = Date.new(year.to_i + 1,month.to_i,1)
+
     if params[:shop_kbn] == nil
       @shop_kbn = 0
     else

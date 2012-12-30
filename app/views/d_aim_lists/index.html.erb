@@ -6,7 +6,9 @@
       <th>対象年月</th>
       <td><%#= select_year(@time_now,:start_year => @start_year, :end_year => @time_now.year) %><%#= select_month(@time_now,:use_month_numbers => true) %>
       	<%#= select_date(@month_first,{:use_month_numbers=>true,:discard_day=>true}) %>
-      	<%= select_year(@month_first,:end_year => @month_first.year) %>年
+      	<%#= select_year(@month_first,:end_year => @month_first.year) %>年
+      	<!-- 2012/12/30 翌年度入力可対応　-->
+      	<%= select_year(@month_first,:end_year => @month_end.year) %>年
       	<%= select_month(@month_first,:use_month_numbers=>true) %>月
       </td>
 	  <th>店舗種別</th>
