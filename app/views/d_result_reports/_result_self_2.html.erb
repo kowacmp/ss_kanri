@@ -44,6 +44,9 @@
 <% @r_bt_total = 0 %><% @r_bankin_total = 0 %><% @r_waiper_total = 0 %><% @r_mobil1_total = 0 %>
 
 <div style="width: 900px">
+<span style="font-weight: bold; font-size: 20px; color: red">
+社外秘
+</span>	
 <span style="float:right">
 <% if @kakutei_flg_count.mikakutei.to_i > 0 %>
 <b>未確定</b>
@@ -56,7 +59,7 @@
 <% end %>
 </span>
 </div>
-<br clear="right">
+
 
 <%= form_tag({:action => 'print',:input_ymd_s => @input_ymd_s }) do %>
 <table id="report_view_table" class="rounded-corner">
