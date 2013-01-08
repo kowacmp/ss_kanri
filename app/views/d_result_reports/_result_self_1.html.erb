@@ -216,10 +216,10 @@
 	<%= hidden_field_tag 'input_ymd_s',@input_ymd_s %>
 	<%= hidden_field_tag 'input_ymd_e',@input_ymd_e %>
 </table>
-	<% if @shop_info.shop_kbn == 9 or current_user.user_class == 3 %>
+<!-- 2013/01/08 印刷条件変更 -->
+	<%# if @shop_info.sho_kbn == 9 or current_user.user_class == 3 %>
+	<% if @shop_info.shop_kbn == 9 %>
 		<%= submit_tag  '  印  刷  ',format: 'pdf' %>
-	<% else %>
-		<%= submit_tag  '  印  刷  ',:disabled=>true %>
 	<% end %>
 <% end %>
 
