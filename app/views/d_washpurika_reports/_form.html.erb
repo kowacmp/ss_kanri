@@ -113,7 +113,11 @@
 	<% for i in 1..@days %>
 	<td align="right">
 		<% if rec["result#{ i }"].nil? then%>
-			<!-- わざと表示しません！ -->
+			<% if d_aim.blank? or d_aim.aim_total == nil %>
+				0
+			<% else %>
+				<%= number_with_delimiter(d_aim["aim_value#{ i }"]) %>
+			<% end %>
 		<% else %>
 			<% if d_aim.blank? or d_aim.aim_total == nil %>
 				0

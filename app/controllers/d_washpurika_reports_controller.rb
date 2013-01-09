@@ -127,7 +127,11 @@ class DWashpurikaReportsController < ApplicationController
               aim_total = 0
               for i in 1..@days
                 if rec["result#{ i }"].nil? then
-                  row.item("aim_#{league_idx}_#{i}").value("") #わざとだしません
+                  if d_aim.blank? or d_aim.aim_total == nil
+                    row.item("aim_#{league_idx}_#{i}").value(0)
+                  else
+                    row.item("aim_#{league_idx}_#{i}").value(d_aim["aim_value#{ i }"])
+                  end
                 else
                   #2012/11/30 目標値累積修正 oda
                   #row.item("aim_#{league_idx}_#{i}").value(d_aim["aim_value#{ i }"]) unless d_aim.nil?
