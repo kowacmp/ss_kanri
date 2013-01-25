@@ -252,6 +252,7 @@ SsKanri::Application.routes.draw do
       get :all_lock
       get :report_view
       get :report_print
+      get :comment
     end
   end
   

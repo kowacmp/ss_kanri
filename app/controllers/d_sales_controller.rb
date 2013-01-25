@@ -5,6 +5,12 @@ class DSalesController < ApplicationController
   include ApplicationHelper
   include DSalesHelper
   
+  def comment
+  
+    render :layout => false
+    
+  end
+  
   # GET /d_sales
   # GET /d_sales.json
   def index

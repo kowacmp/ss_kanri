@@ -415,7 +415,15 @@
   	<% else%>
   	   <%= f.submit '  登  録  ', :disable_with => "登録中.....",:confirm => "登録します。よろしいですか？", :method => :post %>
   	<% end %>
+  	
+  	<%= f.hidden_field :comment %>
+  	<% if @d_sale.kakutei_flg == 1 and params[:from_view] != "index" %>
+      <%= link_to("過不足理由", {:action => "comment", :mode => 'show'}, :class => 'modal', :style => 'margin-left:70px;') %>
+    <% else %>
+      <%= link_to("過不足理由", {:action => "comment", :mode => 'edit'}, :class => 'modal', :style => 'margin-left:70px;') %>
+    <% end %>
   	</span>
+  	
   </div>
 <% end %>
 

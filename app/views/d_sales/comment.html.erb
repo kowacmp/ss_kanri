@@ -1,0 +1,22 @@
+過不足理由：<br/>
+<textarea id="_comment" rows="5" cols="60" style="ime-mode: active;" maxlength="100" ></textarea>
+<br/>
+<br/>
+<input type="button" value="閉じる" onclick="return update_comment();" >
+
+<script>
+
+$(function(){
+	// 本体フォームよりコメントを取得
+	$("#_comment").val( $("#d_sale_comment").val() );
+});
+
+function update_comment() {
+	// 本体フォームのコメントを上書きして終了
+	<% if params[:mode] == "edit" %>
+	$("#d_sale_comment").val( $("#_comment").val() );
+	<% end %>
+	$("div#modal div.background").trigger("click");
+}
+
+</script>
