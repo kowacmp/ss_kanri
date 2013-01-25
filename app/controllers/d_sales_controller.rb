@@ -11,6 +11,18 @@ class DSalesController < ApplicationController
     
   end
   
+  def comment_update
+  
+    d_sale = DSale.find(:first, :conditions => ["m_shop_id=? and sale_date=?", params[:m_shop_id], params[:sale_date]])
+    if not(d_sale.blank?)
+      d_sale[:comment] = params[:comment]
+      d_sale.save!
+    end
+    
+    head :ok
+    
+  end
+  
   # GET /d_sales
   # GET /d_sales.json
   def index

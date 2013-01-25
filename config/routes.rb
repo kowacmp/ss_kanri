@@ -253,6 +253,7 @@ SsKanri::Application.routes.draw do
       get :report_view
       get :report_print
       get :comment
+      post :comment_update
     end
   end
   
