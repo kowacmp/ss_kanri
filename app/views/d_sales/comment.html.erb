@@ -2,12 +2,15 @@
 <textarea id="_comment" rows="5" cols="60" style="ime-mode: active;" maxlength="100" ></textarea>
 <br/>
 <br/>
-
+<div style="text-align:right">
 <% if params[:mode] == "edit" %>
-	<input type="button" value="保存" onclick="return update_comment();" />
+	<input type="button" value="登録" onclick="return update_comment();" />
 <% else %>
 	<input type="button" value="閉じる" onclick='$("div#modal div.background").trigger("click");' />
 <% end %>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</div>
+
 <script>
 
 $(function(){
