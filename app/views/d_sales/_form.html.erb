@@ -418,9 +418,9 @@
   	
   	<%= f.hidden_field :comment %>
   	<% if @d_sale.kakutei_flg == 1 and params[:from_view] != "index" %>
-      <%= link_to("過不足理由", {:action => "comment", :mode => 'show'}, :class => 'modal', :style => 'margin-left:70px;') %>
+      <%= link_to("過不足(出金誤差)理由", {:action => "comment", :mode => 'show'}, :class => 'modal', :style => 'margin-left:70px;') %>
     <% else %>
-      <%= link_to("過不足理由", {:action => "comment", :mode => 'edit'}, :class => 'modal', :style => 'margin-left:70px;') %>
+      <%= link_to("過不足(出金誤差)理由", {:action => "comment", :mode => 'edit'}, :class => 'modal', :style => 'margin-left:70px;') %>
     <% end %>
   	</span>
   	
