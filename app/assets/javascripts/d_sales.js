@@ -522,8 +522,10 @@ $(function () {
      	}
      	
     }
-    kabusoku_calc();
-    kabusoku_total_calc();
+    if ($("label[id=kabusoku]").length > 0) {
+    	kabusoku_calc();
+    	kabusoku_total_calc();
+    }
     // ADD END 2013.01.29 過不足,出金誤差が発生した場合は黄色にする
     
     //カンマ編集
