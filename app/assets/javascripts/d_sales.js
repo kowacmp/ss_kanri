@@ -455,8 +455,8 @@ $(function () {
      	total = num[0] - num[1];
      	
      	$("#kabusoku").text(format_kanma( total )); 
+     	set_minus_color($("#kabusoku")); // ADD 2013.01.29 過不足,出金誤差が発生した場合は黄色にする
      	$("#d_sale_over_short").val(total); 	
-     	
      	kabusoku_total_calc(); //過不足合計を計算 2012/09/30 nishimura
     };
     
@@ -482,6 +482,7 @@ $(function () {
      	total = num[0] + num[1] + num[2] - num[3] - num[4] + num[5];
      	
      	$("#kabusoku_total").text(format_kanma( total )); 
+     	set_minus_color($("#kabusoku_total")); // ADD 2013.01.29 過不足,出金誤差が発生した場合は黄色にする
      	//$("#d_sale_over_short").val(total); 	
     };
     
@@ -511,6 +512,19 @@ $(function () {
     };
     */
     
+    // ADD BEGIN 2013.01.29 過不足,出金誤差が発生した場合は黄色にする
+    function set_minus_color(span) {
+    
+     	if (span.text() == "0") {
+     		span.parent().css("background-color", "")
+     	} else {
+     		span.parent().css("background-color", "#F7DC67")
+     	}
+     	
+    }
+    kabusoku_calc();
+    kabusoku_total_calc();
+    // ADD END 2013.01.29 過不足,出金誤差が発生した場合は黄色にする
     
     //カンマ編集
     //set…1:カンマ編集する（デフォルト）
