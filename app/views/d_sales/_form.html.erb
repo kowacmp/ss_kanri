@@ -371,13 +371,26 @@
       <div class="title_alias">現金有高(B)</div>
       <div class="info_alias"><label id="cash_aridaka"><%= num_fmt(@cash_aridaka.to_i) %></label></div>
       <div class="title_alias">過不足 B-A</div>
-      <div class="info_alias"><label id="kabusoku"><%= num_fmt(@cash_aridaka - @total) %></label></div><br /><br />
+      <%
+      	bgcolor = ""
+      	if (@cash_aridaka - @total).to_i != 0
+      	  bgcolor = "#FFD700" 
+      	end
+      %>
+      <div class="info_alias" style="background-color: <%=bgcolor%>"><label id="kabusoku"><%= num_fmt(@cash_aridaka - @total) %></label></div><br /><br />
       <div class="title_alias">翌日出前</div>
       <div class="info_alias"><label id="sale_am_out2"><%= num_fmt(@d_sale.sale_am_out.to_i) %></label></div>
       <div class="title_alias">翌日出後</div>
       <div class="info_alias"><label id="sale_pm_out2"><%= num_fmt(@d_sale.sale_pm_out.to_i) %></label></div>
       <div class="title_alias">出金誤差</div>
-      <div class="info_alias"><label id="kabusoku_total">
+      <%
+      	bgcolor = ""
+      	if (@d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i -
+      				@syo_total - @d_sale.sale_ass.to_i).to_i != 0
+      	  bgcolor = "#FFD700" 
+      	end
+      %>
+      <div class="info_alias" style="background-color: <%=bgcolor%>"><label id="kabusoku_total">
       	<!-- 翌日出前 + 翌日出後 + 当日出 - 小計 - 両替金 + 過不足 -->
       	<%#= num_fmt(@d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i + @d_sale.sale_today_out.to_i - @syo_total - @d_sale.sale_ass.to_i + (@cash_aridaka - @total)) %>
       	<!-- 翌日出前 + 翌日出後 + 当日出 - 小計 - 両替金 -->
@@ -475,8 +488,6 @@ $(function () {
      			return false;
      	    };         	
     });
-
-
 });	
 </script>
 

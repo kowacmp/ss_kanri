@@ -518,13 +518,9 @@ $(function () {
      	if (span.text() == "0") {
      		span.parent().css("background-color", "")
      	} else {
-     		span.parent().css("background-color", "#F7DC67")
+     		span.parent().css("background-color", "#FFD700")
      	}
      	
-    }
-    if ($("label[id=kabusoku]").length > 0) {
-    	kabusoku_calc();
-    	kabusoku_total_calc();
     }
     // ADD END 2013.01.29 過不足,出金誤差が発生した場合は黄色にする
     
