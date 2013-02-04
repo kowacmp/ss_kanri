@@ -364,7 +364,7 @@ private
           where
                 a.result_date = '#{ym + sprintf('%02d', d)}'
             and a.m_shop_id   =  #{rec.m_shop_id}
-           and b.m_oiletc_id =  34 --34:洗車プリカ売上金額(洗車型)
+           and b.m_oiletc_id =  33 --33:洗車総合計(洗車型)
         "
       
         d_uriage = DResult.find_by_sql(sql)
