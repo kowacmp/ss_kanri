@@ -1,6 +1,15 @@
 <%= javascript_include_tag "comma" %>
 <div id="div_d_washpurika_reports" style="visibility: hidden;">
 <%=form_tag({:action => "update"}) do %>
+<!-- 対象年月日追加表示 -->
+<%if session[:washpurika_mode] != "edit" then%>
+	<th>
+		&nbsp;&nbsp;
+		<%= @d_washpurika_reports[0]["object_day"][0..3].to_s + "年" + 
+		@d_washpurika_reports[0]["object_day"][4..5].to_s + "月" + 
+		@d_washpurika_reports[0]["object_day"][6..7].to_s + "日現在"%>
+	</th>
+<%end %>
 <table class='rounded-corner' id="tablefix" >
 <!-- begin ヘッダ -->
 <tr>
@@ -34,11 +43,11 @@
 		</span>
 	</th>
 	<% end %>
-	<th rowspan="3" style="white-space: nowrap" >
-		累積
-	</th>
 	<th rowspan="1" style="white-space: nowrap" >
 		月合計
+	</th>
+	<th rowspan="3" style="white-space: nowrap" >
+		差枚数
 	</th>
 	<th rowspan="2" style="white-space: nowrap" >
 		ペース
@@ -52,14 +61,13 @@
 </tr>
 <tr>
 	<th rowspan="2" style="white-space: nowrap" >
-		差枚数
+		累計
 	</th>
 	<th rowspan="1" style="white-space: nowrap" >
 		前年同日迄の実績
 	</th>
 </tr>
 <tr>
-
 	<th rowspan="1" style="white-space: nowrap" >
 		洗車売上金額
 	</th>
@@ -129,20 +137,8 @@
 		<% end %>
 	</td>
 	<% end %>
-	
-	<!-- 目標累積　-->
-	<td align="right">
-		<!-- 2012/11/30 目標値累積修正 oda -->
-		<%# if d_aim.blank? or d_aim.aim_total == nil %>
-		<%# else %>
-			<%#= number_with_delimiter(d_aim.aim_total) %>
-		<%# end %>
-		<%= aim_cnt %>
-	</td>
-	<!-- 2012/11/30 月合計表示 oda -->
 	<!-- 月合計 -->
 	<td align="right">
-
 		<% if d_aim.blank? or d_aim.aim_total == nil %>
 			0
 		<% else %>
@@ -150,16 +146,13 @@
 		<% end %>
 	</td>
 	<!-- 差枚数 -->
-	<!-- 2012/11/30 月合計表示(差枚数移動) oda
 	<td rowspan="3" align="right">
-	-->
-		<%# if d_aim.blank? or d_aim.aim_total == nil %>
-		<%# else %>
-			<%#= number_with_delimiter(d_aim.aim_total - rec["result_total"]) %>
-		<%# end %>
-	<!--
+		<% if d_aim.blank? or d_aim.aim_total == nil %>
+			0
+		<% else %>
+			<%= number_with_delimiter(rec["result_total"] - aim_cnt) %>
+		<% end %>
 	</td>
-	-->
 
 	<!-- ペース -->
 	<td rowspan="2" align="right">
@@ -193,25 +186,15 @@
 	<th rowspan="2">
 		実績
 	</th>
-
 	<!--　実績枚数1～31 -->
 	<% for i in 1..@days %>
 	<td rowspan="2" align="right">
 		<%= number_with_delimiter(rec["result#{ i }"]) %>
 	</td>
 	<% end %>
-
-	<!-- 実績枚数トータル -->
-	<td rowspan="2" align="right">
-		<%= number_with_delimiter(rec["result_total"]) %>
-	</td>
-	<!-- 2012/11/30 月合計表示(差枚数移動) oda -->
-	<td rowspan="2" align="right">
-		<% if d_aim.blank? or d_aim.aim_total == nil %>
-			0
-		<% else %>
-			<%= number_with_delimiter(aim_cnt - rec["result_total"]) %>
-		<% end %>
+	<!-- 目標値累計 -->
+	<td align="right">
+		<%= aim_cnt %>
 	</td>
 	<!-- 前年同日迄の実績 -->
 	<td rowspan="1" align="right">
@@ -226,6 +209,10 @@
 
 </tr>
 <tr>
+	<!-- 実績枚数トータル -->
+	<td align="right">
+		<%= number_with_delimiter(rec["result_total"]) %>
+	</td>
 	<!-- 洗車売上金額 -->
 	<td align="right">
 		<%= number_with_delimiter(rec["uriage_total"]) %> 
@@ -324,7 +311,7 @@
 	
 <% end %> <!-- form_tag({:action => "update"}) do -->
 
-<%if session[:washpurika_mode].to_s != "edit" then %>
+<%if session[:washpurika_mode].to_s != "edit" and @shop_info.shop_kbn == 9 then %>
 	<%= form_tag({:action => 'print'}) do %>
 		<!-- begin 帳表用検索パラメータ -->
 		<%= hidden_field :rheader, :y,    :value => params[:header][:y] %>

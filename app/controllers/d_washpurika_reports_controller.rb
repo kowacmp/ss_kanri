@@ -18,7 +18,7 @@ class DWashpurikaReportsController < ApplicationController
 
     @d_washpurika_reports = read_d_washpurika_reports(params[:header][:y] + params[:header][:m])
     @days = Time.days_in_month(params[:header][:m].to_i, params[:header][:y].to_i)
-
+    @shop_info = MShop.find(current_user.m_shop_id)
   end
 
   def edit
@@ -46,7 +46,9 @@ class DWashpurikaReportsController < ApplicationController
         d_washpurika_report = DWashpurikaReport.new()
         d_washpurika_report.created_user_id = current_user.id
       end
-                                                     
+      #2013/02/05 対象年月日追加
+      d_washpurika_report.object_day = params[:hheader][:y] + params[:hheader][:m] + params[:hheader][:d]
+
       d_washpurika_report.attributes = rec
       d_washpurika_report.updated_user_id = current_user.id
       if params[:update][:rezero].to_s == "true" then
@@ -79,6 +81,15 @@ class DWashpurikaReportsController < ApplicationController
       #e.page.item(:page).value(e.page.no)
       #e.page.item(:sakusei_ymd).value(Time.now.strftime("%Y-%m-%d"))
       e.page.item(:title).value("洗車プリカ販売目標・実績表")
+      #2013/02/05 対象年月日表示追加
+      if e.page.no.to_i == 1 then
+        e.page.item(:title1).value(@d_washpurika_reports[0]["object_day"][0..3].to_s + "年" + 
+                                   @d_washpurika_reports[0]["object_day"][4..5].to_s + "月" + 
+                                   @d_washpurika_reports[0]["object_day"][6..7].to_s + "日現在  目標に対する実績")
+      
+      else
+        e.page.item(:title1).value("")
+      end
     end #evants.on
     
     report.start_new_page
@@ -161,7 +172,7 @@ class DWashpurikaReportsController < ApplicationController
               #枚数差
               #2012/11/30 目標値累積修正 oda
               #row.item("aim_maisu_#{league_idx}").value(d_aim.aim_total - rec["result_total"]) unless d_aim.nil?
-              row.item("aim_maisu_#{league_idx}").value(aim_total - rec["result_total"])
+              row.item("aim_maisu_#{league_idx}").value(rec["result_total"] - aim_total)
               #ペース
               row.item("aim_pace_#{league_idx}").value(rec["pace"])
               #前年同日迄のペース
@@ -266,7 +277,8 @@ private
       ret_rec["same_uriage"] = washpurika_report.same_uriage
       ret_rec["same_uriage_total"] = washpurika_report.same_uriage_total
       ret_rec["same_uriage_total_max"] = washpurika_report.same_uriage_total_max
-      
+      #2013/02/05 対象年月日追加
+      ret_rec["object_day"] = washpurika_report.object_day
       ret.push ret_rec
 
     end 
