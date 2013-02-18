@@ -371,6 +371,7 @@ private
             sql = <<-SQL
                     select 
                         coalesce(sum(b.meter), 0) as sum_meter
+                       ,coalesce(sum(b.uriage), 0) as sum_uriage -- #ADD 2013.02.18 ゼロメータの売上計
                     from 
                                   d_sale_etcs        a 
                        inner join d_sale_etc_details b
@@ -475,7 +476,14 @@ private
           #end
           
           if m_etc_rec.etc_class.to_i == 1 then
-            dt_rec[:k_uri] = dt_rec[:t_meter]
+            # UPDATE BEGIN 2013.02.18 ゼロメータの売上を修正
+            #dt_rec[:k_uri] = dt_rec[:t_meter]
+            if d_sale_etcs_sum.nil? or d_sale_etcs_sum.sum_uriage.nil?
+              dt_rec[:k_uri] = 0
+            else
+              dt_rec[:k_uri] = d_sale_etcs_sum.sum_uriage.to_i
+            end
+            # UPDATE END 2013.02.18 ゼロメータの売上を修正
           else
             # UPDATE BEGIN 2012.11.28 計算上売上高はdetail.uriageの集計とする
             #if dt_rec[:t_meter] < dt_rec[:z_meter] then
