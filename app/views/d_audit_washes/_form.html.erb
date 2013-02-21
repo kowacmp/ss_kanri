@@ -167,7 +167,9 @@
 	b_del = false
 	if not(wash_max.nil?) then
 		if wash_max.audit_date_from == @audit_date_from.delete("/") then
-			b_del = true
+			if @d_audit_wash["kakutei_flg"].to_s == "0" then # ADD 2013.02.21 確定済みのデータは削除させない
+				b_del = true
+			end 
 		end
 	end
 %>
