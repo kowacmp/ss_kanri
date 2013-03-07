@@ -251,7 +251,16 @@ private
     
     
       ret_rec = Hash.new()
-    
+
+      # ADD BEGIN 2013.03.07 起算年月より前の場合を考慮する
+      m_shop = MShop.find(rec.m_shop_id)
+      if m_shop.add_ym.to_s > ym
+        ret_rec["open_flg"] = "1"
+      else
+        ret_rec["open_flg"] = "0"
+      end
+      # ADD END 2013.03.07 起算年月より前の場合を考慮する
+
       ret_rec["date"] = ym
       ret_rec["m_shop_id"]     = rec.m_shop_id
       ret_rec["dsp_league"]    = rec.before_league #DBに存在しない項目
@@ -283,6 +292,27 @@ private
 
     end 
  
+    # ADD BEGIN 2013.03.07 前月のデータ入力後に起算年月が変更される場合を考慮して前月順位を暫定的に見直す
+    ret = ret.sort{|a,b| sort_func(a, b, "open_flg, before_league, before_rank")}
+    league = 1
+    rank = 0
+    for rec in ret
+      rank += 1
+      if rank > 5 then
+        rank = 1
+        league += 1
+      end
+     
+      rec["before_league"] = league
+      rec["before_rank"] = rank
+     
+    end
+    # ADD END 2013.03.07 前月のデータ入力後に起算年月が変更される場合を考慮して前月順位を暫定的に見直す
+ 
+    # ADD BEGIN 2013.03.07 起算年月より前の場合を考慮する
+    ret = ret.sort{|a,b| sort_func(a, b, "open_flg, before_league, uriage_total desc")}
+    # ADD END 2013.03.07 起算年月より前の場合を考慮する
+    
     return ret
  
   end
@@ -313,6 +343,15 @@ private
     for rec in washpurika_reports
     
       ret_rec = Hash.new()
+      
+      # ADD BEGIN 2013.03.07 起算年月より前の場合を考慮する
+      m_shop = MShop.find(rec.m_shop_id)
+      if m_shop.add_ym.to_s > ym
+        ret_rec["open_flg"] = "1"
+      else
+        ret_rec["open_flg"] = "0"
+      end
+      # ADD END 2013.03.07 起算年月より前の場合を考慮する
       
       ret_rec["date"] = ym
       ret_rec["m_shop_id"]    = rec.m_shop_id
@@ -398,8 +437,19 @@ private
     if result_days == 0 then
       ret_rec["pace"] = 0
     else
-      #ret_rec["pace"] = uriage_total / result_days * Time.days_in_month(ym[4..5].to_i, ym[0..3].to_i)
-      ret_rec["pace"] = (uriage_total.to_f / result_days * Time.days_in_month(ym[4..5].to_i, ym[0..3].to_i)).round(0)
+      
+      # ADD BEGIN 2013.03.07 ペースの日数を開店日を考慮した日数にする 
+      month_days = Time.days_in_month(ym[4..5].to_i, ym[0..3].to_i)
+      if (!m_shop.open_day.blank?) and (m_shop.open_day[0..5] == ym)
+        month_days -= (m_shop.open_day[6..7].to_i - 1)
+      end
+      # ADD END 2013.03.07 ペースの日数を開店日を考慮した日数にする 
+      
+      # UPDATE BEGIN 2013.03.07 ペースの日数を開店日を考慮した日数にする
+      ##ret_rec["pace"] = uriage_total / result_days * Time.days_in_month(ym[4..5].to_i, ym[0..3].to_i)
+      #ret_rec["pace"] = (uriage_total.to_f / result_days * Time.days_in_month(ym[4..5].to_i, ym[0..3].to_i)).round(0)
+      ret_rec["pace"] = (uriage_total.to_f / result_days * month_days).round(0)
+      # UPDATE END 2013.03.07 ペースの日数を開店日を考慮した日数にする
     end
     # 前年同月データを読込
     zennen = DWashpurikaReport.find(:first, 
@@ -478,9 +528,31 @@ private
     ret.push ret_rec
       
    end # for rec in @washpurika_reports    
- 
+   
+   # ADD BEGIN 2013.03.07 前月のデータ入力後に起算年月が変更される場合を考慮して前月順位を暫定的に見直す
+   ret = ret.sort{|a,b| sort_func(a, b, "open_flg, before_league, before_rank")}
+   league = 1
+   rank = 0
+   for rec in ret
+     rank += 1
+     if rank > 5 then
+       rank = 1
+       league += 1
+     end
+     
+     rec["before_league"] = league
+     rec["league"] = league
+     rec["before_rank"] = rank
+     rec["rank"] = rank
+     
+   end
+   # ADD END 2013.03.07 前月のデータ入力後に起算年月が変更される場合を考慮して前月順位を暫定的に見直す
+   
    # 今月当初リーグ、今月売上の降順でソート
-   ret = ret.sort{|a,b| sort_func(a, b, "before_league, uriage_total desc")}
+   # UPDATE BEGIN 2013.03.07 起算年月より前の場合を考慮する
+   #ret = ret.sort{|a,b| sort_func(a, b, "before_league, uriage_total desc")}
+   ret = ret.sort{|a,b| sort_func(a, b, "open_flg, before_league, uriage_total desc")}
+   # UPDATE END 2013.03.07 起算年月より前の場合を考慮する
  
    # ①今月当初リーグ、今月売上の降順で順位をつける
    rank = 0
@@ -518,7 +590,16 @@ private
          rec2 = i
        end
      end
-           
+     
+     # ADD BEGIN 2013.03.07 起算年月より前の場合を考慮する
+     if (not rec1.nil?) and (ret[rec1]["open_flg"] == "1")
+       rec1 = nil
+     end
+     if (not rec2.nil?) and (ret[rec2]["open_flg"] == "1")
+       rec2 = nil
+     end
+     # ADD END 2013.03.07 起算年月より前の場合を考慮する
+     
      # 最上位、最下位を強制的に入れ替える
      if (not(rec1.nil?)) and (not(rec2.nil?)) then
         #if ret[rec1]["uriage_total"] < ret[rec2]["uriage_total"] then #DEL 2012.10.31 売上に関係なく入れ替える
@@ -532,7 +613,10 @@ private
    end
 
    #今月のリーグ内順位を振り直す
-   ret = ret.sort{|a,b| sort_func(a, b, "league, uriage_total desc, before_league, before_rank")}   
+   # UPDATE BEGIN 2013.03.07 起算年月の場合を考慮する
+   #ret = ret.sort{|a,b| sort_func(a, b, "league, uriage_total desc, before_league, before_rank")}   
+   ret = ret.sort{|a,b| sort_func(a, b, "open_flg, league, uriage_total desc, before_league, before_rank")}
+   # UPDATE END 2013.03.07 起算年月の場合を考慮する
    league = 0
    rank = 0
    for i in 0..(ret.length - 1)
@@ -558,7 +642,10 @@ private
                                                             ret[i]["league"],
                                                             ret[i]["rank"]])
                                                             
-      if not(m_get_point.nil?) then
+      # UPDATE BEGIN 2013.03.07 起算年月の場合を考慮する
+      #if not(m_get_point.nil?) then
+      if not(m_get_point.nil?) and ret[i]["open_flg"] == "0" then 
+      # UPDATE END 2013.03.07 起算年月の場合を考慮する
           ret[i]["up_point"] = m_get_point.pt.to_i
           ret[i]["total_point"] += m_get_point.pt.to_i
       end
@@ -566,7 +653,10 @@ private
    end
 
    # 今月リーグ、今月ランクでソート
-   ret = ret.sort{|a,b| sort_func(a, b, "before_league, before_rank")}
+   # UPDATE BEGIN 2013.03.07 起算年月より前の場合を考慮する
+   #ret = ret.sort{|a,b| sort_func(a, b, "before_league, before_rank")}
+   ret = ret.sort{|a,b| sort_func(a, b, "open_flg, before_league, before_rank")}
+   # UPDATE END 2013.03.07 起算年月より前の場合を考慮する
 
    return ret
  
