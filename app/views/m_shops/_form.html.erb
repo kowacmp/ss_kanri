@@ -120,7 +120,22 @@
 			<% end %>
 		  </td> 	  
 		</tr>
-		
+		<tr>
+			<th><%= f.label '開店日' %></th>
+			<%
+				if not @m_shop.open_day.blank? 
+					@m_shop.open_day = "#{@m_shop.open_day[0..3]}/#{@m_shop.open_day[4..5]}/#{@m_shop.open_day[6..7]}"
+				end
+			%>
+			<td><%= f.number_field :open_day, :readonly => true, :class => "datepicker", :size => 5 %></td>
+		</tr>
+		<tr>
+			<th><%= f.label '洗車プリカ起算年月' %></th>
+			<td>
+				<%= select_year(@start_year, :value => @m_shop.add_ym.to_s[0..3], :start_year => @before_year, :end_year => @after_year, :include_blank => "") %>年
+				<%= select_month(@start_month, :value => @m_shop.add_ym.to_s[4..5], :use_month_numbers => true, :include_blank => "") %>月</td>
+			</td>
+		</tr>
 		<% @m_oils.each_with_index do |m_oil,idx| %>
 		<%- if m_oil.id == @m_shop.m_oil_id1 -%>
 		<%- elsif m_oil.id == @m_shop.m_oil_id2 -%>

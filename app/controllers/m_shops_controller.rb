@@ -52,6 +52,12 @@ class MShopsController < ApplicationController
   # GET /m_shops/new.json
   def new
     @m_shop = MShop.new
+    
+    #2013/03/07 洗車プリカ起算年月追加
+    @time_now = Time.now
+    @before_year = @time_now.year.to_i - 1
+    @after_year = @time_now.year.to_i + 1
+    
     @m_oils = MOil.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'oil_cd')
 
     #@m_tanks = MTank.find(:all,
@@ -71,6 +77,15 @@ class MShopsController < ApplicationController
   # GET /m_shops/1/edit
   def edit
     @m_shop = MShop.find(params[:id])
+    #2013/03/07 洗車プリカ起算年月追加
+    @time_now = Time.now
+    @before_year = @time_now.year.to_i - 1
+    @after_year = @time_now.year.to_i + 1
+    if not(@m_shop.add_ym.blank?)
+      @start_year = @m_shop.add_ym.to_s[0,4].to_i
+      @start_month = @m_shop.add_ym.to_s[4,2].to_i
+    end
+    
     @m_oils = MOil.find(:all, :conditions => ["deleted_flg = ?",0], :order => 'oil_cd')
     
     sql_where = "m_shop_id = ?"
@@ -97,7 +112,7 @@ class MShopsController < ApplicationController
   def create
     #店舗情報　保存 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     @m_shop = MShop.new(params[:m_shop])
-    
+    @m_shop.add_ym = @start_year+@start_month
     @m_shop.save
     #店舗情報　保存 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     
@@ -182,7 +197,15 @@ class MShopsController < ApplicationController
     
     #店舗情報　保存 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     @m_shop = MShop.find(params[:id])
-    @m_shop.update_attributes(params[:m_shop])
+    #@m_shop.update_attributes(params[:m_shop])
+    @m_shop.attributes = params[:m_shop]
+    @m_shop.open_day = @m_shop.open_day.to_s.delete("/")
+    if (params[:date][:year].blank? or params[:date][:month].blank?)
+      @m_shop.add_ym = nil
+    else
+      @m_shop.add_ym = params[:date][:year] + sprintf("%02d", params[:date][:month].to_i)
+    end
+    @m_shop.save!
     #店舗情報　保存 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     
     #洗車売上報告　保存 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
