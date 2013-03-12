@@ -196,6 +196,21 @@ $(function () {
 			$(this).attr("disabled", "disabled")
 		});
 		
+		// ADD BEGIN 2013.03.12 全てチェックボタン追加
+		$("div.crossDiv #btn_all_check").each(function(){
+			$(this).removeAttr("disabled");
+		});
+		$("div.bodyDiv #btn_all_check").each(function(){
+			$(this).attr("disabled", "disabled")
+		});
+		$("div.rowDiv #btn_all_check").each(function(){
+			$(this).attr("disabled", "disabled")
+		});
+		$("div.colDiv #btn_all_check").each(function(){
+			$(this).attr("disabled", "disabled")
+		});
+		// ADD END 2013.03.12 全てチェックボタン追加
+		
 		//確定チェックボックス
 		$("div.rowDiv [id^=d_duty_kakutei_flg_]").each(function(){
 			$(this).removeAttr("disabled");
@@ -239,4 +254,51 @@ function all_input_flg(input_flg){
 	);
 };
 
+// ADD BEGIN 2013.03.12 全てチェックボタン追加
+function btn_all_check_click() {
+
+	//社員の入力が済んでいない場合はエラーにする
+	var ym = $("#head_input_day").val();
+	var last_day = new Date(ym.substring(0, 3), ym.substring(4, 6), 0).getDate(); //月末取得
+	
+	var Div_id = "";
+	if ($("div.bodyDiv").size() > 0) {
+		Div_id = 'div.bodyDiv ';
+	};
+	
+	//日付のループが遅いので共通条件で絞り込みしたものをキャッシュ
+	var hiddens = $(Div_id + "[type=hidden][value=]"); 
+	
+	//入力されてない日付を探す
+	var err_days = "";
+	for (var i = 1; i <= last_day; i++) {
+		if (hiddens.filter("[id^=hiden_syain_" + i + "_]").length > 0) {
+			if (err_days != "") { err_days += ", " }
+			err_days += (i + "日");
+		}
+	}
+	
+	if (err_days != "") {
+		alert("以下の日付の勤怠を入力してください。\n" + err_days);
+		return false;
+	}
+
+	if (!confirm("全て入力済みにします、よろしいですか？")) {
+		return false;
+	}
+
+	$.post(
+		'/d_duties/kakutei_check_all',                 // 送信先
+		{ input_day: $("#head_input_day").val(), 
+	      m_shop_id: $("#head_m_shop_id").val(), 
+		},
+		function(data, status) {        // 通信成功時にデータを表示
+		   //$('#result').empty();
+		   //$('#result').append(data);
+		 },
+		"script"                          // 応答データ形式 xml, html, script, json, jsonp, text
+	);
+
+}
+// ADD END 2013.03.12 全てチェックボタン追加
 </script>

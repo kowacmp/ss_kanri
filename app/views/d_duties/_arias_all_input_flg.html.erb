@@ -7,3 +7,7 @@
 	          "if (confirm('前回の入力済みに復元します。よろしいですか？')) {all_input_flg(1)};", :id=>"all_input_flg" %>
 	<%= hidden_field_tag :bef_all_input_flg_days, @bef_all_input_flg_days %>
 <% end  %>
+
+<!-- ADD BEGIN 2013.03.12 全てチェックボタン追加 -->
+<input type="button" id="btn_all_check" value="全てチェック" onclick="btn_all_check_click();" />
+<!-- ADD END 2013.03.12 全てチェックボタン追加 -->

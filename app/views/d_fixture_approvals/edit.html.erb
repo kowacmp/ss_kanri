@@ -20,7 +20,11 @@
 <% i = 0 %>
 <% sum_goukei = 0 %>
 <h1>備品購入申請承認</h1>
-<%= link_to '一覧へ戻る',{:action => 'index',:from_ymd => @from_ymd,:to_ymd => @to_ymd,:shop_kbn => @shop_kbn, :approve_flg=> @approve_flg}, :class => 'return_icon' %>
+<!-- UPDATE BEGIN 2013.03.12 一覧へ戻るを右へ移動 -->
+<%#= link_to '一覧へ戻る',{:action => 'index',:from_ymd => @from_ymd,:to_ymd => @to_ymd,:shop_kbn => @shop_kbn, :approve_flg=> @approve_flg}, :class => 'return_icon' %>
+<%= link_to '一覧へ戻る',{:action => 'index',:from_ymd => @from_ymd,:to_ymd => @to_ymd,:shop_kbn => @shop_kbn, :approve_flg=> @approve_flg}, :class => 'return_icon', :style => "float:right;" %>
+<br/>
+<!-- UPDATE END 2013.03.12 一覧へ戻るを右へ移動 -->
 <table id='rounded-corner'>
 	<tr>
 	  <th>対象店舗</th>
@@ -145,7 +149,11 @@
 </table>
 
 <div id="message"></div>
-<%= link_to '一覧へ戻る',{:action => 'index',:from_ymd => @from_ymd,:to_ymd => @to_ymd,:shop_kbn => @shop_kbn, :approve_flg=> @approve_flg}, :class => 'return_icon' %>
+<!-- UPDATE BEGIN 2013.03.12 一覧へ戻るを右へ移動 -->
+<%#= link_to '一覧へ戻る',{:action => 'index',:from_ymd => @from_ymd,:to_ymd => @to_ymd,:shop_kbn => @shop_kbn, :approve_flg=> @approve_flg}, :class => 'return_icon' %>
+<br/>
+<%= link_to '一覧へ戻る',{:action => 'index',:from_ymd => @from_ymd,:to_ymd => @to_ymd,:shop_kbn => @shop_kbn, :approve_flg=> @approve_flg}, :class => 'return_icon', :style => "float:right" %>
+<!-- UPDATE END 2013.03.12 一覧へ戻るを右へ移動 -->
 <script type="text/javascript">
 jQuery(function() {
 <% @fixtures.each do |f| %>

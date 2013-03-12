@@ -369,6 +369,32 @@ class DDutiesController < ApplicationController
     end      
   end
   
+  # ADD BEGIN 2013.03.12 全てチェックボタン追加
+  def kakutei_check_all()
+    
+    sql = "update d_duties 
+           set
+              input_flg = 1
+             ,updated_user_id = :updated_user_id
+             ,updated_at      = :updated_at
+           where 
+                 duty_nengetu = :input_day 
+             and m_shop_id    = :m_shop_id 
+             and input_flg != 1 "
+    
+    sql_p = {
+       :updated_user_id => current_user.id,
+       :updated_at => Time.now,
+       :input_day => params[:input_day],
+       :m_shop_id => params[:m_shop_id]
+    }
+    
+    update_sql = ActiveRecord::Base.send(:sanitize_sql_array, [sql, sql_p])
+    ActiveRecord::Base::connection.execute(update_sql)
+    
+  end
+  # ADD END 2013.03.12 全てチェックボタン追加
+  
   private
   
   #バイト用データ更新
