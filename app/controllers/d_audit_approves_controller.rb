@@ -18,7 +18,7 @@ class DAuditApprovesController < ApplicationController
       else
         @menu_id = "38"
       end
-      
+      @audit_date = "audit_date"
     when "2" #釣銭
       @table = "d_audit_changemachines"
 
@@ -27,7 +27,7 @@ class DAuditApprovesController < ApplicationController
       else
         @menu_id = "39"
       end
-    
+      @audit_date = "audit_date"
     when "3" #洗車
       @table = "d_audit_washes"
 
@@ -36,7 +36,7 @@ class DAuditApprovesController < ApplicationController
       else
         @menu_id = "40"
       end
-    
+      @audit_date = "audit_date_from"
     when "4" #その他
       @table = "d_audit_etcs"
 
@@ -45,14 +45,13 @@ class DAuditApprovesController < ApplicationController
       else
         @menu_id = "41"
       end
-    
+      @audit_date = "audit_date_from"
     end
     
     # 承認ID、及び名称を取得する
     @approval_id = 0
     @approval_name = ""
     m_approval = MApproval.find(:first, :conditions => ["menu_id=?", @menu_id])
-    
     if not(m_approval.nil?) then
       for i in 1..5 do
         if m_approval["approval_id#{i}"].to_s == current_user.id.to_s then
@@ -87,7 +86,7 @@ class DAuditApprovesController < ApplicationController
         and a.audit_class = #{params[:header][:audit_class]}
         #{ where_zumi }
       order by
-         m_shops.shop_cd
+         m_shops.shop_cd,a.#{@audit_date}
     SQL
     
     @approval = MApproval.find_by_sql(sql)

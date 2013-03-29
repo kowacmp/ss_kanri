@@ -27,20 +27,28 @@
 		<th>監査日</th>
 		<th>処理</th>
 		<th>種別</th>
+		<!--
 		<th>監査人</th>
 		<th>立会人</th>
+		-->
+		<th>承認者1</th>
+		<th>承認者2</th>
+		<th>承認者3</th>
+		<th>承認者4</th>
+		<th>承認者5</th>
 		<th>詳細</th>
 		<th>
 		<!-- UPDATE 2012.10.15 ボタンをやめてチェックボックスへ変更 -->
 			承認<br/>
-			<input type="checkbox" id="audit_approves_check_all" />
-			<script>
+			<!-- <input type="checkbox" id="audit_approves_check_all" />
+			-->
+			<script>/*
 			$(function() {
 				$("#audit_approves_check_all").click( function (){ 
 					$(":checkbox[id$=approval_flg]:not([disabled=disabled])").prop("checked", $(this).prop("checked"));
 				});
 			});
-			</script>
+			*/</script>
 		<!-- UPDATE 2012.10.15 ボタンをやめてチェックボックスへ変更 -->
 		</th>
 	</tr>
@@ -50,11 +58,11 @@
 		<% rec_cnt += 1 %>
 
 		<tr>
-			<td align="center">
+			<td align="left">
 				<% m_shop = MShop.find(approval.m_shop_id) %>
 				<%= m_shop.shop_cd %>
 				&nbsp;
-				<%= m_shop.shop_name %>
+				<%= m_shop.shop_ryaku %>
 			</td>
 			<td align="center">
 				<%if approval[:audit_date].nil? then%>
@@ -63,7 +71,7 @@
 				      dts = approval.audit_date_to
 				    %>
 					<%=dtf[0..3] + "/" + dtf[4..5] + "/" + dtf[6..7] %>
-			        ～
+			        ～</Br>
 			        <%=dts[0..3] + "/" + dts[4..5] + "/" + dts[6..7] %>
 			    <%else%>
 			        <%
@@ -73,11 +81,57 @@
 			    <%end%>
 			</td>
 			<td align="center">
-				<%=Menu.find(@menu_id).display_name%>
+				<%=Menu.find(@menu_id).display_name.to_s.delete('自主監査').delete('本監査')%>
 			</td>
 			<td align="center">
 				<%=MCode.find(:first, :conditions=>["kbn='shop_kbn' and code=?", params[:header][:shop_kbn]]).code_name %>
 			</td>
+			<!--承認者1 -->
+			<td align="center">
+				<% unless approval.approve_id1.blank? %>
+					 <% if approval.approve_id1 != '0' then %>
+						<% user = User.find(approval.approve_id1) %>
+						<%= user.user_name %>
+					<%end%>
+				<%end%>
+			</td>
+			<!--承認者2 -->
+			<td align="center">
+				<% unless approval.approve_id2.blank? %>
+					<% if approval.approve_id2 != '0' then %>
+						<% user = User.find(approval.approve_id2) %>
+						<%= user.user_name %>
+					<%end%>
+				<%end%>
+			</td>
+			<!--承認者3 -->
+			<td align="center">
+				<% unless approval.approve_id3.blank? %>
+					<% if approval.approve_id3 != '0' then %>
+						<% user = User.find(approval.approve_id3) %>
+						<%= user.user_name %>
+					<%end%>
+				<%end%>
+			</td>
+			<!--承認者4 -->
+			<td align="center">
+				<% unless approval.approve_id4.blank? %>
+					<% if approval.approve_id4 != '0' then %>
+						<% user = User.find(approval.approve_id4) %>
+						<%= user.user_name %>
+					<%end%>
+				<%end%>
+			</td>
+			<!--承認者5 -->
+			<td align="center">
+				<% unless approval.approve_id5.blank? %>
+					<% if approval.approve_id5 != '0' then %>
+						<% user = User.find(approval.approve_id5) %>
+						<%= user.user_name %>
+					<%end%>
+				<%end%>
+			</td>
+<!--
 			<td align="center">
 				<% user = User.find(approval.created_user_id) %>
 				<%= user.user_name %>
@@ -86,6 +140,7 @@
 				<% user = User.find(approval.confirm_user_id) %>
 				<%= user.user_name %>
 			</td>
+-->
 			<td align="center">
 				<!-- UPDATE 2012.10.16 詳細の呼出先にコメントのみ更新する機能をつける -->
 				<%= link_to image_tag('icon/24_show.png'), :controller => @table, :action => "show", :id => approval.id, :comment => true %>
