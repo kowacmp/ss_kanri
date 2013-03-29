@@ -5,7 +5,7 @@ class PostgreSqlMaintenancesController < ApplicationController
   include PostgreSqlMaintenancesHelper
 
   def index
-
+    # push test
   end
 
   def sequence
