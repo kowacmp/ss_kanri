@@ -10,9 +10,12 @@
 	
 	# 一律でだれでもよい
 	# UPDATE BEGIN 2012.12.05 ログイン本人は表示しない
+	# UPDATE START 2013/04/01 退職者は表示対象外
 	#users = User.find(:all, :conditions => ["deleted_flg=0 and m_shop_id=?", c_shop_id], :order => "account") 
-	users = User.find(:all, :conditions => ["deleted_flg=0 and m_shop_id=? and id!=?", c_shop_id, current_user.id], :order => "account") 
+	#users = User.find(:all, :conditions => ["deleted_flg=0 and m_shop_id=? and id!=?", c_shop_id, current_user.id], :order => "account") 
+	users = User.find(:all, :conditions => ["(deleted_flg=0 and m_shop_id=? and taisyoku_date is null and id!=?) or id = ?", c_shop_id, current_user.id, c_user_id], :order => "account") 
 	# UPDATE END 2012.12.05 ログイン本人は表示しない
+	# UPDATE END 2013/04/01 退職者は表示対象外
 %>
 
 <%=select       :confirm, :user_id, users.collect{|i| [i.user_name, i.id]}, 
