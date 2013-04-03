@@ -24,41 +24,46 @@
   	<tr>
   	  <th><%= f.label '承認者1' %></th>
   	  <td>
-  	  	<%= f.select(:approval_id1, User.find(:all, :conditions => "user_class = 3 and deleted_flg = 0", :order => 'id').map do |u|
+  	  	<%= f.select(:approval_id1, User.find(:all, 
+  	  	:conditions => ["(user_class = 3 or user_class = 4) and deleted_flg = 0 and COALESCE(taisyoku_date,'') ='' or id=?",f.object.approval_id1], :order => 'id').map do |u|
       		[u.user_name,u.id]
-        end, {:include_blank => "選択して下さい"}) %>
+        end, { :include_blank => "選択して下さい"}) %>
 	  </td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '承認者2' %></th>
   	  <td>
-  	  	<%= f.select(:approval_id2, User.find(:all, :conditions => "user_class = 3 and deleted_flg = 0", :order => 'id').map do |u|
+  	  	<%= f.select(:approval_id2, User.find(:all, 
+  	  	:conditions => ["(user_class = 3 or user_class = 4) and deleted_flg = 0 and COALESCE(taisyoku_date,'') ='' or id=?",f.object.approval_id2], :order => 'id').map do |u|
       		[u.user_name,u.id]
-        end, {:include_blank => "選択して下さい"}) %>
+        end, { :include_blank => "選択して下さい"}) %>
 	  </td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '承認者3' %></th>
   	  <td>
-  	  	<%= f.select(:approval_id3, User.find(:all, :conditions => "user_class = 3 and deleted_flg = 0", :order => 'id').map do |u|
+  	  	<%= f.select(:approval_id3, User.find(:all, 
+  	  	:conditions => ["(user_class = 3 or user_class = 4) and deleted_flg = 0 and COALESCE(taisyoku_date,'') ='' or id=?",f.object.approval_id3], :order => 'id').map do |u|
       		[u.user_name,u.id]
-        end, {:include_blank => "選択して下さい"}) %>
+        end, { :include_blank => "選択して下さい"}) %>
 	  </td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '承認者4' %></th>
   	  <td>
-  	  	<%= f.select(:approval_id4, User.find(:all, :conditions => "user_class = 3 and deleted_flg = 0", :order => 'id').map do |u|
+  	  	<%= f.select(:approval_id4, User.find(:all, 
+  	  	:conditions => ["(user_class = 3 or user_class = 4) and deleted_flg = 0 and COALESCE(taisyoku_date,'') ='' or id=?",f.object.approval_id4], :order => 'id').map do |u|
       		[u.user_name,u.id]
-        end, {:include_blank => "選択して下さい"}) %>
+        end, { :include_blank => "選択して下さい"}) %>
 	  </td>  	  
   	</tr>
   	<tr>
   	  <th><%= f.label '承認者5' %></th>
   	  <td>
-  	  	<%= f.select(:approval_id5, User.find(:all, :conditions => "user_class = 3 and deleted_flg = 0", :order => 'id').map do |u|
+  	  	<%= f.select(:approval_id5, User.find(:all, 
+  	  	:conditions => ["(user_class = 3 or user_class = 4) and deleted_flg = 0 and COALESCE(taisyoku_date,'') ='' or id=?",f.object.approval_id5], :order => 'id').map do |u|
       		[u.user_name,u.id]
-        end, {:include_blank => "選択して下さい"}) %>
+        end, { :include_blank => "選択して下さい"}) %>
 	  </td>  	  
   	</tr>
   	

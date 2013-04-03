@@ -310,7 +310,8 @@ private
     # ADD END 2013.03.07 前月のデータ入力後に起算年月が変更される場合を考慮して前月順位を暫定的に見直す
  
     # ADD BEGIN 2013.03.07 起算年月より前の場合を考慮する
-    ret = ret.sort{|a,b| sort_func(a, b, "open_flg, before_league, uriage_total desc")}
+    #ret = ret.sort{|a,b| sort_func(a, b, "open_flg, before_league, uriage_total desc")}
+    ret = ret.sort{|a,b| sort_func(a, b, "open_flg, before_league, before_rank")}
     # ADD END 2013.03.07 起算年月より前の場合を考慮する
     
     return ret
