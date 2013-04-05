@@ -190,9 +190,9 @@
 <!-- INSERT END 2012.11.20 最終データのみ削除機能を追加-->
 <%
 	if params[:audit_list].to_s == "true" then
-	url = "./edit?id=#{params[:id]}&audit_list=true"
+		url = "./edit?id=#{params[:id]}&audit_list=true"
 	else
-	url = "./edit?header[m_shop_id]=#{@m_shop_id}&header[created_user_id]=#{@created_user_id}&header[audit_date_from]=#{@audit_date_from}&header[audit_date_to]=#{@audit_date_to}"			
+		url = "./edit?header[m_shop_id]=#{@m_shop_id}&header[created_user_id]=#{@created_user_id}&header[audit_date_from]=#{@audit_date_from}&header[audit_date_to]=#{@audit_date_to}"			
 	end
 %>
 	<input type="button" value="キャンセル" 

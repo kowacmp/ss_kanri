@@ -159,6 +159,37 @@
 </table>
 
 <div style="float:right; padding-right: 20px;">
+
+<!-- INSERT BEGIN 2013.04.05 最終データのみ削除機能を追加 -->
+<%
+	# 表示中のデータが最終データかを確認する
+	cashbox_max = DAuditCashbox.find(:first, :conditions => ["m_shop_id=?", @m_shop_id], :order => "audit_date desc")
+	b_del = false
+	if not(cashbox_max.nil?) then
+		if cashbox_max.audit_date == @audit_date.delete("/") then
+			if @d_audit_cashbox["kakutei_flg"].to_s == "0" then # 確定済みのデータは削除させない
+				b_del = true
+			end 
+		end
+	end
+%>
+<% if b_del then %>
+	<%= hidden_field_tag "delete_id" %>
+	<%= submit_tag "　削　除　", :onclick => "return audit_cashbox_delete();", :disable_with => "削除中です..." %>
+	<script>
+		function audit_cashbox_delete(){
+			if (confirm('削除します。よろしいですか？')) {
+				$('#delete_id').val('<%= cashbox_max.id %>');
+				return true;
+			} else {
+				return false;
+			}
+		}
+	</script>
+<% end %>
+<!-- INSERT END 2012.11.20 最終データのみ削除機能を追加-->
+&nbsp;&nbsp;
+
 <%
 	if params[:audit_list].to_s == "true" then
 	url = "./edit?audit_list=true&id=#{params[:id]}"
