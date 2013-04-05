@@ -112,6 +112,20 @@ class DAuditChangemachinesController < ApplicationController
 
   def update
 
+    # INSERT BEGIN 2013.04.05 削除機能を追加 
+    if not(params[:delete_id].blank?)
+      DAuditChangemachine.transaction {  
+        DAuditChangemachine.destroy_all(["id=?", params[:delete_id].to_i])
+      }
+      if params[:audit_list].to_s == "true" then
+        redirect_to :controller => "d_audit_lists", :action => "edit", :back => true
+      else
+        redirect_to :action => "index", :audit_class => session[:audit_class]
+      end
+      return
+    end
+    # INSERT END 2013.04.05 削除機能を追加
+
     #更新日時をバッファ
     upd_time = Time.now 
 
