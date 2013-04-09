@@ -32,12 +32,18 @@
 			<% end %>
 		</td>
 		<td style="text-align: center">
-			 <% unless washsale_report == nil %>
-      	    <% if washsale_report.kakutei_flg == 1  %>
-      	      <%= check_box_tag("cbox[]",washsale_report.id,{:checked => true}) %>
-      	    <% else %>
-      	      <%= check_box_tag("cbox[]",washsale_report.id) %> 	  
-      	    <% end %>
+		  <% unless washsale_report == nil %>
+      	    <!-- UPDATE BEGIN 2013.04.09 更新対象を厳密にする -->
+      	    <%# if washsale_report.kakutei_flg == 1  %>
+      	      <%#= check_box_tag("cbox[]",washsale_report.id,{:checked => true}) %>
+      	    <%# else %>
+      	      <%#= check_box_tag("cbox[]",washsale_report.id) %> 	  
+      	    <%# end %>
+      	    
+      	    <%= check_box :kakutei_flgs, washsale_report[:id],
+      	                  {:checked => washsale_report[:kakutei_flg].to_s == "1"},
+      	                  1, 0 %>
+      	    <!-- UPDATE END 2013.04.09 更新対象を厳密にする -->
       	  <% end %>
 		</td>
 	</tr>
