@@ -11,7 +11,7 @@
 		<th>店舗種別</th>
 		<td>
 			<% shop_kbn_list = MCode.find(:all, :conditions => ["kbn='shop_kbn'and code<>'9'"], :order => "code").collect{|i| [i.code_name, i.code]} %>
-			<%= select_tag "shop_kbn", options_for_select(shop_kbn_list) %>
+			<%= select_tag "shop_kbn", options_for_select(shop_kbn_list,:selected => params[:shop_kbn]) %>
 		</td> 
 		<td><%= submit_tag "検索" %></td>
 	</tr>

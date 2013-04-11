@@ -63,12 +63,13 @@ class DWashsaleReportListsController < ApplicationController
     #  d_washsale_report.updated_user_id = current_user.id
     #  d_washsale_report.save!
     #end
-    
-    params[:kakutei_flgs].each do |id, kakutei_flg|
-      d_washsale_report = DWashsaleReport.find(id)
-      d_washsale_report[:kakutei_flg] = kakutei_flg
-      d_washsale_report[:updated_user_id] = current_user.id
-      d_washsale_report.save!
+    unless params[:kakutei_flgs].blank?
+      params[:kakutei_flgs].each do |id, kakutei_flg|
+        d_washsale_report = DWashsaleReport.find(id)
+        d_washsale_report[:kakutei_flg] = kakutei_flg
+        d_washsale_report[:updated_user_id] = current_user.id
+        d_washsale_report.save!
+      end
     end
     @d_washsale_reports = DWashsaleReport.find(:all,:conditions => ['sale_date = ?',@sale_date])
     
