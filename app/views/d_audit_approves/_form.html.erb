@@ -6,6 +6,9 @@
 <%=hidden_field :hheader, :audit_class, :value => params[:header][:audit_class] %>
 <%=hidden_field :hheader, :zumi_flg,    :value => params[:header][:zumi_flg] %>
 
+<%=hidden_field :hheader, :ym_y,       :value => params[:header][:ym_y] %>
+<%=hidden_field :hheader, :ym_m,       :value => params[:header][:ym_m] %>
+
 <!-- 書き込み先の情報を付加 -->
 <%=hidden_field :approval, :table,         :value => @table %>
 <%=hidden_field :approval, :approval_id,   :value => @approval_id %>
@@ -31,11 +34,11 @@
 		<th>監査人</th>
 		<th>立会人</th>
 		-->
-		<th>承認者1</th>
-		<th>承認者2</th>
-		<th>承認者3</th>
-		<th>承認者4</th>
-		<th>承認者5</th>
+		<th>承認者</th>
+		<th>承認者</th>
+		<th>承認者</th>
+		<th>承認者</th>
+		<th>承認者</th>
 		<th>詳細</th>
 		<th>
 		<!-- UPDATE 2012.10.15 ボタンをやめてチェックボックスへ変更 -->
@@ -84,31 +87,22 @@
 				<%=Menu.find(@menu_id).display_name.to_s.delete('自主監査').delete('本監査')%>
 			</td>
 			<td align="center">
-				<%=MCode.find(:first, :conditions=>["kbn='shop_kbn' and code=?", params[:header][:shop_kbn]]).code_name %>
+				<% if params[:header][:audit_class] == 0 %>
+					自主監査
+				<% else %>
+					本監査
+				<% end %>
 			</td>
-			<!--承認者1 -->
+			<!--
 			<td align="center">
-				<% unless approval.approve_id1.blank? %>
-					 <% if approval.approve_id1 != '0' then %>
-						<% user = User.find(approval.approve_id1) %>
-						<%= user.user_name %>
-					<%end%>
-				<%end%>
+				<%#=MCode.find(:first, :conditions=>["kbn='shop_kbn' and code=?", params[:header][:shop_kbn]]).code_name %>
 			</td>
-			<!--承認者2 -->
+			-->
+			<!--承認者5 -->
 			<td align="center">
-				<% unless approval.approve_id2.blank? %>
-					<% if approval.approve_id2 != '0' then %>
-						<% user = User.find(approval.approve_id2) %>
-						<%= user.user_name %>
-					<%end%>
-				<%end%>
-			</td>
-			<!--承認者3 -->
-			<td align="center">
-				<% unless approval.approve_id3.blank? %>
-					<% if approval.approve_id3 != '0' then %>
-						<% user = User.find(approval.approve_id3) %>
+				<% unless approval.approve_id5.blank? %>
+					<% if approval.approve_id5 != '0' then %>
+						<% user = User.find(approval.approve_id5) %>
 						<%= user.user_name %>
 					<%end%>
 				<%end%>
@@ -122,11 +116,29 @@
 					<%end%>
 				<%end%>
 			</td>
-			<!--承認者5 -->
+			<!--承認者3 -->
 			<td align="center">
-				<% unless approval.approve_id5.blank? %>
-					<% if approval.approve_id5 != '0' then %>
-						<% user = User.find(approval.approve_id5) %>
+				<% unless approval.approve_id3.blank? %>
+					<% if approval.approve_id3 != '0' then %>
+						<% user = User.find(approval.approve_id3) %>
+						<%= user.user_name %>
+					<%end%>
+				<%end%>
+			</td>
+			<!--承認者2 -->
+			<td align="center">
+				<% unless approval.approve_id2.blank? %>
+					<% if approval.approve_id2 != '0' then %>
+						<% user = User.find(approval.approve_id2) %>
+						<%= user.user_name %>
+					<%end%>
+				<%end%>
+			</td>
+			<!--承認者1 -->
+			<td align="center">
+				<% unless approval.approve_id1.blank? %>
+					 <% if approval.approve_id1 != '0' then %>
+						<% user = User.find(approval.approve_id1) %>
 						<%= user.user_name %>
 					<%end%>
 				<%end%>
@@ -154,7 +166,7 @@
 						end
 					end
 				%>
-			    <%=hidden_field "approval#{rec_cnt}", :id,               :value   => approval.id %>
+				<%=hidden_field "approval#{rec_cnt}", :id,               :value   => approval.id %>
 				<%=hidden_field "approval#{rec_cnt}", :old_approval_flg, :value   => flg %> 
 				<%=check_box    "approval#{rec_cnt}", :approval_flg,     
 						{:checked => flg, :disabled => (@approval_id == 0)} , true, false %>
@@ -164,7 +176,7 @@
 	<% end %> <!-- for approval in @approval do -->
 		
 	<tr>
-		<td colspan="8" align="right" style="border: none">
+		<td colspan="10" align="right" style="border: none">
 			<%= submit_tag '　登  録　', :disable_with => "登録中です...", :confirm => "登録してもよろしいですか？",
 				:disabled => (@approval_id == 0) %>
 		</td>

@@ -2,10 +2,12 @@
 
 <br/>
 
-<%=render :partial => 'header' , :locals => {:kansa => params[:header][:kansa],
-	                                         :shop_kbn => params[:header][:shop_kbn],
-                                             :audit_class => params[:header][:audit_class],
-                                             :zumi_flg => params[:header][:zumi_flg]} %>
+<%=render :partial => 'header' , :locals => {:ym_y => params[:header][:ym_y],
+											:ym_m => params[:header][:ym_m],
+											:kansa => params[:header][:kansa],
+											:shop_kbn => params[:header][:shop_kbn],
+											:audit_class => params[:header][:audit_class],
+											:zumi_flg => params[:header][:zumi_flg]} %>
 
 <hr style="width: 100%;" />
 

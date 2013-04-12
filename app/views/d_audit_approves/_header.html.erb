@@ -1,6 +1,28 @@
 <%= form_tag({:action => 'edit' }) do %>
 <table class='rounded-corner' >
 	<tr>
+		<th>
+			対象年月
+		</th>
+		<td>
+			<% 
+				year = Date.today.year - 1	
+				y_list = Array.new()
+				for i in 1..3
+					y_list.push [year.to_s, year.to_s]
+					year += 1
+				end
+  			%>
+			<%=select :header, :ym_y, y_list, :selected => ym_y %>
+			年
+			<%
+				m_list = Array.new()
+				for i in 1..12
+					m_list.push [sprintf('%02d', i), sprintf('%02d', i)]
+				end
+			%>
+			<%=select :header, :ym_m, m_list, :selected => ym_m %>
+			月
   		<th>
   			処理選択
   		</th>
@@ -27,12 +49,14 @@
   		<td>
   			<%=radio_button :header, :audit_class, "0", {:checked => (audit_class.to_s == "0")} %>
   			<label for="header_audit_class_0">自主監査</label>
-  			&nbsp;&nbsp;
+  			&nbsp;</br>
   			<%=radio_button :header, :audit_class, "1", {:checked => (audit_class.to_s == "1")} %>
   			<label for="header_audit_class_1">本監査</label>
-  			&nbsp;&nbsp;
-  			<%=check_box :header, :zumi_flg, {:checked => (zumi_flg.to_s == "true")}, true, false %>
+  			<!--
+  				&nbsp;&nbsp;
+  			<%#=check_box :header, :zumi_flg, {:checked => (zumi_flg.to_s == "true")}, true, false %>
   			<label for="header_zumi_flg">承認済含む</label>
+ 			-->
   		</td>
   		<td style="border: none;">
 			&nbsp;

@@ -2,11 +2,12 @@
 
 <br/>
 
-<%=render :partial => 'header' , :locals => {:kansa => nil,
+<%= render :partial => 'header', :locals => {:ym_y => Date.today.year.to_s,
+	                                         :ym_m => sprintf('%02d', Date.today.month),
+	                                         :kansa => nil,
 	                                         :shop_kbn => nil,
                                              :audit_class => 0,
                                              :zumi_flg => false} %>
-
 <br/>
 
 

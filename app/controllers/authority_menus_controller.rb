@@ -83,13 +83,19 @@ class AuthorityMenusController < ApplicationController
   end
   
   def authority_select
-    @m_authority_id = params[:select][:m_authority_id]
-    
-    sql = authority_menu_sql(@m_authority_id)
-    @authority_menus = Menu.find_by_sql(sql)
+    if params[:select][:m_authority_id].blank?
+      @authority_menus = Hash.new
+    else
+      @m_authority_id = params[:select][:m_authority_id]
+      
+      sql = authority_menu_sql(@m_authority_id)
+      @authority_menus = Menu.find_by_sql(sql)
+    end
   end
 
   def authority_menu_create
+    return if params[:select].blank?
+
     m_authority_id = params[:select][:m_authority_id].to_i
     AuthorityMenu.destroy_all(["m_authority_id = ?", m_authority_id])
     menus = Menu.all
@@ -105,5 +111,6 @@ class AuthorityMenusController < ApplicationController
     
     #ログイン中の権限を変更した場合はメニューの再取得
     get_menus(current_user.m_authority_id) if current_user.m_authority_id == m_authority_id
+
   end
 end
