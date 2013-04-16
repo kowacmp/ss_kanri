@@ -87,7 +87,7 @@
 				<%=Menu.find(@menu_id).display_name.to_s.delete('自主監査').delete('本監査')%>
 			</td>
 			<td align="center">
-				<% if params[:header][:audit_class] == 0 %>
+				<% if params[:header][:audit_class] == '0' %>
 					自主監査
 				<% else %>
 					本監査
