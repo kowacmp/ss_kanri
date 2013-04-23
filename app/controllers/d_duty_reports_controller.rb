@@ -275,10 +275,10 @@ class DDutyReportsController < ApplicationController
         
         d_aim_uriage = DAim.new if d_aim_uriage.blank?
         d_aim_jinken = DAim.new if d_aim_jinken.blank?
-
+        #万円単位で入力ため×1000して小数点以下第2を四捨五入した値を出力
         #y_sisu = (d_aim_jinken.aim_total.to_i == 0 ? 0: (d_aim_uriage.aim_total.to_i*10000).to_f / (d_aim_jinken.aim_total.to_i*10000).to_f * 100).round
-        y_sisu = (d_aim_jinken.aim_total.to_i == 0 ? 0: (d_aim_uriage.aim_total.to_i).to_f / (d_aim_jinken.aim_total.to_i*10000).to_f * 100).round
-        
+        y_sisu = (d_aim_jinken.aim_total.to_i == 0 ? 0: (((d_aim_uriage.aim_total.to_i).to_f / (d_aim_jinken.aim_total.to_i).to_f) * 1000).round).to_f/10.round
+
         if @m_shop.shop_kbn == 0
           #h.item(:u_aim).value(d_aim_uriage.aim_total.to_i*10000)
           #h.item(:j_aim).value(d_aim_jinken.aim_total.to_i*10000)
@@ -303,7 +303,8 @@ class DDutyReportsController < ApplicationController
             h.item("u_aim_#{i+1}").value(d_aim_uriage["aim_value#{i+1}"])
             h.item("j_aim_#{i+1}").value(d_aim_jinken["aim_value#{i+1}"])
           end
-          y_sisu_n = (d_aim_jinken["aim_value#{i+1}"].to_i == 0 ? 0 : (d_aim_uriage["aim_value#{i+1}"].to_i*10000).to_f  / (d_aim_jinken["aim_value#{i+1}"].to_i*10000).to_f  * 100).round
+          #万円単位で入力ため×1000して小数点以下第2を四捨五入した値を出力
+          y_sisu_n = (d_aim_jinken["aim_value#{i+1}"].to_i == 0 ? 0 : ((d_aim_uriage["aim_value#{i+1}"].to_i*10000).to_f / (d_aim_jinken["aim_value#{i+1}"].to_i*10000).to_f * 1000).round).to_f/10.round
           h.item("y_sisu_#{i+1}").value(y_sisu_n)
         end 
     end
