@@ -8,6 +8,16 @@
 //= require jquery_ujs
 //=# require_tree .
 //= require jquery-ui
+//= require modal
+//= require jquery-ui-1.8.22.custom.min
+//= require jquery.ui.datepicker.js
+//= require jquery.ui.datepicker-ja
+//= require ddsmoothmenu
+//= require jquery.tablefix
+//= require jquery.blockUI.js
+//= require jquery.blockUIajax.js
+//= require jquery.input_wareki.js
+
 $(function(){
 $('#prefecture_id').change(function(){
 var pref_id = $("#prefecture_id").val();
