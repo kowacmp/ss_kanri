@@ -157,7 +157,19 @@
 </tr>
 <% end %> <!-- if w_name == "" then -->
 </table>
-
+<!--2013/04/27 戻るボタン左下実装　-->
+<br/>
+<div style="float:left; padding-left: 20px;">
+<!-- 戻るボタンを実装する -->
+<% if params[:back].to_s == "true" then %>
+<a href="javascript:history.back();" class="return_icon" >一覧へ戻る</a><br/>
+<% end %>
+<!-- INSERT 2012.12.06 監査リストからの戻るを実装する -->
+<% if params[:audit_list].to_s == "true" then %>
+	<%=link_to "一覧へ戻る", {:controller => "d_audit_lists", :action => "edit", :back => "true"}, :class => "return_icon" %>
+<% end %>
+</div>
+<!-- INSERT 2012.12.06 監査リストからの戻るを実装する -->
 <div style="float:right; padding-right: 20px;">
 
 <!-- INSERT BEGIN 2013.04.05 最終データのみ削除機能を追加 -->

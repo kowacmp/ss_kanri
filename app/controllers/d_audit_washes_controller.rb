@@ -229,6 +229,37 @@ class DAuditWashesController < ApplicationController
     render :layout => "modal"
     
   end
+  # 2013/04/25 予備メーター有無参照追加
+  # 予備メーター有無選択時イベント
+  def dialog_sub_meter
+    
+    # 予備メーターが発生した日を取得
+    sql = <<-SQL
+        select 
+            a.sale_date
+        from 
+                     d_wash_sales     a 
+          inner join d_washsale_items b
+        on 
+              a.id = b.d_wash_sale_id
+        where 
+                a.sale_date  >=  '#{params[:dialog_sub_meter][:sale_date_from]}' 
+            and a.sale_date  <=  '#{params[:dialog_sub_meter][:sale_date_to]}'
+            and a.m_shop_id  =  #{params[:dialog_sub_meter][:m_shop_id]} 
+            and b.m_wash_id   =  #{params[:dialog_sub_meter][:m_wash_id]}
+            and (b.sub_meter !=  0 
+            or (b.sub_meter = 0 and b.meter <> 0))
+        order by
+            a.sale_date
+     
+     SQL
+    
+    @d_wash_sales = DWashSale.find_by_sql(sql)
+    
+    render :layout => "modal"
+    
+  end
+
 
   # INSERT BEGIN 2012.11.16 コメント機能追加 
   def edit_comment

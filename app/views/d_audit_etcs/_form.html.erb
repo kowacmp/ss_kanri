@@ -30,6 +30,7 @@
 		<th>計算上売上高</th>
 		<th>現金売上高</th>
 		<th>誤差</th>
+		<th>予備有無</th>
 	</tr>  	
 
 	<% for dt_rec in @dt%>
@@ -43,11 +44,20 @@
   				<% if dt_rec[:etc_no] == 1 then %>
   					<td rowspan="<%= dt_rec[:max_num] %>" style="background-color: #C3C3C3;">&nbsp;</td>
   					<td rowspan="<%= dt_rec[:max_num] %>" align="center">
-  						<%=link_to "参照", {:action => "dialog_gosa", :dialog_gosa => {
+  						<%=link_to "誤差参照", {:action => "dialog_gosa", :dialog_gosa => {
   							:sale_date_from => dt_rec[:audit_date_from],
   							:sale_date_to => dt_rec[:audit_date_to],
   							:m_shop_id => dt_rec[:m_shop_id],
   							:m_etc_id => dt_rec[:m_etc_id]}}, :class => "modal" %>
+  					<!-- 2013/04/25 予備メーター有無参照追加 -->
+  					<!-- 予備メーター有無 -->
+  					<td rowspan="<%= dt_rec[:max_num] %>" align="center">
+  						<%=link_to "予備参照", {:action => "dialog_sub_meter", :dialog_sub_meter => {
+  							:sale_date_from => dt_rec[:audit_date_from],
+  							:sale_date_to => dt_rec[:audit_date_to],
+  							:m_shop_id => dt_rec[:m_shop_id],
+  							:m_etc_id => dt_rec[:m_etc_id]}}, :class => "modal" %>
+					</td>
 					</td>
   				<% end %>
 			</tr>
@@ -59,6 +69,7 @@
   				<td align="right" style="background-color: #A5D7AA;"><%= number_with_delimiter(dt_rec[:k_uri]) %></td>
   				<td align="right" style="background-color: #A5D7AA;"><%= number_with_delimiter(dt_rec[:g_uri]) %></td>
   				<td align="right" style="background-color: #A5D7AA;"><%= number_with_delimiter(dt_rec[:gosa])  %></td>
+  				<td></td>
   			</tr>
             <%  #最終行集計用合算
 				k_uri_sum += dt_rec[:k_uri]
@@ -75,121 +86,136 @@
   		<td style="border-width: 3px; background-color: #A5D7AA;" align="right"><%= number_with_delimiter(k_uri_sum) %></td>
   		<td style="border-width: 3px; background-color: #A5D7AA;" align="right"><%= number_with_delimiter(g_uri_sum) %></td>
   		<td style="border-width: 3px; background-color: #A5D7AA;" align="right"><%= number_with_delimiter(gosa_sum)  %></td>
+  		<td></td>
   	</tr>
   	  	
-<tr><td colspan="6" style="border: none; text-align: right;">
-<div style="float:right;">
-<%=form_tag :action => 'update' do %>
-    <%= hidden_field_tag :audit_list, params[:audit_list] %>
-    
-	<!-- INSERT BEGIN 2012.10.16 コメント機能追加 -->
-	<% 
-		if @d_audit_etc.nil? then 
-			comment = ""
-		else
-			comment = @d_audit_etc[:comment].to_s
-		end
-	%>
-	<%= hidden_field :d_audit_etc, :comment, :value => comment %>
-	<!-- INSERT END 2012.10.16 コメント機能追加 -->
-
-	<!-- 立会人 -->
-	<%
-  		c_shop_id = @d_audit_etc.confirm_shop_id unless @d_audit_etc.nil?
-  		c_user_id = @d_audit_etc.confirm_user_id unless @d_audit_etc.nil?
-	%>
-	<table class='rounded-corner' >
 	<tr>
-		<th rowspan="2">立会人</th>
-		<td>
-				<%=render :partial => 'd_audit_changemachines/confirm_shop_id', 
-					:locals => {:c_shop_id => c_shop_id, 
-					            :c_user_id => c_user_id} %>
-		</td>
-    </tr>
-    <tr>
-		<td>
-			<div id="confirm_user_id_div">
-				<%=render :partial => 'd_audit_changemachines/confirm_user_id', 
-					:locals => {:c_shop_id => c_shop_id, 
-					            :c_user_id => c_user_id} %>
-			</div>
-		</td>
-    </tr>
-	</table>
-
-	<!-- 更新内容 -->
-	<% rec_no = 0 %>
-	<% for dt_rec in @dt %>  
-  		<% rec_no += 1 %>
-    	<%= hidden_field("dt#{rec_no}", :audit_date_from, :value => dt_rec[:audit_date_from]) %>	
-    	<%= hidden_field("dt#{rec_no}", :audit_date_to,   :value => dt_rec[:audit_date_to]) %>	
-    	<%= hidden_field("dt#{rec_no}", :audit_class,     :value => dt_rec[:audit_class]) %>	
-    	<%= hidden_field("dt#{rec_no}", :m_shop_id,       :value => dt_rec[:m_shop_id]) %>	
-    	<%= hidden_field("dt#{rec_no}", :m_etc_id,        :value => dt_rec[:m_etc_id]) %>	
-    	<%= hidden_field("dt#{rec_no}", :etc_no,          :value => dt_rec[:etc_no]) %>	
-    
-    	<%= hidden_field("dt#{rec_no}", :t_meter,         :value => dt_rec[:t_meter]) %>	
-    	<%= hidden_field("dt#{rec_no}", :z_meter,         :value => dt_rec[:z_meter]) %>	
-    	<%= hidden_field("dt#{rec_no}", :k_uri,           :value => dt_rec[:k_uri]) %>	
-    	<%= hidden_field("dt#{rec_no}", :g_uri,           :value => dt_rec[:g_uri]) %>	
-    	<%= hidden_field("dt#{rec_no}", :gosa,            :value => dt_rec[:gosa]) %>	
-  	
-	<% end %>
-	<br/>
-<!-- INSERT BEGIN 2012.11.20 最終データのみ削除機能を追加 -->
-<%
-	# 表示中のデータが最終データかを確認する
-	etc_max = DAuditEtc.find(:first, :conditions => ["m_shop_id=?", @m_shop_id], :order => "audit_date_from desc")
-	b_del = false
-	if not(etc_max.nil?) then
-		if etc_max.audit_date_from == @audit_date_from.delete("/") then
-			if @d_audit_etc["kakutei_flg"].to_s == "0" then # ADD 2013.02.21 確定済みのデータは削除させない
-				b_del = true
+		<td colspan="9" style="border:none" align="right">
+		<%=form_tag :action => 'update' do %>
+		    <%= hidden_field_tag :audit_list, params[:audit_list] %>
+		    
+			<!-- INSERT BEGIN 2012.10.16 コメント機能追加 -->
+			<% 
+				if @d_audit_etc.nil? then 
+					comment = ""
+				else
+					comment = @d_audit_etc[:comment].to_s
+				end
+			%>
+			<%= hidden_field :d_audit_etc, :comment, :value => comment %>
+			<!-- INSERT END 2012.10.16 コメント機能追加 -->
+		
+			<!-- 立会人 -->
+			<%
+		  		c_shop_id = @d_audit_etc.confirm_shop_id unless @d_audit_etc.nil?
+		  		c_user_id = @d_audit_etc.confirm_user_id unless @d_audit_etc.nil?
+			%>
+			<table class='rounded-corner' >
+			<tr>
+				<th rowspan="2">立会人</th>
+				<td>
+						<%=render :partial => 'd_audit_changemachines/confirm_shop_id', 
+							:locals => {:c_shop_id => c_shop_id, 
+							            :c_user_id => c_user_id} %>
+				</td>
+		    </tr>
+		    <tr>
+				<td>
+					<div id="confirm_user_id_div">
+						<%=render :partial => 'd_audit_changemachines/confirm_user_id', 
+							:locals => {:c_shop_id => c_shop_id, 
+							            :c_user_id => c_user_id} %>
+					</div>
+				</td>
+		    </tr>
+			</table>
+		
+			<!-- 更新内容 -->
+			<% rec_no = 0 %>
+			<% for dt_rec in @dt %>  
+		  		<% rec_no += 1 %>
+		    	<%= hidden_field("dt#{rec_no}", :audit_date_from, :value => dt_rec[:audit_date_from]) %>	
+		    	<%= hidden_field("dt#{rec_no}", :audit_date_to,   :value => dt_rec[:audit_date_to]) %>	
+		    	<%= hidden_field("dt#{rec_no}", :audit_class,     :value => dt_rec[:audit_class]) %>	
+		    	<%= hidden_field("dt#{rec_no}", :m_shop_id,       :value => dt_rec[:m_shop_id]) %>	
+		    	<%= hidden_field("dt#{rec_no}", :m_etc_id,        :value => dt_rec[:m_etc_id]) %>	
+		    	<%= hidden_field("dt#{rec_no}", :etc_no,          :value => dt_rec[:etc_no]) %>	
+		    
+		    	<%= hidden_field("dt#{rec_no}", :t_meter,         :value => dt_rec[:t_meter]) %>	
+		    	<%= hidden_field("dt#{rec_no}", :z_meter,         :value => dt_rec[:z_meter]) %>	
+		    	<%= hidden_field("dt#{rec_no}", :k_uri,           :value => dt_rec[:k_uri]) %>	
+		    	<%= hidden_field("dt#{rec_no}", :g_uri,           :value => dt_rec[:g_uri]) %>	
+		    	<%= hidden_field("dt#{rec_no}", :gosa,            :value => dt_rec[:gosa]) %>	
+		  	
+			<% end %>
+			<br/>
+		<div style="float:right;">
+		<!-- INSERT BEGIN 2012.11.20 最終データのみ削除機能を追加 -->
+		<%
+			# 表示中のデータが最終データかを確認する
+			etc_max = DAuditEtc.find(:first, :conditions => ["m_shop_id=?", @m_shop_id], :order => "audit_date_from desc")
+			b_del = false
+			if not(etc_max.nil?) then
+				if etc_max.audit_date_from == @audit_date_from.delete("/") then
+					if @d_audit_etc["kakutei_flg"].to_s == "0" then # ADD 2013.02.21 確定済みのデータは削除させない
+						b_del = true
+					end
+				end
 			end
-		end
-	end
-%>
-<% if b_del then %>
-	<%= hidden_field_tag "delete_id" %>
-	<%= submit_tag "　削　除　", :onclick => "return audit_etc_delete();", :disable_with => "削除中です..." %>
-	<script>
-		function audit_etc_delete(){
-			if (confirm('削除します。よろしいですか？')) {
-				$('#delete_id').val('<%= etc_max.id %>');
-				return true;
-			} else {
-				return false;
-			}
-		}
-	</script>
-<% end %>
-<!-- INSERT END 2012.11.20 最終データのみ削除機能を追加-->
-<%
-	if params[:audit_list].to_s == "true" then
-		url = "./edit?id=#{params[:id]}&audit_list=true"
-	else
-		url = "./edit?header[m_shop_id]=#{@m_shop_id}&header[created_user_id]=#{@created_user_id}&header[audit_date_from]=#{@audit_date_from}&header[audit_date_to]=#{@audit_date_to}"			
-	end
-%>
-	<input type="button" value="キャンセル" 
-			onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
-						this.value='キャンセル中です...';
-						this.disabled=true;document.location='<%=url%>';
-					}" />
-	<!-- 使用不可で開始、立会人入力により使用可 -->
-	<%= submit_tag '　登　録　', :onclick => "return update_chk()" ,:disable_with => '登録中です...', :disabled => not(params["audit_list"].to_s == "true") , :id => "btn_update" %>
-	<!-- true の場合は永続的に更新不可 -->
-	<% 
-		if @d_audit_etc.nil? then
-			kakutei_flg = ""
-		else
-			kakutei_flg = @d_audit_etc["kakutei_flg"].to_s
-		end
-	%>
-	<%= hidden_field_tag "update_flg", ((params[:readonly].to_s == "true") or (kakutei_flg == "1")) %>
-</div>
-</td></tr>
+		%>
+		<% if b_del then %>
+			<%= hidden_field_tag "delete_id" %>
+			<%= submit_tag "　削　除　", :onclick => "return audit_etc_delete();", :disable_with => "削除中です..." %>
+			<script>
+				function audit_etc_delete(){
+					if (confirm('削除します。よろしいですか？')) {
+						$('#delete_id').val('<%= etc_max.id %>');
+						return true;
+					} else {
+						return false;
+					}
+				}
+			</script>
+		<% end %>
+		<!-- INSERT END 2012.11.20 最終データのみ削除機能を追加-->
+		<%
+			if params[:audit_list].to_s == "true" then
+				url = "./edit?id=#{params[:id]}&audit_list=true"
+			else
+				url = "./edit?header[m_shop_id]=#{@m_shop_id}&header[created_user_id]=#{@created_user_id}&header[audit_date_from]=#{@audit_date_from}&header[audit_date_to]=#{@audit_date_to}"			
+			end
+		%>
+			<input type="button" value="キャンセル" 
+					onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
+								this.value='キャンセル中です...';
+								this.disabled=true;document.location='<%=url%>';
+							}" />
+			<!-- 使用不可で開始、立会人入力により使用可 -->
+			<%= submit_tag '　登　録　', :onclick => "return update_chk()" ,:disable_with => '登録中です...', :disabled => not(params["audit_list"].to_s == "true") , :id => "btn_update" %>
+			<!-- true の場合は永続的に更新不可 -->
+			<% 
+				if @d_audit_etc.nil? then
+					kakutei_flg = ""
+				else
+					kakutei_flg = @d_audit_etc["kakutei_flg"].to_s
+				end
+			%>
+			<%= hidden_field_tag "update_flg", ((params[:readonly].to_s == "true") or (kakutei_flg == "1")) %>
+		</div>
+				
+		<div style="float:left; padding-left: 20px;">
+		<!-- 戻るボタンを実装する -->
+		<% if params[:back].to_s == "true" then %>
+			<a href="javascript:history.back();" class="return_icon" >一覧へ戻る</a><br/>
+		<% end %>
+		<!-- INSERT 2012.12.06 監査リストからの戻るを実装する -->
+		<% if params[:audit_list].to_s == "true" then %>
+			<%=link_to "一覧へ戻る", {:controller => "d_audit_lists", :action => "edit", :back => "true"}, :class => "return_icon" %>
+		<% end %>
+		<!-- INSERT 2012.12.06 監査リストからの戻るを実装する -->
+		</div>
+		</td>
+	</tr>
 </table>
 <% end %>
 
