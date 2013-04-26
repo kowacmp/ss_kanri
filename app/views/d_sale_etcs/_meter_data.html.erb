@@ -267,6 +267,7 @@
 			  </span>
 			<% end %>
 	    </td>
+	    <td></td>
 	   </tr>
 	  <% end %>
 	  <tr><td colspan="2">&nbsp;</td>
@@ -277,8 +278,9 @@
 	  	  	<span id="meter_k"><%= sum_genkin_uriage %></span></td>
 	  	  <td align="right" class="input_no" id="display">
 	  	  	<span id="gosa_k"><%= sum_gosa %></span></td>
+	  	  <td></td>
 	  </tr>
-	  <tr><td colspan="6">
+	  <tr><td colspan="7"> <!-- UPDATE 2012.11.26 colspan="6" → "7" -->
 	  	<div class="field">
 	     <% if kakutei_flg == 1 %>
 	       <%= submit_tag("  登  録  ",:disabled => true) %>	 
