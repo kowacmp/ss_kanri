@@ -35,7 +35,10 @@ $('input[type!="submit"][type!="button"]').live("keypress",function(e){
 
 // textareaのmaxlength属性を未対応ブラウザ(ie)でも有効にする
 $("textarea[maxlength]").live("change", function() {
-  var maxlength = Number($(this).attr("maxlength"));	
+  var maxlength = Number($(this).attr("maxlength"));
+  var text = $(this).val().replace(/\r/g, "");
+  var text = text.replace(/\n/g, "");
+  $(this).val(text);  
   if (!isNaN(maxlength)) {
     if ($(this).val().length > maxlength ) {
       $(this).val( $(this).val().substr(0, maxlength) );
