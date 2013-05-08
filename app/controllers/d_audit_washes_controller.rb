@@ -227,10 +227,11 @@ class DAuditWashesController < ApplicationController
     
     #@d_wash_sales = DWashSale.find_by_sql(sql)
 
-    @d_wash_sales = get_gosa(params[:dialog_sub_meter][:sale_date_from],
-    params[:dialog_sub_meter][:sale_date_to],
-    params[:dialog_sub_meter][:m_shop_id],
-    params[:dialog_sub_meter][:m_wash_id])
+    @d_wash_sales = get_gosa(params[:dialog_gosa][:sale_date_from],
+                             params[:dialog_gosa][:sale_date_to],
+                             params[:dialog_gosa][:m_shop_id],
+                             params[:dialog_gosa][:m_wash_id])
+
     render :layout => "modal"
     
   end
@@ -261,10 +262,10 @@ class DAuditWashesController < ApplicationController
     
 #     @d_wash_sales = DWashSale.find_by_sql(sql)
     @d_wash_sales = get_sub_meter(params[:dialog_sub_meter][:sale_date_from],
-    params[:dialog_sub_meter][:sale_date_to],
-    params[:dialog_sub_meter][:m_shop_id],
-    params[:dialog_sub_meter][:m_wash_id])
-    
+                                  params[:dialog_sub_meter][:sale_date_to],
+                                  params[:dialog_sub_meter][:m_shop_id],
+                                  params[:dialog_sub_meter][:m_wash_id])
+
     render :layout => "modal"
     
   end

@@ -226,10 +226,11 @@ class DAuditEtcsController < ApplicationController
      #SQL
     
     #@d_sale_etcs = DSaleEtc.find_by_sql(sql)
-    @d_sale_etcs = get_gosa_etc(params[:dialog_sub_meter][:sale_date_from],
-                    params[:dialog_sub_meter][:sale_date_to],
-                    params[:dialog_sub_meter][:m_shop_id],
-                    params[:dialog_sub_meter][:m_etc_id])
+    @d_sale_etcs = get_gosa_etc(params[:dialog_gosa][:sale_date_from],
+                                params[:dialog_gosa][:sale_date_to],
+                                params[:dialog_gosa][:m_shop_id],
+                                params[:dialog_gosa][:m_etc_id])
+
     render :layout => "modal"
     
   end
@@ -260,9 +261,10 @@ class DAuditEtcsController < ApplicationController
     
     #@d_sale_etcs = DSaleEtc.find_by_sql(sql)
     @d_sale_etcs = get_sub_meter_etc(params[:dialog_sub_meter][:sale_date_from],
-                    params[:dialog_sub_meter][:sale_date_to],
-                    params[:dialog_sub_meter][:m_shop_id],
-                    params[:dialog_sub_meter][:m_etc_id])
+                                     params[:dialog_sub_meter][:sale_date_to],
+                                     params[:dialog_sub_meter][:m_shop_id],
+                                     params[:dialog_sub_meter][:m_etc_id])
+
     render :layout => "modal"
     
   end
