@@ -6,6 +6,9 @@ class ApplicationController < ActionController::Base
   #権限チェック
   #before_filter :permission_check
   
+  #アドレスバー直打ちチェック
+  before_filter :referer_check
+  
   #アクセスログ
   before_filter :access_log
   
@@ -17,6 +20,24 @@ class ApplicationController < ActionController::Base
 
     root_path
   end  
+  
+  #アドレスバー直打ちチェック
+  def referer_check
+    
+    # 例外のアドレスを設定
+    permit_url = ["/",
+                  "/users/sign_in",
+                  "/home/index",
+                  "/d_schedule_lists/index"]
+
+    # method=get の referer のホストが自身のホストと一致してるか確認する
+    if request.request_method == "GET" and not(permit_url.include?(request.path_info.to_s))
+      unless /^(http|https):\/\/#{ request.host }(|:\d+)\// =~ request.referer
+        redirect_to "", :status => :bad_request
+      end
+    end
+
+  end
   
   #権限チェック
   def permission_check
