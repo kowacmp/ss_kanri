@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+include DAuditWashesHelper
 class DAuditWashesController < ApplicationController
 
   def index
@@ -204,28 +205,32 @@ class DAuditWashesController < ApplicationController
   def dialog_gosa
     
     # 誤差が発生した日を取得
-    sql = <<-SQL
-        select 
-            a.sale_date
-        from 
-                     d_wash_sales     a 
-          inner join d_washsale_items b
-        on 
-              a.id = b.d_wash_sale_id
-        where 
-                a.sale_date  >=  '#{params[:dialog_gosa][:sale_date_from]}' 
-            and a.sale_date  <=  '#{params[:dialog_gosa][:sale_date_to]}'
-            and a.m_shop_id  =  #{params[:dialog_gosa][:m_shop_id]} 
-            and b.m_wash_id   =  #{params[:dialog_gosa][:m_wash_id]}
-            and b.wash_no     =  99
-            and b.error_money !=  0 --UPDATE 2012.10.16 >0 → != 0
-        order by
-            a.sale_date
+    #sql = <<-SQL
+    #    select 
+    #        a.sale_date
+    #    from 
+    #                 d_wash_sales     a 
+    #      inner join d_washsale_items b
+    #    on 
+    #          a.id = b.d_wash_sale_id
+    #    where 
+    #            a.sale_date  >=  '#{params[:dialog_gosa][:sale_date_from]}' 
+    #        and a.sale_date  <=  '#{params[:dialog_gosa][:sale_date_to]}'
+    #        and a.m_shop_id  =  #{params[:dialog_gosa][:m_shop_id]} 
+    #        and b.m_wash_id   =  #{params[:dialog_gosa][:m_wash_id]}
+    #        and b.wash_no     =  99
+    #        and b.error_money !=  0 --UPDATE 2012.10.16 >0 → != 0
+    #    order by
+    #        a.sale_date
      
-     SQL
+    # SQL
     
-    @d_wash_sales = DWashSale.find_by_sql(sql)
-    
+    #@d_wash_sales = DWashSale.find_by_sql(sql)
+
+    @d_wash_sales = get_gosa(params[:dialog_sub_meter][:sale_date_from],
+    params[:dialog_sub_meter][:sale_date_to],
+    params[:dialog_sub_meter][:m_shop_id],
+    params[:dialog_sub_meter][:m_wash_id])
     render :layout => "modal"
     
   end
@@ -234,27 +239,31 @@ class DAuditWashesController < ApplicationController
   def dialog_sub_meter
     
     # 予備メーターが発生した日を取得
-    sql = <<-SQL
-        select 
-            a.sale_date
-        from 
-                     d_wash_sales     a 
-          inner join d_washsale_items b
-        on 
-              a.id = b.d_wash_sale_id
-        where 
-                a.sale_date  >=  '#{params[:dialog_sub_meter][:sale_date_from]}' 
-            and a.sale_date  <=  '#{params[:dialog_sub_meter][:sale_date_to]}'
-            and a.m_shop_id  =  #{params[:dialog_sub_meter][:m_shop_id]} 
-            and b.m_wash_id   =  #{params[:dialog_sub_meter][:m_wash_id]}
-            and (b.sub_meter !=  0 
-            or (b.sub_meter = 0 and b.meter <> 0))
-        order by
-            a.sale_date
-     
-     SQL
+#    sql = <<-SQL
+#        select 
+#            a.sale_date
+#        from 
+#                     d_wash_sales     a 
+#          inner join d_washsale_items b
+#        on 
+#              a.id = b.d_wash_sale_id
+#        where 
+#                a.sale_date  >=  '#{params[:dialog_sub_meter][:sale_date_from]}' 
+#            and a.sale_date  <=  '#{params[:dialog_sub_meter][:sale_date_to]}'
+#            and a.m_shop_id  =  #{params[:dialog_sub_meter][:m_shop_id]} 
+#            and b.m_wash_id   =  #{params[:dialog_sub_meter][:m_wash_id]}
+#            and (b.sub_meter !=  0 
+#            or (b.sub_meter = 0 and b.meter <> 0))
+#        order by
+#            a.sale_date
+#     
+#     SQL
     
-    @d_wash_sales = DWashSale.find_by_sql(sql)
+#     @d_wash_sales = DWashSale.find_by_sql(sql)
+    @d_wash_sales = get_sub_meter(params[:dialog_sub_meter][:sale_date_from],
+    params[:dialog_sub_meter][:sale_date_to],
+    params[:dialog_sub_meter][:m_shop_id],
+    params[:dialog_sub_meter][:m_wash_id])
     
     render :layout => "modal"
     

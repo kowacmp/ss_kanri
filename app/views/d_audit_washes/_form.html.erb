@@ -64,22 +64,37 @@
 							<%= submit_tag '参照', :disable_with => "処理中です..." %>
   						<% end %>
   						-->
-  						<%=link_to "誤差参照", {:action => "dialog_gosa", :dialog_gosa => {
-  							:sale_date_from => dt_rec[:audit_date_from],
-  							:sale_date_to => dt_rec[:audit_date_to],
-  							:m_shop_id => dt_rec[:m_shop_id],
-  							:m_wash_id => dt_rec[:m_wash_id]}}, :class => "modal" %>
+	  					<!-- 誤差有無 -->
+	  					<% if @d_wash_sales = get_gosa(dt_rec[:audit_date_from],
+	  							dt_rec[:audit_date_to],
+	  							dt_rec[:m_shop_id],
+	  							dt_rec[:m_wash_id]).blank?%>
+	  						誤差参照
+	  					<% else %>
+	  						<%=link_to "誤差参照", {:action => "dialog_gosa", :dialog_gosa => {
+	  							:sale_date_from => dt_rec[:audit_date_from],
+	  							:sale_date_to => dt_rec[:audit_date_to],
+	  							:m_shop_id => dt_rec[:m_shop_id],
+	  							:m_wash_id => dt_rec[:m_wash_id]}}, :class => "modal" %>
+						<% end %>
 					</td>
   					<!-- 2013/04/25 予備メーター有無参照追加 -->
-  					<!-- 予備メーター有無 -->
   					<td rowspan="<%= dt_rec[:max_num] %>" align="center" >
- 
-  						<%=link_to "予備参照", {:action => "dialog_sub_meter", :dialog_sub_meter => {
-  							:sale_date_from => dt_rec[:audit_date_from],
-  							:sale_date_to => dt_rec[:audit_date_to],
-  							:m_shop_id => dt_rec[:m_shop_id],
-  							:m_wash_id => dt_rec[:m_wash_id]}}, :class => "modal" %>
+	  					<!-- 予備メーター有無 -->
+	  					<% if @d_wash_sales = get_sub_meter(dt_rec[:audit_date_from],
+	  							dt_rec[:audit_date_to],
+	  							dt_rec[:m_shop_id],
+	  							dt_rec[:m_wash_id]).blank?%>
+	  						予備参照
+	  					<% else %>
+	  						<%=link_to "予備参照", {:action => "dialog_sub_meter", :dialog_sub_meter => {
+	  							:sale_date_from => dt_rec[:audit_date_from],
+	  							:sale_date_to => dt_rec[:audit_date_to],
+	  							:m_shop_id => dt_rec[:m_shop_id],
+	  							:m_wash_id => dt_rec[:m_wash_id]}}, :class => "modal" %>
+						<% end %>
 					</td>
+
   				<% end %>
 			</tr>
 		<%else%>

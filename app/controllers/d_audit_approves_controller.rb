@@ -7,13 +7,7 @@ class DAuditApprovesController < ApplicationController
   end
 
   def edit
-    p "params[:header]1=======================#{params[:header][:ym_y]}"
-    p "params[:header]1========================#{params[:header][:ym_m]}"
-    # params[:header][:ym_y] = Date.today.year.to_s
-    #  params[:header][:ym_m] = sprintf('%02d', Date.today.month)
-    #end
-    p "params[:header]2=======================#{params[:header][:ym_y]}"
-    p "params[:header]2========================#{params[:header][:ym_m]}"
+
     # 処理選択よりメニューIDを取得する
     case params[:header][:kansa].to_s
     when "1" #金庫
@@ -66,18 +60,6 @@ class DAuditApprovesController < ApplicationController
         end
       end
     end
-    
-    # 承認済を含むの条件を先に作る
-    #where_zumi = ""
-    #if params[:header][:zumi_flg].to_s != "true" then #自分が承認していないもの
-    #  where_zumi = "
-    #                   and coalesce(a.approve_id1, 0) != #{current_user.id} 
-    #                   and coalesce(a.approve_id2, 0) != #{current_user.id}
-    #                   and coalesce(a.approve_id3, 0) != #{current_user.id}
-    #                   and coalesce(a.approve_id4, 0) != #{current_user.id}
-    #                   and coalesce(a.approve_id5, 0) != #{current_user.id}
-    #               "
-    #end
     
     sql = <<-SQL
       select

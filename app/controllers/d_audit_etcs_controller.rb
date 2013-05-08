@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+include DAuditEtcsHelper
 class DAuditEtcsController < ApplicationController
 
   def index
@@ -204,28 +205,31 @@ class DAuditEtcsController < ApplicationController
   def dialog_gosa
     
     # 誤差が発生した日を取得
-    sql = <<-SQL
-        select 
-            a.sale_date
-        from 
-                     d_sale_etcs        a 
-          inner join d_sale_etc_details b
-        on 
-              a.id = b.d_sale_etc_id
-        where 
-                a.sale_date  >=  '#{params[:dialog_gosa][:sale_date_from]}' 
-            and a.sale_date  <=  '#{params[:dialog_gosa][:sale_date_to]}'
-            and a.m_shop_id  =  #{params[:dialog_gosa][:m_shop_id]} 
-            and b.m_etc_id   =  #{params[:dialog_gosa][:m_etc_id]}
-            and b.etc_no     =  99
-            and b.error_money != 0 --UPDATE 2012.10.16 >0 → != 0
-        order by
-            a.sale_date
+    #sql = <<-SQL
+    #    select 
+    #        a.sale_date
+    #    from 
+    #                 d_sale_etcs        a 
+    #      inner join d_sale_etc_details b
+    #    on 
+    #          a.id = b.d_sale_etc_id
+    #    where 
+    #            a.sale_date  >=  '#{params[:dialog_gosa][:sale_date_from]}' 
+    #        and a.sale_date  <=  '#{params[:dialog_gosa][:sale_date_to]}'
+    #        and a.m_shop_id  =  #{params[:dialog_gosa][:m_shop_id]} 
+    #        and b.m_etc_id   =  #{params[:dialog_gosa][:m_etc_id]}
+    #        and b.etc_no     =  99
+    #        and b.error_money != 0 --UPDATE 2012.10.16 >0 → != 0
+    #    order by
+    #        a.sale_date
      
-     SQL
+     #SQL
     
-    @d_sale_etcs = DSaleEtc.find_by_sql(sql)
-    
+    #@d_sale_etcs = DSaleEtc.find_by_sql(sql)
+    @d_sale_etcs = get_gosa_etc(params[:dialog_sub_meter][:sale_date_from],
+                    params[:dialog_sub_meter][:sale_date_to],
+                    params[:dialog_sub_meter][:m_shop_id],
+                    params[:dialog_sub_meter][:m_etc_id])
     render :layout => "modal"
     
   end
@@ -233,29 +237,32 @@ class DAuditEtcsController < ApplicationController
   # 予備メーター有無選択時イベント
   def dialog_sub_meter
     
-    # 誤差が発生した日を取得
-    sql = <<-SQL
-        select 
-            a.sale_date
-        from 
-                     d_sale_etcs        a 
-          inner join d_sale_etc_details b
-        on 
-              a.id = b.d_sale_etc_id
-        where 
-                a.sale_date  >=  '#{params[:dialog_sub_meter][:sale_date_from]}' 
-            and a.sale_date  <=  '#{params[:dialog_sub_meter][:sale_date_to]}'
-            and a.m_shop_id  =  #{params[:dialog_sub_meter][:m_shop_id]} 
-            and b.m_etc_id   =  #{params[:dialog_sub_meter][:m_etc_id]}
-            and (b.sub_meter !=  0 
-            or (b.sub_meter = 0 and b.meter <> 0))
-        order by
-            a.sale_date
+    # 予備メーターが発生した日を取得
+    #sql = <<-SQL
+    #    select 
+    #        a.sale_date
+    #    from 
+    #                 d_sale_etcs        a 
+    #      inner join d_sale_etc_details b
+    #    on 
+    #          a.id = b.d_sale_etc_id
+    #    where 
+    #            a.sale_date  >=  '#{params[:dialog_sub_meter][:sale_date_from]}' 
+    #        and a.sale_date  <=  '#{params[:dialog_sub_meter][:sale_date_to]}'
+    #        and a.m_shop_id  =  #{params[:dialog_sub_meter][:m_shop_id]} 
+    #        and b.m_etc_id   =  #{params[:dialog_sub_meter][:m_etc_id]}
+    #        and (b.sub_meter !=  0 
+    #        or (b.sub_meter = 0 and b.meter <> 0))
+    #    order by
+    #        a.sale_date
      
-     SQL
+    # SQL
     
-    @d_sale_etcs = DSaleEtc.find_by_sql(sql)
-    
+    #@d_sale_etcs = DSaleEtc.find_by_sql(sql)
+    @d_sale_etcs = get_sub_meter_etc(params[:dialog_sub_meter][:sale_date_from],
+                    params[:dialog_sub_meter][:sale_date_to],
+                    params[:dialog_sub_meter][:m_shop_id],
+                    params[:dialog_sub_meter][:m_etc_id])
     render :layout => "modal"
     
   end
