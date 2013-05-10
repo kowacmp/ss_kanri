@@ -40,20 +40,9 @@
 		<th>承認者</th>
 		<th>承認者</th>
 		<th>詳細</th>
-		<th>
-		<!-- UPDATE 2012.10.15 ボタンをやめてチェックボックスへ変更 -->
-			承認<br/>
-			<!-- <input type="checkbox" id="audit_approves_check_all" />
-			-->
-			<script>/*
-			$(function() {
-				$("#audit_approves_check_all").click( function (){ 
-					$(":checkbox[id$=approval_flg]:not([disabled=disabled])").prop("checked", $(this).prop("checked"));
-				});
-			});
-			*/</script>
-		<!-- UPDATE 2012.10.15 ボタンをやめてチェックボックスへ変更 -->
-		</th>
+		<!-- DELETE 2013.05.09 承認機能を削除
+		<th>承認</th>
+		DELETE 2013.05.09 承認機能を削除 -->
 	</tr>
 	
 	<% rec_cnt = 0 %>
@@ -157,6 +146,7 @@
 				<!-- UPDATE 2012.10.16 詳細の呼出先にコメントのみ更新する機能をつける -->
 				<%= link_to image_tag('icon/24_show.png'), :controller => @table, :action => "show", :id => approval.id, :comment => true %>
 			</td>
+			<!-- DELETE 2013.05.09 承認機能を削除
 			<td align="center">
 				<%
 					flg = false
@@ -171,17 +161,20 @@
 				<%=check_box    "approval#{rec_cnt}", :approval_flg,     
 						{:checked => flg, :disabled => (@approval_id == 0)} , true, false %>
 			</td>
+			DELETE 2013.05.09 承認機能を削除 -->
 		</tr>
 		
 	<% end %> <!-- for approval in @approval do -->
 		
+	<!-- DELETE 2013.05.09 承認機能を削除
 	<tr>
 		<td colspan="10" align="right" style="border: none">
 			<%= submit_tag '　登  録　', :disable_with => "登録中です...", :confirm => "登録してもよろしいですか？",
 				:disabled => (@approval_id == 0) %>
 		</td>
 	</tr>
-		
+	-->
+	
 </table>
 <% end %> <!-- form_tag({:action => 'update' }, :id => "form_update") do -->
 

@@ -7,6 +7,14 @@ class DAuditApprovesController < ApplicationController
   end
 
   def edit
+    
+    # 詳細からの戻りを考慮
+    if params[:header].blank? 
+      redirect_to :action => "edit", :header => session[:d_audit_approves_header]
+      return
+    end
+    session[:d_audit_approves_header] = params[:header]
+    
     p "params[:header]1=======================#{params[:header][:ym_y]}"
     p "params[:header]1========================#{params[:header][:ym_m]}"
     # params[:header][:ym_y] = Date.today.year.to_s
@@ -167,6 +175,34 @@ class DAuditApprovesController < ApplicationController
                                                :shop_kbn => params[:hheader][:shop_kbn],
                                                :audit_class => params[:hheader][:audit_class],
                                                :zumi_flg => true} #チェックONを強制的に出す    
+    
+  end
+  
+  # 各詳細画面からの承認のAJAX更新
+  def update_audit_approves
+    
+    # 更新対象の情報を得る
+    approves = get_apploval_info(params[:table], params[:id].to_i)
+    table = approves[:table]
+    approval_id = approves[:approval_id]
+
+    # 1～5に自分が書込されていたら初期化
+    for j in 1..5 do
+      if table["approve_id#{j}"].to_s == current_user.id.to_s then
+            table["approve_id#{j}"] = 0
+            table["approve_date#{j}"] = nil
+      end
+    end
+    
+    if params[:checked].to_s == "true" then
+      # マスタに設定されているIDの箇所に書込
+      table["approve_id#{approval_id}"] = current_user.id
+      table["approve_date#{approval_id}"] = Time.now.to_date
+    end
+    
+    table.save!
+    
+    head :ok
     
   end
   

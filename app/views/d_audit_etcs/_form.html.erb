@@ -150,6 +150,9 @@
 			<% end %>
 			<br/>
 		<div style="float:right;">
+			<!-- 承認のチェックを追加 -->
+			<%= raw(apploval_check_box "d_audit_etcs", params[:id].to_i) if params[:comment].to_s == "true" %>
+			
 		<!-- INSERT BEGIN 2012.11.20 最終データのみ削除機能を追加 -->
 		<%
 			# 表示中のデータが最終データかを確認する
@@ -206,7 +209,9 @@
 		<div style="float:left; padding-left: 20px;">
 		<!-- 戻るボタンを実装する -->
 		<% if params[:back].to_s == "true" then %>
-			<a href="javascript:history.back();" class="return_icon" >一覧へ戻る</a><br/>
+			<!-- <a href="javascript:history.back();" class="return_icon" >一覧へ戻る</a> -->
+			<%=link_to "一覧へ戻る", {:controller => "d_audit_approves", :action => "edit"}, :class => "return_icon" %>
+			<br/>
 		<% end %>
 		<!-- INSERT 2012.12.06 監査リストからの戻るを実装する -->
 		<% if params[:audit_list].to_s == "true" then %>

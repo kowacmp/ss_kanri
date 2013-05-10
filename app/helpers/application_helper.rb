@@ -80,4 +80,93 @@ module ApplicationHelper
     target.gsub(/\r\n|\r|\n/, "<br />").html_safe
   end
   
+  # 各詳細画面で使用する承認情報取得
+  def get_apploval_info(table, id)
+  
+    case table
+    when "d_audit_cashboxes" #金庫
+      tb = DAuditCashbox.find(id)
+      if tb[:audit_class] == 0
+        menu_id = 34
+      else
+        menu_id = 38
+      end
+      
+    when "d_audit_changemachines" #釣銭
+      tb = DAuditChangemachine.find(id)
+      if tb[:audit_class] == 0
+        menu_id = 35
+      else
+        menu_id = 39
+      end
+      
+    when "d_audit_washes" #洗車
+      tb = DAuditWash.find(id)
+      if tb[:audit_class] == 0
+        menu_id = 36
+      else
+        menu_id = 40
+      end
+      
+    when "d_audit_etcs" #その他
+      tb = DAuditEtc.find(id)
+      if tb[:audit_class] == 0
+        menu_id = 37
+      else
+        menu_id = 41
+      end
+      
+    end
+    
+    approval_id = 0
+    approval_name = ""
+    m_approval = MApproval.find(:first, :conditions => ["menu_id=?", menu_id])
+    if not(m_approval.nil?) then
+      for i in 1..5 do
+        if m_approval["approval_id#{i}"].to_s == current_user.id.to_s
+          approval_id   = i
+          approval_name = m_approval["approval_name#{i}"] 
+        end
+      end
+    end
+    
+    return :table => tb,
+           :approval_id => approval_id,
+           :approval_name => approval_name 
+    
+  end
+  
+  # 各詳細画面で使用する承認用チェックボックス
+  def apploval_check_box(table, id)
+    
+    apploval = get_apploval_info(table, id)
+    rec = apploval[:table]
+    flg = false
+    for i in 1..5
+      if rec["approve_id#{ i }"].to_s == current_user.id.to_s
+        flg = true
+      end
+    end
+
+    if flg
+      checked = "checked='checked'"
+    else
+      checked = ""
+    end
+    
+    url = url_for(:controller => "d_audit_approves", :action => "update_audit_approves")
+    
+    return "<input type='checkbox' #{ checked } 
+             onchange=\" $.post('#{ url }',
+                                {  table : '#{ table }' 
+                                  ,id : #{ id } 
+                                  ,checked : $(this).prop('checked')
+                                 });\" />
+            <label onclick=\" var checkbox = $(this).prev(':checkbox');
+                              checkbox.prop('checked', !checkbox.prop('checked'));
+                              checkbox.change();
+                              \" style='color:red; font-weight:bold; margin-right:10px;'>承認</label>"
+                              
+  end
+  
 end
