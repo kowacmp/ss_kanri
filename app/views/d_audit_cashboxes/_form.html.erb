@@ -189,7 +189,7 @@
 %>
 
 <!-- 承認のチェックを追加 -->
-<%= raw(apploval_check_box "d_audit_cashboxes", params[:id].to_i) if params[:comment].to_s == "true" %>
+<%= raw(apploval_check_box "d_audit_cashboxes", params[:id].to_i) if params[:approve].to_s == "true" %>
 
 <% if b_del then %>
 	<%= hidden_field_tag "delete_id" %>
@@ -207,9 +207,6 @@
 <% end %>
 <!-- INSERT END 2012.11.20 最終データのみ削除機能を追加-->
 &nbsp;&nbsp;
-
-<!-- 承認のチェックを追加 -->
-<%= raw(apploval_check_box "d_audit_cashboxes", params[:id].to_i) if params[:approve].to_s == "true" %>
 
 <%
 	if params[:audit_list].to_s == "true" then
