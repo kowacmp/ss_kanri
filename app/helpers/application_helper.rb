@@ -140,6 +140,10 @@ module ApplicationHelper
   def apploval_check_box(table, id)
     
     apploval = get_apploval_info(table, id)
+    if apploval[:approval_id].to_i == 0
+      return ""
+    end
+    
     rec = apploval[:table]
     flg = false
     for i in 1..5
