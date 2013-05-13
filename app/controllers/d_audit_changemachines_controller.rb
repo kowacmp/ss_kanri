@@ -14,7 +14,7 @@ class DAuditChangemachinesController < ApplicationController
   
   def show
     
-    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true, :comment => params[:comment].to_s
+    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true, :comment => params[:comment].to_s, :approve => params[:approve].to_s
     
   end
   

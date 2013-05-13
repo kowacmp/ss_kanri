@@ -144,7 +144,7 @@
 -->
 			<td align="center">
 				<!-- UPDATE 2012.10.16 詳細の呼出先にコメントのみ更新する機能をつける -->
-				<%= link_to image_tag('icon/24_show.png'), :controller => @table, :action => "show", :id => approval.id, :comment => true %>
+				<%= link_to image_tag('icon/24_show.png'), :controller => @table, :action => "show", :id => approval.id, :comment => true, :approve => true %>
 			</td>
 			<!-- DELETE 2013.05.09 承認機能を削除
 			<td align="center">

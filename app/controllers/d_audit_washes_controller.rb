@@ -27,7 +27,7 @@ class DAuditWashesController < ApplicationController
   def show
     
     # UPDATE 2012.10.16 コメントのみ更新モードを追加
-    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true, :comment => params[:comment].to_s
+    redirect_to :action => "edit", :id => params[:id], :readonly => true, :back => true, :comment => params[:comment].to_s, :approve => params[:approve].to_s
     
   end
 

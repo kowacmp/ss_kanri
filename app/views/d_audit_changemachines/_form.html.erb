@@ -417,7 +417,7 @@ end
 </div>
 
 <!-- 承認のチェックを追加 -->
-<%= raw(apploval_check_box "d_audit_changemachines", params[:id].to_i) if params[:comment].to_s == "true" %>
+<%= raw(apploval_check_box "d_audit_changemachines", params[:id].to_i) if params[:approve].to_s == "true" %>
 
 <!-- INSERT BEGIN 2013.04.05 最終データのみ削除機能を追加 -->
 <%
