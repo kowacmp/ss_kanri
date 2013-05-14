@@ -15,11 +15,18 @@
 		<!-- 2012/10/16 レイアウト変更(対象年月追加) oda
 		<th>店舗コード</th>
 		-->
-		<th style="min-width: 200px">店舗</th>
-		<th>対象年月</th>
+		<th style="min-width: 80px">店舗</th>
+		<th style="min-width: 50px">対象<br>年月</th>
+		<!--
 		<th>店舗種別</th>
-		<th>現金有高(累計)</th>
-		<th>過不足(累計)</th>
+		-->
+		<th style="min-width: 80px">現金有高<br>(累計)</th>
+		<th style="min-width: 80px">過不足<br>(累計)</th>
+		<th>承認者</th>
+		<th>承認者</th>
+		<th>承認者</th>
+		<th>承認者</th>
+		<th>承認者</th>
 		<th style="min-width: 30px">詳細</th>
 		<!-- DELETE 2013.05.14 明細側でチェックを行う
 		<th style="min-width: 30px">
@@ -42,20 +49,72 @@
 			-->
 			<td align="left">
 				<%=approval.shop_cd%>&nbsp;&nbsp;
-				<%=approval.shop_name%>
+				<!-- #2013/05/14 承認チェック詳細画面へ -->
+				<%#=approval.shop_name%>
+				<%=approval.shop_ryaku%>
 			</td>
 			<td style="text-align: center">
-				<%= "#{approval.sale_date.to_s[0,4]}" + "年" +"#{approval.sale_date.to_s[4,2]}" + "月" unless approval.sale_date.blank? %>
+				<%= "#{approval.sale_date.to_s[0,4]}" + "/" +"#{approval.sale_date.to_s[4,2]}" unless approval.sale_date.blank? %>
 			</td>
+			<!-- #2013/05/14 承認チェック詳細画面へ -->
+			<!--
 			<td align="center">
 				<%=MCode.find(:first, :conditions=>["kbn='shop_kbn' and code=?", approval.shop_kbn]).code_name %>
 			</td>
+			-->
 			<td align="right">
 				<%=number_with_delimiter(approval.exist_money)%>
 			</td>
 			<td align="right">
 				<%=number_with_delimiter(approval.over_short)%>
 			</td>
+			<!-- #2013/05/14 承認チェック詳細画面へ -->
+			<!--承認者5 -->
+			<td align="center">
+				<% unless approval.approve_id5.blank? %>
+					<% if approval.approve_id5 != '0' then %>
+						<% user = User.find(approval.approve_id5) %>
+						<%= user.user_name %>
+					<%end%>
+				<%end%>
+			</td>
+			<!--承認者4 -->
+			<td align="center">
+				<% unless approval.approve_id4.blank? %>
+					<% if approval.approve_id4 != '0' then %>
+						<% user = User.find(approval.approve_id4) %>
+						<%= user.user_name %>
+					<%end%>
+				<%end%>
+			</td>
+			<!--承認者3 -->
+			<td align="center">
+				<% unless approval.approve_id3.blank? %>
+					<% if approval.approve_id3 != '0' then %>
+						<% user = User.find(approval.approve_id3) %>
+						<%= user.user_name %>
+					<%end%>
+				<%end%>
+			</td>
+			<!--承認者2 -->
+			<td align="center">
+				<% unless approval.approve_id2.blank? %>
+					<% if approval.approve_id2 != '0' then %>
+						<% user = User.find(approval.approve_id2) %>
+						<%= user.user_name %>
+					<%end%>
+				<%end%>
+			</td>
+			<!--承認者1 -->
+			<td align="center">
+				<% unless approval.approve_id1.blank? %>
+					 <% if approval.approve_id1 != '0' then %>
+						<% user = User.find(approval.approve_id1) %>
+						<%= user.user_name %>
+					<%end%>
+				<%end%>
+			</td>
+			
 			<td align="center">
 				<%=link_to image_tag('icon/24_show.png'), :controller => "d_sales", :action => "report_view", :id => approval.id,  
 					  :from_controller => "d_sale_approves",  

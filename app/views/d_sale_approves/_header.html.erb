@@ -24,10 +24,13 @@
   			<% shop_kbn_list = MCode.find(:all, :conditions => ["kbn='shop_kbn'and code<>'9'"], :order => "code").collect{|i| [i.code_name, i.code]} %>
   			<%=select :header, :shop_kbn, shop_kbn_list, :selected => shop_kbn %>
   		</td>
+  		<!-- #2013/05/14 承認チェック詳細画面へ -->
+  		<!--
   		<td>
-  			<%=check_box :header, :zumi_flg, {:checked => zumi_flg.to_s == "true"}, true, false %>
-  			<label for="header_zumi_flg">承認済含む</label>
+  			<%#=check_box :header, :zumi_flg, {:checked => zumi_flg.to_s == "true"}, true, false %>
+  			<label for#="header_zumi_flg">承認済含む</label>
   		</td>
+  		-->
   		<td style="border: none;">
 			&nbsp;
 			<%= submit_tag '　表　示　', :disable_with => "処理中です..." %>

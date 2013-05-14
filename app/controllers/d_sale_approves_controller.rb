@@ -27,15 +27,16 @@ class DSaleApprovesController < ApplicationController
     
     # 承認済を含むの条件を先に作る
     where_zumi = ""
-    if params[:header][:zumi_flg].to_s != "true" then #自分が承認していないもの
-      where_zumi = "
-                       and coalesce(d_sale_reports.approve_id1, 0) != #{current_user.id} 
-                       and coalesce(d_sale_reports.approve_id2, 0) != #{current_user.id}
-                       and coalesce(d_sale_reports.approve_id3, 0) != #{current_user.id}
-                       and coalesce(d_sale_reports.approve_id4, 0) != #{current_user.id}
-                       and coalesce(d_sale_reports.approve_id5, 0) != #{current_user.id}
-                   "
-    end
+    #2013/05/14 承認チェック詳細画面へ
+    #if params[:header][:zumi_flg].to_s != "true" then #自分が承認していないもの
+    #  where_zumi = "
+    #                   and coalesce(d_sale_reports.approve_id1, 0) != #{current_user.id} 
+    #                   and coalesce(d_sale_reports.approve_id2, 0) != #{current_user.id}
+    #                   and coalesce(d_sale_reports.approve_id3, 0) != #{current_user.id}
+    #                   and coalesce(d_sale_reports.approve_id4, 0) != #{current_user.id}
+    #                   and coalesce(d_sale_reports.approve_id5, 0) != #{current_user.id}
+    #               "
+    #end
     #2012/10/16 確定フラグonの分のみ対象 oda
     sql = "
       select
@@ -48,7 +49,8 @@ class DSaleApprovesController < ApplicationController
         ,coalesce(d_sale_reports.approve_id4, 0) as approve_id4
         ,coalesce(d_sale_reports.approve_id5, 0) as approve_id5
         ,m_shops.shop_cd
-        ,m_shops.shop_name   
+        ,m_shops.shop_name
+        ,m_shops.shop_ryaku
         ,m_shops.shop_kbn
         ,d_sales_sum.exist_money
         ,d_sales_sum.over_short
