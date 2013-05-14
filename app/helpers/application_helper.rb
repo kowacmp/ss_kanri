@@ -164,17 +164,22 @@ module ApplicationHelper
     
     url = url_for(:controller => "d_audit_approves", :action => "update_audit_approves")
     
-    return "<input type='checkbox' #{ checked } 
-             onchange=\" $.post('#{ url }',
-                                {  table : '#{ table }' 
-                                  ,id : #{ id } 
-                                  ,checked : $(this).prop('checked')
-                                 });\" />
+    return "<input type='checkbox' #{ checked } id='check_approval' />
             <label onclick=\" var checkbox = $(this).prev(':checkbox');
                               checkbox.prop('checked', !checkbox.prop('checked'));
                               checkbox.change();
-                              \" style='color:red; font-weight:bold; margin-right:10px;'>承認</label>"
-                              
+                              \" style='color:red; font-weight:bold; margin-right:10px;'>承認</label>
+             <script> 
+             $(function () {
+               $('#check_approval').change(function() {
+                  $.post('#{ url }',
+                         {  table : '#{ table }' 
+                           ,id : #{ id } 
+                           ,checked : $(this).prop('checked')
+                          });
+               });
+             });
+            </script>"
   end
   
 end
