@@ -115,7 +115,11 @@ module ApplicationHelper
       else
         menu_id = 41
       end
-      
+    
+    when "d_sale_reports" #売上
+      tb = DSaleReport.find(id)
+      menu_id = 44
+    
     end
     
     approval_id = 0
@@ -138,7 +142,7 @@ module ApplicationHelper
   
   # 各詳細画面で使用する承認用チェックボックス
   def apploval_check_box(table, id)
-    
+
     apploval = get_apploval_info(table, id)
     if apploval[:approval_id].to_i == 0
       return ""

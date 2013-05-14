@@ -148,7 +148,13 @@
 			<td class="money">
 				<%#= num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i)  %>
 				<%= num_fmt(@balance_money)  %>
-		    </td>
+			</td>
+			<!-- INSERT 2013.05.14 監査承認機能を追加 -->
+			<% if @from_controller == "d_sale_approves" %>
+				<td colspan="18" style="text-align: right; border: none;">
+					<%= raw apploval_check_box("d_sale_reports", params[:id]) %>
+				</td>
+			<% end %>
 		</tr>
 		</tbody>
 	</table>

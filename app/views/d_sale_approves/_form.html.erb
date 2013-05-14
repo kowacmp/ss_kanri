@@ -21,11 +21,13 @@
 		<th>現金有高(累計)</th>
 		<th>過不足(累計)</th>
 		<th style="min-width: 30px">詳細</th>
+		<!-- DELETE 2013.05.14 明細側でチェックを行う
 		<th style="min-width: 30px">
 			承認<br/> <%# 一括チェック用 %>
 			<input type="checkbox" onchange="return chk_flgs_all(this.checked);" 
 			      <%="disabled = 'disabled'" if (@approval_id == 0) %>>
 		</th>
+		-->
 	</tr>
 	
 	<% rec_cnt = 0 %>
@@ -64,6 +66,7 @@
 						}
 				%>
 			</td>
+			<!-- DELETE 2013.05.14 明細側でチェックを行う
 			<td align="center">
 				<%
 					flg = false
@@ -78,16 +81,19 @@
 				<%=check_box    "approval#{rec_cnt}", :approval_flg,     
 					{:checked => flg, :disabled => (@approval_id == 0)}, true, false %>
 			</td>
+			-->
 		</tr>
 		
 	<% end %> <!-- for approval in @approval do -->
-		
+	
+	<!-- DELETE 2013.05.14 明細側でチェックを行う
 	<tr>
 		<td colspan="7" align="right" style="border: none">
 			<%= submit_tag '　登　録　', :disable_with => "登録中です...", :confirm => "登録してもよろしいですか？",
 			    :disabled => (@approval_id == 0) %>
 		</td>
 	</tr>
+	-->
 		
 </table>
 <% end %> <!-- form_tag({:action => 'update' }, :id => "form_update") do -->
