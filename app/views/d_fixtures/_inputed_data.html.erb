@@ -24,13 +24,17 @@
 		  <% end %>
 		  <td >
 		  	<% if fixture.approve_flg == 1 %>
-		  	<% unless fixture.buy_day == nil or fixture.buy_day == "" %>
-		  	<%= text_field_tag("buy_day_#{i+1}",(fixture.buy_day[0,4] + '/' + fixture.buy_day[4,2] + '/' + fixture.buy_day[6,2]), :size => 10 ,:class => 'datepicker')  %>
-            <% else %>
-		  	<%= text_field_tag("buy_day_#{i+1}","", :size => 10 ,:class => 'datepicker')  %>
+		  		<% if fixture.buy_day == nil or fixture.buy_day == "" %>
+		  			<%= text_field_tag("buy_day_#{i+1}","", :size => 10 ,:class => 'datepicker')  %>
+				<% else %>
+		  			<% unless fixture.buy_day.length == 8 %>
+		  				<%= text_field_tag("buy_day_#{i+1}","", :size => 10 ,:class => 'datepicker')  %>
+					<% else %>
+		  				<%= text_field_tag("buy_day_#{i+1}",(fixture.buy_day[0,4] + '/' + fixture.buy_day[4,2] + '/' + fixture.buy_day[6,2]), :size => 10 ,:class => 'datepicker')  %>
+		  			<% end %>
+		  		<% end %>
 		  	<% end %>
-		  	<% end %>
-      	  </td>
+		</td>
 	    </tr>
 	    <tr>
 	      <% if fixture.approve_flg == 1 or fixture.approve_flg == 2%>
