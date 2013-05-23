@@ -1,6 +1,9 @@
 <%#= javascript_include_tag "modal" %><!-- モーダルを出すには再読み込みする必要あり -->
 <% i = 0 %>
 <%= form_tag({:action => 'update'}) do %>
+<%= submit_tag(" 登  録 ",:disable_with => "登録中...",:confirm => '登録しても良いですか？',
+ :style=>"float:right;margin-right:30px;margin-top:5px") %>	 
+ </br>
 <table id="rounded-corner">
 	<tr>
 		<th rowspan="2" style="min-width: 17px" align="center">No</th>
