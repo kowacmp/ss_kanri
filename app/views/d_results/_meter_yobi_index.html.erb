@@ -24,8 +24,8 @@
   	<% @meters.each_with_index do |meter, idx| %>
   	<% tab_index = idx + 1 %>
   	<tr>
-  	  <th><%= idx + 1 %></th>
-  	 
+   	  <th><%= idx + 1 %></th>
+  	  <% tab_index = idx + 1 %><!-- 2012/10/01 tabindex nishimura -->
 		<% @m_oils.each do |m_oil| %>
   	    	<% @m_codes.each do |m_code| %>
   	    		<% if meter["#{m_oil.id}_#{m_code.code}_m_meter_id"].blank? %>
@@ -54,6 +54,7 @@
 		  	          
 		  	        </td>
   	    		<% end %>
+  	    		<% tab_index = tab_index + @meters.count %><!-- 2012/10/01 tabindex nishimura -->
   	    	<% end %> 	
   	  	<% end %>    
   	</tr>

@@ -396,7 +396,7 @@ module DResultsHelper
   #地下タンク計算データ-------------------------
     
     #販売数量SQL                                                   
-    meter_sql = "select t.id m_tank_id, dm.meter, old_dm.meter old_meter"                                                     
+    meter_sql = "select t.id m_tank_id, dm.meter, dm.sub_meter, old_dm.meter old_meter"                                                     
     meter_sql << " from m_tanks t, m_meters m"
     meter_sql << " left join d_result_meters dm on (dm.m_meter_id = m.id and dm.d_result_id = #{d_result.id})"
     meter_sql << " left join d_result_meters old_dm on (old_dm.m_meter_id = m.id and old_dm.d_result_id = #{old_d_result_id})"
@@ -413,17 +413,21 @@ module DResultsHelper
       if tank_id != meter_sale.m_tank_id
         tank_id = meter_sale.m_tank_id
         sales[meter_sale.m_tank_id] = Hash::new
-        
-        if meter_sale.meter.to_i < meter_sale.old_meter.to_i
-          sales[meter_sale.m_tank_id][:sale] = meter_sale.meter.to_i
+        #2013/05/31 予備ﾒｰﾀｰ入力時のﾒｰﾀｰ進み算出修正
+        #if meter_sale.meter.to_i < meter_sale.old_meter.to_i
+        if not meter_sale.sub_meter.blank?
+          #sales[meter_sale.m_tank_id][:sale] = meter_sale.meter.to_i
+          sales[meter_sale.m_tank_id][:sale] = meter_sale.meter.to_i - meter_sale.sub_meter.to_i
         else
           sales[meter_sale.m_tank_id][:sale] = meter_sale.meter.to_i - meter_sale.old_meter.to_i  
         end 
       else  
         tank_id = meter_sale.m_tank_id
         
-        if meter_sale.meter.to_i < meter_sale.old_meter.to_i
-          sales[meter_sale.m_tank_id][:sale] += meter_sale.meter.to_i
+        #if meter_sale.meter.to_i < meter_sale.old_meter.to_i
+        if not meter_sale.sub_meter.blank?
+          #sales[meter_sale.m_tank_id][:sale] += meter_sale.meter.to_i
+          sales[meter_sale.m_tank_id][:sale] += meter_sale.meter.to_i - meter_sale.sub_meter.to_i
         else
           sales[meter_sale.m_tank_id][:sale] += meter_sale.meter.to_i - meter_sale.old_meter.to_i  
         end        
