@@ -68,7 +68,7 @@ module DSaleEtcsHelper
          select max(c.sale_date) as sale_date from 
          (select a.sale_date,a.m_shop_id,b.m_etc_id,b.etc_no from 
          (select * from d_sale_etcs) a 
-         left join d_sale_etc_details b on  a.id = b.d_sale_etc_id and b.meter > 0
+         left join d_sale_etc_details b on  a.id = b.d_sale_etc_id and b.meter >= 0
          group by a.sale_date,a.m_shop_id,b.m_etc_id,b.etc_no 
          having a.sale_date < '#{sale_date}' 
             and a.m_shop_id = ?

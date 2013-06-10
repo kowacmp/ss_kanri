@@ -142,6 +142,7 @@ module DWashSalesHelper
   end
 =end
   
+  #2013/05/28 
   #2012/10/03 nishimura
   #機種毎前回データ取得
   def get_wash_zenkai_date(sale_date,shop_id,wash_id,wash_no,mode)
@@ -150,7 +151,7 @@ module DWashSalesHelper
          select max(c.sale_date) as sale_date from 
          (select a.sale_date,a.m_shop_id,b.m_wash_id,b.wash_no from 
          (select * from d_wash_sales) a 
-         left join d_washsale_items b on  a.id = b.d_wash_sale_id and b.meter > 0
+         left join d_washsale_items b on  a.id = b.d_wash_sale_id and b.meter >= 0
          group by a.sale_date,a.m_shop_id,b.m_wash_id,b.wash_no 
          having a.sale_date < '#{sale_date}' 
             and a.m_shop_id = ? 
