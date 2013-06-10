@@ -48,7 +48,7 @@
 	  					<% if @d_sale_etcs = get_gosa_etc(dt_rec[:audit_date_from],
 	  							dt_rec[:audit_date_to],
 	  							dt_rec[:m_shop_id],
-	  							dt_rec[:m_wash_id]).blank?%>
+	  							dt_rec[:m_etc_id]).blank?%>
 	  						誤差参照
 	  					<% else %>
 	  						<%=link_to "誤差参照", {:action => "dialog_gosa", :dialog_gosa => {
@@ -66,7 +66,7 @@
 	  					<% if @d_wash_sales = get_sub_meter_etc(dt_rec[:audit_date_from],
 	  							dt_rec[:audit_date_to],
 	  							dt_rec[:m_shop_id],
-	  							dt_rec[:m_wash_id]).blank?%>
+	  							dt_rec[:m_etc_id]).blank?%>
 	  						予備参照
 	  					<% else %>
 	 						<%=link_to "予備参照", {:action => "dialog_sub_meter", :dialog_sub_meter => {
