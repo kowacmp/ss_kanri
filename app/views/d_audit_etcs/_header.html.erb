@@ -24,7 +24,11 @@
   				<script language="JavaScript">
 				$(function () {
 					$("#input_m_shop_id").change(function () {
-						window.location.href = "<%=url_for(:action=>"index")%>?audit_class=1&header_m_shop_id=" + $("#input_m_shop_id").val();
+						// window.location.hrefがIE7で失敗するため修正
+						//window.location.href = "<%#=url_for(:action=>"index")%>?audit_class=1&header_m_shop_id=" + $("#input_m_shop_id").val();
+						$("#form_redirect_to_index").find("#audit_class").val("1");
+						$("#form_redirect_to_index").find("#header_m_shop_id").val($("#input_m_shop_id").val());
+						$("#form_redirect_to_index").submit();
 					});
 				});
   				</script>
@@ -168,3 +172,8 @@ function ckDate(datestr) {
 }
 </script>
 <!-- 検索条件入力領域 END -->
+
+<%= form_tag({:action => "index"}, :method => "get", :id => "form_redirect_to_index") do %>
+	<%= hidden_field_tag :audit_class %>
+	<%= hidden_field_tag :header_m_shop_id %>
+<% end %>
