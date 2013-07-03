@@ -196,7 +196,7 @@ class DAuditWashesController < ApplicationController
     if params[:audit_list].to_s == "true" then
       redirect_to :action => "edit", :id => @id, :audit_list => true
     else
-      redirect_to :action => "edit", :id => @id      
+      redirect_to :action => "edit", :id => @id
     end
     
   end
@@ -259,7 +259,6 @@ class DAuditWashesController < ApplicationController
 #            a.sale_date
 #     
 #     SQL
-    
 #     @d_wash_sales = DWashSale.find_by_sql(sql)
     @d_wash_sales = get_sub_meter(params[:dialog_sub_meter][:sale_date_from],
                                   params[:dialog_sub_meter][:sale_date_to],
@@ -436,8 +435,12 @@ private
         dt_rec[:gosa] = 0                    #誤差(合計行のみ)
         
         #前回メータ
-        if not(d_audit_wash_z.nil?) then
-          dt_rec[:z_meter]   = d_audit_wash_detail_z.meter #前回監査登録済
+        if not(d_audit_wash_z.nil?) then           #前回監査有無
+          if not(d_audit_wash_detail_z.nil?) then  #前回監査詳細有無
+            dt_rec[:z_meter]   = d_audit_wash_detail_z.meter #前回監査登録済
+           else
+            dt_rec[:z_meter]   = 0 #前回監査なし
+          end
         else
           dt_rec[:z_meter]   = 0 #前回監査なし          
         end
