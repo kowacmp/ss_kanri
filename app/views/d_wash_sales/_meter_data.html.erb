@@ -139,9 +139,12 @@
 		  	<% 
 		  	   v1 = 0
 		  	   v2 = 0
+		  	   uriage = 0
 		  	   if not(d_washsales_item.nil?) then
 		  	   	if not(d_washsales_item.meter.nil?) then
 		  	   		v1 = d_washsales_item.meter
+		  	   		#20130808 単価変更時最新の単価算出されるため売上取得
+		  	   		uriage = d_washsales_item.uriage
 		  	   	end
 		  	   end  
 		  	   if not(d_washsales_item_mae.nil?) then
@@ -167,7 +170,9 @@
 		  	   end
 		  	   #UPDATE END 2012.11.26 前回予備メータ追加
 		  	%>
-            <% display_keisan_uriage = display_keisan_uriage * wash.price %>
+		  	<!-- 20130808 単価変更時最新の単価算出されるため売上取得-->
+            <%# display_keisan_uriage = display_keisan_uriage * wash.price %>
+            <% display_keisan_uriage = uriage %>
 		  	<span id="k<%=meter_id%>"><%= number_with_delimiter(display_keisan_uriage) %></span>
 		    <% sum_keisan_uriage = sum_keisan_uriage + display_keisan_uriage %>
 		  </td>
@@ -362,9 +367,10 @@
 	
 	$(function(){
 		// 読込時に再計算
-		if ($("input:text[id^=meter_]").length > 0) {
-			kmeter_update();
-		}
+		//20130808 単価変更時最新の単価算出されるため削除
+		//if ($("input:text[id^=meter_]").length > 0) {
+		//	kmeter_update();
+		//}
 
 		//当日メータ更新後イベント
 		$("input:text[id^=meter_]").blur(function(){
