@@ -162,12 +162,13 @@
 	<!-- 前年同日迄のペース -->
 	<td rowspan="1" align="right">
 		<!-- <%= number_with_delimiter(rec["same_pace"]) %> -->
-		<%if session[:washpurika_mode].to_s == "edit" then %>
-			<%= text_field "data#{cnt}", :same_pace, :value => rec["same_pace"], :class => "money" %> 
-		<% else %>
+		<!-- 2013/10/07 テキスト→ラベル -->
+		<%#if session[:washpurika_mode].to_s == "edit" then %>
+			<%#= text_field "data#{cnt}", :same_pace, :value => rec["same_pace"], :class => "money" %> 
+		<%# else %>
 			<%= number_with_delimiter(rec["same_pace"]) %>
 			<%= hidden_field "data#{cnt}", :same_pace, :value => rec["same_pace"] %> 
-		<% end %>
+		<%# end %>
 	</td>
 
 	<!-- 同月過去最高実績 -->
@@ -199,12 +200,13 @@
 	<!-- 前年同日迄の実績 -->
 	<td rowspan="1" align="right">
 		<!-- <%= number_with_delimiter(rec["same_uriage"]) %> -->
-		<%if session[:washpurika_mode].to_s == "edit" then %>
-			<%= text_field "data#{cnt}", :same_uriage, :value => rec["same_uriage"], :class => "money" %> 
-		<% else %>
+		<!-- 2013/10/07 テキスト→ラベル -->
+		<%#if session[:washpurika_mode].to_s == "edit" then %>
+			<%#= text_field "data#{cnt}", :same_uriage, :value => rec["same_uriage"], :class => "money" %> 
+		<%# else %>
 			<%= number_with_delimiter(rec["same_uriage"]) %>
 			<%= hidden_field "data#{cnt}", :same_uriage, :value => rec["same_uriage"] %> 
-		<% end %>
+		<%# end %>
 	</td>
 
 </tr>
@@ -221,12 +223,13 @@
 	<!-- 前年同月末実績 -->
 	<td align="right">
 		<!-- <%= number_with_delimiter(rec["same_uriage_total"]) %> -->
-		<%if session[:washpurika_mode].to_s == "edit" then %>
-			<%= text_field "data#{cnt}", :same_uriage_total, :value => rec["same_uriage_total"], :class => "money" %> 
-		<% else %>
+		<!-- 2013/10/07 テキスト→ラベル -->
+		<%#if session[:washpurika_mode].to_s == "edit" then %>
+			<%#= text_field "data#{cnt}", :same_uriage_total, :value => rec["same_uriage_total"], :class => "money" %> 
+		<%# else %>
 			<%= number_with_delimiter(rec["same_uriage_total"]) %>
 			<%= hidden_field "data#{cnt}", :same_uriage_total, :value => rec["same_uriage_total"] %> 
-		<% end %>
+		<%# end %>
 	</td>
 	
 	<!-- 本年ペース - 過去最高 -->
