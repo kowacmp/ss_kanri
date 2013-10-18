@@ -71,7 +71,7 @@ class DDutyOutputsController < ApplicationController
       where
              d_duties.duty_nengetu = :duty_nengetu
          and d_duties.m_shop_id    = :m_shop_id
-         and users.user_class not in (0, 2)
+          and users.user_class = 1
       group by 
          d_duties.user_id               --ユーザID
         ,users.account                  --社員コード

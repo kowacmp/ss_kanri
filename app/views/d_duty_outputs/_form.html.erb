@@ -367,8 +367,10 @@
 		&nbsp;
 	</td>
 	<!-- 出勤日数 -->
-	<td>
-		&nbsp;
+	<td style="text-align: center;">
+		<% ret = number_with_delimiter(get_sum_i(@d_duties, "day"), :precision => 1, :unit => "") %>
+		<%= ret %>
+		<%= hidden_field :footer, :d_day1_sum, :value => ret %>
 	</td>
 	<!--  日勤時間 -->
 	<td style="text-align: right;">
