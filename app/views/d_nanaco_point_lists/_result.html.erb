@@ -1,0 +1,71 @@
+
+<% nanaco_point_data = nil %>
+
+<%= form_tag({:action => 'print'}) do %>
+<%= hidden_field_tag 'from_ymd',@from_ymd %>
+<%= hidden_field_tag 'to_ymd'  ,@to_ymd %>
+<%= hidden_field_tag 'shop_kbn',@shop_kbn %>
+<%= hidden_field_tag 'start_ymd',@start_ymd %>
+<%= hidden_field_tag 'end_ymd'  ,@end_ymd %>
+<table id="report_view_table" class="rounded-corner">
+  <thead>
+	<tr>
+		<th style="min-width: 100px;">店舗</th>
+		<% @num = Date.parse(@to_ymd) - Date.parse(@from_ymd) %>
+		<% for i in 0..@num.to_i %>
+			<th style="min-width: 40px;"><%= (Date.parse(@from_ymd) + i).strftime("%m/%d") %></th>
+		<% end %>
+		<th style="min-width: 40px;">合計</th>
+	</tr>
+  </thead>
+
+<tbody>
+
+	<% @shops.each do |shop|%>
+	<% sum_cols_pos1 = 0
+       sum_cols_pos2 = 0 %>
+	<tr>
+		
+		<th  rowspan="2" ><%= shop.shop_cd %><br /><%= shop.shop_ryaku %></th>
+		<%# @num = Date.parse(@to_ymd) - Date.parse(@from_ymd) %>
+		<% for i in 0..@num.to_i %>
+			<td style="text-align: right">
+				<% result_date = (Date.parse(@from_ymd) + i).strftime("%Y%m%d") %>
+				<% nanaco_point_data = get_nanaco_point_num(result_date,shop.id) %>
+				<%= nanaco_point_data.nanacopoint_num.to_i unless nanaco_point_data == nil %>
+				<% sum_cols_pos1 = sum_cols_pos1 + nanaco_point_data.nanacopoint_num.to_i unless nanaco_point_data == nil %>
+			</td>
+		<% end %>
+		<td style="text-align: right"><%= sum_cols_pos1.to_i %></td>
+	</tr>
+	<tr>
+		<%# @num = Date.parse(@to_ymd) - Date.parse(@from_ymd) %>
+		<% for i in 0..@num.to_i %>
+			<td style="text-align: right">
+				<% result_date = (Date.parse(@from_ymd) + i).strftime("%Y%m%d") %>
+				<% nanaco_point_data = get_nanaco_point(result_date,shop.id) %>
+				<%= nanaco_point_data.nanacopoint.to_i unless nanaco_point_data == nil %>
+				<% sum_cols_pos2 = sum_cols_pos2 + nanaco_point_data.nanacopoint.to_i unless nanaco_point_data == nil %>
+			</td>
+		<% end %>
+		<td style="text-align: right"><%= sum_cols_pos2.to_i %></td>
+	</tr>
+	<% end %><!-- shop.each -->
+
+</tbody>  	
+
+</table>
+<%= submit_tag  '  印  刷  ',format: 'pdf' %>
+<% end %>
+
+
+<script>
+	$(function () {
+		$('#report_view_table').tablefix({width:900,height: 600,fixRows:1, fixCols: 1});
+	});
+</script>
+
+
+
+      
+    

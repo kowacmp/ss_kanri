@@ -1,0 +1,23 @@
+<h1>ナナコポイント管理表</h1>
+<%= form_tag(url_for(:action => 'search'),:remote => true) do %>
+<table id='rounded-corner'>
+	<tr>
+	  <th>対象日(From)</th>
+	  <td><%= text_field_tag  "start_ymd" , @start_ymd, :readonly => true ,:class => 'datepicker',:size => 10%></td>
+	  <th>対象日(To)</th>
+	  <td><%= text_field_tag  "end_ymd" , @end_ymd, :readonly => true ,:class => 'datepicker',:size => 10%></td>
+	  <th>店舗種別</th>
+	  <td>
+		<% shop_kbn_list = MCode.find(:all, :conditions => ["kbn='shop_kbn'and code<>'9'"], :order => "code").collect{|i| [i.code_name, i.code]} %>
+		<%= select_tag "shop_kbn", options_for_select(shop_kbn_list) %>
+	  </td> 
+	  <td><%= submit_tag "検索" %></td>
+      </tr>
+</table>
+<% end %>
+
+<p>
+	<div id="result">
+	    <%= render partial: 'result'%>
+	</div>
+</p>
