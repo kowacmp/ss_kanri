@@ -1,0 +1,46 @@
+<% bank_money_data = nil %>
+
+<%= form_tag({:action => 'print'}) do %>
+<%= hidden_field_tag 'from_ymd',@from_ymd %>
+<%= hidden_field_tag 'to_ymd'  ,@to_ymd %>
+<%= hidden_field_tag 'shop_kbn',@shop_kbn %>
+<table id="report_view_table" class="rounded-corner">
+  <thead>
+	<tr>
+		<th style="min-width: 100px;">店舗</th>
+        <% start_ymd = (@from_ymd[0,4].to_s + '/' + @from_ymd[4,2] + '/' + @from_ymd[6,2]).to_time %>
+        <% start_day = start_ymd.end_of_month.day %>
+        <% start_day.times do |i| %>
+  		  <th style="min-width: 40px;"><%= i+1 %></th>
+		<% end %>
+	</tr>
+  </thead>
+
+<tbody>
+
+	<% @shops.each do |shop|%>
+	<tr>
+		<th style="text-align: left;"><%= shop.shop_cd %>&nbsp;<%= shop.shop_ryaku %></th>
+		<% result_date = @from_ymd %>
+        <% start_day.times do |i| %>
+  		  <td style="text-align: right">
+    		   <% bank_money_data = get_bank_money(result_date,shop.id) %>
+    		   <% result_date = (result_date.to_i + 1).to_s %>
+    		   <%= num_fmt(bank_money_data) unless bank_money_data == nil %>
+  		   </td>
+		<% end %>
+	</tr>
+	<% end %><!-- shop.each -->
+	
+</tbody>  	
+
+</table>
+<%= submit_tag  '  印  刷  ',format: 'pdf' %>
+<% end %>
+
+
+<script>
+	$(function () {
+		$('#report_view_table').tablefix({width:900,height: 600,fixRows:1, fixCols: 1});
+	});
+</script>
