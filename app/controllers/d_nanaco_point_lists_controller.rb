@@ -15,7 +15,7 @@ class DNanacoPointListsController < ApplicationController
       @start_ymd = params[:start_ymd]
     end
     if params[:end_ymd] == nil or params[:end_ymd] == ""
-      @end_ymd   = (Time.now.next_month - 60*60*24).strftime("%Y/%m/%d")
+      @end_ymd   = (Time.now - 60*60*24*2).next_month.strftime("%Y/%m/%d")
     else
       @end_ymd   = params[:end_ymd]     
     end
