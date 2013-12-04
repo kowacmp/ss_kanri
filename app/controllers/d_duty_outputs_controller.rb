@@ -3,6 +3,15 @@ class DDutyOutputsController < ApplicationController
 
   def index
     
+    # 引数より対象店舗の選択可否を設定 1:選択不可、引数なし:選択可能
+    if params[:mode] == nil then
+      session[:duty_output_mode] = nil     
+    else
+      session[:duty_output_mode] = 1   
+    end
+    
+    @m_shop = MShop.find(current_user.m_shop_id)
+    
     # 年月表示用データを作成
     @years = Array.new()
     min_year = DDuty.minimum(:duty_nengetu).to_s[0..3].to_i

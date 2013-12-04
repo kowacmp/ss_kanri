@@ -9,7 +9,16 @@
 	</td>
 	<th>対象店舗</th>
 	<td>
-		<%= select :d_duty_output, :m_shop_id, MShop.find(:all, :conditions => "shop_kbn in (0,1)", :order => "shop_cd").collect{|t| [t.shop_ryaku, t.id] } %>
+		<%#= select :d_duty_output, :m_shop_id, MShop.find(:all, :conditions => "shop_kbn in (0,1)", :order => "shop_cd").collect{|t| [t.shop_ryaku, t.id] } %>
+		<%if session[:duty_output_mode] == nil then%>
+			<%= select :d_duty_output, :m_shop_id, MShop.find(:all, :conditions => "shop_kbn in (0,1)", :order => "shop_cd").collect{|t| [t.shop_ryaku, t.id] } %>
+		<%else%>
+			<%if @m_shop.shop_kbn == 9 then%>
+				<%= select :d_duty_output, :m_shop_id, MShop.find(:all, :conditions => "shop_kbn in (0,1)", :order => "shop_cd").collect{|t| [t.shop_ryaku, t.id] } %>
+			<%else%>
+				<%= select :d_duty_output, :m_shop_id, MShop.find(:all, :conditions => ["id=?",current_user.m_shop_id]).collect{|t| [t.shop_ryaku, t.id] } %>
+			<%end %>
+		<%end %>
 	</td>
 	<td>
 		<%= submit_tag "　表　示　" %>
