@@ -11,7 +11,7 @@
         <% start_ymd = (@from_ymd[0,4].to_s + '/' + @from_ymd[4,2] + '/' + @from_ymd[6,2]).to_time %>
         <% start_day = start_ymd.end_of_month.day %>
         <% start_day.times do |i| %>
-  		  <th style="min-width: 40px;"><%= i+1 %></th>
+  		  <th style="min-width: 60px;"><%= i+1 %></th>
 		<% end %>
 	</tr>
   </thead>
