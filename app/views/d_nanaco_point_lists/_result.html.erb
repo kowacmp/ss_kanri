@@ -7,11 +7,26 @@
 <%= hidden_field_tag 'shop_kbn',@shop_kbn %>
 <%= hidden_field_tag 'start_ymd',@start_ymd %>
 <%= hidden_field_tag 'end_ymd'  ,@end_ymd %>
+
+<% 
+   nanaco_datas = Array::new
+   @num = Date.parse(@to_ymd) - Date.parse(@from_ymd)
+   for i in 0..@num.to_i
+     result_date = (Date.parse(@from_ymd) + i).strftime("%Y%m%d")
+     nanaco_point_data = get_nanaco_point(result_date,@shop_kbn)
+     nanaco_point_data.each_with_index do |nanaco,idx|
+     	if i == 0
+     		nanaco_datas[idx] = Hash::new
+     	end
+     	nanaco_datas[idx][i] = nanaco
+     end
+   end
+%>
+
 <table id="report_view_table" class="rounded-corner">
   <thead>
 	<tr>
 		<th style="min-width: 100px;">店舗</th>
-		<% @num = Date.parse(@to_ymd) - Date.parse(@from_ymd) %>
 		<% for i in 0..@num.to_i %>
 			<th style="min-width: 40px;"><%= (Date.parse(@from_ymd) + i).strftime("%m/%d") %></th>
 		<% end %>
@@ -20,37 +35,29 @@
   </thead>
 
 <tbody>
-
-	<% @shops.each do |shop|%>
-	<% sum_cols_pos1 = 0
+    <% nanaco_datas.each_with_index do |nanaco,idx| %>
+    <% sum_cols_pos1 = 0
        sum_cols_pos2 = 0 %>
-	<tr>
-		
-		<th  rowspan="2" ><%= shop.shop_cd %><br /><%= shop.shop_ryaku %></th>
-		<%# @num = Date.parse(@to_ymd) - Date.parse(@from_ymd) %>
-		<% for i in 0..@num.to_i %>
-			<td style="text-align: right">
-				<% result_date = (Date.parse(@from_ymd) + i).strftime("%Y%m%d") %>
-				<% nanaco_point_data = get_nanaco_point_num(result_date,shop.id) %>
-				<%= nanaco_point_data.nanacopoint_num.to_i unless nanaco_point_data == nil %>
-				<% sum_cols_pos1 = sum_cols_pos1 + nanaco_point_data.nanacopoint_num.to_i unless nanaco_point_data == nil %>
-			</td>
-		<% end %>
-		<td style="text-align: right"><%= sum_cols_pos1.to_i %></td>
-	</tr>
-	<tr>
-		<%# @num = Date.parse(@to_ymd) - Date.parse(@from_ymd) %>
-		<% for i in 0..@num.to_i %>
-			<td style="text-align: right">
-				<% result_date = (Date.parse(@from_ymd) + i).strftime("%Y%m%d") %>
-				<% nanaco_point_data = get_nanaco_point(result_date,shop.id) %>
-				<%= nanaco_point_data.nanacopoint.to_i unless nanaco_point_data == nil %>
-				<% sum_cols_pos2 = sum_cols_pos2 + nanaco_point_data.nanacopoint.to_i unless nanaco_point_data == nil %>
-			</td>
-		<% end %>
-		<td style="text-align: right"><%= sum_cols_pos2.to_i %></td>
-	</tr>
-	<% end %><!-- shop.each -->
+    <tr>
+      <th rowspan="2"><%= nanaco[0].shop_cd %><br /><%= nanaco[0].shop_ryaku %></th>
+      <% for i in 0..@num.to_i %>
+        <td style="text-align: right">
+          <%= nanaco[i].nanacopoint_num.to_i unless nanaco[i] == nil %>
+          <% sum_cols_pos1 = sum_cols_pos1 + nanaco[i].nanacopoint_num.to_i unless nanaco[i] == nil %>
+        </td>
+      <% end %>
+      <td style="text-align: right"><%= sum_cols_pos1.to_i %></td>
+    </tr>
+    <tr>
+      <% for i in 0..@num.to_i %>
+        <td style="text-align: right">
+          <%= nanaco[i].nanacopoint.to_i unless nanaco[i] == nil %>
+          <% sum_cols_pos2 = sum_cols_pos2 + nanaco[i].nanacopoint.to_i unless nanaco[i] == nil %>
+        </td>
+      <% end %>
+      <td style="text-align: right"><%= sum_cols_pos2.to_i %></td>
+    </tr>
+    <% end %><%# nanako_datas.each_with_index %>
 
 </tbody>  	
 
