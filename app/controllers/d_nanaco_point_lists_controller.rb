@@ -76,6 +76,14 @@ class DNanacoPointListsController < ApplicationController
     
     report = ThinReports::Report.new :layout =>  File.join(Rails.root,'app','reports', 'd_nanaco_point_list.tlf')
 
+    report.layout.config.list(:list) do
+    # フッターに合計をセット.
+      events.on :footer_insert do |e|
+        e.section.item(:sp1_sum).value(sum_sp1)
+        e.section.item(:sp2_sum).value(sum_sp2)
+      end #events.on
+    end #list
+
     #ページ番号、タイトル、作成日セット  
       #title1 = "#{@from_ymd[0,4]}／#{@from_ymd[4,2]}"
       title1 = "#{@start_ymd}～#{@end_ymd}"
@@ -124,6 +132,8 @@ class DNanacoPointListsController < ApplicationController
         row.item(:p1_sum).value(p1_sum_col)
         row.item(:p2_sum).value(p2_sum_col)
       end #add_row
+      sum_sp1 = sum_sp1 + p1_sum_col.to_i
+      sum_sp2 = sum_sp2 + p2_sum_col.to_i
     end # nanaco_datas.each_with_index
     
     #ファイル名セット     
