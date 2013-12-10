@@ -55,8 +55,13 @@ class DNanacoPointListsController < ApplicationController
     @end_ymd   = params[:end_ymd]
     sp1 = Hash.new
     sp2 = Hash.new
+    
+    sum_sn1 = 0
+    sum_sn2 = 0
     sum_sp1 = 0
     sum_sp2 = 0
+    from_ymd = @from_ymd
+    to_ymd = @to_ymd
 
 
     nanaco_datas = Array::new
@@ -79,8 +84,32 @@ class DNanacoPointListsController < ApplicationController
     report.layout.config.list(:list) do
     # フッターに合計をセット.
       events.on :footer_insert do |e|
+        
+        shop_kbn_name1 = MCode.find_by_kbn_and_code('shop_kbn','0') ? MCode.find_by_kbn_and_code('shop_kbn','0').code_name : "洗車型"
+        shop_kbn_name2 = MCode.find_by_kbn_and_code('shop_kbn','1') ? MCode.find_by_kbn_and_code('shop_kbn','1').code_name : "油外型"
+        #s1：油外　s2：洗車
+        e.section.item(:sn1_label).value("件数(#{shop_kbn_name2})")
+        e.section.item(:sn2_label).value("件数(#{shop_kbn_name1})")
+        e.section.item(:sp1_label).value("ポイント(#{shop_kbn_name2})")
+        e.section.item(:sp2_label).value("ポイント(#{shop_kbn_name1})")
+        
+        # 油外型
+        oil_total = get_nanaco_point_total(from_ymd,to_ymd,1)
+        sum_sn1 = oil_total.nanacopoint_num.to_i if oil_total.present?
+        sum_sp1 = oil_total.nanacopoint.to_i if oil_total.present?
+        
+        # 洗車型
+        sensya_total = get_nanaco_point_total(from_ymd,to_ymd,0)
+        sum_sn2 = sensya_total.nanacopoint_num.to_i if sensya_total.present?
+        sum_sp2 = sensya_total.nanacopoint.to_i if sensya_total.present?
+        
+        e.section.item(:sn1_sum).value(sum_sn1)
+        e.section.item(:sn2_sum).value(sum_sn2)
+        e.section.item(:sn_all_sum).value(sum_sn1 + sum_sn2)
+        
         e.section.item(:sp1_sum).value(sum_sp1)
         e.section.item(:sp2_sum).value(sum_sp2)
+        e.section.item(:sp_all_sum).value(sum_sp1 + sum_sp2)
       end #events.on
     end #list
 
@@ -132,8 +161,8 @@ class DNanacoPointListsController < ApplicationController
         row.item(:p1_sum).value(p1_sum_col)
         row.item(:p2_sum).value(p2_sum_col)
       end #add_row
-      sum_sp1 = sum_sp1 + p1_sum_col.to_i
-      sum_sp2 = sum_sp2 + p2_sum_col.to_i
+      #sum_sp1 = sum_sp1 + p1_sum_col.to_i
+      #sum_sp2 = sum_sp2 + p2_sum_col.to_i
     end # nanaco_datas.each_with_index
     
     #ファイル名セット     
