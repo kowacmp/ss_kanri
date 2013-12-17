@@ -1,4 +1,8 @@
+# -*- coding:utf-8 -*-
 class DSale < ActiveRecord::Base
+  
+  validates :m_shop_id, :uniqueness => {:scope => :sale_date,
+                                   :message => '重複しています。'}
   
   validate :set_default
   

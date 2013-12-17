@@ -408,6 +408,20 @@
   	<% end %>
   	</span>
   	<span class="actions_right">
+  		
+  	<span style="margin-right:10px;">
+  	<label style='color:red; font-weight:bold;'>再確認</label>
+  	<% if f.object.new_record? %>
+  		<%= f.check_box :double_check, {:disabled => true,:checked => false}, 1, 0 %>
+  	<% else %>	
+  		<% if @d_sale.double_check.to_i == 1 %>
+			<%= f.check_box :double_check, {:checked => true}, 1, 0 %>
+		<% else %>
+			<%= f.check_box :double_check, {:checked => false}, 1, 0 %>
+		<% end %>
+	<% end %>
+	</span>
+  		
   	<% if @head[:from_view] == "index" %>
   	    <%#= link_to "キャンセル", {:controller => "d_sales", :action => "new", :from_view=>"index", :input_shop_kbn => @head[:input_shop_kbn], :id => @d_sale.id}, :confirm => "入力をキャンセルします。よろしいですか？", :method => :get %>
 		<input type="button" value="キャンセル" 

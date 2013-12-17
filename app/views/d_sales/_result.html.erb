@@ -3,6 +3,8 @@
     <th>店舗</th>
     <th>売上日</th>
     <th>作成者</th>
+    <th>確認状況</th>
+    <th>確認者</th>
     <th>店舗種別</th>
     <th>入力状況</th>
     <th>ロック/解除<br />
@@ -24,6 +26,10 @@
     <td><%#= "{data.account}  #{data.user_name}" %></td>
     -->
     <td><%= "#{data.user_name}" %></td>
+    
+    <td style="text-align: center"><%= if data.double_check.blank? or data.double_check.to_i == 0 then "未" else "済" end %></td>
+    <td><%= "#{data.double_check_user_name}" %></td>
+    
     <!-- 2012/09/26 oda アカウント表示不可 end-->
     <td style="text-align: center"><%= data.shop_kbn_name %></td>
     <td style="text-align: center"><%= if data.sale_date.blank? then "未" else "済" end %></td>

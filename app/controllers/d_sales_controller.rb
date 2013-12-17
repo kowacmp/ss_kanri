@@ -279,8 +279,10 @@ p params
         #2012/09/29 nishimura >>>>>>>>>>>>>>>>>>>>
         format.json { render json: @d_sale, status: :created, location: @d_sale }
       else
-        format.html { render action: "index" }
-        format.json { render json: @d_sale.errors, status: :unprocessable_entity }
+        #format.html { render action: "index" }
+        #format.json { render json: @d_sale.errors, status: :unprocessable_entity }
+        redirect_to :controller => "homes", :action => "index"
+        return
       end
     end
   end
@@ -292,6 +294,14 @@ p params
 
 
     @d_sale.updated_user_id = current_user.id
+    
+    #確認が変更された場合、更新する
+    if params[:d_sale] != nil and @d_sale != nil
+      if params[:d_sale][:double_check].to_i != @d_sale.double_check.to_i
+        @d_sale.double_check_user_id = current_user.id
+        @d_sale.double_check_date = Time.now
+      end
+    end
     
     respond_to do |format|
       if @d_sale.update_attributes(params[:d_sale])
@@ -708,13 +718,15 @@ p params
   #売上入力状況一覧の表示対象データを取得
   def result_datas_get(input_day, input_shop_kbn)
     select_sql = "select b.shop_cd, b.shop_name, b.shop_kbn "
-    select_sql << " , a.id, a.sale_date, a.created_user_id, a.kakutei_flg "
+    select_sql << " , a.id, a.sale_date, a.created_user_id, a.kakutei_flg, a.double_check, a.double_check_user_id "
     select_sql << " , c.account, c.user_name "
     select_sql << " , d.code_name shop_kbn_name " 
+    select_sql << " , e.user_name double_check_user_name "
     select_sql << " from m_shops b " 
     select_sql << " left join (select * from d_sales where sale_date = '#{input_day.to_s.gsub("/", "")}') a on a.m_shop_id = b.id " 
     select_sql << " left join users c on a.created_user_id = c.id " 
     select_sql << " left join (select * from m_codes where kbn='shop_kbn') d on b.shop_kbn = cast(d.code as integer) "
+    select_sql << " left join users e on a.double_check_user_id = e.id "
 
     condition_sql = " where b.deleted_flg = 0 "
     condition_sql << " and b.shop_kbn <> 9 " #2012/10/01 nishimura
