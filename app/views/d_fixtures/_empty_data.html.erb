@@ -12,10 +12,11 @@
 		  <td ><%= text_field_tag("now_num_#{i+1}", "" ,
 		  		    :style => "text-align:right",:class => "money") %></td>
 		  <td ><%#= text_field_tag("buy_day_#{i+1}", "" , :style => "text-align:right",:size => 2) %></td>
+		  <td rowspan="2" align="center"></td><!-- 削除-->
 	    </tr>
 	    <tr>
 		  <td colspan="5"><%= text_field_tag("buy_object_#{i+1}", "" ,
-		  		    :size => 110,:maxlength=>110, :style=>"ime-mode:active") %></td>
+		  		    :size => 105,:maxlength=>110, :style=>"ime-mode:active") %></td>
 		  <td></td><!-- 承認-->
 		  <td></td><!-- コメント -->
 		  <%= hidden_field_tag "fixture_id_#{i+1}",nil %>

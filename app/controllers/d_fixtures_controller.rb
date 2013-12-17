@@ -71,4 +71,20 @@ class DFixturesController < ApplicationController
     @fixture = DFixture.find(params[:id])
     render :layout => 'modal'
   end
+  
+  # DELETE /d_fixtures/1
+  # DELETE /d_fixtures/1.json
+  def destroy
+    @input_ymd = params[:input_ymd]
+    @d_fixture = DFixture.find(params[:id])
+    @d_fixture.destroy
+
+    respond_to do |format|
+      #format.html { redirect_to d_fixtures_url }
+      #format.json { head :ok }
+      format.html { redirect_to  :action => "index",:input_ymd => @input_ymd }
+      format.json { head :ok }
+    end
+  end
+  
 end

@@ -34,7 +34,13 @@
 		  			<% end %>
 		  		<% end %>
 		  	<% end %>
-		</td>
+		  </td>
+		  <td rowspan="2" align="center">
+			<% unless fixture.approve_flg == 1 then %>
+				<%= link_to image_tag('icon/24_delete.png'), {:action=>"destroy",:id=>fixture.id,:input_ymd=>@input_ymd}, 
+				                                              :confirm => "No.#{i + 1}　#{fixture.buy_item}\n削除します。よろしいですか？", :method => :delete %>
+			<% end %>
+		  </td><!-- 削除-->
 	    </tr>
 	    <tr>
 	      <% if fixture.approve_flg == 1 or fixture.approve_flg == 2%>
