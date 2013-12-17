@@ -345,6 +345,15 @@ class DResultsController < ApplicationController
       d_result.m_shop_id = m_shop.id
       d_result.kakutei_flg = 0
       d_result.created_user_id = current_user.id      
+    else
+      #確認が変更された場合、更新する
+      if params[:d_result] != nil and d_result != nil
+        if params[:d_result][:double_check].to_i != d_result.double_check.to_i
+          d_result.double_check = params[:d_result][:double_check].to_i
+          d_result.double_check_user_id = current_user.id
+          d_result.double_check_date = Time.now
+        end
+      end
     end
     d_result.updated_user_id = current_user.id
     d_result.save

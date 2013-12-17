@@ -707,11 +707,13 @@ module DResultsHelper
     sql = "select s.shop_cd, s.shop_name, r.id, r.kakutei_flg, u.user_name, u.account, d.code_name shop_kbn_name, m.code_name flg,"
     sql << "      substr(r.result_date, 1, 4) || '/' || substr(r.result_date, 5, 2) || '/' || substr(r.result_date, 7, 2) as result_date"
     sql << ",s.id as shop_id"
+    sql << ",r.double_check, r.double_check_user_id, uc.user_name double_check_user_name"
     sql << " from m_shops s"
     sql << " left join d_results r on (r.m_shop_id = s.id and r.result_date = '#{date}')"
     sql << " left join users u on (r.created_user_id = u.id)"
     sql << " left join (select * from m_codes where kbn='shop_kbn') d on s.shop_kbn = cast(d.code as integer)"
     sql << " left join (select * from m_codes where kbn='misumi_flg') m on r.kakutei_flg = cast(m.code as integer)"
+    sql << " left join users uc on (r.double_check_user_id = uc.id)"
     sql << " where s.deleted_flg = 0"
     sql << " and s.shop_kbn <> 9 " #2012/10/01 nishimura
     unless shop_kbn.blank?

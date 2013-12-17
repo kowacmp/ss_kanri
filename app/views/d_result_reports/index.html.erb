@@ -4,7 +4,7 @@
 	<tr>
       <th>対象日</th>
         <td>
-	        <%= text_field_tag  "input_ymd" , @input_ymd, :readonly => true ,:class => 'datepicker',:size => 10%>
+	        <%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 10%>
 	    </td>
 	  <th>実績表種別</th>
 	  <% shop_kbn_name0 = MCode.find_by_kbn_and_code('shop_kbn','0') ? MCode.find_by_kbn_and_code('shop_kbn','0').code_name : "洗車型"  %>

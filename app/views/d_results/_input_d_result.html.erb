@@ -253,6 +253,20 @@
   <%= hidden_field :select, :m_shop_id, :value => @m_shop.id %>
   <%#= hidden_field :select, :edit_flg, :value => @edit_flg %>
   <div style="text-align:right; width: 800px;">
+  
+    <span style="margin-right:10px;">
+      <label style='color:red; font-weight:bold;'>再確認</label>
+      <% if @d_result.blank? %>
+        <%= check_box :d_result, "double_check", {:disabled => true}, 1, 0 %>
+      <% else %>
+        <% if @d_result.double_check.to_i == 0 %>
+          <%= check_box :d_result, "double_check", {:checked => false}, 1, 0 %>
+        <% else %>  
+          <%= check_box :d_result, "double_check", {:checked => true}, 1, 0 %>
+        <% end %>
+      <% end %>
+    </span>
+  
   	<%= submit_tag ' 登  録 ', {:confirm => "登録します。よろしいですか？"} %>
   </div>
 <% end %>

@@ -3,6 +3,8 @@
 	  <th>店舗</th> 
 	  <th>実績日</th>
 	  <th>作成者</th>
+	  <th>確認状況</th>
+	  <th>確認者</th>
 	  <th>店舗種別</th>
 	  <th>入力状況</th>
       <th>ロック/解除<br />
@@ -42,6 +44,22 @@
 	      <td style="color: red; font-weight: bold">
 	    <% end %>
           <%= m_shop.user_name %></td>
+          
+        
+	    <% if submeter_cnt == "0" %>
+	      <td style="text-align: center">
+	    <% else %>
+	      <td style="text-align: center;color: red; font-weight: bold">
+	    <% end %>
+          <%= if m_shop.double_check.blank? or m_shop.double_check.to_i == 0 then "未" else "済" end %></td>
+        
+	    <% if submeter_cnt == "0" %>
+	      <td style="text-align: center">
+	    <% else %>
+	      <td style="text-align: center;color: red; font-weight: bold">
+	    <% end %>
+          <%= "#{m_shop.double_check_user_name}" %></td>
+        
 	    <!-- 2012/12/05 予備メーター入力有無判定-->
 	    <% if submeter_cnt == "0" %>
 	      <td style="text-align: center">
