@@ -130,7 +130,8 @@
   	  	
 	<tr>
 		<td colspan="9" style="border:none" align="right">
-		<%=form_tag :action => 'update' do %>
+		<%#=form_tag :action => 'update' do %>
+		<%= form_tag({:action => 'update' }, :name => "form_update") do %>
 		    <%= hidden_field_tag :audit_list, params[:audit_list] %>
 			
 			<!-- INSERT BEGIN 2012.10.16 コメント機能追加 -->
@@ -208,7 +209,8 @@
 		%>
 		<% if b_del then %>
 			<%= hidden_field_tag "delete_id" %>
-			<%= submit_tag "　削　除　", :onclick => "return audit_wash_delete();", :disable_with => "削除中です..." %>
+			<%#= submit_tag "　削　除　", :onclick => "return audit_wash_delete();", :disable_with => "削除中です..." %>
+			<%= submit_tag "　削　除　", :onclick => "if (audit_wash_delete()){exec_do();value='削除中です...';document.form_update.submit();}else{return false;}", :class=>"exec_do"%>
 			<script>
 				function audit_wash_delete(){
 					if (confirm('削除します。よろしいですか？')) {
@@ -228,13 +230,20 @@
 				url = "./edit?header[m_shop_id]=#{@m_shop_id}&header[created_user_id]=#{@created_user_id}&header[audit_date_from]=#{@audit_date_from}&header[audit_date_to]=#{@audit_date_to}"			
 			end
 		%>
-			<input type="button" value="キャンセル" 
+			<!--input type="button" value="キャンセル" 
 					onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
 								this.value='キャンセル中です...';
-								this.disabled=true;document.location='<%=url%>';
-							}" />
+								this.disabled=true;document.location='<%#=url%>';
+							}" /-->
+			<input type="button" value="キャンセル" class="exec_do"
+				onclick="if (confirm('入力をキャンセルします。よろしいですか？')) {
+								this.value='キャンセル中です...';
+								exec_do();
+								this.disabled=true;document.form_cancel.submit();
+						}" />
 			<!-- 使用不可で開始、立会人入力により使用可 -->
-			<%= submit_tag '　登　録　', :onclick => "return update_chk()" ,:disable_with => '登録中です...', :disabled => not(params["audit_list"].to_s == "true") , :id => "btn_update" %>
+			<%#= submit_tag '　登　録　', :onclick => "return update_chk()" ,:disable_with => '登録中です...', :disabled => not(params["audit_list"].to_s == "true") , :id => "btn_update" %>
+			<%= submit_tag("　登　録　" ,:onclick => "if (update_chk()){exec_do();value='登録中です...';document.form_update.submit();}else{return false;}" , :disabled => not(params["audit_list"].to_s == "true") , :id => "btn_update" ,:class=>"exec_do") %>
 			<!-- true の場合は永続的に更新不可 -->
 			<% 
 				if @d_audit_wash.nil? then
@@ -265,6 +274,18 @@
 </table>
 <% end %>
 
+<%= form_tag({:action => 'edit' }, :name => "form_cancel") do%>
+	<%if params[:audit_list].to_s == "true" then%>
+		<%= hidden_field_tag 'audit_list', "true" %>
+		<%= hidden_field_tag 'id', params[:id] %>
+	<%else%>
+		<%= hidden_field_tag 'header[m_shop_id]', @m_shop_id %>
+		<%= hidden_field_tag 'header[created_user_id]', @created_user_id %>
+		<%= hidden_field_tag 'header[audit_date_from]', @audit_date_from %>
+		<%= hidden_field_tag 'header[audit_date_to]', @audit_date_to %>
+	<%end%>
+<% end %>
+
 <!-- 参照ダイアログ -->
 <div id="dialog_div" style="display: none;" >
 
@@ -291,6 +312,12 @@
   		
   		return confirm('登録しても良いですか？');	
   		
+  	}
+  	
+  	// 更新時ボタン押下不可
+  	function exec_do() {
+  		$('.exec_do').attr('disabled',true);
+  		return true;
   	}
   	
 </script>
