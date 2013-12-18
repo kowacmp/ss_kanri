@@ -19,7 +19,6 @@ class DAuditCashboxesController < ApplicationController
   end
 
   def edit
-    
     if not(params[:id].nil?) then
       # IDを指定した呼出
       d_audit_cashbox       = DAuditCashbox.find(params[:id]) 
@@ -155,7 +154,10 @@ class DAuditCashboxesController < ApplicationController
     @d_audit_cashbox.updated_user_id = current_user.id
     
     # 更新完了
-    @d_audit_cashbox.save!
+    unless @d_audit_cashbox.save
+      redirect_to :controller => "homes", :action => "index"
+      return
+    end
   
     # 再読込
     if params[:audit_list].to_s == "true" then

@@ -111,7 +111,10 @@ class DAimsController < ApplicationController
                 @d_aim = DAim.new(value2)
                 @d_aim.created_user_id = current_user.id
                 @d_aim.updated_user_id = current_user.id
-                @d_aim.save
+                unless @d_aim.save
+                  redirect_to :controller => "homes", :action => "index"
+                  return
+                end
             else
                 @d_aim.updated_user_id = current_user.id
                 @d_aim.update_attributes(value2)
@@ -125,7 +128,11 @@ class DAimsController < ApplicationController
               @d_aim = DAim.new(value)
               @d_aim.created_user_id = current_user.id
               @d_aim.updated_user_id = current_user.id
-              @d_aim.save
+              unless @d_aim.save
+                redirect_to :controller => "homes", :action => "index"
+                return
+              end
+              
           else
               @d_aim.updated_user_id = current_user.id
               @d_aim.update_attributes(value)
