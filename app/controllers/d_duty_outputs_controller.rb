@@ -53,7 +53,8 @@ class DDutyOutputsController < ApplicationController
         ,m_info_costs.time_price6
         ,m_info_costs.day_price1
         ,m_info_costs.day_price2
-        ,count(d_duties.id) as day                        --出勤日数
+        --,count(d_duties.id) as day                        --出勤日数
+        ,sum(case when d_duties.all_work_time > 0 then 1 else 0 end) as day  --出勤日数
         ,sum(d_duties.day_work_time) as day_work_time     --日勤時間
         ,sum(d_duties.day_over_time) as day_over_time     --残業時間
         ,sum(d_duties.night_work_time) as night_work_time --深夜時間
