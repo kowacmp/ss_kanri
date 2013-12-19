@@ -59,7 +59,7 @@ end
 <%= hidden_field :key, :id, :value => tmp_id %>
 
 
-<%= form_for(@d_audit_changemachine, :url => {:action => "update"}, :html => {:name => "form_update"} ) do |f| %>
+<%= form_for(@d_audit_changemachine, :url => {:action => "update"}, :html => {:id => "form_update",:name => "form_update"} ) do |f| %>
 
 <!-- 監査リストからedit呼び出しされたのを保持するフラグ -->
 <%= hidden_field_tag :audit_list, (params["audit_list"].to_s == "true").to_s %>
@@ -435,7 +435,7 @@ end
 <% if b_del then %>
 	<%= hidden_field_tag "delete_id" %>
 	<%#= submit_tag "　削　除　", :onclick => "return audit_changemachine_delete();", :disable_with => "削除中です..." %>
-	<%= submit_tag "　削　除　", :onclick => "if (audit_changemachine_delete()){exec_do();value='削除中です...';document.form_update.submit();}else{return false;}", :class=>"exec_do"%>
+	<%= submit_tag "　削　除　", :onclick => "if (audit_changemachine_delete()){exec_do();value='削除中です...';$('#form_update').submit();}else{return false;}", :class=>"exec_do"%>
 	<script>
 		function audit_changemachine_delete(){
 			if (confirm('削除します。よろしいですか？')) {
@@ -471,7 +471,7 @@ end
 			&nbsp;&nbsp;
 			<!-- 使用不可で開始、立会人入力により使用可 -->
 			<%#= submit_tag '　登　録　', :onclick => "return update_chk()" ,:disable_with => '登録中です...', :disabled => not(params["audit_list"].to_s == "true") , :id => "btn_update"%>
-			<%= submit_tag("　登　録　" ,:onclick => "if (update_chk()){exec_do();value='登録中です...';document.form_update.submit();}else{return false;}" , :disabled => not(params["audit_list"].to_s == "true") , :id => "btn_update" ,:class=>"exec_do") %>			
+			<%= submit_tag("　登　録　" ,:onclick => "if (update_chk()){exec_do();value='登録中です...';$('#form_update').submit();}else{return false;}" , :disabled => not(params["audit_list"].to_s == "true") , :id => "btn_update" ,:class=>"exec_do") %>			
 			<!-- true の場合は永続的に更新不可 -->
 			<%= hidden_field_tag "update_flg", ((params[:readonly].to_s == "true") or (f.object["kakutei_flg"].to_s == "1")) %>
 		</td>

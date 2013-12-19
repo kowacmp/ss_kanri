@@ -454,14 +454,14 @@
   	   <%#= f.submit '  登  録  ', :disable_with => "登録中.....",:confirm => "登録します。よろしいですか？", :method => :post, :disabled=>"disabled" %>
   	   <%= f.submit '  登  録  ', :onclick => "if (confirm('登録します。よろしいですか？'))
   	                                              {
-  	                                                 if (update_chk()){;exec_do();value='登録中.....';document.form_update.submit();
+  	                                                 if (update_chk()){;exec_do();value='登録中.....';$('#form_d_sale').submit();
   	                                                    }else{return false;}
   	                                               }else{return false;}", :method => :post, :disabled=>"disabled" ,:class=>"exec_do" %>
   	<% else%>
   	   <%#= f.submit '  登  録  ', :disable_with => "登録中.....",:confirm => "登録します。よろしいですか？", :method => :post %>
   	   <%= f.submit '  登  録  ', :onclick => "if (confirm('登録します。よろしいですか？'))
   	                                              {
-  	                                                 if (update_chk()){;exec_do();value='登録中.....';document.form_update.submit();
+  	                                                 if (update_chk()){;exec_do();value='登録中.....';$('#form_d_sale').submit();
   	                                                    }else{return false;}
   	                                               }else{return false;}", :method => :post ,:class=>"exec_do" %>
   	<% end %>
@@ -500,7 +500,7 @@ $(function () {
 <%= javascript_include_tag "tabs" %>
   
 <script>
-/* --キャンセル処理修正時コメントアウト
+/* //キャンセル処理修正時コメントアウト
 $(function () {
 
     //保存の時

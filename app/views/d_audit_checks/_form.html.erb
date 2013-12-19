@@ -112,7 +112,7 @@
 						}" />
 			&nbsp;&nbsp;
 			<%#= submit_tag '　登　録　', :disable_with => '登録中です...', :confirm => '登録しても良いですか？' %>
-			<%= submit_tag("　登　録　" ,:onclick => "if (confirm('登録しても良いですか？')){exec_do();value='登録中です...';document.form_update.submit();}else{return false;}" ,:class=>"exec_do") %>
+			<%= submit_tag("　登　録　" ,:onclick => "if (confirm('登録しても良いですか？')){exec_do();value='登録中です...';$('#form_update').submit();}else{return false;}" ,:class=>"exec_do") %>
 			&nbsp;&nbsp;	
   	</td>
   <tr>
