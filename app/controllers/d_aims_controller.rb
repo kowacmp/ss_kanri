@@ -3,6 +3,9 @@ class DAimsController < ApplicationController
   # GET /d_aims
   # GET /d_aims.json
   def index
+    
+    @start_year = DAim.minimum("date")[0,4].to_i
+    
     #@d_aims = DAim.all
     date = DateTime.now
     year = date.strftime("%Y")
@@ -27,6 +30,11 @@ class DAimsController < ApplicationController
        #2012/12/30 翌年度入力可対応
        @month_end = Date.new(params[:input_year].to_i + 1,params[:input_month].to_i,1)
     end
+    
+    # 2013/12/27 遷移用日付データ追加
+    @this_month = {}
+    @this_month["year"] = @year
+    @this_month["month"] = @month
     
     @d_aim = DAim.new
     
@@ -193,6 +201,9 @@ class DAimsController < ApplicationController
   
   
   def search 
+    
+    @start_year = DAim.minimum("date")[0,4].to_i
+    
     @search_aim = params[:search][:aim]
     
     year = params[:date][:year]
@@ -200,6 +211,11 @@ class DAimsController < ApplicationController
     
     @year = format("%04d",year)
     @month = format("%02d",month)
+    
+    # 2013/12/27 遷移用日付データ追加
+    @this_month = {}
+    @this_month["year"] = @year
+    @this_month["month"] = @month
     
     @month_first = Date.new(year.to_i,month.to_i,1)
     @month_last_day = Date.new(year.to_i,month.to_i,-1).day

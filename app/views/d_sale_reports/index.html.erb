@@ -4,8 +4,10 @@
 	<tr>
       <th>対象年月</th>
       <td>
+      	<%#= select_year(@head[:input_day].to_s[0,4].to_i, :prefix=>"", :field_name=>"input_day(1i)",
+      	  #              :start_year => @start_year, :end_year => @head[:input_day].to_s[0,4].to_i) %>
       	<%= select_year(@head[:input_day].to_s[0,4].to_i, :prefix=>"", :field_name=>"input_day(1i)",
-      	                :start_year => @start_year, :end_year => @head[:input_day].to_s[0,4].to_i) %>
+      	                :start_year => @start_year, :end_year => Time.now.year) %>
       	                年
       	<%= select_month(@head[:input_day].to_s[4,2].to_i, :prefix=>"", :field_name=>"input_day(2i)", :use_month_numbers => true) %>月</td>
 	  <th>店舗種別</th>

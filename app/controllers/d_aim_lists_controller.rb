@@ -7,6 +7,8 @@ class DAimListsController < ApplicationController
 
   def search
 
+    @start_year = DAim.minimum("date")[0,4].to_i
+
     if params[:date] == nil
       date = DateTime.now
       year = date.strftime("%Y")

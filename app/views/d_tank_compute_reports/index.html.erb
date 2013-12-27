@@ -3,7 +3,8 @@
 <table id='rounded-corner'>
 	<tr>
 		<th>対象年月</th>
-		<td><%= select_year(@time_now,:start_year => @start_year, :end_year => @time_now.year) %>
+		<td><%#= select_year(@time_now,:start_year => @start_year, :end_year => @time_now.year) %>
+			<%= select_year(@time_now,:start_year => @start_year, :end_year => Time.now.year) %>
 		年
 		<%= select_month(@time_now,:use_month_numbers => true) %>
 		月

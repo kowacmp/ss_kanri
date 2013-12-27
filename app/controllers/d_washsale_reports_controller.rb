@@ -85,13 +85,19 @@ class DWashsaleReportsController < ApplicationController
     end #transaction
 
     respond_to do |format|
-      @time_now = Time.now
+      #@time_now = Time.now
       @shop = MShop.find(current_user.m_shop_id)
       @year = params[:sale_date][0,4]
       @month = params[:sale_date][4,2]
       @this_month = @year + @month
       @last_month = get_last_month(@year, @month)
       @d_washsale_report_last = get_d_washsale_report(@last_month,@m_shop_id)
+      
+      @time_now = Time.mktime(@year.to_i,@month.to_i,1)
+      
+      dwashsalemin = DWashSale.minimum("sale_date",:conditions => ['m_shop_id = ?',@m_shop_id])
+      @start_year = dwashsalemin[0,4].to_i
+      
       format.html { render action: "index", notice: 'D wash sale was successfully updated.' }
     end
   end

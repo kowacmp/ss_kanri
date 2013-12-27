@@ -8,7 +8,8 @@
 	<tr>
       <th>対象年月</th>
       <td>
-      		<%= select_year(@input_ymd, :start_year => @start_year,:end_year => @input_ymd.year) %>年
+      		<%#= select_year(@input_ymd, :start_year => @start_year,:end_year => @input_ymd.year) %>
+      		<%= select_year(@input_ymd, :start_year => @start_year,:end_year => Time.now.year) %>年
       		<%= select_month(@input_ymd,:use_month_numbers=>true) %>月
       	<%#= select_year(@input_ymd.to_s[0,4].to_i, :prefix=>"",
       	   #             :start_year => @start_year, :end_year => @input_ymd.to_s[0,4].to_i) %>
