@@ -4,14 +4,19 @@
 <%= hidden_field_tag 'from_ymd',@from_ymd %>
 <%= hidden_field_tag 'to_ymd'  ,@to_ymd %>
 <%= hidden_field_tag 'shop_kbn',@shop_kbn %>
+<%= hidden_field_tag 'start_ymd',@start_ymd %>
+<%= hidden_field_tag 'end_ymd'  ,@end_ymd %>
+
+<% @num = Date.parse(@to_ymd) - Date.parse(@from_ymd) %>
+
 <table id="report_view_table" class="rounded-corner">
   <thead>
 	<tr>
 		<th style="min-width: 100px;">店舗</th>
         <% start_ymd = (@from_ymd[0,4].to_s + '/' + @from_ymd[4,2] + '/' + @from_ymd[6,2]).to_time %>
         <% start_day = start_ymd.end_of_month.day %>
-        <% start_day.times do |i| %>
-  		  <th style="min-width: 60px;"><%= i+1 %></th>
+		<% for i in 0..@num.to_i %>
+			<th style="min-width: 60px;"><%= (Date.parse(@from_ymd) + i).strftime("%m/%d") %></th>
 		<% end %>
 	</tr>
   </thead>
@@ -22,10 +27,12 @@
 	<tr>
 		<th style="text-align: left;"><%= shop.shop_cd %>&nbsp;<%= shop.shop_ryaku %></th>
 		<% result_date = @from_ymd %>
-        <% start_day.times do |i| %>
+        <%# start_day.times do |i| %>
+        <% for i in 0..@num.to_i %>
   		  <td style="text-align: right">
+  		       <% result_date = (Date.parse(@from_ymd) + i).strftime("%Y%m%d") %>
     		   <% bank_money_data = get_bank_money(result_date,shop.id) %>
-    		   <% result_date = (result_date.to_i + 1).to_s %>
+    		   <%# result_date = (result_date.to_i + 1).to_s %>
     		   <%= num_fmt(bank_money_data) unless bank_money_data == nil %>
   		   </td>
 		<% end %>
