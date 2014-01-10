@@ -267,8 +267,10 @@ function calc_total(taerget_id, total_id){
     $(taerget_id).each(function(i){
     		//id名の先頭が'datas_'の分のみ
     		if ($(this).attr('id').substring(0,6) == 'datas_') {
-	    		num = Number($(this).text());
-	    		if ($(this).text() == '') {num = Number($(this).val());};
+	    		//num = Number($(this).text());
+	    		num = Number(String($(this).text()).replace(/,/g, ""));
+	    		//if ($(this).text() == '') {num = Number($(this).val());};
+	    		if ($(this).text() == '') {num = Number(String($(this).val()).replace(/,/g, ""));};
 	        	if (isNaN(num)) {num = 0};
 	        	total = total + (num*10);
        		};

@@ -136,20 +136,36 @@
 			  			<%= label_tag "datas_#{i + 1}_night_over_time", d_dutry.night_over_time.to_s, {:id=>"datas_#{i + 1}_night_over_time"} %>
 			  		</td>
 					<td style="text-align: right; background-color: #A5D7AA;">
-						<label id='<%= "l_datas_#{i + 1}_all_work_time" %>'><%= d_dutry.all_work_time.to_s %></label>
+						<label id='<%= "datas_#{i + 1}_all_work_time" %>'><%= d_dutry.all_work_time.to_s %></label>
 						<%#= hidden_field_tag "datas[#{i + 1}][all_work_time]", d_dutry.all_work_time %>
 				    </td>
 					<td style="text-align: right;<%= background_css if background_css %>">
+						<% if d_dutry.get_money1.present? %>
+						<%= label_tag "datas_#{i + 1}_get_money1", num_fmt(d_dutry.get_money1.to_s), {:id=>"datas_#{i + 1}_get_money1"} %>
+						<% else %>
 						<%= label_tag "datas_#{i + 1}_get_money1", d_dutry.get_money1.to_s, {:id=>"datas_#{i + 1}_get_money1"} %>
+						<% end %>
 					</td>
 					<td style="text-align: right;<%= background_css if background_css %>">
+						<% if d_dutry.get_money2.present? %>
+						<%= label_tag "datas_#{i + 1}_get_money2", num_fmt(d_dutry.get_money2.to_s), {:id=>"datas_#{i + 1}_get_money2"} %>
+						<% else %>
 						<%= label_tag "datas_#{i + 1}_get_money2", d_dutry.get_money2.to_s, {:id=>"datas_#{i + 1}_get_money2"} %>
+						<% end %>
 					</td>
 					<td style="text-align: right;<%= background_css if background_css %>">
+						<% if d_dutry.get_money3.present? %>
+						<%= label_tag "datas_#{i + 1}_get_money3", num_fmt(d_dutry.get_money3.to_s), {:id=>"datas_#{i + 1}_get_money3"} %>
+						<% else %>
 						<%= label_tag "datas_#{i + 1}_get_money3", d_dutry.get_money3.to_s, {:id=>"datas_#{i + 1}_get_money3"} %>
+						<% end %>
 					</td>
 					<td style="text-align: right;<%= background_css if background_css %>">
+						<% if d_dutry.get_money4.present? %>
+						<%= label_tag "datas_#{i + 1}_get_money4", num_fmt(d_dutry.get_money4.to_s), {:id=>"datas_#{i + 1}_get_money4"} %>
+						<% else %>
 						<%= label_tag "datas_#{i + 1}_get_money4", d_dutry.get_money4.to_s, {:id=>"datas_#{i + 1}_get_money4"} %>
+						<% end %>
 					</td>	
 				  <% else %>
 				   	<td style="text-align: right;<%= background_css if background_css %>"></td>	  	
