@@ -46,6 +46,25 @@ module DPriceCheckReportsHelper
     
   end
   
+  # 税込金額取得
+  def get_zeikomi_print(tanka)
+    
+    # 指定された単価が無い場合空白を返す
+    if tanka.to_f == 0 then
+      return ""
+    end
+    
+    # 消費税率を取得する
+    establish = Establish.find(1)
+    
+    # 税込額を計算
+    ret = tanka.to_f * establish.tax_rate.to_f
+    
+    # 小数点1位で四捨五入
+    return ret.round(0)
+    
+  end
+  
   # 小数点1桁まで表示,ただし.0の場合は小数点以下を表示しない
   def format_minus_gak(par)
     

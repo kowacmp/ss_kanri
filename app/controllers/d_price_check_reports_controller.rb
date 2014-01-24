@@ -19,6 +19,9 @@ class DPriceCheckReportsController < ApplicationController
       @shop_kbn = params[:shop_kbn]
     end
     
+    @shop_from = params[:shop_from]
+    @shop_to = params[:shop_to]
+    
     if params[:price_kbn] == nil
       @price_kbn = 0
     else
@@ -44,7 +47,10 @@ class DPriceCheckReportsController < ApplicationController
     select_sql << " left join (select * from m_codes where kbn='oil_panel') c on b.dis1_2_code = cast(c.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='oil_panel') d on b.dis2_2_code = cast(d.code as integer) "
     
-    condition_sql = " where a.deleted_flg = 0 and a.shop_kbn = #{@shop_kbn} "
+    #condition_sql = " where a.deleted_flg = 0 and a.shop_kbn = #{@shop_kbn} "
+    condition_sql = " where a.deleted_flg = 0 and a.shop_kbn <> 9 "
+    condition_sql = condition_sql + " and a.price_sort >= #{@shop_from} " if @shop_from.present?
+    condition_sql = condition_sql + " and a.price_sort <= #{@shop_to} " if @shop_to.present?
     
     @shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.price_sort")
     
@@ -58,6 +64,9 @@ class DPriceCheckReportsController < ApplicationController
     else
       @shop_kbn = params[:shop_kbn]
     end
+    
+    @shop_from = params[:shop_from]
+    @shop_to = params[:shop_to]
     
     if params[:price_kbn] == nil
       @price_kbn = 0
@@ -84,7 +93,10 @@ class DPriceCheckReportsController < ApplicationController
     select_sql << " left join (select * from m_codes where kbn='oil_panel') c on b.dis1_2_code = cast(c.code as integer) "
     select_sql << " left join (select * from m_codes where kbn='oil_panel') d on b.dis2_2_code = cast(d.code as integer) "
     
-    condition_sql = " where a.deleted_flg = 0 and a.shop_kbn = #{@shop_kbn} "
+    #condition_sql = " where a.deleted_flg = 0 and a.shop_kbn = #{@shop_kbn} "
+    condition_sql = " where a.deleted_flg = 0 and a.shop_kbn <> 9 "
+    condition_sql = condition_sql + " and a.price_sort >= #{@shop_from} " if @shop_from.present?
+    condition_sql = condition_sql + " and a.price_sort <= #{@shop_to} " if @shop_to.present?
     
     shops = MShop.find_by_sql("#{select_sql} #{condition_sql} order by a.price_sort")
     
@@ -94,7 +106,7 @@ class DPriceCheckReportsController < ApplicationController
 
      #ページ、作成日、タイトル設定
     report.events.on :page_create do |e|
-      #e.page.item(:page).value(e.page.no)
+      e.page.item(:page).value(e.page.no)
       #e.page.item(:sakusei_ymd).value(Time.now.strftime("%Y-%m-%d"))
       e.page.item(:taisyo_ymd).value(taisyo_ymd)
       if @price_kbn.to_i == 0
@@ -119,6 +131,15 @@ class DPriceCheckReportsController < ApplicationController
             row.item(:record_back).style(:fill, '#dbeef3') # 塗り
           end
           
+          #最終更新日時
+          if shop.research_day != nil
+            row.item(:last_update_day).value(shop.research_day[0,4] + "/"+ shop.research_day[4,2] + "/"+ shop.research_day[6,2])
+            row.item(:last_update_time).value(shop.research_time + "時")
+          else
+            row.item(:last_update_day).value("")
+            row.item(:last_update_time).value("")
+          end
+          
           #店舗
           row.item(:shop_name).value(shop.shop_ryaku)
           
@@ -132,7 +153,8 @@ class DPriceCheckReportsController < ApplicationController
           #現金(税抜)
           row.item(:dis1_3_hg).value(shop.dis1_3_hg)
           #現金(税込)
-          row.item(:dis1_4_hg).value(shop.dis1_4_hg)
+          #row.item(:dis1_4_hg).value(shop.dis1_4_hg)
+          row.item(:dis1_4_hg).value(get_zeikomi_print(shop.dis1_3_hg))
           #会員
           if shop.dis1_3_hg.to_i != 0 and shop.minus_gak3.to_f != 0
             row.item(:dis1_3_hg_k).value(format_minus_gak(shop.dis1_3_hg.to_i + shop.minus_gak3.to_f))
@@ -156,7 +178,8 @@ class DPriceCheckReportsController < ApplicationController
           #現金(税抜)
           row.item(:dis1_3_rg).value(shop.dis1_3_rg)
           #現金(税込)
-          row.item(:dis1_4_rg).value(shop.dis1_4_rg)
+          #row.item(:dis1_4_rg).value(shop.dis1_4_rg)
+          row.item(:dis1_4_rg).value(get_zeikomi_print(shop.dis1_3_rg))
           #会員
           if shop.dis1_3_rg.to_i != 0 and shop.minus_gak3.to_f != 0
             row.item(:dis1_3_rg_k).value(format_minus_gak(shop.dis1_3_rg.to_i + shop.minus_gak3.to_f))
@@ -180,7 +203,8 @@ class DPriceCheckReportsController < ApplicationController
           #現金(税抜)
           row.item(:dis1_3_kg).value(shop.dis1_3_kg)
           #現金(税込)
-          row.item(:dis1_4_kg).value(shop.dis1_4_kg)
+          #row.item(:dis1_4_kg).value(shop.dis1_4_kg)
+          row.item(:dis1_4_kg).value(get_zeikomi_print(shop.dis1_3_kg))
           #会員
           if shop.dis1_3_kg.to_i != 0 and shop.minus_gak3.to_f != 0
             row.item(:dis1_3_kg_k).value(format_minus_gak(shop.dis1_3_kg.to_i + shop.minus_gak3.to_f))
@@ -197,10 +221,11 @@ class DPriceCheckReportsController < ApplicationController
           #灯油
           #看板
           row.item(:dis1_tg).value(shop.dis1_2_tg)
-          #現金(税込)18L
+          #現金(税抜)18L
           row.item(:dis1_3_tg).value(shop.dis1_3_tg)
-          #現金(税抜)
-          row.item(:dis1_4_tg).value(shop.dis1_4_tg)
+          #現金(税込)
+          #row.item(:dis1_4_tg).value(shop.dis1_4_tg)
+          row.item(:dis1_4_tg).value(get_zeikomi_print(shop.dis1_3_tg.to_f/18))
           #会員
           if shop.dis1_3_tg.to_i != 0 and shop.minus_gak5.to_f != 0
             #row.item(:dis1_3_tg_p).value(shop.dis1_3_tg.to_i + shop.minus_gak3.to_i)
@@ -214,7 +239,7 @@ class DPriceCheckReportsController < ApplicationController
           else
             row.item(:dis1_3_tg_p).value("")
           end
-          #現金(税込)1L
+          #現金(税抜)1L
           if shop.dis1_3_tg.to_i != 0
             row.item(:dis1_3_tg_l).value((shop.dis1_3_tg.to_f/18).round(1))
           else
@@ -289,6 +314,15 @@ class DPriceCheckReportsController < ApplicationController
             row.item(:record_back).style(:fill, '#dbeef3') # 塗り
           end
           
+          #最終更新日時
+          if shop.research_day != nil
+            row.item(:last_update_day).value(shop.research_day[0,4] + "/"+ shop.research_day[4,2] + "/"+ shop.research_day[6,2])
+            row.item(:last_update_time).value(shop.research_time + "時")
+          else
+            row.item(:last_update_day).value("")
+            row.item(:last_update_time).value("")
+          end
+          
           #店舗
           row.item(:shop_name).value(shop.shop_ryaku)
           
@@ -302,7 +336,8 @@ class DPriceCheckReportsController < ApplicationController
           #現金(税抜)
           row.item(:dis1_3_hg).value(shop.dis2_3_hg)
           #現金(税込)
-          row.item(:dis1_4_hg).value(get_zeinuki_print(shop.dis2_3_hg))
+          #row.item(:dis1_4_hg).value(get_zeinuki_print(shop.dis2_3_hg))
+          row.item(:dis1_4_hg).value(get_zeikomi_print(shop.dis2_3_hg))
           #会員
           if shop.dis2_3_hg.to_i != 0 and shop.minus_gak3.to_f != 0
             row.item(:dis1_3_hg_k).value(format_minus_gak(shop.dis2_3_hg.to_i + shop.minus_gak3.to_f))
@@ -326,7 +361,8 @@ class DPriceCheckReportsController < ApplicationController
           #現金(税抜)
           row.item(:dis1_3_rg).value(shop.dis2_3_rg)
           #現金(税込)
-          row.item(:dis1_4_rg).value(get_zeinuki_print(shop.dis2_3_rg))
+          #row.item(:dis1_4_rg).value(get_zeinuki_print(shop.dis2_3_rg))
+          row.item(:dis1_4_rg).value(get_zeikomi_print(shop.dis2_3_rg))
           #会員
           if shop.dis2_3_rg.to_i != 0 and shop.minus_gak3.to_f != 0
             row.item(:dis1_3_rg_k).value(format_minus_gak(shop.dis2_3_rg.to_i + shop.minus_gak3.to_f))
@@ -350,7 +386,8 @@ class DPriceCheckReportsController < ApplicationController
           #現金(税抜)
           row.item(:dis1_3_kg).value(shop.dis2_3_kg)
           #現金(税込)
-          row.item(:dis1_4_kg).value(get_zeinuki_kg_print(shop.dis2_3_kg))
+          #row.item(:dis1_4_kg).value(get_zeinuki_kg_print(shop.dis2_3_kg))
+          row.item(:dis1_4_kg).value(get_zeikomi_print(shop.dis2_3_kg))
           #会員
           if shop.dis2_3_kg.to_i != 0 and shop.minus_gak3.to_f != 0
             row.item(:dis1_3_kg_k).value(format_minus_gak(shop.dis2_3_kg.to_i + shop.minus_gak3.to_f))
@@ -367,10 +404,11 @@ class DPriceCheckReportsController < ApplicationController
           #灯油
           #看板
           row.item(:dis1_tg).value(shop.dis2_2_tg)
-          #現金(税込)18L
+          #現金(税抜)18L
           row.item(:dis1_3_tg).value(shop.dis2_3_tg)
-          #現金(税抜)
-          row.item(:dis1_4_tg).value(get_zeinuki_print(shop.dis2_3_tg.to_f/18))
+          #現金(税込)
+          #row.item(:dis1_4_tg).value(get_zeinuki_print(shop.dis2_3_tg.to_f/18))
+          row.item(:dis1_4_tg).value(get_zeikomi_print(shop.dis2_3_tg.to_f/18))
           #会員
           if shop.dis2_3_tg.to_i != 0 and shop.minus_gak5.to_f != 0
             row.item(:dis1_3_tg_k).value(format_minus_gak(shop.dis2_3_tg.to_i + (shop.minus_gak5.to_f * 18)))
@@ -383,7 +421,7 @@ class DPriceCheckReportsController < ApplicationController
           else
             row.item(:dis1_3_tg_p).value("")
           end
-          #現金(税込)1L
+          #現金(税抜)1L
           if shop.dis2_3_tg.to_i != 0
             row.item(:dis1_3_tg_l).value((shop.dis2_3_tg.to_f/18).round(1))
           else
