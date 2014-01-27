@@ -6,22 +6,11 @@
 		<td>
 	      <%= text_field_tag  "input_ymd" , @input_ymd ,:class => 'datepicker',:size => 10%>
 	    </td>
-	    <!--th>店舗種別</th>
+	    <th>店舗種別</th>
 		<td>
-		  	<%#= select_tag "shop_kbn",  
+		  	<%= select_tag "shop_kbn",  
 	        options_for_select(MCode.find(:all, :conditions=>["kbn='shop_kbn' and code <> '9'"], :order=>"code").collect{|i| [ "#{i.code_name}", i.code ]}) %>
-		</td-->
-		<th>対象店舗</th>
-		<td>
-		<%= select_tag "shop_from",  
-	        options_for_select(MShop.find(:all, :conditions=>["deleted_flg = 0 and shop_kbn <> 9"], :order=>"price_sort").collect{|i| 
-	        [ "#{i.price_sort.to_s.rjust(3,'　')} #{i.shop_ryaku}", i.price_sort ]}), :include_blank => "" %>
-		～
-	  	<%= select_tag "shop_to",  
-	        options_for_select(MShop.find(:all, :conditions=>["deleted_flg = 0 and shop_kbn <> 9"], :order=>"price_sort").collect{|i| 
-	        [ "#{i.price_sort.to_s.rjust(3,'　')} #{i.shop_ryaku}", i.price_sort ]}), :include_blank => "" %>
-	    </td>
-		
+		</td>
 		<th>価格表種別</th>
 		<td>
 			<%= radio_button_tag("price_kbn",0, :checked => true) %>通常時
