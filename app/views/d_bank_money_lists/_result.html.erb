@@ -18,12 +18,14 @@
 		<% for i in 0..@num.to_i %>
 			<th style="min-width: 60px;"><%= (Date.parse(@from_ymd) + i).strftime("%m/%d") %></th>
 		<% end %>
+		<th style="min-width: 60px;">合計</th>
 	</tr>
   </thead>
 
 <tbody>
 
 	<% @shops.each do |shop|%>
+	  <% sum_money_data = 0 %>
 	<tr>
 		<th style="text-align: left;"><%= shop.shop_cd %>&nbsp;<%= shop.shop_ryaku %></th>
 		<% result_date = @from_ymd %>
@@ -34,8 +36,10 @@
     		   <% bank_money_data = get_bank_money(result_date,shop.id) %>
     		   <%# result_date = (result_date.to_i + 1).to_s %>
     		   <%= num_fmt(bank_money_data) unless bank_money_data == nil %>
+    		   <% sum_money_data = sum_money_data + bank_money_data.to_i unless bank_money_data == nil%>
   		   </td>
 		<% end %>
+		<td style="text-align: right"><%= num_fmt(sum_money_data) %></td>
 	</tr>
 	<% end %><!-- shop.each -->
 	
