@@ -150,11 +150,12 @@ class DPriceCheckReportsController < ApplicationController
           if shop.dis1_1_hg.to_s != "" or shop.dis1_2_hg.to_s != ""
             row.item(:dis1_hg).value("/")
           end
-          #現金(税抜)
-          row.item(:dis1_3_hg).value(shop.dis1_3_hg)
           #現金(税込)
+          row.item(:dis1_3_hg).value(shop.dis1_3_hg)
+          #現金(税抜)
           #row.item(:dis1_4_hg).value(shop.dis1_4_hg)
-          row.item(:dis1_4_hg).value(get_zeikomi_print(shop.dis1_3_hg))
+          row.item(:dis1_4_hg).value(get_zeinuki_print(shop.dis1_3_hg))
+          #row.item(:dis1_4_hg).value(get_zeikomi_print(shop.dis1_3_hg))
           #会員
           if shop.dis1_3_hg.to_i != 0 and shop.minus_gak3.to_f != 0
             row.item(:dis1_3_hg_k).value(format_minus_gak(shop.dis1_3_hg.to_i + shop.minus_gak3.to_f))
@@ -175,11 +176,12 @@ class DPriceCheckReportsController < ApplicationController
           if shop.dis1_1_rg.to_s != "" or shop.dis1_2_rg.to_s != ""
             row.item(:dis1_rg).value("/")
           end
-          #現金(税抜)
+          #現金(税込)
           row.item(:dis1_3_rg).value(shop.dis1_3_rg)
-          #現金(税込) 
+          #現金(税抜) 
           #row.item(:dis1_4_rg).value(shop.dis1_4_rg)
-          row.item(:dis1_4_rg).value(get_zeikomi_print(shop.dis1_3_rg))
+          row.item(:dis1_4_rg).value(get_zeinuki_print(shop.dis1_3_rg))
+          #row.item(:dis1_4_rg).value(get_zeikomi_print(shop.dis1_3_rg))
           #会員
           if shop.dis1_3_rg.to_i != 0 and shop.minus_gak3.to_f != 0
             row.item(:dis1_3_rg_k).value(format_minus_gak(shop.dis1_3_rg.to_i + shop.minus_gak3.to_f))
@@ -200,11 +202,12 @@ class DPriceCheckReportsController < ApplicationController
           if shop.dis1_1_kg.to_s != "" or shop.dis1_2_kg.to_s != ""
             row.item(:dis1_kg).value("/")
           end
-          #現金(税抜)
-          row.item(:dis1_3_kg).value(shop.dis1_3_kg)
           #現金(税込)
+          row.item(:dis1_3_kg).value(shop.dis1_3_kg)
+          #現金(税抜)
           #row.item(:dis1_4_kg).value(shop.dis1_4_kg)
-          row.item(:dis1_4_kg).value(get_zeikomi_print(shop.dis1_3_kg))
+          row.item(:dis1_4_kg).value(get_zeinuki_kg_print(shop.dis1_3_kg))
+          #row.item(:dis1_4_kg).value(get_zeikomi_print(shop.dis1_3_kg))
           #会員
           if shop.dis1_3_kg.to_i != 0 and shop.minus_gak3.to_f != 0
             row.item(:dis1_3_kg_k).value(format_minus_gak(shop.dis1_3_kg.to_i + shop.minus_gak3.to_f))
@@ -221,11 +224,12 @@ class DPriceCheckReportsController < ApplicationController
           #灯油
           #看板
           row.item(:dis1_tg).value(shop.dis1_2_tg)
-          #現金(税抜)18L
+          #現金(税込)18L
           row.item(:dis1_3_tg).value(shop.dis1_3_tg)
-          #現金(税込)
+          #現金(税抜)
           #row.item(:dis1_4_tg).value(shop.dis1_4_tg)
-          row.item(:dis1_4_tg).value(get_zeikomi_print(shop.dis1_3_tg.to_f/18))
+          row.item(:dis1_4_tg).value(get_zeinuki_print(shop.dis1_3_tg.to_f/18))
+          #row.item(:dis1_4_tg).value(get_zeikomi_print(shop.dis1_3_tg.to_f/18))
           #会員
           if shop.dis1_3_tg.to_i != 0 and shop.minus_gak5.to_f != 0
             #row.item(:dis1_3_tg_p).value(shop.dis1_3_tg.to_i + shop.minus_gak3.to_i)
@@ -239,7 +243,7 @@ class DPriceCheckReportsController < ApplicationController
           else
             row.item(:dis1_3_tg_p).value("")
           end
-          #現金(税抜)1L
+          #現金(税込)1L
           if shop.dis1_3_tg.to_i != 0
             row.item(:dis1_3_tg_l).value((shop.dis1_3_tg.to_f/18).round(1))
           else
@@ -333,11 +337,11 @@ class DPriceCheckReportsController < ApplicationController
           if shop.dis2_1_hg.to_s != "" or shop.dis2_2_hg.to_s != ""
             row.item(:dis1_hg).value("/")
           end
-          #現金(税抜)
-          row.item(:dis1_3_hg).value(shop.dis2_3_hg)
           #現金(税込)
-          #row.item(:dis1_4_hg).value(get_zeinuki_print(shop.dis2_3_hg))
-          row.item(:dis1_4_hg).value(get_zeikomi_print(shop.dis2_3_hg))
+          row.item(:dis1_3_hg).value(shop.dis2_3_hg)
+          #現金(税抜)
+          row.item(:dis1_4_hg).value(get_zeinuki_print(shop.dis2_3_hg))
+          #row.item(:dis1_4_hg).value(get_zeikomi_print(shop.dis2_3_hg))
           #会員
           if shop.dis2_3_hg.to_i != 0 and shop.minus_gak3.to_f != 0
             row.item(:dis1_3_hg_k).value(format_minus_gak(shop.dis2_3_hg.to_i + shop.minus_gak3.to_f))
@@ -358,11 +362,11 @@ class DPriceCheckReportsController < ApplicationController
           if shop.dis2_1_rg.to_s != "" or shop.dis2_2_rg.to_s != ""
             row.item(:dis1_rg).value("/")
           end
-          #現金(税抜)
-          row.item(:dis1_3_rg).value(shop.dis2_3_rg)
           #現金(税込)
-          #row.item(:dis1_4_rg).value(get_zeinuki_print(shop.dis2_3_rg))
-          row.item(:dis1_4_rg).value(get_zeikomi_print(shop.dis2_3_rg))
+          row.item(:dis1_3_rg).value(shop.dis2_3_rg)
+          #現金(税抜)
+          row.item(:dis1_4_rg).value(get_zeinuki_print(shop.dis2_3_rg))
+          #row.item(:dis1_4_rg).value(get_zeikomi_print(shop.dis2_3_rg))
           #会員
           if shop.dis2_3_rg.to_i != 0 and shop.minus_gak3.to_f != 0
             row.item(:dis1_3_rg_k).value(format_minus_gak(shop.dis2_3_rg.to_i + shop.minus_gak3.to_f))
@@ -383,11 +387,11 @@ class DPriceCheckReportsController < ApplicationController
           if shop.dis2_1_kg.to_s != "" or shop.dis2_2_kg.to_s != ""
             row.item(:dis1_kg).value("/")
           end
-          #現金(税抜)
-          row.item(:dis1_3_kg).value(shop.dis2_3_kg)
           #現金(税込)
-          #row.item(:dis1_4_kg).value(get_zeinuki_kg_print(shop.dis2_3_kg))
-          row.item(:dis1_4_kg).value(get_zeikomi_print(shop.dis2_3_kg))
+          row.item(:dis1_3_kg).value(shop.dis2_3_kg)
+          #現金(税抜)
+          row.item(:dis1_4_kg).value(get_zeinuki_kg_print(shop.dis2_3_kg))
+          #row.item(:dis1_4_kg).value(get_zeikomi_print(shop.dis2_3_kg))
           #会員
           if shop.dis2_3_kg.to_i != 0 and shop.minus_gak3.to_f != 0
             row.item(:dis1_3_kg_k).value(format_minus_gak(shop.dis2_3_kg.to_i + shop.minus_gak3.to_f))
@@ -404,11 +408,11 @@ class DPriceCheckReportsController < ApplicationController
           #灯油
           #看板
           row.item(:dis1_tg).value(shop.dis2_2_tg)
-          #現金(税抜)18L
+          #現金(税込)18L
           row.item(:dis1_3_tg).value(shop.dis2_3_tg)
-          #現金(税込)
-          #row.item(:dis1_4_tg).value(get_zeinuki_print(shop.dis2_3_tg.to_f/18))
-          row.item(:dis1_4_tg).value(get_zeikomi_print(shop.dis2_3_tg.to_f/18))
+          #現金(税抜)
+          row.item(:dis1_4_tg).value(get_zeinuki_print(shop.dis2_3_tg.to_f/18))
+          #row.item(:dis1_4_tg).value(get_zeikomi_print(shop.dis2_3_tg.to_f/18))
           #会員
           if shop.dis2_3_tg.to_i != 0 and shop.minus_gak5.to_f != 0
             row.item(:dis1_3_tg_k).value(format_minus_gak(shop.dis2_3_tg.to_i + (shop.minus_gak5.to_f * 18)))
@@ -421,7 +425,7 @@ class DPriceCheckReportsController < ApplicationController
           else
             row.item(:dis1_3_tg_p).value("")
           end
-          #現金(税抜)1L
+          #現金(税込)1L
           if shop.dis2_3_tg.to_i != 0
             row.item(:dis1_3_tg_l).value((shop.dis2_3_tg.to_f/18).round(1))
           else

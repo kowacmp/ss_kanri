@@ -32,16 +32,16 @@ class DPriceChecksController < ApplicationController
     d_price_check.updated_user_id = current_user.id
     
     # 2014/01 ３次開発で税込入力から税抜入力に変更された為、税込を設定する <<<
-    ## 税抜を設定 
-    #d_price_check.dis1_4_rg = get_zeinuki(d_price_check.dis1_3_rg)
-    #d_price_check.dis1_4_hg = get_zeinuki(d_price_check.dis1_3_hg)
-    #d_price_check.dis1_4_kg = get_zeinuki_kg(d_price_check.dis1_3_kg)
-    #d_price_check.dis1_4_tg = get_zeinuki(d_price_check.dis1_3_tg.to_f / 18)
-    # 税込を設定
-    d_price_check.dis1_4_rg = get_zeikomi(d_price_check.dis1_3_rg)
-    d_price_check.dis1_4_hg = get_zeikomi(d_price_check.dis1_3_hg)
-    d_price_check.dis1_4_kg = get_zeikomi(d_price_check.dis1_3_kg)
-    d_price_check.dis1_4_tg = get_zeikomi(d_price_check.dis1_3_tg.to_f / 18)
+    # 税抜を設定 
+    d_price_check.dis1_4_rg = get_zeinuki(d_price_check.dis1_3_rg)
+    d_price_check.dis1_4_hg = get_zeinuki(d_price_check.dis1_3_hg)
+    d_price_check.dis1_4_kg = get_zeinuki_kg(d_price_check.dis1_3_kg)
+    d_price_check.dis1_4_tg = get_zeinuki(d_price_check.dis1_3_tg.to_f / 18)
+    ## 税込を設定
+    #d_price_check.dis1_4_rg = get_zeikomi(d_price_check.dis1_3_rg)
+    #d_price_check.dis1_4_hg = get_zeikomi(d_price_check.dis1_3_hg)
+    #d_price_check.dis1_4_kg = get_zeikomi(d_price_check.dis1_3_kg)
+    #d_price_check.dis1_4_tg = get_zeikomi(d_price_check.dis1_3_tg.to_f / 18)
     # 2014/01 ３次開発で税込入力から税抜入力に変更された為、税込を設定する >>>
     
     # 更新確定
