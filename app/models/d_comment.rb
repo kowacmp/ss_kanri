@@ -5,6 +5,6 @@ class DComment < ActiveRecord::Base
     validates :contents,   :presence => {:message => '内容は入力必須です。'}
     validates :receive_id, :presence => {:message => '表示先は入力必須です。'}
     
-    validates :contents, :length => {:maximum => 40, :message => "内容は40文字以内で入力してください．" }
+    validates :contents, :length => {:maximum => 150, :message => "内容は150文字以内で入力してください．" }
     validates :title, :length => {:maximum => 20, :message => "タイトルは20文字以内で入力してください．" }
 end

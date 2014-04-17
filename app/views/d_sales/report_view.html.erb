@@ -153,19 +153,25 @@
 		</tbody>
 	</table>
 <!--/div-->
+<!--div-->
+<span style="float: right; margin-top: 20px; margin-bottom: 10px; margin-right: 20px;">
+
+
+			<!-- INSERT 2013.05.14 監査承認機能を追加 -->
+<% if @from_controller == "d_sale_approves" %>
+<!--span style="float: right; margin-top: 20px; margin-bottom: 10px; margin-right: 20px;"-->
+		<%= raw apploval_check_box("d_sale_reports", params[:id]) %>
+<!--/span-->
+<!--br><br-->
+<% end %>
+
 <% if @from_controller == "d_sale_approves" %>
 	<%= link_to "一覧へ戻る", {:controller => @from_controller, :action => "edit", :header=> {:ym => @head[:input_ym], :shop_kbn => @head[:input_shop_kbn], :zumi_flg =>  @head[:input_zumi_flg]}}, :method => :get, :class => 'return_icon' %>
 <% else %>
 	<%= link_to "一覧へ戻る", {:controller => @from_controller, :action => "index", :input_day => @head[:input_day], :input_shop_kbn => @head[:input_shop_kbn]}, :method => :get, :class => 'return_icon' %>
 <% end %>
-			<!-- INSERT 2013.05.14 監査承認機能を追加 -->
-<% if @from_controller == "d_sale_approves" %>
-<span style="float: right; margin-top: 20px; margin-bottom: 10px; margin-right: 20px;">
-		<%= raw apploval_check_box("d_sale_reports", params[:id]) %>
 </span>
 <br><br>
-<% end %>
-
 <script>
 $(function () {
 	$('#report_view_table').tablefix({width: 925, height: 700, fixRows: 1, fixCols: 2});

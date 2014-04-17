@@ -124,12 +124,12 @@
 			<% if not(@appraval_id.blank?) %>
 			
 				<%= radio_button_tag("rbtn#{fixture.id}",1, (fixture.approve_flg == 1)) %>
-				<label for='<%="rbtn#{fixture.id}_1"%>'>承認</label>
+				<label for='<%="rbtn#{fixture.id}_1"%>'>承　認</label>
 				
 				&nbsp;&nbsp;
 				
 				<%= radio_button_tag("rbtn#{fixture.id}",2, (fixture.approve_flg == 2)) %>
-				<label for='<%="rbtn#{fixture.id}_2"%>'>却下</label>
+				<label for='<%="rbtn#{fixture.id}_2"%>'>却　下</label>
 			
 			<% end %> <!-- if not(@appraval_id.blank?) -->
 		</td>
