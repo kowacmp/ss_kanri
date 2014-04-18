@@ -17,7 +17,7 @@
     <td><%= d_comment.send_day.strftime("%Y/%m/%d") %></td>
     <td><%= d_comment.title %></td>
     <td style="table-layout: fixed; width: 300px; word-break: break-all"><%= hbr(d_comment.contents) %></td>
-    <td><%= d_comment.receive_user_account%>&nbsp;<%= d_comment.receive_user_name %></td>
+    <td><%= d_comment.receive_user_name %></td>
     <td class="icon">
     	<%= link_to image_tag('icon/24_show.png'), d_comment %>
     </td>

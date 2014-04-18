@@ -181,7 +181,7 @@ $(function(){
 		for (i = 0; i < ymd.length; i++) {
 			if (ymd[i].value != "" && (!ckDate(ymd[i].value))) {
 				alert("日付を正しく入力してください。");
-				ymd[i].focus();
+				$('#' + ymd[i].id + '_wareki_d').focus();
 				return false;
 			}
 		}
