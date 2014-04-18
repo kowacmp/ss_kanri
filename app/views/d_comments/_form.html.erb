@@ -21,12 +21,12 @@
   <tr>
     <th><%= f.label 'タイトル' %></th>
     <td>
-      <%= f.text_field :title %>
+      <%= f.text_field :title, :size => 40 %>
     </td>
   </tr>
   <tr>
     <th><%= f.label '内容' %></th>
-    <td><%= f.text_area :contents, :rows => 2 %></td>
+    <td><%= f.text_area :contents, :rows => 5, :cols => 50 %></td>
   </tr>
   <tr>
     <th><%= f.label '表示先' %></th>
