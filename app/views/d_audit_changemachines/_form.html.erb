@@ -407,12 +407,12 @@ end
 <!-- 戻るボタンを実装する -->
 <% if params[:back].to_s == "true" then %>
 	<!-- <a href="javascript:history.back();" class="return_icon" >一覧へ戻る</a>-->
-	<%=link_to "一覧へ戻る", {:controller => "d_audit_approves", :action => "edit"}, :class => "return_icon" %>
+	<%#=link_to "一覧へ戻る", {:controller => "d_audit_approves", :action => "edit"}, :class => "return_icon" %>
 	<br/>
 <% end %>
 <!-- INSERT 2012.12.06 監査リストからの戻るを実装する -->
 <% if params[:audit_list].to_s == "true" then %>
-	<%=link_to "一覧へ戻る", {:controller => "d_audit_lists", :action => "edit", :back => "true"}, :class => "return_icon" %>
+	<%#=link_to "一覧へ戻る", {:controller => "d_audit_lists", :action => "edit", :back => "true"}, :class => "return_icon" %>
 <% end %>
 </div>
 
@@ -474,6 +474,17 @@ end
 			<%= submit_tag("　登　録　" ,:onclick => "if (update_chk()){exec_do();value='登録中です...';$('#form_update').submit();}else{return false;}" , :disabled => not(params["audit_list"].to_s == "true") , :id => "btn_update" ,:class=>"exec_do") %>			
 			<!-- true の場合は永続的に更新不可 -->
 			<%= hidden_field_tag "update_flg", ((params[:readonly].to_s == "true") or (f.object["kakutei_flg"].to_s == "1")) %>
+			
+			<% if params[:back].to_s == "true" then %>
+	          <!-- <a href="javascript:history.back();" class="return_icon" >一覧へ戻る</a>-->
+	          <%=link_to "一覧へ戻る", {:controller => "d_audit_approves", :action => "edit"}, :class => "return_icon" %>
+	          <br/>
+            <% end %>
+            <!-- INSERT 2012.12.06 監査リストからの戻るを実装する -->
+            <% if params[:audit_list].to_s == "true" then %>
+	          <%=link_to "一覧へ戻る", {:controller => "d_audit_lists", :action => "edit", :back => "true"}, :class => "return_icon" %>
+            <% end %>
+			
 		</td>
 	</tr>
 	
