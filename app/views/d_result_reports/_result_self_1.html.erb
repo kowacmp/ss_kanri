@@ -217,8 +217,10 @@
 	<%= hidden_field_tag 'input_ymd_e',@input_ymd_e %>
 </table>
 <!-- 2013/01/08 印刷条件変更 -->
+<!-- 2014/04/23 印刷条件変更 -->
 	<%# if @shop_info.sho_kbn == 9 or current_user.user_class == 3 %>
-	<% if @shop_info.shop_kbn == 9 %>
+	<%# if @shop_info.shop_kbn == 9 %>
+	<% if @shop_info.shop_kbn == 9 or current_user.m_shop_id == 41 or current_user.m_shop_id == 42 %>
 		<%= submit_tag  '  印  刷  ',format: 'pdf' %>
 	<% end %>
 <% end %>
