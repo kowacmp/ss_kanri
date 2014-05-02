@@ -123,7 +123,7 @@ p params
  
     #固定釣銭機情報を取得
     taisyo_m = (@head[:input_day].to_s.gsub("/", "")).to_s[4,2].to_i
-    m_fix_moneys = MFixMoney.find(:all, :conditions=>["m_shop_id = ? ", @m_shop_id])    
+    m_fix_moneys = MFixMoney.find(:all, :conditions=>["m_shop_id = ? and deleted_flg = 0 ", @m_shop_id])    
     @m_fix_money = MFixMoney.new
     
     m_fix_moneys.each_with_index {|data, i|
