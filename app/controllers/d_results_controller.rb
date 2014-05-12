@@ -552,6 +552,10 @@ class DResultsController < ApplicationController
       d_result_self_report.ozone = m_oiletc_pos_total(d_result.id, 40, tax_rate)
       d_result_self_report.spare = 0
       #2012/09/24 nishimura マスタ統合による修正 >>>
+      
+      #2014/05/12 add
+      d_result_self_report.type_err = m_oiletc_pos_total(d_result.id, 42, tax_rate)
+      
       d_result_self_report.save
     else
       #実績表データ

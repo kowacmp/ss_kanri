@@ -840,6 +840,8 @@ r_ozone_total = 0
       
       @kyuyu_purika_label = MOiletc.find(8) ? MOiletc.find(8).oiletc_ryaku : "GP"
       @cb_label = MOiletc.find(24) ? MOiletc.find(24).oiletc_ryaku : "CB"
+      #2014/05/12 add
+      @type_err_label = MOiletc.find(42) ? MOiletc.find(42).oiletc_ryaku : "入力ミス"
     elsif select_kbn == 3
       @title_label = MCode.find_by_kbn_and_code('shop_kbn','0') ? MCode.find_by_kbn_and_code('shop_kbn','0').code_name : "洗車型"
       
@@ -969,13 +971,13 @@ r_ozone_total = 0
       select_sql << " left join (select id ,m_shop_id"
       select_sql <<              " from d_results where result_date = '#{input_ymd_e}') b on a.id = b.m_shop_id" 
       
-      select_sql << " left join (select d_result_id,mo_gas,keiyu,touyu,kyuyu_purika,cb "
+      select_sql << " left join (select d_result_id,mo_gas,keiyu,touyu,kyuyu_purika,cb,type_err "
       select_sql <<            " from d_result_self_reports) c on b.id = c.d_result_id"
       
       select_sql << " left join (select d1.m_shop_id,"
       select_sql <<       "sum(d2.mo_gas) as r_mo_gas, sum(d2.keiyu) as r_keiyu,"
       select_sql <<       "sum(d2.touyu) as r_touyu, sum(d2.kyuyu_purika) as r_kyuyu_purika, "
-      select_sql <<       "sum(d2.cb) as r_cb"
+      select_sql <<       "sum(d2.cb) as r_cb ,sum(d2.type_err) as r_type_err"
       select_sql <<            " from d_results d1"
       select_sql <<            " left join (select * from d_result_self_reports) d2 on d1.id = d2.d_result_id"
       select_sql <<            " where d1.result_date >= '#{input_ymd_s}' and d1.result_date <= '#{input_ymd_e}' "

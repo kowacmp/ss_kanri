@@ -14,6 +14,9 @@
 <!-- CB-->
 <% @cb_total = 0 %>
 <% @r_cb_total = 0 %>
+<!-- 入力ミス-->
+<% @type_err_total = 0 %>
+<% @r_type_err_total = 0 %>
 
 <div style="width: 900px">
 <span style="font-weight: bold; font-size: 20px; color: red">
@@ -56,6 +59,8 @@
 		<th style="min-width: 100px"><%= @kyuyu_purika_label + "ペース" %></th>
 		<th style="min-width: 100px"><%= @cb_label %></th>
 		<th style="min-width: 100px"><%= "R" + @cb_label %></th>
+		<th style="min-width: 100px"><%= @type_err_label %></th>
+		<th style="min-width: 100px"><%= "R" + @type_err_label %></th>
 	</tr>
 	</thead>
 	
@@ -107,6 +112,8 @@
 	  	</td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.cb) %></td>
 	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_cb) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.type_err) %></td>
+	  	<td class="input_no"><%= number_with_delimiter(m_shop.r_type_err) %></td>
 	  </tr>
 	<!-- 2012/12/26 集計表示　-->
 	  <% @mo_gas_total = @mo_gas_total + m_shop.mo_gas.to_f.round(1) %>
@@ -114,12 +121,14 @@
 	  <% @touyu_total = @touyu_total + m_shop.touyu.to_f.round(1) %>
 	  <% @kyuyu_total = @kyuyu_total + m_shop.kyuyu_purika.to_i %>
 	  <% @cb_total = @cb_total + m_shop.cb.to_i %>
+	  <% @type_err_total = @type_err_total + m_shop.type_err.to_i %>
 
 	  <% @r_mo_gas_total = @r_mo_gas_total + m_shop.r_mo_gas.to_f.round(1) %>
 	  <% @r_keiyu_total = @r_keiyu_total + m_shop.r_keiyu.to_f.round(1) %>
 	  <% @r_touyu_total = @r_touyu_total + m_shop.r_touyu.to_f.round(1) %>
 	  <% @r_kyuyu_total = @r_kyuyu_total + m_shop.r_kyuyu_purika.to_i %>
 	  <% @r_cb_total = @r_cb_total + m_shop.r_cb.to_i %>
+	  <% @r_type_err_total = @r_type_err_total + m_shop.r_type_err.to_i %>
 
 	  
     <% end %>
@@ -147,7 +156,11 @@
 		  	<td class="input_no"></td>
 		  	<td class="input_no"><%= number_with_delimiter(@cb_total) %></td>
 		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@type_err_total) %></td>
+		  	<td class="input_no"></td>
 		  <% else %>
+			<td ></td>
+			<td ></td>
 			<td ></td>
 			<td ></td>
 			<td ></td>
@@ -191,7 +204,11 @@
 		  	<td class="input_no"></td>
 		  	<td class="input_no"></td>
 		  	<td class="input_no"><%= number_with_delimiter(@r_cb_total) %></td>
+		  	<td class="input_no"></td>
+		  	<td class="input_no"><%= number_with_delimiter(@r_type_err_total) %></td>
 		  <% else %>
+			<td ></td>
+			<td ></td>
 			<td ></td>
 			<td ></td>
 			<td ></td>
