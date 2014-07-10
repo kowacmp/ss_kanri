@@ -143,7 +143,9 @@
 				</td>
 				<td style="text-align:right; min-width: 50px">
 					<label id=<%= "syain_total_#{user.id}" %>>
-						<%= num_fmt( d_duty_syain_total(select_where, "money")[0].all_money) %>
+						<%#= num_fmt( d_duty_syain_total(select_where, "money")[0].all_money) %>
+						<%# 2014/07/09 小数点切り捨て表示%>
+						<%= num_fmt( d_duty_syain_total(select_where, "money")[0].all_money.to_i) %>
 					</label>
 				</td>
 				<% if @head_output_kbn == 1 #金額を表示 %>
@@ -168,7 +170,9 @@
 				</td>
 				<td style="text-align:right ;min-width: 50px">
 					<label id=<%= "baito_total_#{user.id}" %>>
-						<%= num_fmt( d_duty_baito_total(select_where, "money")[0].all_money) %>
+						<%#= num_fmt( d_duty_baito_total(select_where, "money")[0].all_money) %>
+						<%# 2014/07/09 小数点切り捨て表示%>
+						<%= num_fmt( d_duty_baito_total(select_where, "money").to_i) %>
 					</label>
 				</td>
 

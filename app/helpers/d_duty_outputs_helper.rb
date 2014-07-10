@@ -17,7 +17,8 @@ module DDutyOutputsHelper
   def get_shiharai_gak (d_duty)
   
     ret = 0
-    
+
+#=begin    
     ret += d_duty.day_work_money.to_i
     ret += d_duty.day_over_money.to_i
     ret += d_duty.night_work_money.to_i
@@ -34,6 +35,27 @@ module DDutyOutputsHelper
     for i in 1..4
       ret += d_duty["get_money#{ i }"].to_i
     end
+#=end
+
+=begin
+    #2014/07/09 小数点処理
+    ret += d_duty.day_work_money.to_f
+    ret += d_duty.day_over_money.to_f
+    ret += d_duty.night_work_money.to_f
+    ret += d_duty.night_over_money.to_f
+    
+    for i in 1..6
+      ret += d_duty["time#{ i }_money"].to_f
+    end
+    
+    for i in 1..2
+      ret += d_duty["day#{ i }_money"].to_f
+    end
+    
+    for i in 1..4
+      ret += d_duty["get_money#{ i }"].to_f
+    end
+=end    
     
     return ret
     
@@ -65,7 +87,9 @@ module DDutyOutputsHelper
   def get_shiharai_gaks(d_duties)
     ret = 0
     for d_duty in d_duties
-      ret += get_shiharai_gak(d_duty)
+#      ret += get_shiharai_gak(d_duty)
+      #2014/07/09 小数点処理
+      ret += get_shiharai_gak(d_duty).to_f
     end
     return ret
   end

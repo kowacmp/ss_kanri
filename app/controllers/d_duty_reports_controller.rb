@@ -343,7 +343,9 @@ class DDutyReportsController < ApplicationController
         end
         #2012/12/17 勤続年数表示
         row.item("years").value(get_keika_ym(@head[:input_day].to_s[0,6],user.nyusya_date.to_s[0,6]))
-        row.item("ruikei").value(d_duty_syain_total(select_where, "money")[0].all_money)
+#        row.item("ruikei").value(d_duty_syain_total(select_where, "money")[0].all_money)
+        #2014/07/09 小数点切り捨て表示
+        row.item("ruikei").value(d_duty_syain_total(select_where, "money")[0].all_money.to_i)
         jinken_total = jinken_total.to_i + d_duty_syain_total(select_where, "money")[0].all_money.to_i
         
         unless d_duties.blank?
@@ -354,7 +356,9 @@ class DDutyReportsController < ApplicationController
                 
                 if @head_output_kbn == 1
                   #金額表示
-                  row.item("j_#{i+1}").value(d_duties[n].all_money)
+#                  row.item("j_#{i+1}").value(d_duties[n].all_money)
+                  #2014/07/09 小数点切り上げ表示
+                  row.item("j_#{i+1}").value(d_duties[n].all_money.to_f.ceil)
                 else
                   #勤怠表示
                   if d_duties[n].day_work_time.to_i == 1
@@ -364,7 +368,9 @@ class DDutyReportsController < ApplicationController
                   end
                   row.item("j_#{i+1}").style(:align,:center) #テキストの位置（横位置）
                 end
-                jinken[i+1] = jinken[i+1].to_i + d_duties[n].all_money.to_i
+#                jinken[i+1] = jinken[i+1].to_i + d_duties[n].all_money.to_i
+                #2014/07/09 小数点切り上げ表示
+                jinken[i+1] = jinken[i+1].to_i + d_duties[n].all_money.to_f.ceil
                 n += 1
               end
             end
@@ -417,8 +423,10 @@ class DDutyReportsController < ApplicationController
         
         #2012/12/17 勤続年数表示
         row.item("years").value(get_keika_ym(@head[:input_day].to_s[0,6],user.nyusya_date.to_s[0,6]))
-        row.item("ruikei").value(d_duty_baito_total(select_where, "money")[0].all_money)
-        jinken_total = jinken_total.to_i + d_duty_baito_total(select_where, "money")[0].all_money.to_i
+#        row.item("ruikei").value(d_duty_baito_total(select_where, "money")[0].all_money)
+        #2014/07/09 小数点切り捨て表示
+        row.item("ruikei").value(d_duty_baito_total(select_where, "money").to_i)
+        jinken_total = jinken_total.to_i + d_duty_baito_total(select_where, "money").to_i
         
         unless d_duties.blank?
           n = 0
@@ -428,7 +436,9 @@ class DDutyReportsController < ApplicationController
                 
                 if @head_output_kbn == 1
                   #金額表示
-                  row.item("j_#{i+1}").value(d_duties[n].all_money)
+#                  row.item("j_#{i+1}").value(d_duties[n].all_money)
+                  #2014/07/09 小数点切り上げ表示
+                  row.item("j_#{i+1}").value(d_duties[n].all_money.to_f.ceil)
                 else
                   #勤怠表示
                   if d_duties[n].all_work_time.to_f > 0
@@ -439,7 +449,9 @@ class DDutyReportsController < ApplicationController
                     row.item("j_#{i+1}").value("")
                   end
                 end
-                jinken[i+1] = jinken[i+1].to_i + d_duties[n].all_money.to_i
+#                jinken[i+1] = jinken[i+1].to_i + d_duties[n].all_money.to_i
+                #2014/07/09 小数点切り上げ表示
+                jinken[i+1] = jinken[i+1].to_i + d_duties[n].all_money.to_f.ceil
                 n += 1
               end
             end

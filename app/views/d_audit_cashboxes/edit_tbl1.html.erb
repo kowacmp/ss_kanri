@@ -138,7 +138,20 @@
 
 	<% for i in 1..5 %>
 	<tr>
-		<th>立替未処理<%=i%>(金額)</th>
+		<% case i %>
+		<% when 1 then %>
+			<th>買物立替</th>
+		<% when 2 then %>
+			<th>自販機立替</th>
+		<% when 3 then %>
+			<th>洗車機等立替</th>
+		<% when 4 then %>
+			<th>CB立替</th>
+		<% else %>
+			<th>立替未処理<%=i%>(金額)</th>
+		<% end %>
+		<!--th>立替未処理<%#=i%>(金額)</th-->
+		
 		<td>
 			<input type="text" id="_still<%=i%>" class="money" style="width:100px;" />
 		</td>

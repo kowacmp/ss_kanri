@@ -442,6 +442,7 @@ class DDutiesController < ApplicationController
       m_info_cost = MInfoCost.find(:first, :conditions=>["user_id=?", user_id])
       
       unless m_info_cost.blank?
+=begin
         day_work_money = (m_info_cost.general_price.to_i * d_dutie.day_work_time.to_f).ceil #日勤金額（m_info_costs.通常単価×日勤時間）　切り上げ
         day_over_money = (m_info_cost.general_overtime.to_i * d_dutie.day_over_time.to_f).ceil #残業金額（m_info_costs.通常残業×残業時間）　切り上げ
         night_work_money = (m_info_cost.night_price.to_i * d_dutie.night_work_time.to_f).ceil #深夜金額（m_info_costs.深夜単価×深夜時間）　切り上げ
@@ -477,10 +478,51 @@ class DDutiesController < ApplicationController
         d_dutie.time6_money = time_price6.to_i #時間６金額
         d_dutie.day1_money  = day_price1.to_i #日数１金額
         d_dutie.day2_money = day_price2.to_i #日数２金額
+=end
+        
+        #2014/07/09 金額を小数点一桁までもたせるよう修正
+        day_work_money = m_info_cost.general_price.to_i * d_dutie.day_work_time.to_f #日勤金額（m_info_costs.通常単価×日勤時間）
+        day_over_money = m_info_cost.general_overtime.to_i * d_dutie.day_over_time.to_f #残業金額（m_info_costs.通常残業×残業時間）
+        night_work_money = m_info_cost.night_price.to_i * d_dutie.night_work_time.to_f #深夜金額（m_info_costs.深夜単価×深夜時間）
+        night_over_money = m_info_cost.night_overtime.to_i * d_dutie.night_over_time.to_f #深夜残業（m_info_costs.深夜残業×深夜残業時間）
+        #勤務金額合計
+        d_dutie.work_money = day_work_money + day_over_money + night_work_money + night_over_money
+        #時間単価金額
+        time_price = 0
+        time_price1 = m_info_cost.time_price1.to_i * d_dutie.all_work_time.to_f 
+        time_price2 = m_info_cost.time_price2.to_i * d_dutie.all_work_time.to_f 
+        time_price3 = m_info_cost.time_price3.to_i * d_dutie.all_work_time.to_f 
+        time_price4 = m_info_cost.time_price4.to_i * d_dutie.all_work_time.to_f 
+        time_price5 = m_info_cost.time_price5.to_i * d_dutie.all_work_time.to_f
+        time_price6 = m_info_cost.time_price6.to_i * d_dutie.all_work_time.to_f 
+        time_price = time_price1.to_f + time_price2.to_f + time_price3.to_f + time_price4.to_f + time_price5.to_f + time_price6.to_f
+        
+        #日数単価金額
+        day_price = 0
+        day_price1 = m_info_cost.day_price1.to_i if d_dutie.all_work_time.to_f > 0
+        day_price2 = m_info_cost.day_price2.to_i if d_dutie.all_work_time.to_f > 0
+        day_price = day_price1.to_i + day_price2.to_i
+        
+        #人件費情報マスタの内容を勤怠データに保存する
+        d_dutie.day_work_money = day_work_money #日勤金額
+        d_dutie.day_over_money = day_over_money #残業金額
+        d_dutie.night_work_money = night_work_money #深夜金額
+        d_dutie.night_over_money = night_over_money #深夜残業金額
+        d_dutie.time1_money = time_price1 #時間１金額
+        d_dutie.time2_money = time_price2 #時間２金額
+        d_dutie.time3_money = time_price3 #時間３金額
+        d_dutie.time4_money = time_price4 #時間４金額
+        d_dutie.time5_money = time_price5 #時間５金額
+        d_dutie.time6_money = time_price6 #時間６金額
+        d_dutie.day1_money  = day_price1.to_i #日数１金額
+        d_dutie.day2_money = day_price2.to_i #日数２金額
+        
       end
       
       #人件費合計
-      d_dutie.all_money = d_dutie.work_money.to_i + d_dutie.get_money1.to_i + d_dutie.get_money2.to_i + d_dutie.get_money3.to_i + d_dutie.get_money4.to_i + time_price.to_i + day_price.to_i
+#      d_dutie.all_money = d_dutie.work_money.to_i + d_dutie.get_money1.to_i + d_dutie.get_money2.to_i + d_dutie.get_money3.to_i + d_dutie.get_money4.to_i + time_price.to_i + day_price.to_i
+      #2014/07/09 金額を小数点一桁までもたせるよう修正
+      d_dutie.all_money = d_dutie.work_money.to_f + d_dutie.get_money1.to_f + d_dutie.get_money2.to_f + d_dutie.get_money3.to_f + d_dutie.get_money4.to_f + time_price.to_f + day_price.to_f
       
       d_dutie.updated_user_id = current_user.id
       d_dutie.save
@@ -512,7 +554,10 @@ class DDutiesController < ApplicationController
       else
         nisu = (Date.new(@input_day.to_s[0,4].to_i, @input_day.to_s[4,2].to_i, -1)).strftime("%d").to_i
         #truncate切り捨て
-        d_dutie.all_money = ((m_info_cost.general_price.to_i + m_info_cost.time_price1.to_i + m_info_cost.time_price2.to_i + m_info_cost.time_price3.to_i + m_info_cost.time_price4.to_i + m_info_cost.time_price5.to_i + m_info_cost.time_price6.to_i) / nisu).truncate
+#        d_dutie.all_money = ((m_info_cost.general_price.to_i + m_info_cost.time_price1.to_i + m_info_cost.time_price2.to_i + m_info_cost.time_price3.to_i + m_info_cost.time_price4.to_i + m_info_cost.time_price5.to_i + m_info_cost.time_price6.to_i) / nisu).truncate
+        #2014/07/09 金額を小数点一桁までもたせるよう修正
+        d_dutie.all_money = ((m_info_cost.general_price.to_i + m_info_cost.time_price1.to_i + m_info_cost.time_price2.to_i + m_info_cost.time_price3.to_i + m_info_cost.time_price4.to_i + m_info_cost.time_price5.to_i + m_info_cost.time_price6.to_i).to_f / nisu.to_f).round(1)
+        
       end
       
       d_dutie.updated_user_id = current_user.id

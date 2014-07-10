@@ -48,14 +48,18 @@ module DDutiesHelper
           if d_duties[n].day == (i + 1)
             case outputkbn
               when "money"#金額をセット
-                rtn_html << "<label id='syain_all_money_#{i+1}_#{user_id}'>#{num_fmt(d_duties[n].all_money)}</label>"
+#                rtn_html << "<label id='syain_all_money_#{i+1}_#{user_id}'>#{num_fmt(d_duties[n].all_money)}</label>"
+                #2014/07/09 小数点切り上げ表示
+                rtn_html << "<label id='syain_all_money_#{i+1}_#{user_id}'>#{num_fmt(d_duties[n].all_money.to_f.ceil)}</label>"
               when "time-money"#勤怠を表示して金額を隠しで出力
                 if d_duties[n].day_work_time.to_i == 1
                   rtn_html << "<label id='syain_#{i+1}_#{user_id}'>出</label>"
                 else
                   rtn_html << "<label id='syain_#{i+1}_#{user_id}' style='color:red'>休</label>"
                 end
-                rtn_html << hidden_field_tag("syain_all_money_#{i+1}_#{user_id}",d_duties[n].all_money)
+#                rtn_html << hidden_field_tag("syain_all_money_#{i+1}_#{user_id}",d_duties[n].all_money)
+                #2014/07/09 小数点切り上げ表示
+                rtn_html << hidden_field_tag("syain_all_money_#{i+1}_#{user_id}",d_duties[n].all_money.to_f.ceil)
               else
                 if d_duties[n].day_work_time.to_i == 1
                   rtn_html << "<label id='syain_#{i+1}_#{user_id}'>出</label>"
@@ -144,14 +148,18 @@ module DDutiesHelper
           if d_duties[n].day == (i + 1)
             case outputkbn
               when "money"#金額をセット
-                rtn_html << "<label id='baito_all_money_#{i+1}_#{user_id}'>#{num_fmt(d_duties[n].all_money)}</label>"
+#                rtn_html << "<label id='baito_all_money_#{i+1}_#{user_id}'>#{num_fmt(d_duties[n].all_money)}</label>"
+                #2014/07/09 小数点切り上げ表示
+                rtn_html << "<label id='baito_all_money_#{i+1}_#{user_id}'>#{num_fmt(d_duties[n].all_money.to_f.ceil)}</label>"
               when "time-money"#勤怠を表示して金額を隠しで出力
                 if d_duties[n].all_work_time.to_f > 0
                   rtn_html << "<label id='baito_#{i+1}_#{user_id}'>#{d_duties[n].all_work_time}</label>"
                 else
                   rtn_html << "<label id='baito_#{i+1}_#{user_id}'></label>"
                 end
-                rtn_html << hidden_field_tag("baito_all_money_#{i+1}_#{user_id}",d_duties[n].all_money)
+#                rtn_html << hidden_field_tag("baito_all_money_#{i+1}_#{user_id}",d_duties[n].all_money)
+                #2014/07/09 小数点切り上げ表示
+                rtn_html << hidden_field_tag("baito_all_money_#{i+1}_#{user_id}",d_duties[n].all_money.to_f.ceil)
               else
                 if d_duties[n].all_work_time.to_f > 0
                   rtn_html << "<label id='baito_#{i+1}_#{user_id}'>#{d_duties[n].all_work_time}</label>"
@@ -247,7 +255,50 @@ module DDutiesHelper
   #outputkbn->moneyの場合は金額を送る
   def d_duty_baito_total(select_where, outputkbn=nil)
     if outputkbn == "money"
-      return DDuty.find_by_sql("select sum(all_money) all_money from d_duties where #{select_where} ")
+#      return DDuty.find_by_sql("select sum(all_money) all_money from d_duties where #{select_where} ")
+      #2014/07/09 小数点切り捨て表示
+      select_field = "
+                      sum(d_duties.day_work_money) as day_work_money     --日勤金額
+                     ,sum(d_duties.day_over_money) as day_over_money     --残業金額
+                     ,sum(d_duties.night_work_money) as night_work_money --深夜金額
+                     ,sum(d_duties.night_over_money) as night_over_money --深夜残業金額
+                     ,sum(d_duties.time1_money) as time1_money         --時間1金額
+                     ,sum(d_duties.time2_money) as time2_money         --時間2金額
+                     ,sum(d_duties.time3_money) as time3_money         --時間3金額
+                     ,sum(d_duties.time4_money) as time4_money         --時間4金額
+                     ,sum(d_duties.time5_money) as time5_money         --時間5金額
+                     ,sum(d_duties.time6_money) as time6_money         --時間6金額
+                     ,sum(d_duties.day1_money)  as day1_money          --日数1金額
+                     ,sum(d_duties.day2_money)  as day2_money          --日数2金額
+                     ,sum(d_duties.get_money1)  as get_money1          --手当1
+                     ,sum(d_duties.get_money2)  as get_money2          --手当2
+                     ,sum(d_duties.get_money3)  as get_money3          --手当3
+                     ,sum(d_duties.get_money4)  as get_money4          --手当4
+      "
+      
+      d_duty = DDuty.find_by_sql("select #{select_field} from d_duties where #{select_where} ").first
+      
+      ret = 0
+      
+      ret += d_duty.day_work_money.to_i
+      ret += d_duty.day_over_money.to_i
+      ret += d_duty.night_work_money.to_i
+      ret += d_duty.night_over_money.to_i
+      
+      for i in 1..6
+        ret += d_duty["time#{ i }_money"].to_i
+      end
+      
+      for i in 1..2
+        ret += d_duty["day#{ i }_money"].to_i
+      end
+    
+      for i in 1..4
+        ret += d_duty["get_money#{ i }"].to_i
+      end
+      
+      return ret
+      
     else
       return DDuty.find_by_sql("select sum(all_work_time) jikan from d_duties where #{select_where} ")
     end    
