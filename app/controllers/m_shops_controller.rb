@@ -112,7 +112,13 @@ class MShopsController < ApplicationController
   def create
     #店舗情報　保存 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     @m_shop = MShop.new(params[:m_shop])
-    @m_shop.add_ym = @start_year+@start_month
+    #@m_shop.add_ym = @start_year+@start_month
+    @m_shop.open_day = @m_shop.open_day.to_s.delete("/")
+    if (params[:date][:year].blank? or params[:date][:month].blank?)
+      @m_shop.add_ym = nil
+    else
+      @m_shop.add_ym = params[:date][:year] + sprintf("%02d", params[:date][:month].to_i)
+    end
     @m_shop.save
     #店舗情報　保存 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     
