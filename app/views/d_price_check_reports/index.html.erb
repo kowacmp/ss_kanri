@@ -24,8 +24,8 @@
 		
 		<th>価格表種別</th>
 		<td>
-			<%= radio_button_tag("price_kbn",0, :checked => true) %>通常時
-			<%= radio_button_tag("price_kbn",1) %>特売時
+			<%= radio_button_tag("price_kbn",0, :checked => true) %>税込<!--通常時-->
+			<%= radio_button_tag("price_kbn",1) %>税抜<!--特売時-->
 		</td>
 		<td><%= submit_tag "検索" %></td>
     </tr>
