@@ -708,6 +708,7 @@ module DResultsHelper
     sql << "      substr(r.result_date, 1, 4) || '/' || substr(r.result_date, 5, 2) || '/' || substr(r.result_date, 7, 2) as result_date"
     sql << ",s.id as shop_id"
     sql << ",r.double_check, r.double_check_user_id, uc.user_name double_check_user_name"
+    sql << ",(select count(rm.d_result_id) from d_result_meters rm where sub_meter is not null and r.id = rm.d_result_id) submeter_cnt"
     sql << " from m_shops s"
     sql << " left join d_results r on (r.m_shop_id = s.id and r.result_date = '#{date}')"
     sql << " left join users u on (r.created_user_id = u.id)"
