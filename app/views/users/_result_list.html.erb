@@ -6,11 +6,12 @@
     <th>社員種別</th>
     <th>権限</th>
     <th>給与<br>区分</th>
-    <th>ﾗﾝｸ</th>
+    <th>R</th>
     <th>出力<br>区分</th>
     <th>区分内<br>ｿｰﾄ順</th>
+    <th></th>
     <th>編集</th>
-    <th>ﾊﾟｽﾜｰﾄﾞ<br>変更</th>
+    <th>パス<br>変更</th>
     <th>削除</th>
   </tr>
 
@@ -35,6 +36,11 @@
     <td class="<%= "#{del_flg}" %>" align="center"><%= user.rank_name %></td>
     <td class="<%= "#{del_flg}" %>" align="center"><%= user.duty_sort_name %></td>
     <td class="<%= "#{del_flg}" %>" align="center"><%= user.duty_kbn_sort %></td>
+    <td class="<%= "#{del_flg}" %>" align="center">
+      <%- if user.taisyoku_date.present? -%>
+        <%= "退" %>
+      <%- end -%>
+    </td>
     <td class="icon">
     	<%- if user.deleted_flg == 0 -%>
     	<%= link_to image_tag('icon/24_edit.png'), {:action=>"edit",:id=>user.id,:pass_flg=>0,:return_flg=>1} %>
