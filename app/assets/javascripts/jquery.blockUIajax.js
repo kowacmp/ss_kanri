@@ -15,7 +15,7 @@
 					,type     : "get"
 					,data     : data
 					,dataType : dataType
-					,timeout  : 30000
+					,timeout  : 60000
 					,success  : function(data, status, xhr) {
 						if ((typeof handler) === "function") {
 							handler(data, status);
@@ -45,7 +45,7 @@
 					,type     : "post"
 					,data     : data
 					,dataType : dataType
-					,timeout  : 30000
+					,timeout  : 60000
 					,success  : function(data, status, xhr) {
 						if ((typeof handler) === "function") {
 							handler(data, status);
