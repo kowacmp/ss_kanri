@@ -35,8 +35,9 @@ module DTankComputeReportDetailsHelper
       select tank_union_no from m_tanks
       where id = ?)
       and m_shop_id = ?
-      order by id
       and deleted_flg = 0
+      order by id
+      
     SQL
     volume = 0
     tank_data = Hash.new
