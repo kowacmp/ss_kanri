@@ -60,7 +60,7 @@ module DTankComputeReportDetailsHelper
 #    p "*** get_select_oil = #{result_id},#{oil_id},#{m_shop_id}***"
     tank_id = Array.new
 
-    tanks = MTank.find(:all,:conditions => ['m_oil_id = ? and m_shop_id = ?',oil_id,m_shop_id])
+    tanks = MTank.find(:all,:conditions => ['m_oil_id = ? and m_shop_id = ? and deleted_flg = 0',oil_id,m_shop_id])
     tanks.each do |tank|
       #tank_id << tank.tank_no
       tank_id << tank.id
