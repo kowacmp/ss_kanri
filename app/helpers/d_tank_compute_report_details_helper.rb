@@ -94,7 +94,7 @@ module DTankComputeReportDetailsHelper
        select tank_union_no from m_tanks
        where id = ?)
        and m_shop_id = ?
-       deleted_flg = 0
+       and deleted_flg = 0
        order by id) a,
        d_tank_compute_reports b
        where a.id = b.m_tank_id
