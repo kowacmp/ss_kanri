@@ -120,7 +120,7 @@ class DTankComputeReportDetailsController < ApplicationController
         page.item(:year).value(params[:from_ymd][0,4])
         page.item(:month).value(params[:from_ymd][4,2].to_i)
         unless params[:oil_id] == nil or params[:oil_id] == ""
-          tanks = MTank.find(:all,:conditions => ['m_oil_id = ? and m_shop_id = ?',params[:oil_id],@shop_id],:order => 'tank_no')
+          tanks = MTank.find(:all,:conditions => ['m_oil_id = ? and m_shop_id = ? deleted_flg = 0',params[:oil_id],@shop_id],:order => 'tank_no')
           tanks.each do |tank|
             tank_no << tank.tank_no
             tank_volume = tank_volume + tank.volume
