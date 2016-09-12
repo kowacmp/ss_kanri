@@ -5,7 +5,7 @@ module DTankComputeReportDetailsHelper
       tank_union_nos.each do |union_no|
          sql = "select t.*, o.oil_name from m_tanks t, m_oils o"
          sql << " where t.m_oil_id = o.id and tank_union_no = #{union_no.tank_union_no}"
-         sql << "   and m_shop_id = #{union_no.m_shop_id} and deleted_flg = 0 order by tank_no" 
+         sql << "   and m_shop_id = #{union_no.m_shop_id} and t.deleted_flg = 0 order by tank_no" 
 
          tank_options = MTank.find_by_sql(sql)
          tank_name = ""
