@@ -36,6 +36,7 @@ module DTankComputeReportDetailsHelper
       where id = ?)
       and m_shop_id = ?
       order by id
+      and deleted_flg = 0
     SQL
     volume = 0
     tank_data = Hash.new
