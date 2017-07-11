@@ -167,7 +167,7 @@ end
           row.item(:oil3_adj1).value(data.oil3_adj1_total)
           row.item(:oil3_adj2).value(data.oil3_adj2_total)
           row.item(:oil4_adj1).value(data.oil4_adj1_total)
-          row.item(:oil4_adj2).value(data.oil4_adj2)
+          row.item(:oil4_adj2).value(data.oil4_adj2_total)
           oil1_adj1_sum = oil1_adj1_sum + data.oil1_adj1_total.to_i
           oil1_adj2_sum = oil1_adj2_sum + data.oil1_adj2_total.to_i
           oil2_adj1_sum = oil2_adj1_sum + data.oil2_adj1_total.to_i
