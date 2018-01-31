@@ -1,0 +1,29 @@
+<h1>データ削除一覧</h1>
+
+<table id='rounded-corner'>
+  <tr>
+  	<th width="40">No</th>
+    <th width="600">名称</th>
+    <th width="70">保持期間</th>
+    <th width="90">削除可能日</th>
+    <th width="40">編集</th>
+    </tr>
+<% @m_keep_months.each_with_index do |m_keep,i| %>
+	<tr>
+		<td style="text-align: center;"><%= m_keep.display_order %></td>
+		</td>
+		<td style="text-align: left;"><%= m_keep.display_name %></td>
+		</td>
+		<td style="text-align: center;"><%= m_keep.keep_month %>&nbsp&nbspヶ月</td>
+		</td>
+		<td style="text-align: center;"><%= m_keep.del_ymd %></td>
+		</td>
+		<td style="text-align: center;">
+		<%= link_to image_tag('icon/24_edit.png'), {:action => "edit", :id=>m_keep.id} %>
+		</td>
+	</tr>
+<% end %>
+
+</table>
+
+<br />

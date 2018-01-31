@@ -1,0 +1,32 @@
+<h1>データ削除</h1>
+
+<%= form_tag(url_for(:action => 'delete'),:remote => true) do %>
+		<%= hidden_field :id,:value=>@m_keep_months.id %>
+		<%= hidden_field :m_keep_months, :display_order,:value=>@m_keep_months.display_order %>
+		<%= hidden_field :m_keep_months, :del_ymd,:value=>@m_keep_months.del_ymd %>
+	<table id='rounded-corner'>
+		<tr>
+			<th width="40">No</th>
+			<th width="400">名称</th>
+			<th width="70">保持期間</th>
+			<th width="90">削除可能日</th>
+			<th width="90">削除日入力</th>
+		</tr>
+		<tr>
+			<td style="text-align: center;"><%= @m_keep_months.display_order %></td>
+			<td style="text-align: left;"><%= @m_keep_months.display_name %></td>
+			<td style="text-align: center;"><%= @m_keep_months.keep_month %>&nbsp&nbspヶ月</td>
+			<td style="text-align: center;"><%= @m_keep_months.del_ymd %></td>
+			<td style="text-align: left;"><%= text_field :m_keep_months ,:input_ymd, :class=>"datepicker" , :readonly=>"readonly" %>
+		</tr>
+
+		<td align="left" style="border: none">
+			<%= link_to '戻る',{:controller => 'data_deletes',:action => 'index',
+				:id => @m_keep_months.display_order} , :method => :get, :class => 'return_icon'%>
+		</td>
+		<td align="right" style="border: none">
+			<%= submit_tag '削  除',:disable_with => "削除中.....",:confirm => '削除しても良いですか？' , :onclick => "return chk_date();"%>
+		</td>
+	</table>
+<% end %>
+

@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Display order:</b>
+  <%= @m_keep_month.display_order %>
+</p>
+
+<p>
+  <b>Display name:</b>
+  <%= @m_keep_month.display_name %>
+</p>
+
+<p>
+  <b>Keep month:</b>
+  <%= @m_keep_month.keep_month %>
+</p>
+
+
+<%= link_to 'Edit', edit_m_keep_month_path(@m_keep_month) %> |
+<%= link_to 'Back', m_keep_months_path %>

@@ -1,5 +1,11 @@
 SsKanri::Application.routes.draw do
 
+
+  get "data_deletes/index"
+  get "data_deletes/edit"
+
+  resources :m_keep_months
+
   get "d_duty_outputs/index"
   
   get "d_price_check_reports/index"
