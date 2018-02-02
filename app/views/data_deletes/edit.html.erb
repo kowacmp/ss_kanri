@@ -19,7 +19,7 @@
 			<td style="text-align: center;"><%= @m_keep_months.del_ymd %></td>
 			<td style="text-align: left;"><%= text_field :m_keep_months ,:input_ymd, :class=>"datepicker" , :readonly=>"readonly" %>
 		</tr>
-
+	</table>
 		<td align="left" style="border: none">
 			<%= link_to '戻る',{:controller => 'data_deletes',:action => 'index',
 				:id => @m_keep_months.display_order} , :method => :get, :class => 'return_icon'%>
@@ -27,6 +27,6 @@
 		<td align="right" style="border: none">
 			<%= submit_tag '削  除',:disable_with => "削除中.....",:confirm => '削除しても良いですか？' , :onclick => "return chk_date();"%>
 		</td>
-	</table>
+
 <% end %>
 
