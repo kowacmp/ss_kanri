@@ -1,11 +1,11 @@
 <%= form_for(@m_keep_month) do |f| %>
   <% if @m_keep_month.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@m_keep_month.errors.count, "error") %> prohibited this m_keep_month from being saved:</h2>
+      <h2><%= pluralize(@m_keep_month.errors.count, "") %> 件のエラーがあります。</h2>
 
       <ul>
       <% @m_keep_month.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= sliceString(msg) %></li>
       <% end %>
       </ul>
     </div>

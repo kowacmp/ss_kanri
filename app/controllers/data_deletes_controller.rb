@@ -3,7 +3,7 @@ class DataDeletesController < ApplicationController
   include DataDeletesHelper
   
    def index
-p "index"
+
      p "** index=#{params[:id]}"
     sql_sel = "SELECT id, display_order, display_name, keep_month, "
     sql_sel << " '' AS del_ymd ,'' AS input_ymd "
@@ -23,7 +23,7 @@ p "index"
   end
 
   def edit
-     p "** edit=#{params[:id]}"
+
     sql_sel = "SELECT id, display_order, display_name, keep_month "
     sql_sel << " FROM m_keep_months "
     sql_sel << " where id = " + params[:id]
@@ -306,13 +306,7 @@ p "index"
           #備品購入申請データ削除
           DFixture.delete_all(['application_date < ? ',params[:m_keep_months][:input_ymd].delete("/")])
         end
-        
-        #価格調査データ存在チェック
-        @d_price_check = DPriceCheck.count(:all, :conditions => ["research_day < ?", params[:m_keep_months][:input_ymd].delete("/")])
-        if @d_price_check  != 0 
-          #価格調査データ削除
-          DPriceCheck.delete_all(['research_day < ? ',params[:m_keep_months][:input_ymd].delete("/")])
-        end
+
      elsif params[:m_keep_months][:display_order].to_i == 4
         #アクセスログ存在チェック
         @access_logs = AccessLog.count(:all, :conditions => ["access_date < ?", params[:m_keep_months][:input_ymd].delete("/")])
@@ -334,9 +328,18 @@ p "index"
             end
           end
         end
-     else
-
-     end
+     elsif params[:m_keep_months][:display_order].to_i == 6
+       
+     p "** 価格データ#********************************************************"
+        #価格データ存在チェック
+        @d_price_check = DPriceCheck.count(:all, :conditions => ["research_day < ?", params[:m_keep_months][:input_ymd].delete("/")])
+        if @d_price_check  != 0 
+          #価格データ削除
+          DPriceCheck.delete_all(['research_day < ? ',params[:m_keep_months][:input_ymd].delete("/")])
+        end
+    else
+        
+    end
 
     respond_to do |format|
        format.html { redirect_to :controller => "data_deletes", :action => "index" }
