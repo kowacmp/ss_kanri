@@ -4,18 +4,17 @@ class DataDeletesController < ApplicationController
   
    def index
 
-     p "** index=#{params[:id]}"
     sql_sel = "SELECT id, display_order, display_name, keep_month, "
     sql_sel << " '' AS del_ymd ,'' AS input_ymd "
     sql_sel << " FROM m_keep_months "
     sql_sel << " ORDER BY display_order"
 
     @m_keep_months = MKeepMonth.find_by_sql(sql_sel)
-    
     @m_keep_months.each do |m_keep|
       m_keep.del_ymd = get_del_date(Date.today,m_keep.keep_month)
+
     end
-    
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @m_keep_months }
@@ -42,7 +41,6 @@ class DataDeletesController < ApplicationController
     end
   end
 
-
   def delete
 
     sql_sel = "SELECT id, display_order, display_name, keep_month "
@@ -61,7 +59,7 @@ class DataDeletesController < ApplicationController
         end 
         return 
      end
-     
+
      if params[:m_keep_months][:display_order].to_i == 1
         #実績データ存在チェック
         @d_result = DResult.count(:all, :conditions => ["result_date < ? ",params[:m_keep_months][:input_ymd].delete("/")])
@@ -329,8 +327,7 @@ class DataDeletesController < ApplicationController
           end
         end
      elsif params[:m_keep_months][:display_order].to_i == 6
-       
-     p "** 価格データ#********************************************************"
+     
         #価格データ存在チェック
         @d_price_check = DPriceCheck.count(:all, :conditions => ["research_day < ?", params[:m_keep_months][:input_ymd].delete("/")])
         if @d_price_check  != 0 
