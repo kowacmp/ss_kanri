@@ -17,6 +17,8 @@ class DSale < ActiveRecord::Base
     self.sale_change2 = 0 if read_attribute(:sale_change2).blank?
     self.sale_change3 = 0 if read_attribute(:sale_change3).blank?
     self.sale_ass = 0 if read_attribute(:sale_ass).blank?
+    #2018.10.15 チャージ項目追加 oda add
+    self.sale_charge = 0 if read_attribute(:sale_charge).blank?
     self.recive_money = 0 if read_attribute(:recive_money).blank?
     self.pay_money = 0 if read_attribute(:pay_money).blank?
     self.sale_cashbox = 0 if read_attribute(:sale_cashbox).blank?

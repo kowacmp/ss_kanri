@@ -12,10 +12,12 @@ module DSalesHelper
     select_sql << " , a.recive_money "
     select_sql << " , a.pay_money " 
     select_sql << " , a.sale_ass "
-    # 2012/09/25 ﾚｲｱｳﾄ修正 小田 start
+    # 2018/10/15 チャージ oda add
+    select_sql << " , a.sale_charge "
+    # 2012/09/25 ﾚｲｱｳﾄ修正 oda start
     #select_sql << " , cast(a.sale_change1 as int) + cast(a.sale_change2 as int) + cast(a.sale_change3 as int) as sale_change "
     select_sql << " , cast(a.sale_change1 as int) + cast(a.sale_change2 as int) + cast(a.sale_change3 as int) + cast(a.sale_etc as int)as sale_change "
-    # 2012/09/25 ﾚｲｱｳﾄ修正 小田 end
+    # 2012/09/25 ﾚｲｱｳﾄ修正 oda end
     select_sql << " , a.sale_today_out "
     select_sql << " , a.sale_am_out "
     select_sql << " , a.sale_pm_out "
@@ -55,11 +57,14 @@ module DSalesHelper
     d_sale = d_sales[0]
     if d_sale then
        #一覧表にする現金売上は、プリカ手数料とその他売上を引いた値にする
-       d_sale.sale_money = d_sale.sale_money.to_i - d_sale.sonota_money.to_i - d_sale.purika_tesuryo.to_i
+       #d_sale.sale_money = d_sale.sale_money.to_i - d_sale.sonota_money.to_i - d_sale.purika_tesuryo.to_i
+       #一覧表の現金売上 ：現金売上-プリカ手数料-その他売上-チャージ 2018/10/15 チャージ oda up
+       d_sale.sale_money = d_sale.sale_money.to_i - d_sale.sonota_money.to_i - d_sale.purika_tesuryo.to_i - d_sale.sale_charge.to_i
        @d_sale_ass = zenjitu_d_sale.sale_pm_out.to_i + d_sale.sale_today_out.to_i + d_sale.sale_am_out.to_i   #ASS入金額
        # 2012/09/29 掛入金加算対応 oda
        #@d_sale_syokei = d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i + d_sale.purika_tesuryo.to_i - d_sale.pay_money.to_i #小計
-       @d_sale_syokei = d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i + d_sale.purika_tesuryo.to_i + d_sale.recive_money - d_sale.pay_money.to_i #小計
+        #小計=現金売上+プリカ+その他売上+リカ手数料-出金+チャージ 2018/10/15 add oda
+       @d_sale_syokei = d_sale.sale_money.to_i + d_sale.sale_purika.to_i + d_sale.sonota_money.to_i + d_sale.purika_tesuryo.to_i + d_sale.recive_money - d_sale.pay_money.to_i + d_sale.sale_charge.to_i
        # 2012/09/25 ﾚｲｱｳﾄ修正 小田 start
        #@zenjitu_d_sale_cash_arigaka = zenjitu_d_sale.sale_change1.to_i + zenjitu_d_sale.sale_change2.to_i + zenjitu_d_sale.sale_change3.to_i + zenjitu_d_sale.sale_cashbox.to_i
        #@zenjitu_d_sale_cash_arigaka = zenjitu_d_sale.sale_change1.to_i + zenjitu_d_sale.sale_change2.to_i + zenjitu_d_sale.sale_change3.to_i  + zenjitu_d_sale.sale_etc.to_i + zenjitu_d_sale.sale_cashbox.to_i
@@ -96,6 +101,8 @@ module DSalesHelper
       return_hash[:d_sale_calc_aridaka] = ""
       return_hash[:d_sale_cash_aridaka] = ""
       return_hash[:kabusoku] = ""
+      # 2018/10/15 チャージ oda add
+      return_hash[:sale_charge] = ""
     end
     
     if @d_sale
@@ -115,6 +122,8 @@ module DSalesHelper
       return_hash[:d_sale_calc_aridaka] = return_hash[:d_sale_calc_aridaka].to_i + @calc_exist_money.to_i
       return_hash[:d_sale_cash_aridaka] = return_hash[:d_sale_cash_aridaka].to_i + @d_sale.exist_money.to_i
       return_hash[:kabusoku] = return_hash[:kabusoku].to_i + @d_sale.over_short.to_i
+      # 2018/10/15 チャージ oda add
+      return_hash[:sale_charge] = return_hash[:sale_charge].to_i + @d_sale.sale_charge.to_i
     end  
     return return_hash
 

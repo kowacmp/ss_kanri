@@ -168,6 +168,10 @@ p params
     if @d_sale.sale_ass == nil
       @d_sale.sale_ass=0
     end
+    #チャージ 2018/10/15 add oda
+    if @d_sale.sale_charge == nil
+      @d_sale.sale_charge=0
+    end
     #釣銭機1
     if @d_sale.sale_change1 == nil
       @d_sale.sale_change1=0
@@ -750,7 +754,8 @@ p params
     footer[:coin_tesuryo] = ""
     footer[:suito_zan] = ""
     footer[:uketori_tesuryo] = "" #2012/10/02 nishimura
-   
+    footer[:charge_money] = ""
+       
     d_sale_total = Hash::new #合計データ
     d_sale_total = calc_total(d_sale_total,true) #初期化
     
@@ -766,6 +771,7 @@ p params
         e.section.item(:footer_uketori_tesuryo).value(footer[:uketori_tesuryo]) #2012/10/02 nishimura
         e.section.item(:footer_d_sale_kei).value(footer[:d_sale_kei])
         e.section.item(:footer_over_short).value(footer[:over_short])
+        e.section.item(:footer_charge_money).value(footer[:charge_money])  #2018/10/15 oda add
         
         e.section.item(:total_day).value("計")
         e.section.item(:total_sale_money).value((d_sale_total[:sale_money].to_i)) 
@@ -782,6 +788,7 @@ p params
         e.section.item(:total_calc_exist_money).value((d_sale_total[:d_sale_calc_aridaka].to_i))
         e.section.item(:total_exist_money).value((d_sale_total[:d_sale_cash_aridaka].to_i))
         e.section.item(:total_over_short).value((d_sale_total[:kabusoku].to_i))
+        e.section.item(:total_sale_charge).value((d_sale_total[:sale_charge].to_i))  #2018/10/15 oda add
         
         #2012/10/02 出金誤差追加 nishimura <<<
         error_money_total = d_sale_total[:sale_am_out].to_i + d_sale_total[:sale_pm_out].to_i + d_sale_total[:sale_today_out].to_i - 
@@ -815,6 +822,7 @@ p params
         row.item(:week).value(day_of_the_week(select_day.wday))
         if @d_sale
           row.item(:sale_money).value(num_fmt(@d_sale.sale_money)) 
+          row.item(:sale_charge).value(num_fmt(@d_sale.sale_charge)) # 2018/10/15 チャージ oda add
           row.item(:sale_purika).value(num_fmt(@d_sale.sale_purika))
           row.item(:purika_tesuryo).value(num_fmt(@d_sale.purika_tesuryo))
           row.item(:sonota_money).value(num_fmt(@d_sale.sonota_money))
@@ -875,6 +883,7 @@ p params
     #footer[:cash_money] = num_fmt(d_sale_total[:sale_money].to_i - d_sale_total[:purika_tesuryo].to_i)
     footer[:cash_money] = num_fmt(d_sale_total[:sale_money].to_i)
     #2012/12/20 end
+    footer[:charge_money] = num_fmt(d_sale_total[:sale_charge].to_i) # 2018/10/15 チャージ oda add
     footer[:coin_tesuryo] = num_fmt(@etc_item_total.item_money.to_i)
     #footer[:suito_zan] = num_fmt(@d_sale_syokei.to_i + @d_sale_cash_aridaka.to_i)
     footer[:suito_zan] = num_fmt(@balance_money)
