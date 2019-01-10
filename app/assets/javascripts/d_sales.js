@@ -119,8 +119,11 @@ $(function () {
 	$(".bodyDiv table#recive_table :input[id*=_item_money]").live('change', function(){ recive_money_total_calc(); });
 	//出金
 	$(".bodyDiv table#pay_table :input[id*=_item_money]").live('change', function(){ pay_money_total_calc(); });
+	//電子ﾏﾈｰﾁｬｰｼﾞ20190107 追加 oda
+	$(".bodyDiv table#charge_table :input[id*=_item_money]").live('change', function(){ charge_money_total_calc(); });
 	//固定金庫
-   $(":input[id^=d_sale_sale_cashbox]").live('change', function(){ sale_cashbox_calc(); });
+	$(":input[id^=d_sale_sale_cashbox]").live('change', function(){ sale_cashbox_calc(); });
+
 	
     //売上合計を計算
     function sale_money_total_calc(){
@@ -259,7 +262,9 @@ $(function () {
 		var i=0;
 		var num;
 		var total=0;
-		
+		var ch_num;
+		var ch_total=0;
+
 		$(".bodyDiv table#recive_table :input[id*=_item_money]").each(function(i){
 		    num = Number(format_kanma($(this).val(), 2));
 		    if (isNaN(num)) {num = 0};
@@ -268,7 +273,34 @@ $(function () {
 
       	$("#d_sale_recive_money").val(format_kanma(total));    
       	$("#recive_money_total").text(format_kanma(total));
-      	$("#recive_money_total2").text(format_kanma(total)); 
+      	//$("#recive_money_total2").text(format_kanma(total));
+      	//電子ﾏﾈｰﾁｬｰｼﾞ20190107 追加 oda
+      	ch_num = Number(format_kanma($("#charge_money_total").text(), 2));
+      	ch_total = total + ch_num
+      	$("#recive_money_total2").text(format_kanma(ch_total)); 
+      	
+      	syo_total_calc();//小計計算 	
+    };
+    
+    //電子ﾏﾈｰﾁｬｰｼﾞ20190107 追加 oda
+    function charge_money_total_calc() {
+		var i=0;
+		var num;
+		var total=0;
+		var ch_num;
+		var ch_total=0;		
+		
+		$(".bodyDiv table#charge_table :input[id*=_item_money]").each(function(i){
+		    num = Number(format_kanma($(this).val(), 2));
+		    if (isNaN(num)) {num = 0};
+		    total = total + num;
+		})
+      	$("#d_sale_sale_charge").val(format_kanma(total));    
+      	$("#charge_money_total").text(format_kanma(total));
+      	
+      	ch_num = Number(format_kanma($("#recive_money_total").text(), 2));
+      	ch_total = total + ch_num
+      	$("#recive_money_total2").text(format_kanma(ch_total));       	
       	
       	syo_total_calc();//小計計算 	
     };
@@ -278,12 +310,12 @@ $(function () {
     	//売上＋プリカ＋入金ー出金
     	var num = new Array(4);
     	var total=0;
-    	
+    	var re_total=0;
+    	    	
     	num[0]=Number(format_kanma($("#sale_money_total2").text(), 2));
     	num[1]=Number(format_kanma($("#sale_purika2").text(), 2));
-    	num[2]=Number(format_kanma($("#recive_money_total2").text(), 2));
+    	num[2]=Number(format_kanma($("#recive_money_total").text(), 2));
     	num[3]=Number(format_kanma($("#pay_money_total2").text(), 2));
-    	
 		var i=0;
       	while(i<4){
         	if (isNaN(num[i])) {num[i] = 0};
@@ -291,9 +323,9 @@ $(function () {
      	};
      	
 		total = num[0] + num[1] + num[2] - num[3];
-		
+
 		$("#syo_total").text(format_kanma( total ));  	
-		
+
 		total_calc();//合計を計算
 		changebox_aridaka2_calc(); //釣銭有高2を計算
     };
@@ -445,15 +477,14 @@ $(function () {
 
     	num[0]=Number(format_kanma($("#cash_aridaka").text(), 2));
      	num[1]=Number(format_kanma($("#total").text(), 2));
-
      	
 		var i=0;
-      	while(i<2){
+      	//while(i<2){
+      	while(i<3){
         	if (isNaN(num[i])) {num[i] = 0};
         	i=i+1;
      	};  
      	total = num[0] - num[1];
-     	
      	$("#kabusoku").text(format_kanma( total )); 
      	set_minus_color($("#kabusoku")); // ADD 2013.01.29 過不足,出金誤差が発生した場合は黄色にする
      	$("#d_sale_over_short").val(total); 	

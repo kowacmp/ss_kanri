@@ -239,7 +239,10 @@ p params
     @d_sale.sale_changebox = @sale_change_total #釣銭有高2    
     @d_sale.exist_money = @cash_aridaka #現金有高
     @d_sale.over_short = @cash_aridaka - @total #過不足
-    
+p "@d_sale.recive_money==========================-#{@d_sale.recive_money}"
+p "@syo_total==========================-#{@syo_total}"
+p "@cash_aridaka==================--#{@cash_aridaka}"
+p "@total==========================-#{@total}"
     respond_to do |format|
       if params[:remote]
         p "@d_sale=#{@d_sale.sale_money1}"
@@ -658,6 +661,51 @@ p params
             if d_sale_item.item_name.blank? and 
               d_sale_item.m_shop_id.blank? and
               d_sale_item.item_money.blank?
+              d_sale_item.destroy
+            else
+              d_sale_item.save
+            end
+
+          end
+    }
+    #20190107 追加 oda
+    #電子ﾏﾈｰ
+    20.times{ |i|
+          charge_item = params[:charge_item][i.to_s]
+          update_flg = 0
+          
+          if charge_item["id"] == ""
+            #insert
+            d_sale_item = DSaleItem.new
+            d_sale_item.d_sale_id = d_sale_id
+            d_sale_item.item_class = 5
+            d_sale_item.created_user_id = current_user.id
+            
+            update_flg = 1 unless charge_item["m_item_id"].blank?
+            update_flg = 1 unless charge_item["item_money"].blank?
+            update_flg = 1 unless charge_item["item_name"].blank?
+            
+          else
+            #update
+            d_sale_item = DSaleItem.find(charge_item["id"])
+            
+            update_flg = 1 if d_sale_item.m_item_id != charge_item["m_item_id"]
+            update_flg = 1 if d_sale_item.item_money != charge_item["item_money"]
+            update_flg = 1 if d_sale_item.item_name != charge_item["item_name"]
+            
+          end    
+          
+          if update_flg == 1
+            d_sale_item.m_item_id = charge_item["m_item_id"]
+            d_sale_item.item_money = charge_item["item_money"]
+            d_sale_item.item_name = charge_item["item_name"]
+            
+            d_sale_item.updated_user_id = current_user.id
+                        
+            #内容が空だったら削除する
+            if d_sale_item.m_item_id.blank? and 
+              d_sale_item.item_money.blank? and
+              d_sale_item.item_name.blank?
               d_sale_item.destroy
             else
               d_sale_item.save
