@@ -211,9 +211,10 @@ p params
       @d_sale.sale_cashbox = @m_fix_money.total_cash_box.to_i 
     end
     
-    
+    #20190118 電子ﾏﾈｰ追加 oda
     # 2012/09/24 oda 算出項目がnilの場合、算出不可 end
-    @syo_total=@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i + @d_sale.sale_purika.to_i + @d_sale.recive_money.to_i - @d_sale.pay_money.to_i 
+    #syo_total=@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i + @d_sale.sale_purika.to_i + @d_sale.recive_money.to_i - @d_sale.pay_money.to_i 
+    @syo_total=@d_sale.sale_money1.to_i + @d_sale.sale_money2.to_i + @d_sale.sale_money3.to_i + @d_sale.sale_purika.to_i + @d_sale.recive_money.to_i - @d_sale.pay_money.to_i  + @d_sale.sale_charge.to_i
     # 2012/09/28 算出式変更 翌日出前を加算 oda
     #@total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + @zenjitu_d_sale.sale_changebox.to_i + @d_sale.sale_ass.to_i
     #@total = @syo_total.to_i + @zenjitu_d_sale.sale_cashbox.to_i + (@zenjitu_d_sale.sale_changebox.to_i - (@zenjitu_d_sale.sale_am_out.to_i + @zenjitu_d_sale.sale_pm_out.to_i) + (@d_sale.sale_am_out.to_i + @d_sale.sale_pm_out.to_i)) + @d_sale.sale_ass.to_i
@@ -239,10 +240,7 @@ p params
     @d_sale.sale_changebox = @sale_change_total #釣銭有高2    
     @d_sale.exist_money = @cash_aridaka #現金有高
     @d_sale.over_short = @cash_aridaka - @total #過不足
-p "@d_sale.recive_money==========================-#{@d_sale.recive_money}"
-p "@syo_total==========================-#{@syo_total}"
-p "@cash_aridaka==================--#{@cash_aridaka}"
-p "@total==========================-#{@total}"
+
     respond_to do |format|
       if params[:remote]
         p "@d_sale=#{@d_sale.sale_money1}"
@@ -865,7 +863,6 @@ p "@total==========================-#{@total}"
                        
       #明細データセット
       report.page.list(:report_list).add_row do |row|
-        
         row.item(:day).value(i + 1)
         row.item(:week).value(day_of_the_week(select_day.wday))
         if @d_sale

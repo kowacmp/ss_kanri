@@ -314,14 +314,14 @@ $(function () {
     	    	
     	num[0]=Number(format_kanma($("#sale_money_total2").text(), 2));
     	num[1]=Number(format_kanma($("#sale_purika2").text(), 2));
-    	num[2]=Number(format_kanma($("#recive_money_total").text(), 2));
+    	num[2]=Number(format_kanma($("#recive_money_total2").text(), 2));
     	num[3]=Number(format_kanma($("#pay_money_total2").text(), 2));
 		var i=0;
       	while(i<4){
         	if (isNaN(num[i])) {num[i] = 0};
         	i=i+1;
      	};
-     	
+
 		total = num[0] + num[1] + num[2] - num[3];
 
 		$("#syo_total").text(format_kanma( total ));  	
